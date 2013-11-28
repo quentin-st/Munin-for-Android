@@ -396,13 +396,13 @@ public class MuninServer extends Model {
 					String uri = url;
 					String methodName = "GET";
 					
-					cnonce = Util.newCnonce();
+					cnonce = DigestUtils.newCnonce();
 					
-					// Parser le header
-					realmName = Util.match(this.authString, "realm");
-					nonce = Util.match(this.authString, "nonce");
-					opaque = Util.match(this.authString, "opaque");
-					qop = Util.match(this.authString, "qop");
+					// Parse header
+					realmName = DigestUtils.match(this.authString, "realm");
+					nonce = DigestUtils.match(this.authString, "nonce");
+					opaque = DigestUtils.match(this.authString, "opaque");
+					qop = DigestUtils.match(this.authString, "qop");
 					
 					String a1 = DigestUtils.md5Hex(userName + ":" + realmName + ":" + password);
 					String a2 = DigestUtils.md5Hex(methodName + ":" + uri);
@@ -410,19 +410,19 @@ public class MuninServer extends Model {
 					String response = DigestUtils.md5Hex(responseSeed);
 					
 					String header = "Digest ";
-					header += Util.formatField("username", userName, false);
-					header += Util.formatField("realm", realmName, false);
-					header += Util.formatField("nonce", nonce, false);
+					header += DigestUtils.formatField("username", userName, false);
+					header += DigestUtils.formatField("realm", realmName, false);
+					header += DigestUtils.formatField("nonce", nonce, false);
 					if (!opaque.equals(""))
-						header += Util.formatField("opaque", opaque, false);
-					header += Util.formatField("uri", uri, false);
-					header += Util.formatField("response", response, false);
-					header += Util.formatField("cnonce", cnonce, false);
-					header += Util.formatField("nc", nc, false);
+						header += DigestUtils.formatField("opaque", opaque, false);
+					header += DigestUtils.formatField("uri", uri, false);
+					header += DigestUtils.formatField("response", response, false);
+					header += DigestUtils.formatField("cnonce", cnonce, false);
+					header += DigestUtils.formatField("nc", nc, false);
 					if (!qop.equals(""))
-						header += Util.formatField("qop", qop, false);
-					header += Util.formatField("charset", "utf-8", false);
-					header += Util.formatField("algorithm", algorithm, true);
+						header += DigestUtils.formatField("qop", qop, false);
+					header += DigestUtils.formatField("charset", "utf-8", false);
+					header += DigestUtils.formatField("algorithm", algorithm, true);
 					
 					request.setHeader("Authorization", header);
 				}

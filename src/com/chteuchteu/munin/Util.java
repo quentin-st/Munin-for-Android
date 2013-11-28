@@ -2,7 +2,6 @@ package com.chteuchteu.munin;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.MessageDigest;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -30,49 +29,6 @@ public final class Util {
 		if (netInfo != null && netInfo.isConnectedOrConnecting())
 			return true;
 		return false;
-	}
-	
-	public static String match(String headerLine, String token) {
-		if (headerLine == null) {
-			return "";
-		}
-		
-		int match = headerLine.indexOf(token);
-		if (match <= 0) return "";
-		
-		// = to skip
-		match += token.length() + 1;
-		int traillingComa = headerLine.indexOf(",", match);
-		String value = headerLine.substring(match, traillingComa > 0 ? traillingComa : headerLine.length());
-		value = value.endsWith("\"") ? value.substring(0, value.length() - 1) : value;
-		return value.startsWith("\"") ? value.substring(1) : value;
-	}
-	
-	public static String toBase16(byte[] bytes) {
-		int base = 16;
-		StringBuilder buf = new StringBuilder();
-		for (byte b : bytes) {
-			int bi = 0xff & b;
-			int c = '0' + (bi / base) % base;
-			if (c > '9')
-				c = 'a' + (c - '0' - 10);
-			buf.append((char) c);
-			c = '0' + bi % base;
-			if (c > '9')
-				c = 'a' + (c - '0' - 10);
-			buf.append((char) c);
-		}
-		return buf.toString();
-	}
-	
-	public static String newCnonce() {
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] b = md.digest(String.valueOf(System.currentTimeMillis()).getBytes("ISO-8859-1"));
-			return toHexString(b);
-		} catch (Exception e) {
-			return "";
-		}
 	}
 	
 	public static Bitmap fastblur(Bitmap sentBitmap, int radius) {
@@ -305,40 +261,6 @@ public final class Util {
 		bitmap.setPixels(pix, 0, w, 0, 0, w, h);
 		
 		return (bitmap);
-	}
-	
-	// AddServer : digest auth
-	/*public static String digest2HexString(byte[] digest)
-	{
-		String digestString="";
-		int low, hi ;
-		
-		for(int i=0; i < digest.length; i++)
-		{
-			low =  ( digest[i] & 0x0f ) ;
-			hi  =  ( (digest[i] & 0xf0)>>4 ) ;
-			digestString += Integer.toHexString(hi);
-			digestString += Integer.toHexString(low);
-		}
-		return digestString ;
-	}*/
-	
-	public static String toHexString(byte[] data) {
-		StringBuilder buffer = new StringBuilder();
-		for (int i = 0; i < data.length; i++) {
-			buffer.append(Integer.toHexString((data[i] & 0xf0) >>> 4));
-			buffer.append(Integer.toHexString(data[i] & 0x0f));
-		}
-		return buffer.toString();
-	}
-	
-	public static String formatField(String f, String v, boolean last) {
-		// f="v",
-		String s = "";
-		s = s + f + "=\"" + v + "\"";
-		if (!last)
-			s += ", ";
-		return s;
 	}
 	
 	public static String setHttps(String url) {

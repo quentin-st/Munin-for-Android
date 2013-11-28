@@ -76,31 +76,6 @@ public class Activity_Main extends Activity {
 			this.getWindow().getDecorView().setBackgroundColor(Color.WHITE);
 		}
 		
-		// Mise à jour 2.0.1 -> 2.1
-		/*if (getPref("lastMFAVersion").equals("2.0") || getPref("lastMFAVersion").equals("1.9")) {
-			AlertDialog.Builder builder2 = new AlertDialog.Builder(Activity_Main.this);
-			builder2.setMessage("Ads have been removed! If you really like the app, you can buy the Premium Pack (1.5$ only!). Some awesome features are already planned for upcoming releases!")
-			.setCancelable(true)
-			// Yes
-			.setPositiveButton("Buy", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					try {
-						Intent intent = new Intent(Intent.ACTION_VIEW);
-						intent.setData(Uri.parse("market://details?id=com.chteuchteu.muninforandroidfeaturespack"));
-						startActivity(intent);
-					} catch (Exception ex) { }
-				}
-			})
-			// No
-			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-				}
-			});
-			AlertDialog alert2 = builder2.create();
-			alert2.show();
-		}*/
-		
 		if (Locale.getDefault().getLanguage().equals("de") && getPref("suggestLanguage").equals("") && (getPref("lang").equals("fr") || getPref("lang").equals("en"))) {
 			AlertDialog.Builder builder2 = new AlertDialog.Builder(Activity_Main.this);
 			builder2.setMessage("Die App ist nun auch auf Deutsch verfügbar. Möchten Sie die Sprache wechseln?")
@@ -123,46 +98,6 @@ public class Activity_Main extends Activity {
 			AlertDialog alert2 = builder2.create();
 			alert2.show();
 		}
-		
-		// Répression des fraudes
-		//if (!muninFoo.premium) {
-		/*if(!isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack")) {
-			boolean fraude = false;
-			// Recherche d'un serveur premium
-			for (int i=0; i<muninFoo.getHowManyServers(); i++) {
-				if (muninFoo.getServer(i) != null && muninFoo.getServer(i).getSSL() == true) {
-					fraude = true;
-					muninFoo.deleteServer(i);
-				}
-			}
-
-			if (fraude) {
-				muninFoo.sqlite.saveServers();
-				muninFoo.log("Fraude", "Server(s)_deleted.");
-
-				AlertDialog.Builder builder2 = new AlertDialog.Builder(Activity_Main.this);
-				builder2.setMessage("It seems that at least one of your saved servers needs SSL Support while you uninstalled the Features Pack. Please install it back to use those servers.")
-				.setCancelable(true)
-				// Yes
-				.setPositiveButton("Buy", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						try {
-							Intent intent = new Intent(Intent.ACTION_VIEW);
-							intent.setData(Uri.parse("market://details?id=com.chteuchteu.muninforandroidfeaturespack"));
-							startActivity(intent);
-						} catch (Exception ex) { }
-					}
-				})
-				// No
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-				AlertDialog alert2 = builder2.create();
-				alert2.show();
-			}
-		}*/
 		
 		if (!muninFoo.drawer) {
 			buttonGraphs					= (Button) findViewById(R.id.graphsContainer);
@@ -244,7 +179,7 @@ public class Activity_Main extends Activity {
 				buttonPremium.setVisibility(View.GONE);
 		}
 		
-		// Affichage d'un message après validation de paramètres dans Settings (retour vers main)
+		// Display a message after settings save
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("action")) {
 			String action = thisIntent.getExtras().getString("action");
@@ -252,48 +187,11 @@ public class Activity_Main extends Activity {
 				// Settings saved successfully!
 				AppMsg.makeText(this, getString(R.string.text36), AppMsg.STYLE_INFO).show();
 		}
-		
-		// Mise à jour vers 2.2 (apparition des widgets)
-		/*if(getPref("widgetsMessageShown").equals("")) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this)
-			.setTitle("Say hello to widgets!");
-			if (!muninFoo.premium) {
-				builder.setPositiveButton("Learn more", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						try {
-							Intent intent = new Intent(Intent.ACTION_VIEW);
-							intent.setData(Uri.parse("market://details?id=com.chteuchteu.muninforandroidfeaturespack"));
-							startActivity(intent);
-						} catch (Exception ex) { }
-					}
-				});
-			}
-			builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) { }
-			});
-			final FrameLayout frameView = new FrameLayout(this);
-			builder.setView(frameView);
-			final AlertDialog alertDialog = builder.create();
-			LayoutInflater inflater = alertDialog.getLayoutInflater();
-			inflater.inflate(R.layout.widget_announcement, frameView);
-			((TextView) frameView.findViewById(R.id.widget_txt1)).setText("New feature!");
-			String txt2 = "";
-			if (muninFoo.premium)
-				txt2 = "As a Munin for Android Features Pack user, you have access to the latest premium features. Here comes the widgets: try them!";
-			else
-				txt2 = "You asked for them: graph widgets are now available in the Munin for Android Features Pack!";
-			((TextView) frameView.findViewById(R.id.widget_txt2)).setText(txt2);
-			alertDialog.show();
-
-			setPref("widgetsMessageShown", "true");
-		}*/
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		//muninFoo = MuninFoo.getInstance(this);
 		
 		if (!muninFoo.drawer) {
 			boolean enable = muninFoo.currentServer != null;

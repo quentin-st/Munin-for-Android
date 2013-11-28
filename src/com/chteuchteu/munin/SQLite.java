@@ -16,9 +16,6 @@ public class SQLite {
 	}
 	
 	//	SERVERS
-	/*public MuninServer getServer(int id) {
-		return new Select().from(MuninServer.class).where("id = ?", id).executeSingle();
-	}*/
 	public List<MuninServer> getServers() {
 		return new Select().from(MuninServer.class).execute();
 	}
