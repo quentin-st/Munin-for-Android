@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -184,15 +183,11 @@ public class Activity_Servers extends ListActivity {
 	}
 	
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Intent intent = new Intent(this, Activity_Main.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			setTransition("shallower");
-			return false;
-		}
-		return super.onKeyDown(keyCode, event);
+	public void onBackPressed() {
+		Intent intent = new Intent(this, Activity_Main.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		setTransition("shallower");
 	}
 	
 	public String getPref(String key) {

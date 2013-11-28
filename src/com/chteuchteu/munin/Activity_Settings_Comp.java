@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -23,6 +22,13 @@ import android.widget.Spinner;
 import com.google.analytics.tracking.android.EasyTracker;
 
 public class Activity_Settings_Comp extends Activity {
+	/*
+	 * Note : this activity is deprecated.
+	 * This is because of the use of the switch element which is not compatible
+	 * with 'old' versions of Android.
+	 * When I'll have time, I'll dynamically display checkbox or switch depending
+	 * on version of Android with the main Activity_Settings activity.
+	 */
 	public static CheckBox 		cb_splash;
 	public static Spinner		spinner_scale;
 	public static Spinner		spinner_lang;
@@ -181,15 +187,11 @@ public class Activity_Settings_Comp extends Activity {
 	}
 	
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Intent intent = new Intent(this, Activity_Main.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			setTransition("shallower");
-			return false;
-		}
-		return super.onKeyDown(keyCode, event);
+	public void onBackPressed() {
+		Intent intent = new Intent(this, Activity_Main.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		setTransition("shallower");
 	}
 	
 	// SHARED PREFERENCES

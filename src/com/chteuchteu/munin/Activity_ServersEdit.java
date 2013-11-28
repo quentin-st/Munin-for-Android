@@ -14,7 +14,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -209,17 +208,13 @@ public class Activity_ServersEdit extends ListActivity {
 				return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Intent intent = new Intent(this, Activity_Servers.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			setTransition("shallower");
-			return false;
-		}
-		return super.onKeyDown(keyCode, event);
+	public void onBackPressed() {
+		Intent intent = new Intent(this, Activity_Servers.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		setTransition("shallower");
 	}
 	
 	public String getPref(String key) {

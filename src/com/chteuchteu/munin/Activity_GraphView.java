@@ -29,7 +29,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -398,51 +397,38 @@ public class Activity_GraphView extends Activity {
 	}
 	
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (findViewById(R.id.serverSwitch_mask).getVisibility() == View.VISIBLE) {
-				if (findViewById(R.id.labels_container).getVisibility() == View.VISIBLE)
-					actionCloseLabels();
-				else
-					actionServerSwitchQuit();
-			} else {
-				//recycleBitmaps();
-				Intent thisIntent = getIntent();
-				if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")) {
-					String from = thisIntent.getExtras().getString("from");
-					if (from.equals("labels")) {
-						if (thisIntent.getExtras().containsKey("label")) {
-							Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
-							intent.putExtra("label", thisIntent.getExtras().getString("label"));
-							startActivity(intent);
-							setTransition("shallower");
-						}
-					} else if (from.equals("alerts")) {
-						if (thisIntent.getExtras().containsKey("server")) {
-							if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
-								muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
-							Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
-							startActivity(intent);
-							setTransition("shallower");
-						}
+	public void onBackPressed() {
+		if (findViewById(R.id.serverSwitch_mask).getVisibility() == View.VISIBLE) {
+			if (findViewById(R.id.labels_container).getVisibility() == View.VISIBLE)
+				actionCloseLabels();
+			else
+				actionServerSwitchQuit();
+		} else {
+			//recycleBitmaps();
+			Intent thisIntent = getIntent();
+			if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")) {
+				String from = thisIntent.getExtras().getString("from");
+				if (from.equals("labels")) {
+					if (thisIntent.getExtras().containsKey("label")) {
+						Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
+						intent.putExtra("label", thisIntent.getExtras().getString("label"));
+						startActivity(intent);
+						setTransition("shallower");
 					}
-				} else {
-					Intent intent = new Intent(this, Activity_PluginSelection.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-					setTransition("shallower");
+				} else if (from.equals("alerts")) {
+					if (thisIntent.getExtras().containsKey("server")) {
+						if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
+							muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
+						Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
+						startActivity(intent);
+						setTransition("shallower");
+					}
 				}
-			}
-			return false;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-	
-	public void recycleBitmaps() {
-		for (Bitmap b : bitmaps) {
-			if (b != null) {
-				b.recycle();
-				b = null;
+			} else {
+				Intent intent = new Intent(this, Activity_PluginSelection.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				setTransition("shallower");
 			}
 		}
 	}

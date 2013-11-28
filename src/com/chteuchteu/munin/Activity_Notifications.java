@@ -16,7 +16,6 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -244,19 +243,16 @@ public class Activity_Notifications extends Activity {
 	}
 	
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (((LinearLayout)findViewById(R.id.list_container)).getVisibility() == View.VISIBLE && keyCode == KeyEvent.KEYCODE_BACK) {
+	public void onBackPressed() {
+		if (((LinearLayout)findViewById(R.id.list_container)).getVisibility() == View.VISIBLE) {
 			changeListViewVisibility(false);
 			saveServersListSettings();
-			return false;
-		} else if (keyCode == KeyEvent.KEYCODE_BACK) {
+		} else {
 			Intent intent = new Intent(this, Activity_Main.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			setTransition("shallower");
-			return false;
 		}
-		return super.onKeyDown(keyCode, event);
 	}
 	
 	@Override

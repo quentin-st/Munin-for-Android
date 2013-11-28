@@ -17,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -373,27 +372,22 @@ public class Activity_PluginSelection extends ListActivity {
 		}
 		// End servers spinner
 	}
-	
+
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if ( ll_filter != null && ll_filter.getVisibility() == View.VISIBLE) {
-				ll_filter.setVisibility(View.GONE);
-				filter.setFocusable(false);
-				filter.setFocusableInTouchMode(false);
-				filter.clearFocus();
-				InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(filter.getWindowToken(), 0);
-			} else {
-				Intent intent = new Intent(this, Activity_Main.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				setTransition("shallower");
-				return false;
-			}
-			return false;
+	public void onBackPressed() {
+		if ( ll_filter != null && ll_filter.getVisibility() == View.VISIBLE) {
+			ll_filter.setVisibility(View.GONE);
+			filter.setFocusable(false);
+			filter.setFocusableInTouchMode(false);
+			filter.clearFocus();
+			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(filter.getWindowToken(), 0);
+		} else {
+			Intent intent = new Intent(this, Activity_Main.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			setTransition("shallower");
 		}
-		return super.onKeyDown(keyCode, event);
 	}
 	
 	public String getPref(String key) {

@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,10 +33,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
 	private MuninLabel		label;
-	//private SimpleAdapter 	sa;
-	private Menu 			menu;
 	private String			activityName;
-	//private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 	private List<List<MuninPlugin>> labelsListCat;
 	private List<MuninPlugin> correspondance;
 	
@@ -178,7 +174,6 @@ public class Activity_LabelsPluginSelection extends Activity {
 	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
 		if (muninFoo.drawer) {
 			dh.getDrawer().setOnOpenListener(new OnOpenListener() {
 				@Override
@@ -206,15 +201,11 @@ public class Activity_LabelsPluginSelection extends Activity {
 	}
 	
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Intent intent = new Intent(this, Activity_Labels.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			setTransition("shallower");
-			return false;
-		}
-		return super.onKeyDown(keyCode, event);
+	public void onBackPressed() {
+		Intent intent = new Intent(this, Activity_Labels.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		setTransition("shallower");
 	}
 	
 	public String getPref(String key) {

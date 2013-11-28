@@ -25,7 +25,7 @@ public class Activity_Splash extends Activity {
 	private MuninFoo muninFoo;
 	
 	//protected boolean _active = true;
-	protected int _splashTime = 5000; // time to display the splash screen in ms
+	protected int _splashTime = 3000; // time to display the splash screen in ms
 	protected boolean splashEnabled;
 	protected String activity;
 	protected boolean splash;
