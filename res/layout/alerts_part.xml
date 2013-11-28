@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/alerts_part"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:orientation="vertical" >
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="15dp"
+		android:background="#eaeaea" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:background="#ffffff"
+		android:orientation="vertical" >
+
+		<TextView
+			android:id="@+id/alerts_part_serverName"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/alerts_hover"
+			android:clickable="true"
+			android:drawableRight="@drawable/arrow"
+			android:focusable="true"
+			android:gravity="center_vertical"
+			android:padding="10dp"
+			android:textColor="#333333"
+			android:textSize="19sp" />
+
+		<LinearLayout
+			android:id="@+id/alerts_part_criticals"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="4dp"
+			android:background="#B2B2B2"
+			android:orientation="vertical" >
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" >
+
+				<TextView
+					android:id="@+id/alerts_part_criticalsNumber"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:layout_marginBottom="1dp"
+					android:layout_marginLeft="15dp"
+					android:layout_marginTop="1dp"
+					android:layout_weight="0"
+					android:gravity="center"
+					android:textColor="#ffffff"
+					android:textSize="23sp" />
+
+				<TextView
+					android:id="@+id/alerts_part_criticalsLabel"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:layout_margin="5dp"
+					android:layout_marginRight="15dp"
+					android:layout_weight="0"
+					android:gravity="center"
+					android:textColor="#ffffff"
+					android:textSize="14sp" />
+
+				<HorizontalScrollView
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_weight="1" >
+
+					<TextView
+						android:id="@+id/alerts_part_criticalsPluginsList"
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:gravity="center_vertical"
+						android:paddingLeft="10dp"
+						android:scrollHorizontally="true"
+						android:textColor="#ffffff"
+						android:textSize="14sp" />
+				</HorizontalScrollView>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="2dp"
+				android:background="#30000000" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/alerts_part_warnings"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="5dp"
+			android:background="#B2B2B2"
+			android:orientation="vertical" >
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" >
+
+				<TextView
+					android:id="@+id/alerts_part_warningsNumber"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:layout_marginBottom="1dp"
+					android:layout_marginLeft="15dp"
+					android:layout_marginTop="1dp"
+					android:layout_weight="0"
+					android:gravity="center"
+					android:textColor="#ffffff"
+					android:textSize="23sp" />
+
+				<TextView
+					android:id="@+id/alerts_part_warningsLabel"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:layout_margin="5dp"
+					android:layout_weight="0"
+					android:gravity="center"
+					android:textColor="#ffffff"
+					android:textSize="14sp" />
+
+				<HorizontalScrollView
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_weight="1" >
+
+					<TextView
+						android:id="@+id/alerts_part_warningsPluginsList"
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:gravity="center_vertical"
+						android:paddingLeft="10dp"
+						android:scrollHorizontally="true"
+						android:textColor="#ffffff"
+						android:textSize="14sp" />
+				</HorizontalScrollView>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="2dp"
+				android:background="#30000000" />
+		</LinearLayout>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="2dp"
+		android:layout_marginBottom="10dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:background="#d7d7d7" />
+
+</LinearLayout>

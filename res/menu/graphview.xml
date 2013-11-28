@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+		android:id="@+id/menu_labels"
+		android:icon="@drawable/collections_labels"
+		android:showAsAction="always"
+		android:title="@string/button_labels" />
+	<item
+		android:id="@+id/menu_save"
+		android:icon="@drawable/content_save_dark"
+		android:showAsAction="withText"
+		android:title="@string/menu_graph_save" />
+	<item
+		android:id="@+id/menu_previous"
+		android:icon="@drawable/navigation_previous_item_dark"
+		android:showAsAction="always"
+		android:title="@string/menu_graph_previous" />
+	<item
+		android:id="@+id/menu_next"
+		android:icon="@drawable/navigation_next_item_dark"
+		android:showAsAction="always"
+		android:title="@string/menu_graph_next" />
+	<item
+		android:id="@+id/menu_refresh"
+		android:icon="@drawable/navigation_refresh_dark"
+		android:showAsAction="always"
+		android:title="@string/menu_graph_refresh" /><!-- Texte et icône: ifRoom|withText -->
+	<item
+		android:id="@+id/menu_switchServer"
+		android:showAsAction="withText"
+		android:title="@string/menu_graph_switch" />
+
+</menu>

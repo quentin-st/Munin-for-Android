@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyAppTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <!-- Any customizations for your app running on pre-3.0 devices here -->
+        <item name="switchStyle">@style/switch_light</item>
+    	<item name="textAppearance">@style/TextAppearance</item>
+    </style>
+</resources>

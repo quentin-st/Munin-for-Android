@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+	<!-- Bottom Line -->
+	<item>
+		<shape android:shape="rectangle" >
+			<solid android:color="#145F9D" />
+			<!-- #1578C4 -->
+		</shape>
+	</item>
+	<!-- #1578C4 -->
+
+	<!-- Color of your action bar -->
+
+	<item android:bottom="2dip">
+
+		<shape
+			android:shape="rectangle"
+			android:useLevel="false" >
+
+			<gradient
+				android:angle="270"
+				android:startColor="#30A6E5"
+				android:centerColor="#2399E1"
+				android:endColor="#1A8BDB"
+				android:type="linear"
+				android:useLevel="false" />
+		</shape>
+	</item>
+
+</layer-list> 
+<!-- V1 : #39B1E0 - #33A8DF - #2D9FDB -->
+<!-- V2 : #259DE2 - #38ACE7 - #1887D9 -->
+<!-- android:startColor="#38ACE7"
+	android:centerColor="#259DE2"
+	android:endColor="#1887D9" -->

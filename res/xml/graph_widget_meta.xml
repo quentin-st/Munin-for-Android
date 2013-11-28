@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.chteuchteu.munin.Widget_Configure"
+    android:initialLayout="@layout/graphwidget_layout"
+    android:minHeight="72dp"
+    android:minWidth="146dp"
+    android:previewImage="@drawable/widget_preview"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="3600000"
+    android:widgetCategory="keyguard|home_screen" >
+    
+	<!-- Old : 180*250.  x*74-2 -->
+
+</appwidget-provider>
