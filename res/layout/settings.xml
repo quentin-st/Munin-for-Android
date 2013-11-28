@@ -131,13 +131,14 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
-            <de.ankri.views.Switch
-                android:id="@+id/switch_splash"
+            <LinearLayout
+                android:id="@+id/checkable_splash"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="13dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/settings_splash_checkbox" />
+                android:gravity="right"
+                android:orientation="vertical" />
 
             <!-- Transitions -->
 
@@ -149,13 +150,14 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
-            <de.ankri.views.Switch
-                android:id="@+id/switch_transitions"
+            <LinearLayout
+                android:id="@+id/checkable_transitions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="13dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/settings_transitions_checkbox" />
+                android:gravity="right"
+                android:orientation="vertical" />
 
             <!-- Drawer -->
 
@@ -167,14 +169,15 @@
                 android:text="@string/settings_drawer_label"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
-
-            <de.ankri.views.Switch
-                android:id="@+id/switch_drawer"
+			
+            <LinearLayout
+                android:id="@+id/checkable_drawer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="13dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/settings_drawer_checkbox" />
+                android:gravity="right"
+                android:orientation="vertical" />
         </LinearLayout>
 
         <LinearLayout

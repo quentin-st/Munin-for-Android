@@ -80,7 +80,6 @@ public class Activity_GraphView extends Activity {
 	private MenuItem		item_previous;
 	private MenuItem		item_next;
 	private ImageButton 	btn_previous;
-	private ImageButton 	btn_refresh;
 	private ImageButton 	btn_next;
 	private ImageButton		btn_list;
 	private Menu 			menu;
@@ -101,7 +100,6 @@ public class Activity_GraphView extends Activity {
 		else if (getPref("graphview_orientation").equals("horizontal"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		
-		// Remove grey bar for Android > 2.X
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			this.getWindow().getDecorView().setBackgroundColor(Color.WHITE);
@@ -109,7 +107,6 @@ public class Activity_GraphView extends Activity {
 		setContentView(R.layout.graphview);
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			// Mode naturel
 			ActionBar actionBar = getActionBar();
 			actionBar.setDisplayHomeAsUpEnabled(true);
 			if (muninFoo.currentServer != null)
@@ -120,11 +117,8 @@ public class Activity_GraphView extends Activity {
 				dh.setDrawerActivity(dh.Activity_GraphView);
 			}
 		} else {
-			// Mode de compatibilité
 			((RelativeLayout)findViewById(R.id.comp_relativelayout)).setVisibility(View.VISIBLE);
-			// Actions sur les boutons (redéfinition des actions)
 			btn_previous = (ImageButton) findViewById(R.id.comp_previous);
-			btn_refresh = (ImageButton) findViewById(R.id.comp_refresh);
 			btn_next = (ImageButton) findViewById(R.id.comp_next);
 			btn_list = (ImageButton) findViewById(R.id.comp_list);
 			
@@ -134,7 +128,7 @@ public class Activity_GraphView extends Activity {
 			btn_next.setOnClickListener(new OnClickListener() {		@Override
 				public void onClick(View actualView) {	actionNext();	}
 			});
-			btn_refresh.setOnClickListener(new OnClickListener() {	@Override
+			findViewById(R.id.comp_refresh).setOnClickListener(new OnClickListener() {	@Override
 				public void onClick(View actualView) {	actionRefresh();	}
 			});
 			btn_list.setOnClickListener(new OnClickListener() {	@Override

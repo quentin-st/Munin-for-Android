@@ -25,8 +25,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,49 +37,40 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
-import de.ankri.views.Switch;
-
 public class Activity_Settings extends Activity {
-	public static Switch		sw_splash;
-	public static Spinner		spinner_scale;
-	public static Spinner		spinner_lang;
-	public static MenuItem		menu_save;
-	public static Spinner		spinner_orientation;
-	public static Switch		sw_transitions;
-	public static Switch		sw_drawer;
-	
+	private Spinner		spinner_scale;
+	private Spinner		spinner_lang;
+	private Spinner		spinner_orientation;
+	private View		checkable_transitions;
+	private View		checkable_drawer;
+	private View		checkable_splash;
+
 	private MuninFoo 			muninFoo;
 	private DrawerHelper		dh;
 	private Menu 				menu;
 	private String				activityName;
-	
+
 	private double onlineLastVersion = 0.0;
 	// Threading check version
 	protected	ProgressDialog	myProgressDialog; 
 	final 		Handler 		uiThreadCallback = new Handler();
-	
-	
+
+
 	@SuppressLint("NewApi")
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
-		
-		try {
-			setContentView(R.layout.settings);
-		} catch (Exception ex) {
-			startActivity(new Intent(Activity_Settings.this, Activity_Settings_Comp.class));
-		}
-		
-		// ==== ACTION BAR ====
+
+		setContentView(R.layout.settings);
+
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			// Mode naturel
 			findViewById(R.id.viewTitle).setVisibility(View.GONE);
 			findViewById(R.id.viewTitleSep).setVisibility(View.GONE);
 			ActionBar actionBar = getActionBar();
 			actionBar.setDisplayHomeAsUpEnabled(true);
 			actionBar.setTitle(getString(R.string.settingsTitle));
-			
+
 			if (muninFoo.drawer) {
 				dh = new DrawerHelper(this, muninFoo);
 				dh.setDrawerActivity(dh.Activity_Settings);
@@ -88,31 +82,28 @@ public class Activity_Settings extends Activity {
 			((Button)findViewById(R.id.btn_checkUpdates)).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionUpdate(); } });
 			((Button)findViewById(R.id.btn_gplay)).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionGPlay(); } });
 		}
-		// ==== ACTION BAR ====
-		
-		
-		
-		sw_splash =			(Switch)findViewById(R.id.switch_splash);
+
 		spinner_scale = 	(Spinner)findViewById(R.id.spinner_scale);
 		spinner_lang =		(Spinner)findViewById(R.id.spinner_lang);
 		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);
-		sw_transitions =	(Switch)findViewById(R.id.switch_transitions);
-		sw_drawer =			(Switch)findViewById(R.id.switch_drawer);
-		
+
+		checkable_drawer = inflateCheckable((ViewGroup)findViewById(R.id.checkable_drawer), getString(R.string.settings_drawer_checkbox));
+		checkable_splash = inflateCheckable((ViewGroup)findViewById(R.id.checkable_splash), getString(R.string.settings_splash_checkbox));
+		checkable_transitions = inflateCheckable((ViewGroup)findViewById(R.id.checkable_transitions), getString(R.string.settings_transitions_checkbox));
+
+
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			findViewById(R.id.switch_drawer_tv).setVisibility(View.GONE);
-			sw_drawer.setVisibility(View.GONE);
+			checkable_drawer.setVisibility(View.GONE);
 		}
-		
-		
+
 		// Bouton sauvegarder
-		final Button save_button = (Button) findViewById(R.id.btn_settings_save);
-		save_button.setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.btn_settings_save).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				actionSave();
 			}
 		});
-		
+
 		// Spinner default period
 		List<String> list = new ArrayList<String>();
 		list.add(getString(R.string.text47_1)); list.add(getString(R.string.text47_2));
@@ -120,8 +111,8 @@ public class Activity_Settings extends Activity {
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_scale.setAdapter(dataAdapter);
-		
-		
+
+
 		// Spinner language
 		List<String> list2 = new ArrayList<String>();
 		list2.add(getString(R.string.lang_english));
@@ -130,8 +121,8 @@ public class Activity_Settings extends Activity {
 		ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
 		dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_lang.setAdapter(dataAdapter2);
-		
-		
+
+
 		// Spinner orientation
 		List<String> list3 = new ArrayList<String>();
 		list3.add(getString(R.string.text48_1));
@@ -141,14 +132,44 @@ public class Activity_Settings extends Activity {
 		dataAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_orientation.setAdapter(dataAdapter3);
 	}
-	
+
+	public View inflateCheckable(ViewGroup container, String label) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			de.ankri.views.Switch sw = new de.ankri.views.Switch(this);
+			sw.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			sw.setText(label);
+			container.addView(sw);
+			return sw;
+		} else {
+			CheckBox cb = new CheckBox(this);
+			cb.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			cb.setText(label);
+			container.addView(cb);
+			return cb;
+		}
+	}
+
+	public boolean getCheckableValue(View reference) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			return ((de.ankri.views.Switch)reference).isChecked();
+		else
+			return ((CheckBox)reference).isChecked();
+	}
+
+	public void setChecked(View reference, boolean checked) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			((de.ankri.views.Switch)reference).setChecked(checked);
+		else
+			((CheckBox)reference).setChecked(checked);
+	}
+
 	public void actionSave() {
 		// Disable splash
-		if (sw_splash.isChecked())
+		if (getCheckableValue(checkable_splash))
 			setPref("splash", "false");
 		else
 			setPref("splash", "true");
-		
+
 		// Graph default scale
 		if (spinner_scale.getSelectedItemPosition() == 0)
 			setPref("defaultScale", "day");
@@ -158,7 +179,7 @@ public class Activity_Settings extends Activity {
 			setPref("defaultScale", "month");
 		else if (spinner_scale.getSelectedItemPosition() == 3)
 			setPref("defaultScale", "year");
-		
+
 		// App language
 		if (spinner_lang.getSelectedItemPosition() == 0)
 			setPref("lang", "en");
@@ -168,7 +189,7 @@ public class Activity_Settings extends Activity {
 			setPref("lang", "de");
 		else
 			setPref("lang", "en");
-		
+
 		// Orientation
 		if (spinner_orientation.getSelectedItemPosition() == 0)
 			setPref("graphview_orientation", "horizontal");
@@ -176,13 +197,13 @@ public class Activity_Settings extends Activity {
 			setPref("graphview_orientation", "vertical");
 		else
 			setPref("graphview_orientation", "auto");
-		
-		if (sw_transitions.isChecked())
+
+		if (getCheckableValue(checkable_transitions))
 			setPref("transitions", "true");
 		else
 			setPref("transitions", "false");
-		
-		if (sw_drawer.isChecked()) {
+
+		if (getCheckableValue(checkable_drawer)) {
 			setPref("drawer", "false");
 			muninFoo.drawer = false;
 		}
@@ -190,7 +211,7 @@ public class Activity_Settings extends Activity {
 			removePref("drawer");
 			muninFoo.drawer = true;
 		}
-		
+
 		// After saving -> go back to reality
 		Intent intent = new Intent(Activity_Settings.this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -198,61 +219,56 @@ public class Activity_Settings extends Activity {
 		startActivity(intent);
 		setTransition("shallower");
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		try {
-			// Disable splash
-			if (getPref("splash").equals("false"))
-				sw_splash.setChecked(true);
-			
-			// Graph default scale
-			if (getPref("defaultScale").equals("day"))
-				spinner_scale.setSelection(0, true);
-			else if (getPref("defaultScale").equals("week"))
-				spinner_scale.setSelection(1, true);
-			else if (getPref("defaultScale").equals("month"))
-				spinner_scale.setSelection(2, true);
-			else if (getPref("defaultScale").equals("year"))
-				spinner_scale.setSelection(3, true);
-			
-			// App language
-			String lang = "";
-			if (!getPref("lang").equals(""))
-				lang = getPref("lang");
-			else
-				lang = Locale.getDefault().getLanguage();
-			
-			if (lang.equals("en"))
-				spinner_lang.setSelection(0, true);
-			else if (lang.equals("fr"))
-				spinner_lang.setSelection(1, true);
-			else if (lang.equals("de"))
-				spinner_lang.setSelection(2, true);
-			
-			// Graphview orientation
-			if (getPref("graphview_orientation").equals("horizontal"))
-				spinner_orientation.setSelection(0);
-			else if (getPref("graphview_orientation").equals("vertical"))
-				spinner_orientation.setSelection(1);
-			else
-				spinner_orientation.setSelection(2);
-			
-			// Transitions
-			if (getPref("transitions").equals("false"))
-				sw_transitions.setChecked(false);
-			else
-				sw_transitions.setChecked(true);
-			
-			// Drawer
-			if (getPref("drawer").equals("false"))
-				sw_drawer.setChecked(true);
-			
-		} catch (Exception ex) {
-			startActivity(new Intent(Activity_Settings.this, Activity_Settings_Comp.class));
-		}
+
+		// Disable splash
+		if (getPref("splash").equals("false"))
+			setChecked(checkable_splash, true);
+
+		// Graph default scale
+		if (getPref("defaultScale").equals("day"))
+			spinner_scale.setSelection(0, true);
+		else if (getPref("defaultScale").equals("week"))
+			spinner_scale.setSelection(1, true);
+		else if (getPref("defaultScale").equals("month"))
+			spinner_scale.setSelection(2, true);
+		else if (getPref("defaultScale").equals("year"))
+			spinner_scale.setSelection(3, true);
+
+		// App language
+		String lang = "";
+		if (!getPref("lang").equals(""))
+			lang = getPref("lang");
+		else
+			lang = Locale.getDefault().getLanguage();
+
+		if (lang.equals("en"))
+			spinner_lang.setSelection(0, true);
+		else if (lang.equals("fr"))
+			spinner_lang.setSelection(1, true);
+		else if (lang.equals("de"))
+			spinner_lang.setSelection(2, true);
+
+		// Graphview orientation
+		if (getPref("graphview_orientation").equals("horizontal"))
+			spinner_orientation.setSelection(0);
+		else if (getPref("graphview_orientation").equals("vertical"))
+			spinner_orientation.setSelection(1);
+		else
+			spinner_orientation.setSelection(2);
+
+		// Transitions
+		if (getPref("transitions").equals("false"))
+			setChecked(checkable_transitions, false);
+		else
+			setChecked(checkable_transitions, true);
+
+		// Drawer
+		if (getPref("drawer").equals("false"))
+			setChecked(checkable_drawer, true);
 	}
 	@SuppressLint("NewApi")
 	@Override
@@ -282,7 +298,6 @@ public class Activity_Settings extends Activity {
 	private void createOptionsMenu() {
 		menu.clear();
 		getMenuInflater().inflate(R.menu.settings, menu);
-		menu_save = menu.findItem(R.id.menu_save);
 		findViewById(R.id.btn_settings_save).setVisibility(View.GONE);
 	}
 	@Override
@@ -290,33 +305,33 @@ public class Activity_Settings extends Activity {
 		if (item.getItemId() != android.R.id.home && dh != null)
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				if (muninFoo.drawer)
-					dh.getDrawer().toggle(true);
-				else {
-					Intent intent = new Intent(this, Activity_Main.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-					setTransition("shallower");
-				}
-				return true;
-			case R.id.menu_save:	actionSave();	return true;
-			case R.id.menu_reset:	actionReset();	return true;
-			case R.id.menu_updates: actionUpdate(); return true;
-			case R.id.menu_gplay:	actionGPlay();	return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_Settings.this, Activity_Settings.class));
-				setTransition("deeper");
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_Settings.this, Activity_About.class));
-				setTransition("deeper");
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+		case android.R.id.home:
+			if (muninFoo.drawer)
+				dh.getDrawer().toggle(true);
+			else {
+				Intent intent = new Intent(this, Activity_Main.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				setTransition("shallower");
+			}
+			return true;
+		case R.id.menu_save:	actionSave();	return true;
+		case R.id.menu_reset:	actionReset();	return true;
+		case R.id.menu_updates: actionUpdate(); return true;
+		case R.id.menu_gplay:	actionGPlay();	return true;
+		case R.id.menu_settings:
+			startActivity(new Intent(Activity_Settings.this, Activity_Settings.class));
+			setTransition("deeper");
+			return true;
+		case R.id.menu_about:
+			startActivity(new Intent(Activity_Settings.this, Activity_About.class));
+			setTransition("deeper");
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	public void actionReset() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Settings.this);
 		// Settings will be reset. Are you sure?
@@ -345,14 +360,14 @@ public class Activity_Settings extends Activity {
 				setPref("addserver_history", "");
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 					setPref("drawer", "true");
-				
+
 				muninFoo.sqlite.deleteLabels();
 				muninFoo.sqlite.deleteWidgets();
 				muninFoo.sqlite.deletePlugins();
 				muninFoo.sqlite.deleteServers();
-				
+
 				muninFoo.resetInstance();
-				
+
 				// Reset performed.
 				Toast.makeText(getApplicationContext(), getString(R.string.text02), Toast.LENGTH_SHORT).show();
 			}
@@ -363,13 +378,13 @@ public class Activity_Settings extends Activity {
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
-	
+
 	public void actionUpdate() {
 		final AlertDialog alert = new AlertDialog.Builder(Activity_Settings.this).create();
-		
+
 		// Checking last version of Munin for Android…
 		myProgressDialog = ProgressDialog.show(Activity_Settings.this, "", getString(R.string.text03), true);
-		
+
 		final Runnable runInUIThread = new Runnable() {
 			public void run() {
 				if (muninFoo.version < onlineLastVersion) {
@@ -388,7 +403,7 @@ public class Activity_Settings extends Activity {
 					// You're running a beta version of Munin for Android. You're the best!
 					alert.setMessage(getString(R.string.text08));
 				}
-				
+
 				alert.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) { dialog.dismiss(); }
 				});
@@ -404,7 +419,7 @@ public class Activity_Settings extends Activity {
 			}
 		}.start();
 	}
-	
+
 	public void actionGPlay() {
 		try {
 			Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -424,7 +439,7 @@ public class Activity_Settings extends Activity {
 			ad.show();
 		}
 	}
-	
+
 	public void grabVersion() {
 		onlineLastVersion = 0;
 		grabUrl check = new grabUrl();
@@ -441,7 +456,7 @@ public class Activity_Settings extends Activity {
 				break;
 		}
 	}
-	
+
 	public class grabUrl extends AsyncTask<String, Void, Void> {
 		@Override
 		protected Void doInBackground(String... url) {
@@ -470,11 +485,11 @@ public class Activity_Settings extends Activity {
 		startActivity(intent);
 		setTransition("shallower");
 	}
-	
+
 	public String getPref(String key) {
 		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
 	}
-	
+
 	public void setPref(String key, String value) {
 		if (value.equals(""))
 			removePref(key);
@@ -485,14 +500,14 @@ public class Activity_Settings extends Activity {
 			editor.commit();
 		}
 	}
-	
+
 	public void removePref(String key) {
 		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.remove(key);
 		editor.commit();
 	}
-	
+
 	public void setTransition(String level) {
 		if (getPref("transitions").equals("true")) {
 			if (level.equals("deeper"))
@@ -501,15 +516,15 @@ public class Activity_Settings extends Activity {
 				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
 		}
 	}
-	
-	
+
+
 	@Override
 	public void onStart() {
 		super.onStart();
 		if (!muninFoo.debug)
 			EasyTracker.getInstance(this).activityStart(this);
 	}
-	
+
 	@Override
 	public void onStop() {
 		super.onStop();

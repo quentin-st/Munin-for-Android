@@ -57,61 +57,9 @@ public class Activity_Splash extends Activity {
 			_splashTime = 3000;
 			setContentView(R.layout.splash);
 			
-			/*findViewById(R.id.ll_splash).setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View actualView) {
-					if (!updating)
-						startActivity(new Intent(Activity_Splash.this, Activity_Main.class));
-				}
-			});*/
-			
-			/*int screenH = 0;
-			if (android.os.Build.VERSION.SDK_INT >= 13) {
-				Display display = getWindowManager().getDefaultDisplay();
-				Point size = new Point();
-				display.getSize(size);
-				screenH = size.y;
-			} else {
-				Display display = getWindowManager().getDefaultDisplay();
-				screenH = display.getHeight();
-			}*/
-			
-			//ImageView logo = (ImageView)findViewById(R.id.overlay_icon);
 			TextView text = (TextView)findViewById(R.id.splash_overlay_appname);
 			Typeface mFont = Typeface.createFromAsset(getAssets(), "RobotoCondensed-Regular.ttf");
 			text.setTypeface(mFont);
-			
-			/*TranslateAnimation a1 = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0,
-					Animation.RELATIVE_TO_SELF, 0,
-					Animation.ABSOLUTE, screenH,
-					Animation.RELATIVE_TO_SELF, 0);
-			a1.setDuration(1000);
-			a1.setFillAfter(true);
-			a1.setInterpolator(new AccelerateDecelerateInterpolator());
-			
-			TranslateAnimation a2 = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0,
-					Animation.RELATIVE_TO_SELF, 0,
-					Animation.ABSOLUTE, screenH,
-					Animation.RELATIVE_TO_SELF, 0);
-			a2.setDuration(1050);
-			a2.setFillAfter(true);
-			a2.setStartOffset(100);
-			a2.setInterpolator(new AccelerateDecelerateInterpolator());
-			
-			TranslateAnimation a3 = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0,
-					Animation.RELATIVE_TO_SELF, 0,
-					Animation.ABSOLUTE, screenH,
-					Animation.RELATIVE_TO_SELF, 0);
-			a3.setDuration(1000);
-			a3.setFillAfter(true);
-			a3.setStartOffset(300);
-			a3.setInterpolator(new AccelerateDecelerateInterpolator());
-			
-			try {
-				logo.startAnimation(a1);
-				text.startAnimation(a2);
-				text2.startAnimation(a3);
-			} catch (Exception ex) { ex.printStackTrace(); }*/
 		}
 		else
 			_splashTime = 0;

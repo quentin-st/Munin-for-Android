@@ -46,7 +46,6 @@ public class Activity_ServersEdit extends ListActivity {
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
 		
-		// ==== ACTION BAR ====
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			setContentView(R.layout.servers_edit);
 			ActionBar actionBar = getActionBar();
@@ -63,7 +62,6 @@ public class Activity_ServersEdit extends ListActivity {
 			super.setTheme(R.style.ListFont);
 			setContentView(R.layout.servers_edit);
 		}
-		// ==== ACTION BAR ====
 		
 		deletedServers = new ArrayList<MuninServer>();
 		serversList = new ArrayList<MuninServer>();
@@ -72,7 +70,6 @@ public class Activity_ServersEdit extends ListActivity {
 		}
 		
 		updateList(true);
-		
 		
 		DragSortListView dslv = (DragSortListView) getListView();
 		dslv.setDropListener(onDrop);

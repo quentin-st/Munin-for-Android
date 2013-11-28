@@ -45,7 +45,6 @@ public class Activity_Servers extends ListActivity {
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
 		
-		// ==== ACTION BAR ====
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			setContentView(R.layout.servers);
 			findViewById(R.id.viewTitle).setVisibility(View.GONE);
@@ -64,7 +63,6 @@ public class Activity_Servers extends ListActivity {
 			super.setTheme(R.style.ListFont);
 			setContentView(R.layout.servers);
 		}
-		// ==== ACTION BAR ====
 		
 		addServer = (Button)findViewById(R.id.servers_btn_add_a_server);
 		

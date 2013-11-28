@@ -151,12 +151,7 @@ public class Activity_Main extends Activity {
 			buttonSettings.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View actualView) {
-					Intent intent;
-					if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO)
-						intent = new Intent(Activity_Main.this, Activity_Settings.class);
-					else
-						intent = new Intent(Activity_Main.this, Activity_Settings_Comp.class);
-					startActivity(intent);
+					startActivity(new Intent(Activity_Main.this, Activity_Settings.class));
 					setTransition("deeper");
 				}
 			});

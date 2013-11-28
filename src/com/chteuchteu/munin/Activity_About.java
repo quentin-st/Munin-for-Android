@@ -69,7 +69,6 @@ public class Activity_About extends Activity {
 	}
 	
 	
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() != android.R.id.home && dh != null)

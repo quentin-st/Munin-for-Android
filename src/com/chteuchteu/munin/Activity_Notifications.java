@@ -54,7 +54,6 @@ public class Activity_Notifications extends Activity {
 		muninFoo.loadLanguage(this);
 		setContentView(R.layout.notifications);
 		
-		// ==== ACTION BAR ====
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			ActionBar actionBar = getActionBar();
 			actionBar.setDisplayHomeAsUpEnabled(true);
@@ -70,7 +69,6 @@ public class Activity_Notifications extends Activity {
 		} else {
 			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
 		}
-		// ==== ACTION BAR ====
 		
 		final Spinner sp_refreshRate = 		(Spinner) findViewById(R.id.spinner_refresh);
 		final CheckBox cb_notifications = 	(CheckBox) findViewById(R.id.checkbox_notifications);

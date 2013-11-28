@@ -65,7 +65,6 @@ public class Activity_Alerts extends Activity {
 		setContentView(R.layout.alerts);
 		Crashlytics.start(this);
 		
-		// ==== ACTION BAR ====
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			ActionBar actionBar = getActionBar();
 			actionBar.setDisplayHomeAsUpEnabled(true);
@@ -81,7 +80,6 @@ public class Activity_Alerts extends Activity {
 		} else {
 			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
 		}
-		// ==== ACTION BAR ====
 		
 		int nbS = muninFoo.getHowManyServers();
 		part_part 					= new LinearLayout[nbS];
@@ -100,7 +98,7 @@ public class Activity_Alerts extends Activity {
 		loading.setIndeterminate(true);
 		
 		servers = new ArrayList<MuninServer>();
-		// Constructioon de la liste des serveurs
+		// Populating servers list
 		for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
 			if (muninFoo.getOrderedServers().get(i) != null)
 				servers.add(muninFoo.getOrderedServers().get(i));
