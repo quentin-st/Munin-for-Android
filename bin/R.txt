@@ -590,6 +590,7 @@ int style ActionBarTitleAppearance 0x7f0b0007
 int style ButtonText 0x7f0b0001
 int style ListFont 0x7f0b0000
 int style MyAppTheme 0x7f0b0005
+int style NoActionBar 0x7f0b000a
 int style TextAppearance 0x7f0b0004
 int style switch_dark 0x7f0b0002
 int style switch_light 0x7f0b0003

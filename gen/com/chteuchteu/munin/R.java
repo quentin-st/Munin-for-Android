@@ -1183,6 +1183,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         /**  <style name="MyAppTheme" parent="@android:style/Theme.Holo.Light"> 
          */
         public static final int MyAppTheme=0x7f0b0005;
+        public static final int NoActionBar=0x7f0b000a;
         public static final int TextAppearance=0x7f0b0004;
         public static final int switch_dark=0x7f0b0002;
         public static final int switch_light=0x7f0b0003;

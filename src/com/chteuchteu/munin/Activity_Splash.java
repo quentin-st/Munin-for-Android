@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
@@ -13,57 +12,57 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.os.Build;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 
 public class Activity_Splash extends Activity {
 	private MuninFoo muninFoo;
-	
+
 	//protected boolean _active = true;
-	protected int _splashTime = 3000; // time to display the splash screen in ms
+	protected int _splashTime = 2700; // time to display the splash screen in ms
 	protected boolean splashEnabled;
 	protected String activity;
 	protected boolean splash;
 	protected boolean updating = true;
 	protected boolean splashing = true;
-	
+
 	// update thread
 	protected ProgressDialog myProgressDialog; 
 	final Handler uiThreadCallback = new Handler();
-	
+
 	private boolean updateOperations;
-	
-	@SuppressLint("NewApi")
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		Crashlytics.start(this);
-		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			getActionBar().hide();
-		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		if (prefs.getString("splash", "").equals("true") || prefs.getString("splash", "").equals(""))
+
+		if (getPref("splash").equals("true") || getPref("splash").equals(""))
 			splash = true;
 		else
 			splash = false;
-		
+
 		if (splash) {
-			_splashTime = 3000;
 			setContentView(R.layout.splash);
-			
+
 			TextView text = (TextView)findViewById(R.id.splash_overlay_appname);
 			Typeface mFont = Typeface.createFromAsset(getAssets(), "RobotoCondensed-Regular.ttf");
 			text.setTypeface(mFont);
+
+			AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
+			animation.setDuration(1300);
+			findViewById(R.id.ll_splash).startAnimation(animation);
 		}
 		else
 			_splashTime = 0;
-		
+
 		// thread for displaying the SplashScreen
 		Thread splashTread = new Thread() {
 			@Override
@@ -75,7 +74,6 @@ public class Activity_Splash extends Activity {
 						waited += 100;
 					}
 				} catch(Exception e) {
-					// do nothing
 				} finally {
 					if (!updating) {
 						startActivity(new Intent(Activity_Splash.this, Activity_Main.class));
@@ -86,39 +84,21 @@ public class Activity_Splash extends Activity {
 			}
 		};
 		splashTread.start();
-		
-		// Démarrage
+
+		// Launch
 		muninFoo = MuninFoo.getInstance(this);
-		
-		onUpdateActionsThreading();
-	}
-	
-	public void onUpdateActionsThreading() {
+
 		updateOperations = false;
 		// Conditions de déclenchement des opérations de mise à jour
 		if (!getPref("lastMFAVersion").equals(muninFoo.version + "") || !getPref("serverUrl").equals("") || !getPref("server00Url").equals(""))
 			updateOperations = true;
-		
+
 		if (updateOperations)
 			myProgressDialog = ProgressDialog.show(Activity_Splash.this, "", getString(R.string.text39), true);
 		// Please wait while the app does some update operations…
-		
-		new Thread() {
-			@Override public void run() {
-				// Traitement en arrière plan
-				if (updateOperations) {
-					onUpdateActions();
-					myProgressDialog.dismiss();
-				}
-				if (!splashing) {
-					startActivity(new Intent(Activity_Splash.this, Activity_Main.class));
-					finish();
-				}
-				updating = false;
-			}
-		}.start();
+		new UpdateOperations().execute();
 	}
-	
+
 	public void onUpdateActions() {
 		if (getPref("lastMFAVersion").equals("1.3") || getPref("lastMFAVersion").equals("1.4") || getPref("lastMFAVersion").equals("1.5") || getPref("lastMFAVersion").equals("1.6")) {
 			// Nettoyage de la base de données
@@ -140,19 +120,19 @@ public class Activity_Splash extends Activity {
 		// Mise à jour de 1.3 a 1.4: modification du serveur
 		if (!getPref("serverUrl").equals("")) {	// Qqch dans les anciens settings
 			MuninServer migrationServ = new MuninServer(getPref("serverName"), getPref("serverUrl"));
-			
+
 			// Nouvelle recherche de plugins (vrais noms des plugins)
 			try {	migrationServ.fetchPluginsList();	}
 			catch (Exception ex) { }
-			
+
 			if (!getPref("authLogin").equals(""))
 				migrationServ.setAuthIds(getPref("authLogin"), getPref("authPassword"));
 			muninFoo.addServer(migrationServ);
-			
+
 			setPref("serverUrl", "");
 		}
 		// fin mise à jour
-		
+
 		// Mise à jour vers 2.0: ajout du graphURL
 		boolean maj_save = false;
 		for (int i=0; i<muninFoo.getHowManyServers(); i++) {
@@ -163,7 +143,7 @@ public class Activity_Splash extends Activity {
 		}
 		if (maj_save)
 			muninFoo.sqlite.saveServers();
-		
+
 		if (getPref("lastMFAVersion").equals("1.8")) {
 			String numberServer = "";
 			for (int i=0; i<muninFoo.getHowManyServers(); i++) {
@@ -172,22 +152,22 @@ public class Activity_Splash extends Activity {
 				removePref("server" + numberServer + "Version");
 			}
 		}
-		
+
 		if (getPref("lang").equals(""))
 			setPref("lang", Locale.getDefault().getLanguage());
-		
+
 		if (getPref("graphview_orientation").equals(""))
 			setPref("graphview_orientation", "auto");
-		
+
 		if (getPref("defaultScale").equals(""))
 			setPref("defaultScale", "day");
-		
+
 		// Migration de la base de données: SharedPreferences ==> SQLite
 		if (!getPref("server00Url").equals("") || !getPref("server01Url").equals("")) {
 			MuninServer serv;
 			String		serverNumber = "0";
 			String[]	pluginsStr;
-			
+
 			for (int i=0; i<100; i++) {
 				if (i<10)	serverNumber = "0" + i;
 				else		serverNumber = ""  + i;
@@ -210,21 +190,21 @@ public class Activity_Splash extends Activity {
 						} catch (Exception ex) { }
 					}
 					serv.setPluginsList(mp);
-					
+
 					if (getPref("server" + serverNumber + "Position").equals(""))
 						setPref("server" + serverNumber + "Position", i + "");
 					serv.setPosition(Integer.parseInt(getPref("server" + serverNumber + "Position")));
-					
+
 					if (!getPref("server" + serverNumber + "AuthLogin").equals("") || !getPref("server" + serverNumber + "AuthPassword").equals(""))
 						serv.setAuthIds(getPref("server" + serverNumber + "AuthLogin"), getPref("server" + serverNumber + "AuthPassword"));
 					if (getPref("server" + serverNumber + "SSL").equals("true"))
 						serv.setSSL(true);
 					serv.setGraphURL(getPref("server" + serverNumber + "GraphURL"));
-					
+
 					serv.save();
 					for (MuninPlugin ms : serv.getPlugins())
 						ms.save();
-					
+
 					Log.v("", "Updated server " + serverNumber);
 					removePref("server" + serverNumber + "Url");
 					removePref("server" + serverNumber + "Name");
@@ -236,14 +216,14 @@ public class Activity_Splash extends Activity {
 					removePref("server" + serverNumber + "GraphURL");
 				}
 			}
-			
+
 			// Migration widgets
 			Context context = getApplicationContext();
 			ComponentName name = new ComponentName(context, Widget_GraphWidget.class);
 			int [] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(name);
-			
+
 			if (ids.length > 0 && !getPref("widget" + ids[0] + "_Url").equals("")) {
-				
+
 				try {
 					for (int id : ids) {
 						MuninWidget w = new MuninWidget();
@@ -266,7 +246,7 @@ public class Activity_Splash extends Activity {
 								if (w.getPlugin() == null)
 									w.setPlugin(muninFoo.sqlite.getBDDInstance(s.getPlugin(0), bddInstance));
 								w.setWidgetId(id);
-								
+
 								break;
 							}
 						}
@@ -280,10 +260,10 @@ public class Activity_Splash extends Activity {
 				} catch (Exception ex) {}
 			}
 		}
-		
+
 		if (getPref("transitions").equals(""))
 			setPref("transitions", "true");
-		
+
 		for (MuninServer s : muninFoo.getServers()) {
 			if (s.getAuthType() == MuninServer.AUTH_UNKNOWN) {
 				MuninServer b = muninFoo.sqlite.getBDDInstance(s);
@@ -295,18 +275,39 @@ public class Activity_Splash extends Activity {
 				b.save();
 			}
 		}
-		
+
 		setPref("lastMFAVersion", muninFoo.version + "");
-		
+
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.resetInstance();
 	}
-	
+
+	private class UpdateOperations extends AsyncTask<Void, Integer, Void>
+	{
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			if (updateOperations) {
+				onUpdateActions();
+				myProgressDialog.dismiss();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			if (!splashing) {
+				startActivity(new Intent(Activity_Splash.this, Activity_Main.class));
+				finish();
+			}
+			updating = false;
+		}
+	}
+
 	// SHARED PREFERENCES
 	public String getPref(String key) {
 		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
 	}
-	
+
 	public void setPref(String key, String value) {
 		if (value.equals(""))
 			removePref(key);
@@ -317,14 +318,14 @@ public class Activity_Splash extends Activity {
 			editor.commit();
 		}
 	}
-	
+
 	public void removePref(String key) {
 		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.remove(key);
 		editor.commit();
 	}
-	
+
 	public void setTransition(String level) {
 		if (getPref("transitions").equals("true")) {
 			if (level.equals("deeper"))
