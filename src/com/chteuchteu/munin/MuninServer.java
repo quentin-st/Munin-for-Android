@@ -131,7 +131,7 @@ public class MuninServer extends Model {
 			//						   code  base_uri
 			Document doc = Jsoup.parse(html, this.getServerUrl());
 			Elements images = doc.select("img[src$=-day.png]");
-			
+
 			currentPl = new MuninPlugin(null, this);
 			String fancyName;
 			String nomPlugin;
@@ -175,6 +175,7 @@ public class MuninServer extends Model {
 					fancyName = fancyName.replaceAll("\"", "");
 					currentPl.setFancyName(fancyName);
 					currentPl.setCategory(group);
+					
 					mp.add(currentPl);
 					
 					if (this.graphURL == null || (this.graphURL != null && this.graphURL.equals("")))
@@ -359,6 +360,7 @@ public class MuninServer extends Model {
 			} else
 				client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(url);
+
 			if (this.isAuthNeeded()) {
 				if (this.getAuthType() == AUTH_BASIC)
 					request.setHeader("Authorization", "Basic " + Base64.encodeToString((authLogin + ":" + authPassword).getBytes(), Base64.NO_WRAP));
@@ -471,6 +473,7 @@ public class MuninServer extends Model {
 	
 	public int getPosition(MuninPlugin p) {
 		int i = 0;
+
 		for (MuninPlugin pl : plugins) {
 			if (pl.equalsApprox(p))
 				return i;
@@ -478,8 +481,11 @@ public class MuninServer extends Model {
 		}
 		return 0;
 	}
-	
+
 	/*public String getPluginsStringList() {
+=======
+	public String getPluginsStringList() {
+>>>>>>> b60a0a3ea865245bfc1f6545e5ebf3e2659dd560
 		if (this.pluginsList != null) {
 			String stringplugins = "";
 			for (int i=0; i<this.pluginsList.size(); i++) {
@@ -493,14 +499,32 @@ public class MuninServer extends Model {
 			
 			return stringplugins;
 		} else { return null; }
+<<<<<<< HEAD
 	}*/
 	
 	/*public List<String> getStringPluginsList() {
+=======
+	}
+	
+	public int getNbPlugins() {
+		if (pluginsList == null)
+			return 0;
+		int nb = 0;
+		for (int i=0; i<pluginsList.size(); i++) {
+			if (pluginsList.get(i) != null)
+				nb++;
+		}
+		return nb;
+	}
+	
+	public List<String> getStringPluginsList() {
+>>>>>>> b60a0a3ea865245bfc1f6545e5ebf3e2659dd560
 		List<String> res = new ArrayList<String>();
 		for (int i=0; i<this.pluginsList.size(); i++) {
 			res.add(pluginsList.get(i).getName());
 		}
 		return res;
+<<<<<<< HEAD
 	}*/
 	
 	public boolean getSSL() {
@@ -590,6 +614,7 @@ public class MuninServer extends Model {
 	
 	public List<String> getDistinctCategories() {
 		List<String> l = new ArrayList<String>();
+
 		for (MuninPlugin p : plugins) {
 			boolean contains = false;
 			for (String s : l) {
@@ -612,6 +637,7 @@ public class MuninServer extends Model {
 	
 	public MuninServer setPluginsList(List<MuninPlugin> pL) {
 		this.plugins = pL;
+
 		return this;
 	}
 	
@@ -627,7 +653,7 @@ public class MuninServer extends Model {
 	public void setSSL(boolean value) {
 		this.ssl = value;
 	}
-	
+
 	public void setErroredPlugins(List<MuninPlugin> mp) {
 		this.erroredPlugins = mp;
 	}
@@ -639,6 +665,7 @@ public class MuninServer extends Model {
 	public void setAuthIds(String login, String password) {
 		this.authLogin = login;
 		this.authPassword = password;
+
 		if (login.equals("") && password.equals(""))
 			this.authType = AUTH_NONE;
 	}

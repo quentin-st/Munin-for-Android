@@ -82,7 +82,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 		}
 		sa = new SimpleAdapter(Activity_LabelsPluginSelection.this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 		((ListView)findViewById(R.id.labels_listview)).setAdapter(sa);*/
-		
+
 		labelsListCat = label.getPluginsSortedByServer();
 		correspondance = new ArrayList<MuninPlugin>();
 		correspondanceServers = new ArrayList<String>();

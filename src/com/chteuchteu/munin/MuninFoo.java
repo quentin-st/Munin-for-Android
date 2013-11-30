@@ -290,7 +290,7 @@ public class MuninFoo {
 		}
 		return null;
 	}
-	/*public MuninServer getServerByName(String name) {
+	/*public MuninServer getServerByName(String name) {<<<<<<< HEAD
 		if (!name.equals("")) {
 			for (MuninServer s : servers) {
 				if (s.getName().equals(name))
@@ -402,6 +402,7 @@ public class MuninFoo {
 			} else
 				client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(s.getServerUrl());
+			
 			if (s.isAuthNeeded()) {
 				if (s.getAuthType() == MuninServer.AUTH_BASIC)
 					request.setHeader("Authorization", "Basic " + Base64.encodeToString((s.getAuthLogin() + ":" + s.getAuthPassword()).getBytes(), Base64.NO_WRAP));
@@ -513,6 +514,7 @@ public class MuninFoo {
 			} else
 				client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(url);
+			
 			if (s.isAuthNeeded()) {
 				if (s.getAuthType() == MuninServer.AUTH_BASIC)
 					request.setHeader("Authorization", "Basic " + Base64.encodeToString((s.getAuthLogin() + ":" + s.getAuthPassword()).getBytes(), Base64.NO_WRAP));
