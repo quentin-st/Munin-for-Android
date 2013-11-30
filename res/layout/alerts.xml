@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical" >
+
+	<TextView
+		android:id="@+id/viewTitle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:background="#dedfde"
+		android:gravity="center"
+		android:padding="8dp"
+		android:text="@string/alertsTitle"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:textColor="#7a7a7a" />
+
+	<LinearLayout
+		android:id="@+id/viewTitleSep"
+		android:layout_width="match_parent"
+		android:layout_height="0.5dp"
+		android:background="#a5a6a5"
+		android:orientation="horizontal" />
+
+	<TextView
+		android:id="@+id/hideNoAlerts"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="#333333"
+		android:clickable="true"
+		android:onClick="onClick"
+		android:paddingBottom="6dp"
+		android:paddingLeft="15dp"
+		android:paddingTop="6dp"
+		android:text="@string/text49.2"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:textColor="#ffffff" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="0.5dp"
+		android:background="#aaaaaa"
+		android:orientation="horizontal" />
+
+	<ScrollView
+		android:id="@+id/alerts_scrollview"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="#f2f2f2"
+		android:orientation="vertical" >
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<ProgressBar
+				android:id="@+id/loading_spin"
+				style="?android:attr/progressBarStyleHorizontal"
+				android:layout_width="match_parent"
+				android:layout_height="10dp"
+				android:maxHeight="10dp"
+				android:minHeight="10dp"
+				android:visibility="invisible" />
+
+			<LinearLayout
+				android:id="@+id/alerts_root_container"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical" />
+		</LinearLayout>
+	</ScrollView>
+
+</LinearLayout>

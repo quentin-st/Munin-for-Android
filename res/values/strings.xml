@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<string name="app_name">Munin for Android</string>
+	<string name="button_graphs">Graphs</string>
+	<string name="button_server">Servers</string>
+	<string name="button_settings">Settings</string>
+	<string name="button_about">About…</string>
+	<string name="button_premium">Go premium</string>
+	<string name="button_alerts">Alerts</string>
+	<string name="button_labels">Labels</string>
+	<string name="button_notifications">Notifications</string>
+	<string name="settings_URL_label">Munin-master URL</string>
+	<string name="settings_URL_label2">ex: 88.180.108.192/munin/localdomain/localhost.localdomain/, or 88.180.108.192:80/munin/</string>
+	<string name="settings_text">… or select a sample server:</string>
+	<string name="settings_http_auth2">HTTP auth required</string>
+	<string name="settings_auth_type">Auth type</string>
+	<string name="settings_login">Login</string>
+	<string name="settings_password">Password</string>
+	<string name="settings_splash_label">Splash screen</string>
+	<string name="settings_splash_checkbox">Disable splash screen on launch</string>
+	<string name="settings_default_scale">Graph default scale</string>
+	<string name="settings_graphview_orientation">Graphs screen orientation</string>
+	<string name="settings_transitions_label">Transitions</string>
+	<string name="settings_transitions_checkbox">Enable transitions animations between app pages</string>
+	<string name="settings_drawer_label">Drawer menu</string>
+	<string name="settings_drawer_checkbox">Disable drawer menu</string>
+	<string name="settings_delete_button">Delete</string>
+	<string name="settings_titlelabel_app">APP</string>
+	<string name="settings_titlelabel_graphs">GRAPHS</string>
+	<string name="servers_btn_add_server">Add a server</string>
+	<string name="save_button">Save</string>
+	<string name="settings_clear_button">Clear</string>
+	<string name="menu_graph_previous">Previous</string>
+	<string name="menu_graph_next">Next</string>
+	<string name="menu_graph_refresh">Refresh</string>
+	<string name="menu_graph_save">Save graph to SD card</string>
+	<string name="menu_graph_switch">Switch server</string>
+	<string name="menu_addserver_save">Save server</string>
+	<string name="menu_addserver_reset">Reset fields</string>
+	<string name="menu_addserver_delete">Delete server</string>
+	<string name="loading">Loading…</string>
+	<string name="search">Search</string>
+	<string name="about_eraseData">Reset app</string>
+	<string name="about_checkUpdates">Check for updates</string>
+	<string name="about_gplay">Google Play: note!</string>
+	<string name="menu_serversedit_revert">Revert servers</string>
+	<string name="servers_noservers_1">No server yet</string>
+	<string name="servers_noservers_2">Add yours or sample ones now by clicking on +</string>
+	<string name="updateNotificationTitle">Update available</string>
+	<string name="updateNotificationText">Please update the app to take advantage of new features and bug fixes.</string>
+	
+	<string name="aboutText">
+<![CDATA[
+	    <head>
+	    <style>
+	    	p { padding: 0px 15px; }
+	    	h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 5px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; border: 2px solid #1578C4; border-width: 0px 0px 2px 0px; }
+	    	body { text-align: justify; color: #555; font-size:0.95em; }
+	    </style>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    </head>
+	    <body>
+	    <br />
+	    <p>If you have any suggestions about how to improve <i>Munin for Android</i>, or if you have found a critical issue, please consider sending me an email at <b><u>chteuchteu@gmail.com</u></b>. Thanks!</p>
+	    <p>I am not affiliated to the development team of the Linux software <i>munin</i>.</p>
+	    
+	    <h2>You\'re running <i>Munin for Android #version#</i></h2>
+	    <p>Please go to <a href="http://chteuchteu.com/munin-for-android/">chteuchteu.com/munin-for-android</a> to see complete changelog and version notes.</p>
+	    
+	    <h2>MfA #version# changelog</h2>
+	    <ul>
+	    <li>Fixed crash on device launch</li>
+	    <li>Fixed an issue with widgets when Munin for Android was closed</li>
+	    </ul>
+	    
+	    <h2>Planned improvements</h2>
+	    <ul>
+	    <li><a href="mailto:chteuchteu@gmail.com">Suggest a feature</a></li>
+	    </ul>
+	    <p>Stay tuned!</p>
+	    
+	    <h2>Special thanks</h2>
+	    <ul>
+	    <li>Steve Schnepp, lead dev. of Munin</li>
+	    <li>Alessandro <i>\"override\"</i></li>
+	    <li>#munin IRC: olasd</li>
+	    <li>Christian Petri, Lucas Garte, Jan Vonde: german translation</li>
+	    </ul>
+	    <br />
+	    </body>]]>
+	</string>
+	<string name="goPremiumBenefits">
+<![CDATA[
+	    <head>
+	    <style>
+	    	p { padding: 0px 15px; }
+	    	h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 5px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; border: 2px solid #1578C4; border-width: 0px 0px 2px 0px; }
+	    	body { text-align: justify; color: #555; font-size:1em; }
+	    	li { margin-bottom: 5px; }
+	    </style>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    </head>
+	    <body>
+	    <h2>Munin for Android Features Pack</h2>
+	    <ul>
+	    <li>SSL Support</li>
+	    <li>Graph Widgets</li>
+	    <li>Digest auth</li>
+	    <li>Labels</li>
+	    <li>Notifications</li>
+	    <li>High-priority support</li>
+	    <li>Single pack of premium features: pay once for actual and upcoming premium features!</li>
+	    <li>And more to come! Be sure to enable auto-updates in Google Play to receive latest premium features</li>
+	    </ul>
+	    <br />
+	    </body>]]>
+	</string>
+	<string name="buy_now">BUY NOW</string>
+	<string name="splashDesc">Loading</string>
+	<string name="graphView_ImageViewDescription">Graph</string>
+
+	<!-- TITLES -->
+	<string name="addServerTitle">Add a server</string>
+	<string name="editServerTitle">Edit a server</string>
+	<string name="editServersTitle">Reorganize / delete servers</string>
+	<string name="serversTitle">Servers</string>
+	<string name="settingsTitle">Settings</string>
+	<string name="aboutTitle">About Munin for Android</string>
+	<string name="goPremiumTitle">Go Premium</string>
+	<string name="alertsTitle">Alerts</string>
+	<string name="notificationsTitle">Notifications</string>
+	<string name="textOn">ON</string>
+	<string name="textOff">OFF</string>
+
+	<!-- MAIN BUTTON -->
+	<style name="ButtonText">
+		<item name="android:layout_width">220dp</item>
+		<item name="android:layout_height">60dp</item>
+		<item name="android:textColor">#ffffff</item>
+		<item name="android:gravity">center</item>
+		<item name="android:layout_margin">5dp</item>
+		<item name="android:textSize">26sp</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:shadowColor">#145F9D</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">2</item>
+		<item name="android:shadowRadius">2</item>
+	</style>
+
+	<string name="widget_configuration1">Success! The widget has been added to your home screen. Tip: you can update the graph by taping on the grey bar at the bottom of the widget!</string>
+	<string name="widget_configuration2">Auto-update the graph only by Wifi (1 update per hour)</string>
+	<string name="settings_lang">App language</string>
+	<string name="lang_english">English</string>
+	<string name="lang_french">French</string>
+	<string name="lang_german">German</string>
+	<string name="text01">Settings will be reset. Are you sure?</string>
+	<string name="text02">Reset performed.</string>
+	<string name="text03">Checking last version of Munin for Android…</string>
+	<string name="text04">New version available</string>
+	<string name="text05">A new version of Munin for Android is available online.\nPlease update it using Google Play.</string>
+	<string name="text06">No update needed.</string>
+	<string name="text07">Munin for Android is up to date.</string>
+	<string name="text08">You\'re running a beta version of Munin for Android. You\'re the best!</string>
+	<string name="text09">Error!</string>
+	<string name="text10">Twitter app seems to be missing on your phone.</string>
+	<string name="text11">Google Play app seems to be missing on your phone.</string>
+	<string name="text12">demo.munin-monitoring.org (single server)</string>
+	<string name="text13">demo.munin-monitoring.org (3 sub-servers)</string>
+	<string name="text14">Textfields cleared</string>
+	<string name="text16">The URL doesn\'t seems to be good. Please check it again.</string>
+	<string name="text18">Success!</string>
+	<string name="text21.1"> sub-server</string>
+	<string name="text21.2"> added!\n</string>
+	<string name="text21.3"> updated!\n</string>
+	<string name="text24">Success</string>
+	<string name="text27"> plugins found!</string>
+	<string name="text28">Graph saved as /muninForAndroid/</string>
+	<string name="text29">Error while saving the graph</string>
+	<string name="text30">No internet connection</string>
+	<string name="text33">Yes</string>
+	<string name="text34">No</string>
+	<string name="text35">Learn more…</string>
+	<string name="text36">Settings saved successfully!</string>
+	<string name="text37">No server set. Please set one in the settings.</string>
+	<string name="text39">Please wait while the app does some update operations…</string>
+	<string name="text41">SSL Support is available with the Munin for Android Features Pack ($1.49). Do you want to purchase it on Google Play?</string>
+	<string name="text42">Loading…</string>
+	<string name="text43">Please wait…</string>
+	<string name="text44">Fetching URL…</string>
+	<string name="text45">Saving!</string>
+	<string name="text46">Reaching server </string>
+	<string name="text47.1">day</string>
+	<string name="text47.2">week</string>
+	<string name="text47.3">month</string>
+	<string name="text47.4">year</string>
+	<string name="text48.1">Force horizontal</string>
+	<string name="text48.2">Force vertical</string>
+	<string name="text48.3">Auto</string>
+	<string name="text49.1">Hide normal state servers</string>
+	<string name="text49.2">Show normal state servers</string>
+	<string name="text50.1">critical</string>
+	<string name="text50.2">criticals</string>
+	<string name="text51.1">warning</string>
+	<string name="text51.2">warnings</string>
+	<string name="text52">Enable notifications</string>
+	<string name="text53">Update by Wifi only</string>
+	<string name="text54">Estimated data consumption: ?? /day</string>
+	<string name="text55">Refresh rate</string>
+	<string name="text56">Select servers to watch</string>
+	<string name="text57">10 minutes/30 minutes/1 hour/2 hours/5 hours/10 hours/24 hours</string>
+	<string name="text58"> critical / criticals /&amp; / warning / warnings /on / server/ servers</string>
+	<string name="text60">Continue</string>
+	<string name="text61">Add</string>
+	<string name="text62">There\'s no label yet</string>
+	<string name="text63.1">Open menu</string>
+	<string name="text63.2">Close menu</string>
+	<string name="text64">Cancel</string>
+	<string name="text65">Digest auth is available with the Munin for Android Features Pack ($1.49).</string>
+	<string name="text65.1">Digest auth is available with the Munin for Android Features Pack ($1.49). Do you want to purchase it on Google Play?</string>
+	<string name="text66">Clear URLs history</string>
+	<string name="text66.1">History cleared.</string>
+	<string name="text67">No label yet</string>
+	<string name="text68">Timeout - The server took too long to handle the request</string>
+</resources>

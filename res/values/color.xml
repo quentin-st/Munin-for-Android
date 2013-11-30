@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>     
+    <color name="blue">#0099CC</color>
+    <color name="blue2">#04aedf</color>
+    <color name="lightBlue">#33B5E5</color>
+    <color name="grayBackground">#EAEAEA</color>
+    
+    <color name="alert">#CC0000</color>
+    <color name="confirm">#FF8800</color>
+    <color name="info">#669900</color>
+    
+    <color name="c444444">#444444</color>
+    <!-- <color name="c4d4d4d">#4d4d4d</color>-->
+    <!-- <color name="c37454A">#37454A</color>-->
+    <color name="c383838">#383838</color>
+    <color name="c8d8d8d">#8d8d8d</color>
+    <color name="c34353C">#34353C</color>
+    <color name="c26262A">#26262A</color>
+    <color name="c212125">#212125</color>
+    <color name="c2A2A30">#2A2A30</color>
+    
+    <color name="cdddddd">#dddddd</color>
+    <color name="cffffff">#ffffff</color>
+</resources>

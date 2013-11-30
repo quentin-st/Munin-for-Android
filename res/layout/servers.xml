@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F2F2F2"
+    android:orientation="vertical" >
+
+    <!-- ### TITLE ### -->
+
+    <TextView
+        android:id="@+id/viewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#dedfde"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/serversTitle"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#7a7a7a" />
+
+    <LinearLayout
+        android:id="@+id/viewTitleSep"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#a5a6a5"
+        android:orientation="horizontal" >
+    </LinearLayout>
+    <!-- ### TITLE ### -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/servers_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/servers_btn_add_a_server"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:text="@string/servers_btn_add_server" />
+
+            <ListView
+                android:id="@+id/android:list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/servers_btn_add_a_server"
+                android:layout_alignParentTop="true"
+                android:paddingLeft="@dimen/listview_horizontal_margin"
+                android:paddingRight="@dimen/listview_horizontal_margin" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/servers_noserver"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginRight="20dp"
+                    android:gravity="bottom"
+                    android:shadowColor="#ffffff"
+                    android:shadowDx="0"
+                    android:shadowDy="2"
+                    android:shadowRadius="1"
+                    android:text="@string/servers_noservers_1"
+                    android:textColor="#4E5258"
+                    android:textSize="40sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/arrow_servers" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:shadowColor="#ffffff"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="1"
+                android:text="@string/servers_noservers_2"
+                android:textColor="#7C828C"
+                android:textSize="25sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

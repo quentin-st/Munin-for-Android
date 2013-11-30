@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:state_pressed="true">
+		<layer-list>
+			<item>
+				<shape>
+					<solid android:color="#285A16" />
+				</shape>
+			</item>
+			<item android:bottom="1dp">
+				<shape>
+					<gradient
+						android:startColor="#4EA130"
+						android:endColor="#4EA130"
+						android:angle="270" />
+					<padding
+						android:left="10dp"
+						android:top="10dp"
+						android:right="10dp"
+						android:bottom="10dp" />
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+	<item android:state_selected="true">
+		<layer-list>
+			<item>
+				<shape>
+					<solid android:color="#69945A" />
+				</shape>
+			</item>
+			<item android:bottom="3dp">
+				<shape>
+					<gradient
+						android:startColor="#7BC85F"
+						android:endColor="#7BC85F"
+						android:angle="270" />
+					<padding
+						android:left="10dp"
+						android:top="10dp"
+						android:right="10dp"
+						android:bottom="10dp" />
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+	<item android:state_hovered="true">
+		<layer-list>
+			<item>
+				<shape>
+					<solid android:color="#69945A" />
+				</shape>
+			</item>
+			<item android:bottom="3dp">
+				<shape>
+					<gradient
+						android:startColor="#7BC85F"
+						android:endColor="#7BC85F"
+						android:angle="270" />
+					<padding
+						android:left="10dp"
+						android:top="10dp"
+						android:right="10dp"
+						android:bottom="10dp" />
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+	<item android:state_focused="true">
+		<layer-list>
+			<item>
+				<shape>
+					<solid android:color="#69945A" />
+				</shape>
+			</item>
+			<item android:bottom="3dp">
+				<shape>
+					<gradient
+						android:startColor="#7BC85F"
+						android:endColor="#7BC85F"
+						android:angle="270" />
+					<padding
+						android:left="10dp"
+						android:top="10dp"
+						android:right="10dp"
+						android:bottom="10dp" />
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+	<item>
+		<layer-list>
+			<item>
+				<shape>
+					<solid android:color="#396B27" />
+				</shape>
+			</item>
+			<item android:bottom="3dp">
+				<shape>
+					<gradient
+						android:startColor="#5FB241"
+						android:endColor="#5FB241"
+						android:angle="270" />
+					<padding
+						android:left="10dp"
+						android:top="10dp"
+						android:right="10dp"
+						android:bottom="10dp" />
+				</shape>
+			</item>
+		</layer-list>
+	</item>
+</selector>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/popup"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_gravity="center"
+	android:gravity="center"
+	android:orientation="vertical">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_gravity="center"
+		android:background="#9933343B"
+		android:gravity="center"
+		android:orientation="vertical">
+
+		<LinearLayout
+			android:id="@+id/popup_credentials"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:orientation="vertical"
+			android:visibility="gone"
+			android:padding="@dimen/addserver_popup_margin_horiz">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="#66ffffff"
+				android:orientation="vertical"
+				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_thin">
+				<Spinner
+					android:id="@+id/popup_credentials_authtype"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:spinnerMode="dialog"
+					android:padding="10dp" />
+			</LinearLayout>
+
+			<TextView
+				android:id="@+id/popup_credentials_premium"
+				android:text="@string/text65"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:gravity="center_horizontal"
+				android:textColor="#ffffff"
+				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_thin"
+				android:textSize="16sp"
+				android:visibility="gone"
+				android:padding="10dp"
+				android:background="#33ff0000" />
+
+			<EditText
+				android:id="@+id/popup_credentials_login"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_thin"
+				android:background="#66ffffff"
+				android:hint="@string/settings_login"
+				android:inputType="text"
+				android:padding="10dp" />
+
+			<EditText
+				android:id="@+id/popup_credentials_password"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_large"
+				android:background="#66ffffff"
+				android:hint="@string/settings_password"
+				android:inputType="textPassword"
+				android:padding="10dp" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+
+				<Button
+					android:id="@+id/popup_credentials_cancel"
+					style="@style/ButtonText"
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:background="@drawable/white_button"
+					android:gravity="center_horizontal"
+					android:shadowColor="#ffffff"
+					android:shadowRadius="1"
+					android:text="@string/text64"
+					android:textColor="#99000000"
+					android:textSize="30sp" />
+
+				<Button
+					android:id="@+id/popup_credentials_continue"
+					style="@style/ButtonText"
+					android:layout_width="0dp"
+					android:layout_marginRight="10dp"
+					android:layout_weight="1"
+					android:background="@drawable/green_button"
+					android:gravity="center_horizontal"
+					android:shadowColor="#ffffff"
+					android:shadowRadius="1"
+					android:text="@string/text60"
+					android:textColor="#396B27"
+					android:textSize="30sp" />
+			</LinearLayout>
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/popup_url"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:orientation="vertical"
+			android:padding="@dimen/addserver_popup_margin_horiz"
+			android:visibility="gone">
+
+			<TextView
+				android:id="@+id/popup_url_message"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center_horizontal"
+				android:textColor="#ffffff"
+				android:textSize="@dimen/addserver_popup_fontsize2"
+				android:text="@string/text16"
+				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_thin" />
+
+			<TextView
+				android:id="@+id/popup_url_message2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center_horizontal"
+				android:textColor="#ffffff"
+				android:textSize="@dimen/addserver_popup_fontsize3"
+				android:text="@string/text16"
+				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_large" />
+
+			<EditText
+				android:id="@+id/popup_url_edittext"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_large"
+				android:background="#66ffffff"
+				android:hint="@string/settings_login"
+				android:inputType="textUri"
+				android:padding="10dp" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+
+				<Button
+					android:id="@+id/popup_url_cancel"
+					style="@style/ButtonText"
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:background="@drawable/white_button"
+					android:gravity="center_horizontal"
+					android:shadowColor="#ffffff"
+					android:shadowRadius="1"
+					android:text="@string/text64"
+					android:textColor="#99000000"
+					android:textSize="30sp" />
+
+				<Button
+					android:id="@+id/popup_url_continue"
+					style="@style/ButtonText"
+					android:layout_width="0dp"
+					android:layout_marginRight="10dp"
+					android:layout_weight="1"
+					android:background="@drawable/green_button"
+					android:gravity="center_horizontal"
+					android:shadowColor="#ffffff"
+					android:shadowRadius="1"
+					android:text="@string/text60"
+					android:textColor="#396B27"
+					android:textSize="30sp" />
+			</LinearLayout>
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/popup_text_a"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/addserver_popup_margin_verti_large"
+			android:gravity="center_horizontal"
+			android:textColor="#ffffff"
+			android:textSize="@dimen/addserver_popup_fontsize1" />
+
+		<LinearLayout
+			android:id="@+id/popup_container_avancement"
+			android:layout_width="match_parent"
+			android:layout_height="10dp"
+			android:layout_marginBottom="@dimen/addserver_popup_margin_verti_large"
+			android:layout_marginLeft="@dimen/addserver_popup_margin_horiz"
+			android:layout_marginRight="@dimen/addserver_popup_margin_horiz"
+			android:background="#55FFFFFF"
+			android:orientation="vertical">
+
+			<LinearLayout
+				android:id="@+id/popup_loading_avancement"
+				android:layout_width="1dp"
+				android:layout_height="match_parent"
+				android:background="#99FF00"
+				android:orientation="vertical" />
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/popup_text_b"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center_horizontal"
+			android:textColor="#ffffff"
+			android:textSize="@dimen/addserver_popup_fontsize2" />
+
+		<Button
+			android:id="@+id/popup_button"
+			style="@style/ButtonText"
+			android:layout_marginTop="@dimen/addserver_popup_margin_verti_large"
+			android:background="@drawable/green_button"
+			android:gravity="center_horizontal"
+			android:shadowColor="#ffffff"
+			android:shadowRadius="1"
+			android:text="@string/text60"
+			android:textColor="#99000000"
+			android:textSize="30sp"
+			android:visibility="gone" />
+	</LinearLayout>
+
+</LinearLayout>

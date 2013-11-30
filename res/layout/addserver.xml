@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/scrollView1"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content" >
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical" >
+
+		<!-- ### TITLE ### -->
+
+		<TextView
+			android:id="@+id/viewTitle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:background="#dedfde"
+			android:gravity="center"
+			android:padding="8dp"
+			android:text="@string/addServerTitle"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:textColor="#7a7a7a" />
+
+		<LinearLayout
+			android:id="@+id/viewTitleSep"
+			android:layout_width="match_parent"
+			android:layout_height="0.5dp"
+			android:background="#a5a6a5"
+			android:orientation="horizontal" >
+		</LinearLayout>
+		<!-- ### TITLE ### -->
+
+
+		<!-- Munin URL -->
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+			android:layout_marginTop="15dp"
+			android:background="#eaeaea"
+			android:focusable="true"
+			android:focusableInTouchMode="true" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+			android:background="#ffffff"
+			android:orientation="vertical"
+			android:padding="20dp" >
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/settings_URL_label"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingLeft="5dp"
+				android:text="@string/settings_URL_label2"
+				android:textColor="#787878"
+				android:textSize="12sp" />
+
+			<AutoCompleteTextView
+				android:id="@+id/textbox_serverUrl"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="0dp"
+				android:layout_marginTop="8dp"
+				android:ems="10"
+				android:inputType="textUri"
+				android:nextFocusLeft="@id/textbox_serverUrl"
+				android:nextFocusUp="@id/textbox_serverUrl" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="2dp"
+			android:layout_marginBottom="10dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+			android:background="#d7d7d7" />
+
+		<!-- ... or select a sample server -->
+
+		<LinearLayout
+			android:id="@+id/ll_sampleServer"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginTop="3dp"
+				android:background="#eaeaea" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:background="#ffffff"
+				android:orientation="vertical"
+				android:paddingBottom="5dp"
+				android:paddingLeft="20dp"
+				android:paddingRight="20dp"
+				android:paddingTop="5dp" >
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/settings_text"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+
+				<Spinner
+					android:id="@+id/spinner"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="13dp"
+					android:layout_marginTop="8dp" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="2dp"
+				android:layout_marginBottom="3dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:background="#d7d7d7" />
+		</LinearLayout>
+
+		<!-- HTTP Auth -->
+		<LinearLayout
+		    android:id="@+id/addserver_auth"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical">
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginTop="3dp"
+				android:background="#eaeaea" />
+	
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:background="#ffffff"
+				android:orientation="vertical"
+				android:paddingBottom="5dp"
+				android:paddingLeft="20dp"
+				android:paddingRight="20dp"
+				android:paddingTop="5dp" >
+	
+				<CheckBox
+					android:id="@+id/checkbox_http_auth"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="8dp"
+					android:text="@string/settings_http_auth2"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:textColor="#2A2A2A" />
+	
+				<LinearLayout
+					android:id="@+id/authIds"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal" >
+	
+					<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:orientation="vertical" >
+						
+					    <TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:gravity="center"
+							android:text="@string/settings_auth_type"
+							android:textColor="#2A2A2A" />
+	
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:gravity="center"
+							android:text="@string/settings_login"
+							android:textColor="#2A2A2A" />
+	
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:gravity="center"
+							android:text="@string/settings_password"
+							android:textColor="#2A2A2A" />
+					</LinearLayout>
+	
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:orientation="vertical" >
+						
+					    <Spinner
+							android:id="@+id/spinner_auth_type"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="15dp" />
+	
+						<EditText
+							android:id="@+id/auth_login"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="15dp"
+							android:ems="10"
+							android:inputType="text" />
+	
+						<EditText
+							android:id="@+id/auth_password"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="15dp"
+							android:ems="10"
+							android:inputType="textPassword" />
+					</LinearLayout>
+				</LinearLayout>
+			</LinearLayout>
+	
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="2dp"
+				android:layout_marginBottom="3dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:background="#d7d7d7" />
+		</LinearLayout>
+
+		<!-- Compatibility: buttons -->
+
+		<LinearLayout
+			android:id="@+id/actionsButtons"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_marginTop="25dp"
+			android:orientation="horizontal" >
+
+			<Button
+				android:id="@+id/btn_server_save"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/save_button" />
+
+			<Button
+				android:id="@+id/btn_server_clear"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/settings_clear_button" />
+
+			<Button
+				android:id="@+id/btn_server_delete"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/settings_delete_button" />
+		</LinearLayout>
+	</LinearLayout>
+
+</ScrollView>

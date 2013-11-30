@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.chteuchteu.munin"
+	android:versionCode="17"
+	android:versionName="2.6">
+
+	<!-- SDK Version -->
+	<uses-sdk
+		android:minSdkVersion="8"
+		android:targetSdkVersion="19" />
+
+	<!-- Permissions -->
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+
+	<!-- Bug Fix (font size with locale) -->
+	<supports-screens
+		android:anyDensity="true"
+		android:largeScreens="true"
+		android:normalScreens="true"
+		android:smallScreens="true" />
+
+	<!-- Application		android:name needed for ActiveAndroid SQLite database -->
+	<application
+		android:name="com.activeandroid.app.Application"
+		android:allowBackup="true"
+		android:configChanges="locale|layoutDirection"
+		android:icon="@drawable/launcher_icon"
+		android:label="@string/app_name"
+		android:theme="@style/MyAppTheme" >
+		<activity
+			android:name="com.chteuchteu.munin.Activity_Splash"
+			android:label="@string/app_name"
+			android:theme="@style/NoActionBar" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity android:name="com.chteuchteu.munin.Activity_About" />
+		<activity android:name="com.chteuchteu.munin.Activity_Alerts" />
+		<activity android:name="com.chteuchteu.munin.Activity_AlertsPluginSelection" />
+		<activity android:name="com.chteuchteu.munin.Activity_AddServer" />
+		<activity android:name="com.chteuchteu.munin.Activity_GraphView" 
+		    android:configChanges="keyboardHidden|orientation" />
+		<activity android:name="com.chteuchteu.munin.Activity_Labels" />
+		<activity android:name="com.chteuchteu.munin.Activity_LabelsPluginSelection" />
+		<activity android:name="com.chteuchteu.munin.Activity_Main" />
+		<activity android:name="com.chteuchteu.munin.Activity_Notifications" />
+		<activity android:name="com.chteuchteu.munin.Activity_PluginSelection" />
+		<activity android:name="com.chteuchteu.munin.Activity_ServersEdit" />
+		<activity android:name="com.chteuchteu.munin.Activity_Servers" />
+		<activity android:name="com.chteuchteu.munin.Activity_Settings" />
+		<activity android:name="com.chteuchteu.munin.Activity_Settings_Comp" />
+		<activity android:name="com.chteuchteu.munin.Activity_GoPremium" />
+
+		<!-- Widget -->
+		<receiver android:name="com.chteuchteu.munin.Widget_GraphWidget">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+				<action android:name="android.appwidget.action.APPWIDGET_DELETED" />
+				<action android:name="com.chteuchteu.munin.widget.UPDATE_GRAPH" />
+				<action android:name="com.chteuchteu.munin.widget.START_ACTIVITY" />
+				<action android:name="com.chteuchteu.munin.widget.START_PREMIUM" />
+			</intent-filter>
+
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/graph_widget_meta" />
+		</receiver>
+		<activity
+			android:name="com.chteuchteu.munin.Widget_Configure"
+			android:theme="@android:style/Theme.Dialog">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+			</intent-filter>
+		</activity>
+
+		<!-- Notifications -->
+		<receiver android:name=".BootReceiver">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+		</receiver>
+		<service
+			android:name=".Service_Notifications"
+			android:enabled="true" />
+
+		<!-- Database -->
+		<meta-data
+			android:name="AA_DB_NAME"
+			android:value="MuninforAndroid.db" />
+		<meta-data
+			android:name="AA_DB_VERSION"
+			android:value="9" />
+		<meta-data android:name="com.crashlytics.ApiKey" android:value="b7bc84aa870bd35d3de03f69309f1748a52354a4"/>
+	</application>
+
+</manifest>

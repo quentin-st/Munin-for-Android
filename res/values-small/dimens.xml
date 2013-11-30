@@ -1,0 +1,12 @@
+<resources>
+	
+	<dimen name="addserver_popup_margin_horiz">10dp</dimen>
+	<dimen name="addserver_popup_margin_verti_thin">10dp</dimen>
+	<dimen name="addserver_popup_margin_verti_large">20dp</dimen>
+	<dimen name="addserver_popup_fontsize1">65sp</dimen>
+	<dimen name="addserver_popup_fontsize2">55sp</dimen>
+	<dimen name="addserver_popup_fontsize3">40sp</dimen>
+	
+	<dimen name="drawer_font_size">23sp</dimen>
+
+</resources>

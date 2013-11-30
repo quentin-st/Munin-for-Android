@@ -1,0 +1,1 @@
+alter table MuninServers add category TEXT;
