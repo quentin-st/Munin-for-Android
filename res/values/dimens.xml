@@ -21,4 +21,8 @@
 	<dimen name="addserver_popup_fontsize3">35sp</dimen>
 	
 	<dimen name="drawer_font_size">26sp</dimen>
+	
+	<!-- Widget min size. size = (74 x n) - 2 -->
+	<dimen name="appwidget_min_width">146dp</dimen>
+	<dimen name="appwidget_min_height">146dp</dimen>
 </resources>

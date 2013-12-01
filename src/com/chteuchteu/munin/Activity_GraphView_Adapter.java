@@ -99,7 +99,6 @@ public class Activity_GraphView_Adapter extends BaseAdapter implements TitleProv
     			}
     		}*/
 			
-			
 			if (Activity_GraphView.bitmaps[position] == null) {
 				loading_spin.setIndeterminate(true);
 				loading_spin.setVisibility(View.VISIBLE);
@@ -112,13 +111,13 @@ public class Activity_GraphView_Adapter extends BaseAdapter implements TitleProv
 			
 			if (Activity_GraphView.load_period != null && muninFoo.currentServer != null && Activity_GraphView.bitmaps != null) {
 				if (Activity_GraphView.bitmaps[pos] == null)
-					Activity_GraphView.bitmaps[pos] = muninFoo.currentServer.getPlugin(pos).getGraph(Activity_GraphView.load_period, muninFoo.currentServer);
+					Activity_GraphView.bitmaps[pos] = Util.removeBitmapBorder(muninFoo.currentServer.getPlugin(pos).getGraph(Activity_GraphView.load_period, muninFoo.currentServer));
 				
 				if (pos != 0 && Activity_GraphView.bitmaps[pos-1] == null)
-					Activity_GraphView.bitmaps[pos-1] = muninFoo.currentServer.getPlugin(pos-1).getGraph(Activity_GraphView.load_period, muninFoo.currentServer);
+					Activity_GraphView.bitmaps[pos-1] = Util.removeBitmapBorder(muninFoo.currentServer.getPlugin(pos-1).getGraph(Activity_GraphView.load_period, muninFoo.currentServer));
 				
 				if (pos != Activity_GraphView.bitmaps.length-1 && Activity_GraphView.bitmaps[pos+1] == null)
-					Activity_GraphView.bitmaps[pos+1] = muninFoo.currentServer.getPlugin(pos+1).getGraph(Activity_GraphView.load_period, muninFoo.currentServer);
+					Activity_GraphView.bitmaps[pos+1] = Util.removeBitmapBorder(muninFoo.currentServer.getPlugin(pos+1).getGraph(Activity_GraphView.load_period, muninFoo.currentServer));
 				
 				// Nettoyage du tableau
 				/*for (int i=0; i<Activity_GraphView.bitmaps.length; i++) {

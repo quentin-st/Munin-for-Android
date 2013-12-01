@@ -39,23 +39,15 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 		}
 	}
 	
-	/**
-	 * Update the widget
-	 *
-	 * @param context
-	 * @param appWidgetManager
-	 * @param appWidgetId
-	 */
 	static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, boolean forceUpdate) {
 		awm = appWidgetManager;
 		widgetId = appWidgetId;
 		
 		boolean premium = checkPremium(context);
 		
-		// Mise à jour du widget
+		// Updating widget
 		views = new RemoteViews(context.getPackageName(), R.layout.graphwidget_layout);
 		if (!premium){
-			//views.setTextViewText(R.id.widget_pluginname, "Munin for Android Features Pack needed");
 			views.setTextViewText(R.id.widget_servername, "Munin for Android Features Pack needed");
 			//views.setBitmap(R.id.widget_graph, "setImageBitmap", BitmapFactory.decodeResource(context.getResources(), R.drawable.widget_featurespack));
 			
@@ -69,45 +61,12 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 			awm.updateAppWidget(widgetId, views);
 		} else {
 			// premium
-			
-			//MuninServer serv = null;
-			//String pluginName = "";
-			//String serverName = "";
-			
-			/*for (MuninWidget w : sqlite.getWidgets()) {
-				if (w.getWidgetId() == appWidgetId)
-					widget = w;
-			}*/
-			
 			widget = sqlite.getWidget(appWidgetId);
-
-			/*if (widget != null) {
-				// Chargement à partir des paramètres
-				serv = new MuninServer(getPref("widget" + appWidgetId+ "_Name", context), getPref("widget" + appWidgetId+ "_Url", context));
-				List<MuninPlugin> a = new ArrayList<MuninPlugin>();
-				a.add(new MuninPlugin(getPref("widget" + appWidgetId+ "_GraphName", context), serv));
-				serv.setPluginsList(a);
-				serv.getPlugin(0).setFancyName(getPref("widget" + appWidgetId+ "_GraphFancyName", context));
-				
-				if (!getPref("widget" + appWidgetId+ "_AuthLogin", context).equals("") || !getPref("widget" + appWidgetId+ "_AuthPassword", context).equals(""))
-					serv.setAuthIds(getPref("widget" + appWidgetId+ "_AuthLogin", context), getPref("widget" + appWidgetId+ "_AuthPassword", context));
-				if (getPref("widget" + appWidgetId + "_SSL", context).equals("true"))
-					serv.setSSL(true);
-				
-				
-				pluginName = serv.getPlugin(0).getFancyName();
-				serverName = serv.getName();
-			}*/
 			
-			//if (serv != null) {
 			if (widget != null) {
-				//views.setTextViewText(R.id.widget_pluginname, pluginName);
-				//views.setTextViewText(R.id.widget_servername, serverName);
-				
-				//views.setTextViewText(R.id.widget_pluginname, widget.getPlugin().getFancyName());
 				views.setTextViewText(R.id.widget_servername, widget.getServer().getName());
 				
-				// Action update
+				// Update action
 				Intent intent = new Intent(context, Widget_GraphWidget.class);
 				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 				intent.setAction(ACTION_UPDATE_GRAPH);
@@ -121,15 +80,8 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 				PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, appWidgetId, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
 				views.setOnClickPendingIntent(R.id.widget_graph, pendingIntent2);
 				
-				
-				//boolean wifiOnly = false;
-				//if (getPref("widget" + appWidgetId + "_WifiOnly", context).equals("true"))
-				//	wifiOnly = true;
-				
-				//if (!wifiOnly || forceUpdate) {
 				if (!widget.isWifiOnly() || forceUpdate) {
-					// Lancement de l'Asyntask
-					//applyBitmap task = new applyBitmap((MuninServer) serv, getPref("widget" + appWidgetId + "_GraphURL", context), views, awm, appWidgetId);
+					// Launching Asyntask
 					applyBitmap task = new applyBitmap((MuninServer) widget.getServer(), widget.getPlugin().getImgUrl(widget.getPeriod()), views, awm, appWidgetId);
 					task.execute();
 				} else {
@@ -164,10 +116,6 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 						widget = sqlite.getWidget(extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID));
 					Intent intent2 = new Intent(context, Activity_GraphView.class);
 					intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					//int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-					//intent2.putExtra("server", getPref("widget" + widgetId + "_Name", context));
-					//intent2.putExtra("plugin", getPref("widget" + widgetId + "_GraphName", context));
-					//intent2.putExtra("period", getPref("widget" + widgetId + "_Period", context));
 					intent2.putExtra("server", widget.getServer().getServerUrl());
 					intent2.putExtra("plugin", widget.getPlugin().getName());
 					intent2.putExtra("period", widget.getPeriod());
@@ -187,23 +135,17 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 	@Override
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
-		//updateAppWidget(context, appWidgetManager, appWidgetId, true);
-		/*PackageManager pm = context.getPackageManager();
-        pm.setComponentEnabledSetting(new ComponentName("com.android.settings",
-                                        ".widget.SettingsAppWidgetProvider"),
-                                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                                        PackageManager.DONT_KILL_APP);*/
 	}
 	
 	static class applyBitmap extends AsyncTask<Void, Integer, Void> {
-		private Bitmap		bm;
+		private Bitmap	bm;
 		
 		private MuninServer	serv;
-		private String		url;
+		private String	url;
 		
 		private RemoteViews	views;
 		private AppWidgetManager awm;
-		private	int			widgetId;
+		private	int		widgetId;
 		
 		public applyBitmap(MuninServer s, String ad, RemoteViews v, AppWidgetManager a, int w) {
 			super();
@@ -217,7 +159,6 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			//this.views.setViewVisibility(R.id.widget_pluginname, View.GONE);
 			this.views.setViewVisibility(R.id.widget_servername, View.GONE);
 			this.views.setViewVisibility(R.id.widget_loading, View.VISIBLE);
 			this.awm.updateAppWidget(this.widgetId, this.views);
@@ -226,6 +167,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			bm = serv.getPlugin(0).getGraph(url);
+			bm = Util.removeBitmapBorder(bm);
 			return null;
 		}
 		
@@ -234,7 +176,6 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 			if (this.bm != null)
 				this.views.setBitmap(R.id.widget_graph, "setImageBitmap", this.bm);
 			this.views.setViewVisibility(R.id.widget_loading, View.GONE);
-			//this.views.setViewVisibility(R.id.widget_pluginname, View.VISIBLE);
 			this.views.setViewVisibility(R.id.widget_servername, View.VISIBLE);
 			this.awm.updateAppWidget(this.widgetId, this.views);
 		}
@@ -264,29 +205,8 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 	
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
-		// called when widgets are deleted
-		// array of widgetIds -> iteration
-		/*String[] prefs = {"_Name", "_Url", "_AuthLogin", "_AuthPassword", "_SSL", "_GraphURL", "_GraphName", "_GraphFrancyName"};
-		for (int i=0; i<appWidgetIds.length; i++) {
-			for (int y=0; y<prefs.length; y++)
-				removePref("widget" + appWidgetIds[i] + prefs[y], context);
-		}*/
-		
 		for (int i : appWidgetIds) {
 			sqlite.deleteWidget(i);
 		}
 	}
-	
-	
-	// SHARED PREFERENCES
-	/*public static String getPref(String key, Context c) {
-		return c.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public static void removePref(String key, Context c) {
-		SharedPreferences prefs = c.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key);
-		editor.commit();
-	}*/
 }

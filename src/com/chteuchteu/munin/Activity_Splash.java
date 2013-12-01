@@ -15,7 +15,6 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
@@ -41,7 +40,6 @@ public class Activity_Splash extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.v("", "Getting muninFoo instance...");
 		muninFoo = new MuninFoo(this);
 		Crashlytics.start(this);
 		
@@ -204,7 +202,6 @@ public class Activity_Splash extends Activity {
 					for (MuninPlugin ms : serv.getPlugins())
 						ms.save();
 					
-					Log.v("", "Updated server " + serverNumber);
 					removePref("server" + serverNumber + "Url");
 					removePref("server" + serverNumber + "Name");
 					removePref("server" + serverNumber + "Plugins");

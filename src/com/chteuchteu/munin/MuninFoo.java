@@ -113,12 +113,6 @@ public class MuninFoo {
 	
 	public void loadInstance(Context c) {
 		loadInstance();
-		String tmps = "";
-		if (c==null)
-			tmps = "null";
-		else
-			tmps = "not null";
-		Log.v("", "instance : " + tmps);
 		if (c != null) {
 			this.premium = isPremium(c);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && !getPref("drawer", c).equals("false"))
@@ -126,11 +120,6 @@ public class MuninFoo {
 			else
 				this.drawer = false;
 		}
-		if (drawer)
-			tmps = "true";
-		else
-			tmps = "false";
-		Log.v("", "drawer : " + tmps);
 	}
 	
 	public void resetInstance(Context c) {
@@ -147,11 +136,8 @@ public class MuninFoo {
 	}
 	
 	public static synchronized MuninFoo getInstance(Context c) {
-		Log.v("", "getInstance(c)");
 		if (instance == null)
 			instance = new MuninFoo(c);
-		else
-			Log.v("", "instance was not null");
 		return instance;
 	}
 	
@@ -612,119 +598,6 @@ public class MuninFoo {
 		
 		return b;
 	}
-	
-	/*public String grabUrl(MuninServer server) {
-		String html = "";
-		try {
-			// Création du HTTP Client
-			HttpClient client = null;
-			if (server.getSSL()) {
-				try {
-					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-					trustStore.load(null, null);
-					
-					CustomSSLFactory sf = new CustomSSLFactory(trustStore);
-					sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-					
-					HttpParams params = new BasicHttpParams();
-					HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-					HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-					
-					SchemeRegistry registry = new SchemeRegistry();
-					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-					registry.register(new Scheme("https", sf, 443));
-					
-					ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-					
-					client = new DefaultHttpClient(ccm, params);
-				} catch (Exception e) {
-					client = new DefaultHttpClient();
-				}
-			} else {
-				client = new DefaultHttpClient();
-			}
-			
-			HttpGet request = new HttpGet(server.getServerUrl());
-			if (server.getAuthNeeded())
-				request.setHeader("Authorization", "Basic " + Base64.encodeToString((server.getAuthLogin() + ":" + server.getAuthPassword()).getBytes(), Base64.NO_WRAP));
-			
-			HttpResponse response = client.execute(request);
-			
-			InputStream in = response.getEntity().getContent();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			StringBuilder str = new StringBuilder();
-			String line = null;
-			while((line = reader.readLine()) != null) {
-				str.append(line);
-			}
-			in.close();
-			
-			html = str.toString();
-		} catch (Exception e) { html = "error"; }
-		return html;
-	}*/
-	
-	/*public String grabUrl(String url) {
-		html_source = "";
-		grabUrl check = new grabUrl();
-		check.execute(url);
-		int timeout = 0;
-		while (html_source == "") {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) { e.printStackTrace(); }
-			timeout++;
-			if (timeout > 40)
-				break;
-		}
-		return html_source;
-	}
-	
-	public class grabUrl extends AsyncTask<String, Void, Void> {
-		@TargetApi(8)
-		@Override
-		protected Void doInBackground(String... url) {
-			//String source = "";
-			String html = "";
-			try {
-				HttpClient client = new DefaultHttpClient();
-				HttpGet request = new HttpGet(url[0]);
-				//if (authNeeded)
-				//request.setHeader("Authorization", "Basic " + Base64.encodeToString((authLogin + ":" + authPassword).getBytes(), Base64.NO_WRAP));
-				
-				HttpResponse response = client.execute(request);
-				
-				InputStream in = response.getEntity().getContent();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-				StringBuilder str = new StringBuilder();
-				String line = null;
-				while((line = reader.readLine()) != null) {
-					str.append(line);
-				}
-				in.close();
-				html = str.toString();
-				
-				// URL adresse = new URL(url[0]);
-				//Log.v("Download","Debut du telechargement de " + url[0]);
-		        //BufferedReader in = new BufferedReader(
-		        //new InputStreamReader(adresse.openStream()));
-
-		        //String inputLine;
-		        //while ((inputLine = in.readLine()) != null) {
-		        //    source = source + inputLine + "\n";
-		            //Log.v("Download...",inputLine);
-		        //}
-		        //in.close();
-			} catch (Exception e) {
-				//Log.v("Exception", "Exception:" + e.getMessage());
-				html = "error";
-			}
-			html_source = html;
-			return null;
-		}
-		@Override
-		protected void onPostExecute(Void result) { }
-	}*/
 	
 	public boolean contains (MuninServer server) {
 		for (MuninServer s : servers) {

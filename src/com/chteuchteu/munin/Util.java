@@ -31,6 +31,13 @@ public final class Util {
 		return false;
 	}
 	
+	public static Bitmap removeBitmapBorder(Bitmap original) {
+		if (original.getPixel(0, 0) == 0xFFCFCFCF)
+			return Bitmap.createBitmap(original, 2, 2, original.getWidth()-4, original.getHeight()-4);
+		else
+			return original;
+	}
+	
 	public static Bitmap fastblur(Bitmap sentBitmap, int radius) {
 		
 		// Stack Blur v1.0 from
