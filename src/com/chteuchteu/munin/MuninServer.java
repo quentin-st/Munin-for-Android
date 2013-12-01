@@ -635,6 +635,16 @@ public class MuninServer extends Model {
 		return l;
 	}
 	
+	public int getPluginPosition(MuninPlugin p) {
+		int i = 0;
+		for (MuninPlugin pl : plugins) {
+			if (pl.equalsApprox(p))
+				return i;
+			i++;
+		}
+		return 0;
+	}
+	
 	public MuninServer setPluginsList(List<MuninPlugin> pL) {
 		this.plugins = pL;
 

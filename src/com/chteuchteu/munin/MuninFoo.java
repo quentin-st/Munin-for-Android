@@ -188,13 +188,17 @@ public class MuninFoo {
 			labels.add(l);
 		return !contains;
 	}
-	public void removeLabel(MuninLabel label) {
+	public boolean removeLabel(MuninLabel label) {
 		List<MuninLabel> list = new ArrayList<MuninLabel>();
+		boolean someThingDeleted = false;
 		for (MuninLabel l : labels) {
 			if (!l.equals(label))
 				list.add(l);
+			else
+				someThingDeleted = true;
 		}
 		labels = list;
+		return someThingDeleted;
 	}
 	public void unLinkAll() {
 		// Permet d'éviter qu'une récupération de la BDD entraîne une modif locale

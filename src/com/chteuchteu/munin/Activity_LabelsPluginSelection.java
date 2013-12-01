@@ -37,6 +37,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 	private List<List<MuninPlugin>> labelsListCat;
 	private List<MuninPlugin> correspondance;
 	private List<String> 	correspondanceServers;
+	private Menu			menu;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,13 +72,14 @@ public class Activity_LabelsPluginSelection extends Activity {
 			super.setTheme(R.style.ListFont);
 			((TextView) this.findViewById(R.id.viewTitle)).setText(label.getName());
 		}
-
+		
 		labelsListCat = label.getPluginsSortedByServer();
 		correspondance = new ArrayList<MuninPlugin>();
 		correspondanceServers = new ArrayList<String>();
 		SeparatedListAdapter adapter = new SeparatedListAdapter(this);
 		for (List<MuninPlugin> l : labelsListCat) {
 			correspondanceServers.add("");
+			correspondance.add(new MuninPlugin());
 			List<Map<String,?>> elements = new LinkedList<Map<String,?>>();
 			String serverName = "";
 			for (MuninPlugin p : l) {
@@ -98,32 +100,22 @@ public class Activity_LabelsPluginSelection extends Activity {
 		((ListView)findViewById(R.id.labels_listview)).setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 				//TextView line_a = (TextView) view.findViewById(R.id.line_a);
-				TextView line_b = (TextView) view.findViewById(R.id.line_b);
-				
-				for (MuninPlugin p : correspondance) {
-					if (p.getName().equals(line_b.toString())) {
-						
-					}
-				}
+				//TextView line_b = (TextView) view.findViewById(R.id.line_b);
 				
 				Log.v("", "position : " + position);
+				Log.v("", "correspondance : \t\t" + correspondance.get(position));
+				Log.v("", "correspondanceServer : \t" + correspondanceServers.get(position));
 				
-				/*Intent intent = new Intent(Activity_LabelsPluginSelection.this, Activity_GraphView.class);
-				int p = 0;
-				if (muninFoo.getServer(serverUrl) != null) {
-					muninFoo.currentServer = muninFoo.getServer(serverUrl);
-					for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-						if (muninFoo.currentServer.getPlugin(i) != null && muninFoo.currentServer.getPlugin(i).getName().equals(pluginName)) {
-							p = i;
-							break;
-						}
-					}
-					intent.putExtra("position", p + "");
-					intent.putExtra("from", "labels");
-					intent.putExtra("label", label.getName());
-					startActivity(intent);
-					setTransition("deeper");
-				}*/
+				MuninPlugin plugin = correspondance.get(position);
+				String serverUrl = correspondanceServers.get(position);
+				Intent intent = new Intent(Activity_LabelsPluginSelection.this, Activity_GraphView.class);
+				muninFoo.currentServer = muninFoo.getServer(serverUrl);
+				int pos = muninFoo.currentServer.getPluginPosition(plugin);
+				intent.putExtra("position", pos + "");
+				intent.putExtra("from", "labels");
+				intent.putExtra("label", label.getName());
+				startActivity(intent);
+				setTransition("deeper");
 			}
 		});
 	}
@@ -148,6 +140,12 @@ public class Activity_LabelsPluginSelection extends Activity {
 					setTransition("shallower");
 				}
 				return true;
+			case R.id.menu_delete:
+				if (muninFoo.removeLabel(label))
+					muninFoo.sqlite.saveMuninLabels();
+				startActivity(new Intent(this, Activity_Labels.class));
+				setTransition("shallower");
+				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_Settings.class));
 				setTransition("deeper");
@@ -162,6 +160,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
+		this.menu = menu;
 		if (muninFoo.drawer) {
 			dh.getDrawer().setOnOpenListener(new OnOpenListener() {
 				@Override
@@ -185,7 +184,8 @@ public class Activity_LabelsPluginSelection extends Activity {
 	}
 	
 	private void createOptionsMenu() {
-		//menu.clear();
+		menu.clear();
+		getMenuInflater().inflate(R.menu.labelspluginselection, menu);
 	}
 	
 	@Override
