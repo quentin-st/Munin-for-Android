@@ -235,15 +235,15 @@ public class Activity_Main extends Activity {
 				public void onOpen() {
 					activityName = getActionBar().getTitle().toString();
 					getActionBar().setTitle("Munin for Android");
-					menu.clear();
-					getMenuInflater().inflate(R.menu.main, menu);
+					//menu.clear();
+					//getMenuInflater().inflate(R.menu.main, menu);
 				}
 			});
 			dh.getDrawer().setOnCloseListener(new OnCloseListener() {
 				@Override
 				public void onClose() {
 					getActionBar().setTitle(activityName);
-					createOptionsMenu();
+					//createOptionsMenu();
 				}
 			});
 		}

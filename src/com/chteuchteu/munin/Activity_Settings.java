@@ -49,6 +49,7 @@ public class Activity_Settings extends Activity {
 	private DrawerHelper		dh;
 	private Menu 				menu;
 	private String				activityName;
+	private Context				context;
 
 	private double onlineLastVersion = 0.0;
 	// Threading check version
@@ -61,6 +62,7 @@ public class Activity_Settings extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		context = this;
 
 		setContentView(R.layout.settings);
 
@@ -366,7 +368,7 @@ public class Activity_Settings extends Activity {
 				muninFoo.sqlite.deletePlugins();
 				muninFoo.sqlite.deleteServers();
 
-				muninFoo.resetInstance();
+				muninFoo.resetInstance(context);
 
 				// Reset performed.
 				Toast.makeText(getApplicationContext(), getString(R.string.text02), Toast.LENGTH_SHORT).show();

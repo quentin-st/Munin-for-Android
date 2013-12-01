@@ -79,15 +79,17 @@ public class MuninFoo {
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<MuninLabel>();
 		sqlite = new SQLite(this);
+		instance = null;
 		loadInstance();
 	}
 	
-	private MuninFoo(Context c) {
+	MuninFoo(Context c) {
 		premium = false;
 		drawer = false;
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<MuninLabel>();
 		sqlite = new SQLite(this);
+		instance = null;
 		loadInstance(c);
 	}
 	
@@ -111,18 +113,31 @@ public class MuninFoo {
 	
 	public void loadInstance(Context c) {
 		loadInstance();
+		String tmps = "";
+		if (c==null)
+			tmps = "null";
+		else
+			tmps = "not null";
+		Log.v("", "instance : " + tmps);
 		if (c != null) {
 			this.premium = isPremium(c);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && !getPref("drawer", c).equals("false"))
 				this.drawer = true;
+			else
+				this.drawer = false;
 		}
+		if (drawer)
+			tmps = "true";
+		else
+			tmps = "false";
+		Log.v("", "drawer : " + tmps);
 	}
 	
-	public void resetInstance() {
+	public void resetInstance(Context c) {
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<MuninLabel>();
 		sqlite = new SQLite(this);
-		loadInstance();
+		loadInstance(c);
 	}
 	
 	public static synchronized MuninFoo getInstance() {
@@ -132,8 +147,11 @@ public class MuninFoo {
 	}
 	
 	public static synchronized MuninFoo getInstance(Context c) {
+		Log.v("", "getInstance(c)");
 		if (instance == null)
 			instance = new MuninFoo(c);
+		else
+			Log.v("", "instance was not null");
 		return instance;
 	}
 	

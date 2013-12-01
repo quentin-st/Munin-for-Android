@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/graph_widget"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:layout_margin="4dp"
-	android:orientation="vertical" >
+	android:orientation="vertical">
 
-	<RelativeLayout
+	<LinearLayout
+		android:id="@+id/widget_graph_ll"
 		android:layout_width="wrap_content"
-		android:layout_height="match_parent"
-		android:orientation="vertical" >
+		android:layout_height="wrap_content"
+		android:background="@drawable/widget_glow"
+		android:paddingTop="9dp"
+		android:paddingLeft="9dp"
+		android:paddingRight="9dp">
 		<ImageView
 			android:id="@+id/widget_graph"
 			android:layout_width="match_parent"
@@ -19,52 +24,44 @@
 			android:contentDescription="@string/graphView_ImageViewDescription"
 			android:gravity="center"
 			android:scaleType="fitCenter" />
-	
-		<LinearLayout
-			android:id="@+id/widget_legend"
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/widget_legend"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@drawable/widget_border2"
+		android:clickable="true"
+		android:focusable="true"
+		android:orientation="horizontal"
+		android:layout_marginLeft="9dp"
+		android:layout_marginRight="9dp">
+
+		<!-- Plugin name already displayed on graph -->
+		<!-- <TextView android:id="@+id/widget_pluginname" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="4dp" android:layout_marginLeft="6dp" android:layout_marginRight="4dp" android:layout_marginTop="2dp" android:textColor="#dbdbdb" /> -->
+
+		<TextView
+			android:id="@+id/widget_servername"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="5dp"
-			android:layout_marginRight="5dp"
-			android:background="@drawable/widget_border2"
-			android:clickable="true"
-			android:focusable="true"
-			android:orientation="horizontal"
-			android:layout_below="@id/widget_graph" >
-	
-			<!-- <TextView
-				android:id="@+id/widget_pluginname"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginBottom="4dp"
-				android:layout_marginLeft="6dp"
-				android:layout_marginRight="4dp"
-				android:layout_marginTop="2dp"
-				android:textColor="#dbdbdb" />-->
-	
-			<TextView
-				android:id="@+id/widget_servername"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginBottom="4dp"
-				android:layout_marginLeft="4dp"
-				android:layout_marginRight="6dp"
-				android:layout_marginTop="2dp"
-				android:gravity="right"
-				android:textColor="#dbdbdb" />
-	
-			<TextView
-				android:id="@+id/widget_loading"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginBottom="4dp"
-				android:layout_marginLeft="6dp"
-				android:layout_marginTop="2dp"
-				android:text="@string/text42"
-				android:textColor="#dbdbdb"
-				android:visibility="gone" />
-		</LinearLayout>
-		
-	</RelativeLayout>
+			android:layout_marginBottom="4dp"
+			android:layout_marginLeft="4dp"
+			android:layout_marginRight="6dp"
+			android:layout_marginTop="2dp"
+			android:gravity="right"
+			android:textSize="16sp"
+			android:textColor="#dbdbdb" />
+
+		<TextView
+			android:id="@+id/widget_loading"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="4dp"
+			android:layout_marginLeft="6dp"
+			android:layout_marginTop="2dp"
+			android:text="@string/text42"
+			android:textColor="#dbdbdb"
+			android:visibility="gone" />
+	</LinearLayout>
 
 </LinearLayout>

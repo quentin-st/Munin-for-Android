@@ -494,7 +494,7 @@ public class Activity_AddServer extends Activity {
 		settingsServer = null;
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 		popup.dismiss();
-		muninFoo.resetInstance();
+		muninFoo.resetInstance(context);
 	}
 	public class Activity_AddServer_Algorithm extends AsyncTask<Void, Integer, Void> {
 		private int res = 0;
@@ -694,7 +694,7 @@ public class Activity_AddServer extends Activity {
 					settingsServer = null;
 					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 					popup.dismiss();
-					muninFoo.resetInstance();
+					muninFoo.resetInstance(context);
 				}
 			});
 			continu.setOnClickListener(new OnClickListener() {
@@ -748,7 +748,7 @@ public class Activity_AddServer extends Activity {
 			task.cancel(true);
 			settingsServer = null;
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-			muninFoo.resetInstance();
+			muninFoo.resetInstance(context);
 			algo_state = AST_IDLE;
 			
 			if (res == RES_NOT_PREMIUM) {
@@ -1048,7 +1048,7 @@ public class Activity_AddServer extends Activity {
 					settingsServer = null;
 					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 					popup.dismiss();
-					muninFoo.resetInstance();
+					muninFoo.resetInstance(context);
 				}
 			});
 			continu.setOnClickListener(new OnClickListener() {

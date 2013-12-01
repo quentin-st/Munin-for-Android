@@ -112,6 +112,7 @@ public class Activity_ServersEdit extends ListActivity {
 		}
 		
 		muninFoo.sqlite.saveServers();
+		muninFoo.resetInstance(this);
 	}
 	
 	private DragSortListView.DropListener onDrop = new DragSortListView.DropListener() {

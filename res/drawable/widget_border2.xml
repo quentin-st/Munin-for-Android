@@ -2,128 +2,44 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape>
-			<stroke
-				android:width="1dp"
-				android:color="#323B1F" />
-		
-			<solid android:color="#dd494949" />
+			<gradient
+				android:startColor="#424242"
+				android:endColor="#525252"
+				android:angle="270" />
 		
 			<padding
 				android:bottom="0dp"
 				android:left="0dp"
 				android:right="0dp"
 				android:top="0dp" />
-		
-			<corners
-				android:topLeftRadius="0dp"
-				android:topRightRadius="0dp"
-				android:bottomLeftRadius="1dp"
-				android:bottomRightRadius="1dp" />
 		</shape>
     </item>
-    <!-- <item android:state_selected="true">
-        <shape>
-			<stroke
-				android:width="1dp"
-				android:color="#323B1F" />
-		
-			<solid android:color="#dd494949" />
-		
-			<padding
-				android:bottom="0dp"
-				android:left="0dp"
-				android:right="0dp"
-				android:top="0dp" />
-		
-			<corners
-				android:topLeftRadius="0dp"
-				android:topRightRadius="0dp"
-				android:bottomLeftRadius="1dp"
-				android:bottomRightRadius="1dp" />
-		</shape>
-    </item> -->
-    <!-- <item android:state_hovered="true">
-        <shape>
-			<stroke
-				android:width="1dp"
-				android:color="#323B1F" />
-		
-			<solid android:color="#dd494949" />
-		
-			<padding
-				android:bottom="0dp"
-				android:left="0dp"
-				android:right="0dp"
-				android:top="0dp" />
-		
-			<corners
-				android:topLeftRadius="0dp"
-				android:topRightRadius="0dp"
-				android:bottomLeftRadius="1dp"
-				android:bottomRightRadius="1dp" />
-		</shape>
-    </item> -->
     <item android:state_focused="true">
         <shape>
-			<stroke
-				android:width="1dp"
-				android:color="#323B1F" />
-		
-			<solid android:color="#dd494949" />
+			<gradient
+				android:startColor="#424242"
+				android:endColor="#525252"
+				android:angle="270" />
 		
 			<padding
 				android:bottom="0dp"
 				android:left="0dp"
 				android:right="0dp"
 				android:top="0dp" />
-		
-			<corners
-				android:topLeftRadius="0dp"
-				android:topRightRadius="0dp"
-				android:bottomLeftRadius="1dp"
-				android:bottomRightRadius="1dp" />
 		</shape>
 	</item>
-	<!-- <item android:state_enabled="true">
-        <shape>
-			<stroke
-				android:width="1dp"
-				android:color="#323B1F" />
-		
-			<solid android:color="#dd494949" />
-		
-			<padding
-				android:bottom="0dp"
-				android:left="0dp"
-				android:right="0dp"
-				android:top="0dp" />
-		
-			<corners
-				android:topLeftRadius="0dp"
-				android:topRightRadius="0dp"
-				android:bottomLeftRadius="1dp"
-				android:bottomRightRadius="1dp" />
-		</shape>
-    </item> -->
     <item>
         <shape>
-			<stroke
-				android:width="1dp"
-				android:color="#323B1F" />
-		
-			<solid android:color="#cc494949" />
+			<gradient
+				android:startColor="#555555"
+				android:endColor="#666666"
+				android:angle="270" />
 		
 			<padding
 				android:bottom="0dp"
 				android:left="0dp"
 				android:right="0dp"
 				android:top="0dp" />
-		
-			<corners
-				android:topLeftRadius="0dp"
-				android:topRightRadius="0dp"
-				android:bottomLeftRadius="1dp"
-				android:bottomRightRadius="1dp" />
 		</shape>
     </item>
 </selector>

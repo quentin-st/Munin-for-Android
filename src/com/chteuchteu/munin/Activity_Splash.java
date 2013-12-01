@@ -41,7 +41,8 @@ public class Activity_Splash extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		Log.v("", "Getting muninFoo instance...");
+		muninFoo = new MuninFoo(this);
 		Crashlytics.start(this);
 		
 		if (getPref("splash").equals("true") || getPref("splash").equals(""))
@@ -75,31 +76,27 @@ public class Activity_Splash extends Activity {
 					}
 				} catch(Exception e) {
 				} finally {
-					if (!updating) {
+					if (!updating)
 						startActivity(new Intent(Activity_Splash.this, Activity_Main.class));
-						finish();
-					}
 					splashing = false;
 				}
 			}
 		};
 		splashTread.start();
 		
-		// Launch
-		muninFoo = MuninFoo.getInstance(this);
-		
 		updateOperations = false;
-		// Conditions de déclenchement des opérations de mise à jour
 		if (!getPref("lastMFAVersion").equals(muninFoo.version + "") || !getPref("serverUrl").equals("") || !getPref("server00Url").equals(""))
 			updateOperations = true;
 		
-		if (updateOperations)
+		if (updateOperations) {
 			myProgressDialog = ProgressDialog.show(Activity_Splash.this, "", getString(R.string.text39), true);
-		// Please wait while the app does some update operations…
-		new UpdateOperations().execute();
+			// Please wait while the app does some update operations…
+			new UpdateOperations().execute();
+		} else
+			updating = false;
 	}
 	
-	public void onUpdateActions() {
+	public void updateActions() {
 		if (getPref("lastMFAVersion").equals("1.3") || getPref("lastMFAVersion").equals("1.4") || getPref("lastMFAVersion").equals("1.5") || getPref("lastMFAVersion").equals("1.6")) {
 			// Nettoyage de la base de données
 			String serverNumber = "";
@@ -141,8 +138,10 @@ public class Activity_Splash extends Activity {
 				maj_save = true;
 			}
 		}
-		if (maj_save)
+		if (maj_save) {
 			muninFoo.sqlite.saveServers();
+			muninFoo.resetInstance(this);
+		}
 		
 		if (getPref("lastMFAVersion").equals("1.8")) {
 			String numberServer = "";
@@ -278,27 +277,22 @@ public class Activity_Splash extends Activity {
 		
 		setPref("lastMFAVersion", muninFoo.version + "");
 		
-		muninFoo = MuninFoo.getInstance(this);
-		muninFoo.resetInstance();
+		muninFoo.resetInstance(this);
 	}
 	
 	private class UpdateOperations extends AsyncTask<Void, Integer, Void>
 	{
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			if (updateOperations) {
-				onUpdateActions();
-				myProgressDialog.dismiss();
-			}
+			updateActions();
 			return null;
 		}
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			if (!splashing) {
+			myProgressDialog.dismiss();
+			if (!splashing)
 				startActivity(new Intent(Activity_Splash.this, Activity_Main.class));
-				finish();
-			}
 			updating = false;
 		}
 	}

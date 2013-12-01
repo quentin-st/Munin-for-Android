@@ -111,13 +111,14 @@ public class SQLite {
 				}
 			}
 		}
-		muninFoo.resetInstance();
+		// muninFoo.resetInstance();  <- done in context
 	}
 	public void deleteServer(MuninServer s) {
 		deleteLabels(s);
 		new Delete().from(MuninWidget.class).where("server = ?", s.getId()).execute();
 		new Delete().from(MuninPlugin.class).where("installedOn = ?", s.getId()).execute();
 		new Delete().from(MuninServer.class).where("id = ?", s.getId()).execute();
+		new Delete().from(MuninLabelRelation.class).where("Server = ?", s.getId()).execute();
 	}
 	public void deleteServer(String url) {
 		new Delete().from(MuninServer.class).where("serverUrl = ?", url).execute();

@@ -237,8 +237,6 @@ public class DrawerHelper {
 			((TextView)a.findViewById(R.id.drawer_notifications_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
 			a.findViewById(R.id.drawer_button_servers_border2).setVisibility(View.VISIBLE);
 			a.findViewById(R.id.drawer_button_notifications_border2).setVisibility(View.VISIBLE);
-		} else if (menuItemName.equals("settings")) {
-			// Rien
 		} else if (menuItemName.equals("labels")) {
 			a.findViewById(R.id.drawer_button_labels_ll).setPadding(7, 0, 0, 0);
 			((TextView)a.findViewById(R.id.drawer_labels_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
@@ -266,7 +264,6 @@ public class DrawerHelper {
 		for (final MuninServer s : m.getOrderedServers()) {
 			View v = vi.inflate(R.layout.drawer_subbutton, null);
 			LinearLayout l = (LinearLayout)v.findViewById(R.id.button_container);
-			//Button b = (Button)v.findViewById(R.id.button);
 			TextView b = (TextView)v.findViewById(R.id.button);
 			b.setText(s.getName());
 			
@@ -304,7 +301,7 @@ public class DrawerHelper {
 	
 	@SuppressLint("NewApi")
 	public void initPluginsList(final int scrollY) {
-		// Bordures
+		// Borders
 		a.findViewById(R.id.drawer_button_graphs_border2).setVisibility(View.VISIBLE);
 		a.findViewById(R.id.drawer_button_alerts_border1).setVisibility(View.VISIBLE);
 		
@@ -317,7 +314,6 @@ public class DrawerHelper {
 		for (final MuninPlugin mp : m.currentServer.getPlugins()) {
 			View v = vi.inflate(R.layout.drawer_subbutton, null);
 			LinearLayout l = (LinearLayout)v.findViewById(R.id.button_container);
-			//final Button b = (Button)v.findViewById(R.id.button);
 			final TextView b = (TextView)v.findViewById(R.id.button);
 			b.setText(mp.getFancyName());
 			
@@ -329,7 +325,7 @@ public class DrawerHelper {
 				// setScrollY
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 					final ViewTreeObserver obs = b.getViewTreeObserver();
-					obs.addOnGlobalLayoutListener(new OnGlobalLayoutListener() { // Sinon getHeight retourne 0
+					obs.addOnGlobalLayoutListener(new OnGlobalLayoutListener() { // Else getHeight returns 0
 						@Override
 						public void onGlobalLayout() {
 							int scroll = 0;
@@ -345,7 +341,6 @@ public class DrawerHelper {
 			
 			b.setOnClickListener(new OnClickListener() {
 				public void onClick (View v) {
-					//Button b = (Button) v;
 					TextView b = (TextView) v;
 					int p = 0;
 					for (int i=0; i<m.currentServer.getPlugins().size(); i++) {
