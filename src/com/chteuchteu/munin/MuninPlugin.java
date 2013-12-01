@@ -110,8 +110,9 @@ public class MuninPlugin extends Model {
 	public void setFancyName (String fn) {
 		this.fancyName = fn;
 	}
-	public void setInstalledOn(MuninServer s) {
+	public MuninPlugin setInstalledOn(MuninServer s) {
 		this.installedOn = s;
+		return this;
 	}
 	public void setCategory(String c) {
 		this.category = c;

@@ -71,17 +71,6 @@ public class Activity_LabelsPluginSelection extends Activity {
 			super.setTheme(R.style.ListFont);
 			((TextView) this.findViewById(R.id.viewTitle)).setText(label.getName());
 		}
-		
-		/*list.clear();
-		HashMap<String,String> item;
-		for (MuninPlugin m : label.plugins) {
-			item = new HashMap<String,String>();
-			item.put("line1", m.getFancyName() + " / " + m.getName());
-			item.put("line2", m.getInstalledOn().getServerUrl());
-			list.add(item);
-		}
-		sa = new SimpleAdapter(Activity_LabelsPluginSelection.this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
-		((ListView)findViewById(R.id.labels_listview)).setAdapter(sa);*/
 
 		labelsListCat = label.getPluginsSortedByServer();
 		correspondance = new ArrayList<MuninPlugin>();

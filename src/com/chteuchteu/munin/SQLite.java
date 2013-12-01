@@ -130,7 +130,7 @@ public class SQLite {
 			if (serv.equalsApprox(s.getServerUrl()))
 				return serv;
 		}
-		return null;
+		return s;
 	}
 	public void fetchMuninLabels() {
 		muninFoo.labels = new ArrayList<MuninLabel>();
@@ -141,7 +141,7 @@ public class SQLite {
 			if (rel != null && rel.getLabelName() != null && rel.getPlugin() != null) {
 				if (!muninFoo.containsLabel(rel.getLabelName()))
 					muninFoo.labels.add(new MuninLabel(rel.getLabelName()));
-				muninFoo.getLabel(rel.getLabelName()).addPlugin(rel.getPlugin());
+				muninFoo.getLabel(rel.getLabelName()).addPlugin(rel.getPlugin().setInstalledOn(rel.getInstalledOn()));
 			} else {
 				try {
 					rel.delete();
@@ -151,11 +151,11 @@ public class SQLite {
 	}
 	public void saveMuninLabels() {
 		deleteLabels();
-		// Re-création des relations
+		// For each label relation : create one MuninLabelRelation object, then call obj.save()
 		Log.v("", "=====================================");
 		for (MuninLabel l : muninFoo.labels) {
 			for (MuninPlugin p : l.plugins) {
-				MuninLabelRelation rel = new MuninLabelRelation(getBDDInstance(p, getBDDInstance(p.getInstalledOn())), l.getName());
+				MuninLabelRelation rel = new MuninLabelRelation(getBDDInstance(p, p.getInstalledOn()), l.getName(), p.getInstalledOn());
 				Log.v("", "Saving label " + l.getName() + " \t " + p.getName() + "\t" + p.getInstalledOn().getName());
 				rel.save();
 			}

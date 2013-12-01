@@ -32,5 +32,5 @@ local.properties
 *~
 *.swp
 
-#Crashlytics export string
-com_crashlytics_export_strings.xml
+# Crashlytics export string
+res/values/com_crashlytics_export_strings.xml

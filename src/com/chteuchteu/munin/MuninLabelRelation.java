@@ -10,12 +10,15 @@ public class MuninLabelRelation extends Model {
 	private MuninPlugin plugin;
 	@Column(name = "LabelName")
 	private String label;
+	@Column(name = "Server") // fix : plugin.getServer() does not returns
+	private MuninServer server; // valid server.
 	
 	public MuninLabelRelation() { }
 	
-	public MuninLabelRelation(MuninPlugin plugin, String label) {
+	public MuninLabelRelation(MuninPlugin plugin, String label, MuninServer installedOn) {
 		this.plugin = plugin;
 		this.label = label;
+		this.server = installedOn;
 	}
 	
 	public void setPlugin(MuninPlugin p) {
@@ -29,5 +32,11 @@ public class MuninLabelRelation extends Model {
 	}
 	public String getLabelName() {
 		return this.label;
+	}
+	public MuninServer getInstalledOn() {
+		return this.server;
+	}
+	public void setInstalledOn(MuninServer s) {
+		this.server = s;
 	}
 }

@@ -1,0 +1,1 @@
+alter table MuninLabelRelations add server INT;
