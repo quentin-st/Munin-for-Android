@@ -32,10 +32,13 @@ public final class Util {
 	}
 	
 	public static Bitmap removeBitmapBorder(Bitmap original) {
-		if (original.getPixel(0, 0) == 0xFFCFCFCF)
-			return Bitmap.createBitmap(original, 2, 2, original.getWidth()-4, original.getHeight()-4);
-		else
-			return original;
+		if (original != null) {
+			if (original.getPixel(0, 0) == 0xFFCFCFCF)
+				return Bitmap.createBitmap(original, 2, 2, original.getWidth()-4, original.getHeight()-4);
+			else
+				return original;
+		}
+		return null;
 	}
 	
 	public static Bitmap fastblur(Bitmap sentBitmap, int radius) {

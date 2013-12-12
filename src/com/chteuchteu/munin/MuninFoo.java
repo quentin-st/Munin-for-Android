@@ -493,6 +493,8 @@ public class MuninFoo {
 	
 	public static Bitmap grabBitmap(MuninServer s, String url) {
 		Bitmap b = null;
+		Log.v("downloading...", url);
+		
 		try {
 			// Création du HTTP Client
 			HttpClient client = null;
@@ -583,6 +585,7 @@ public class MuninFoo {
 			HttpResponse response = client.execute(request);
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();
+			Log.v("", "getentityblabla");
 			if (statusCode == 200) {
 				HttpEntity entity = response.getEntity();
 				byte[] bytes = EntityUtils.toByteArray(entity);
@@ -592,9 +595,9 @@ public class MuninFoo {
 						+ statusCode + " - " + statusLine.getReasonPhrase());
 			}
 		}
-		catch (SocketTimeoutException e) { return null; }
-		catch (ConnectTimeoutException e) { return null; }
-		catch (Exception e) { return null; }
+		catch (SocketTimeoutException e) { e.printStackTrace(); return null; }
+		catch (ConnectTimeoutException e) { e.printStackTrace(); return null; }
+		catch (Exception e) { e.printStackTrace(); return null; }
 		
 		return b;
 	}

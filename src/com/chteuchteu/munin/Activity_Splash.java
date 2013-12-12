@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
@@ -13,8 +14,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
@@ -24,7 +28,7 @@ public class Activity_Splash extends Activity {
 	private MuninFoo muninFoo;
 	
 	//protected boolean _active = true;
-	protected int _splashTime = 2000;
+	protected int _splashTime = 3000;
 	protected boolean splashEnabled;
 	protected String activity;
 	protected boolean splash;
@@ -37,6 +41,7 @@ public class Activity_Splash extends Activity {
 	
 	private boolean updateOperations;
 	
+	@SuppressLint("InlinedApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,7 +55,14 @@ public class Activity_Splash extends Activity {
 		
 		if (splash) {
 			setContentView(R.layout.splash);
-			
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				int id = getResources().getIdentifier("config_enableTranslucentDecor", "bool", "android");
+				if(id != 0 && getResources().getBoolean(id)) { // Translucent available
+					Window w = getWindow();
+			        w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+			        w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+				}
+			}
 			TextView text = (TextView)findViewById(R.id.splash_overlay_appname);
 			Typeface mFont = Typeface.createFromAsset(getAssets(), "RobotoCondensed-Regular.ttf");
 			text.setTypeface(mFont);
