@@ -77,8 +77,8 @@ public class SQLite {
 				// ... sauf si widget
 				for (MuninPlugin mp : toBeDeleted2) {
 					boolean hasWidget = false;
-					List<MuninWidget> lw = getWidgets(bddInstance);
-					for (MuninWidget mw : lw) {
+					List<Widget> lw = getWidgets(bddInstance);
+					for (Widget mw : lw) {
 						if (mw.getPlugin().equalsApprox(mp)) {
 							hasWidget = true; break;
 						}
@@ -115,10 +115,10 @@ public class SQLite {
 	}
 	public void deleteServer(MuninServer s) {
 		deleteLabels(s);
-		new Delete().from(MuninWidget.class).where("server = ?", s.getId()).execute();
+		new Delete().from(Widget.class).where("server = ?", s.getId()).execute();
 		new Delete().from(MuninPlugin.class).where("installedOn = ?", s.getId()).execute();
 		new Delete().from(MuninServer.class).where("id = ?", s.getId()).execute();
-		new Delete().from(MuninLabelRelation.class).where("Server = ?", s.getId()).execute();
+		new Delete().from(LabelRelation.class).where("Server = ?", s.getId()).execute();
 	}
 	public void deleteServer(String url) {
 		new Delete().from(MuninServer.class).where("serverUrl = ?", url).execute();
@@ -134,14 +134,14 @@ public class SQLite {
 		return s;
 	}
 	public void fetchMuninLabels() {
-		muninFoo.labels = new ArrayList<MuninLabel>();
-		muninFoo.labels_relations = new ArrayList<MuninLabelRelation>();
-		List<MuninLabelRelation> l = new Select().from(MuninLabelRelation.class).execute();
-		for (MuninLabelRelation rel : l) {
+		muninFoo.labels = new ArrayList<Label>();
+		muninFoo.labels_relations = new ArrayList<LabelRelation>();
+		List<LabelRelation> l = new Select().from(LabelRelation.class).execute();
+		for (LabelRelation rel : l) {
 			muninFoo.labels_relations.add(rel);
 			if (rel != null && rel.getLabelName() != null && rel.getPlugin() != null) {
 				if (!muninFoo.containsLabel(rel.getLabelName()))
-					muninFoo.labels.add(new MuninLabel(rel.getLabelName()));
+					muninFoo.labels.add(new Label(rel.getLabelName()));
 				muninFoo.getLabel(rel.getLabelName()).addPlugin(rel.getPlugin().setInstalledOn(rel.getInstalledOn()));
 			} else {
 				try {
@@ -152,11 +152,11 @@ public class SQLite {
 	}
 	public void saveMuninLabels() {
 		deleteLabels();
-		// For each label relation : create one MuninLabelRelation object, then call obj.save()
+		// For each label relation : create one LabelRelation object, then call obj.save()
 		Log.v("", "=====================================");
-		for (MuninLabel l : muninFoo.labels) {
+		for (Label l : muninFoo.labels) {
 			for (MuninPlugin p : l.plugins) {
-				MuninLabelRelation rel = new MuninLabelRelation(getBDDInstance(p, p.getInstalledOn()), l.getName(), p.getInstalledOn());
+				LabelRelation rel = new LabelRelation(getBDDInstance(p, p.getInstalledOn()), l.getName(), p.getInstalledOn());
 				Log.v("", "Saving label " + l.getName() + " \t " + p.getName() + "\t" + p.getInstalledOn().getName());
 				rel.save();
 			}
@@ -164,10 +164,10 @@ public class SQLite {
 		Log.v("", "=====================================");
 	}
 	public void deleteLabels() {
-		new Delete().from(MuninLabelRelation.class).execute();
+		new Delete().from(LabelRelation.class).execute();
 	}
 	public void deleteLabels(MuninServer s) {
-		for (MuninLabelRelation l : muninFoo.labels_relations) {
+		for (LabelRelation l : muninFoo.labels_relations) {
 			if (l.getPlugin().getInstalledOn().equalsApprox(s))
 				l.delete();
 		}
@@ -200,29 +200,29 @@ public class SQLite {
 	
 	
 	//	WIDGETS
-	public MuninWidget getWidget(int widgetId) {
-		return new Select().from(MuninWidget.class).where("widgetId = ?", widgetId).executeSingle();
+	public Widget getWidget(int widgetId) {
+		return new Select().from(Widget.class).where("widgetId = ?", widgetId).executeSingle();
 	}
-	public List<MuninWidget> getWidgets() {
-		return new Select().from(MuninWidget.class).execute();
+	public List<Widget> getWidgets() {
+		return new Select().from(Widget.class).execute();
 	}
-	public List<MuninWidget> getWidgets(MuninServer s) {
-		return new Select().from(MuninWidget.class).where("server = ?", s.getId()).execute();
+	public List<Widget> getWidgets(MuninServer s) {
+		return new Select().from(Widget.class).where("server = ?", s.getId()).execute();
 	}
 	public void deleteWidget(int widgetId) {
-		new Delete().from(MuninWidget.class).where("widgetId = ?", widgetId).execute();
+		new Delete().from(Widget.class).where("widgetId = ?", widgetId).execute();
 	}
 	public void deleteWidgets(MuninServer s) {
-		new Delete().from(MuninWidget.class).where("server = ?", s.getId()).execute();
+		new Delete().from(Widget.class).where("server = ?", s.getId()).execute();
 	}
 	public void deleteWidgets(MuninPlugin p) {
-		new Delete().from(MuninWidget.class).where("plugin = ?", p.getId()).execute();
+		new Delete().from(Widget.class).where("plugin = ?", p.getId()).execute();
 	}
 	public void deleteWidgets(MuninPlugin p, MuninServer s) {
-		new Delete().from(MuninWidget.class).where("plugin = ?", p.getId()).where("installedOn = ?", s.getId()).execute();
+		new Delete().from(Widget.class).where("plugin = ?", p.getId()).where("installedOn = ?", s.getId()).execute();
 	}
 	public void deleteWidgets() {
-		new Delete().from(MuninWidget.class).execute();
+		new Delete().from(Widget.class).execute();
 	}
 	
 	
@@ -235,7 +235,7 @@ public class SQLite {
 	public void logWidgets() {
 		Log.v("SQLite", "==========================================");
 		if (getWidgets().size() > 0) {
-			for (MuninWidget w : getWidgets()) {
+			for (Widget w : getWidgets()) {
 				if (w != null) {
 					String s = "";
 					if (w.getPeriod() != null)

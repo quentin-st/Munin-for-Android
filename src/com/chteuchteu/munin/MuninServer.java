@@ -42,6 +42,7 @@ import com.activeandroid.annotation.Table;
 
 @Table(name = "MuninServers")
 public class MuninServer extends Model {
+	private long bddId;
 	@Column(name = "name")
 	private String name;
 	@Column(name = "serverUrl")
@@ -61,6 +62,7 @@ public class MuninServer extends Model {
 	private int authType;
 	@Column(name = "authString")
 	private String authString;
+	private String parent;
 	
 	private List<MuninPlugin> 	erroredPlugins;
 	private List<MuninPlugin> 	warnedPlugins;
@@ -98,7 +100,6 @@ public class MuninServer extends Model {
 		this.authString = "";
 		generatePosition();
 	}
-	// SQLite
 	public MuninServer (String name, String serverUrl, String authLogin, String authPassword, String graphUrl,
 			boolean SSL, int position, int authType, String authString) {
 		super();
@@ -115,6 +116,14 @@ public class MuninServer extends Model {
 		else
 			this.authType = authType;
 		this.authString = authString;
+	}
+	
+	public long getBddId() {
+		return this.bddId;
+	}
+	
+	public void setBddId(long id) {
+		this.bddId = id;
 	}
 	
 	public void fetchPluginsList() {
@@ -481,51 +490,6 @@ public class MuninServer extends Model {
 		}
 		return 0;
 	}
-
-	/*public String getPluginsStringList() {
-=======
-	public String getPluginsStringList() {
->>>>>>> b60a0a3ea865245bfc1f6545e5ebf3e2659dd560
-		if (this.pluginsList != null) {
-			String stringplugins = "";
-			for (int i=0; i<this.pluginsList.size(); i++) {
-				if (this.pluginsList.get(i) != null) {
-					if (i!=(this.pluginsList.size()-1)) {	// Eviter le ";" inutile a la fin
-						stringplugins = stringplugins + this.pluginsList.get(i).getName() + "," + this.pluginsList.get(i).getFancyName() + ";";
-					} else
-						stringplugins += this.pluginsList.get(i).getName() + "," + this.pluginsList.get(i).getFancyName();
-				}
-			}
-			
-			return stringplugins;
-		} else { return null; }
-<<<<<<< HEAD
-	}*/
-	
-	/*public List<String> getStringPluginsList() {
-=======
-	}
-	
-	public int getNbPlugins() {
-		if (pluginsList == null)
-			return 0;
-		int nb = 0;
-		for (int i=0; i<pluginsList.size(); i++) {
-			if (pluginsList.get(i) != null)
-				nb++;
-		}
-		return nb;
-	}
-	
-	public List<String> getStringPluginsList() {
->>>>>>> b60a0a3ea865245bfc1f6545e5ebf3e2659dd560
-		List<String> res = new ArrayList<String>();
-		for (int i=0; i<this.pluginsList.size(); i++) {
-			res.add(pluginsList.get(i).getName());
-		}
-		return res;
-<<<<<<< HEAD
-	}*/
 	
 	public boolean getSSL() {
 		return this.ssl;
@@ -533,6 +497,14 @@ public class MuninServer extends Model {
 	
 	public int getPosition() {
 		return this.position;
+	}
+	
+	public void setParent(String p) {
+		this.parent = p;
+	}
+	
+	public String getParent() {
+		return this.parent;
 	}
 	
 	public void generatePosition() {

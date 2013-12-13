@@ -694,7 +694,7 @@ public class Activity_GraphView extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (!e.getText().toString().equals("")) {
-					if (muninFoo.addLabel(new MuninLabel(e.getText().toString()))) // Si label ajouté : ajout de relation
+					if (muninFoo.addLabel(new Label(e.getText().toString()))) // Si label ajouté : ajout de relation
 						muninFoo.getLabel(e.getText().toString()).addPlugin(muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition()));
 				}
 				e.setText("");
@@ -709,7 +709,7 @@ public class Activity_GraphView extends Activity {
 		final List<CheckBox> checkboxes = new ArrayList<CheckBox>();
 		
 		int i = 0;
-		for (MuninLabel l : muninFoo.labels) {
+		for (Label l : muninFoo.labels) {
 			LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			final View v = vi.inflate(R.layout.labels_list_checkbox, null);
 			

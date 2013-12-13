@@ -25,7 +25,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 	public static final String ACTION_START_PREMIUM = "com.chteuchteu.munin.widget.START_PREMIUM";
 	
 	public static SQLite sqlite = new SQLite(MuninFoo.getInstance());
-	public static MuninWidget widget;
+	public static Widget widget;
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {

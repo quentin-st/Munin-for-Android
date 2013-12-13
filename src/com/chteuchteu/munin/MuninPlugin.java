@@ -8,6 +8,7 @@ import com.activeandroid.annotation.Table;
 
 @Table(name = "MuninPlugins")
 public class MuninPlugin extends Model {
+	private long bddId;
 	@Column(name = "name")
 	private String name;
 	@Column(name = "fancyName")
@@ -58,6 +59,14 @@ public class MuninPlugin extends Model {
 	@Override
 	public String toString() {
 		return this.getFancyName();
+	}
+	
+	public long getBddId() {
+		return this.bddId;
+	}
+	
+	public void setBddId(long id) {
+		this.bddId = id;
 	}
 	
 	public String getName() {

@@ -234,7 +234,7 @@ public class Activity_Splash extends Activity {
 				
 				try {
 					for (int id : ids) {
-						MuninWidget w = new MuninWidget();
+						Widget w = new Widget();
 						// Recherche du serveur
 						String url = getPref("widget" + id + "_Url");
 						for (MuninServer s : muninFoo.getServers()) {

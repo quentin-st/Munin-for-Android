@@ -32,7 +32,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_LabelsPluginSelection extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
-	private MuninLabel		label;
+	private Label		label;
 	private String			activityName;
 	private List<List<MuninPlugin>> labelsListCat;
 	private List<MuninPlugin> correspondance;

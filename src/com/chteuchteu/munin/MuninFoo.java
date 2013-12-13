@@ -54,8 +54,8 @@ public class MuninFoo {
 	public static MuninFoo instance;
 	
 	private List<MuninServer> servers;
-	public List<MuninLabel> labels;
-	public List<MuninLabelRelation> labels_relations;
+	public List<Label> labels;
+	public List<LabelRelation> labels_relations;
 	
 	public SQLite			sqlite;
 	public MuninServer 		currentServer;
@@ -77,7 +77,7 @@ public class MuninFoo {
 		premium = false;
 		drawer = false;
 		servers = new ArrayList<MuninServer>();
-		labels = new ArrayList<MuninLabel>();
+		labels = new ArrayList<Label>();
 		sqlite = new SQLite(this);
 		instance = null;
 		loadInstance();
@@ -87,7 +87,7 @@ public class MuninFoo {
 		premium = false;
 		drawer = false;
 		servers = new ArrayList<MuninServer>();
-		labels = new ArrayList<MuninLabel>();
+		labels = new ArrayList<Label>();
 		sqlite = new SQLite(this);
 		instance = null;
 		loadInstance(c);
@@ -124,7 +124,7 @@ public class MuninFoo {
 	
 	public void resetInstance(Context c) {
 		servers = new ArrayList<MuninServer>();
-		labels = new ArrayList<MuninLabel>();
+		labels = new ArrayList<Label>();
 		sqlite = new SQLite(this);
 		loadInstance(c);
 	}
@@ -181,9 +181,9 @@ public class MuninFoo {
 	public void deleteServer(MuninServer s) {
 		deleteServer(s.getServerUrl());
 	}
-	public boolean addLabel(MuninLabel l) {
+	public boolean addLabel(Label l) {
 		boolean contains = false;
-		for (MuninLabel ml : labels) {
+		for (Label ml : labels) {
 			if (ml.getName().equals(l.getName())) {
 				contains = true; break;
 			}
@@ -192,10 +192,10 @@ public class MuninFoo {
 			labels.add(l);
 		return !contains;
 	}
-	public boolean removeLabel(MuninLabel label) {
-		List<MuninLabel> list = new ArrayList<MuninLabel>();
+	public boolean removeLabel(Label label) {
+		List<Label> list = new ArrayList<Label>();
 		boolean someThingDeleted = false;
-		for (MuninLabel l : labels) {
+		for (Label l : labels) {
 			if (!l.equals(label))
 				list.add(l);
 			else
@@ -325,15 +325,15 @@ public class MuninFoo {
 	}
 	
 	public boolean containsLabel(String lname) {
-		for (MuninLabel l : labels) {
+		for (Label l : labels) {
 			if (l.getName().equals(lname))
 				return true;
 		}
 		return false;
 	}
 	
-	public MuninLabel getLabel(String lname) {
-		for (MuninLabel l : labels) {
+	public Label getLabel(String lname) {
+		for (Label l : labels) {
 			if (l.getName().equals(lname))
 				return l;
 		}

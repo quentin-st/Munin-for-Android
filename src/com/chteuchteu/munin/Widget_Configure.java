@@ -45,7 +45,7 @@ public class Widget_Configure extends Activity {
 
 
 		if (muninFoo.sqlite.getWidget(mAppWidgetId) == null) {
-			final MuninWidget widget = new MuninWidget();
+			final Widget widget = new Widget();
 			widget.setWidgetId(mAppWidgetId);
 
 			// Pas encore sélectionné de serveur / plugin / period
