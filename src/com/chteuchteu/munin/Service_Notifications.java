@@ -17,6 +17,10 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 
+import com.chteuchteu.munin.obj.MuninPlugin;
+import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.ui.Activity_Alerts;
+
 public class Service_Notifications extends Service {
 	private MuninFoo muninFoo;
 	private WakeLock mWakeLock;

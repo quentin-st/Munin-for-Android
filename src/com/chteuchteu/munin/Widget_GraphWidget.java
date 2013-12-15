@@ -16,6 +16,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.chteuchteu.munin.hlpr.SQLite;
+import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.Widget;
+import com.chteuchteu.munin.ui.Activity_GoPremium;
+import com.chteuchteu.munin.ui.Activity_GraphView;
+
 public class Widget_GraphWidget extends AppWidgetProvider {
 	public static RemoteViews 		views;
 	public static AppWidgetManager 	awm;

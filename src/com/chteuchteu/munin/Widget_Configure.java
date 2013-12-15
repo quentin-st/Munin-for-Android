@@ -19,6 +19,10 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.chteuchteu.munin.obj.MuninPlugin;
+import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.Widget;
+
 public class Widget_Configure extends Activity {
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private MuninFoo muninFoo;

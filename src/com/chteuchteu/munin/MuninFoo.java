@@ -49,6 +49,14 @@ import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.chteuchteu.munin.hlpr.DigestUtils;
+import com.chteuchteu.munin.hlpr.SQLite;
+import com.chteuchteu.munin.obj.HTTPResponse;
+import com.chteuchteu.munin.obj.Label;
+import com.chteuchteu.munin.obj.LabelRelation;
+import com.chteuchteu.munin.obj.MuninPlugin;
+import com.chteuchteu.munin.obj.MuninServer;
+
 
 public class MuninFoo {
 	public static MuninFoo instance;
@@ -83,7 +91,7 @@ public class MuninFoo {
 		loadInstance();
 	}
 	
-	MuninFoo(Context c) {
+	public MuninFoo(Context c) {
 		premium = false;
 		drawer = false;
 		servers = new ArrayList<MuninServer>();
