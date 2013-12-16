@@ -36,37 +36,25 @@ import org.jsoup.select.Elements;
 import android.util.Base64;
 import android.util.Log;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 import com.chteuchteu.munin.CustomSSLFactory;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.hlpr.DigestUtils;
 import com.chteuchteu.munin.hlpr.Util;
 
-@Table(name = "MuninServers")
-public class MuninServer extends Model {
+public class MuninServer {
 	private long bddId;
-	@Column(name = "name")
 	private String name;
-	@Column(name = "serverUrl")
 	private String serverUrl;
 	private List<MuninPlugin> plugins;
-	@Column(name = "authLogin")
 	private String authLogin;
-	@Column(name = "authPassword")
 	private String authPassword;
-	@Column(name = "graphURL")
 	private String graphURL;
-	@Column(name = "SSL")
 	private Boolean ssl;
-	@Column(name = "position")
 	private int position;
-	@Column(name = "authType")
 	private int authType;
-	@Column(name = "authString")
 	private String authString;
 	private String parent;
+	public boolean isPersistant;
 	
 	private List<MuninPlugin> 	erroredPlugins;
 	private List<MuninPlugin> 	warnedPlugins;
@@ -76,9 +64,7 @@ public class MuninServer extends Model {
 	public static int AUTH_BASIC = 1;
 	public static int AUTH_DIGEST = 2;
 	
-	// constructeur:
 	public MuninServer() {
-		super();
 		this.name = "";
 		this.serverUrl = "";
 		this.plugins = new ArrayList<MuninPlugin>();
@@ -89,9 +75,9 @@ public class MuninServer extends Model {
 		this.authType = AUTH_UNKNOWN;
 		this.position = -1;
 		this.authString = "";
+		this.isPersistant = false;
 	}
 	public MuninServer (String name, String serverUrl) {
-		super();
 		this.name = name;
 		this.serverUrl = serverUrl;
 		this.plugins = new ArrayList<MuninPlugin>();
@@ -102,11 +88,11 @@ public class MuninServer extends Model {
 		this.authType = AUTH_UNKNOWN;
 		this.position = -1;
 		this.authString = "";
+		this.isPersistant = false;
 		generatePosition();
 	}
 	public MuninServer (String name, String serverUrl, String authLogin, String authPassword, String graphUrl,
 			boolean SSL, int position, int authType, String authString) {
-		super();
 		this.name = name;
 		this.serverUrl = serverUrl;
 		this.plugins = new ArrayList<MuninPlugin>();
@@ -120,6 +106,7 @@ public class MuninServer extends Model {
 		else
 			this.authType = authType;
 		this.authString = authString;
+		this.isPersistant = false;
 	}
 	
 	public long getBddId() {
@@ -144,7 +131,7 @@ public class MuninServer extends Model {
 			//						   code  base_uri
 			Document doc = Jsoup.parse(html, this.getServerUrl());
 			Elements images = doc.select("img[src$=-day.png]");
-
+			
 			currentPl = new MuninPlugin(null, this);
 			String fancyName;
 			String nomPlugin;
@@ -262,11 +249,13 @@ public class MuninServer extends Model {
 		this.authLogin = source.authLogin;
 		this.authPassword = source.authPassword;
 		this.authType = source.authType;
+		this.authString = source.authString;
 		this.graphURL = source.graphURL;
 		this.ssl = source.ssl;
 		this.position = source.position;
 		this.erroredPlugins = source.erroredPlugins;
 		this.warnedPlugins = source.warnedPlugins;
+		this.parent = source.parent;
 	}
 	
 	public String detectPageType() {
@@ -373,7 +362,7 @@ public class MuninServer extends Model {
 			} else
 				client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(url);
-
+			
 			if (this.isAuthNeeded()) {
 				if (this.getAuthType() == AUTH_BASIC)
 					request.setHeader("Authorization", "Basic " + Base64.encodeToString((authLogin + ":" + authPassword).getBytes(), Base64.NO_WRAP));
@@ -477,6 +466,10 @@ public class MuninServer extends Model {
 		return this.plugins;
 	}
 	
+	public String getName() {
+		return this.name;
+	}
+	
 	public MuninPlugin getPlugin(int pos) {
 		if (pos < this.plugins.size() && pos >= 0)
 			return this.plugins.get(pos);
@@ -486,7 +479,7 @@ public class MuninServer extends Model {
 	
 	public int getPosition(MuninPlugin p) {
 		int i = 0;
-
+		
 		for (MuninPlugin pl : plugins) {
 			if (pl.equalsApprox(p))
 				return i;
@@ -567,10 +560,6 @@ public class MuninServer extends Model {
 		return this.serverUrl;
 	}
 	
-	public String getName() {
-		return this.name;
-	}
-	
 	public List<MuninPlugin> getErroredPlugins() {
 		return this.erroredPlugins;
 	}
@@ -590,7 +579,7 @@ public class MuninServer extends Model {
 	
 	public List<String> getDistinctCategories() {
 		List<String> l = new ArrayList<String>();
-
+		
 		for (MuninPlugin p : plugins) {
 			boolean contains = false;
 			for (String s : l) {
@@ -623,8 +612,12 @@ public class MuninServer extends Model {
 	
 	public MuninServer setPluginsList(List<MuninPlugin> pL) {
 		this.plugins = pL;
-
+		
 		return this;
+	}
+	
+	public void setName(String n) {
+		this.name = n;
 	}
 	
 	public void setServerUrl(String u) {
@@ -639,7 +632,7 @@ public class MuninServer extends Model {
 	public void setSSL(boolean value) {
 		this.ssl = value;
 	}
-
+	
 	public void setErroredPlugins(List<MuninPlugin> mp) {
 		this.erroredPlugins = mp;
 	}
@@ -651,7 +644,7 @@ public class MuninServer extends Model {
 	public void setAuthIds(String login, String password) {
 		this.authLogin = login;
 		this.authPassword = password;
-
+		
 		if (login.equals("") && password.equals(""))
 			this.authType = AUTH_NONE;
 	}
@@ -671,18 +664,6 @@ public class MuninServer extends Model {
 	public void setPosition(int position) {
 		this.position = position;
 	}
-	
-	/*public boolean equals (MuninServer server2) {
-		if (!this.getName().equals(server2.getName()))						return false;
-		if (!this.getServerUrl().equals(server2.getServerUrl()))			return false;
-		if (!this.getPluginsStringList().equals(server2.getPluginsStringList()))	return false;
-		if (this.getAuthNeeded() != server2.getAuthNeeded())				return false;
-		try {
-			if (!this.getAuthLogin().equals(server2.getAuthLogin()))		return false;
-			if (!this.getAuthPassword().equals(server2.getAuthPassword()))	return false;
-		} catch (Exception ex) { }
-		return true;
-	}*/
 	
 	public boolean equalsApprox (MuninServer server2) {
 		String address1 = this.getServerUrl();
@@ -722,10 +703,5 @@ public class MuninServer extends Model {
 		}
 		if (!address1.equals(address2))	return false;
 		return true;
-	}
-	
-	// SQLite methods
-	public List<MuninPlugin> SQLite_getPlugins() {
-		return getMany(MuninPlugin.class, "installedOn");
 	}
 }

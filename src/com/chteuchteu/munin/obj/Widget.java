@@ -1,41 +1,26 @@
 package com.chteuchteu.munin.obj;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 
 
-@Table(name = "MuninWidgets")
-public class Widget extends Model {
+public class Widget {
 	private long bddId;
-	@Column(name = "server")
-	private MuninServer server;
-	@Column(name = "period")
-	private String		period;
-	@Column(name = "wifiOnly")
-	private boolean		wifiOnly;
-	@Column(name = "plugin")
+	private String period;
+	private boolean wifiOnly;
 	private MuninPlugin	plugin;
-	@Column(name = "widgetId")
-	private int			widgetId;
+	private int	 widgetId;
 
 	public Widget() {
-		super();
 		this.period = "day";
 		this.wifiOnly = false;
 	}
 
-	public Widget (MuninServer s, String p, boolean w, MuninPlugin pl) {
-		super();
-		this.setServer(s);
+	public Widget (String p, boolean w, MuninPlugin pl) {
 		this.setPeriod(p);
 		this.setWifiOnly(w);
 		this.setPlugin(pl);
 	}
 
-	public Widget(MuninServer server, String period, boolean wifiOnly, MuninPlugin plugin, int widgetId) {
-		super();
-		this.server = server;
+	public Widget(String period, boolean wifiOnly, MuninPlugin plugin, int widgetId) {
 		this.period = period;
 		this.wifiOnly = wifiOnly;
 		this.plugin = plugin;
@@ -50,14 +35,6 @@ public class Widget extends Model {
 		this.bddId = id;
 	}
 
-	public MuninServer getServer() {
-		return server;
-	}
-
-	public void setServer(MuninServer server) {
-		this.server = server;
-	}
-
 	public String getPeriod() {
 		return period;
 	}
@@ -68,6 +45,13 @@ public class Widget extends Model {
 
 	public boolean isWifiOnly() {
 		return wifiOnly;
+	}
+	
+	public void setWifiOnly(int b) {
+		if (b == 1)
+			this.wifiOnly = true;
+		else
+			this.wifiOnly = false;
 	}
 
 	public void setWifiOnly(boolean wifiOnly) {

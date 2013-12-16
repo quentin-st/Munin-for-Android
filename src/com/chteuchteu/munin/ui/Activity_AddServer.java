@@ -349,7 +349,7 @@ public class Activity_AddServer extends Activity {
 	
 	public void actionDelete() {
 		if (contextServerUrl != null && !contextServerUrl.equals("")) {
-			muninFoo.sqlite.deleteServer(muninFoo.currentServer);
+			muninFoo.sqlite.dbHlpr.deleteServer(muninFoo.currentServer);
 			muninFoo.deleteServer(muninFoo.currentServer);
 			
 			if (muninFoo.currentServer != null && muninFoo.currentServer.getServerUrl().equals(contextServerUrl)) {

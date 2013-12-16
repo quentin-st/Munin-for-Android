@@ -34,7 +34,6 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.hlpr.DatabaseHelper_old;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.devspark.appmsg.AppMsg;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -186,11 +185,6 @@ public class Activity_Main extends Activity {
 				// Settings saved successfully!
 				AppMsg.makeText(this, getString(R.string.text36), AppMsg.STYLE_INFO).show();
 		}
-		
-		
-		// TODO Tentative d'accès aux données de la BDD d'ActiveAndroid
-		DatabaseHelper_old dbH = new DatabaseHelper_old(this);
-		dbH.getAllServers();
 	}
 	
 	@Override

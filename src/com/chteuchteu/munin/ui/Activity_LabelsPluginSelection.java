@@ -147,8 +147,8 @@ public class Activity_LabelsPluginSelection extends Activity {
 				}
 				return true;
 			case R.id.menu_delete:
-				if (muninFoo.removeLabel(label))
-					muninFoo.sqlite.saveMuninLabels();
+				//TODO if (muninFoo.removeLabel(label))
+				//	muninFoo.sqlite.saveMuninLabels();
 				startActivity(new Intent(this, Activity_Labels.class));
 				setTransition("shallower");
 				return true;

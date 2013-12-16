@@ -705,7 +705,7 @@ public class Activity_GraphView extends Activity {
 						muninFoo.getLabel(e.getText().toString()).addPlugin(muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition()));
 				}
 				e.setText("");
-				muninFoo.sqlite.saveMuninLabels();
+				// TODO muninFoo.sqlite.saveMuninLabels();
 				refreshLabelsList();
 			}
 		});
@@ -749,7 +749,7 @@ public class Activity_GraphView extends Activity {
 							refreshLabelsList();
 						}
 					}
-					muninFoo.sqlite.saveMuninLabels();
+					// TODO muninFoo.sqlite.saveMuninLabels();
 				}
 			});
 			

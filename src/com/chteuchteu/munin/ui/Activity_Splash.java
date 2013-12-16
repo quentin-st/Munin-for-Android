@@ -1,5 +1,6 @@
 package com.chteuchteu.munin.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -25,6 +26,8 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.Widget_GraphWidget;
+import com.chteuchteu.munin.hlpr.DatabaseHelper;
+import com.chteuchteu.munin.hlpr.DatabaseHelper_old;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
@@ -65,8 +68,8 @@ public class Activity_Splash extends Activity {
 				int id = getResources().getIdentifier("config_enableTranslucentDecor", "bool", "android");
 				if(id != 0 && getResources().getBoolean(id)) { // Translucent available
 					Window w = getWindow();
-			        w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-			        w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+					w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+					w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 				}
 			}
 			TextView text = (TextView)findViewById(R.id.splash_overlay_appname);
@@ -177,7 +180,7 @@ public class Activity_Splash extends Activity {
 		if (getPref("defaultScale").equals(""))
 			setPref("defaultScale", "day");
 		
-		// Migration de la base de données: SharedPreferences ==> SQLite
+		// Migration de la base de données: SharedPreferences ==> SQLite_old
 		if (!getPref("server00Url").equals("") || !getPref("server01Url").equals("")) {
 			MuninServer serv;
 			String		serverNumber = "0";
@@ -216,9 +219,11 @@ public class Activity_Splash extends Activity {
 						serv.setSSL(true);
 					serv.setGraphURL(getPref("server" + serverNumber + "GraphURL"));
 					
-					serv.save();
+					DatabaseHelper_old dbHlprOld = new DatabaseHelper_old(getApplicationContext());
+					serv.setBddId(dbHlprOld.insertMuninServer(serv));
+					
 					for (MuninPlugin ms : serv.getPlugins())
-						ms.save();
+						ms.setBddId(dbHlprOld.insertMuninPlugin(ms));
 					
 					removePref("server" + serverNumber + "Url");
 					removePref("server" + serverNumber + "Name");
@@ -237,7 +242,6 @@ public class Activity_Splash extends Activity {
 			int [] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(name);
 			
 			if (ids.length > 0 && !getPref("widget" + ids[0] + "_Url").equals("")) {
-				
 				try {
 					for (int id : ids) {
 						Widget w = new Widget();
@@ -245,8 +249,6 @@ public class Activity_Splash extends Activity {
 						String url = getPref("widget" + id + "_Url");
 						for (MuninServer s : muninFoo.getServers()) {
 							if (s.equalsApprox(url)) {
-								MuninServer bddInstance = muninFoo.sqlite.getBDDInstance(s);
-								w.setServer(bddInstance);
 								w.setPeriod(getPref("widget" + id + "_Period"));
 								if (getPref("widget" + id + "_WifiOnly").equals("true"))
 									w.setWifiOnly(true);
@@ -254,22 +256,24 @@ public class Activity_Splash extends Activity {
 									w.setWifiOnly(false);
 								for (MuninPlugin p : s.getPlugins()) {
 									if (p.getPluginUrl().equals(getPref("widget" + id + "_GraphUrl"))) {
-										w.setPlugin(muninFoo.sqlite.getBDDInstance(p, bddInstance)); break;
+										w.setPlugin(p); break;
 									}
 								}
 								if (w.getPlugin() == null)
-									w.setPlugin(muninFoo.sqlite.getBDDInstance(s.getPlugin(0), bddInstance));
+									w.setPlugin(s.getPlugin(0));
 								w.setWidgetId(id);
 								
 								break;
 							}
 						}
-						w.save();
-						// On les laisse au cas où il faut ajouter un fix dans la prochaine version
-						/*removePref("widget" + id + "_Url");
+						
+						DatabaseHelper_old dbHlprOld = new DatabaseHelper_old(getApplicationContext());
+						dbHlprOld.insertWidget(w);
+						
+						removePref("widget" + id + "_Url");
 						removePref("widget" + id + "_Period");
 						removePref("widget" + id + "_WifiOnly");
-						removePref("widget" + id + "_GraphUrl");*/
+						removePref("widget" + id + "_GraphUrl");
 					}
 				} catch (Exception ex) {}
 			}
@@ -278,6 +282,10 @@ public class Activity_Splash extends Activity {
 		if (getPref("transitions").equals(""))
 			setPref("transitions", "true");
 		
+		List<MuninServer> servers = muninFoo.getServers();
+		DatabaseHelper dbHlpr = null;
+		if (servers.size() > 0)
+			dbHlpr = new DatabaseHelper(getApplicationContext());
 		for (MuninServer s : muninFoo.getServers()) {
 			if (s.getAuthType() == MuninServer.AUTH_UNKNOWN) {
 				MuninServer b = muninFoo.sqlite.getBDDInstance(s);
@@ -286,9 +294,13 @@ public class Activity_Splash extends Activity {
 				else
 					b.setAuthType(MuninServer.AUTH_NONE);
 				b.setAuthString("");
-				b.save();
+				dbHlpr.updateMuninServer(b);
 			}
 		}
+		
+		File database=getApplicationContext().getDatabasePath("MuninforAndroid.db");
+		if (!database.exists())
+			muninFoo.sqlite.migrateDatabase(this);
 		
 		setPref("lastMFAVersion", muninFoo.version + "");
 		

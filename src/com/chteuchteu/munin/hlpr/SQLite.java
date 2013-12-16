@@ -3,40 +3,70 @@ package com.chteuchteu.munin.hlpr;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
 import android.util.Log;
 
-import com.activeandroid.query.Delete;
-import com.activeandroid.query.Select;
 import com.chteuchteu.munin.MuninFoo;
-import com.chteuchteu.munin.obj.Label;
-import com.chteuchteu.munin.obj.LabelRelation;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
 
 public class SQLite {
-	MuninFoo muninFoo;
+	private MuninFoo muninFoo;
+	public DatabaseHelper dbHlpr;
 	
-	public SQLite(MuninFoo m) {
+	public SQLite(Context c, MuninFoo m) {
 		this.muninFoo = m;
+		this.dbHlpr = new DatabaseHelper(c);
 	}
 	
-	//	SERVERS
-	public List<MuninServer> getServers() {
-		return new Select().from(MuninServer.class).execute();
+	public MuninServer getBDDInstance(MuninServer s) {
+		for (MuninServer serv : dbHlpr.getServers()) {
+			if (s.equalsApprox(serv))
+				return serv;
+		}
+		return s;
 	}
+	
+	public void migrateDatabase(Context c) {
+		// Get data
+		DatabaseHelper_old dbH_old = new DatabaseHelper_old(c);
+		List<MuninServer> servers = dbH_old.getAllMuninServers();
+		List<Widget> widgets = dbH_old.getAllWidgets();
+		
+		// Servers
+		for (MuninServer s : servers) {
+			long id = dbHlpr.insertMuninServer(s);
+			s.setBddId(id);
+			
+			// Plugins
+			List<MuninPlugin> plugins = s.getPlugins();
+			for (MuninPlugin p : plugins) {
+				p.setInstalledOn(s);
+				p.setBddId(dbHlpr.insertMuninPlugin(p));
+				Log.v("", "server id : " + s.getBddId() + " / plugin id : " + p.getBddId());
+			}
+		}
+		
+		// Widgets
+		for (Widget w : widgets) {
+			w.setBddId(dbHlpr.insertWidget(w));
+		}
+		
+		// TODO delete database
+		// Drop the (data)bas(e)s
+	}
+	
 	public void saveServers() {
 		// Vérification des positions
 		for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
 			muninFoo.getOrderedServers().get(i).setPosition(i);
 		}
 		
-		muninFoo.unLinkAll();
-		
 		// Suppression des serveurs à supprimer
 		List<MuninServer> toBeDeleted = new ArrayList<MuninServer>();
 		List<MuninServer> localObj = muninFoo.getServers();
-		for (MuninServer dbS : getServers()) {
+		for (MuninServer dbS : dbHlpr.getServers()) {
 			int nb = 0;
 			for (MuninServer s : localObj) {
 				if (dbS.equalsApprox(s)) {
@@ -46,13 +76,10 @@ public class SQLite {
 			if (nb == 0)
 				toBeDeleted.add(dbS);
 		}
-		for (MuninServer s : toBeDeleted) {
-			deleteWidgets(s);
-			deletePlugins(s);
-			s.delete();
-		}
+		for (MuninServer s : toBeDeleted)
+			dbHlpr.deleteServer(s);
 		
-		List<MuninServer> bdd = getServers();
+		List<MuninServer> bdd = dbHlpr.getServers();
 		for (MuninServer s : muninFoo.getServers()) {
 			MuninServer bddInstance = null;
 			
@@ -64,13 +91,13 @@ public class SQLite {
 			}
 			if (bddInstance != null) {
 				bddInstance.importData(s);
-				bddInstance.save();
+				dbHlpr.saveMuninServer(bddInstance);
 				
 				// Plugins
 				List<MuninPlugin> toBeDeleted2 = new ArrayList<MuninPlugin>();
 				List<MuninPlugin> localObj2 = bddInstance.getPlugins();
 				// Suppression des plugins inutilisés...
-				for (MuninPlugin dbS : getPlugins(bddInstance)) {
+				for (MuninPlugin dbS : dbHlpr.getPlugins(bddInstance)) {
 					int nb = 0;
 					for (MuninPlugin p : localObj2) {
 						if (dbS.equalsApprox(p)) {
@@ -83,14 +110,14 @@ public class SQLite {
 				// ... sauf si widget
 				for (MuninPlugin mp : toBeDeleted2) {
 					boolean hasWidget = false;
-					List<Widget> lw = getWidgets(bddInstance);
+					List<Widget> lw = dbHlpr.getWidgets(bddInstance);
 					for (Widget mw : lw) {
 						if (mw.getPlugin().equalsApprox(mp)) {
 							hasWidget = true; break;
 						}
 					}
 					if (!hasWidget)
-						mp.delete();
+						dbHlpr.deletePlugin(mp);
 				}
 				List<MuninPlugin> toBeAdded = new ArrayList<MuninPlugin>();
 				for (MuninPlugin mp : s.getPlugins()) {
@@ -105,141 +132,25 @@ public class SQLite {
 				}
 				for (MuninPlugin mp : toBeAdded) {
 					mp.setInstalledOn(bddInstance);
-					mp.save();
+					dbHlpr.saveMuninPlugin(mp);
 				}
 			} else {
-				s.save();
+				dbHlpr.saveMuninServer(s);
 				MuninServer serv = getBDDInstance(s);
 				serv.setPluginsList(s.getPlugins());
 				for (MuninPlugin mp : serv.getPlugins()) {
 					mp.setInstalledOn(serv);
-					mp.save();
+					dbHlpr.saveMuninPlugin(mp);
 				}
 			}
 		}
-		// muninFoo.resetInstance();  <- done in context
 	}
-	public void deleteServer(MuninServer s) {
-		deleteLabels(s);
-		new Delete().from(Widget.class).where("server = ?", s.getId()).execute();
-		new Delete().from(MuninPlugin.class).where("installedOn = ?", s.getId()).execute();
-		new Delete().from(MuninServer.class).where("id = ?", s.getId()).execute();
-		new Delete().from(LabelRelation.class).where("Server = ?", s.getId()).execute();
-	}
-	public void deleteServer(String url) {
-		new Delete().from(MuninServer.class).where("serverUrl = ?", url).execute();
-	}
-	public void deleteServers() {
-		new Delete().from(MuninServer.class).execute();
-	}
-	public MuninServer getBDDInstance(MuninServer s) {
-		for (MuninServer serv : getServers()) {
-			if (serv.equalsApprox(s.getServerUrl()))
-				return serv;
-		}
-		return s;
-	}
-	public void fetchMuninLabels() {
-		muninFoo.labels = new ArrayList<Label>();
-		muninFoo.labels_relations = new ArrayList<LabelRelation>();
-		List<LabelRelation> l = new Select().from(LabelRelation.class).execute();
-		for (LabelRelation rel : l) {
-			muninFoo.labels_relations.add(rel);
-			if (rel != null && rel.getLabelName() != null && rel.getPlugin() != null) {
-				if (!muninFoo.containsLabel(rel.getLabelName()))
-					muninFoo.labels.add(new Label(rel.getLabelName()));
-				muninFoo.getLabel(rel.getLabelName()).addPlugin(rel.getPlugin().setInstalledOn(rel.getInstalledOn()));
-			} else {
-				try {
-					rel.delete();
-				} catch (Exception e) {}
-			}
-		}
-	}
-	public void saveMuninLabels() {
-		deleteLabels();
-		// For each label relation : create one LabelRelation object, then call obj.save()
-		Log.v("", "=====================================");
-		for (Label l : muninFoo.labels) {
-			for (MuninPlugin p : l.plugins) {
-				LabelRelation rel = new LabelRelation(getBDDInstance(p, p.getInstalledOn()), l.getName(), p.getInstalledOn());
-				Log.v("", "Saving label " + l.getName() + " \t " + p.getName() + "\t" + p.getInstalledOn().getName());
-				rel.save();
-			}
-		}
-		Log.v("", "=====================================");
-	}
-	public void deleteLabels() {
-		new Delete().from(LabelRelation.class).execute();
-	}
-	public void deleteLabels(MuninServer s) {
-		for (LabelRelation l : muninFoo.labels_relations) {
-			if (l.getPlugin().getInstalledOn().equalsApprox(s))
-				l.delete();
-		}
-	}
-	
-	
-	
-	//	PLUGINS
-	public List<MuninPlugin> getPlugins() {
-		return new Select().from(MuninPlugin.class).execute();
-	}
-	public List<MuninPlugin> getPlugins(MuninServer s) {
-		return new Select().from(MuninPlugin.class).where("installedOn = ?", s.getId()).execute();
-	}
-	public void deletePlugins(MuninServer s) {
-		new Delete().from(MuninPlugin.class).where("installedOn = ?", s.getId()).execute();
-	}
-	public void deletePlugins() {
-		new Delete().from(MuninPlugin.class).execute();
-	}
-	public MuninPlugin getBDDInstance(MuninPlugin p, MuninServer s) {
-		MuninServer server = getBDDInstance(s);
-		for (MuninPlugin pl : getPlugins(server)) {
-			if (pl.equalsApprox(p))
-				return pl;
-		}
-		return null;
-	}
-	
-	
-	
-	//	WIDGETS
-	public Widget getWidget(int widgetId) {
-		return new Select().from(Widget.class).where("widgetId = ?", widgetId).executeSingle();
-	}
-	public List<Widget> getWidgets() {
-		return new Select().from(Widget.class).execute();
-	}
-	public List<Widget> getWidgets(MuninServer s) {
-		return new Select().from(Widget.class).where("server = ?", s.getId()).execute();
-	}
-	public void deleteWidget(int widgetId) {
-		new Delete().from(Widget.class).where("widgetId = ?", widgetId).execute();
-	}
-	public void deleteWidgets(MuninServer s) {
-		new Delete().from(Widget.class).where("server = ?", s.getId()).execute();
-	}
-	public void deleteWidgets(MuninPlugin p) {
-		new Delete().from(Widget.class).where("plugin = ?", p.getId()).execute();
-	}
-	public void deleteWidgets(MuninPlugin p, MuninServer s) {
-		new Delete().from(Widget.class).where("plugin = ?", p.getId()).where("installedOn = ?", s.getId()).execute();
-	}
-	public void deleteWidgets() {
-		new Delete().from(Widget.class).execute();
-	}
-	
-	
-	
-	
 	
 	
 	
 	// Logs
-	public void logWidgets() {
-		Log.v("SQLite", "==========================================");
+	/*public void logWidgets() {
+		Log.v("SQLite_old", "==========================================");
 		if (getWidgets().size() > 0) {
 			for (Widget w : getWidgets()) {
 				if (w != null) {
@@ -256,35 +167,35 @@ public class SQLite {
 						s = s + w.getServer().getName() + " ";
 					else
 						s = s + "{server} ";
-					Log.v("SQLite", s);
+					Log.v("SQLite_old", s);
 				}
 				else
-					Log.v("SQLite", "Something's null");
+					Log.v("SQLite_old", "Something's null");
 			}
 		} else
-			Log.v("SQLite", "No widgets in the database.");
-		Log.v("SQLite", "==========================================");
-	}
+			Log.v("SQLite_old", "No widgets in the database.");
+		Log.v("SQLite_old", "==========================================");
+	}*/
 	public void logServers() {
-		Log.v("SQLite", "==========================================");
-		if (getServers().size() > 0) {
-			for (MuninServer s : getServers()) {
-				Log.v("SQLite", s.getName() + "\t  " + s.getServerUrl());
+		Log.v("SQLite_old", "==========================================");
+		if (dbHlpr.getServers().size() > 0) {
+			for (MuninServer s : dbHlpr.getServers()) {
+				Log.v("SQLite_old", s.getName() + "\t  " + s.getServerUrl());
 			}
 		} else
-			Log.v("SQLite", "No servers in the database.");
-		Log.v("SQLite", "==========================================");
+			Log.v("SQLite_old", "No servers in the database.");
+		Log.v("SQLite_old", "==========================================");
 	}
-	public void logPlugins() {
-		Log.v("SQLite", "==========================================");
+	/*public void logPlugins() {
+		Log.v("SQLite_old", "==========================================");
 		if (getPlugins().size() > 0) {
 			for (MuninPlugin p : getPlugins()) {
-				Log.v("SQLite", p.getName() + "\t  " + p.getFancyName());
+				Log.v("SQLite_old", p.getName() + "\t  " + p.getFancyName());
 			}
 		} else
-			Log.v("SQLite", "No plugins in the database.");
-		Log.v("SQLite", "==========================================");
-	}
+			Log.v("SQLite_old", "No plugins in the database.");
+		Log.v("SQLite_old", "==========================================");
+	}*/
 	public void logLine(int nb) {
 		if (nb == 0)
 			logLine(88);
@@ -301,10 +212,10 @@ public class SQLite {
 	public void logServersTable() {
 		log("");
 		logLine(60);
-		log("Total servers: " + getServers().size() + "\t Total plugins: " + getPlugins().size());
+		log("Total servers: " + dbHlpr.getServers().size() + "\t Total plugins: " + dbHlpr.getServers().size());
 		log("| name                              | nbPlugins | position |");
 		logLine(60);
-		for (MuninServer s : getServers()) {
+		for (MuninServer s : dbHlpr.getServers()) {
 			String[] fields = {s.getName(), s.getPlugins().size() + "", s.getPosition() + "" };
 			int[] space = { 33, 9, 8 };
 			
@@ -326,13 +237,13 @@ public class SQLite {
 		logLine(60);
 	}
 	public void logServersPosition() {
-		for (MuninServer s : getServers()) {
-			Log.v("", s.getId() + "\t" + s.getPosition() + "\t" + s.getName());
+		for (MuninServer s : dbHlpr.getServers()) {
+			Log.v("", s.getBddId() + "\t" + s.getPosition() + "\t" + s.getName());
 		}
 	}
 	public void logLocalServersPosition() {
 		for (MuninServer s : muninFoo.getServers()) {
-			Log.v("", s.getId() + "\t" + s.getPosition() + "\t" + s.getName());
+			Log.v("", s.getBddId() + "\t" + s.getPosition() + "\t" + s.getName());
 		}
 	}
 	public void logMuninFooServersTable() {
@@ -358,7 +269,7 @@ public class SQLite {
 				}
 				l += " |";
 			}
-			l += s.getId();
+			l += s.getBddId();
 			log(l);
 		}
 		logLine(60);

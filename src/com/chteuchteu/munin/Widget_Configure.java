@@ -26,40 +26,40 @@ import com.chteuchteu.munin.obj.Widget;
 public class Widget_Configure extends Activity {
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private MuninFoo muninFoo;
-
+	private MuninServer selectedServer;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		muninFoo = MuninFoo.getInstance(this);
-
+		
 		// If the user closes window, don't create the widget
 		setResult(RESULT_CANCELED);
-
+		
 		// Find widget id from launching intent
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
 		if (extras != null)
 			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
 					AppWidgetManager.INVALID_APPWIDGET_ID);
-
+		
 		// If they gave us an intent without the widget id, just bail.
 		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
 			finish();
-
-
-		if (muninFoo.sqlite.getWidget(mAppWidgetId) == null) {
+		
+		
+		if (muninFoo.sqlite.dbHlpr.getWidget(mAppWidgetId) == null) {
 			final Widget widget = new Widget();
 			widget.setWidgetId(mAppWidgetId);
-
-			// Pas encore sélectionné de serveur / plugin / period
+			
 			setContentView(R.layout.widget_configuration);
-
+			
 			if (muninFoo != null) {
 				// Paramétrage des actions
-				final ListView lv1 = (ListView) findViewById(R.id.listview1);
-				final ListView lv2 = (ListView) findViewById(R.id.listview2);
-				final ListView lv3 = (ListView) findViewById(R.id.listview3);
+				final ListView lv1 = (ListView) findViewById(R.id.listview1); // servers
+				final ListView lv2 = (ListView) findViewById(R.id.listview2); // plugins
+				final ListView lv3 = (ListView) findViewById(R.id.listview3); // period
 				final TextView tv = (TextView) findViewById(R.id.widgetConfiguration_textview);
 				
 				if (muninFoo.getHowManyServers() == 0) {
@@ -71,7 +71,6 @@ public class Widget_Configure extends Activity {
 					tv.setVisibility(View.VISIBLE);
 				}
 				
-				// Vue 1: serveurs
 				ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 				list.clear();
 				HashMap<String,String> item;
@@ -85,18 +84,17 @@ public class Widget_Configure extends Activity {
 				lv1.setAdapter(sa);
 				lv1.setOnItemClickListener(new OnItemClickListener() {
 					public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-						// Enregistrement du serveur sélectionné (setPref, à partir de l'indice du serveur dans les paramètres)
 						String adresse = ((TextView) view.findViewById(R.id.line_b)).getText().toString();
-
+						
 						for (MuninServer s : muninFoo.getServers()) {
 							if (s.getServerUrl().equals(adresse)) {
-								widget.setServer(s); break;
+								selectedServer = s; break;
 							}
 						}
-
+						
 						// Populate lv2
-						List<MuninPlugin> plugins = widget.getServer().getPlugins();
-
+						List<MuninPlugin> plugins = selectedServer.getPlugins();
+						
 						ArrayList<HashMap<String,String>> list2 = new ArrayList<HashMap<String,String>>();
 						list2.clear();
 						HashMap<String,String> item2;
@@ -108,21 +106,18 @@ public class Widget_Configure extends Activity {
 						}
 						SimpleAdapter sa2 = new SimpleAdapter(Widget_Configure.this, list2, R.layout.pluginselection_list_dark, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 						lv2.setAdapter(sa2);
-
+						
 						lv2.setOnItemClickListener(new OnItemClickListener() {
 							public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-								// Enregistrement du plugin sélectionné (setPref)
 								String pluginName = ((TextView) view.findViewById(R.id.line_b)).getText().toString();
-
-								for (MuninPlugin p : widget.getServer().getPlugins()) {
+								
+								for (MuninPlugin p : selectedServer.getPlugins()) {
 									if (p.getName().equals(pluginName))
 										widget.setPlugin(p);
 								}
-
-								// Masquage de la lv2
+								
 								lv2.setVisibility(View.GONE);
-
-								// Affichage de la lv3
+								
 								ArrayList<HashMap<String,String>> list3 = new ArrayList<HashMap<String,String>>();
 								list3.clear();
 								HashMap<String,String> item3;
@@ -137,17 +132,15 @@ public class Widget_Configure extends Activity {
 								lv3.setOnItemClickListener(new OnItemClickListener() {
 									public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 										String[] periods = {"day", "week", "month", "year" };
-										//setPref("widget" + mAppWidgetId + "_Period", periods[position]);
 										widget.setPeriod(periods[position]);
-
-										// Instructions finales + paramètres
+										
 										LinearLayout ll = (LinearLayout) findViewById(R.id.final_instructions);
 										lv3.setVisibility(View.GONE);
 										ll.setVisibility(View.VISIBLE);
 										ll.requestFocus();
 										final CheckBox cb = (CheckBox) findViewById(R.id.checkbox_wifi);
 										Button btn = (Button) findViewById(R.id.save);
-
+										
 										btn.setOnClickListener(new View.OnClickListener() {
 											public void onClick(View v) {
 												// Save & close
@@ -155,12 +148,11 @@ public class Widget_Configure extends Activity {
 													widget.setWifiOnly(true);
 												else
 													widget.setWifiOnly(false);
-
-												// The END!
-												widget.save();
-												muninFoo.sqlite.logWidgets();
+												
+												muninFoo.sqlite.dbHlpr.insertWidget(widget);
+												//muninFoo.sqlite.logWidgets();
 												configureWidget(getApplicationContext());
-
+												
 												// Make sure we pass back the original appWidgetId before closing the activity
 												Intent resultValue = new Intent();
 												resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
@@ -170,28 +162,25 @@ public class Widget_Configure extends Activity {
 										});
 									}
 								});
-
+								
 								lv3.setVisibility(View.VISIBLE);
 								lv3.requestFocus();
 							}
 						});
-
-						// Masquage de la lv1
+						
 						lv1.setVisibility(View.GONE);
-
-						// Affichage de la lv2
+						
 						lv2.setVisibility(View.VISIBLE);
 						lv2.requestFocus();
 					}
 				});
-
-				// Et... Action !
+				
 				lv1.setVisibility(View.VISIBLE);
 				lv1.requestFocus();
 			}
 		}
 	}
-
+	
 	/**
 	 * Configures the created widget
 	 * @param context

@@ -53,7 +53,6 @@ import com.chteuchteu.munin.hlpr.DigestUtils;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.obj.HTTPResponse;
 import com.chteuchteu.munin.obj.Label;
-import com.chteuchteu.munin.obj.LabelRelation;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 
@@ -63,11 +62,10 @@ public class MuninFoo {
 	
 	private List<MuninServer> servers;
 	public List<Label> labels;
-	public List<LabelRelation> labels_relations;
+	public SQLite sqlite;
+	public MuninServer currentServer;
 	
-	public SQLite			sqlite;
-	public MuninServer 		currentServer;
-	public boolean			drawer;
+	public boolean drawer;
 	
 	// === VERSION === //
 	// HISTORY		current:	 ___________________________________________________________________________________________________________________________---_
@@ -86,7 +84,7 @@ public class MuninFoo {
 		drawer = false;
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<Label>();
-		sqlite = new SQLite(this);
+		sqlite = new SQLite(null, this);
 		instance = null;
 		loadInstance();
 	}
@@ -96,19 +94,17 @@ public class MuninFoo {
 		drawer = false;
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<Label>();
-		sqlite = new SQLite(this);
+		sqlite = new SQLite(c, this);
 		instance = null;
 		loadInstance(c);
 	}
 	
 	public void loadInstance() {
-		for (MuninServer s : sqlite.getServers()) {
+		for (MuninServer s : sqlite.dbHlpr.getServers()) {
 			MuninServer server = s;
-			server.setPluginsList(sqlite.getPlugins(s));
+			server.setPluginsList(sqlite.dbHlpr.getPlugins(s));
 			this.addServer(server);
 		}
-		
-		sqlite.fetchMuninLabels();
 		
 		if (servers.size() > 0)
 			currentServer = getServerFromFlatPosition(0);
@@ -133,7 +129,7 @@ public class MuninFoo {
 	public void resetInstance(Context c) {
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<Label>();
-		sqlite = new SQLite(this);
+		sqlite = new SQLite(c, this);
 		loadInstance(c);
 	}
 	
@@ -237,6 +233,10 @@ public class MuninFoo {
 		if (pos >= 0 && pos < servers.size()) {
 			servers.remove(pos);
 		}
+		if (getHowManyServers() == 0)
+			currentServer = null;
+		else
+			currentServer = servers.get(0);
 	}
 	
 	public int getHowManyServers() {

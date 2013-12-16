@@ -3,13 +3,12 @@ package com.chteuchteu.munin.hlpr;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import com.chteuchteu.munin.obj.LabelRelation;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
@@ -27,13 +26,13 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 	// Table names
 	private static final String TABLE_MUNINSERVERS = "MuninServers";
 	private static final String TABLE_MUNINPLUGINS = "MuninPlugins";
-	private static final String TABLE_LABELSRELATIONS = "MuninLabelRelations";
 	private static final String TABLE_WIDGETS = "MuninWidgets";
 	
 	// Fields
-	private static final String KEY_ID = "id";
+	private static final String KEY_ID = "Id";
 	
 	private static final String KEY_MUNINSERVERS_SERVERURL = "serverUrl";
+	private static final String KEY_MUNINSERVERS_NAME = "name";
 	private static final String KEY_MUNINSERVERS_AUTHLOGIN = "authLogin";
 	private static final String KEY_MUNINSERVERS_AUTHPASSWORD = "authPassword";
 	private static final String KEY_MUNINSERVERS_GRAPHURL = "graphURL";
@@ -45,11 +44,6 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 	private static final String KEY_MUNINPLUGINS_NAME = "name";
 	private static final String KEY_MUNINPLUGINS_FANCYNAME = "fancyName";
 	private static final String KEY_MUNINPLUGINS_SERVER = "installedOn";
-	private static final String KEY_MUNINPLUGINS_CATEGORY = "category";
-	
-	private static final String KEY_LABELSRELATIONS_PLUGIN = "Plugin";
-	private static final String KEY_LABELSRELATIONS_LABELNAME = "LabelName";
-	private static final String KEY_LABELSRELATIONS_SERVER = "Server";
 	
 	private static final String KEY_WIDGETS_SERVER = "server";
 	private static final String KEY_WIDGETS_PLUGIN = "plugin";
@@ -61,48 +55,75 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		super(c, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 	
-	@Override
-	public void onCreate(SQLiteDatabase db) {
+	public boolean exists() {
+		return false;
 	}
 	
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-	}
+	public void onCreate(SQLiteDatabase db) { }
 	
-	// TODO :
-	public MuninServer getMuninServer(long id) {
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { }
+	
+	public List<MuninServer> getAllMuninServers() {
+		List<MuninServer> l = new ArrayList<MuninServer>();
+		String selectQuery = "SELECT * FROM " + TABLE_MUNINSERVERS;
+		
 		SQLiteDatabase db = this.getReadableDatabase();
-		
-		String selectQuery = "SELECT * FROM " + TABLE_MUNINSERVERS + " WHERE "
-				+ KEY_ID + " = " + id;
-		
 		Cursor c = db.rawQuery(selectQuery, null);
 		
-		if (c != null)
-			c.moveToFirst();
+		if (c != null && c.moveToFirst()) {
+			do {
+				MuninServer s = new MuninServer();
+				s.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+				s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
+				s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
+				s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
+						c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
+						c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE)));
+				s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
+				if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
+					s.setSSL(true);
+				else
+					s.setSSL(false);
+				s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
+				s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
+				s.setPluginsList(getAllPlugins(s));
+				l.add(s);
+			} while (c.moveToNext());
+		}
 		
-		MuninServer s = new MuninServer();
-		s.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
-		s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
-		s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
-				c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
-				c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE)));
-		s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
-		if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
-			s.setSSL(true);
-		else
-			s.setSSL(false);
-		s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
-		s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
-		return s;
+		return l;
 	}
 	
-	public MuninPlugin getMuninPlugin(long id) {
+	public List<MuninPlugin> getAllPlugins(MuninServer s) {
+		List<MuninPlugin> l = new ArrayList<MuninPlugin>();
+		String selectQuery = "SELECT * FROM " + TABLE_MUNINPLUGINS 
+				+ " WHERE " + KEY_MUNINPLUGINS_SERVER + " = " + s.getBddId();
+		
 		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
 		
-		String selectQuery = "SELECT * FROM " + TABLE_MUNINPLUGINS + " WHERE "
-				+ KEY_ID + " = " + id;
+		if (c != null && c.moveToFirst()) {
+			do {
+				MuninPlugin p = new MuninPlugin();
+				p.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+				p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
+				p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
+				p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
+				p.setInstalledOn(s);
+				l.add(p);
+			} while (c.moveToNext());
+		}
 		
+		return l;
+	}
+	
+	public MuninPlugin getMuninPlugin(int id) {
+		String selectQuery = "SELECT * FROM " + TABLE_MUNINPLUGINS 
+				+ " WHERE " + KEY_ID + " = " + id;
+		
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
 		if (c != null)
@@ -113,70 +134,106 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 		p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
 		p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
-		// TODO : server ?
+		p.setInstalledOn(getMuninServer(c.getInt(c.getColumnIndex(KEY_MUNINPLUGINS_SERVER))));
 		return p;
 	}
 	
-	public LabelRelation getLabelRelation(long id) {
+	public MuninServer getMuninServer(int id) {
+		String selectQuery = "SELECT * FROM " + TABLE_MUNINPLUGINS 
+				+ " WHERE " + KEY_ID + " = " + id;
+		
 		SQLiteDatabase db = this.getReadableDatabase();
-		
-		String selectQuery = "SELECT * FROM " + TABLE_LABELSRELATIONS + " WHERE "
-				+ KEY_ID + " = " + id;
-		
 		Cursor c = db.rawQuery(selectQuery, null);
 		
 		if (c != null)
 			c.moveToFirst();
 		
-		LabelRelation r = new LabelRelation();
-		r.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
-		// TODO setLabel
-		// TODO setPlugin
-		return r;
-	}
-	
-	public Widget getWidget(long id) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		
-		String selectQuery = "SELECT * FROM " + TABLE_WIDGETS + " WHERE "
-				+ KEY_ID + " = " + id;
-		
-		Cursor c = db.rawQuery(selectQuery, null);
-		
-		if (c != null)
-			c.moveToFirst();
-		
-		Widget w = new Widget();
-		// setPlugin
-		// setPeriod
-		w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGETS_PERIOD)));
-		if (c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)) == 1)
-			w.setWifiOnly(true);
+		MuninServer s = new MuninServer();
+		s.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+		s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
+		s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
+		s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
+				c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
+				c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE)));
+		s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
+		if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
+			s.setSSL(true);
 		else
-			w.setWifiOnly(false);
-		return w;
+			s.setSSL(false);
+		s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
+		s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
+		s.setPluginsList(getAllPlugins(s));
+		return s;
 	}
 	
-	public List<MuninServer> getAllServers() {
-		List<MuninServer> auteurs = new ArrayList<MuninServer>();
-		String selectQuery = "SELECT * FROM " + TABLE_MUNINSERVERS;
+	public List<Widget> getAllWidgets() {
+		List<Widget> l = new ArrayList<Widget>();
+		String selectQuery = "SELECT * FROM " + TABLE_WIDGETS;
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
-		// looping through all rows and adding to list
+		
 		if (c != null && c.moveToFirst()) {
 			do {
-				Log.v("server url : ", c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
-				/*Auteur auteur = new Auteur();
-				auteur.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-				auteur.setNom((c.getString(c.getColumnIndex(KEY_AUTEURS_NOM))));
-				
-				auteurs.add(auteur);*/
+				Widget w = new Widget();
+				w.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+				w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGETS_PERIOD)));
+				w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIDGETID)));
+				MuninPlugin pl = getMuninPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN)));
+				pl.setInstalledOn(getMuninServer(c.getInt(c.getColumnIndex(KEY_WIDGETS_SERVER))));
+				w.setPlugin(pl);
+				w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)));
+				l.add(w);
 			} while (c.moveToNext());
-		} else
-			Log.v("", "Pas de serveurs :s");
-		c.close();
+		}
 		
-		return auteurs;
+		return l;
+	}
+	
+	public long insertMuninServer(MuninServer s) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_MUNINSERVERS_SERVERURL, s.getServerUrl());
+		values.put(KEY_MUNINSERVERS_NAME, s.getName());
+		values.put(KEY_MUNINSERVERS_AUTHLOGIN, s.getAuthLogin());
+		values.put(KEY_MUNINSERVERS_AUTHPASSWORD, s.getAuthPassword());
+		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
+		values.put(KEY_MUNINSERVERS_SSL, s.getSSL());
+		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
+		values.put(KEY_MUNINSERVERS_AUTHTYPE, s.getAuthType());
+		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
+		
+		long id = db.insert(TABLE_MUNINSERVERS, null, values);
+		s.setBddId(id);
+		s.isPersistant = true;
+		return id;
+	}
+	
+	public long insertMuninPlugin(MuninPlugin p) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_MUNINPLUGINS_NAME, p.getName());
+		values.put(KEY_MUNINPLUGINS_FANCYNAME, p.getFancyName());
+		values.put(KEY_MUNINPLUGINS_SERVER, p.getInstalledOn().getBddId());
+		
+		long id = db.insert(TABLE_MUNINPLUGINS, null, values);
+		p.setBddId(id);
+		return id;
+	}
+	
+	public long insertWidget(Widget w) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_WIDGETS_PLUGIN, w.getPlugin().getBddId());
+		values.put(KEY_WIDGETS_PERIOD, w.getPeriod());
+		values.put(KEY_WIDGETS_WIFIONLY, w.isWifiOnly());
+		values.put(KEY_WIDGETS_WIDGETID, w.getWidgetId());
+		
+		long id = db.insert(TABLE_WIDGETS, null, values);
+		w.setBddId(id);
+		return id;
 	}
 }

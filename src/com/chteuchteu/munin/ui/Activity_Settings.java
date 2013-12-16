@@ -366,10 +366,12 @@ public class Activity_Settings extends Activity {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 					setPref("drawer", "true");
 				
-				muninFoo.sqlite.deleteLabels();
-				muninFoo.sqlite.deleteWidgets();
-				muninFoo.sqlite.deletePlugins();
-				muninFoo.sqlite.deleteServers();
+				
+				muninFoo.sqlite.dbHlpr.deleteWidgets();
+				muninFoo.sqlite.dbHlpr.deleteLabels();
+				muninFoo.sqlite.dbHlpr.deleteLabelsRelations();
+				muninFoo.sqlite.dbHlpr.deleteMuninPlugins();
+				muninFoo.sqlite.dbHlpr.deleteMuninServers();
 				
 				muninFoo.resetInstance(context);
 				

@@ -2,23 +2,16 @@ package com.chteuchteu.munin.obj;
 
 import android.graphics.Bitmap;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
 import com.chteuchteu.munin.MuninFoo;
 
-@Table(name = "MuninPlugins")
-public class MuninPlugin extends Model {
+public class MuninPlugin {
 	private long bddId;
-	@Column(name = "name")
 	private String name;
-	@Column(name = "fancyName")
 	private String fancyName;
-	@Column(name = "installedOn")
 	private MuninServer installedOn;
-	@Column(name = "category")
 	private String category;
 	private String state;
+	public boolean isPersistant;
 	
 	public static String ALERTS_STATE_UNDEFINED = "undefined";
 	public static String ALERTS_STATE_OK = "ok";
@@ -26,23 +19,23 @@ public class MuninPlugin extends Model {
 	public static String ALERTS_STATE_CRITICAL = "error";
 	
 	public MuninPlugin () {
-		super();
 		this.name = "unknown";
 		this.state = MuninPlugin.ALERTS_STATE_UNDEFINED;
+		this.isPersistant = false;
 	}
 	public MuninPlugin (String name, MuninServer server) {
-		super();
 		this.name = name;
 		this.installedOn = server;
 		this.state = MuninPlugin.ALERTS_STATE_UNDEFINED;
 		this.category = "";
+		this.isPersistant = false;
 	}
 	public MuninPlugin (String name, String fancyName, MuninServer installedOn, String category) {
-		super();
 		this.name = name;
 		this.fancyName = fancyName;
 		this.installedOn = installedOn;
 		this.category = category;
+		this.isPersistant = false;
 	}
 	
 	public void importData(MuninPlugin source) {

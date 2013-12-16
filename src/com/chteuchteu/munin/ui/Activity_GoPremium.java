@@ -157,7 +157,6 @@ public class Activity_GoPremium extends Activity {
 	
 	private void createOptionsMenu() {
 		menu.clear();
-		getMenuInflater().inflate(R.menu.alerts, menu);
 	}
 	
 	@Override

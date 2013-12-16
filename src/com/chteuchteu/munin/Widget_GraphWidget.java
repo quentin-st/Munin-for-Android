@@ -31,11 +31,13 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 	public static final String ACTION_START_ACTIVITY = "com.chteuchteu.munin.widget.START_ACTIVITY";
 	public static final String ACTION_START_PREMIUM = "com.chteuchteu.munin.widget.START_PREMIUM";
 	
-	public static SQLite sqlite = new SQLite(MuninFoo.getInstance());
+	public static SQLite sqlite;
 	public static Widget widget;
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+		sqlite = new SQLite(context, MuninFoo.getInstance(context));
+		
 		// Get all ids
 		ComponentName thisWidget = new ComponentName(context, Widget_GraphWidget.class);
 		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
@@ -68,10 +70,10 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 			awm.updateAppWidget(widgetId, views);
 		} else {
 			// premium
-			widget = sqlite.getWidget(appWidgetId);
+			widget = sqlite.dbHlpr.getWidget(appWidgetId);
 			
 			if (widget != null) {
-				views.setTextViewText(R.id.widget_servername, widget.getServer().getName());
+				views.setTextViewText(R.id.widget_servername, widget.getPlugin().getInstalledOn().getName());
 				
 				// Update action
 				Intent intent = new Intent(context, Widget_GraphWidget.class);
@@ -89,7 +91,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 				
 				if (!widget.isWifiOnly() || forceUpdate) {
 					// Launching Asyntask
-					applyBitmap task = new applyBitmap((MuninServer) widget.getServer(), widget.getPlugin().getImgUrl(widget.getPeriod()), views, awm, appWidgetId);
+					applyBitmap task = new applyBitmap((MuninServer) widget.getPlugin().getInstalledOn(), widget.getPlugin().getImgUrl(widget.getPeriod()), views, awm, appWidgetId);
 					task.execute();
 				} else {
 					// Automatic update -> let's check if on wifi or data
@@ -119,11 +121,11 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 			} else if (intent.getAction().equals(ACTION_START_ACTIVITY)) {
 				Bundle extras = intent.getExtras();
 				if (extras != null) {
-					if (widget == null || (widget != null && (widget.getServer() == null || widget.getPlugin() == null)))
-						widget = sqlite.getWidget(extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID));
+					if (widget == null || (widget != null && (widget.getPlugin().getInstalledOn() == null || widget.getPlugin() == null)))
+						widget = sqlite.dbHlpr.getWidget(extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID));
 					Intent intent2 = new Intent(context, Activity_GraphView.class);
 					intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					intent2.putExtra("server", widget.getServer().getServerUrl());
+					intent2.putExtra("server", widget.getPlugin().getInstalledOn().getServerUrl());
 					intent2.putExtra("plugin", widget.getPlugin().getName());
 					intent2.putExtra("period", widget.getPeriod());
 					context.startActivity(intent2);
@@ -212,8 +214,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 	
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
-		for (int i : appWidgetIds) {
-			sqlite.deleteWidget(i);
-		}
+		for (int i : appWidgetIds)
+			sqlite.dbHlpr.deleteWidget(i);
 	}
 }
