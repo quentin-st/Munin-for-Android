@@ -4,7 +4,7 @@
 	
 	<dimen name="listview_horizontal_margin">20dp</dimen>
 	<dimen name="listview_inner_horizontal_margin">10dp</dimen>
-	<dimen name="item_padding">20dp</dimen>
+	<dimen name="item_padding">18dp</dimen>
 	
 	<dimen name="addserver_popup_margin_horiz">50dp</dimen>
 	<dimen name="addserver_popup_margin_verti_thin">40dp</dimen>
@@ -13,6 +13,6 @@
 	<dimen name="addserver_popup_fontsize2">60sp</dimen>
 	<dimen name="addserver_popup_fontsize3">50sp</dimen>
 	
-	<dimen name="drawer_font_size">30sp</dimen>
+	<dimen name="drawer_font_size">28sp</dimen>
 
 </resources>

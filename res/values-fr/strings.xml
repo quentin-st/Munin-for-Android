@@ -38,6 +38,7 @@
 	<string name="menu_addserver_save">Sauvegarder le serveur</string>
 	<string name="menu_addserver_reset">Vider les champs</string>
 	<string name="menu_addserver_delete">Supprimer le serveur</string>
+	<string name="menu_pluginselection">Grouper par catégorie</string>
 	<string name="loading">Chargement…</string>
 	<string name="search">Rechercher</string>
 	<string name="about_eraseData">Remise à zéro de l\'appli</string>

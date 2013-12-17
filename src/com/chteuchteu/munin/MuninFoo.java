@@ -501,7 +501,6 @@ public class MuninFoo {
 	
 	public static Bitmap grabBitmap(MuninServer s, String url) {
 		Bitmap b = null;
-		Log.v("downloading...", url);
 		
 		try {
 			// Création du HTTP Client
@@ -593,13 +592,12 @@ public class MuninFoo {
 			HttpResponse response = client.execute(request);
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();
-			Log.v("", "getentityblabla");
 			if (statusCode == 200) {
 				HttpEntity entity = response.getEntity();
 				byte[] bytes = EntityUtils.toByteArray(entity);
 				b = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 			} else {
-				throw new IOException("Download failed, HTTP response code "
+				throw new IOException("Download failed :s HTTP response code "
 						+ statusCode + " - " + statusLine.getReasonPhrase());
 			}
 		}

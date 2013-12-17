@@ -37,7 +37,7 @@ public class Activity_Splash extends Activity {
 	private MuninFoo muninFoo;
 	
 	//protected boolean _active = true;
-	protected int _splashTime = 3000;
+	protected int _splashTime = 2100;
 	protected boolean splashEnabled;
 	protected String activity;
 	protected boolean splash;
@@ -66,7 +66,7 @@ public class Activity_Splash extends Activity {
 			setContentView(R.layout.splash);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 				int id = getResources().getIdentifier("config_enableTranslucentDecor", "bool", "android");
-				if(id != 0 && getResources().getBoolean(id)) { // Translucent available
+				if (id != 0 && getResources().getBoolean(id)) { // Translucent available
 					Window w = getWindow();
 					w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 					w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

@@ -13,6 +13,7 @@ import android.app.ActionBar.OnNavigationListener;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -62,6 +63,10 @@ public class Activity_PluginSelection extends ListActivity {
 	private	ActionBar		actionBar;
 	private Menu 			menu;
 	private String			activityName;
+	
+	private int mode;
+	private int MODE_GROUPED = 1;
+	private int MODE_FLAT = 2;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -118,7 +123,6 @@ public class Activity_PluginSelection extends ListActivity {
 			
 			sp  = (Spinner) this.findViewById(R.id.spinner_server);
 			
-			// Remplissage spinner (liste deroulante)
 			List<String> list = new ArrayList<String>();
 			for (int i=0; i<muninFoo.getHowManyServers(); i++) {
 				list.add(muninFoo.getServer(i).getName());
@@ -126,61 +130,159 @@ public class Activity_PluginSelection extends ListActivity {
 			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
 			dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			sp.setAdapter(dataAdapter);
-			// Fin remplissage spinner
+		}
+		
+		mode = getListViewMode();
+		
+		if (muninFoo.currentServer == null && muninFoo.getHowManyServers() > 0)
+			muninFoo.currentServer = muninFoo.getServer(0);
+		
+		if (muninFoo.currentServer != null && muninFoo.currentServer.getPlugins() != null && muninFoo.currentServer.getPlugins().size() > 0) {
+			if (actionBar != null)
+				actionBar.setSelectedNavigationItem(muninFoo.currentServer.getFlatPosition());
+			
+			updateListView();
+		} else {
+			Intent intent = new Intent(this, Activity_Main.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+		}
+		
+		if (sp != null) { // Servers spinner: compatibility
+			sp.setSelection(muninFoo.getServerFlatRange(muninFoo.currentServer), true);
+			if (muninFoo.getHowManyServers() == 1) {
+				sp.setEnabled(false);
+				sp.setClickable(false);
+			} else {
+				sp.setOnItemSelectedListener(new OnItemSelectedListener() {
+					@Override
+					public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
+						if (muninFoo.getServerFromFlatPosition(position) != null) {
+							muninFoo.currentServer = muninFoo.getServerFromFlatPosition(position);
+							updateListView();
+						}
+						/*if (muninFoo.getServerByName(((TextView)view).getText().toString()) != null) {
+							muninFoo.currentServer = muninFoo.getServerByName(((TextView)view).getText().toString());
+							updateListView();
+						}*/
+					}
+					@Override
+					public void onNothingSelected(AdapterView<?> parentView) { }
+				});
+			}
 		}
 	}
 	
+	public int getListViewMode() {
+		if (muninFoo.currentServer.getPluginsListWithCategory().size() < 2)
+			mode = MODE_FLAT;
+		else {
+			if (getPref("listViewMode").equals("flat"))
+				mode = MODE_FLAT;
+			else
+				mode = MODE_GROUPED;
+		}
+		return mode;
+	}
+	
+	public void switchListViewMode(int mode) {
+		if (mode == MODE_FLAT)
+			setPref("listViewMode", "flat");
+		else
+			setPref("listViewMode", "grouped");
+	}
+	
 	public void updateListView() {
-		// Création de la liste des plugins
-		pluginsListCat = muninFoo.currentServer.getPluginsListWithCategory();
-		
-		pluginsList = new ArrayList<MuninPlugin>();
-		for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-			if (muninFoo.currentServer.getPlugins().get(i) != null)
-				pluginsList.add(muninFoo.currentServer.getPlugins().get(i));
-		}
-		
-		//list.clear();
-		/*HashMap<String,String> item;
-		for(int i=0; i<pluginsList.size(); i++){
-			item = new HashMap<String,String>();
-			item.put("line1", pluginsList.get(i).getFancyName());
-			item.put("line2", pluginsList.get(i).getName());
-			list.add(item);
-		}
-		sa = new SimpleAdapter(Activity_PluginSelection.this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
-		setListAdapter(sa);
-		 */
-		getListView().setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-				TextView plu = (TextView) view.findViewById(R.id.line_b);
-				Intent intent = new Intent(Activity_PluginSelection.this, Activity_GraphView.class);
-				int p = 0;
-				for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-					if (muninFoo.currentServer.getPlugin(i) != null && muninFoo.currentServer.getPlugin(i).getName().equals(plu.getText().toString())) {
-						p = i;
-						break;
-					}
-				}
-				intent.putExtra("position", p + "");
-				startActivity(intent);
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			}
-		});
-		
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this);
-		for (List<MuninPlugin> l : pluginsListCat) {
-			List<Map<String,?>> elements = new LinkedList<Map<String,?>>();
-			String categoryName = "";
-			for (MuninPlugin p : l) {
-				elements.add(createItem(p.getFancyName(), p.getName()));
-				categoryName = p.getCategory();
+		updateListView(getListViewMode());
+	}
+	
+	public void updateListView(int mode) {
+		if (mode == MODE_FLAT) {
+			pluginsList = new ArrayList<MuninPlugin>();
+			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
+				if (muninFoo.currentServer.getPlugins().get(i) != null)
+					pluginsList.add(muninFoo.currentServer.getPlugins().get(i));
 			}
 			
-			adapter.addSection(categoryName, new SimpleAdapter(this, elements, R.layout.pluginselection_list,
-					new String[] { "title", "caption" }, new int[] { R.id.line_a, R.id.line_b }));
+			list.clear();
+			HashMap<String,String> item;
+			for(int i=0; i<pluginsList.size(); i++){
+				item = new HashMap<String,String>();
+				item.put("line1", pluginsList.get(i).getFancyName());
+				item.put("line2", pluginsList.get(i).getName());
+				list.add(item);
+			}
+			sa = new SimpleAdapter(this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+			setListAdapter(sa);
+			
+			getListView().setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
+					TextView plu = (TextView) view.findViewById(R.id.line_b);
+					Intent intent = new Intent(Activity_PluginSelection.this, Activity_GraphView.class);
+					int p = 0;
+					for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
+						if (muninFoo.currentServer.getPlugin(i) != null && muninFoo.currentServer.getPlugin(i).getName().equals(plu.getText().toString())) {
+							p = i;
+							break;
+						}
+					}
+					intent.putExtra("position", p + "");
+					startActivity(intent);
+					overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
+				}
+			});
+		} else {
+			// Création de la liste des plugins
+			pluginsListCat = muninFoo.currentServer.getPluginsListWithCategory();
+			
+			pluginsList = new ArrayList<MuninPlugin>();
+			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
+				if (muninFoo.currentServer.getPlugins().get(i) != null)
+					pluginsList.add(muninFoo.currentServer.getPlugins().get(i));
+			}
+			
+			//list.clear();
+			/*HashMap<String,String> item;
+			for(int i=0; i<pluginsList.size(); i++){
+				item = new HashMap<String,String>();
+				item.put("line1", pluginsList.get(i).getFancyName());
+				item.put("line2", pluginsList.get(i).getName());
+				list.add(item);
+			}
+			sa = new SimpleAdapter(Activity_PluginSelection.this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+			setListAdapter(sa);
+			 */
+			getListView().setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
+					TextView plu = (TextView) view.findViewById(R.id.line_b);
+					Intent intent = new Intent(Activity_PluginSelection.this, Activity_GraphView.class);
+					int p = 0;
+					for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
+						if (muninFoo.currentServer.getPlugin(i) != null && muninFoo.currentServer.getPlugin(i).getName().equals(plu.getText().toString())) {
+							p = i;
+							break;
+						}
+					}
+					intent.putExtra("position", p + "");
+					startActivity(intent);
+					overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
+				}
+			});
+			
+			SeparatedListAdapter adapter = new SeparatedListAdapter(this);
+			for (List<MuninPlugin> l : pluginsListCat) {
+				List<Map<String,?>> elements = new LinkedList<Map<String,?>>();
+				String categoryName = "";
+				for (MuninPlugin p : l) {
+					elements.add(createItem(p.getFancyName(), p.getName()));
+					categoryName = p.getCategory();
+				}
+				
+				adapter.addSection(categoryName, new SimpleAdapter(this, elements, R.layout.pluginselection_list,
+						new String[] { "title", "caption" }, new int[] { R.id.line_a, R.id.line_b }));
+			}
+			this.getListView().setAdapter(adapter);
 		}
-		this.getListView().setAdapter(adapter);
 	}
 	
 	public Map<String,?> createItem(String title, String caption) {  
@@ -288,6 +390,13 @@ public class Activity_PluginSelection extends ListActivity {
 					imm.hideSoftInputFromWindow(filter.getWindowToken(), 0);
 				}
 				return true;
+			case R.id.menu_modelist:
+				if (mode == MODE_FLAT)
+					switchListViewMode(MODE_GROUPED);
+				else
+					switchListViewMode(MODE_FLAT);
+				updateListView();
+				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_PluginSelection.this, Activity_Settings.class));
 				setTransition("deeper");
@@ -305,83 +414,11 @@ public class Activity_PluginSelection extends ListActivity {
 	public void onResume() {
 		super.onResume();
 		
-		if (muninFoo.currentServer == null && muninFoo.getHowManyServers() > 0)
-			muninFoo.currentServer = muninFoo.getServer(0);
-		
-		if (muninFoo.currentServer != null && muninFoo.currentServer.getPlugins() != null && muninFoo.currentServer.getPlugins().size() > 0) {
-			if (actionBar != null)
-				actionBar.setSelectedNavigationItem(muninFoo.currentServer.getFlatPosition());
-			
-			/*// Création de la liste des plugins
-			pluginsList = new ArrayList<MuninPlugin>();
-			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-				if (muninFoo.currentServer.getPlugins().get(i) != null)
-					pluginsList.add(muninFoo.currentServer.getPlugins().get(i));
-			}
-
-			list.clear();
-			HashMap<String,String> item;
-			for(int i=0; i<pluginsList.size(); i++){
-				item = new HashMap<String,String>();
-				item.put("line1", pluginsList.get(i).getFancyName());
-				item.put("line2", pluginsList.get(i).getName());
-				list.add(item);
-			}
-			sa = new SimpleAdapter(this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
-			setListAdapter(sa);
-
-			getListView().setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-					TextView plu = (TextView) view.findViewById(R.id.line_b);
-					Intent intent = new Intent(Activity_PluginSelection.this, Activity_GraphView.class);
-					int p = 0;
-					for (int i=0; i<muninFoo.currentServer.getNbPlugins(); i++) {
-						if (muninFoo.currentServer.getPlugin(i) != null && muninFoo.currentServer.getPlugin(i).getName().equals(plu.getText().toString())) {
-							p = i;
-							break;
-						}
-					}
-					intent.putExtra("position", p + "");
-					startActivity(intent);
-					overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-				}
-			});*/
-			updateListView();
-		} else {
-			Intent intent = new Intent(this, Activity_Main.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-		}
-		
-		if (sp != null) { // Servers spinner: compatibility
-			sp.setSelection(muninFoo.getServerFlatRange(muninFoo.currentServer), true);
-			if (muninFoo.getHowManyServers() == 1) {
-				sp.setEnabled(false);
-				sp.setClickable(false);
-			} else {
-				sp.setOnItemSelectedListener(new OnItemSelectedListener() {
-					@Override
-					public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
-						if (muninFoo.getServerFromFlatPosition(position) != null) {
-							muninFoo.currentServer = muninFoo.getServerFromFlatPosition(position);
-							updateListView();
-						}
-						/*if (muninFoo.getServerByName(((TextView)view).getText().toString()) != null) {
-							muninFoo.currentServer = muninFoo.getServerByName(((TextView)view).getText().toString());
-							updateListView();
-						}*/
-					}
-					@Override
-					public void onNothingSelected(AdapterView<?> parentView) { }
-				});
-			}
-		}
-		// End servers spinner
 	}
-
+	
 	@Override
 	public void onBackPressed() {
-		if ( ll_filter != null && ll_filter.getVisibility() == View.VISIBLE) {
+		if (ll_filter != null && ll_filter.getVisibility() == View.VISIBLE) {
 			ll_filter.setVisibility(View.GONE);
 			filter.setFocusable(false);
 			filter.setFocusableInTouchMode(false);
@@ -398,6 +435,24 @@ public class Activity_PluginSelection extends ListActivity {
 	
 	public String getPref(String key) {
 		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
+	}
+	
+	public void setPref(String key, String value) {
+		if (value.equals(""))
+			removePref(key);
+		else {
+			SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString(key, value);
+			editor.commit();
+		}
+	}
+	
+	public void removePref(String key) {
+		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.remove(key);
+		editor.commit();
 	}
 	
 	public void setTransition(String level) {

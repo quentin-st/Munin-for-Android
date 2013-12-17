@@ -232,7 +232,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
-		if (c.moveToFirst()) {
+		if (c != null && c.moveToFirst()) {
 			do {
 				MuninServer s = new MuninServer();
 				s.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
@@ -254,6 +254,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				l.add(s);
 			} while (c.moveToNext());
 		}
+		c.close();
 		
 		return l;
 	}
@@ -266,7 +267,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
-		if (c.moveToFirst()) {
+		if (c != null && c.moveToFirst()) {
 			do {
 				MuninPlugin p = new MuninPlugin();
 				p.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
@@ -278,6 +279,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				l.add(p);
 			} while (c.moveToNext());
 		}
+		c.close();
 		
 		return l;
 	}
@@ -289,46 +291,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
-		if (c != null)
-			c.moveToFirst();
-		
-		MuninPlugin p = new MuninPlugin();
-		p.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
-		p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
-		p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
-		p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_CATEGORY)));
-		p.setInstalledOn(getServer(c.getInt(c.getColumnIndex(KEY_MUNINPLUGINS_SERVER))));
-		p.isPersistant = true;
-		return p;
+		if (c != null && c.moveToFirst()) {
+			MuninPlugin p = new MuninPlugin();
+			p.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+			p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
+			p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
+			p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_CATEGORY)));
+			p.setInstalledOn(getServer(c.getInt(c.getColumnIndex(KEY_MUNINPLUGINS_SERVER))));
+			p.isPersistant = true;
+			c.close();
+			return p;
+		}
+		return null;
 	}
 	
 	public MuninServer getServer(int id) {
-		String selectQuery = "SELECT * FROM " + TABLE_MUNINPLUGINS 
+		String selectQuery = "SELECT * FROM " + TABLE_MUNINSERVERS
 				+ " WHERE " + KEY_ID + " = " + id;
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
-		if (c != null)
-			c.moveToFirst();
-		
-		MuninServer s = new MuninServer();
-		s.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
-		s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
-		s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
-		s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
-				c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
-				c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE)));
-		s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
-		if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
-			s.setSSL(true);
-		else
-			s.setSSL(false);
-		s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
-		s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
-		s.setPluginsList(getPlugins(s));
-		s.isPersistant = true;
-		return s;
+		if (c != null && c.moveToFirst()) {
+			MuninServer s = new MuninServer();
+			s.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+			s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
+			s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
+			s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
+					c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
+					c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE)));
+			s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
+			if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
+				s.setSSL(true);
+			else
+				s.setSSL(false);
+			s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
+			s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
+			s.setPluginsList(getPlugins(s));
+			s.isPersistant = true;
+			c.close();
+			return s;
+		}
+		return null;
 	}
 	
 	public List<Widget> getWidgets() {
@@ -349,6 +353,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				l.add(w);
 			} while (c.moveToNext());
 		}
+		c.close();
 		
 		return l;
 	}
@@ -360,17 +365,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
-		if (c != null)
-			c.moveToFirst();
-		
-		Widget w = new Widget();
-		w.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
-		w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGETS_PERIOD)));
-		w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIDGETID)));
-		w.setPlugin(getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN))));
-		w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)));
-		
-		return w;
+		if (c != null && c.moveToFirst()) {
+			Widget w = new Widget();
+			w.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+			w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGETS_PERIOD)));
+			w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIDGETID)));
+			w.setPlugin(getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN))));
+			w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)));
+			c.close();
+			
+			return w;
+		}
+		return null;
 	}
 	
 	public List<Widget> getWidgets(MuninServer s) {

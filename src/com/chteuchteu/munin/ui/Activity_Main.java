@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,11 +32,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
-import com.devspark.appmsg.AppMsg;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -183,7 +184,7 @@ public class Activity_Main extends Activity {
 			String action = thisIntent.getExtras().getString("action");
 			if (action != null && action.equals("settingsSave"))
 				// Settings saved successfully!
-				AppMsg.makeText(this, getString(R.string.text36), AppMsg.STYLE_INFO).show();
+				Toast.makeText(this, getString(R.string.text36), Toast.LENGTH_LONG).show();
 		}
 	}
 	

@@ -39,6 +39,7 @@
 	<string name="menu_addserver_save">Save server</string>
 	<string name="menu_addserver_reset">Reset fields</string>
 	<string name="menu_addserver_delete">Delete server</string>
+	<string name="menu_pluginselection">Group by category</string>
 	<string name="loading">Loading…</string>
 	<string name="search">Search</string>
 	<string name="about_eraseData">Reset app</string>

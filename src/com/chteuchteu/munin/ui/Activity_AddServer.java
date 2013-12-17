@@ -56,7 +56,6 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.devspark.appmsg.AppMsg;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -811,7 +810,7 @@ public class Activity_AddServer extends Activity {
 			} else if (res == RES_NO_CONNECTION) {
 				runOnUiThread(new Runnable() {
 					public void run() {
-						AppMsg.makeText(Activity_AddServer.this, getString(R.string.text30), AppMsg.STYLE_INFO).show();
+						Toast.makeText(Activity_AddServer.this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 					}
 				});
 			}
@@ -1177,7 +1176,7 @@ public class Activity_AddServer extends Activity {
 				}
 			}
 			if (!Util.isOnline(context))
-				AppMsg.makeText(Activity_AddServer.this, getString(R.string.text30), AppMsg.STYLE_CONFIRM).show();
+				Toast.makeText(Activity_AddServer.this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 		}
 	}
 	

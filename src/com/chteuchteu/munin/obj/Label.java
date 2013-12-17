@@ -50,7 +50,7 @@ public class Label {
 				}
 			}
 			for (Integer i : posToRemove)
-				pl.remove(i.intValue());
+				pl.remove(i.intValue()); // TODO
 			pl.remove(0);
 			if (ltemp.size() > 0)
 				l.add(ltemp);

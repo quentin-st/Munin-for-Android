@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
 	<item
+		android:id="@+id/menu_modelist"
+		android:icon="@drawable/collections_sort_by_size"
+		android:showAsAction="always"
+		android:title="@string/menu_pluginselection" />
+	
+	<item
 		android:id="@+id/menu_filter"
 		android:icon="@drawable/action_search_dark"
 		android:showAsAction="always"

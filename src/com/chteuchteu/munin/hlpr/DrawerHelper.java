@@ -125,6 +125,10 @@ public class DrawerHelper {
 		this.vf = v;
 	}
 	
+	public void reInitDrawer() {
+		initDrawer();
+	}
+	
 	@SuppressLint("NewApi")
 	private void initDrawer() {
 		sm = new SlidingMenu(a);

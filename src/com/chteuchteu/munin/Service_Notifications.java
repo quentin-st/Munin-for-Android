@@ -179,7 +179,7 @@ public class Service_Notifications extends Service {
 				texteNotification = warningPlugins;
 
 			if (nbCriticals > 0 || nbWarnings > 0) {
-				//if (!getPref("lastNotificationText").equals(texteNotification)) {
+				if (!getPref("lastNotificationText").equals(texteNotification)) {
 					NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 					Notification notification = new Notification(R.drawable.launcher_icon_mono, "Munin for Android", System.currentTimeMillis());
 
@@ -191,7 +191,7 @@ public class Service_Notifications extends Service {
 					//Enfin on ajoute notre notification et son ID à notre gestionnaire de notification
 					notificationManager.notify(1234, notification);
 					stopSelf();
-				//}
+				}
 			} else {
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				mNotificationManager.cancel(1234);

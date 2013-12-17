@@ -208,6 +208,7 @@ public class Activity_Settings extends Activity {
 		else
 			setPref("transitions", "false");
 		
+		// Drawer
 		if (getCheckableValue(checkable_drawer)) {
 			setPref("drawer", "false");
 			muninFoo.drawer = false;
@@ -375,6 +376,9 @@ public class Activity_Settings extends Activity {
 				
 				muninFoo.resetInstance(context);
 				
+				if (muninFoo.drawer)
+					dh.reInitDrawer();
+				
 				// Reset performed.
 				Toast.makeText(getApplicationContext(), getString(R.string.text02), Toast.LENGTH_SHORT).show();
 			}
@@ -450,11 +454,11 @@ public class Activity_Settings extends Activity {
 	public void grabVersion() {
 		onlineLastVersion = 0;
 		grabUrl check = new grabUrl();
-		check.execute("");
+		check.execute();
 		int timeout = 0;
 		while (onlineLastVersion == 0) {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -59,6 +59,7 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chteuchteu.munin.GraphView_Adapter;
 import com.chteuchteu.munin.MuninFoo;
@@ -68,7 +69,6 @@ import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.crashlytics.android.Crashlytics;
-import com.devspark.appmsg.AppMsg;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -276,7 +276,7 @@ public class Activity_GraphView extends Activity {
 		});
 		
 		if (!isOnline())
-			AppMsg.makeText(this, getString(R.string.text30), AppMsg.STYLE_INFO).show();
+			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 	}
 	
 	@Override
@@ -614,10 +614,10 @@ public class Activity_GraphView extends Activity {
 				String filePath = dir + fileName1 + fileName2;
 				MediaScannerConnection.scanFile(Activity_GraphView.this, new String[] { filePath }, null, null);
 				// Graph saved as /muninForAndroid/[...]
-				AppMsg.makeText(Activity_GraphView.this, getString(R.string.text28) + fileName1 + fileName2, AppMsg.STYLE_INFO).show();
+				Toast.makeText(this, getString(R.string.text28) + fileName1 + fileName2, Toast.LENGTH_LONG).show();
 			} catch (Exception e) {
 				// Error while saving the graph
-				AppMsg.makeText(Activity_GraphView.this, getString(R.string.text29), AppMsg.STYLE_ALERT).show();
+				Toast.makeText(this, getString(R.string.text29), Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
 		}

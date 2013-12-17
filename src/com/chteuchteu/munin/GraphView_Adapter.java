@@ -28,7 +28,6 @@ public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
 	
 	@Override
 	public int getCount() {
-		//return ids.length;
 		if (muninFoo == null)
 			muninFoo = MuninFoo.getInstance();
 		return muninFoo.currentServer.getPlugins().size();
