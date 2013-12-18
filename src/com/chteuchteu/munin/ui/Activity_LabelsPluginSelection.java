@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,18 +98,13 @@ public class Activity_LabelsPluginSelection extends Activity {
 			adapter.addSection(serverName, new SimpleAdapter(this, elements, R.layout.pluginselection_list,
 					new String[] { "title", "caption" }, new int[] { R.id.line_a, R.id.line_b }));
 		}
-		for (String s : correspondanceServers)
-			Log.v("corresp.", "." + s);
+		
 		((ListView)findViewById(R.id.labels_listview)).setAdapter(adapter);
 		
 		((ListView)findViewById(R.id.labels_listview)).setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 				//TextView line_a = (TextView) view.findViewById(R.id.line_a);
 				//TextView line_b = (TextView) view.findViewById(R.id.line_b);
-				
-				Log.v("", "position : " + position);
-				Log.v("", "correspondance : \t\t" + correspondance.get(position));
-				Log.v("", "correspondanceServer : \t" + correspondanceServers.get(position));
 				
 				MuninPlugin plugin = correspondance.get(position);
 				String serverUrl = correspondanceServers.get(position);
@@ -147,8 +141,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 				}
 				return true;
 			case R.id.menu_delete:
-				//TODO if (muninFoo.removeLabel(label))
-				//	muninFoo.sqlite.saveMuninLabels();
+				muninFoo.removeLabel(label);
 				startActivity(new Intent(this, Activity_Labels.class));
 				setTransition("shallower");
 				return true;

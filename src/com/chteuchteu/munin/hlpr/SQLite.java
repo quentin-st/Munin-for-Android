@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
@@ -37,20 +38,19 @@ public class SQLite {
 		// Servers
 		for (MuninServer s : servers) {
 			long id = dbHlpr.insertMuninServer(s);
-			s.setBddId(id);
+			s.setId(id);
 			
 			// Plugins
 			List<MuninPlugin> plugins = s.getPlugins();
 			for (MuninPlugin p : plugins) {
 				p.setInstalledOn(s);
-				p.setBddId(dbHlpr.insertMuninPlugin(p));
-				Log.v("", "server id : " + s.getBddId() + " / plugin id : " + p.getBddId());
+				p.setId(dbHlpr.insertMuninPlugin(p));
 			}
 		}
 		
 		// Widgets
 		for (Widget w : widgets) {
-			w.setBddId(dbHlpr.insertWidget(w));
+			w.setId(dbHlpr.insertWidget(w));
 		}
 		
 		// TODO delete database
@@ -146,7 +146,73 @@ public class SQLite {
 		}
 	}
 	
+	public void saveLabels() {
+		// Simpler way of doing it!
+		dbHlpr.deleteLabels();
+		dbHlpr.deleteLabelsRelations();
+		for (Label l : muninFoo.labels) {
+			dbHlpr.insertLabel(l);
+			
+			for (MuninPlugin p : l.plugins)
+				dbHlpr.insertLabelRelation(p, l);
+		}
+	}
 	
+	/*public void saveLabels() {
+		// Check if we have to add / delete Labels
+		List<Label> toBeDeleted = new ArrayList<Label>();
+		
+		// Delete labels if necessary
+		for (Label dbL : dbHlpr.getLabels()) {
+			int nb = 0;
+			for (Label l : muninFoo.labels) {
+				if (l.equals(dbL)) {
+					nb++; break;
+				}
+			}
+			if (nb == 0) {
+				toBeDeleted.add(dbL);
+			}
+		}
+		for (Label l : toBeDeleted)
+			dbHlpr.deleteLabel(l);
+		
+		// Add labels if necessary
+		List<MuninPlugin> toBeDeleted2 = new ArrayList<MuninPlugin>();
+		for (Label localL : muninFoo.labels) {
+			Log.v("LABEL", localL.getName());
+			Label dbL = dbHlpr.getLabel(localL.getName());
+			if (dbL != null) {
+				// Label already exists in BDD. Let's update relations if necessary
+				// Delete old relations
+				for (MuninPlugin dbP : dbHlpr.getPlugins(dbL)) {
+					int nb = 0;
+					for (MuninPlugin p : dbL.plugins) {
+						if (p.equalsApprox(dbP)) {
+							nb++; break;
+						}
+					}
+					if (nb == 0)
+						toBeDeleted2.add(dbP);
+				}
+				for (MuninPlugin p : toBeDeleted2) {
+					dbHlpr.deleteLabelsRelation(p, dbL);
+				}
+				
+				// Create new relations
+				for (MuninPlugin p : dbL.plugins) {
+					if (dbHlpr.getPlugins(dbL) == null)
+						dbHlpr.insertLabelRelation(p, dbL);
+				}
+			} else {
+				// Create label and labelrelations
+				dbHlpr.insertLabel(localL);
+				for (MuninPlugin p : localL.plugins) {
+					dbHlpr.insertLabelRelation(p, localL);
+				}
+			}
+		}
+	}*/
 	
 	// Logs
 	/*public void logWidgets() {
@@ -236,16 +302,6 @@ public class SQLite {
 		}
 		logLine(60);
 	}
-	public void logServersPosition() {
-		for (MuninServer s : dbHlpr.getServers()) {
-			Log.v("", s.getBddId() + "\t" + s.getPosition() + "\t" + s.getName());
-		}
-	}
-	public void logLocalServersPosition() {
-		for (MuninServer s : muninFoo.getServers()) {
-			Log.v("", s.getBddId() + "\t" + s.getPosition() + "\t" + s.getName());
-		}
-	}
 	public void logMuninFooServersTable() {
 		log("");
 		logLine(60);
@@ -269,7 +325,7 @@ public class SQLite {
 				}
 				l += " |";
 			}
-			l += s.getBddId();
+			l += s.getId();
 			log(l);
 		}
 		logLine(60);

@@ -4,26 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Label {
-	private long bddId;
+	private long id;
 	private String name;
+	public boolean isPersistant;
 	
 	public List<MuninPlugin> plugins;
 	
 	public Label() {
 		this.plugins = new ArrayList<MuninPlugin>();
+		this.isPersistant = false;
 	}
 	
 	public Label(String name) {
 		this.name = name;
 		this.plugins = new ArrayList<MuninPlugin>();
+		this.isPersistant = false;
 	}
 	
-	public long getBddId() {
-		return this.bddId;
+	public long getId() {
+		return this.id;
 	}
 	
-	public void setBddId(long id) {
-		this.bddId = id;
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	// Returns a List of List of MuninPlugin, sorted by server.
@@ -42,15 +45,15 @@ public class Label {
 			MuninServer s = pl.get(0).getInstalledOn();
 			List<MuninPlugin> ltemp = new ArrayList<MuninPlugin>();
 			ltemp.add(pl.get(0));
-			List<Integer> posToRemove = new ArrayList<Integer>();
+			List<MuninPlugin> posToRemove = new ArrayList<MuninPlugin>();
 			for (int i=1; i<pl.size(); i++) {
 				if (pl.get(i).getInstalledOn().equalsApprox(s)) {
 					ltemp.add(pl.get(i));
-					posToRemove.add(Integer.valueOf(i));
+					posToRemove.add(pl.get(i));
 				}
 			}
-			for (Integer i : posToRemove)
-				pl.remove(i.intValue()); // TODO
+			for (MuninPlugin p : posToRemove)
+				pl.remove(p);
 			pl.remove(0);
 			if (ltemp.size() > 0)
 				l.add(ltemp);

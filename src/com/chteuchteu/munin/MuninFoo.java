@@ -100,11 +100,8 @@ public class MuninFoo {
 	}
 	
 	public void loadInstance() {
-		for (MuninServer s : sqlite.dbHlpr.getServers()) {
-			MuninServer server = s;
-			server.setPluginsList(sqlite.dbHlpr.getPlugins(s));
-			this.addServer(server);
-		}
+		this.servers = sqlite.dbHlpr.getServers();
+		this.labels = sqlite.dbHlpr.getLabels();
 		
 		if (servers.size() > 0)
 			currentServer = getServerFromFlatPosition(0);
@@ -206,6 +203,8 @@ public class MuninFoo {
 				someThingDeleted = true;
 		}
 		labels = list;
+		if (someThingDeleted)
+			sqlite.saveLabels();
 		return someThingDeleted;
 	}
 	public void unLinkAll() {

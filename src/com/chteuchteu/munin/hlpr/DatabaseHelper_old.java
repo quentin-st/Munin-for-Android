@@ -75,7 +75,7 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		if (c != null && c.moveToFirst()) {
 			do {
 				MuninServer s = new MuninServer();
-				s.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+				s.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 				s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
 				s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 				s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
@@ -99,7 +99,7 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 	public List<MuninPlugin> getAllPlugins(MuninServer s) {
 		List<MuninPlugin> l = new ArrayList<MuninPlugin>();
 		String selectQuery = "SELECT * FROM " + TABLE_MUNINPLUGINS 
-				+ " WHERE " + KEY_MUNINPLUGINS_SERVER + " = " + s.getBddId();
+				+ " WHERE " + KEY_MUNINPLUGINS_SERVER + " = " + s.getId();
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
@@ -107,7 +107,7 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		if (c != null && c.moveToFirst()) {
 			do {
 				MuninPlugin p = new MuninPlugin();
-				p.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+				p.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 				p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 				p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
 				p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
@@ -130,7 +130,7 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 			c.moveToFirst();
 		
 		MuninPlugin p = new MuninPlugin();
-		p.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+		p.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 		p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 		p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
 		p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
@@ -149,7 +149,7 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 			c.moveToFirst();
 		
 		MuninServer s = new MuninServer();
-		s.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+		s.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 		s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
 		s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 		s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
@@ -176,7 +176,7 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		if (c != null && c.moveToFirst()) {
 			do {
 				Widget w = new Widget();
-				w.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+				w.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 				w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGETS_PERIOD)));
 				w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIDGETID)));
 				MuninPlugin pl = getMuninPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN)));
@@ -205,7 +205,7 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
 		
 		long id = db.insert(TABLE_MUNINSERVERS, null, values);
-		s.setBddId(id);
+		s.setId(id);
 		s.isPersistant = true;
 		return id;
 	}
@@ -216,10 +216,10 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_MUNINPLUGINS_NAME, p.getName());
 		values.put(KEY_MUNINPLUGINS_FANCYNAME, p.getFancyName());
-		values.put(KEY_MUNINPLUGINS_SERVER, p.getInstalledOn().getBddId());
+		values.put(KEY_MUNINPLUGINS_SERVER, p.getInstalledOn().getId());
 		
 		long id = db.insert(TABLE_MUNINPLUGINS, null, values);
-		p.setBddId(id);
+		p.setId(id);
 		return id;
 	}
 	
@@ -227,13 +227,13 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_WIDGETS_PLUGIN, w.getPlugin().getBddId());
+		values.put(KEY_WIDGETS_PLUGIN, w.getPlugin().getId());
 		values.put(KEY_WIDGETS_PERIOD, w.getPeriod());
 		values.put(KEY_WIDGETS_WIFIONLY, w.isWifiOnly());
 		values.put(KEY_WIDGETS_WIDGETID, w.getWidgetId());
 		
 		long id = db.insert(TABLE_WIDGETS, null, values);
-		w.setBddId(id);
+		w.setId(id);
 		return id;
 	}
 }

@@ -27,7 +27,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -705,7 +704,7 @@ public class Activity_GraphView extends Activity {
 						muninFoo.getLabel(e.getText().toString()).addPlugin(muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition()));
 				}
 				e.setText("");
-				// TODO muninFoo.sqlite.saveMuninLabels();
+				muninFoo.sqlite.saveLabels();
 				refreshLabelsList();
 			}
 		});
@@ -738,7 +737,6 @@ public class Activity_GraphView extends Activity {
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					// Save
 					String labelName = ((TextView)v.findViewById(R.id.line_a)).getText().toString();
-					Log.v("", "Selected label : " + labelName);
 					MuninPlugin p = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
 					if (isChecked)
 						muninFoo.getLabel(labelName).addPlugin(p);
@@ -749,7 +747,7 @@ public class Activity_GraphView extends Activity {
 							refreshLabelsList();
 						}
 					}
-					// TODO muninFoo.sqlite.saveMuninLabels();
+					muninFoo.sqlite.saveLabels();
 				}
 			});
 			

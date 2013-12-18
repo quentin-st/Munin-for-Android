@@ -24,7 +24,7 @@
 	<item
 		android:id="@+id/menu_refresh"
 		android:icon="@drawable/navigation_refresh_dark"
-		android:showAsAction="always"
+		android:showAsAction="withText"
 		android:title="@string/menu_graph_refresh" /><!-- Texte et icône: ifRoom|withText -->
 	<item
 		android:id="@+id/menu_switchServer"

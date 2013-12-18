@@ -42,7 +42,7 @@ import com.chteuchteu.munin.hlpr.DigestUtils;
 import com.chteuchteu.munin.hlpr.Util;
 
 public class MuninServer {
-	private long bddId;
+	private long id;
 	private String name;
 	private String serverUrl;
 	private List<MuninPlugin> plugins;
@@ -109,12 +109,12 @@ public class MuninServer {
 		this.isPersistant = false;
 	}
 	
-	public long getBddId() {
-		return this.bddId;
+	public long getId() {
+		return this.id;
 	}
 	
-	public void setBddId(long id) {
-		this.bddId = id;
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	public void fetchPluginsList() {

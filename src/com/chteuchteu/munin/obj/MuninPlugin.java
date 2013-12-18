@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import com.chteuchteu.munin.MuninFoo;
 
 public class MuninPlugin {
-	private long bddId;
+	private long id;
 	private String name;
 	private String fancyName;
 	private MuninServer installedOn;
@@ -51,12 +51,12 @@ public class MuninPlugin {
 		return this.getFancyName();
 	}
 	
-	public long getBddId() {
-		return this.bddId;
+	public long getId() {
+		return this.id;
 	}
 	
-	public void setBddId(long id) {
-		this.bddId = id;
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	public String getName() {

@@ -3,21 +3,24 @@ package com.chteuchteu.munin.obj;
 
 
 public class Widget {
-	private long bddId;
+	private long id;
 	private String period;
 	private boolean wifiOnly;
 	private MuninPlugin	plugin;
 	private int	 widgetId;
+	public boolean isPersistant;
 
 	public Widget() {
 		this.period = "day";
 		this.wifiOnly = false;
+		this.isPersistant = false;
 	}
 
 	public Widget (String p, boolean w, MuninPlugin pl) {
 		this.setPeriod(p);
 		this.setWifiOnly(w);
 		this.setPlugin(pl);
+		this.isPersistant = false;
 	}
 
 	public Widget(String period, boolean wifiOnly, MuninPlugin plugin, int widgetId) {
@@ -25,14 +28,15 @@ public class Widget {
 		this.wifiOnly = wifiOnly;
 		this.plugin = plugin;
 		this.widgetId = widgetId;
+		this.isPersistant = false;
 	}
 
-	public long getBddId() {
-		return this.bddId;
+	public long getId() {
+		return this.id;
 	}
 	
-	public void setBddId(long id) {
-		this.bddId = id;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getPeriod() {

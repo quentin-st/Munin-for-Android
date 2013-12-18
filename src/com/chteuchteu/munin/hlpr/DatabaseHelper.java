@@ -125,7 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_PARENT, s.getParent());
 		
 		long id = db.insert(TABLE_MUNINSERVERS, null, values);
-		s.setBddId(id);
+		s.setId(id);
 		s.isPersistant = true;
 		return id;
 	}
@@ -143,11 +143,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_MUNINPLUGINS_NAME, p.getName());
 		values.put(KEY_MUNINPLUGINS_FANCYNAME, p.getFancyName());
-		values.put(KEY_MUNINPLUGINS_SERVER, p.getInstalledOn().getBddId());
+		values.put(KEY_MUNINPLUGINS_SERVER, p.getInstalledOn().getId());
 		values.put(KEY_MUNINPLUGINS_CATEGORY, p.getCategory());
 		
 		long id = db.insert(TABLE_MUNINPLUGINS, null, values);
-		p.setBddId(id);
+		p.setId(id);
 		return id;
 	}
 	
@@ -167,7 +167,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_LABELS_NAME, l.getName());
 		
 		long id = db.insert(TABLE_LABELS, null, values);
-		l.setBddId(id);
+		l.setId(id);
 		return id;
 	}
 	
@@ -175,8 +175,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_LABELSRELATIONS_LABEL, l.getBddId());
-		values.put(KEY_LABELSRELATIONS_PLUGIN, p.getBddId());
+		values.put(KEY_LABELSRELATIONS_LABEL, l.getId());
+		values.put(KEY_LABELSRELATIONS_PLUGIN, p.getId());
 		
 		return db.insert(TABLE_LABELSRELATIONS, null, values);
 	}
@@ -185,13 +185,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_WIDGETS_PLUGIN, w.getPlugin().getBddId());
+		values.put(KEY_WIDGETS_PLUGIN, w.getPlugin().getId());
 		values.put(KEY_WIDGETS_PERIOD, w.getPeriod());
 		values.put(KEY_WIDGETS_WIFIONLY, w.isWifiOnly());
 		values.put(KEY_WIDGETS_WIDGETID, w.getWidgetId());
 		
 		long id = db.insert(TABLE_WIDGETS, null, values);
-		w.setBddId(id);
+		w.setId(id);
 		return id;
 	}
 	
@@ -210,7 +210,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
 		values.put(KEY_MUNINSERVERS_PARENT, s.getParent());
 		
-		return db.update(TABLE_MUNINSERVERS, values, KEY_ID + " = ?", new String[] { String.valueOf(s.getBddId()) });
+		return db.update(TABLE_MUNINSERVERS, values, KEY_ID + " = ?", new String[] { String.valueOf(s.getId()) });
 	}
 	
 	public int updateMuninPlugin(MuninPlugin p) {
@@ -219,10 +219,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_MUNINPLUGINS_NAME, p.getName());
 		values.put(KEY_MUNINPLUGINS_FANCYNAME, p.getFancyName());
-		values.put(KEY_MUNINPLUGINS_SERVER, p.getInstalledOn().getBddId());
+		values.put(KEY_MUNINPLUGINS_SERVER, p.getInstalledOn().getId());
 		values.put(KEY_MUNINPLUGINS_CATEGORY, p.getCategory());
 		
-		return db.update(TABLE_MUNINPLUGINS, values, KEY_ID + " = ?", new String[] { String.valueOf(p.getBddId()) });
+		return db.update(TABLE_MUNINPLUGINS, values, KEY_ID + " = ?", new String[] { String.valueOf(p.getId()) });
 	}
 	
 	public List<MuninServer> getServers() {
@@ -235,7 +235,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		if (c != null && c.moveToFirst()) {
 			do {
 				MuninServer s = new MuninServer();
-				s.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+				s.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 				s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
 				s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 				s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
@@ -254,7 +254,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				l.add(s);
 			} while (c.moveToNext());
 		}
-		c.close();
+		if (c != null)
+			c.close();
 		
 		return l;
 	}
@@ -262,7 +263,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public List<MuninPlugin> getPlugins(MuninServer s) {
 		List<MuninPlugin> l = new ArrayList<MuninPlugin>();
 		String selectQuery = "SELECT * FROM " + TABLE_MUNINPLUGINS 
-				+ " WHERE " + KEY_MUNINPLUGINS_SERVER + " = " + s.getBddId();
+				+ " WHERE " + KEY_MUNINPLUGINS_SERVER + " = " + s.getId();
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
@@ -270,7 +271,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		if (c != null && c.moveToFirst()) {
 			do {
 				MuninPlugin p = new MuninPlugin();
-				p.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+				p.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 				p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 				p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
 				p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_CATEGORY)));
@@ -279,7 +280,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				l.add(p);
 			} while (c.moveToNext());
 		}
-		c.close();
+		if (c != null)
+			c.close();
 		
 		return l;
 	}
@@ -293,7 +295,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		if (c != null && c.moveToFirst()) {
 			MuninPlugin p = new MuninPlugin();
-			p.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+			p.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 			p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 			p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
 			p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_CATEGORY)));
@@ -314,7 +316,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		if (c != null && c.moveToFirst()) {
 			MuninServer s = new MuninServer();
-			s.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+			s.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 			s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
 			s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 			s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
@@ -345,15 +347,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		if (c != null && c.moveToFirst()) {
 			do {
 				Widget w = new Widget();
-				w.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+				w.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 				w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGETS_PERIOD)));
 				w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIDGETID)));
 				w.setPlugin(getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN))));
 				w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)));
+				w.isPersistant = true;
 				l.add(w);
 			} while (c.moveToNext());
 		}
-		c.close();
+		if (c != null)
+			c.close();
 		
 		return l;
 	}
@@ -367,11 +371,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		if (c != null && c.moveToFirst()) {
 			Widget w = new Widget();
-			w.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
+			w.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 			w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGETS_PERIOD)));
 			w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIDGETID)));
 			w.setPlugin(getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN))));
 			w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)));
+			w.isPersistant = true;
 			c.close();
 			
 			return w;
@@ -388,15 +393,74 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return l;
 	}
 	
+	public List<Label> getLabels() {
+		List<Label> list = new ArrayList<Label>();
+		String selectQuery = "SELECT * FROM " + TABLE_LABELS;
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+		
+		if (c != null && c.moveToFirst()) {
+			do {
+				Label l = new Label();
+				l.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+				l.setName(c.getString(c.getColumnIndex(KEY_LABELS_NAME)));
+				l.setPlugins(getPlugins(l));
+				list.add(l);
+			} while (c.moveToNext());
+		}
+		c.close();
+		
+		return list;
+	}
+	
+	public Label getLabel(String labelName) {
+		String selectQuery = "SELECT * FROM " + TABLE_LABELS
+				+ " WHERE " + KEY_LABELS_NAME + " = '" + labelName + "'";
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+		
+		if (c != null && c.moveToFirst()) {
+			Label l = new Label();
+			l.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+			l.setName(c.getString(c.getColumnIndex(KEY_LABELS_NAME)));
+			l.setPlugins(getPlugins(l));
+			l.isPersistant = true;
+			
+			return l;
+		}
+		return null;
+	}
+	
+	public List<MuninPlugin> getPlugins(Label l) {
+		List<MuninPlugin> list = new ArrayList<MuninPlugin>();
+		String selectQuery = "SELECT * FROM " + TABLE_LABELSRELATIONS
+				+ " WHERE " + KEY_LABELSRELATIONS_LABEL + " = " + l.getId();
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+		
+		if (c != null && c.moveToFirst()) {
+			do {
+				MuninPlugin p = getPlugin(c.getInt(c.getColumnIndex(KEY_LABELSRELATIONS_PLUGIN)));
+				list.add(p);
+			} while (c.moveToNext());
+		}
+		if (c != null)
+			c.close();
+		return list;
+	}
+	
 	public void deleteServer(MuninServer s) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_MUNINSERVERS, KEY_ID + " = ?", new String[] { String.valueOf(s.getBddId()) });
+		db.delete(TABLE_MUNINSERVERS, KEY_ID + " = ?", new String[] { String.valueOf(s.getId()) });
 		deletePlugins(s);
 	}
 	
 	public void deletePlugin(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_MUNINPLUGINS, KEY_ID + " = ?", new String[] { String.valueOf(p.getBddId()) });
+		db.delete(TABLE_MUNINPLUGINS, KEY_ID + " = ?", new String[] { String.valueOf(p.getId()) });
 	}
 	
 	public void deletePlugins(MuninServer s) {
@@ -406,12 +470,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			deleteWidgets(p);
 			deleteLabelsRelations(p);
 		}
-		db.delete(TABLE_MUNINPLUGINS, KEY_MUNINPLUGINS_SERVER + " = ?", new String[] { String.valueOf(s.getBddId()) });
+		db.delete(TABLE_MUNINPLUGINS, KEY_MUNINPLUGINS_SERVER + " = ?", new String[] { String.valueOf(s.getId()) });
 	}
 	
 	public void deleteWidgets(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_WIDGETS, KEY_WIDGETS_PLUGIN + " = ?", new String[] { String.valueOf(p.getBddId()) });
+		db.delete(TABLE_WIDGETS, KEY_WIDGETS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });
 	}
 	
 	public void deleteWidget(int appWidgetId) {
@@ -421,17 +485,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public void deleteLabelsRelations(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(p.getBddId()) });
+		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });
 	}
 	
 	public void deleteLabelsRelations(Label l) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_LABEL + " = ?", new String[] { String.valueOf(l.getBddId()) });
+		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_LABEL + " = ?", new String[] { String.valueOf(l.getId()) });
+	}
+	
+	public void deleteLabelsRelation(MuninPlugin p, Label l) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_LABEL + " = ? AND " + KEY_LABELSRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(l.getId()), String.valueOf(p.getId()) });
 	}
 	
 	public void deleteLabel(Label l) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_LABELS, KEY_ID + " = ?", new String[] { String.valueOf(l.getBddId()) });
+		db.delete(TABLE_LABELS, KEY_ID + " = ?", new String[] { String.valueOf(l.getId()) });
 		deleteLabelsRelations(l);
 	}
 	
@@ -461,62 +530,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_MUNINSERVERS);
 		db.execSQL(CREATE_TABLE_MUNINSERVERS);
 	}
-	
-	
-	/* public Label getLabel(long id) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		
-		String selectQuery = "SELECT * FROM " + TABLE_LABELS + " WHERE "
-				+ KEY_ID + " = " + id;
-		
-		Cursor c = db.rawQuery(selectQuery, null);
-		
-		if (c != null)
-			c.moveToFirst();
-		
-		Label l = new Label();
-		l.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
-		l.setName(c.getString(c.getColumnIndex(KEY_LABELS_NAME)));
-		return l;
-	}
-	
-	public LabelRelation getLabelRelation(long id) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		
-		String selectQuery = "SELECT * FROM " + TABLE_LABELS + " WHERE "
-				+ KEY_ID + " = " + id;
-		
-		Cursor c = db.rawQuery(selectQuery, null);
-		
-		if (c != null)
-			c.moveToFirst();
-		
-		LabelRelation r = new LabelRelation();
-		r.setBddId(c.getInt(c.getColumnIndex(KEY_ID)));
-		// TODO setLabel
-		// TODO setPlugin
-		return r;
-	}
-	
-	public Widget getWidget(long id) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		
-		String selectQuery = "SELECT * FROM " + TABLE_WIDGETS + " WHERE "
-				+ KEY_ID + " = " + id;
-		
-		Cursor c = db.rawQuery(selectQuery, null);
-		
-		if (c != null)
-			c.moveToFirst();
-		
-		Widget w = new Widget();
-		// setPlugin
-		// setPeriod
-		w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGETS_PERIOD)));
-		if (c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)) == 1)
-			w.setWifiOnly(true);
-		else
-			w.setWifiOnly(false);
-		return w;
-	}*/
 }

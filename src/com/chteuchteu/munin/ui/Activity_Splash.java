@@ -220,10 +220,10 @@ public class Activity_Splash extends Activity {
 					serv.setGraphURL(getPref("server" + serverNumber + "GraphURL"));
 					
 					DatabaseHelper_old dbHlprOld = new DatabaseHelper_old(getApplicationContext());
-					serv.setBddId(dbHlprOld.insertMuninServer(serv));
+					serv.setId(dbHlprOld.insertMuninServer(serv));
 					
 					for (MuninPlugin ms : serv.getPlugins())
-						ms.setBddId(dbHlprOld.insertMuninPlugin(ms));
+						ms.setId(dbHlprOld.insertMuninPlugin(ms));
 					
 					removePref("server" + serverNumber + "Url");
 					removePref("server" + serverNumber + "Name");
