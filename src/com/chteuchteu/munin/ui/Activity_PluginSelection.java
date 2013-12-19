@@ -1,12 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
@@ -43,6 +36,13 @@ import com.chteuchteu.munin.obj.MuninServer;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 
 @SuppressLint("NewApi")
@@ -88,8 +88,8 @@ public class Activity_PluginSelection extends ListActivity {
 				actionBarSpinnerIndex = muninFoo.currentServer.getFlatPosition();
 				List<String> list2 = new ArrayList<String>();
 				List<MuninServer> l1 = muninFoo.getOrderedServers();
-				for (int i=0; i<l1.size(); i++) {
-					list2.add(l1.get(i).getName());
+				for (MuninServer s : l1) {
+					list2.add(s.getName());
 				}
 				SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list2);
 				
@@ -206,10 +206,10 @@ public class Activity_PluginSelection extends ListActivity {
 			
 			list.clear();
 			HashMap<String,String> item;
-			for(int i=0; i<pluginsList.size(); i++){
+			for (MuninPlugin pl : pluginsList) {
 				item = new HashMap<String,String>();
-				item.put("line1", pluginsList.get(i).getFancyName());
-				item.put("line2", pluginsList.get(i).getName());
+				item.put("line1", pl.getFancyName());
+				item.put("line2", pl.getName());
 				list.add(item);
 			}
 			sa = new SimpleAdapter(this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
@@ -341,11 +341,11 @@ public class Activity_PluginSelection extends ListActivity {
 					}
 					
 					HashMap<String,String> item;
-					for(int i=0; i<pluginsFilter.length; i++){
-						if (pluginsFilter[i] != null) {
+					for (MuninPlugin p : pluginsFilter) {
+						if (p != null) {
 							item = new HashMap<String,String>();
-							item.put("line1", pluginsFilter[i].getFancyName());
-							item.put("line2", pluginsFilter[i].getName());
+							item.put("line1", p.getFancyName());
+							item.put("line2", p.getName());
 							list.add(item);
 						}
 					}

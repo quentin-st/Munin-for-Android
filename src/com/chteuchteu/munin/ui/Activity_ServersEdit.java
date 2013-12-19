@@ -1,9 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ListActivity;
@@ -29,6 +25,10 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleFloatViewManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Activity_ServersEdit extends ListActivity {
 	private MuninFoo		muninFoo;
@@ -89,10 +89,10 @@ public class Activity_ServersEdit extends ListActivity {
 	public void updateList(boolean firstTime) {
 		list.clear();
 		HashMap<String,String> item;
-		for(int i=0; i<serversList.size(); i++){
+		for (MuninServer s : serversList) {
 			item = new HashMap<String,String>();
-			item.put("line1", serversList.get(i).getName());
-			item.put("line2", serversList.get(i).getServerUrl());
+			item.put("line1", s.getName());
+			item.put("line2", s.getServerUrl());
 			list.add(item);
 		}
 		sa = new SimpleAdapter(this, list, R.layout.serversedit_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});

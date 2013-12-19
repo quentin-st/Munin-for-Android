@@ -1,9 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -41,6 +37,10 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Activity_Notifications extends Activity {
 	private MuninFoo		muninFoo;
@@ -246,7 +246,7 @@ public class Activity_Notifications extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		if (((LinearLayout)findViewById(R.id.list_container)).getVisibility() == View.VISIBLE) {
+		if (findViewById(R.id.list_container).getVisibility() == View.VISIBLE) {
 			changeListViewVisibility(false);
 			saveServersListSettings();
 		} else {
@@ -299,7 +299,7 @@ public class Activity_Notifications extends Activity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (((LinearLayout)findViewById(R.id.list_container)).getVisibility() == View.VISIBLE) {
+				if (findViewById(R.id.list_container).getVisibility() == View.VISIBLE) {
 					changeListViewVisibility(false);
 					saveServersListSettings();
 				} else {

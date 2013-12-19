@@ -1,10 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -17,7 +12,6 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -32,20 +26,23 @@ import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
 import com.crashlytics.android.Crashlytics;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class Activity_Splash extends Activity {
 	private MuninFoo muninFoo;
 	
 	//protected boolean _active = true;
 	protected int _splashTime = 2100;
-	protected boolean splashEnabled;
 	protected String activity;
 	protected boolean splash;
 	protected boolean updating = true;
 	protected boolean splashing = true;
 	
 	// update thread
-	protected ProgressDialog myProgressDialog; 
-	final Handler uiThreadCallback = new Handler();
+	protected ProgressDialog myProgressDialog;
 	
 	private boolean updateOperations;
 	
@@ -55,11 +52,8 @@ public class Activity_Splash extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = new MuninFoo(this);
 		Crashlytics.start(this);
-		
-		if (getPref("splash").equals("true") || getPref("splash").equals(""))
-			splash = true;
-		else
-			splash = false;
+
+		splash = getPref("splash").equals("true") || getPref("splash").equals("");
 		
 		if (splash) {
 			setContentView(R.layout.splash);
@@ -212,7 +206,6 @@ public class Activity_Splash extends Activity {
 							m = new MuninPlugin(pluginsStr[y].split(",")[0], serv);
 							m.setFancyName(pluginsStr[y].split(",")[1]);
 							mp.add(m);
-							m = null;
 						} catch (Exception ex) { }
 					}
 					serv.setPluginsList(mp);

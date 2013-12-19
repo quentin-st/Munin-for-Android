@@ -1,12 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -28,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -39,6 +31,13 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class Activity_Settings extends Activity {
 	private Spinner		spinner_scale;
@@ -83,9 +82,9 @@ public class Activity_Settings extends Activity {
 		} else {
 			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
 			findViewById(R.id.layout_actions).setVisibility(View.VISIBLE);
-			((Button)findViewById(R.id.btn_eraseData)).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionReset(); } });
-			((Button)findViewById(R.id.btn_checkUpdates)).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionUpdate(); } });
-			((Button)findViewById(R.id.btn_gplay)).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionGPlay(); } });
+			findViewById(R.id.btn_eraseData).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionReset(); } });
+			findViewById(R.id.btn_checkUpdates).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionUpdate(); } });
+			findViewById(R.id.btn_gplay).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionGPlay(); } });
 		}
 		
 		spinner_scale = 	(Spinner)findViewById(R.id.spinner_scale);
@@ -245,7 +244,7 @@ public class Activity_Settings extends Activity {
 			spinner_scale.setSelection(3, true);
 		
 		// App language
-		String lang = "";
+		String lang;
 		if (!getPref("lang").equals(""))
 			lang = getPref("lang");
 		else
