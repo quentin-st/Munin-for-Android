@@ -16,7 +16,7 @@ import com.chteuchteu.munin.obj.Widget;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 2;
-	private static final String DATABASE_NAME = "muninForAndroid";
+	private static final String DATABASE_NAME = "muninForAndroid2.db";
 	
 	// Table names
 	private static final String TABLE_MUNINSERVERS = "muninServers";

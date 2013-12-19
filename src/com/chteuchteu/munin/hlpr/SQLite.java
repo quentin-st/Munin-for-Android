@@ -30,6 +30,7 @@ public class SQLite {
 	}
 	
 	public void migrateDatabase(Context c) {
+		Log.v("", "Trying to migrate database");
 		// Get data
 		DatabaseHelper_old dbH_old = new DatabaseHelper_old(c);
 		List<MuninServer> servers = dbH_old.getAllMuninServers();

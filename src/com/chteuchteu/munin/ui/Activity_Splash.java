@@ -27,7 +27,6 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.Widget_GraphWidget;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
-import com.chteuchteu.munin.hlpr.DatabaseHelper_old;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
@@ -104,11 +103,14 @@ public class Activity_Splash extends Activity {
 		splashTread.start();
 		
 		updateOperations = false;
-		if (!getPref("lastMFAVersion").equals(muninFoo.version + "") || !getPref("serverUrl").equals("") || !getPref("server00Url").equals(""))
+		if (!getPref("lastMFAVersion").equals(muninFoo.version + "") || !getPref("serverUrl").equals("") || !getPref("server00Url").equals("")) {
 			updateOperations = true;
+			updating = true;
+		}
 		
 		if (updateOperations) {
-			myProgressDialog = ProgressDialog.show(Activity_Splash.this, "", getString(R.string.text39), true);
+			if (myProgressDialog == null || (myProgressDialog != null && !myProgressDialog.isShowing()))
+				myProgressDialog = ProgressDialog.show(Activity_Splash.this, "", getString(R.string.text39), true);
 			// Please wait while the app does some update operations…
 			new UpdateOperations().execute();
 		} else
@@ -180,8 +182,14 @@ public class Activity_Splash extends Activity {
 		if (getPref("defaultScale").equals(""))
 			setPref("defaultScale", "day");
 		
-		// Migration de la base de données: SharedPreferences ==> SQLite_old
-		if (!getPref("server00Url").equals("") || !getPref("server01Url").equals("")) {
+		// 2.6 : migrate database. Operations under those ones will be done on the new DB.
+		File new_database = getApplicationContext().getDatabasePath("muninForAndroid2.db");
+		File old_database = getApplicationContext().getDatabasePath("MuninforAndroid.db");
+		if (!new_database.exists() && old_database.exists())
+			muninFoo.sqlite.migrateDatabase(this);
+		
+		// BDD Migration : SharedPreferences ==> SQLite
+		if (!getPref("server00Url").equals("")) {
 			MuninServer serv;
 			String		serverNumber = "0";
 			String[]	pluginsStr;
@@ -219,11 +227,11 @@ public class Activity_Splash extends Activity {
 						serv.setSSL(true);
 					serv.setGraphURL(getPref("server" + serverNumber + "GraphURL"));
 					
-					DatabaseHelper_old dbHlprOld = new DatabaseHelper_old(getApplicationContext());
-					serv.setId(dbHlprOld.insertMuninServer(serv));
+					DatabaseHelper dbHlpr = new DatabaseHelper(getApplicationContext());
+					serv.setId(dbHlpr.insertMuninServer(serv));
 					
 					for (MuninPlugin ms : serv.getPlugins())
-						ms.setId(dbHlprOld.insertMuninPlugin(ms));
+						ms.setId(dbHlpr.insertMuninPlugin(ms));
 					
 					removePref("server" + serverNumber + "Url");
 					removePref("server" + serverNumber + "Name");
@@ -267,8 +275,8 @@ public class Activity_Splash extends Activity {
 							}
 						}
 						
-						DatabaseHelper_old dbHlprOld = new DatabaseHelper_old(getApplicationContext());
-						dbHlprOld.insertWidget(w);
+						DatabaseHelper dbHlpr = new DatabaseHelper(getApplicationContext());
+						dbHlpr.insertWidget(w);
 						
 						removePref("widget" + id + "_Url");
 						removePref("widget" + id + "_Period");
@@ -297,10 +305,6 @@ public class Activity_Splash extends Activity {
 				dbHlpr.updateMuninServer(b);
 			}
 		}
-		
-		File database=getApplicationContext().getDatabasePath("MuninforAndroid.db");
-		if (!database.exists())
-			muninFoo.sqlite.migrateDatabase(this);
 		
 		setPref("lastMFAVersion", muninFoo.version + "");
 		
