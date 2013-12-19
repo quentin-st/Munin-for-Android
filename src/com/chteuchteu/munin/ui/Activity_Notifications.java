@@ -24,8 +24,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,8 +61,8 @@ public class Activity_Notifications extends Activity {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 			actionBar.setTitle(getString(R.string.notificationsTitle));
 			
-			((TextView)findViewById(R.id.viewTitle)).setVisibility(View.GONE);
-			((LinearLayout)findViewById(R.id.viewTitleSep)).setVisibility(View.GONE);
+			findViewById(R.id.viewTitle).setVisibility(View.GONE);
+			findViewById(R.id.viewTitleSep).setVisibility(View.GONE);
 			
 			if (muninFoo.drawer) {
 				dh = new DrawerHelper(this, muninFoo);
@@ -186,21 +184,21 @@ public class Activity_Notifications extends Activity {
 	@SuppressLint("NewApi")
 	public void changeListViewVisibility(boolean toBeShown) {
 		if (toBeShown) {
-			((LinearLayout)findViewById(R.id.list_container)).setVisibility(View.VISIBLE);
-			((ScrollView)findViewById(R.id.list_scrollview)).setVisibility(View.VISIBLE);
-			((LinearLayout)findViewById(R.id.view1)).setVisibility(View.GONE);
+			findViewById(R.id.list_container).setVisibility(View.VISIBLE);
+			findViewById(R.id.list_scrollview).setVisibility(View.VISIBLE);
+			findViewById(R.id.view1).setVisibility(View.GONE);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				getActionBar().setTitle(getString(R.string.text56));
 		} else {
-			((LinearLayout)findViewById(R.id.list_container)).setVisibility(View.GONE);
-			((ScrollView)findViewById(R.id.list_scrollview)).setVisibility(View.GONE);
-			((LinearLayout)findViewById(R.id.view1)).setVisibility(View.VISIBLE);
+			findViewById(R.id.list_container).setVisibility(View.GONE);
+			findViewById(R.id.list_scrollview).setVisibility(View.GONE);
+			findViewById(R.id.view1).setVisibility(View.VISIBLE);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				getActionBar().setTitle(getString(R.string.notificationsTitle));
 			computeEstimatedConsumption();
 		}
 	}
-	
+
 	public void enableNotifications() {
 		if (muninFoo.premium) {
 			setPref("lastNotificationText", "");

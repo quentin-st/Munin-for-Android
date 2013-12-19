@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -235,10 +234,12 @@ public class Activity_AddServer extends Activity {
 					tb_auth_password.setText("");
 				} else
 					launching = false;
-				if (((TextView)view).getText().toString().equals(getString(R.string.text12)))
-					tb_serverUrl.setText("http://demo.munin-monitoring.org/munin-monitoring.org/demo.munin-monitoring.org/");
-				else if (((TextView)view).getText().toString().equals(getString(R.string.text13)))
-					tb_serverUrl.setText("http://demo.munin-monitoring.org/");
+				if (view != null) {
+					if (((TextView)view).getText().toString().equals(getString(R.string.text12)))
+						tb_serverUrl.setText("http://demo.munin-monitoring.org/munin-monitoring.org/demo.munin-monitoring.org/");
+					else if (((TextView)view).getText().toString().equals(getString(R.string.text13)))
+						tb_serverUrl.setText("http://demo.munin-monitoring.org/");
+				}
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> parentView) { }
@@ -497,7 +498,6 @@ public class Activity_AddServer extends Activity {
 		popupIsShown = false;
 		algo_state = AST_IDLE;
 		settingsServer = null;
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 		popup.dismiss();
 		muninFoo.resetInstance(context);
 	}
@@ -519,7 +519,7 @@ public class Activity_AddServer extends Activity {
 				public void run() {
 					if (avancement >= 0 && avancement <= 100) {
 						View l = popup.getContentView().findViewById(R.id.popup_container_avancement);
-						if (l.getVisibility() == View.GONE)	l.setVisibility(View.VISIBLE);
+						if (l != null && l.getVisibility() == View.GONE)	l.setVisibility(View.VISIBLE);
 						loading_width = Math.round(avancement * popup_width / 100);
 						if (loading != null)	loading.setLayoutParams(new LinearLayout.LayoutParams(loading_width, LayoutParams.MATCH_PARENT));
 					}
@@ -543,9 +543,6 @@ public class Activity_AddServer extends Activity {
 			super.onPreExecute();
 			Log.v("", "onPreExecute()");
 			if (Util.isOnline(context)) {
-				// Verrouillage de la rotation de l'écran
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-				
 				if (algo_state != AST_WAITING_FOR_CREDENTIALS && algo_state != AST_WAITING_FOR_URL) {
 					runOnUiThread(new Runnable() {
 						public void run() {
@@ -697,7 +694,6 @@ public class Activity_AddServer extends Activity {
 					popupIsShown = false;
 					algo_state = AST_IDLE;
 					settingsServer = null;
-					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 					popup.dismiss();
 					muninFoo.resetInstance(context);
 				}
@@ -752,7 +748,6 @@ public class Activity_AddServer extends Activity {
 			
 			task.cancel(true);
 			settingsServer = null;
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 			muninFoo.resetInstance(context);
 			algo_state = AST_IDLE;
 			
@@ -1051,7 +1046,6 @@ public class Activity_AddServer extends Activity {
 					popupIsShown = false;
 					algo_state = AST_IDLE;
 					settingsServer = null;
-					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 					popup.dismiss();
 					muninFoo.resetInstance(context);
 				}
@@ -1136,8 +1130,6 @@ public class Activity_AddServer extends Activity {
 			else
 				muninFoo.currentServer = muninFoo.getServer(0);
 			
-			// Déverouillage de la rotation de l'écran
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 			canCancel = true;
 			algo_state = AST_IDLE;
 			if (res != RES_UNDEFINED) {

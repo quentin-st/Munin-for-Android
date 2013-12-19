@@ -1,15 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.taptwo.android.widget.TitleFlowIndicator;
-import org.taptwo.android.widget.ViewFlow;
-import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -54,7 +44,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -71,6 +60,16 @@ import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
+
+import org.taptwo.android.widget.TitleFlowIndicator;
+import org.taptwo.android.widget.ViewFlow;
+import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Activity_GraphView extends Activity {
 	private MuninFoo		muninFoo;
@@ -123,7 +122,7 @@ public class Activity_GraphView extends Activity {
 				dh.setDrawerActivity(dh.Activity_GraphView);
 			}
 		} else {
-			((RelativeLayout)findViewById(R.id.comp_relativelayout)).setVisibility(View.VISIBLE);
+			findViewById(R.id.comp_relativelayout).setVisibility(View.VISIBLE);
 			btn_previous = (ImageButton) findViewById(R.id.comp_previous);
 			btn_next = (ImageButton) findViewById(R.id.comp_next);
 			btn_list = (ImageButton) findViewById(R.id.comp_list);
@@ -336,8 +335,8 @@ public class Activity_GraphView extends Activity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (((LinearLayout)findViewById(R.id.serverSwitch_mask)).getVisibility() == View.VISIBLE) {
-					if (((LinearLayout)findViewById(R.id.labels_container)).getVisibility() == View.VISIBLE)
+				if (findViewById(R.id.serverSwitch_mask).getVisibility() == View.VISIBLE) {
+					if (findViewById(R.id.labels_container).getVisibility() == View.VISIBLE)
 						actionCloseLabels();
 					else
 						actionServerSwitchQuit();
@@ -438,9 +437,9 @@ public class Activity_GraphView extends Activity {
 	public void actionServerSwitch() {
 		ListView switch_server = (ListView) findViewById(R.id.serverSwitch_listview);
 		switch_server.setVisibility(View.VISIBLE);
-		((LinearLayout)findViewById(R.id.serverSwitch_mask)).setVisibility(View.VISIBLE);
+		findViewById(R.id.serverSwitch_mask).setVisibility(View.VISIBLE);
 		
-		((LinearLayout)findViewById(R.id.serverSwitch_mask)).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionServerSwitchQuit(); } });
+		findViewById(R.id.serverSwitch_mask).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionServerSwitchQuit(); } });
 		
 		int screenH = 0;
 		if (android.os.Build.VERSION.SDK_INT >= 13) {
@@ -466,7 +465,7 @@ public class Activity_GraphView extends Activity {
 		a2.setDuration(300);
 		
 		switch_server.startAnimation(a1);
-		((LinearLayout)findViewById(R.id.serverSwitch_mask)).startAnimation(a2);
+		findViewById(R.id.serverSwitch_mask).startAnimation(a2);
 		
 		MuninPlugin currentPlugin = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
 		
@@ -506,14 +505,14 @@ public class Activity_GraphView extends Activity {
 	public void actionServerSwitchQuit() {
 		ListView switch_server = (ListView) findViewById(R.id.serverSwitch_listview);
 		switch_server.setVisibility(View.GONE);
-		((LinearLayout)findViewById(R.id.serverSwitch_mask)).setVisibility(View.GONE);
+		findViewById(R.id.serverSwitch_mask).setVisibility(View.GONE);
 		
 		// Animation alpha
 		AlphaAnimation a = new AlphaAnimation(1.0f, 0.0f);
 		a.setDuration(300);
 		
 		switch_server.startAnimation(a);
-		((LinearLayout)findViewById(R.id.serverSwitch_mask)).startAnimation(a);
+		findViewById(R.id.serverSwitch_mask).startAnimation(a);
 	}
 	
 	public void actionPrevious() {
@@ -687,10 +686,10 @@ public class Activity_GraphView extends Activity {
 	}
 	
 	public void actionLabels() {
-		((LinearLayout)findViewById(R.id.serverSwitch_mask)).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionCloseLabels(); } });
+		findViewById(R.id.serverSwitch_mask).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionCloseLabels(); } });
 		
-		((LinearLayout)findViewById(R.id.serverSwitch_mask)).setVisibility(View.VISIBLE);
-		((LinearLayout)findViewById(R.id.labels_container)).setVisibility(View.VISIBLE);
+		findViewById(R.id.serverSwitch_mask).setVisibility(View.VISIBLE);
+		findViewById(R.id.labels_container).setVisibility(View.VISIBLE);
 		
 		refreshLabelsList();
 		
@@ -721,7 +720,7 @@ public class Activity_GraphView extends Activity {
 			
 			checkboxes.add((CheckBox) v.findViewById(R.id.line_0));
 			
-			((LinearLayout) v.findViewById(R.id.line)).setOnClickListener(new OnClickListener() {
+			v.findViewById(R.id.line).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
 					CheckBox cb = (CheckBox) v.findViewById(R.id.line_0);
@@ -762,21 +761,21 @@ public class Activity_GraphView extends Activity {
 			i++;
 		}
 		if (muninFoo.labels.size() == 0) {
-			((TextView) findViewById(R.id.labels_nolabel)).setVisibility(View.VISIBLE);
-			((LinearLayout) findViewById(R.id.listviewLabels)).setVisibility(View.GONE);
+			findViewById(R.id.labels_nolabel).setVisibility(View.VISIBLE);
+			findViewById(R.id.listviewLabels).setVisibility(View.GONE);
 		}
 		else {
-			((TextView) findViewById(R.id.labels_nolabel)).setVisibility(View.GONE);
-			((LinearLayout) findViewById(R.id.listviewLabels)).setVisibility(View.VISIBLE);
+			findViewById(R.id.labels_nolabel).setVisibility(View.GONE);
+			findViewById(R.id.listviewLabels).setVisibility(View.VISIBLE);
 		}
 	}
 	public void actionCloseLabels() {
-		((LinearLayout)findViewById(R.id.serverSwitch_mask)).setVisibility(View.GONE);
-		((LinearLayout)findViewById(R.id.labels_container)).setVisibility(View.GONE);
+		findViewById(R.id.serverSwitch_mask).setVisibility(View.GONE);
+		findViewById(R.id.labels_container).setVisibility(View.GONE);
 		AlphaAnimation a = new AlphaAnimation(1.0f, 0.0f);
 		a.setDuration(300);
-		((LinearLayout)findViewById(R.id.serverSwitch_mask)).startAnimation(a);
-		((LinearLayout)findViewById(R.id.labels_container)).startAnimation(a);
+		findViewById(R.id.serverSwitch_mask).startAnimation(a);
+		findViewById(R.id.labels_container).startAnimation(a);
 	}
 	
 	@SuppressLint("NewApi")
