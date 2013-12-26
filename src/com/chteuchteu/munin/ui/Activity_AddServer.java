@@ -1103,7 +1103,7 @@ public class Activity_AddServer extends Activity {
 			if (!stop) {
 				String res2 = initialization();
 				if (!res2.equals("munin/") && !res2.equals("munin/x/")) {
-					Log.v("", "dunno lol");
+					Log.v("resultat", "" + res2);
 					if (res2.length() > 3) {
 						String result = res2.substring(0, 3);
 						if (result.equals("401"))

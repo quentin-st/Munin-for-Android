@@ -76,6 +76,20 @@ public class Activity_Splash extends Activity {
 		else
 			_splashTime = 0;
 		
+		updateOperations = false;
+		if (!getPref("lastMFAVersion").equals(muninFoo.version + "") || !getPref("serverUrl").equals("") || !getPref("server00Url").equals("")) {
+			updateOperations = true;
+			updating = true;
+		}
+		
+		if (updateOperations) {
+			if (myProgressDialog == null || (myProgressDialog != null && !myProgressDialog.isShowing()))
+				myProgressDialog = ProgressDialog.show(Activity_Splash.this, "", getString(R.string.text39), true);
+			// Please wait while the app does some update operations…
+			new UpdateOperations().execute();
+		} else
+			updating = false;
+		
 		// thread for displaying the SplashScreen
 		Thread splashTread = new Thread() {
 			@Override
@@ -95,20 +109,6 @@ public class Activity_Splash extends Activity {
 			}
 		};
 		splashTread.start();
-		
-		updateOperations = false;
-		if (!getPref("lastMFAVersion").equals(muninFoo.version + "") || !getPref("serverUrl").equals("") || !getPref("server00Url").equals("")) {
-			updateOperations = true;
-			updating = true;
-		}
-		
-		if (updateOperations) {
-			if (myProgressDialog == null || (myProgressDialog != null && !myProgressDialog.isShowing()))
-				myProgressDialog = ProgressDialog.show(Activity_Splash.this, "", getString(R.string.text39), true);
-			// Please wait while the app does some update operations…
-			new UpdateOperations().execute();
-		} else
-			updating = false;
 	}
 	
 	public void updateActions() {

@@ -7,6 +7,7 @@
 		<item name="android:titleTextStyle">@style/ActionBarTitleAppearance</item>
 		<item name="android:subtitleTextStyle">@style/ActionBarSubtitleAppearance</item>
 		<item name="android:icon">@drawable/launcher_icon_mono</item>
+		<item name="android:actionMenuTextColor">#fff</item>
 	</style>
 
 	<style name="ActionBarTitleAppearance" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">

@@ -82,9 +82,8 @@ public class Activity_Alerts extends Activity {
 				dh = new DrawerHelper(this, muninFoo);
 				dh.setDrawerActivity(dh.Activity_Alerts);
 			}
-		} else {
+		} else
 			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
-		}
 		
 		int nbS = muninFoo.getHowManyServers();
 		part_part 					= new LinearLayout[nbS];

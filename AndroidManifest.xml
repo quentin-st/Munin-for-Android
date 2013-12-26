@@ -55,7 +55,6 @@
 		<activity android:name="com.chteuchteu.munin.ui.Activity_ServersEdit" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Servers" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Settings" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Settings_Comp" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GoPremium" />
 
 		<!-- Widget -->

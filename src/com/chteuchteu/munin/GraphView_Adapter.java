@@ -45,10 +45,9 @@ public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// Chargement de -1, 0 et +1
+		// Loading pos -1, 0 and +1
 		if (convertView == null)
 			convertView = mInflater.inflate(R.layout.fragment_graphview, null);
-		//((ImageView) convertView.findViewById(R.id.tiv)).setImageBitmap(null);
 		this.position = position;
 		
 		((ImageView) convertView.findViewById(R.id.tiv)).setTag(position);
@@ -93,14 +92,6 @@ public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
 			super.onPreExecute();
 			tiv.setImageBitmap(null);
 			
-			// Nettoyage du tableau des bitmaps
-			/*if (position > 0 && position < Activity_GraphView.bitmaps.length - 1) {
-    			for (int i = 0; i<Activity_GraphView.bitmaps.length; i++) {
-    				if (i != position-1 && i != position && i != position+1 && Activity_GraphView.bitmaps[i] != null)
-    					Activity_GraphView.bitmaps[i] = null;
-    			}
-    		}*/
-			
 			if (Activity_GraphView.bitmaps[position] == null) {
 				loading_spin.setIndeterminate(true);
 				loading_spin.setVisibility(View.VISIBLE);
@@ -121,7 +112,7 @@ public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
 				if (pos != Activity_GraphView.bitmaps.length-1 && Activity_GraphView.bitmaps[pos+1] == null)
 					Activity_GraphView.bitmaps[pos+1] = Util.removeBitmapBorder(muninFoo.currentServer.getPlugin(pos+1).getGraph(Activity_GraphView.load_period, muninFoo.currentServer));
 				
-				// Nettoyage du tableau
+				// Clean array
 				/*for (int i=0; i<Activity_GraphView.bitmaps.length; i++) {
     				if (i != Activity_GraphView.position-1 && i != Activity_GraphView.position && i != Activity_GraphView.position+1 && Activity_GraphView.bitmaps[i] != null)
     					Activity_GraphView.bitmaps[i] = null;

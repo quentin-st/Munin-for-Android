@@ -90,22 +90,22 @@ public class MuninPlugin {
 		return this.getInstalledOn().getServerUrl() + this.getName() + ".html";
 	}
 	
-	public Bitmap getGraph (String period, MuninServer server) {
+	public Bitmap getGraph(String period, MuninServer server) {
 		return MuninFoo.grabBitmap(this.installedOn, getImgUrl(period));
 	}
 	
-	public Bitmap getGraph (String url) {
+	public Bitmap getGraph(String url) {
 		return MuninFoo.grabBitmap(this.installedOn, url);
 	}
 	
-	public String getState () {
+	public String getState() {
 		return this.state;
 	}
 	
-	public void setName (String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
-	public void setFancyName (String fn) {
+	public void setFancyName(String fn) {
 		this.fancyName = fn;
 	}
 	public MuninPlugin setInstalledOn(MuninServer s) {
@@ -115,7 +115,7 @@ public class MuninPlugin {
 	public void setCategory(String c) {
 		this.category = c;
 	}
-	public void setState (String st) {
+	public void setState(String st) {
 		if (st.equals(MuninPlugin.ALERTS_STATE_CRITICAL) || st.equals(MuninPlugin.ALERTS_STATE_OK)
 				|| st.equals(MuninPlugin.ALERTS_STATE_UNDEFINED) || st.equals(MuninPlugin.ALERTS_STATE_WARNING))
 			this.state = st;

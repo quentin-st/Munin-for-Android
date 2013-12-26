@@ -217,6 +217,7 @@ public class DrawerHelper {
 			a.findViewById(R.id.drawer_graphs_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_alerts_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
+			a.findViewById(R.id.drawer_labels_btn).setEnabled(false);
 		}
 		
 		setFont((ViewGroup) a.findViewById(R.id.drawer_scrollview), "RobotoCondensed-Regular.ttf");

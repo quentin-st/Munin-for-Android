@@ -502,10 +502,10 @@ public class MuninFoo {
 		Bitmap b = null;
 		
 		try {
-			// Création du HTTP Client
 			HttpClient client = null;
 			if (s.getSSL()) {
 				try {
+					Log.v("", "ssl needed");
 					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 					trustStore.load(null, null);
 					
@@ -532,9 +532,12 @@ public class MuninFoo {
 			HttpGet request = new HttpGet(url);
 			
 			if (s.isAuthNeeded()) {
-				if (s.getAuthType() == MuninServer.AUTH_BASIC)
+				Log.v("", "authneeded");
+				if (s.getAuthType() == MuninServer.AUTH_BASIC) {
 					request.setHeader("Authorization", "Basic " + Base64.encodeToString((s.getAuthLogin() + ":" + s.getAuthPassword()).getBytes(), Base64.NO_WRAP));
-				else if (s.getAuthType() == MuninServer.AUTH_DIGEST) {
+					Log.v("", "basic");
+				} else if (s.getAuthType() == MuninServer.AUTH_DIGEST) {
+					Log.v("", "digest");
 					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
 					String userName = s.getAuthLogin();
 					String password = s.getAuthPassword();

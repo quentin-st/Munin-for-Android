@@ -58,7 +58,6 @@ public class Activity_Main extends Activity {
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
 		
-		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			if (muninFoo.drawer)
 				setContentView(R.layout.main_clear);
@@ -73,8 +72,7 @@ public class Activity_Main extends Activity {
 				setFont((ViewGroup)findViewById(R.id.ll_splash), "RobotoCondensed-Regular.ttf");
 			} else
 				setFont((ViewGroup)findViewById(R.id.buttonsContainer), "RobotoCondensed-Regular.ttf");
-		}
-		else {
+		} else {
 			setContentView(R.layout.main);
 			this.getWindow().getDecorView().setBackgroundColor(Color.WHITE);
 		}

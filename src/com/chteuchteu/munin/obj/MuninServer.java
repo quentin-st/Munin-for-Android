@@ -267,6 +267,7 @@ public class MuninServer {
 		Log.v("", "grabUrl finished");
 		String page = res.html;
 		if (!res.header_wwwauthenticate.equals("")) {
+			Log.v("authstring?", "-> " + res.header_wwwauthenticate);
 			// Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
 			this.authString = res.header_wwwauthenticate;
 			if (res.header_wwwauthenticate.contains("Digest"))
@@ -338,6 +339,7 @@ public class MuninServer {
 			HttpClient client = null;
 			if (this.ssl) {
 				try {
+					Log.v("", "SSL needed");
 					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 					trustStore.load(null, null);
 					
@@ -364,6 +366,7 @@ public class MuninServer {
 			HttpGet request = new HttpGet(url);
 			
 			if (this.isAuthNeeded()) {
+				Log.v("", "authneeded!");
 				if (this.getAuthType() == AUTH_BASIC)
 					request.setHeader("Authorization", "Basic " + Base64.encodeToString((authLogin + ":" + authPassword).getBytes(), Base64.NO_WRAP));
 				else if (this.getAuthType() == AUTH_DIGEST) {
@@ -433,6 +436,7 @@ public class MuninServer {
 			Log.v("", "_request finished");
 			
 			resp.html = str.toString();
+			Log.v("html", resp.html);
 			resp.responseReason = response.getStatusLine().getReasonPhrase();
 			resp.responseCode = response.getStatusLine().getStatusCode();
 			Log.v(resp.responseCode + "", resp.responseReason);
@@ -538,7 +542,7 @@ public class MuninServer {
 	}
 	
 	public boolean isAuthNeeded() {
-		if (this.authLogin.equals("") && this.authPassword.equals(""))
+		if (this.authType == AUTH_NONE && this.authLogin.equals("") && this.authPassword.equals(""))
 			return false;
 		else
 			return true;

@@ -1,125 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/drawer_layout" android:layout_width="match_parent" android:layout_height="match_parent"> -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
 
-    <!-- <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:adjustViewBounds="true" android:contentDescription="@string/app_name" android:scaleType="centerCrop" android:src="@drawable/splash_bg" /> -->
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@drawable/splash_gradient"
+		android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/splash_gradient"
-        android:orientation="vertical" >
+		<!-- Update notification -->
 
-        <!-- Update notification -->
+		<LinearLayout
+			android:id="@+id/updateNotification"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:clickable="true"
+			android:onClick="onClick"
+			android:orientation="vertical"
+			android:visibility="gone" >
 
-        <LinearLayout
-            android:id="@+id/updateNotification"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:clickable="true"
-            android:onClick="onClick"
-            android:orientation="vertical"
-            android:visibility="gone" >
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="#333333"
+				android:orientation="horizontal" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#333333"
-                android:orientation="horizontal" >
+				<ImageView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:padding="15dp"
+					android:src="@drawable/icon_alerts" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:src="@drawable/icon_alerts" />
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical" >
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:paddingBottom="2dp"
+						android:paddingLeft="3dp"
+						android:paddingTop="6dp"
+						android:text="@string/updateNotificationTitle"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:textColor="#ffffff" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="2dp"
-                        android:paddingLeft="3dp"
-                        android:paddingTop="6dp"
-                        android:text="@string/updateNotificationTitle"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#ffffff" />
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:paddingBottom="6dp"
+						android:paddingLeft="3dp"
+						android:paddingRight="10dp"
+						android:paddingTop="2dp"
+						android:text="@string/updateNotificationText"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:textColor="#ffffff"
+						android:textSize="12sp" />
+				</LinearLayout>
+			</LinearLayout>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="6dp"
-                        android:paddingLeft="3dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="2dp"
-                        android:text="@string/updateNotificationText"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#ffffff"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="0.5dp"
+				android:background="#aaaaaa"
+				android:orientation="horizontal" />
+		</LinearLayout>
+		<!-- Fin update notification -->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#aaaaaa"
-                android:orientation="horizontal" />
-        </LinearLayout>
-        <!-- Fin update notification -->
+		<LinearLayout
+			android:id="@+id/ll_splash"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center_vertical"
+			android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/ll_splash"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="vertical" >
+			<ImageView
+				android:id="@+id/overlay_icon"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginBottom="30dp"
+				android:alpha="0.9"
+				android:contentDescription="@string/splashDesc"
+				android:src="@drawable/splash_overlay_logo" />
 
-            <ImageView
-                android:id="@+id/overlay_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
-                android:alpha="0.9"
-                android:contentDescription="@string/splashDesc"
-                android:src="@drawable/splash_overlay_logo" />
+			<TextView
+				android:id="@+id/splash_overlay_appname"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginBottom="10dp"
+				android:contentDescription="@string/splashDesc"
+				android:shadowColor="#222222"
+				android:shadowDx="0"
+				android:shadowDy="1"
+				android:shadowRadius="2"
+				android:text="@string/app_name"
+				android:textColor="#ffffff"
+				android:textSize="40sp" />
+		</LinearLayout>
+	</RelativeLayout>
 
-            <TextView
-                android:id="@+id/splash_overlay_appname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:contentDescription="@string/splashDesc"
-                android:shadowColor="#222222"
-                android:shadowDx="0"
-                android:shadowDy="1"
-                android:shadowRadius="2"
-                android:text="@string/app_name"
-                android:textColor="#ffffff"
-                android:textSize="40sp" />
-        </LinearLayout>
-
-        <!--
-             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:gravity="center" android:orientation="horizontal" > <Button android:id="@+id/graphsContainer" style="@style/ButtonText" android:layout_width="wrap_content" android:layout_height="wrap_content" 
-			android:background="@drawable/blue_button" android:drawablePadding="15sp" android:drawableTop="@drawable/icon_graphs" android:gravity="center" android:paddingTop="-15dp" android:text="@string/button_graphs" /> <Button android:id="@+id/serverContainer" style="@style/ButtonText" android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" android:background="@drawable/blue_button" android:drawablePadding="15sp" android:drawableTop="@drawable/icon_servers" android:gravity="center" android:paddingTop="-15dp" android:text="@string/button_server" /> <Button android:id="@+id/settingsContainer" style="@style/ButtonText" 
-			android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/blue_button" android:drawablePadding="15sp" android:drawableTop="@drawable/icon_settings" android:gravity="center" android:paddingTop="-15dp" android:text="@string/button_settings" /> <Button android:id="@+id/premiumContainer" 
-			style="@style/ButtonText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/blue_button" android:drawablePadding="15sp" android:drawableTop="@drawable/icon_premium" android:gravity="center" android:paddingTop="-15dp" android:text="@string/button_premium" 
-			/> <Button android:id="@+id/alertsContainer" style="@style/ButtonText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/blue_button" android:drawablePadding="15sp" android:drawableTop="@drawable/icon_alerts" android:gravity="center" android:paddingTop="-15dp" 
-			android:text="@string/button_alerts" /> <Button android:id="@+id/notificationsContainer" style="@style/ButtonText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/blue_button" android:drawablePadding="15sp" android:drawableTop="@drawable/icon_alerts" 
-			android:gravity="center" android:paddingTop="-15dp" android:text="@string/button_notifications" /> <Button android:id="@+id/aboutContainer" style="@style/ButtonText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/blue_button" android:drawablePadding="15sp" 
-			android:drawableTop="@drawable/icon_about" android:gravity="center" android:paddingTop="-15dp" android:text="@string/button_about" /> </LinearLayout>
-        -->
-    </RelativeLayout>
-
-</FrameLayout><!--
-     <LinearLayout android:id="@+id/drawer" android:layout_width="240dp" android:layout_height="match_parent" android:layout_gravity="start" android:background="#f5f5f5"> <ListView android:id="@+id/drawer_list" android:layout_width="match_parent" android:layout_height="wrap_content" android:choiceMode="singleChoice" 
-	android:divider="#e0e0e0" android:dividerHeight="1dp" /> </LinearLayout> </android.support.v4.widget.DrawerLayout>
--->
+</FrameLayout>

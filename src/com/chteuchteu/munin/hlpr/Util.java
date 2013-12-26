@@ -23,6 +23,14 @@ public final class Util {
 			return true;
 	}
 	
+	public static int getStatusBarHeight(Context c) {
+		int result = 0;
+		int resourceId = c.getResources().getIdentifier("status_bar_height", "dimen", "android");
+		if (resourceId > 0)
+			result = c.getResources().getDimensionPixelSize(resourceId);
+		return result;
+	}
+	
 	public static boolean isOnline(Context c) {
 		ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
