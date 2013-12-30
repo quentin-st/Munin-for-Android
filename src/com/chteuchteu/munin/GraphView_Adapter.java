@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.android.volley.toolbox.ImageRequest;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 
@@ -20,10 +21,14 @@ public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
 	
 	private LayoutInflater	mInflater;
 	private int 			position;
+	private Context			c;
+	
+	private ImageRequest r;
 	
 	public GraphView_Adapter(Context context) {
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		muninFoo = MuninFoo.getInstance();
+		muninFoo = MuninFoo.getInstance(context);
+		c = context;
 	}
 	
 	@Override
@@ -103,18 +108,21 @@ public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
 			int pos = Activity_GraphView.viewFlow.getSelectedItemPosition();
 			
 			if (Activity_GraphView.load_period != null && muninFoo.currentServer != null && Activity_GraphView.bitmaps != null) {
+				// Fetch pos 0
 				if (Activity_GraphView.bitmaps[pos] == null)
-					Activity_GraphView.bitmaps[pos] = Util.removeBitmapBorder(muninFoo.currentServer.getPlugin(pos).getGraph(Activity_GraphView.load_period, muninFoo.currentServer));
+					Activity_GraphView.bitmaps[pos] = Util.removeBitmapBorder(MuninFoo.grabBitmap(muninFoo.currentServer, muninFoo.currentServer.getPlugin(pos).getImgUrl(Activity_GraphView.load_period)));
 				
+				// Fetch pos -1
 				if (pos != 0 && Activity_GraphView.bitmaps[pos-1] == null)
-					Activity_GraphView.bitmaps[pos-1] = Util.removeBitmapBorder(muninFoo.currentServer.getPlugin(pos-1).getGraph(Activity_GraphView.load_period, muninFoo.currentServer));
+					Activity_GraphView.bitmaps[pos-1] = Util.removeBitmapBorder(MuninFoo.grabBitmap(muninFoo.currentServer, muninFoo.currentServer.getPlugin(pos-1).getImgUrl(Activity_GraphView.load_period)));
 				
+				// Fetch pos +1
 				if (pos != Activity_GraphView.bitmaps.length-1 && Activity_GraphView.bitmaps[pos+1] == null)
-					Activity_GraphView.bitmaps[pos+1] = Util.removeBitmapBorder(muninFoo.currentServer.getPlugin(pos+1).getGraph(Activity_GraphView.load_period, muninFoo.currentServer));
+					Activity_GraphView.bitmaps[pos+1] = Util.removeBitmapBorder(MuninFoo.grabBitmap(muninFoo.currentServer, muninFoo.currentServer.getPlugin(pos+1).getImgUrl(Activity_GraphView.load_period)));
 				
 				// Clean array
 				/*for (int i=0; i<Activity_GraphView.bitmaps.length; i++) {
-    				if (i != Activity_GraphView.position-1 && i != Activity_GraphView.position && i != Activity_GraphView.position+1 && Activity_GraphView.bitmaps[i] != null)
+					if (i != Activity_GraphView.position-1 && i != Activity_GraphView.position && i != Activity_GraphView.position+1 && Activity_GraphView.bitmaps[i] != null)
     					Activity_GraphView.bitmaps[i] = null;
     			}*/
 			}
@@ -138,6 +146,78 @@ public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
 			}
 		}
 	}
+	
+	/*public void fetchBitmap(final int pos, final boolean retried) {
+		final String url = muninFoo.currentServer.getPlugin(pos).getImgUrl(Activity_GraphView.load_period);
+		Log.v("", "fetching bitmap " + pos + " (" + url + ")");
+		final RequestFuture<Bitmap> future = RequestFuture.newFuture();
+		Activity_GraphView.bitmaps[pos] = null;
+		
+		if (r != null)
+			Log.v("", "r was not null");
+		else
+			Log.v("", "r was null");
+		
+		r = new ImageRequest(url, future, 0, 0, null,
+				new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				Log.v("", "error " + pos + " : " + error.toString());
+				Activity_GraphView.bitmaps[pos] = null;
+				// Error while trying to get a response : may be digest auth
+				if (muninFoo.currentServer.getAuthType() == MuninServer.AUTH_DIGEST) {
+					if (error == null)
+						Log.v("", "error is null");
+					else {
+						if (error.networkResponse == null)
+							Log.v("", "error.networkRresponse");
+						else {
+							if (error.networkResponse.headers == null)
+								Log.v("", "headers");
+							else {
+								if (error.networkResponse.headers.get("WWW-Authenticate") == null)
+									Log.v("", "www-auth is null");
+							}
+						}
+					}
+					if (error != null && error.networkResponse != null && error.networkResponse.headers != null
+							&& error.networkResponse.headers.get("WWW-Authenticate") != null) {
+						Log.v("", "");
+						muninFoo.currentServer.setAuthString(error.networkResponse.headers.get("WWW-Authenticate"));
+						// Let's retry with this new auth string
+						if (!retried) {
+							Log.v("", "retrying " + pos);
+							future.cancel(true);
+							r.cancel();
+							fetchBitmap(pos, true);
+						}
+						else
+							Log.v("", "won't retry");
+					} else
+						Log.v("", "something's null");
+				}
+				else
+					Log.v("", "not digest");
+			}
+		}) {
+			@Override
+			public Map<String, String> getHeaders() throws AuthFailureError {
+				Map<String, String> headers = new HashMap<String, String>();
+				if (muninFoo.currentServer.getAuthType() == MuninServer.AUTH_BASIC)
+					headers.put("Authorization", "Basic " + Base64.encodeToString((muninFoo.currentServer.getAuthLogin() + ":" + muninFoo.currentServer.getAuthPassword()).getBytes(), Base64.NO_WRAP));
+				else if (muninFoo.currentServer.getAuthType() == MuninServer.AUTH_DIGEST)
+					headers.put("Authorization", DigestUtils.getDigestAuthHeader(muninFoo.currentServer, url));
+				return headers;
+			}
+		};
+		muninFoo.requestQueue.add(r);
+		try {
+			Log.v("", "trying to get");
+			Activity_GraphView.bitmaps[pos] = future.get();
+		} catch (InterruptedException e) { e.printStackTrace(); }
+		catch (Exception e) { e.printStackTrace(); }
+		Log.v("", "finished " + pos);
+	}*/
 	
 	@Override
 	public String getTitle(int position) {

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.security.KeyStore;
@@ -49,6 +50,8 @@ import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.chteuchteu.munin.hlpr.DigestUtils;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.obj.HTTPResponse;
@@ -64,6 +67,7 @@ public class MuninFoo {
 	public List<Label> labels;
 	public SQLite sqlite;
 	public MuninServer currentServer;
+	public RequestQueue requestQueue;
 	
 	public boolean drawer;
 	
@@ -96,6 +100,7 @@ public class MuninFoo {
 		labels = new ArrayList<Label>();
 		sqlite = new SQLite(c, this);
 		instance = null;
+		requestQueue = Volley.newRequestQueue(c);
 		loadInstance(c);
 	}
 	
@@ -157,8 +162,6 @@ public class MuninFoo {
 		}
 		// else: lang set according to device locale
 	}
-	
-	
 	
 	public void addServer(MuninServer server) {
 		boolean contains = false;
@@ -499,7 +502,13 @@ public class MuninFoo {
 	}
 	
 	public static Bitmap grabBitmap(MuninServer s, String url) {
+		return grabBitmap(s, url, false);
+	}
+	
+	public static Bitmap grabBitmap(MuninServer s, String url, boolean retried) {
 		Bitmap b = null;
+		Log.v("url", url);
+		Log.v("server", s.getServerUrl());
 		
 		try {
 			HttpClient client = null;
@@ -540,7 +549,9 @@ public class MuninFoo {
 					Log.v("", "digest");
 					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
 					String userName = s.getAuthLogin();
+					Log.v("userName", s.getAuthLogin());
 					String password = s.getAuthPassword();
+					Log.v("password", s.getAuthPassword());
 					String realmName = "";
 					String nonce = "";
 					String algorithm = "MD5";
@@ -594,13 +605,17 @@ public class MuninFoo {
 			HttpResponse response = client.execute(request);
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) {
+			if (statusCode == HttpURLConnection.HTTP_OK) {
 				HttpEntity entity = response.getEntity();
 				byte[] bytes = EntityUtils.toByteArray(entity);
 				b = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 			} else {
-				throw new IOException("Download failed :s HTTP response code "
-						+ statusCode + " - " + statusLine.getReasonPhrase());
+				if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried && response.getHeaders("WWW-Authenticate").length > 0) {
+					s.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
+					return grabBitmap(s, url, true);
+				} else
+					throw new IOException("Download failed :s HTTP response code "
+							+ statusCode + " - " + statusLine.getReasonPhrase());
 			}
 		}
 		catch (SocketTimeoutException e) { e.printStackTrace(); return null; }
