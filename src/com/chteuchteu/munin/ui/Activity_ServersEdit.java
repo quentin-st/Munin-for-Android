@@ -1,5 +1,9 @@
 package com.chteuchteu.munin.ui;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ListActivity;
@@ -9,7 +13,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -25,10 +28,6 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleFloatViewManager;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class Activity_ServersEdit extends ListActivity {
 	private MuninFoo		muninFoo;
@@ -108,10 +107,8 @@ public class Activity_ServersEdit extends ListActivity {
 			muninFoo.deleteServer(s);
 		}
 		
-		for (int i=0; i<serversList.size(); i++) {
+		for (int i=0; i<serversList.size(); i++)
 			muninFoo.getServer(serversList.get(i).getServerUrl()).setPosition(i);
-			Log.v("", muninFoo.getServer(serversList.get(i).getServerUrl()).getName() + " -> pos. " + i);
-		}
 		
 		muninFoo.sqlite.saveServers();
 		muninFoo.resetInstance(this);

@@ -4,8 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import android.util.Log;
-
 import com.chteuchteu.munin.obj.MuninServer;
 
 public class DigestUtils {
@@ -53,7 +51,7 @@ public class DigestUtils {
 				header += DigestUtils.formatField("qop", qop, false);
 			header += DigestUtils.formatField("charset", "utf-8", false);
 			header += DigestUtils.formatField("algorithm", algorithm, true);
-			Log.v("header", header);
+			
 			return header;
 		}
 		

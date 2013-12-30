@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.util.Log;
 import android.view.ViewConfiguration;
 
 public final class Util {
@@ -284,9 +283,7 @@ public final class Util {
 	public static String setHttps(String url) {
 		if (url.contains("http://"))
 			url = url.replaceAll("http://", "https://");
-		Log.v("avant set port", url);
 		url = Util.setPort(url, 443);
-		Log.v("après set port", url);
 		return url;
 	}
 	

@@ -34,7 +34,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.util.Base64;
-import android.util.Log;
 
 import com.chteuchteu.munin.CustomSSLFactory;
 import com.chteuchteu.munin.MuninFoo;
@@ -118,14 +117,12 @@ public class MuninServer {
 	}
 	
 	public void fetchPluginsList() {
-		Log.v("", "fetchPluginsList()");
 		List<MuninPlugin> mp = new ArrayList<MuninPlugin>();
 		String html = grabUrl(this.getServerUrl()).html;
 		
 		if (html == null || html == "" || html == "error") {
 			this.plugins = new ArrayList<MuninPlugin>();
 		} else {
-			Log.v("", "Parsing plugins");
 			MuninPlugin currentPl;
 			
 			//						   code  base_uri
@@ -264,10 +261,8 @@ public class MuninServer {
 		//	- munin/x/		: list of plugins
 		//  - err_code		: if error -> error code
 		HTTPResponse res = grabUrl(this.serverUrl);
-		Log.v("", "grabUrl finished");
 		String page = res.html;
 		if (!res.header_wwwauthenticate.equals("")) {
-			Log.v("authstring?", "-> " + res.header_wwwauthenticate);
 			// Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
 			this.authString = res.header_wwwauthenticate;
 			if (res.header_wwwauthenticate.contains("Digest"))
@@ -333,13 +328,11 @@ public class MuninServer {
 	}
 	
 	public HTTPResponse grabUrl(String url) {
-		Log.v("", "grabUrl(" + url + ")");
 		HTTPResponse resp = new HTTPResponse("", -1);
 		try {
 			HttpClient client = null;
 			if (this.ssl) {
 				try {
-					Log.v("", "SSL needed");
 					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 					trustStore.load(null, null);
 					
@@ -366,7 +359,6 @@ public class MuninServer {
 			HttpGet request = new HttpGet(url);
 			
 			if (this.isAuthNeeded()) {
-				Log.v("", "authneeded!");
 				if (this.getAuthType() == AUTH_BASIC)
 					request.setHeader("Authorization", "Basic " + Base64.encodeToString((authLogin + ":" + authPassword).getBytes(), Base64.NO_WRAP));
 				else if (this.getAuthType() == AUTH_DIGEST) {
@@ -423,7 +415,6 @@ public class MuninServer {
 			HttpConnectionParams.setSoTimeout(httpParameters, 7000);
 			((DefaultHttpClient) client).setParams(httpParameters);
 			
-			Log.v("", "_executing request...");
 			HttpResponse response = client.execute(request);
 			InputStream in = response.getEntity().getContent();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -433,13 +424,10 @@ public class MuninServer {
 				str.append(line);
 			}
 			in.close();
-			Log.v("", "_request finished");
 			
 			resp.html = str.toString();
-			Log.v("html", resp.html);
 			resp.responseReason = response.getStatusLine().getReasonPhrase();
 			resp.responseCode = response.getStatusLine().getStatusCode();
-			Log.v(resp.responseCode + "", resp.responseReason);
 			if (response.getHeaders("WWW-Authenticate").length > 0) {
 				resp.header_wwwauthenticate = response.getHeaders("WWW-Authenticate")[0].getValue();
 			}

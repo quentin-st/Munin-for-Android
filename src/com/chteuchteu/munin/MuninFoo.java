@@ -507,14 +507,11 @@ public class MuninFoo {
 	
 	public static Bitmap grabBitmap(MuninServer s, String url, boolean retried) {
 		Bitmap b = null;
-		Log.v("url", url);
-		Log.v("server", s.getServerUrl());
 		
 		try {
 			HttpClient client = null;
 			if (s.getSSL()) {
 				try {
-					Log.v("", "ssl needed");
 					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 					trustStore.load(null, null);
 					
@@ -541,17 +538,12 @@ public class MuninFoo {
 			HttpGet request = new HttpGet(url);
 			
 			if (s.isAuthNeeded()) {
-				Log.v("", "authneeded");
-				if (s.getAuthType() == MuninServer.AUTH_BASIC) {
+				if (s.getAuthType() == MuninServer.AUTH_BASIC)
 					request.setHeader("Authorization", "Basic " + Base64.encodeToString((s.getAuthLogin() + ":" + s.getAuthPassword()).getBytes(), Base64.NO_WRAP));
-					Log.v("", "basic");
-				} else if (s.getAuthType() == MuninServer.AUTH_DIGEST) {
-					Log.v("", "digest");
+				else if (s.getAuthType() == MuninServer.AUTH_DIGEST) {
 					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
 					String userName = s.getAuthLogin();
-					Log.v("userName", s.getAuthLogin());
 					String password = s.getAuthPassword();
-					Log.v("password", s.getAuthPassword());
 					String realmName = "";
 					String nonce = "";
 					String algorithm = "MD5";
@@ -568,8 +560,6 @@ public class MuninFoo {
 					nonce = DigestUtils.match(s.getAuthString(), "nonce");
 					opaque = DigestUtils.match(s.getAuthString(), "opaque");
 					qop = DigestUtils.match(s.getAuthString(), "qop");
-					
-					Log.v("authstring", "= " + s.getAuthString());
 					
 					String a1 = DigestUtils.md5Hex(userName + ":" + realmName + ":" + password);
 					String a2 = DigestUtils.md5Hex(methodName + ":" + uri);

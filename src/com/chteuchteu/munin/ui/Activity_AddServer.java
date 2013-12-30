@@ -23,7 +23,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -541,7 +540,7 @@ public class Activity_AddServer extends Activity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			Log.v("", "onPreExecute()");
+			
 			if (Util.isOnline(context)) {
 				if (algo_state != AST_WAITING_FOR_CREDENTIALS && algo_state != AST_WAITING_FOR_URL) {
 					runOnUiThread(new Runnable() {
@@ -564,7 +563,6 @@ public class Activity_AddServer extends Activity {
 		}
 		
 		private int start() {
-			Log.v("", "start()");
 			int ret = RES_UNDEFINED;
 			// Flou du fond
 			try {
@@ -642,7 +640,6 @@ public class Activity_AddServer extends Activity {
 		}
 		
 		private void askAgainForUrl(final String err) {
-			Log.v("", "askAgainForUrl()");
 			final EditText et_url = (EditText) popup.getContentView().findViewById(R.id.popup_url_edittext);
 			final Button cancel = (Button) popup.getContentView().findViewById(R.id.popup_url_cancel);
 			final Button continu = (Button) popup.getContentView().findViewById(R.id.popup_url_continue);
@@ -658,7 +655,7 @@ public class Activity_AddServer extends Activity {
 					popup_title2.setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_url).setVisibility(View.VISIBLE);
-					Log.v("adk...", err);
+					
 					if (err != null && err.contains("Timeout")) {
 						popup.getContentView().findViewById(R.id.popup_url_message).setVisibility(View.GONE);
 						((TextView)popup.getContentView().findViewById(R.id.popup_url_message2)).setText(err);
@@ -829,7 +826,6 @@ public class Activity_AddServer extends Activity {
 		}
 		
 		private String initialization() {
-			Log.v("", "initialization()");
 			oldServers = new ArrayList<String>();
 			// Création de la liste des serveurs courants (pour diff)
 			for (MuninServer s : muninFoo.getServers())
@@ -852,17 +848,14 @@ public class Activity_AddServer extends Activity {
 			settingsServer.setSSL(SSL);
 			
 			type = settingsServer.detectPageType();
-			Log.v("", "detectPageType() => " + type);
 			
 			return type;
 		}
 		
 		private int finish() {
-			Log.v("", "finish()");
 			int ret = RES_UNDEFINED;
 			if (type.equals("munin/")) {
 				/*		CONTENT OF THE PAGE: SERVERS LIST	*/
-				Log.v("", "servers list");
 				int nbNewServers = 0;
 				
 				boolean fetchSuccess = false;
@@ -927,7 +920,6 @@ public class Activity_AddServer extends Activity {
 			else if (type.equals("munin/x/")) {
 				/*		CONTENT OF THE PAGE: PLUGINS LIST	*/
 				/*   (long code: here is a potato:	0	)	*/
-				Log.v("", "plugins list");
 				boolean fetchSuccess = false;
 				
 				setPopupText(getString(R.string.text44), "");
@@ -1103,7 +1095,6 @@ public class Activity_AddServer extends Activity {
 			if (!stop) {
 				String res2 = initialization();
 				if (!res2.equals("munin/") && !res2.equals("munin/x/")) {
-					Log.v("resultat", "" + res2);
 					if (res2.length() > 3) {
 						String result = res2.substring(0, 3);
 						if (result.equals("401"))
