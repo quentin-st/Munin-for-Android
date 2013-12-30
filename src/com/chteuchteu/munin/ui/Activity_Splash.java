@@ -148,7 +148,7 @@ public class Activity_Splash extends Activity {
 		// Mise à jour vers 2.0: ajout du graphURL
 		boolean maj_save = false;
 		for (int i=0; i<muninFoo.getHowManyServers(); i++) {
-			if (muninFoo.getServer(i).getGraphURL() == null || (muninFoo.getServer(i).getGraphURL() != null && muninFoo.getServer(i).getGraphURL().equals(""))) {
+			if (muninFoo.getServer(i).getGraphURL() == null || muninFoo.getServer(i).getGraphURL().equals("")) {
 				muninFoo.getServer(i).fetchPluginsList();
 				maj_save = true;
 			}
