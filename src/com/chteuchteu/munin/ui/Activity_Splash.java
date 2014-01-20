@@ -1,5 +1,10 @@
 package com.chteuchteu.munin.ui;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -12,6 +17,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -25,11 +31,6 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
 import com.crashlytics.android.Crashlytics;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 public class Activity_Splash extends Activity {
 	private MuninFoo muninFoo;
@@ -50,10 +51,11 @@ public class Activity_Splash extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.v("", "Splashing");
 		muninFoo = new MuninFoo(this);
 		Crashlytics.start(this);
-
-		splash = getPref("splash").equals("true") || getPref("splash").equals("");
+		
+		splash = (getPref("splash").equals("true") || getPref("splash").equals(""));
 		
 		if (splash) {
 			setContentView(R.layout.splash);
