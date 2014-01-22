@@ -5,6 +5,7 @@ import java.net.URL;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -46,6 +47,28 @@ public final class Util {
 				return original;
 		}
 		return null;
+	}
+	
+	public static String getPref(Context c, String key) {
+		return c.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
+	}
+	
+	public static void setPref(Context c, String key, String value) {
+		if (value.equals(""))
+			removePref(c, key);
+		else {
+			SharedPreferences prefs = c.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString(key, value);
+			editor.commit();
+		}
+	}
+	
+	public static void removePref(Context c, String key) {
+		SharedPreferences prefs = c.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.remove(key);
+		editor.commit();
 	}
 	
 	public static Bitmap fastblur(Bitmap sentBitmap, int radius) {
