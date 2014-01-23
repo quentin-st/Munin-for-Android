@@ -3,8 +3,6 @@ package com.chteuchteu.munin.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.validator.routines.UrlValidator;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -599,7 +597,7 @@ public class Activity_AddServer extends Activity {
 					serverUrl = serverUrl + "/index.html";
 				
 				// Vérification de l'URL
-				String[] schemes = {"http", "https"};
+				/*String[] schemes = {"http", "https"};
 				UrlValidator urlValidator = new UrlValidator(schemes);
 				try {
 					if (urlValidator.isValid(serverUrl))
@@ -608,7 +606,7 @@ public class Activity_AddServer extends Activity {
 						return RES_MALFORMED_URL;
 				} catch (Exception ex) {
 					return RES_MALFORMED_URL;
-				}
+				}*/
 				
 				// On vérifie encore si premium (a peut-être acheté Features Pack entre temps)
 				/*if (!muninFoo.premium) {
