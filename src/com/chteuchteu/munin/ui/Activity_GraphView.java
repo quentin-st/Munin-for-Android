@@ -1,5 +1,15 @@
 package com.chteuchteu.munin.ui;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.taptwo.android.widget.TitleFlowIndicator;
+import org.taptwo.android.widget.ViewFlow;
+import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -60,16 +70,6 @@ import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
-
-import org.taptwo.android.widget.TitleFlowIndicator;
-import org.taptwo.android.widget.ViewFlow;
-import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class Activity_GraphView extends Activity {
 	private MuninFoo		muninFoo;
@@ -225,6 +225,7 @@ public class Activity_GraphView extends Activity {
 		TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
 		indicator.setTitleProvider(adapter);
 		viewFlow.setFlowIndicator(indicator);
+		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			if (dh != null) {
 				dh.setViewFlow(viewFlow);

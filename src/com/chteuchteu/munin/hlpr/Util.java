@@ -21,22 +21,27 @@ import android.widget.TextView;
 public final class Util {
 	private Util() { }
 	
-	public static String FONT_RobotoCondensed_Regular = "RobotoCondensed-Regular.ttf";
-	public static String FONT_Roboto_Thin = "Roboto-Thin.ttf";
+	/* ENUM Custom Fonts */
+	public enum CustomFont {
+		RobotoCondensed_Regular("RobotoCondensed-Regular.ttf"), Roboto_Thin("Roboto-Thin.ttf");
+		final String file;
+		private CustomFont(String fileName) { this.file = fileName; }
+		public String getValue() { return this.file; }
+	}
 	
 	/* Fonts */
-	public static void setFont(Context c, ViewGroup g, String font) {
-		Typeface mFont = Typeface.createFromAsset(c.getAssets(), font);
+	public static void setFont(Context c, ViewGroup g, CustomFont font) {
+		Typeface mFont = Typeface.createFromAsset(c.getAssets(), font.getValue());
 		setFont(g, mFont);
 	}
 	
-	public static void setFont(Context c, TextView t, String font) {
-		Typeface mFont = Typeface.createFromAsset(c.getAssets(), font);
+	public static void setFont(Context c, TextView t, CustomFont font) {
+		Typeface mFont = Typeface.createFromAsset(c.getAssets(), font.getValue());
 		t.setTypeface(mFont);
 	}
 	
-	public static void setFont(Context c, Button t, String font) {
-		Typeface mFont = Typeface.createFromAsset(c.getAssets(), font);
+	public static void setFont(Context c, Button t, CustomFont font) {
+		Typeface mFont = Typeface.createFromAsset(c.getAssets(), font.getValue());
 		t.setTypeface(mFont);
 	}
 	
@@ -50,6 +55,10 @@ public final class Util {
 			} else if (v instanceof ViewGroup)
 				setFont((ViewGroup) v, font);
 		}
+	}
+	
+	public static Typeface getTypeFace(Context c, CustomFont name) {
+		return Typeface.createFromAsset(c.getAssets(), name.getValue());
 	}
 	
 	@SuppressLint("NewApi")

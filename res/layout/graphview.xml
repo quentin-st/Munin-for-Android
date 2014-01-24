@@ -10,22 +10,23 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="#333333"
-		android:paddingTop="10dp" >
+		android:paddingTop="6dp" >
 
 		<org.taptwo.android.widget.TitleFlowIndicator
 			android:id="@+id/viewflowindic"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			app:clipPadding="0dp"
-			app:footerColor="#aaaaaa"
-			app:footerLineHeight="1dp"
+			app:clipPadding="2dp"
+			app:customTypeface="RobotoCondensed-Regular.ttf"
+			app:footerColor="#f0f0f0"
+			app:footerLineHeight="0dp"
 			app:footerTriangleHeight="5dp"
-			app:selectedColor="#eeeeee"
+			app:selectedColor="#f0f0f0"
 			app:selectedSize="14dp"
 			app:textColor="#cccccc"
 			app:textSize="12sp"
 			app:textSize2="12sp"
-			app:titlePadding="4dp" />
+			app:titlePadding="30dp" />
 	</LinearLayout>
 
 	<RelativeLayout

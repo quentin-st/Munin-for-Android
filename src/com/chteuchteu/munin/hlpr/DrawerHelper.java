@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.Util.CustomFont;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_AddServer;
@@ -219,7 +220,7 @@ public class DrawerHelper {
 			a.findViewById(R.id.drawer_labels_btn).setEnabled(false);
 		}
 		
-		Util.setFont(c, (ViewGroup) a.findViewById(R.id.drawer_scrollview), Util.FONT_RobotoCondensed_Regular);
+		Util.setFont(c, (ViewGroup) a.findViewById(R.id.drawer_scrollview), CustomFont.RobotoCondensed_Regular);
 	}
 	
 	public void closeDrawerIfOpened() {
