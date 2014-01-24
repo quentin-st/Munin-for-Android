@@ -213,14 +213,13 @@ public class DrawerHelper {
 			a.findViewById(R.id.drawer_button_premium_ll).setVisibility(View.VISIBLE);
 		}
 		if (m.getHowManyServers() == 0) {
-			// TODO état visuel "disabled"
 			a.findViewById(R.id.drawer_graphs_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_alerts_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_labels_btn).setEnabled(false);
 		}
 		
-		setFont((ViewGroup) a.findViewById(R.id.drawer_scrollview), "RobotoCondensed-Regular.ttf");
+		Util.setFont(c, (ViewGroup) a.findViewById(R.id.drawer_scrollview), Util.FONT_RobotoCondensed_Regular);
 	}
 	
 	public void closeDrawerIfOpened() {

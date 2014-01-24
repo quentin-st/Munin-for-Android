@@ -7,13 +7,50 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public final class Util {
 	private Util() { }
+	
+	public static String FONT_RobotoCondensed_Regular = "RobotoCondensed-Regular.ttf";
+	public static String FONT_Roboto_Thin = "Roboto-Thin.ttf";
+	
+	/* Fonts */
+	public static void setFont(Context c, ViewGroup g, String font) {
+		Typeface mFont = Typeface.createFromAsset(c.getAssets(), font);
+		setFont(g, mFont);
+	}
+	
+	public static void setFont(Context c, TextView t, String font) {
+		Typeface mFont = Typeface.createFromAsset(c.getAssets(), font);
+		t.setTypeface(mFont);
+	}
+	
+	public static void setFont(Context c, Button t, String font) {
+		Typeface mFont = Typeface.createFromAsset(c.getAssets(), font);
+		t.setTypeface(mFont);
+	}
+	
+	private static void setFont(ViewGroup group, Typeface font) {
+		int count = group.getChildCount();
+		View v;
+		for (int i = 0; i < count; i++) {
+			v = group.getChildAt(i);
+			if (v instanceof TextView || v instanceof EditText || v instanceof Button) {
+				((TextView) v).setTypeface(font);
+			} else if (v instanceof ViewGroup)
+				setFont((ViewGroup) v, font);
+		}
+	}
 	
 	@SuppressLint("NewApi")
 	public static boolean deviceHasBackKey(Context c) {

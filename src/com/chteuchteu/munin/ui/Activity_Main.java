@@ -17,7 +17,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -28,14 +27,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -69,9 +67,9 @@ public class Activity_Main extends Activity {
 			if (muninFoo.drawer) {
 				dh = new DrawerHelper(this, muninFoo);
 				dh.setDrawerActivity(dh.Activity_Main);
-				setFont((ViewGroup)findViewById(R.id.ll_splash), "RobotoCondensed-Regular.ttf");
+				Util.setFont(this, (ViewGroup)findViewById(R.id.ll_splash), Util.FONT_RobotoCondensed_Regular);
 			} else
-				setFont((ViewGroup)findViewById(R.id.buttonsContainer), "RobotoCondensed-Regular.ttf");
+				Util.setFont(this, (ViewGroup)findViewById(R.id.buttonsContainer), Util.FONT_RobotoCondensed_Regular);
 		} else {
 			setContentView(R.layout.main);
 			this.getWindow().getDecorView().setBackgroundColor(Color.WHITE);
@@ -352,22 +350,5 @@ public class Activity_Main extends Activity {
 		super.onStop();
 		if (!muninFoo.debug)
 			EasyTracker.getInstance(this).activityStop(this);
-	}
-	
-	public void setFont(ViewGroup g, String font) {
-		Typeface mFont = Typeface.createFromAsset(getAssets(), font);
-		setFont(g, mFont);
-	}
-	
-	public void setFont(ViewGroup group, Typeface font) {
-		int count = group.getChildCount();
-		View v;
-		for (int i = 0; i < count; i++) {
-			v = group.getChildAt(i);
-			if (v instanceof TextView || v instanceof EditText || v instanceof Button) {
-				((TextView) v).setTypeface(font);
-			} else if (v instanceof ViewGroup)
-				setFont((ViewGroup) v, font);
-		}
 	}
 }

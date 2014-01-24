@@ -13,7 +13,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,8 +68,7 @@ public class Activity_Splash extends Activity {
 				}
 			}
 			TextView text = (TextView)findViewById(R.id.splash_overlay_appname);
-			Typeface mFont = Typeface.createFromAsset(getAssets(), "RobotoCondensed-Regular.ttf");
-			text.setTypeface(mFont);
+			Util.setFont(this, text, Util.FONT_RobotoCondensed_Regular);
 			
 			AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
 			animation.setDuration(1300);

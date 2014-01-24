@@ -11,9 +11,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -544,15 +544,15 @@ public class Activity_AddServer extends Activity {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							popup.showAtLocation(layout_popup, Gravity.CENTER, 0, 0);
+							setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 						}
 					});
 					
 					loading = (LinearLayout) popup.getContentView().findViewById(R.id.popup_loading_avancement);
 					popup_title1 = (TextView) popup.getContentView().findViewById(R.id.popup_text_a);
 					popup_title2 = (TextView) popup.getContentView().findViewById(R.id.popup_text_b);
-					Typeface mFont = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
-					popup_title1.setTypeface(mFont);
-					popup_title2.setTypeface(mFont);
+					Util.setFont(context, popup_title1, Util.FONT_Roboto_Thin);
+					Util.setFont(context, popup_title2, Util.FONT_Roboto_Thin);
 					popupIsShown = true;
 					popup_title1.setText(getString(R.string.text43)); // Please wait...
 				}
@@ -641,26 +641,27 @@ public class Activity_AddServer extends Activity {
 			final EditText et_url = (EditText) popup.getContentView().findViewById(R.id.popup_url_edittext);
 			final Button cancel = (Button) popup.getContentView().findViewById(R.id.popup_url_cancel);
 			final Button continu = (Button) popup.getContentView().findViewById(R.id.popup_url_continue);
-			final Typeface mFont = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
 			
 			runOnUiThread(new Runnable() {
 				public void run() {
-					((TextView)popup.getContentView().findViewById(R.id.popup_url_message)).setTypeface(mFont);
-					((TextView)popup.getContentView().findViewById(R.id.popup_url_message2)).setTypeface(mFont);
-					cancel.setTypeface(Typeface.createFromAsset(getAssets(), "RobotoCondensed-Regular.ttf"));
-					continu.setTypeface(Typeface.createFromAsset(getAssets(), "RobotoCondensed-Regular.ttf"));
+					TextView popup_url_message = (TextView)popup.getContentView().findViewById(R.id.popup_url_message);
+					TextView popup_url_message2 = (TextView)popup.getContentView().findViewById(R.id.popup_url_message2);
+					Util.setFont(context, popup_url_message, Util.FONT_Roboto_Thin);
+					Util.setFont(context, popup_url_message2, Util.FONT_Roboto_Thin);
+					Util.setFont(context, cancel, Util.FONT_RobotoCondensed_Regular);
+					Util.setFont(context, continu, Util.FONT_RobotoCondensed_Regular);
 					popup_title1.setVisibility(View.GONE);
 					popup_title2.setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_url).setVisibility(View.VISIBLE);
 					
 					if (err != null && err.contains("Timeout")) {
-						popup.getContentView().findViewById(R.id.popup_url_message).setVisibility(View.GONE);
-						((TextView)popup.getContentView().findViewById(R.id.popup_url_message2)).setText(err);
+						popup_url_message.setVisibility(View.GONE);
+						popup_url_message2.setText(err);
 					} else if (err != null && !err.substring(0, 3).equals("200"))
-						((TextView)popup.getContentView().findViewById(R.id.popup_url_message)).setText(err);
+						popup_url_message.setText(err);
 					else
-						popup.getContentView().findViewById(R.id.popup_url_message).setVisibility(View.GONE);
+						popup_url_message.setVisibility(View.GONE);
 					if (settingsServer != null)
 						et_url.setText(settingsServer.getServerUrl());
 					else
@@ -977,8 +978,8 @@ public class Activity_AddServer extends Activity {
 					popup_title2.setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_credentials).setVisibility(View.VISIBLE);
-					cancel.setTypeface(Typeface.createFromAsset(getAssets(), "RobotoCondensed-Regular.ttf"));
-					continu.setTypeface(Typeface.createFromAsset(getAssets(), "RobotoCondensed-Regular.ttf"));
+					Util.setFont(context, cancel, Util.FONT_RobotoCondensed_Regular);
+					Util.setFont(context, continu, Util.FONT_RobotoCondensed_Regular);
 					
 					// Remplissage spinner auth type
 					List<String> list2 = new ArrayList<String>();
@@ -1123,7 +1124,7 @@ public class Activity_AddServer extends Activity {
 			algo_state = AST_IDLE;
 			if (res != RES_UNDEFINED) {
 				Button b = (Button) popup.getContentView().findViewById(R.id.popup_button);
-				b.setTypeface(Typeface.createFromAsset(getAssets(), "RobotoCondensed-Regular.ttf"));
+				Util.setFont(context, b, Util.FONT_RobotoCondensed_Regular);
 				LinearLayout loading_bar = (LinearLayout) popup.getContentView().findViewById(R.id.popup_container_avancement);
 				if (res == RES_SERVER_SUCCESS) {
 					// Congratulations!			X plugins found!
@@ -1138,6 +1139,7 @@ public class Activity_AddServer extends Activity {
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
 							setTransition("shallower");
+							setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 						}
 					});
 				} else if (res == RES_SERVERS_SUCCESS) {
@@ -1152,6 +1154,7 @@ public class Activity_AddServer extends Activity {
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
 							setTransition("shallower");
+							setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 						}
 					});
 				}
