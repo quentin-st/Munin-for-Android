@@ -38,8 +38,8 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 	private static final String KEY_MUNINSERVERS_GRAPHURL = "graphURL";
 	private static final String KEY_MUNINSERVERS_SSL = "SSL";
 	private static final String KEY_MUNINSERVERS_POSITION = "position";
-	private static final String KEY_MUNINSERVERS_AUTHTYPE = "authType";
-	private static final String KEY_MUNINSERVERS_AUTHSTRING = "authString";
+	//private static final String KEY_MUNINSERVERS_AUTHTYPE = "authType";
+	//private static final String KEY_MUNINSERVERS_AUTHSTRING = "authString";
 	
 	private static final String KEY_MUNINPLUGINS_NAME = "name";
 	private static final String KEY_MUNINPLUGINS_FANCYNAME = "fancyName";
@@ -80,8 +80,8 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 				s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 				s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
 						c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
-						c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE)));
-				s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
+						MuninServer.AUTH_BASIC);
+				//s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
 				if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
 					s.setSSL(true);
 				else
@@ -110,7 +110,7 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 				p.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 				p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 				p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
-				p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
+				//p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 				p.setInstalledOn(s);
 				l.add(p);
 			} while (c.moveToNext());
@@ -133,7 +133,7 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		p.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 		p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 		p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
-		p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
+		//p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 		p.setInstalledOn(getMuninServer(c.getInt(c.getColumnIndex(KEY_MUNINPLUGINS_SERVER))));
 		return p;
 	}
@@ -154,8 +154,8 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 		s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
 				c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
-				c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE)));
-		s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
+				MuninServer.AUTH_BASIC);
+		//s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
 		if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
 			s.setSSL(true);
 		else
@@ -201,8 +201,8 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
 		values.put(KEY_MUNINSERVERS_SSL, s.getSSL());
 		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
-		values.put(KEY_MUNINSERVERS_AUTHTYPE, s.getAuthType());
-		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
+		//values.put(KEY_MUNINSERVERS_AUTHTYPE, s.getAuthType());
+		//values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
 		
 		long id = db.insert(TABLE_MUNINSERVERS, null, values);
 		s.setId(id);

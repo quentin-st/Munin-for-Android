@@ -27,6 +27,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.Widget_GraphWidget;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
+import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
@@ -179,12 +180,11 @@ public class Activity_Splash extends Activity {
 			setPref("defaultScale", "day");
 		
 		// 2.6 : migrate database. Operations under those ones will be done on the new DB.
-		File new_database = getApplicationContext().getDatabasePath("muninForAndroid2.db");
 		File old_database = getApplicationContext().getDatabasePath("MuninforAndroid.db");
-		if (!new_database.exists() && old_database.exists())
+		
+		boolean alreadyMigrated = Util.getPref(this, "db_migrated").equals("true");
+		if (!alreadyMigrated && old_database.exists())
 			muninFoo.sqlite.migrateDatabase(this);
-		//if (getPref("db_migrated").equals(""))
-			//muninFoo.sqlite.migrateDatabase(this);
 		
 		// BDD Migration : SharedPreferences ==> SQLite
 		if (!getPref("server00Url").equals("")) {

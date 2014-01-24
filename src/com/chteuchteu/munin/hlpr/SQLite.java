@@ -54,7 +54,7 @@ public class SQLite {
 			w.setId(dbHlpr.insertWidget(w));
 		}
 		
-		//Util.setPref(c, "db_migrated", "true");
+		Util.setPref(c, "db_migrated", "true");
 		
 		// TODO delete database
 		// Drop the (data)bas(e)s

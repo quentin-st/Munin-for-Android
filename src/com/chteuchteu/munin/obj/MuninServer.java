@@ -643,7 +643,11 @@ public class MuninServer {
 	
 	public void setAuthIds(String login, String password, int authType) {
 		setAuthIds(login, password);
-		this.authType = authType;
+		
+		if (login.equals("") || password.equals(""))
+			this.authType = AUTH_NONE;
+		else
+			this.authType = authType;
 	}
 	
 	public void setAuthType(int t) {
