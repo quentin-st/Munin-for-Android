@@ -29,35 +29,47 @@ public class SQLite {
 		return s;
 	}
 	
-	public void migrateDatabase(Context c) {
-		Log.v("", "Trying to migrate database");
-		// Get data
-		DatabaseHelper_old dbH_old = new DatabaseHelper_old(c);
-		List<MuninServer> servers = dbH_old.getAllMuninServers();
-		List<Widget> widgets = dbH_old.getAllWidgets();
-		
-		// Servers
-		for (MuninServer s : servers) {
-			long id = dbHlpr.insertMuninServer(s);
-			s.setId(id);
+	public boolean migrateDatabase(Context c) {
+		try {
+			// Get data
+			DatabaseHelper_old dbH_old = new DatabaseHelper_old(c);
+			List<MuninServer> servers = dbH_old.getAllMuninServers();
+			List<Widget> widgets = dbH_old.getAllWidgets();
 			
-			// Plugins
-			List<MuninPlugin> plugins = s.getPlugins();
-			for (MuninPlugin p : plugins) {
-				p.setInstalledOn(s);
-				p.setId(dbHlpr.insertMuninPlugin(p));
+			// Servers
+			for (MuninServer s : servers) {
+				long id = dbHlpr.insertMuninServer(s);
+				s.setId(id);
+				
+				// Plugins
+				List<MuninPlugin> plugins = s.getPlugins();
+				for (MuninPlugin p : plugins) {
+					p.setInstalledOn(s);
+					p.setId(dbHlpr.insertMuninPlugin(p));
+				}
 			}
+			
+			// Widgets
+			for (Widget w : widgets) {
+				w.setId(dbHlpr.insertWidget(w));
+			}
+			
+			Util.setPref(c, "db_migrated", "true");
+			
+			// TODO delete database
+			// Drop the (data)bas(e)s
+			return true;
+		} catch (Exception ex) {
+			// Data half-migrated : delete all
+			try {
+				muninFoo.sqlite.dbHlpr.deleteWidgets();
+				muninFoo.sqlite.dbHlpr.deleteLabels();
+				muninFoo.sqlite.dbHlpr.deleteLabelsRelations();
+				muninFoo.sqlite.dbHlpr.deleteMuninPlugins();
+				muninFoo.sqlite.dbHlpr.deleteMuninServers();
+			} catch (Exception ex2) { }
+			return false;
 		}
-		
-		// Widgets
-		for (Widget w : widgets) {
-			w.setId(dbHlpr.insertWidget(w));
-		}
-		
-		Util.setPref(c, "db_migrated", "true");
-		
-		// TODO delete database
-		// Drop the (data)bas(e)s
 	}
 	
 	public void saveServers() {

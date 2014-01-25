@@ -7,10 +7,12 @@ import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -43,10 +45,15 @@ public class Activity_Splash extends Activity {
 	protected boolean updating = true;
 	protected boolean splashing = true;
 	
+	private Context c;
+	
 	// update thread
 	protected ProgressDialog myProgressDialog;
 	
 	private boolean updateOperations;
+	
+	private boolean migration = false;
+	private boolean migrationSuccess = false;
 	
 	@SuppressLint("InlinedApi")
 	@Override
@@ -57,6 +64,7 @@ public class Activity_Splash extends Activity {
 		Crashlytics.start(this);
 		
 		splash = (getPref("splash").equals("true") || getPref("splash").equals(""));
+		c = this;
 		
 		if (splash) {
 			setContentView(R.layout.splash);
@@ -182,8 +190,10 @@ public class Activity_Splash extends Activity {
 		File old_database = getApplicationContext().getDatabasePath("MuninforAndroid.db");
 		
 		boolean alreadyMigrated = Util.getPref(this, "db_migrated").equals("true");
-		if (!alreadyMigrated && old_database.exists())
-			muninFoo.sqlite.migrateDatabase(this);
+		if (!alreadyMigrated && old_database.exists()) {
+			migration = true;
+			migrationSuccess = muninFoo.sqlite.migrateDatabase(this);
+		}
 		
 		// BDD Migration : SharedPreferences ==> SQLite
 		if (!getPref("server00Url").equals("")) {
@@ -318,9 +328,28 @@ public class Activity_Splash extends Activity {
 		@Override
 		protected void onPostExecute(Void result) {
 			myProgressDialog.dismiss();
-			if (!splashing)
-				startActivity(new Intent(Activity_Splash.this, Activity_Main.class));
-			updating = false;
+			if (migration && !migrationSuccess) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(c);
+				String message = "We changed the way data in stored in the app. Unfortunately, it seems that we weren't able to migrate the servers information from the old to the new database."
+						+ "This means that you will have to re-add the servers manually. Please excuse us for the inconvenience.";
+				builder.setMessage(message).setTitle("Migration failed");
+				builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						if (!splashing)
+							startActivity(new Intent(Activity_Splash.this, Activity_Main.class));
+						updating = false;
+					}
+				});
+				AlertDialog dial = builder.create();
+				dial.show();
+				
+			} else {
+				if (!splashing)
+					startActivity(new Intent(Activity_Splash.this, Activity_Main.class));
+				updating = false;
+			}
 		}
 	}
 	
