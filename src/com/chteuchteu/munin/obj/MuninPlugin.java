@@ -22,6 +22,7 @@ public class MuninPlugin {
 		this.name = "unknown";
 		this.state = MuninPlugin.ALERTS_STATE_UNDEFINED;
 		this.isPersistant = false;
+		this.category = "";
 	}
 	public MuninPlugin (String name, MuninServer server) {
 		this.name = name;
@@ -71,7 +72,9 @@ public class MuninPlugin {
 	}
 	
 	public String getCategory() {
-		return this.category;
+		if (category != null)
+			return this.category;
+		return "";
 	}
 	
 	public String getFancyName() {

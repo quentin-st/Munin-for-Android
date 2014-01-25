@@ -2,8 +2,8 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.chteuchteu.munin"
-	android:versionCode="17"
-	android:versionName="2.6">
+	android:versionCode="18"
+	android:versionName="2.6.1">
 
 	<!-- SDK Version -->
 	<uses-sdk
