@@ -126,10 +126,8 @@ public class Activity_Main extends Activity {
 			buttonLabels.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View actualView) {
-					if (muninFoo.premium) {
-						startActivity(new Intent(Activity_Main.this, Activity_Labels.class));
-						setTransition("deeper");
-					}
+					startActivity(new Intent(Activity_Main.this, Activity_Labels.class));
+					setTransition("deeper");
 				}
 			});
 			buttonServer.setOnClickListener(new OnClickListener() {
@@ -195,10 +193,8 @@ public class Activity_Main extends Activity {
 			buttonNotifications.setEnabled(enable);
 			buttonLabels.setEnabled(enable);
 			
-			if (!muninFoo.premium) {
+			if (!muninFoo.premium)
 				buttonNotifications.setEnabled(false);
-				buttonLabels.setEnabled(false);
-			}
 		}
 	}
 	

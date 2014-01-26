@@ -315,8 +315,6 @@ public class Activity_GraphView extends Activity {
 		menu.clear();
 		getMenuInflater().inflate(R.menu.graphview, menu);
 		
-		if (!muninFoo.premium)
-			menu.findItem(R.id.menu_labels).setVisible(false);
 		item_previous = menu.findItem(R.id.menu_previous);
 		item_next = menu.findItem(R.id.menu_next);
 		

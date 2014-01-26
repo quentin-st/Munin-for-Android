@@ -147,7 +147,7 @@ public class DrawerHelper {
 		//sm.attachToActivity(a, SlidingMenu.SLIDING_WINDOW);
 		sm.attachToActivity(a, SlidingMenu.SLIDING_CONTENT);
 		if (Util.deviceHasBackKey(c));
-			sm.setActionBarSlideIcon(new ActionBarSlideIcon(a, R.drawable.ic_navigation_drawer, R.string.text63_1, R.string.text63_2));
+		sm.setActionBarSlideIcon(new ActionBarSlideIcon(a, R.drawable.ic_navigation_drawer, R.string.text63_1, R.string.text63_2));
 		
 		sm.setMenu(R.layout.drawer);
 		
@@ -205,11 +205,6 @@ public class DrawerHelper {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				a.findViewById(R.id.drawer_notifications_img).setAlpha(0.5f);
 				a.findViewById(R.id.drawer_notifications_txt).setAlpha(0.5f);
-			}
-			a.findViewById(R.id.drawer_labels_btn).setEnabled(false);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				a.findViewById(R.id.drawer_labels_img).setAlpha(0.6f);
-				a.findViewById(R.id.drawer_labels_txt).setAlpha(0.6f);
 			}
 			a.findViewById(R.id.drawer_button_premium_ll).setVisibility(View.VISIBLE);
 		}
