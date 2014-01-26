@@ -563,8 +563,8 @@ public class Activity_AddServer extends Activity {
 		
 		private int start() {
 			int ret = RES_UNDEFINED;
-			// Flou du fond
-			try {
+			// Background blur
+			/*try {
 				ScrollView l = (ScrollView) findViewById(R.id.scrollView1);
 				View v1 = l.getRootView();
 				v1.setDrawingCacheEnabled(true);
@@ -578,7 +578,7 @@ public class Activity_AddServer extends Activity {
 					}
 				});
 			}
-			catch (Exception ex) { }
+			catch (Exception ex) { }*/
 			
 			if (Util.isOnline(context)) {
 				setPopupState(0);
