@@ -55,11 +55,14 @@ public class SQLite {
 			}
 			
 			Util.setPref(c, "db_migrated", "true");
+			Util.setPref(c, "db_migrated_failed", "false");
 			
 			// TODO delete database
 			// Drop the (data)bas(e)s
 			return true;
 		} catch (Exception ex) {
+			Util.setPref(c, "db_migrated", "true");
+			Util.setPref(c, "db_migrated_failed", "true");
 			// Data half-migrated : delete all
 			try {
 				muninFoo.sqlite.dbHlpr.deleteWidgets();

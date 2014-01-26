@@ -205,7 +205,7 @@ public class Activity_GraphView extends Activity {
 					else if (position == 3)	Activity_GraphView.load_period = "year";
 					else 					Activity_GraphView.load_period = "day";
 					
-					if (viewFlow != null) // Update Viewflow)
+					if (viewFlow != null) // Update Viewflow
 						viewFlow.setSelection(viewFlow.getSelectedItemPosition());
 				}
 				public void onNothingSelected(AdapterView<?> parentView) { }

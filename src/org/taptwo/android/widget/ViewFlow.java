@@ -48,7 +48,7 @@ import com.chteuchteu.munin.R;
  */
 public class ViewFlow extends AdapterView<Adapter> {
 
-	private static final int SNAP_VELOCITY = 1000;
+	private static final int SNAP_VELOCITY = 100;
 	private static final int INVALID_SCREEN = -1;
 	private final static int TOUCH_STATE_REST = 0;
 	private final static int TOUCH_STATE_SCROLLING = 1;
@@ -446,7 +446,7 @@ public class ViewFlow extends AdapterView<Adapter> {
 
 		final int newX = whichScreen * getWidth();
 		final int delta = newX - getScrollX();
-		mScroller.startScroll(getScrollX(), 0, delta, 0, Math.abs(delta) * 2);
+		mScroller.startScroll(getScrollX(), 0, delta, 0, Math.abs(delta)/2);
 		invalidate();
 	}
 

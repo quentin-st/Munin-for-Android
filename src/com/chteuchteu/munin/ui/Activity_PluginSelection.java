@@ -161,10 +161,6 @@ public class Activity_PluginSelection extends ListActivity {
 							muninFoo.currentServer = muninFoo.getServerFromFlatPosition(position);
 							updateListView();
 						}
-						/*if (muninFoo.getServerByName(((TextView)view).getText().toString()) != null) {
-							muninFoo.currentServer = muninFoo.getServerByName(((TextView)view).getText().toString());
-							updateListView();
-						}*/
 					}
 					@Override
 					public void onNothingSelected(AdapterView<?> parentView) { }
@@ -228,7 +224,7 @@ public class Activity_PluginSelection extends ListActivity {
 					}
 					intent.putExtra("position", p + "");
 					startActivity(intent);
-					overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
+					setTransition("deeper");
 				}
 			});
 		} else {
@@ -265,7 +261,7 @@ public class Activity_PluginSelection extends ListActivity {
 					}
 					intent.putExtra("position", p + "");
 					startActivity(intent);
-					overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
+					setTransition("deeper");
 				}
 			});
 			
