@@ -93,6 +93,8 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 		
+		if (c != null)	c.close();
+		
 		return l;
 	}
 	
@@ -116,6 +118,8 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 		
+		if (c != null)	c.close();
+		
 		return l;
 	}
 	
@@ -135,6 +139,9 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
 		//p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 		p.setInstalledOn(getMuninServer(c.getInt(c.getColumnIndex(KEY_MUNINPLUGINS_SERVER))));
+		
+		if (c != null)	c.close();
+		
 		return p;
 	}
 	
@@ -163,6 +170,9 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
 		s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 		s.setPluginsList(getAllPlugins(s));
+		
+		if (c != null)	c.close();
+		
 		return s;
 	}
 	
@@ -186,6 +196,8 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 				l.add(w);
 			} while (c.moveToNext());
 		}
+		
+		if (c != null)	c.close();
 		
 		return l;
 	}
