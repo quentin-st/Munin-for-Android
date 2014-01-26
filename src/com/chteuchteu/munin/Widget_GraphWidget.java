@@ -214,6 +214,8 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 	
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
+		if (sqlite == null)
+			sqlite = new SQLite(context, MuninFoo.getInstance(context));
 		for (int i : appWidgetIds)
 			sqlite.dbHlpr.deleteWidget(i);
 	}
