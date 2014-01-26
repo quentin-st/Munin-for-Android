@@ -613,6 +613,7 @@ public class MuninFoo {
 		}
 		catch (SocketTimeoutException e) { e.printStackTrace(); return null; }
 		catch (ConnectTimeoutException e) { e.printStackTrace(); return null; }
+		catch (OutOfMemoryError e) { e.printStackTrace(); return null; }
 		catch (Exception e) { e.printStackTrace(); return null; }
 		
 		return b;
