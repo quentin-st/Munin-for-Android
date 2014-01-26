@@ -27,6 +27,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -222,6 +223,8 @@ public class Activity_GraphView extends Activity {
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
 		GraphView_Adapter adapter = new GraphView_Adapter(this);
 		viewFlow.setAdapter(adapter, pos);
+		viewFlow.setAnimationEnabled(getPref("transitions").equals("true"));
+		Log.v("", "animations : " + getPref("transitions").equals("true"));
 		TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
 		indicator.setTitleProvider(adapter);
 		viewFlow.setFlowIndicator(indicator);

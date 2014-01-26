@@ -75,6 +75,7 @@ public class ViewFlow extends AdapterView<Adapter> {
 	private AdapterDataSetObserver mDataSetObserver;
 	private FlowIndicator mIndicator;
 	private int mLastOrientation = -1;
+	private boolean animationEnabled = true; // Custom
 
 	private OnGlobalLayoutListener orientationChangeListener = new OnGlobalLayoutListener() {
 
@@ -446,7 +447,9 @@ public class ViewFlow extends AdapterView<Adapter> {
 
 		final int newX = whichScreen * getWidth();
 		final int delta = newX - getScrollX();
-		mScroller.startScroll(getScrollX(), 0, delta, 0, Math.abs(delta)/2);
+		int animation_duration = Math.abs(delta)/2;
+		if (!animationEnabled)	animation_duration = 0;
+		mScroller.startScroll(getScrollX(), 0, delta, 0, animation_duration);
 		invalidate();
 	}
 
@@ -506,6 +509,10 @@ public class ViewFlow extends AdapterView<Adapter> {
 	@Override
 	public void setAdapter(Adapter adapter) {
 		setAdapter(adapter, 0);
+	}
+	
+	public void setAnimationEnabled(boolean b) {
+		this.animationEnabled = b;
 	}
 	
 	public void setAdapter(Adapter adapter, int initialPosition) {
