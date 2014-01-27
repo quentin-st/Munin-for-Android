@@ -85,6 +85,9 @@ public class Activity_PluginSelection extends ListActivity {
 			actionBar.setDisplayShowTitleEnabled(false);
 			
 			if (muninFoo != null && muninFoo.getHowManyServers() > 0) {
+				if (muninFoo.currentServer == null) // hotfix
+					muninFoo.currentServer = muninFoo.getServer(0);
+				
 				actionBarSpinnerIndex = muninFoo.currentServer.getFlatPosition();
 				List<String> list2 = new ArrayList<String>();
 				List<MuninServer> l1 = muninFoo.getOrderedServers();

@@ -109,6 +109,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_NAME + " TEXT");
 	}
 	
+	private void close(Cursor c, SQLiteDatabase db) {
+		if (c != null)	c.close();
+		if (db != null) db.close();
+	}
+	
 	public long insertMuninServer(MuninServer s) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -127,6 +132,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		long id = db.insert(TABLE_MUNINSERVERS, null, values);
 		s.setId(id);
 		s.isPersistant = true;
+		
+		close(null, db);
 		return id;
 	}
 	
@@ -148,6 +155,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		long id = db.insert(TABLE_MUNINPLUGINS, null, values);
 		p.setId(id);
+		close(null, db);
 		return id;
 	}
 	
@@ -168,6 +176,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		long id = db.insert(TABLE_LABELS, null, values);
 		l.setId(id);
+		close(null, db);
 		return id;
 	}
 	
@@ -178,6 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_LABELSRELATIONS_LABEL, l.getId());
 		values.put(KEY_LABELSRELATIONS_PLUGIN, p.getId());
 		
+		close(null, db);
 		return db.insert(TABLE_LABELSRELATIONS, null, values);
 	}
 	
@@ -192,6 +202,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		long id = db.insert(TABLE_WIDGETS, null, values);
 		w.setId(id);
+		close(null, db);
 		return id;
 	}
 	
@@ -210,6 +221,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
 		values.put(KEY_MUNINSERVERS_PARENT, s.getParent());
 		
+		close(null, db);
 		return db.update(TABLE_MUNINSERVERS, values, KEY_ID + " = ?", new String[] { String.valueOf(s.getId()) });
 	}
 	
@@ -222,6 +234,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINPLUGINS_SERVER, p.getInstalledOn().getId());
 		values.put(KEY_MUNINPLUGINS_CATEGORY, p.getCategory());
 		
+		close(null, db);
 		return db.update(TABLE_MUNINPLUGINS, values, KEY_ID + " = ?", new String[] { String.valueOf(p.getId()) });
 	}
 	
@@ -254,9 +267,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				l.add(s);
 			} while (c.moveToNext());
 		}
-		if (c != null)
-			c.close();
 		
+		close(c, db);
 		return l;
 	}
 	
@@ -280,9 +292,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				l.add(p);
 			} while (c.moveToNext());
 		}
-		if (c != null)
-			c.close();
 		
+		close(c, db);
 		return l;
 	}
 	
@@ -301,7 +312,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_CATEGORY)));
 			p.setInstalledOn(getServer(c.getInt(c.getColumnIndex(KEY_MUNINPLUGINS_SERVER))));
 			p.isPersistant = true;
-			c.close();
+			close(c, db);
 			return p;
 		}
 		return null;
@@ -331,7 +342,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 			s.setPluginsList(getPlugins(s));
 			s.isPersistant = true;
-			c.close();
+			close(c, db);
 			return s;
 		}
 		return null;
@@ -356,9 +367,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				l.add(w);
 			} while (c.moveToNext());
 		}
-		if (c != null)
-			c.close();
 		
+		close(c, db);
 		return l;
 	}
 	
@@ -377,8 +387,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			w.setPlugin(getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN))));
 			w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)));
 			w.isPersistant = true;
-			c.close();
-			
+			close(c, db);
 			return w;
 		}
 		return null;
@@ -409,8 +418,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				list.add(l);
 			} while (c.moveToNext());
 		}
-		c.close();
-		
+		close(c, db);
 		return list;
 	}
 	
@@ -427,7 +435,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			l.setName(c.getString(c.getColumnIndex(KEY_LABELS_NAME)));
 			l.setPlugins(getPlugins(l));
 			l.isPersistant = true;
-			
+			close(c, db);
 			return l;
 		}
 		return null;
@@ -447,8 +455,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				list.add(p);
 			} while (c.moveToNext());
 		}
-		if (c != null)
-			c.close();
+		close(c, db);
 		return list;
 	}
 	
@@ -456,6 +463,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_MUNINSERVERS, KEY_ID + " = ?", new String[] { String.valueOf(s.getId()) });
 		deletePlugins(s);
+		close(null, db);
 	}
 	
 	public void deletePlugin(MuninPlugin p) {
@@ -471,36 +479,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			deleteLabelsRelations(p);
 		}
 		db.delete(TABLE_MUNINPLUGINS, KEY_MUNINPLUGINS_SERVER + " = ?", new String[] { String.valueOf(s.getId()) });
+		close(null, db);
 	}
 	
 	public void deleteWidgets(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_WIDGETS, KEY_WIDGETS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });
+		close(null, db);
 	}
 	
 	public void deleteWidget(int appWidgetId) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_WIDGETS, KEY_WIDGETS_WIDGETID + " = ?", new String[] { String.valueOf(appWidgetId) });
+		close(null, db);
 	}
 	
 	public void deleteLabelsRelations(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });
+		close(null, db);
 	}
 	
 	public void deleteLabelsRelations(Label l) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_LABEL + " = ?", new String[] { String.valueOf(l.getId()) });
+		close(null, db);
 	}
 	
 	public void deleteLabelsRelation(MuninPlugin p, Label l) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_LABEL + " = ? AND " + KEY_LABELSRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(l.getId()), String.valueOf(p.getId()) });
+		close(null, db);
 	}
 	
 	public void deleteLabel(Label l) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_LABELS, KEY_ID + " = ?", new String[] { String.valueOf(l.getId()) });
+		close(null, db);
 		deleteLabelsRelations(l);
 	}
 	
@@ -509,25 +524,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_LABELSRELATIONS);
 		db.execSQL(CREATE_TABLE_LABELSRELATIONS);
+		close(null, db);
 	}
 	public void deleteLabels() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_LABELS);
 		db.execSQL(CREATE_TABLE_LABELS);
+		close(null, db);
 	}
 	public void deleteWidgets() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_WIDGETS);
 		db.execSQL(CREATE_TABLE_WIDGETS);
+		close(null, db);
 	}
 	public void deleteMuninPlugins() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_MUNINPLUGINS);
 		db.execSQL(CREATE_TABLE_MUNINPLUGINS);
+		close(null, db);
 	}
 	public void deleteMuninServers() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_MUNINSERVERS);
 		db.execSQL(CREATE_TABLE_MUNINSERVERS);
+		close(null, db);
 	}
 }

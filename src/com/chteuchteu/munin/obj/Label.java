@@ -68,8 +68,11 @@ public class Label {
 	}
 	
 	public boolean contains(MuninPlugin p) {
+		if (plugins == null)
+			return false;
+		
 		for (MuninPlugin mp : plugins) {
-			if (mp.equals(p))
+			if (mp != null && mp.equals(p))
 				return true;
 		}
 		return false;

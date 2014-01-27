@@ -70,6 +70,8 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 			awm.updateAppWidget(widgetId, views);
 		} else {
 			// premium
+			if (sqlite == null)
+				sqlite = new SQLite(context, MuninFoo.getInstance(context));
 			widget = sqlite.dbHlpr.getWidget(appWidgetId);
 			
 			if (widget != null) {
