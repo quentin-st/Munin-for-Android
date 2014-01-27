@@ -78,7 +78,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 			((TextView) this.findViewById(R.id.viewTitle)).setText(label.getName());
 		}
 		
-		labelsListCat = label.getPluginsSortedByServer();
+		labelsListCat = label.getPluginsSortedByServer(muninFoo);
 		correspondance = new ArrayList<MuninPlugin>();
 		correspondanceServers = new ArrayList<String>();
 		SeparatedListAdapter adapter = new SeparatedListAdapter(this);

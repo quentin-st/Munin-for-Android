@@ -40,11 +40,13 @@ public class MuninPlugin {
 	}
 	
 	public void importData(MuninPlugin source) {
-		this.name = source.name;
-		this.fancyName = source.fancyName;
-		this.installedOn = source.installedOn;
-		this.state = source.state;
-		this.category = source.category;
+		if (source != null) {
+			this.name = source.name;
+			this.fancyName = source.fancyName;
+			this.installedOn = source.installedOn;
+			this.state = source.state;
+			this.category = source.category;
+		}
 	}
 	
 	@Override

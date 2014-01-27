@@ -3,6 +3,8 @@ package com.chteuchteu.munin.obj;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chteuchteu.munin.MuninFoo;
+
 public class Label {
 	private long id;
 	private String name;
@@ -31,33 +33,24 @@ public class Label {
 	
 	// Returns a List of List of MuninPlugin, sorted by server.
 	// To be displayed in Activity_LabelsPluginSelection
-	public List<List<MuninPlugin>> getPluginsSortedByServer() {
+	// The loop is made from MuninFoo's servers list (more easy than previous way)
+	//		, and made according to servers sorting positions
+	public List<List<MuninPlugin>> getPluginsSortedByServer(MuninFoo f) {
 		List<List<MuninPlugin>> l = new ArrayList<List<MuninPlugin>>();
-		// Copie de la liste pl (= tmp plugins)
-		List<MuninPlugin> pl = new ArrayList<MuninPlugin>();
-		for (MuninPlugin p : plugins) {
-			MuninPlugin newP = new MuninPlugin();
-			newP.importData(p);
-			pl.add(newP);
+		
+		List<MuninPlugin> curList;
+		for (MuninServer s : f.getOrderedServers()) {
+			curList = new ArrayList<MuninPlugin>();
+			
+			for (MuninPlugin p : plugins) {
+				if (p.getInstalledOn().equalsApprox(s))
+					curList.add(p);
+			}
+			
+			if (curList.size() > 0)
+				l.add(curList);
 		}
 		
-		while (pl.size() > 0) {
-			MuninServer s = pl.get(0).getInstalledOn();
-			List<MuninPlugin> ltemp = new ArrayList<MuninPlugin>();
-			ltemp.add(pl.get(0));
-			List<MuninPlugin> posToRemove = new ArrayList<MuninPlugin>();
-			for (int i=1; i<pl.size(); i++) {
-				if (pl.get(i).getInstalledOn().equalsApprox(s)) {
-					ltemp.add(pl.get(i));
-					posToRemove.add(pl.get(i));
-				}
-			}
-			for (MuninPlugin p : posToRemove)
-				pl.remove(p);
-			pl.remove(0);
-			if (ltemp.size() > 0)
-				l.add(ltemp);
-		}
 		return l;
 	}
 	
