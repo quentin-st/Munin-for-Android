@@ -462,8 +462,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void deleteServer(MuninServer s) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_MUNINSERVERS, KEY_ID + " = ?", new String[] { String.valueOf(s.getId()) });
-		deletePlugins(s);
 		close(null, db);
+		deletePlugins(s);
 	}
 	
 	public void deletePlugin(MuninPlugin p) {
@@ -472,12 +472,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public void deletePlugins(MuninServer s) {
-		SQLiteDatabase db = this.getWritableDatabase();
 		List<MuninPlugin> l = getPlugins(s);
 		for (MuninPlugin p : l) {
 			deleteWidgets(p);
 			deleteLabelsRelations(p);
 		}
+		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_MUNINPLUGINS, KEY_MUNINPLUGINS_SERVER + " = ?", new String[] { String.valueOf(s.getId()) });
 		close(null, db);
 	}
