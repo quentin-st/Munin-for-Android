@@ -221,8 +221,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
 		values.put(KEY_MUNINSERVERS_PARENT, s.getParent());
 		
+		int nbRows = db.update(TABLE_MUNINSERVERS, values, KEY_ID + " = ?", new String[] { String.valueOf(s.getId()) });
 		close(null, db);
-		return db.update(TABLE_MUNINSERVERS, values, KEY_ID + " = ?", new String[] { String.valueOf(s.getId()) });
+		return nbRows;
 	}
 	
 	public int updateMuninPlugin(MuninPlugin p) {
@@ -234,8 +235,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINPLUGINS_SERVER, p.getInstalledOn().getId());
 		values.put(KEY_MUNINPLUGINS_CATEGORY, p.getCategory());
 		
+		int nbRows = db.update(TABLE_MUNINPLUGINS, values, KEY_ID + " = ?", new String[] { String.valueOf(p.getId()) });
 		close(null, db);
-		return db.update(TABLE_MUNINPLUGINS, values, KEY_ID + " = ?", new String[] { String.valueOf(p.getId()) });
+		return nbRows;
 	}
 	
 	public List<MuninServer> getServers() {
