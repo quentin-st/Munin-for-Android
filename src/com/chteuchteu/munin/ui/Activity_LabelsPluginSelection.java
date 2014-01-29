@@ -50,12 +50,16 @@ public class Activity_LabelsPluginSelection extends Activity {
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
 		
-		// Récupération label courant
+		// Getting current label
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null
 				&& thisIntent.getExtras().containsKey("label")) {
 			String labelName = thisIntent.getExtras().getString("label");
 			label = muninFoo.getLabel(labelName);
+			if (label == null) {
+				Toast.makeText(this, "Error while trying to display this list...", Toast.LENGTH_LONG).show();
+				startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_Labels.class));
+			}
 		} else
 			startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_Labels.class));
 		
