@@ -325,7 +325,11 @@ public class Activity_Splash extends Activity {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			myProgressDialog.dismiss();
+			if (myProgressDialog != null && myProgressDialog.isShowing()) {
+				try {
+					myProgressDialog.dismiss();
+				} catch (Exception ignored) { }
+			}
 			if (migration && !migrationSuccess) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(c);
 				String message = "We changed the way data in stored in the app. Unfortunately, it seems that we weren't able to migrate the servers information from the old to the new database."

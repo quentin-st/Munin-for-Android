@@ -111,6 +111,9 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
 		
+		if (sqlite == null)
+			sqlite = new SQLite(context, MuninFoo.getInstance(context));
+		
 		if (intent.getAction() != null) {
 			if (intent.getAction().equals(ACTION_UPDATE_GRAPH)) {
 				Bundle extras = intent.getExtras();
