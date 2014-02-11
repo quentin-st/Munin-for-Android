@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.chteuchteu.munin.obj.Widget;
 
 /*
@@ -80,7 +81,7 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 				s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 				s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
 						c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
-						MuninServer.AUTH_BASIC);
+						AuthType.BASIC);
 				//s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
 				if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
 					s.setSSL(true);
@@ -161,7 +162,7 @@ public class DatabaseHelper_old extends SQLiteOpenHelper {
 		s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 		s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
 				c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
-				MuninServer.AUTH_BASIC);
+				AuthType.BASIC);
 		//s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
 		if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
 			s.setSSL(true);

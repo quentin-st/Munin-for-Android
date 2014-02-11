@@ -2,8 +2,8 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.chteuchteu.munin"
-	android:versionCode="21"
-	android:versionName="2.6.4">
+	android:versionCode="23"
+	android:versionName="2.6.6">
 
 	<!-- SDK Version -->
 	<uses-sdk
@@ -47,6 +47,8 @@
 			android:configChanges="orientation|keyboardHidden" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GraphView" 
 		    android:configChanges="keyboardHidden|orientation" />
+		<activity android:name="com.chteuchteu.munin.ui.Activity_Grid" />
+		<activity android:name="com.chteuchteu.munin.ui.Activity_GridSelection" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Labels" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_LabelsPluginSelection" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Main" />

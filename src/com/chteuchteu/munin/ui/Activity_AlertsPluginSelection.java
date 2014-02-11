@@ -25,6 +25,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.obj.MuninPlugin;
+import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
@@ -69,7 +70,7 @@ public class Activity_AlertsPluginSelection extends Activity {
 			// Construction de plugins - liste des plugins à afficher
 			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
 				if (muninFoo.currentServer.getPlugin(i) != null && 
-						(muninFoo.currentServer.getPlugin(i).getState().equals(MuninPlugin.ALERTS_STATE_WARNING) || muninFoo.currentServer.getPlugin(i).getState().equals(MuninPlugin.ALERTS_STATE_CRITICAL))) {
+						(muninFoo.currentServer.getPlugin(i).getState() == AlertState.WARNING || muninFoo.currentServer.getPlugin(i).getState() == AlertState.CRITICAL)) {
 					plugins.add(muninFoo.currentServer.getPlugin(i));
 					// Construction de la vue
 					LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -77,9 +78,9 @@ public class Activity_AlertsPluginSelection extends Activity {
 					
 					((TextView)v.findViewById(R.id.line_a)).setText(muninFoo.currentServer.getPlugin(i).getFancyName());
 					((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.currentServer.getPlugin(i).getName());
-					if (muninFoo.currentServer.getPlugin(i).getState().equals(MuninPlugin.ALERTS_STATE_WARNING))
+					if (muninFoo.currentServer.getPlugin(i).getState() == AlertState.WARNING)
 						((LinearLayout)v.findViewById(R.id.pluginselection_part_ll)).setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_WARNING));
-					else if (muninFoo.currentServer.getPlugin(i).getState().equals(MuninPlugin.ALERTS_STATE_CRITICAL))
+					else if (muninFoo.currentServer.getPlugin(i).getState() == AlertState.CRITICAL)
 						((LinearLayout)v.findViewById(R.id.pluginselection_part_ll)).setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_CRITICAL));
 					
 					((LinearLayout)v.findViewById(R.id.pluginselection_part_ll)).setOnClickListener(new OnClickListener() {

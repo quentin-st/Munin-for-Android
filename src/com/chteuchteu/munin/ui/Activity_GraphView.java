@@ -13,7 +13,9 @@ import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -46,7 +48,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -337,40 +338,33 @@ public class Activity_GraphView extends Activity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (findViewById(R.id.serverSwitch_mask).getVisibility() == View.VISIBLE) {
-					if (findViewById(R.id.labels_container).getVisibility() == View.VISIBLE)
-						actionCloseLabels();
-					else
-						actionServerSwitchQuit();
-				} else {
-					if (muninFoo.drawer)
-						dh.getDrawer().toggle(true);
-					else {
-						Intent thisIntent = getIntent();
-						if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")) {
-							String from = thisIntent.getExtras().getString("from");
-							if (from.equals("labels")) {
-								if (thisIntent.getExtras().containsKey("label")) {
-									Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
-									intent.putExtra("label", thisIntent.getExtras().getString("label"));
-									startActivity(intent);
-									setTransition("shallower");
-								}
-							} else if (from.equals("alerts")) {
-								if (thisIntent.getExtras().containsKey("server")) {
-									if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
-										muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
-									Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
-									startActivity(intent);
-									setTransition("shallower");
-								}
+				if (muninFoo.drawer)
+					dh.getDrawer().toggle(true);
+				else {
+					Intent thisIntent = getIntent();
+					if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")) {
+						String from = thisIntent.getExtras().getString("from");
+						if (from.equals("labels")) {
+							if (thisIntent.getExtras().containsKey("label")) {
+								Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
+								intent.putExtra("label", thisIntent.getExtras().getString("label"));
+								startActivity(intent);
+								setTransition("shallower");
 							}
-						} else {
-							Intent intent = new Intent(this, Activity_PluginSelection.class);
-							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-							startActivity(intent);
-							setTransition("shallower");
+						} else if (from.equals("alerts")) {
+							if (thisIntent.getExtras().containsKey("server")) {
+								if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
+									muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
+								Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
+								startActivity(intent);
+								setTransition("shallower");
+							}
 						}
+					} else {
+						Intent intent = new Intent(this, Activity_PluginSelection.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivity(intent);
+						setTransition("shallower");
 					}
 				}
 				return true;
@@ -380,10 +374,7 @@ public class Activity_GraphView extends Activity {
 			case R.id.menu_save:		actionSave();			return true;
 			case R.id.menu_switchServer:actionServerSwitch();	return true;
 			case R.id.menu_labels:
-				if (findViewById(R.id.labels_container).getVisibility() == View.GONE)
-					actionLabels();
-				else
-					actionCloseLabels();
+				actionLabels();
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_GraphView.this, Activity_Settings.class));
@@ -399,38 +390,31 @@ public class Activity_GraphView extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		if (findViewById(R.id.serverSwitch_mask).getVisibility() == View.VISIBLE) {
-			if (findViewById(R.id.labels_container).getVisibility() == View.VISIBLE)
-				actionCloseLabels();
-			else
-				actionServerSwitchQuit();
-		} else {
-			//recycleBitmaps();
-			Intent thisIntent = getIntent();
-			if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")) {
-				String from = thisIntent.getExtras().getString("from");
-				if (from.equals("labels")) {
-					if (thisIntent.getExtras().containsKey("label")) {
-						Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
-						intent.putExtra("label", thisIntent.getExtras().getString("label"));
-						startActivity(intent);
-						setTransition("shallower");
-					}
-				} else if (from.equals("alerts")) {
-					if (thisIntent.getExtras().containsKey("server")) {
-						if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
-							muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
-						Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
-						startActivity(intent);
-						setTransition("shallower");
-					}
+		//recycleBitmaps();
+		Intent thisIntent = getIntent();
+		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")) {
+			String from = thisIntent.getExtras().getString("from");
+			if (from.equals("labels")) {
+				if (thisIntent.getExtras().containsKey("label")) {
+					Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
+					intent.putExtra("label", thisIntent.getExtras().getString("label"));
+					startActivity(intent);
+					setTransition("shallower");
 				}
-			} else {
-				Intent intent = new Intent(this, Activity_PluginSelection.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				setTransition("shallower");
+			} else if (from.equals("alerts")) {
+				if (thisIntent.getExtras().containsKey("server")) {
+					if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
+						muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
+					Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
+					startActivity(intent);
+					setTransition("shallower");
+				}
 			}
+		} else {
+			Intent intent = new Intent(this, Activity_PluginSelection.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			setTransition("shallower");
 		}
 	}
 	
@@ -642,7 +626,6 @@ public class Activity_GraphView extends Activity {
 				fadeInAnimation.setDuration(10);
 				arg1.startAnimation(fadeInAnimation);
 				popupActions.dismiss();
-				//String selectedItemText = ((TextView) arg1).getText().toString();
 				int id = Integer.parseInt(((TextView) arg1).getTag().toString());
 				switch (id) {
 					case 0:
@@ -687,41 +670,38 @@ public class Activity_GraphView extends Activity {
 		return adapter;
 	}
 	
-	public void actionLabels() {
-		findViewById(R.id.serverSwitch_mask).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionCloseLabels(); } });
-		
-		findViewById(R.id.serverSwitch_mask).setVisibility(View.VISIBLE);
-		findViewById(R.id.labels_container).setVisibility(View.VISIBLE);
-		
-		refreshLabelsList();
-		
-		Button b = (Button) findViewById(R.id.addLabelButton);
-		final EditText e = (EditText) findViewById(R.id.addLabelEditText);
-		b.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (!e.getText().toString().equals("")) {
-					if (muninFoo.addLabel(new Label(e.getText().toString()))) // Si label ajouté : ajout de relation
-						muninFoo.getLabel(e.getText().toString()).addPlugin(muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition()));
-				}
-				e.setText("");
-				muninFoo.sqlite.saveLabels();
-				refreshLabelsList();
+	public void actionAddLabel() {
+		final EditText input = new EditText(this);
+		new AlertDialog.Builder(Activity_GraphView.this)
+		.setTitle(getText(R.string.text62))
+		.setView(input)
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String value = input.getText().toString();
+				if (!value.equals(""))
+					muninFoo.addLabel(new Label(value));
+				dialog.dismiss();
+				actionLabels();
 			}
-		});
+		}).setNegativeButton(getText(R.string.text64), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) { }
+		}).show();
 	}
-	public void refreshLabelsList() {
-		View insertPoint = findViewById(R.id.listviewLabels);
-		((LinearLayout)insertPoint).removeAllViews();
-		final List<CheckBox> checkboxes = new ArrayList<CheckBox>();
+	
+	public void actionLabels() {
+		final CharSequence[] items = new CharSequence[muninFoo.labels.size()];
+		for (int i=0; i<muninFoo.labels.size(); i++)
+			items[i] = muninFoo.labels.get(i).getName();
 		
+		LinearLayout checkboxesContainer = new LinearLayout(this);
+		checkboxesContainer.setPadding(10, 10, 10, 10);
+		checkboxesContainer.setOrientation(LinearLayout.VERTICAL);
+		final List<CheckBox> checkboxes = new ArrayList<CheckBox>();
 		int i = 0;
 		for (Label l : muninFoo.labels) {
 			LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			final View v = vi.inflate(R.layout.labels_list_checkbox, null);
-			
 			checkboxes.add((CheckBox) v.findViewById(R.id.line_0));
-			
 			v.findViewById(R.id.line).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
@@ -730,8 +710,7 @@ public class Activity_GraphView extends Activity {
 				}
 			});
 			
-			if (l.contains(muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition())))
-				checkboxes.get(i).setChecked(true);
+			if (l.contains(muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition())))	checkboxes.get(i).setChecked(true);
 			
 			((CheckBox) v.findViewById(R.id.line_0)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				@Override
@@ -741,13 +720,9 @@ public class Activity_GraphView extends Activity {
 					MuninPlugin p = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
 					if (isChecked)
 						muninFoo.getLabel(labelName).addPlugin(p);
-					else {
+					else
 						muninFoo.getLabel(labelName).removePlugin(p);
-						if (muninFoo.getLabel(labelName).plugins.size() == 0) {
-							muninFoo.removeLabel(muninFoo.getLabel(labelName));
-							refreshLabelsList();
-						}
-					}
+					
 					muninFoo.sqlite.saveLabels();
 				}
 			});
@@ -759,25 +734,45 @@ public class Activity_GraphView extends Activity {
 				((CheckBox) v.findViewById(R.id.line_0)).setButtonDrawable(id);
 			}
 			
-			((ViewGroup) insertPoint).addView(v);
+			checkboxesContainer.addView(v);
 			i++;
 		}
 		if (muninFoo.labels.size() == 0) {
-			findViewById(R.id.labels_nolabel).setVisibility(View.VISIBLE);
-			findViewById(R.id.listviewLabels).setVisibility(View.GONE);
+			TextView tv = new TextView(this);
+			tv.setText(getText(R.string.text62));
+			tv.setTextSize(18f);
+			tv.setPadding(20, 20, 0, 0);
+			checkboxesContainer.addView(tv);
 		}
-		else {
-			findViewById(R.id.labels_nolabel).setVisibility(View.GONE);
-			findViewById(R.id.listviewLabels).setVisibility(View.VISIBLE);
-		}
-	}
-	public void actionCloseLabels() {
-		findViewById(R.id.serverSwitch_mask).setVisibility(View.GONE);
-		findViewById(R.id.labels_container).setVisibility(View.GONE);
-		AlphaAnimation a = new AlphaAnimation(1.0f, 0.0f);
-		a.setDuration(300);
-		findViewById(R.id.serverSwitch_mask).startAnimation(a);
-		findViewById(R.id.labels_container).startAnimation(a);
+		
+		AlertDialog dialog;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(getText(R.string.button_labels));
+		builder.setView(checkboxesContainer)
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				// OK
+				dialog.dismiss();
+			}
+		})
+		.setNeutralButton(getText(R.string.text70_2), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// Add a label
+				dialog.dismiss();
+				actionAddLabel();
+			}
+		})
+		.setNegativeButton(getText(R.string.text64), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				// Cancel
+				dialog.dismiss();
+			}
+		});
+		dialog = builder.create();
+		dialog.show();
 	}
 	
 	@SuppressLint("NewApi")

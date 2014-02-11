@@ -9,6 +9,7 @@
 	<string name="button_premium">Go premium</string>
 	<string name="button_alerts">Alerts</string>
 	<string name="button_labels">Labels</string>
+	<string name="button_grid">Grids</string>
 	<string name="button_notifications">Notifications</string>
 	<string name="settings_URL_label">Munin-master URL</string>
 	<string name="settings_URL_label2">ex: 88.180.108.192/munin/localdomain/localhost.localdomain/, or 88.180.108.192:80/munin/</string>
@@ -47,9 +48,10 @@
 	<string name="about_gplay">Google Play: note!</string>
 	<string name="menu_serversedit_revert">Revert servers</string>
 	<string name="servers_noservers_1">No server yet</string>
-	<string name="servers_noservers_2">Add yours or sample ones now by clicking on +</string>
+	<string name="servers_noservers_2">Add yours or sample ones now by tapping on +</string>
 	<string name="updateNotificationTitle">Update available</string>
 	<string name="updateNotificationText">Please update the app to take advantage of new features and bug fixes.</string>
+	<string name="edit">Edit</string>
 	
 	<string name="aboutText">
 <![CDATA[
@@ -222,4 +224,21 @@
 	<string name="text66.1">History cleared.</string>
 	<string name="text67">No label yet</string>
 	<string name="text68">Timeout - The server took too long to handle the request</string>
+	<string name="text69">Grid name</string>
+	<string name="text70">Add a grid</string>
+	<string name="text70.2">Add a label</string>
+	<string name="text71">Select a server</string>
+	<string name="text72">Select plugins to add</string>
+	<string name="text73">Delete this grid</string>
+	<string name="text74">A grid with that name already exists.</string>
+	<string name="text75">Grid</string>
+	<string name="text76">Change period…</string>
+	<string name="text77">No grid</string>
+	<string name="text78">Add one now by tapping on +</string>
+	
+	<string name="delete">Delete</string>
+	<string name="move_up">Move up</string>
+	<string name="move_right">Move right</string>
+	<string name="move_down">Move down</string>
+	<string name="move_left">Move left</string>
 </resources>

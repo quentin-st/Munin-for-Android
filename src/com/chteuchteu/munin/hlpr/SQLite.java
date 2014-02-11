@@ -7,6 +7,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.obj.Grid;
+import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
@@ -176,90 +178,16 @@ public class SQLite {
 		}
 	}
 	
-	/*public void saveLabels() {
-		// Check if we have to add / delete Labels
-		List<Label> toBeDeleted = new ArrayList<Label>();
-		
-		// Delete labels if necessary
-		for (Label dbL : dbHlpr.getLabels()) {
-			int nb = 0;
-			for (Label l : muninFoo.labels) {
-				if (l.equals(dbL)) {
-					nb++; break;
-				}
-			}
-			if (nb == 0) {
-				toBeDeleted.add(dbL);
-			}
+	public void saveGridItemRelations(Grid g) {
+		// Simplest way of doing it ;)
+		dbHlpr.deleteGridItemRelations(g);
+		for (GridItem i : g.items) {
+			dbHlpr.insertGridItemRelation(i);
 		}
-		for (Label l : toBeDeleted)
-			dbHlpr.deleteLabel(l);
-		
-		// Add labels if necessary
-		List<MuninPlugin> toBeDeleted2 = new ArrayList<MuninPlugin>();
-		for (Label localL : muninFoo.labels) {
-			Log.v("LABEL", localL.getName());
-			Label dbL = dbHlpr.getLabel(localL.getName());
-			if (dbL != null) {
-				// Label already exists in BDD. Let's update relations if necessary
-				// Delete old relations
-				for (MuninPlugin dbP : dbHlpr.getPlugins(dbL)) {
-					int nb = 0;
-					for (MuninPlugin p : dbL.plugins) {
-						if (p.equalsApprox(dbP)) {
-							nb++; break;
-						}
-					}
-					if (nb == 0)
-						toBeDeleted2.add(dbP);
-				}
-				for (MuninPlugin p : toBeDeleted2) {
-					dbHlpr.deleteLabelsRelation(p, dbL);
-				}
-				
-				// Create new relations
-				for (MuninPlugin p : dbL.plugins) {
-					if (dbHlpr.getPlugins(dbL) == null)
-						dbHlpr.insertLabelRelation(p, dbL);
-				}
-			} else {
-				// Create label and labelrelations
-				dbHlpr.insertLabel(localL);
-				for (MuninPlugin p : localL.plugins) {
-					dbHlpr.insertLabelRelation(p, localL);
-				}
-			}
-		}
-	}*/
+	}
 	
-	// Logs
-	/*public void logWidgets() {
-		Log.v("SQLite_old", "==========================================");
-		if (getWidgets().size() > 0) {
-			for (Widget w : getWidgets()) {
-				if (w != null) {
-					String s = "";
-					if (w.getPeriod() != null)
-						s = s + w.getPeriod() + " ";
-					else
-						s = s + "{period} ";
-					if (w.getPlugin() != null)
-						s = s + w.getPlugin().getName() + " ";
-					else
-						s = s + "{plugin} ";
-					if (w.getServer() != null)
-						s = s + w.getServer().getName() + " ";
-					else
-						s = s + "{server} ";
-					Log.v("SQLite_old", s);
-				}
-				else
-					Log.v("SQLite_old", "Something's null");
-			}
-		} else
-			Log.v("SQLite_old", "No widgets in the database.");
-		Log.v("SQLite_old", "==========================================");
-	}*/
+	
+	
 	public void logServers() {
 		Log.v("SQLite_old", "==========================================");
 		if (dbHlpr.getServers().size() > 0) {

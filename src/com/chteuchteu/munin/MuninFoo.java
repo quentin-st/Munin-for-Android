@@ -58,6 +58,7 @@ import com.chteuchteu.munin.obj.HTTPResponse;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
 
 public class MuninFoo {
@@ -72,18 +73,18 @@ public class MuninFoo {
 	public boolean drawer;
 	
 	// === VERSION === //
-	// HISTORY		current:	 ___________________________________________________________________________________________________________________________---_
+	// HISTORY		current:	 _______________________________________________________________________________________________________________________________
 	// android:versionName:		| 1.1		1.2		1.3		1.4		1.4.1	1.4.2	1.4.5	1.4.6	2.0		2.0.1	2.1		2.2		2.3		2.4		2.5		2.6 |
 	// android:versionCode: 	|  1		 2		 3		 4		 5		 6		 7	 	 8	  	 10		11		12		13		14		15		16		17	|
 	// MfA version:				| 1.1		1.2		1.3		1.4		1.5		1.6		1.7  	1.8   	1.9		2.0		2.1 	2.2		2.3		2.4		2.5		2.6	|
 	//							--------------------------------------------------------------------------------------------------------------------------------
-	//							| 2.6.1		2.6.2	2.6.3	2.6.4
-	//							|  18		 19		20		21
-	//							|  2.7		2.8		2.9		3.0
+	//							| 2.6.1		2.6.2	2.6.3	2.6.4	2.6.5	2.6.6
+	//							|  18		 19		20		21		22		23
+	//							|  2.7		2.8		2.9		3.0		3.1		3.2
 	
-	public double version = 3.0;
+	public double version = 3.2;
 	// =============== //
-	public boolean debug = false;
+	public boolean debug = true;
 	public boolean premium;
 	
 	private MuninFoo() {
@@ -425,9 +426,9 @@ public class MuninFoo {
 			HttpGet request = new HttpGet(s.getServerUrl());
 			
 			if (s.isAuthNeeded()) {
-				if (s.getAuthType() == MuninServer.AUTH_BASIC)
+				if (s.getAuthType() == AuthType.BASIC)
 					request.setHeader("Authorization", "Basic " + Base64.encodeToString((s.getAuthLogin() + ":" + s.getAuthPassword()).getBytes(), Base64.NO_WRAP));
-				else if (s.getAuthType() == MuninServer.AUTH_DIGEST) {
+				else if (s.getAuthType() == AuthType.DIGEST) {
 					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
 					String userName = s.getAuthLogin();
 					String password = s.getAuthPassword();
@@ -505,6 +506,7 @@ public class MuninFoo {
 	}
 	
 	public static Bitmap grabBitmap(MuninServer s, String url) {
+		//Log.v("", "Downloading image " + url);
 		return grabBitmap(s, url, false);
 	}
 	
@@ -541,9 +543,9 @@ public class MuninFoo {
 			HttpGet request = new HttpGet(url);
 			
 			if (s.isAuthNeeded()) {
-				if (s.getAuthType() == MuninServer.AUTH_BASIC)
+				if (s.getAuthType() == AuthType.BASIC)
 					request.setHeader("Authorization", "Basic " + Base64.encodeToString((s.getAuthLogin() + ":" + s.getAuthPassword()).getBytes(), Base64.NO_WRAP));
-				else if (s.getAuthType() == MuninServer.AUTH_DIGEST) {
+				else if (s.getAuthType() == AuthType.DIGEST) {
 					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
 					String userName = s.getAuthLogin();
 					String password = s.getAuthPassword();
@@ -646,6 +648,8 @@ public class MuninFoo {
 	
 	public boolean isPremium(Context c) {
 		if (isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
+			if (debug)
+				return true;
 			PackageManager manager = c.getPackageManager();
 			if (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")
 					== PackageManager.SIGNATURE_MATCH) {

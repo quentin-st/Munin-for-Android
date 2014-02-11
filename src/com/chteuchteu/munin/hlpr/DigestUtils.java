@@ -5,12 +5,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
 public class DigestUtils {
 	private static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 	
 	public static String getDigestAuthHeader(MuninServer s, String url) {
-		if (s.getAuthType() == MuninServer.AUTH_DIGEST) {
+		if (s.getAuthType() == AuthType.DIGEST) {
 			// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
 			String userName = s.getAuthLogin();
 			String password = s.getAuthPassword();

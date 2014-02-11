@@ -39,6 +39,7 @@ import com.chteuchteu.munin.CustomSSLFactory;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.hlpr.DigestUtils;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 
 public class MuninServer {
 	private long id;
@@ -50,7 +51,7 @@ public class MuninServer {
 	private String graphURL;
 	private Boolean ssl;
 	private int position;
-	private int authType;
+	private AuthType authType;
 	private String authString;
 	private String parent;
 	public boolean isPersistant;
@@ -58,10 +59,10 @@ public class MuninServer {
 	private List<MuninPlugin> 	erroredPlugins;
 	private List<MuninPlugin> 	warnedPlugins;
 	
-	public static int AUTH_UNKNOWN = -2;
+	/*public static int AUTH_UNKNOWN = -2;
 	public static int AUTH_NONE = -1;
 	public static int AUTH_BASIC = 1;
-	public static int AUTH_DIGEST = 2;
+	public static int AUTH_DIGEST = 2;*/
 	
 	public MuninServer() {
 		this.name = "";
@@ -71,7 +72,7 @@ public class MuninServer {
 		this.authPassword = "";
 		this.graphURL = "";
 		this.ssl = false;
-		this.authType = AUTH_UNKNOWN;
+		this.authType = AuthType.UNKNOWN;
 		this.position = -1;
 		this.authString = "";
 		this.isPersistant = false;
@@ -84,14 +85,14 @@ public class MuninServer {
 		this.authPassword = "";
 		this.graphURL = "";
 		this.ssl = false;
-		this.authType = AUTH_UNKNOWN;
+		this.authType = AuthType.UNKNOWN;
 		this.position = -1;
 		this.authString = "";
 		this.isPersistant = false;
 		generatePosition();
 	}
 	public MuninServer (String name, String serverUrl, String authLogin, String authPassword, String graphUrl,
-			boolean SSL, int position, int authType, String authString) {
+			boolean SSL, int position, AuthType authType, String authString) {
 		this.name = name;
 		this.serverUrl = serverUrl;
 		this.plugins = new ArrayList<MuninPlugin>();
@@ -100,12 +101,24 @@ public class MuninServer {
 		this.graphURL = graphUrl;
 		this.ssl = SSL;
 		this.position = position;
-		if (authType == 0)
-			this.authType = AUTH_UNKNOWN;
-		else
-			this.authType = authType;
+		this.authType = authType;
 		this.authString = authString;
 		this.isPersistant = false;
+	}
+	
+	public enum AuthType {
+		UNKNOWN(-2), NONE(-1), BASIC(1), DIGEST(2);
+		private int val = -2;
+		
+		AuthType(int val) { this.val = val; }
+		public int getVal() { return this.val; }
+		public String toString() { return val + ""; }
+		public static AuthType get(int val) {
+			for (AuthType t : AuthType.values())
+				if (t.val == val)
+					return t;
+			return UNKNOWN;
+		}
 	}
 	
 	public long getId() {
@@ -207,15 +220,15 @@ public class MuninServer {
 				}
 				if (mp != null) {
 					if (image.hasClass("crit") || image.hasClass("icrit")) {
-						mp.setState(MuninPlugin.ALERTS_STATE_CRITICAL);
+						mp.setState(AlertState.CRITICAL);
 						erroredPlugins.add(mp);
 					}
 					else if (image.hasClass("warn") || image.hasClass("iwarn")) {
-						mp.setState(MuninPlugin.ALERTS_STATE_WARNING);
+						mp.setState(AlertState.WARNING);
 						warnedPlugins.add(mp);
 					}
 					else
-						mp.setState(MuninPlugin.ALERTS_STATE_OK);
+						mp.setState(AlertState.OK);
 				}
 			}
 		}
@@ -223,7 +236,7 @@ public class MuninServer {
 		// Passage du reste à MuninPlugin.ALERTS_STATE_UNDEFINED
 		for (int i=0; i<this.plugins.size(); i++) {
 			if (this.getPlugin(i) != null && (this.getPlugin(i).getState() == null || (this.getPlugin(i).getState() != null && this.getPlugin(i).getState().equals(""))))
-				this.getPlugin(i).setState(MuninPlugin.ALERTS_STATE_UNDEFINED);
+				this.getPlugin(i).setState(AlertState.UNDEFINED);
 		}
 	}
 	
@@ -235,7 +248,7 @@ public class MuninServer {
 			return this.graphURL;
 		return "";
 	}
-	public int getAuthType() {
+	public AuthType getAuthType() {
 		return this.authType;
 	}
 	
@@ -266,9 +279,9 @@ public class MuninServer {
 			// Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
 			this.authString = res.header_wwwauthenticate;
 			if (res.header_wwwauthenticate.contains("Digest"))
-				this.authType = MuninServer.AUTH_DIGEST;
+				this.authType = AuthType.DIGEST;
 			else if (res.header_wwwauthenticate.contains("Basic"))
-				this.authType = MuninServer.AUTH_BASIC;
+				this.authType = AuthType.BASIC;
 		}
 		
 		if (res.timeout)
@@ -359,9 +372,9 @@ public class MuninServer {
 			HttpGet request = new HttpGet(url);
 			
 			if (this.isAuthNeeded()) {
-				if (this.getAuthType() == AUTH_BASIC)
+				if (this.getAuthType() == AuthType.BASIC)
 					request.setHeader("Authorization", "Basic " + Base64.encodeToString((authLogin + ":" + authPassword).getBytes(), Base64.NO_WRAP));
-				else if (this.getAuthType() == AUTH_DIGEST) {
+				else if (this.getAuthType() == AuthType.DIGEST) {
 					// Digest foo:digestedPass, realm="munin", nonce="+RdhgM7qBAA=86e58ecf5cbd672ba8246c4f9eed4a389fe87fd6", algorithm=MD5, qop="auth"
 					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
 					String userName = this.authLogin;
@@ -530,7 +543,7 @@ public class MuninServer {
 	}
 	
 	public boolean isAuthNeeded() {
-		if (this.authType == AUTH_NONE && this.authLogin.equals("") && this.authPassword.equals(""))
+		if (this.authType == AuthType.NONE && this.authLogin.equals("") && this.authPassword.equals(""))
 			return false;
 		else
 			return true;
@@ -638,23 +651,20 @@ public class MuninServer {
 		this.authPassword = password;
 		
 		if (login.equals("") && password.equals(""))
-			this.authType = AUTH_NONE;
+			this.authType = AuthType.NONE;
 	}
 	
-	public void setAuthIds(String login, String password, int authType) {
+	public void setAuthIds(String login, String password, AuthType authType) {
 		setAuthIds(login, password);
 		
 		if (login.equals("") || password.equals(""))
-			this.authType = AUTH_NONE;
+			this.authType = AuthType.NONE;
 		else
 			this.authType = authType;
 	}
 	
-	public void setAuthType(int t) {
-		if (t == AUTH_BASIC || t == AUTH_DIGEST || t == AUTH_NONE || t == AUTH_UNKNOWN)
-			this.authType = t;
-		else
-			this.authType = AUTH_UNKNOWN;
+	public void setAuthType(AuthType t) {
+		this.authType = t;
 	}
 	
 	public void setPosition(int position) {

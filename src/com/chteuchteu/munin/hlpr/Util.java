@@ -3,6 +3,8 @@ package com.chteuchteu.munin.hlpr;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.chteuchteu.munin.obj.MuninPlugin.Period;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,6 +13,7 @@ import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
@@ -61,6 +64,14 @@ public final class Util {
 		return Typeface.createFromAsset(c.getAssets(), name.getValue());
 	}
 	
+	public static int[] getDeviceSize(Context c) {
+		int[] r = new int[2];
+		DisplayMetrics dm = c.getResources().getDisplayMetrics();
+		r[0] = dm.widthPixels;
+		r[1] = dm.heightPixels;
+		return r;
+	}
+	
 	@SuppressLint("NewApi")
 	public static boolean deviceHasBackKey(Context c) {
 		if (Build.VERSION.SDK_INT >= 14)
@@ -83,6 +94,10 @@ public final class Util {
 		if (netInfo != null && netInfo.isConnectedOrConnecting())
 			return true;
 		return false;
+	}
+	
+	public static Period getDefaultPeriod(Context c) {
+		return Period.get(Util.getPref(c, "defaultScale"));
 	}
 	
 	public static Bitmap removeBitmapBorder(Bitmap original) {

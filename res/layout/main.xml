@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical">
+	android:orientation="vertical" >
 
 	<!-- Update notification -->
 
@@ -14,24 +13,24 @@
 		android:clickable="true"
 		android:onClick="onClick"
 		android:orientation="vertical"
-		android:visibility="gone">
+		android:visibility="gone" >
 
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:background="#333333"
-			android:orientation="horizontal">
+			android:orientation="horizontal" >
 
 			<ImageView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:padding="15dp"
-				android:src="@drawable/icon_alerts" />
+				android:src="@drawable/ic_dr_warning" />
 
 			<LinearLayout
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:orientation="vertical">
+				android:orientation="vertical" >
 
 				<TextView
 					android:layout_width="match_parent"
@@ -68,7 +67,7 @@
 	<ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_gravity="center">
+		android:layout_gravity="center" >
 
 		<LinearLayout
 			android:id="@+id/buttonsContainer"
@@ -78,24 +77,34 @@
 			android:gravity="center_horizontal"
 			android:orientation="vertical"
 			android:paddingBottom="30dp"
-			android:paddingTop="30dp">
+			android:paddingTop="30dp" >
 
 			<Button
 				android:id="@+id/graphsContainer"
 				style="@style/ButtonText"
 				android:layout_margin="20dp"
 				android:background="@drawable/blue_button"
-				android:drawableLeft="@drawable/icon_graphs"
+				android:drawableLeft="@drawable/ic_dr_graphs"
 				android:drawablePadding="-15sp"
 				android:gravity="center"
 				android:text="@string/button_graphs" />
+
+			<Button
+				android:id="@+id/gridsContainer"
+				style="@style/ButtonText"
+				android:layout_margin="20dp"
+				android:background="@drawable/blue_button"
+				android:drawableLeft="@drawable/ic_dr_grid"
+				android:drawablePadding="-15sp"
+				android:gravity="center"
+				android:text="@string/button_grid" />
 
 			<Button
 				android:id="@+id/labelsContainer"
 				style="@style/ButtonText"
 				android:layout_margin="20dp"
 				android:background="@drawable/blue_button"
-				android:drawableLeft="@drawable/icon_labels"
+				android:drawableLeft="@drawable/ic_dr_labels"
 				android:drawablePadding="-15sp"
 				android:gravity="center"
 				android:text="@string/button_labels" />
@@ -105,7 +114,7 @@
 				style="@style/ButtonText"
 				android:layout_margin="20dp"
 				android:background="@drawable/blue_button"
-				android:drawableLeft="@drawable/icon_alerts"
+				android:drawableLeft="@drawable/ic_dr_warning"
 				android:drawablePadding="-15sp"
 				android:gravity="center"
 				android:text="@string/button_alerts" />
@@ -115,7 +124,7 @@
 				style="@style/ButtonText"
 				android:layout_margin="20dp"
 				android:background="@drawable/blue_button"
-				android:drawableLeft="@drawable/icon_servers"
+				android:drawableLeft="@drawable/ic_dr_servers"
 				android:drawablePadding="-15sp"
 				android:gravity="center"
 				android:text="@string/button_server" />
@@ -125,7 +134,7 @@
 				style="@style/ButtonText"
 				android:layout_margin="20dp"
 				android:background="@drawable/blue_button"
-				android:drawableLeft="@drawable/icon_alerts"
+				android:drawableLeft="@drawable/ic_dr_warning"
 				android:drawablePadding="-15sp"
 				android:gravity="center"
 				android:text="@string/button_notifications" />
@@ -155,7 +164,7 @@
 				style="@style/ButtonText"
 				android:layout_margin="20dp"
 				android:background="@drawable/blue_button"
-				android:drawableLeft="@drawable/icon_premium"
+				android:drawableLeft="@drawable/ic_dr_premium"
 				android:drawablePadding="-15sp"
 				android:gravity="center"
 				android:text="@string/button_premium" />

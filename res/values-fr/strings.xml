@@ -8,6 +8,7 @@
 	<string name="button_premium">Go premium</string>
 	<string name="button_alerts">Alertes</string>
 	<string name="button_labels">Labels</string>
+	<string name="button_grid">Grilles</string>
 	<string name="button_notifications">Notifications</string>
 	<string name="settings_URL_label">Munin-master URL</string>
 	<string name="settings_URL_label2">ex: 88.180.108.192/munin/localdomain/localhost.localdomain/, ou 88.180.108.192:80/munin/</string>
@@ -58,11 +59,12 @@
 	<string name="notificationsTitle">Notifications</string>
 	<string name="menu_serversedit_revert">Annuler les modifications</string>
 	<string name="servers_noservers_1">Aucun serveur</string>
-	<string name="servers_noservers_2">Ajoutez les vôtres ou des serveurs d\'exemple en cliquant sur +</string>
+	<string name="servers_noservers_2">Ajoutez-en en cliquant sur +</string>
 	<string name="updateNotificationTitle">Mise à jour disponible</string>
 	<string name="updateNotificationText">Veuillez mettre à jour l\'application pour bénéficier des dernières fonctionnalités.</string>
 	<string name="buy_now">BUY NOW</string>
 	<string name="splashDesc">Loading</string>
+	<string name="edit">Editer</string>
 
 	<string name="widget_configuration1">Félicitations! Le widget a été ajouté avec succès à votre écran d\'accueil. Conseil: vous pouvez actualiser le graph en tapant sur la barre horizontale grise en-dessous de celui-ci.</string>
 	<string name="widget_configuration2">Rafraîchissement auto du graph par Wifi uniquement (1 par heure)</string>
@@ -141,12 +143,33 @@
 	<string name="text66.1">Historique effacé.</string>
 	<string name="text67">Aucun label</string>
 	<string name="text68">Timeout - Le serveur a mis trop longtemps à répondre</string>
-
+	
+	<string name="text69">Nom de la grille</string>
+	<string name="text70">Ajouter une grille</string>
+	<string name="text73">Supprimer cette grille</string>
+	
+	<string name="text70.2">Ajouter un label</string>
+	
+	<string name="text71">Sélectionnez un serveur</string>
+	<string name="text72">Sélectionnez les plugins à ajouter</string>
+	<string name="text74">Une grille portant ce nom existe déjà.</string>
+	<string name="text75">Grille</string>
+	<string name="text76">Changer la période…</string>
+	
+	<string name="text77">Aucune grille</string>
+	<string name="text78">Ajoutez-en une maintenant en appuyant sur +</string>
+	
 	<string name="settings_lang">Langue de l\'application</string>
 	<string name="lang_french">Français</string>
 	<string name="lang_german">Allemand</string>
 	<string name="lang_english">Anglais</string>
 
+	
+	<string name="delete">Supprimer</string>
+	<string name="move_up">Déplacer vers le haut</string>
+	<string name="move_right">Déplacer vers la droite</string>
+	<string name="move_down">Déplacer vers le bas</string>
+	<string name="move_left">Déplacer vers la gauche</string>
 
 	<string name="aboutText">
 	    <![CDATA[

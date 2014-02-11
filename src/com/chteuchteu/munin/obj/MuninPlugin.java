@@ -10,24 +10,19 @@ public class MuninPlugin {
 	private String fancyName;
 	private MuninServer installedOn;
 	private String category;
-	private String state;
+	private AlertState state;
 	public boolean isPersistant;
-	
-	public static String ALERTS_STATE_UNDEFINED = "undefined";
-	public static String ALERTS_STATE_OK = "ok";
-	public static String ALERTS_STATE_WARNING = "warning";
-	public static String ALERTS_STATE_CRITICAL = "error";
 	
 	public MuninPlugin () {
 		this.name = "unknown";
-		this.state = MuninPlugin.ALERTS_STATE_UNDEFINED;
+		this.state = AlertState.UNDEFINED;
 		this.isPersistant = false;
 		this.category = "";
 	}
 	public MuninPlugin (String name, MuninServer server) {
 		this.name = name;
 		this.installedOn = server;
-		this.state = MuninPlugin.ALERTS_STATE_UNDEFINED;
+		this.state = AlertState.UNDEFINED;
 		this.category = "";
 		this.isPersistant = false;
 	}
@@ -37,6 +32,26 @@ public class MuninPlugin {
 		this.installedOn = installedOn;
 		this.category = category;
 		this.isPersistant = false;
+	}
+	
+	public enum Period {
+		DAY("day"), WEEK("week"), MONTH("month"), YEAR("year");
+		
+		private String name = "";
+		Period(String p) { this.name = p; }
+		
+		public String toString() { return name; }
+		
+		public static Period get(String name) {
+			for (Period p : Period.values())
+				if (p.name.equals(name))
+					return p;
+			return DAY;
+		}
+	}
+	
+	public enum AlertState {
+		UNDEFINED, OK, WARNING, CRITICAL
 	}
 	
 	public void importData(MuninPlugin source) {
@@ -95,15 +110,15 @@ public class MuninPlugin {
 		return this.getInstalledOn().getServerUrl() + this.getName() + ".html";
 	}
 	
-	public Bitmap getGraph(String period, MuninServer server) {
-		return MuninFoo.grabBitmap(this.installedOn, getImgUrl(period));
+	public Bitmap getGraph(Period period) {
+		return MuninFoo.grabBitmap(this.installedOn, getImgUrl(period.name()));
 	}
 	
 	public Bitmap getGraph(String url) {
 		return MuninFoo.grabBitmap(this.installedOn, url);
 	}
 	
-	public String getState() {
+	public AlertState getState() {
 		return this.state;
 	}
 	
@@ -120,12 +135,8 @@ public class MuninPlugin {
 	public void setCategory(String c) {
 		this.category = c;
 	}
-	public void setState(String st) {
-		if (st.equals(MuninPlugin.ALERTS_STATE_CRITICAL) || st.equals(MuninPlugin.ALERTS_STATE_OK)
-				|| st.equals(MuninPlugin.ALERTS_STATE_UNDEFINED) || st.equals(MuninPlugin.ALERTS_STATE_WARNING))
-			this.state = st;
-		else
-			this.state = MuninPlugin.ALERTS_STATE_UNDEFINED;
+	public void setState(AlertState s) {
+		this.state = s;
 	}
 	public boolean equals(MuninPlugin p) {
 		if (this.name.equals(p.name) && this.fancyName.equals(p.fancyName) && this.installedOn.equalsApprox(p.installedOn))

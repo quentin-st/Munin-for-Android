@@ -28,6 +28,7 @@ import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_AddServer;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
+import com.chteuchteu.munin.ui.Activity_GridSelection;
 import com.chteuchteu.munin.ui.Activity_Labels;
 import com.chteuchteu.munin.ui.Activity_Notifications;
 import com.chteuchteu.munin.ui.Activity_PluginSelection;
@@ -46,6 +47,8 @@ public class DrawerHelper {
 	public int Activity_LabelsPluginSelection = 9;
 	public int Activity_GoPremium = 10;
 	public int Activity_GraphView = 3;
+	public int Activity_Grid = 11;
+	public int Activity_GridSelection = 11;
 	public int Activity_Main = 0;
 	public int Activity_Notifications = 4;
 	public int Activity_PluginSelection = 7;
@@ -116,6 +119,8 @@ public class DrawerHelper {
 			case 10:
 				setSelectedMenuItem("premium");
 				break;
+			case 11:
+				setSelectedMenuItem("grid");
 			default:
 				setSelectedMenuItem("");
 				break;
@@ -156,6 +161,13 @@ public class DrawerHelper {
 			@Override
 			public void onClick(View v) {
 				a.startActivity(new Intent(a, Activity_PluginSelection.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+				setTransition("deeper");
+			}
+		});
+		a.findViewById(R.id.drawer_grid_btn).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				a.startActivity(new Intent(a, Activity_GridSelection.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 				setTransition("deeper");
 			}
 		});
@@ -202,14 +214,18 @@ public class DrawerHelper {
 		
 		if (!m.premium) {
 			a.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
+			a.findViewById(R.id.drawer_grid_btn).setEnabled(false);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				a.findViewById(R.id.drawer_notifications_img).setAlpha(0.5f);
 				a.findViewById(R.id.drawer_notifications_txt).setAlpha(0.5f);
+				a.findViewById(R.id.drawer_grid_img).setAlpha(0.5f);
+				a.findViewById(R.id.drawer_grid_txt).setAlpha(0.5f);
 			}
 			a.findViewById(R.id.drawer_button_premium_ll).setVisibility(View.VISIBLE);
 		}
 		if (m.getHowManyServers() == 0) {
 			a.findViewById(R.id.drawer_graphs_btn).setEnabled(false);
+			a.findViewById(R.id.drawer_grid_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_alerts_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_labels_btn).setEnabled(false);
@@ -228,10 +244,15 @@ public class DrawerHelper {
 			a.findViewById(R.id.drawer_button_graphs_ll).setPadding(7, 0, 0, 0);
 			((TextView)a.findViewById(R.id.drawer_graphs_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
 			a.findViewById(R.id.drawer_button_graphs_border2).setVisibility(View.VISIBLE);
+		} else if (menuItemName.equals("grid")) {
+			a.findViewById(R.id.drawer_button_grid_ll).setPadding(7, 0, 0, 0);
+			((TextView)a.findViewById(R.id.drawer_grid_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
+			a.findViewById(R.id.drawer_button_graphs_border2).setVisibility(View.VISIBLE);
+			a.findViewById(R.id.drawer_button_grid_border2).setVisibility(View.VISIBLE);
 		} else if (menuItemName.equals("alerts")) {
 			a.findViewById(R.id.drawer_button_alerts_ll).setPadding(7, 0, 0, 0);
 			((TextView)a.findViewById(R.id.drawer_alerts_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			a.findViewById(R.id.drawer_button_graphs_border2).setVisibility(View.VISIBLE);
+			a.findViewById(R.id.drawer_button_grid_border2).setVisibility(View.VISIBLE);
 			a.findViewById(R.id.drawer_button_alerts_border2).setVisibility(View.VISIBLE);
 		} else if (menuItemName.equals("labels")) {
 			a.findViewById(R.id.drawer_button_labels_ll).setPadding(7, 0, 0, 0);
@@ -260,6 +281,7 @@ public class DrawerHelper {
 			a.findViewById(R.id.drawer_button_premium_border2).setVisibility(View.VISIBLE);
 		} else if (menuItemName.equals("")) {
 			((TextView)a.findViewById(R.id.drawer_graphs_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
+			((TextView)a.findViewById(R.id.drawer_grid_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
 			((TextView)a.findViewById(R.id.drawer_alerts_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
 			((TextView)a.findViewById(R.id.drawer_labels_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
 			((TextView)a.findViewById(R.id.drawer_servers_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
@@ -314,7 +336,7 @@ public class DrawerHelper {
 	public void initPluginsList(final int scrollY) {
 		// Borders
 		a.findViewById(R.id.drawer_button_graphs_border2).setVisibility(View.VISIBLE);
-		a.findViewById(R.id.drawer_button_alerts_border1).setVisibility(View.VISIBLE);
+		a.findViewById(R.id.drawer_button_grid_border1).setVisibility(View.VISIBLE);
 		
 		((LinearLayout)a.findViewById(R.id.drawer_containerPlugins)).removeAllViews();
 		

@@ -47,6 +47,7 @@ public class Activity_Main extends Activity {
 	public static Button	buttonAlerts;
 	public static Button	buttonNotifications;
 	public static Button	buttonLabels;
+	public static Button	buttonGrids;
 	private Menu 			menu;
 	private String			activityName;
 	
@@ -104,6 +105,7 @@ public class Activity_Main extends Activity {
 			buttonAlerts					= (Button) findViewById(R.id.alertsContainer);
 			buttonNotifications				= (Button) findViewById(R.id.notificationsContainer);
 			buttonLabels					= (Button) findViewById(R.id.labelsContainer);
+			buttonGrids						= (Button) findViewById(R.id.gridsContainer);
 			final Button buttonSettings 	= (Button) findViewById(R.id.settingsContainer);
 			final Button buttonAbout 		= (Button) findViewById(R.id.aboutContainer);
 			final Button buttonServer 		= (Button) findViewById(R.id.serverContainer);
@@ -113,6 +115,13 @@ public class Activity_Main extends Activity {
 				@Override
 				public void onClick(View actualView) {
 					startActivity(new Intent(Activity_Main.this, Activity_PluginSelection.class));
+					setTransition("deeper");
+				}
+			});
+			buttonGrids.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View actualView) {
+					startActivity(new Intent(Activity_Main.this, Activity_GridSelection.class));
 					setTransition("deeper");
 				}
 			});
@@ -189,12 +198,15 @@ public class Activity_Main extends Activity {
 		if (!muninFoo.drawer) {
 			boolean enable = muninFoo.currentServer != null;
 			buttonGraphs.setEnabled(enable);
+			buttonGrids.setEnabled(enable);
 			buttonAlerts.setEnabled(enable);
 			buttonNotifications.setEnabled(enable);
 			buttonLabels.setEnabled(enable);
 			
-			if (!muninFoo.premium)
+			if (!muninFoo.premium) {
 				buttonNotifications.setEnabled(false);
+				buttonGrids.setEnabled(false);
+			}
 		}
 	}
 	

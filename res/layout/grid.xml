@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#F0F0F0" >
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical" >
+
+		<TextView
+			android:id="@+id/viewTitle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:background="#dedfde"
+			android:gravity="center"
+			android:padding="8dp"
+			android:text="@string/button_grid"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:textColor="#7a7a7a" />
+
+		<LinearLayout
+			android:id="@+id/viewTitleSep"
+			android:layout_width="match_parent"
+			android:layout_height="0.5dp"
+			android:background="#a5a6a5"
+			android:orientation="horizontal" />
+
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" >
+
+			<ScrollView
+				android:id="@+id/grid_scroll"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" >
+
+				<LinearLayout
+					android:id="@+id/grid_root_container"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical" />
+			</ScrollView>
+
+			<LinearLayout
+				android:id="@+id/add_column_right"
+				android:layout_width="30dp"
+				android:layout_height="match_parent"
+				android:layout_alignParentRight="true"
+				android:layout_marginBottom="30dp"
+				android:background="#33555555"
+				android:orientation="vertical"
+				android:visibility="gone" />
+
+			<LinearLayout
+				android:id="@+id/add_line_bottom"
+				android:layout_width="match_parent"
+				android:layout_height="30dp"
+				android:layout_alignParentBottom="true"
+				android:background="#33555555"
+				android:orientation="horizontal"
+				android:visibility="gone" />
+		</RelativeLayout>
+	</LinearLayout>
+
+	<RelativeLayout
+		android:id="@+id/fullscreen"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="#77000000"
+		android:orientation="vertical"
+		android:visibility="gone" >
+
+		<ImageView
+			android:id="@+id/fullscreen_iv"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_gravity="center_vertical|center_horizontal"
+			android:paddingBottom="40dp"
+			android:paddingLeft="10dp"
+			android:paddingRight="10dp"
+			android:paddingTop="40dp" />
+
+		<TextView
+			android:id="@+id/fullscreen_tv"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:background="#333333"
+			android:paddingBottom="8dp"
+			android:paddingLeft="20dp"
+			android:paddingRight="20dp"
+			android:paddingTop="8dp"
+			android:shadowColor="#000000"
+			android:shadowDx="0"
+			android:shadowDy="2"
+			android:shadowRadius="2"
+			android:textColor="#f0f0f0"
+			android:textSize="18sp" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:background="#222222"
+			android:baselineAligned="false"
+			android:orientation="horizontal"
+			android:paddingTop="1dp" >
+
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:paddingRight="1dp" >
+
+				<TextView
+					android:id="@+id/fullscreen_action1"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="1dp"
+					android:background="#333333"
+					android:paddingBottom="8dp"
+					android:paddingLeft="20dp"
+					android:paddingRight="20dp"
+					android:paddingTop="8dp"
+					android:shadowColor="#000000"
+					android:shadowDx="0"
+					android:shadowDy="2"
+					android:shadowRadius="2"
+					android:text="Action 1"
+					android:textColor="#f0f0f0"
+					android:textSize="17sp" />
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1" >
+
+				<TextView
+					android:id="@+id/fullscreen_action2"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="#333333"
+					android:paddingBottom="8dp"
+					android:paddingLeft="20dp"
+					android:paddingRight="20dp"
+					android:paddingTop="8dp"
+					android:shadowColor="#000000"
+					android:shadowDx="0"
+					android:shadowDy="2"
+					android:shadowRadius="2"
+					android:text="Action 2"
+					android:textColor="#f0f0f0"
+					android:textSize="17sp" />
+			</LinearLayout>
+		</LinearLayout>
+	</RelativeLayout>
+
+</RelativeLayout>

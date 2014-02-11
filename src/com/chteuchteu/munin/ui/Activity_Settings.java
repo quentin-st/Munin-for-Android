@@ -372,6 +372,8 @@ public class Activity_Settings extends Activity {
 				muninFoo.sqlite.dbHlpr.deleteLabelsRelations();
 				muninFoo.sqlite.dbHlpr.deleteMuninPlugins();
 				muninFoo.sqlite.dbHlpr.deleteMuninServers();
+				muninFoo.sqlite.dbHlpr.deleteGrids();
+				muninFoo.sqlite.dbHlpr.deleteGridItemRelations();
 				
 				muninFoo.resetInstance(context);
 				

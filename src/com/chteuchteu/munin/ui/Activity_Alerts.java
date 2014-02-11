@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
-import com.chteuchteu.munin.obj.MuninPlugin;
+import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -168,9 +168,9 @@ public class Activity_Alerts extends Activity {
 					int nbWarnings = 0;
 					for (int y=0; y < muninFoo.getServer(i).getPlugins().size(); y++) {
 						if (muninFoo.getServer(i).getPlugin(y) != null) {
-							if (muninFoo.getServer(i).getPlugin(y).getState().equals(MuninPlugin.ALERTS_STATE_CRITICAL))
+							if (muninFoo.getServer(i).getPlugin(y).getState() == AlertState.CRITICAL)
 								nbErrors++;
-							else if (muninFoo.getServer(i).getPlugin(y).getState().equals(MuninPlugin.ALERTS_STATE_WARNING))
+							else if (muninFoo.getServer(i).getPlugin(y).getState() == AlertState.WARNING)
 								nbWarnings++;
 						}
 					}
@@ -189,9 +189,9 @@ public class Activity_Alerts extends Activity {
 				int nbWarnings = 0;
 				for (int y=0; y < muninFoo.getServer(i).getPlugins().size(); y++) {
 					if (muninFoo.getServer(i).getPlugin(y) != null) {
-						if (muninFoo.getServer(i).getPlugin(y).getState().equals(MuninPlugin.ALERTS_STATE_CRITICAL))
+						if (muninFoo.getServer(i).getPlugin(y).getState() == AlertState.CRITICAL)
 							nbErrors++;
-						else if (muninFoo.getServer(i).getPlugin(y).getState().equals(MuninPlugin.ALERTS_STATE_WARNING))
+						else if (muninFoo.getServer(i).getPlugin(y).getState() == AlertState.WARNING)
 							nbWarnings++;
 					}
 				}
@@ -234,9 +234,9 @@ public class Activity_Alerts extends Activity {
 					int nbWarnings = 0;
 					for (int i=0; i<muninFoo.getServer(z).getPlugins().size(); i++) {
 						if (muninFoo.getServer(z).getPlugin(i) != null) {
-							if (muninFoo.getServer(z).getPlugin(i).getState().equals(MuninPlugin.ALERTS_STATE_CRITICAL))
+							if (muninFoo.getServer(z).getPlugin(i).getState() == AlertState.CRITICAL)
 								nbErrors++;
-							else if (muninFoo.getServer(z).getPlugin(i).getState().equals(MuninPlugin.ALERTS_STATE_WARNING))
+							else if (muninFoo.getServer(z).getPlugin(i).getState() == AlertState.WARNING)
 								nbWarnings++;
 						}
 					}

@@ -32,6 +32,7 @@ import com.chteuchteu.munin.hlpr.Util.CustomFont;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
+import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.crashlytics.android.Crashlytics;
 
 public class Activity_Splash extends Activity {
@@ -299,12 +300,12 @@ public class Activity_Splash extends Activity {
 		if (servers.size() > 0)
 			dbHlpr = new DatabaseHelper(getApplicationContext());
 		for (MuninServer s : muninFoo.getServers()) {
-			if (s.getAuthType() == MuninServer.AUTH_UNKNOWN) {
+			if (s.getAuthType() == AuthType.UNKNOWN) {
 				MuninServer b = muninFoo.sqlite.getBDDInstance(s);
 				if (b.isAuthNeeded())
-					b.setAuthType(MuninServer.AUTH_BASIC);
+					b.setAuthType(AuthType.BASIC);
 				else
-					b.setAuthType(MuninServer.AUTH_NONE);
+					b.setAuthType(AuthType.NONE);
 				b.setAuthString("");
 				dbHlpr.updateMuninServer(b);
 			}

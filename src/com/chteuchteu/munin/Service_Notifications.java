@@ -19,6 +19,7 @@ import android.os.PowerManager.WakeLock;
 
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 
 public class Service_Notifications extends Service {
@@ -93,13 +94,13 @@ public class Service_Notifications extends Service {
 				boolean throatingServer = false;
 				for (MuninPlugin p: s.getPlugins()) {
 					if (p != null) {
-						if (p.getState().equals(MuninPlugin.ALERTS_STATE_CRITICAL) || p.getState().equals(MuninPlugin.ALERTS_STATE_WARNING))
+						if (p.getState() == AlertState.CRITICAL || p.getState() == AlertState.WARNING)
 							throatingServer = true;
-						if (p.getState().equals(MuninPlugin.ALERTS_STATE_CRITICAL)) {
+						if (p.getState() == AlertState.CRITICAL) {
 							criticalPlugins = criticalPlugins + p.getFancyName() + ", ";
 							nbCriticals++;
 						}
-						else if (p.getState().equals(MuninPlugin.ALERTS_STATE_WARNING)) {
+						else if (p.getState() == AlertState.WARNING) {
 							warningPlugins = warningPlugins + p.getFancyName() + ", ";
 							nbWarnings++;
 						}

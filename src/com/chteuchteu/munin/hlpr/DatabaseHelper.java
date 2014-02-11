@@ -9,13 +9,30 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.obj.Grid;
+import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
+import com.chteuchteu.munin.obj.MuninPlugin.Period;
+import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
 
+/**
+ * @author chteuchteu
+ *
+ */
+/**
+ * @author chteuchteu
+ *
+ */
+/**
+ * @author chteuchteu
+ *
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 	private static final String DATABASE_NAME = "muninForAndroid2.db";
 	
 	// Table names
@@ -24,6 +41,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String TABLE_LABELS = "labels";
 	private static final String TABLE_LABELSRELATIONS = "labelsRelations";
 	private static final String TABLE_WIDGETS = "widgets";
+	private static final String TABLE_GRIDS = "grids";
+	private static final String TABLE_GRIDITEMRELATIONS = "gridItemsRelations";
 	
 	// Fields
 	private static final String KEY_ID = "id";
@@ -53,6 +72,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_WIDGETS_PERIOD = "period";
 	private static final String KEY_WIDGETS_WIFIONLY = "wifiOnly";
 	private static final String KEY_WIDGETS_WIDGETID = "widgetId";
+	
+	private static final String KEY_GRIDS_NAME = "name";
+	
+	private static final String KEY_GRIDITEMRELATIONS_GRID = "grid";
+	private static final String KEY_GRIDITEMRELATIONS_X = "x";
+	private static final String KEY_GRIDITEMRELATIONS_Y = "y";
+	private static final String KEY_GRIDITEMRELATIONS_PLUGIN = "plugin";
+	private static final String KEY_GRIDITEMRELATIONS_DEFAULTPERIOD = "defaultPeriod";
+	
 	
 	private static final String CREATE_TABLE_MUNINSERVERS = "CREATE TABLE " + TABLE_MUNINSERVERS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
@@ -90,6 +118,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_WIDGETS_PERIOD + " TEXT,"
 			+ KEY_WIDGETS_WIFIONLY + " INTEGER)";
 	
+	private static final String CREATE_TABLE_GRIDS = "CREATE TABLE " + TABLE_GRIDS + " ("
+			+ KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_GRIDS_NAME + " TEXT)";
+	
+	private static final String CREATE_TABLE_GRIDITEMRELATIONS = "CREATE TABLE " + TABLE_GRIDITEMRELATIONS + " ("
+			+ KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_GRIDITEMRELATIONS_GRID + " INTEGER,"
+			+ KEY_GRIDITEMRELATIONS_PLUGIN + " INTEGER,"
+			+ KEY_GRIDITEMRELATIONS_DEFAULTPERIOD + " TEXT,"
+			+ KEY_GRIDITEMRELATIONS_X + " INTEGER,"
+			+ KEY_GRIDITEMRELATIONS_Y + ")";
+	
 	public DatabaseHelper(Context c) {
 		super(c, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -101,12 +141,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_LABELS);
 		db.execSQL(CREATE_TABLE_LABELSRELATIONS);
 		db.execSQL(CREATE_TABLE_WIDGETS);
+		db.execSQL(CREATE_TABLE_GRIDS);
+		db.execSQL(CREATE_TABLE_GRIDITEMRELATIONS);
 	}
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		if (newVersion == 2)
 			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_NAME + " TEXT");
+		else if (newVersion == 3) {
+			db.execSQL(CREATE_TABLE_GRIDS);
+			db.execSQL(CREATE_TABLE_GRIDITEMRELATIONS);
+		}
 	}
 	
 	private void close(Cursor c, SQLiteDatabase db) {
@@ -125,7 +171,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
 		values.put(KEY_MUNINSERVERS_SSL, s.getSSL());
 		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
-		values.put(KEY_MUNINSERVERS_AUTHTYPE, s.getAuthType());
+		values.put(KEY_MUNINSERVERS_AUTHTYPE, s.getAuthType().getVal());
 		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
 		values.put(KEY_MUNINSERVERS_PARENT, s.getParent());
 		
@@ -187,8 +233,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_LABELSRELATIONS_LABEL, l.getId());
 		values.put(KEY_LABELSRELATIONS_PLUGIN, p.getId());
 		
+		long id = db.insert(TABLE_LABELSRELATIONS, null, values);
 		close(null, db);
-		return db.insert(TABLE_LABELSRELATIONS, null, values);
+		return id;
 	}
 	
 	public long insertWidget(Widget w) {
@@ -206,6 +253,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return id;
 	}
 	
+	public long insertGrid(Grid g) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_GRIDS_NAME, g.name);
+		
+		long id = db.insert(TABLE_GRIDS, null, values);
+		g.id = id;
+		close(null, db);
+		return id;
+	}
+	
+	public long insertGridItemRelation(GridItem i) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_GRIDITEMRELATIONS_GRID, i.grid.id);
+		values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.plugin.getId());
+		values.put(KEY_GRIDITEMRELATIONS_DEFAULTPERIOD, i.period.toString());
+		values.put(KEY_GRIDITEMRELATIONS_X, i.X);
+		values.put(KEY_GRIDITEMRELATIONS_Y, i.Y);
+		
+		long id = db.insert(TABLE_GRIDITEMRELATIONS, null, values);
+		i.id = id;
+		close(null, db);
+		return id;
+	}
+	
+	public void saveGridItems(Grid g) {
+		for (GridItem i : g.items) {
+			if (i.isPersistant)
+				updateGridItemRelation(i);
+			else
+				insertGridItemRelation(i);
+		}
+	}
+	
 	public int updateMuninServer(MuninServer s) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -217,7 +301,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
 		values.put(KEY_MUNINSERVERS_SSL, s.getSSL());
 		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
-		values.put(KEY_MUNINSERVERS_AUTHTYPE, s.getAuthType());
+		values.put(KEY_MUNINSERVERS_AUTHTYPE, s.getAuthType().getVal());
 		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
 		values.put(KEY_MUNINSERVERS_PARENT, s.getParent());
 		
@@ -240,6 +324,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return nbRows;
 	}
 	
+	public int updateGridItemRelation(GridItem i) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_GRIDITEMRELATIONS_GRID, i.grid.id);
+		values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.plugin.getId());
+		values.put(KEY_GRIDITEMRELATIONS_DEFAULTPERIOD, i.period.toString());
+		values.put(KEY_GRIDITEMRELATIONS_X, i.X);
+		values.put(KEY_GRIDITEMRELATIONS_Y, i.Y);
+		
+		int nbRows = db.update(TABLE_GRIDITEMRELATIONS, values, KEY_ID + " = ?", new String[] { String.valueOf(i.id) });
+		close(null, db);
+		return nbRows;
+	}
+	
 	public List<MuninServer> getServers() {
 		List<MuninServer> l = new ArrayList<MuninServer>();
 		String selectQuery = "SELECT * FROM " + TABLE_MUNINSERVERS;
@@ -255,7 +354,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 				s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
 						c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
-						c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE)));
+						AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE))));
 				s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
 				if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
 					s.setSSL(true);
@@ -334,7 +433,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 			s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
 					c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
-					c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE)));
+					AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE))));
 			s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
 			if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
 				s.setSSL(true);
@@ -443,6 +542,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return null;
 	}
 	
+	/**
+	 * Get all plugins linked to a label
+	 * @param l
+	 * @return
+	 */
 	public List<MuninPlugin> getPlugins(Label l) {
 		List<MuninPlugin> list = new ArrayList<MuninPlugin>();
 		String selectQuery = "SELECT * FROM " + TABLE_LABELSRELATIONS
@@ -459,6 +563,102 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 		close(c, db);
 		return list;
+	}
+	
+	public List<Grid> getGrids(Context co, MuninFoo f) {
+		List<Grid> l = new ArrayList<Grid>();
+		String selectQuery = "SELECT * FROM " + TABLE_GRIDS;
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+		
+		if (c != null && c.moveToFirst()) {
+			do {
+				Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), f);
+				g.id = c.getInt(c.getColumnIndex(KEY_ID));
+				// Get all GridItems
+				List<GridItem> li = getGridItems(co, g);
+				/*for (GridItem i : li)
+					g.add(i, co, editView);*/
+				g.items = li;
+				l.add(g);
+			} while (c.moveToNext());
+		}
+		close(c, db);
+		return l;
+	}
+	
+	public List<String> getGridsNames() {
+		List<String> names = new ArrayList<String>();
+		String selectQuery = "SELECT * FROM " + TABLE_GRIDS;
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+		
+		if (c != null && c.moveToFirst()) {
+			do {
+				names.add(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)));
+			} while (c.moveToNext());
+		}
+		close(c, db);
+		return names;
+	}
+	
+	/**
+	 * Get a grid from its name
+	 * @param co Context
+	 * @param f MuninFoo instance
+	 * @param editView Should edit view ?
+	 * @param gridName Grid name
+	 * @return Grid
+	 */
+	public Grid getGrid(Context co, MuninFoo f, boolean editView, String gridName) {
+		String selectQuery = "SELECT * FROM " + TABLE_GRIDS
+				+ " WHERE " + KEY_GRIDS_NAME + " = '" + gridName + "'";
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+		
+		if (c != null && c.moveToFirst()) {
+			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), f);
+			g.id = c.getInt(c.getColumnIndex(KEY_ID));
+			// Get all GridItems
+			List<GridItem> li = getGridItems(co, g);
+			g.items = li;
+			
+			close(c, db);
+			return g;
+		}
+		return null;
+	}
+	
+	/**
+	 * Get all grid items from a Grid
+	 * @param co
+	 * @param g
+	 * @return
+	 */
+	public List<GridItem> getGridItems(Context co, Grid g) {
+		List<GridItem> l = new ArrayList<GridItem>();
+		String selectQuery = "SELECT * FROM " + TABLE_GRIDITEMRELATIONS
+				+ " WHERE " + KEY_GRIDITEMRELATIONS_GRID + " = " + g.id;
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+		
+		if (c != null && c.moveToFirst()) {
+			do {
+				GridItem i = new GridItem(g, getPlugin(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_PLUGIN))), co);
+				i.id = c.getInt(c.getColumnIndex(KEY_ID));
+				i.period = Period.get(c.getString(c.getColumnIndex(KEY_GRIDITEMRELATIONS_DEFAULTPERIOD)));
+				i.X = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X));
+				i.Y = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_Y));
+				i.isPersistant = true;
+				l.add(i);
+			} while (c.moveToNext());
+		}
+		close(c, db);
+		return l;
 	}
 	
 	public void deleteServer(MuninServer s) {
@@ -521,6 +721,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		deleteLabelsRelations(l);
 	}
 	
+	public void deleteGrid(Grid g) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_GRIDS, KEY_ID + " = ?", new String[] { String.valueOf(g.id) });
+		close(null, db);
+		deleteGridItemRelations(g);
+	}
+	
+	public void deleteGridItemRelations(Grid g) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_GRID + " = ?", new String[] { String.valueOf(g.id) });
+		close(null, db);
+	}
+	
 	// DROP
 	public void deleteLabelsRelations() {
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -550,6 +763,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_MUNINSERVERS);
 		db.execSQL(CREATE_TABLE_MUNINSERVERS);
+		close(null, db);
+	}
+	public void deleteGrids() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_GRIDS);
+		db.execSQL(CREATE_TABLE_GRIDS);
+		close(null, db);
+	}
+	public void deleteGridItemRelations() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_GRIDITEMRELATIONS);
+		db.execSQL(CREATE_TABLE_GRIDITEMRELATIONS);
 		close(null, db);
 	}
 }

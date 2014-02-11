@@ -51,6 +51,7 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.CustomFont;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -419,9 +420,9 @@ public class Activity_AddServer extends Activity {
 				
 				tb_auth_login.setText(settingsServer.getAuthLogin());
 				tb_auth_password.setText(settingsServer.getAuthPassword());
-				if (settingsServer.getAuthType() == MuninServer.AUTH_BASIC)
+				if (settingsServer.getAuthType() == AuthType.BASIC)
 					sp_authType.setSelection(0);
-				else if (settingsServer.getAuthType() == MuninServer.AUTH_DIGEST)
+				else if (settingsServer.getAuthType() == AuthType.DIGEST)
 					sp_authType.setSelection(1);
 			} else
 				ll_auth.setVisibility(View.GONE);
@@ -838,9 +839,9 @@ public class Activity_AddServer extends Activity {
 			if (findViewById(R.id.addserver_auth).getVisibility() == View.VISIBLE && cb_auth.isChecked() && !tb_auth_login.getText().toString().equals("")) {
 				settingsServer.setAuthIds(tb_auth_login.getText().toString(), tb_auth_password.getText().toString());
 				if (sp_authType.getSelectedItemPosition() == 0)
-					settingsServer.setAuthType(MuninServer.AUTH_BASIC);
+					settingsServer.setAuthType(AuthType.BASIC);
 				else
-					settingsServer.setAuthType(MuninServer.AUTH_DIGEST);
+					settingsServer.setAuthType(AuthType.DIGEST);
 			}
 			settingsServer.setSSL(SSL);
 			
@@ -990,9 +991,9 @@ public class Activity_AddServer extends Activity {
 					if (settingsServer.isAuthNeeded() == true) {
 						et_login.setText(settingsServer.getAuthLogin());
 						et_password.setText(settingsServer.getAuthPassword());
-						if (settingsServer.getAuthType() == MuninServer.AUTH_BASIC)
+						if (settingsServer.getAuthType() == AuthType.BASIC)
 							pop_sp_authType.setSelection(0);
-						else if (settingsServer.getAuthType() == MuninServer.AUTH_DIGEST)
+						else if (settingsServer.getAuthType() == AuthType.DIGEST)
 							pop_sp_authType.setSelection(1);
 					}
 					
@@ -1049,9 +1050,9 @@ public class Activity_AddServer extends Activity {
 						String password = et_password.getText().toString();
 						settingsServer.setAuthIds(login, password);
 						if (pop_sp_authType.getSelectedItemPosition() == 0)
-							settingsServer.setAuthType(MuninServer.AUTH_BASIC);
+							settingsServer.setAuthType(AuthType.BASIC);
 						else
-							settingsServer.setAuthType(MuninServer.AUTH_DIGEST);
+							settingsServer.setAuthType(AuthType.DIGEST);
 						//InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 						//imm.hideSoftInputFromWindow(tb_serverUrl.getWindowToken(), 0);
 						//imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);
