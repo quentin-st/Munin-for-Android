@@ -51,7 +51,7 @@ public class GridItem {
 	public ProgressBar 	pb;
 	public boolean		isPersistant;
 	
-	public static int 		ICONS_MAX_WIDTH = 280;
+	public static int 		ICONS_MAX_WIDTH = 250;
 	public static float	ALPHA_EDITING = 0.2f;
 	
 	public GridItem(Grid g, MuninPlugin p, Context c) {
@@ -99,8 +99,13 @@ public class GridItem {
 		return outerContainer;
 	}
 	
-	public void preview(Context c) {
+	public void preview(final Context c) {
 		if (graph != null) {
+			Activity_Grid.menu_open.setVisible(true);
+			Activity_Grid.menu_period.setVisible(false);
+			Activity_Grid.menu_refresh.setVisible(false);
+			Activity_Grid.menu_edit.setVisible(false);
+			grid.currentlyOpenedPlugin = plugin;
 			((ImageView) ((Activity) c).findViewById(R.id.fullscreen_iv)).setImageBitmap(graph);
 			((TextView) ((Activity) c).findViewById(R.id.fullscreen_tv)).setText(plugin.getInstalledOn().getName());
 			View fs = ((Activity) c).findViewById(R.id.fullscreen);
@@ -186,7 +191,6 @@ public class GridItem {
 					selectedItems.remove(Integer.valueOf(indexSelected));
 			}
 		})
-		// Set the action buttons
 		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
@@ -216,7 +220,6 @@ public class GridItem {
 		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
-				//  Your code when user clicked on Cancel
 				dialog.dismiss();
 			}
 		});
@@ -226,7 +229,7 @@ public class GridItem {
 	
 	private static boolean alreadyAdded(Grid g, GridItem i) {
 		for (GridItem item : g.items) {
-			if (item.plugin.equalsApprox(i.plugin))
+			if (item.plugin.equals(i.plugin))
 				return true;
 		}
 		return false;

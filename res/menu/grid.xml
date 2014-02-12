@@ -22,10 +22,16 @@
 		</menu>
 	</item>
 	<item
+	    android:id="@+id/menu_open"
+	    android:icon="@drawable/content_picture_dark"
+	    android:showAsAction="always"
+	    android:title="@string/text79"
+	    android:visible="false" />
+	<item
 		android:id="@+id/menu_delete"
 		android:icon="@drawable/content_delete_dark"
 		android:showAsAction="ifRoom"
-		android:title="@string/text73"/>
+		android:title="@string/delete" />
 	<item
 		android:id="@+id/menu_refresh"
 		android:icon="@drawable/navigation_refresh_dark"

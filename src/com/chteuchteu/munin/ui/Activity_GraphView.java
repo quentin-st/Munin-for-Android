@@ -153,7 +153,7 @@ public class Activity_GraphView extends Activity {
 		spinner.setAdapter(dataAdapter);
 		// Fin remplissage spinner
 		
-		// Origine = widget
+		// Coming from widget
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null
 				&& thisIntent.getExtras().containsKey("server")
@@ -187,36 +187,46 @@ public class Activity_GraphView extends Activity {
 		if (muninFoo.currentServer == null)
 			muninFoo.currentServer = muninFoo.getServer(0);
 		
-		
-		// Recuperation du nom du plugin
 		int pos = 0;
+		
+		// Coming from Grid
+		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("plugin")) {
+			int i = 0;
+			for (MuninPlugin p : muninFoo.currentServer.getPlugins()) {
+				if (p.getName().equals(thisIntent.getExtras().getString("plugin"))) {
+					pos = i; break;
+				}
+				i++;
+			}
+		}
+		
+		// Coming from PluginSelection or if orientation changed
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("position")) {
 			String position = thisIntent.getExtras().getString("position");
 			pos = Integer.parseInt(position);
-			
-			if (savedInstanceState != null)
-				pos = savedInstanceState.getInt("position");
-			
-			
-			spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-				public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
-					bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
-					if (position == 0)	Activity_GraphView.load_period = "day";
-					else if (position == 1)	Activity_GraphView.load_period = "week";
-					else if (position == 2)	Activity_GraphView.load_period = "month";
-					else if (position == 3)	Activity_GraphView.load_period = "year";
-					else 					Activity_GraphView.load_period = "day";
-					
-					if (viewFlow != null) // Update Viewflow
-						viewFlow.setSelection(viewFlow.getSelectedItemPosition());
-				}
-				public void onNothingSelected(AdapterView<?> parentView) { }
-			});
-		} else { // Vérification de l'intent ratée: redirection
-			// Redirection vers la liste des plugins
+		}/* else { // Vérification de l'intent ratée: redirection
 			Intent intent2 = new Intent(Activity_GraphView.this, Activity_PluginSelection.class);
 			startActivity(intent2);
-		}
+		}*/
+		
+		if (savedInstanceState != null)
+			pos = savedInstanceState.getInt("position");
+		
+		
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
+				bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
+				if (position == 0)	Activity_GraphView.load_period = "day";
+				else if (position == 1)	Activity_GraphView.load_period = "week";
+				else if (position == 2)	Activity_GraphView.load_period = "month";
+				else if (position == 3)	Activity_GraphView.load_period = "year";
+				else 					Activity_GraphView.load_period = "day";
+				
+				if (viewFlow != null) // Update Viewflow
+					viewFlow.setSelection(viewFlow.getSelectedItemPosition());
+			}
+			public void onNothingSelected(AdapterView<?> parentView) { }
+		});
 		
 		// Viewflow
 		position = pos;
@@ -407,6 +417,16 @@ public class Activity_GraphView extends Activity {
 						muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
 					Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
 					startActivity(intent);
+					setTransition("shallower");
+				}
+			} else if (from.equals("grid")) {
+				if (thisIntent.getExtras().containsKey("fromGrid")) {
+					Intent intent = new Intent(Activity_GraphView.this, Activity_Grid.class);
+					intent.putExtra("position", thisIntent.getExtras().getString("fromGrid"));
+					startActivity(intent);
+					setTransition("shallower");
+				} else {
+					startActivity(new Intent(Activity_GraphView.this, Activity_GridSelection.class));
 					setTransition("shallower");
 				}
 			}
@@ -671,10 +691,15 @@ public class Activity_GraphView extends Activity {
 	}
 	
 	public void actionAddLabel() {
+		final LinearLayout ll = new LinearLayout(this);
+		ll.setOrientation(LinearLayout.VERTICAL);
+		ll.setPadding(10, 30, 10, 10);
 		final EditText input = new EditText(this);
+		ll.addView(input);
+		
 		new AlertDialog.Builder(Activity_GraphView.this)
-		.setTitle(getText(R.string.text62))
-		.setView(input)
+		.setTitle(getText(R.string.text70_2))
+		.setView(ll)
 		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String value = input.getText().toString();

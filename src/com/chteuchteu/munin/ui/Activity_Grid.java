@@ -43,11 +43,13 @@ public class Activity_Grid extends Activity {
 	public static boolean	editing;
 	private Grid			grid;
 	private LinearLayout	container;
+	private ImageView		fs_iv;
 	
-	private MenuItem		menu_refresh;
-	private MenuItem		menu_edit;
+	public static MenuItem	menu_refresh;
+	public static MenuItem	menu_edit;
 	private MenuItem		menu_delete;
-	private MenuItem		menu_period;
+	public static MenuItem	menu_period;
+	public static MenuItem	menu_open;
 	
 	private Period			currentPeriod;
 	
@@ -78,6 +80,8 @@ public class Activity_Grid extends Activity {
 		} else
 			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
 		
+		fs_iv = (ImageView) findViewById(R.id.fullscreen_iv);
+		
 		container = (LinearLayout) findViewById(R.id.grid_root_container);
 		currentPeriod = Util.getDefaultPeriod(this);
 		setupGrid();
@@ -107,14 +111,18 @@ public class Activity_Grid extends Activity {
 		});
 		
 		Util.setFont(this, (TextView) findViewById(R.id.fullscreen_tv), CustomFont.RobotoCondensed_Regular);
-		Util.setFont(this, (TextView) findViewById(R.id.fullscreen_action1), CustomFont.RobotoCondensed_Regular);
-		Util.setFont(this, (TextView) findViewById(R.id.fullscreen_action2), CustomFont.RobotoCondensed_Regular);
 		
 		if (grid.items.size() == 0)
 			edit();
 	}
 	
 	private void hidePreview() {
+		grid.currentlyOpenedPlugin = null;
+		menu_refresh.setVisible(true);
+		menu_edit.setVisible(true);
+		menu_period.setVisible(true);
+		menu_open.setVisible(false);
+		
 		AlphaAnimation a = new AlphaAnimation(1.0f, 0.0f);
 		a.setDuration(300);
 		a.setAnimationListener(new AnimationListener() {
@@ -125,7 +133,7 @@ public class Activity_Grid extends Activity {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				findViewById(R.id.fullscreen).setVisibility(View.GONE);
-				((ImageView) ((Activity) c).findViewById(R.id.fullscreen_iv)).setImageBitmap(null);
+				fs_iv.setImageBitmap(null);
 				((TextView) ((Activity) c).findViewById(R.id.fullscreen_tv)).setText("");
 			}
 		});
@@ -194,6 +202,7 @@ public class Activity_Grid extends Activity {
 		menu_edit = menu.findItem(R.id.menu_edit);
 		menu_delete = menu.findItem(R.id.menu_delete);
 		menu_period = menu.findItem(R.id.menu_period);
+		menu_open = menu.findItem(R.id.menu_open);
 		menu_delete.setVisible(editing);
 		menu_refresh.setVisible(!editing);
 		if (editing)	menu_edit.setIcon(R.drawable.navigation_accept_dark);
@@ -201,11 +210,9 @@ public class Activity_Grid extends Activity {
 	}
 	
 	private void edit() {
-		if (menu_refresh != null) {
-			menu_refresh.setVisible(editing);
-			menu_delete.setVisible(!editing);
-			menu_period.setVisible(editing);
-		}
+		if (menu_refresh != null)	menu_refresh.setVisible(editing);
+		if (menu_delete != null)	menu_delete.setVisible(!editing);
+		if (menu_period != null)	menu_period.setVisible(editing);
 		
 		if (editing) {
 			grid.cancelEdit(this, this);
@@ -228,6 +235,18 @@ public class Activity_Grid extends Activity {
 	private void refresh() {
 		grid.dHelper.period = this.currentPeriod;
 		grid.dHelper.start(true);
+	}
+	
+	private void openGraph() {
+		grid.f.currentServer = grid.currentlyOpenedPlugin.getInstalledOn();
+		Intent i = new Intent(c, Activity_GraphView.class);
+		i.putExtra("plugin", grid.currentlyOpenedPlugin.getName());
+		i.putExtra("from", "grid");
+		Intent gridIntent = ((Activity) c).getIntent();
+		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("position"))
+			i.putExtra("fromGrid", gridIntent.getExtras().getString("position"));
+		c.startActivity(i);
+		Util.setTransition(c, "deeper");
 	}
 	
 	@Override
@@ -269,6 +288,9 @@ public class Activity_Grid extends Activity {
 			case R.id.period_year:
 				this.currentPeriod = Period.YEAR;
 				refresh();
+				return true;
+			case R.id.menu_open:
+				openGraph();
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Grid.this, Activity_Settings.class));

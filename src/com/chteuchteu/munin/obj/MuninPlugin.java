@@ -148,6 +148,5 @@ public class MuninPlugin {
 		if (this.name.equals(p.name) && this.fancyName.equals(p.fancyName))
 			return true;
 		return false;
-		
 	}
 }

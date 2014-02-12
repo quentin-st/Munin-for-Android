@@ -158,6 +158,7 @@
 	
 	<string name="text77">Aucune grille</string>
 	<string name="text78">Ajoutez-en une maintenant en appuyant sur +</string>
+	<string name="text79">Ouvrir</string>
 	
 	<string name="settings_lang">Langue de l\'application</string>
 	<string name="lang_french">Français</string>
@@ -171,6 +172,10 @@
 	<string name="move_down">Déplacer vers le bas</string>
 	<string name="move_left">Déplacer vers la gauche</string>
 
+	<string name="rate">Noter l\'application</string>
+	<string name="rate_long">Si vous aimez l\'application, pourriez-vous prendre une minute pour la noter sur Google Play ? Merci !</string>
+	<string name="not_now">Pas maintenant</string>
+	
 	<string name="aboutText">
 	    <![CDATA[
    <head>

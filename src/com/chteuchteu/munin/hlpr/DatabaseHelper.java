@@ -19,18 +19,7 @@ import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
 
-/**
- * @author chteuchteu
- *
- */
-/**
- * @author chteuchteu
- *
- */
-/**
- * @author chteuchteu
- *
- */
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 3;
 	private static final String DATABASE_NAME = "muninForAndroid2.db";
@@ -678,6 +667,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		for (MuninPlugin p : l) {
 			deleteWidgets(p);
 			deleteLabelsRelations(p);
+			deleteGridItemRelations(p);
 		}
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_MUNINPLUGINS, KEY_MUNINPLUGINS_SERVER + " = ?", new String[] { String.valueOf(s.getId()) });
@@ -731,6 +721,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void deleteGridItemRelations(Grid g) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_GRID + " = ?", new String[] { String.valueOf(g.id) });
+		close(null, db);
+	}
+	
+	public void deleteGridItemRelations(MuninPlugin p) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });
 		close(null, db);
 	}
 	

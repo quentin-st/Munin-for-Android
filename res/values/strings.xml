@@ -235,10 +235,16 @@
 	<string name="text76">Change period…</string>
 	<string name="text77">No grid</string>
 	<string name="text78">Add one now by tapping on +</string>
+	<string name="text79">Open</string>
+	
 	
 	<string name="delete">Delete</string>
 	<string name="move_up">Move up</string>
 	<string name="move_right">Move right</string>
 	<string name="move_down">Move down</string>
 	<string name="move_left">Move left</string>
+	
+	<string name="rate">Rate the app</string>
+	<string name="rate_long">If you like the app, would you mind rating it on Google Play? Thank you!</string>
+	<string name="not_now">Not now</string>
 </resources>

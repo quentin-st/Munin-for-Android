@@ -38,6 +38,7 @@ import com.chteuchteu.munin.hlpr.Util.CustomFont;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
+import com.tjeannin.apprate.AppRate;
 
 public class Activity_Main extends Activity {
 	private MuninFoo		muninFoo;
@@ -189,6 +190,20 @@ public class Activity_Main extends Activity {
 				// Settings saved successfully!
 				Toast.makeText(this, getString(R.string.text36), Toast.LENGTH_LONG).show();
 		}
+		
+		// Ask the user to rate the app
+		AlertDialog.Builder builder = new AlertDialog.Builder(this)
+		.setTitle(getText(R.string.rate))
+		.setIcon(R.drawable.launcher_icon)
+		.setMessage(getText(R.string.rate_long))
+		.setPositiveButton(getText(R.string.text33), null) // Yes
+		.setNegativeButton(getText(R.string.text34), null) // No
+		.setNeutralButton(getText(R.string.not_now), null); // Not now
+		new AppRate(this)
+		.setCustomDialog(builder)
+		.setMinDaysUntilPrompt(10)
+		.setMinLaunchesUntilPrompt(10)
+		.init();
 	}
 	
 	@Override

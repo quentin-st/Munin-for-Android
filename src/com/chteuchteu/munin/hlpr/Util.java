@@ -3,9 +3,8 @@ package com.chteuchteu.munin.hlpr;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.chteuchteu.munin.obj.MuninPlugin.Period;
-
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -20,6 +19,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.obj.MuninPlugin.Period;
 
 public final class Util {
 	private Util() { }
@@ -70,6 +72,15 @@ public final class Util {
 		r[0] = dm.widthPixels;
 		r[1] = dm.heightPixels;
 		return r;
+	}
+	
+	public static void setTransition(Context c, String level) {
+		if (getPref(c, "transitions").equals("true")) {
+			if (level.equals("deeper"))
+				((Activity) c).overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
+			else if (level.equals("shallower"))
+				((Activity) c).overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
+		}
 	}
 	
 	@SuppressLint("NewApi")

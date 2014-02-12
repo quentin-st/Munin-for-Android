@@ -32,6 +32,8 @@ public class Grid {
 	public static int GridItemWidth = 800;
 	public static int GridItemHeight = 600;
 	
+	public MuninPlugin currentlyOpenedPlugin = null;
+	
 	public Grid(String name, MuninFoo f) {
 		this.name = name;
 		this.items = new ArrayList<GridItem>();
