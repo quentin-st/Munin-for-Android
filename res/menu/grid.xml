@@ -23,7 +23,7 @@
 	</item>
 	<item
 	    android:id="@+id/menu_open"
-	    android:icon="@drawable/content_picture_dark"
+	    android:icon="@drawable/content_graph"
 	    android:showAsAction="always"
 	    android:title="@string/text79"
 	    android:visible="false" />

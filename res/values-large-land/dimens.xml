@@ -1,6 +1,6 @@
 <resources>
 
 	<dimen name="slidingmenu_offset">450dp</dimen>
-	<dimen name="item_padding">15dp</dimen>
+	<dimen name="item_padding">13dp</dimen>
 
 </resources>

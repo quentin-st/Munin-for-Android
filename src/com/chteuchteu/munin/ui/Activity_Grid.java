@@ -1,7 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -144,18 +142,10 @@ public class Activity_Grid extends Activity {
 	private void setupGrid() {
 		container.removeAllViews();
 		
-		int position = 0;
 		Intent thisIntent = getIntent();
-		if (thisIntent != null && thisIntent.getExtras() != null) {
-			if (thisIntent.getExtras().containsKey("position")) {
-				position = Integer.parseInt(thisIntent.getExtras().getString("position"));
-				List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(this, muninFoo);
-				if (grids.size() > position)
-					grid = grids.get(position);
-			} else if (thisIntent.getExtras().containsKey("gridName")) {
-				String gridName = thisIntent.getExtras().getString("gridName");
-				grid = muninFoo.sqlite.dbHlpr.getGrid(this, muninFoo, true, gridName);
-			}
+		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("gridName")) {
+			String gridName = thisIntent.getExtras().getString("gridName");
+			grid = muninFoo.sqlite.dbHlpr.getGrid(this, muninFoo, true, gridName);
 		}
 		
 		if (grid == null)
@@ -243,8 +233,8 @@ public class Activity_Grid extends Activity {
 		i.putExtra("plugin", grid.currentlyOpenedPlugin.getName());
 		i.putExtra("from", "grid");
 		Intent gridIntent = ((Activity) c).getIntent();
-		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("position"))
-			i.putExtra("fromGrid", gridIntent.getExtras().getString("position"));
+		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("gridName"))
+			i.putExtra("fromGrid", gridIntent.getExtras().getString("gridName"));
 		c.startActivity(i);
 		Util.setTransition(c, "deeper");
 	}

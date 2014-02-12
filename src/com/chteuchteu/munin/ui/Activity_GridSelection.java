@@ -87,15 +87,7 @@ public class Activity_GridSelection extends ListActivity {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					TextView gridName = (TextView) view.findViewById(R.id.line_a);
 					Intent intent = new Intent(Activity_GridSelection.this, Activity_Grid.class);
-					int p = 0;
-					List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(c, muninFoo);
-					for (int i=0; i<grids.size(); i++) {
-						if (grids.get(i).name.equals(gridName)) {
-							p = i;
-							break;
-						}
-					}
-					intent.putExtra("position", p + "");
+					intent.putExtra("gridName", gridName.getText().toString());
 					startActivity(intent);
 					setTransition("deeper");
 				}

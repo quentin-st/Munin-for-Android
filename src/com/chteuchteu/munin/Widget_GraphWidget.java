@@ -74,7 +74,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 				sqlite = new SQLite(context, MuninFoo.getInstance(context));
 			widget = sqlite.dbHlpr.getWidget(appWidgetId);
 			
-			if (widget != null) {
+			if (widget != null && widget.getPlugin() != null && widget.getPlugin().getInstalledOn() != null) {
 				views.setTextViewText(R.id.widget_servername, widget.getPlugin().getInstalledOn().getName());
 				
 				// Update action

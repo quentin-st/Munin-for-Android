@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="13dp"
-        android:src="@drawable/content_picture" />
+        android:src="@drawable/ic_action_picture" />
 
     <LinearLayout
         android:layout_width="match_parent"

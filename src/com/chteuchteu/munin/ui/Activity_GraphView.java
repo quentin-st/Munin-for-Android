@@ -422,7 +422,7 @@ public class Activity_GraphView extends Activity {
 			} else if (from.equals("grid")) {
 				if (thisIntent.getExtras().containsKey("fromGrid")) {
 					Intent intent = new Intent(Activity_GraphView.this, Activity_Grid.class);
-					intent.putExtra("position", thisIntent.getExtras().getString("fromGrid"));
+					intent.putExtra("gridName", thisIntent.getExtras().getString("fromGrid"));
 					startActivity(intent);
 					setTransition("shallower");
 				} else {
