@@ -122,6 +122,7 @@ public class Activity_Settings extends Activity {
 		list2.add(getString(R.string.lang_english));
 		list2.add(getString(R.string.lang_french));
 		list2.add(getString(R.string.lang_german));
+		list2.add(getString(R.string.lang_russian));
 		ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
 		dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_lang.setAdapter(dataAdapter2);
@@ -191,6 +192,8 @@ public class Activity_Settings extends Activity {
 			setPref("lang", "fr");
 		else if (spinner_lang.getSelectedItemPosition() == 2)
 			setPref("lang", "de");
+		else if (spinner_lang.getSelectedItemPosition() == 3)
+			setPref("lang", "ru");
 		else
 			setPref("lang", "en");
 		
@@ -256,6 +259,8 @@ public class Activity_Settings extends Activity {
 			spinner_lang.setSelection(1, true);
 		else if (lang.equals("de"))
 			spinner_lang.setSelection(2, true);
+		else if (lang.equals("ru"))
+			spinner_lang.setSelection(3, true);
 		
 		// Graphview orientation
 		if (getPref("graphview_orientation").equals("horizontal"))

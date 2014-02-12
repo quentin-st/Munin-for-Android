@@ -154,8 +154,8 @@ public class MuninFoo {
 	public void loadLanguage(Context c) {
 		if (!getPref("lang", c).equals("")) {
 			String lang = getPref("lang", c);
-			// lang == "en" || "fr" || "de"
-			if (!(lang.equals("en") || lang.equals("fr") || lang.equals("de"))) {
+			// lang == "en" || "fr" || "de" || "ru"
+			if (!(lang.equals("en") || lang.equals("fr") || lang.equals("de") || lang.equals("ru"))) {
 				lang = "en";
 			}
 			Resources res = c.getApplicationContext().getResources();
