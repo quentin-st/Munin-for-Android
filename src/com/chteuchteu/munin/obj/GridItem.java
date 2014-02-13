@@ -101,10 +101,11 @@ public class GridItem {
 	
 	public void preview(final Context c) {
 		if (graph != null) {
-			Activity_Grid.menu_open.setVisible(true);
-			Activity_Grid.menu_period.setVisible(false);
-			Activity_Grid.menu_refresh.setVisible(false);
-			Activity_Grid.menu_edit.setVisible(false);
+			if (Activity_Grid.menu_open != null) 	Activity_Grid.menu_open.setVisible(true);
+			if (Activity_Grid.menu_period != null)	Activity_Grid.menu_period.setVisible(false);
+			if (Activity_Grid.menu_refresh != null)	Activity_Grid.menu_refresh.setVisible(false);
+			if (Activity_Grid.menu_edit != null)	Activity_Grid.menu_edit.setVisible(false);
+			
 			grid.currentlyOpenedPlugin = plugin;
 			((ImageView) ((Activity) c).findViewById(R.id.fullscreen_iv)).setImageBitmap(graph);
 			((TextView) ((Activity) c).findViewById(R.id.fullscreen_tv)).setText(plugin.getInstalledOn().getName());

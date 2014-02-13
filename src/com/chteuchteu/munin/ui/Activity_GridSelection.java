@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -65,6 +66,9 @@ public class Activity_GridSelection extends ListActivity {
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.gridselection);
 			super.setTheme(R.style.ListFont);
+			Button add_comp = (Button) findViewById(R.id.comp_add_grid);
+			add_comp.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { add(); } });
+			add_comp.setVisibility(View.VISIBLE);
 		}
 		
 		List<Grid> gridsList = muninFoo.sqlite.dbHlpr.getGrids(this, muninFoo);

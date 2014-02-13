@@ -39,7 +39,7 @@
 		android:title="@string/menu_graph_refresh"/>
 	<item
 		android:id="@+id/menu_edit"
-		android:icon="@drawable/content_edit"
+		android:icon="@drawable/content_edit_dark"
 		android:showAsAction="ifRoom"
 		android:title="@string/edit"/>
 

@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,6 +49,9 @@ public class Activity_Grid extends Activity {
 	private MenuItem		menu_delete;
 	public static MenuItem	menu_period;
 	public static MenuItem	menu_open;
+	public static ImageButton comp_delete;
+	public static ImageButton comp_refresh;
+	public static ImageButton comp_edit;
 	
 	private Period			currentPeriod;
 	
@@ -75,8 +79,16 @@ public class Activity_Grid extends Activity {
 				dh = new DrawerHelper(this, muninFoo);
 				dh.setDrawerActivity(dh.Activity_Grid);
 			}
-		} else
+		} else {
 			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
+			findViewById(R.id.comp_actions).setVisibility(View.VISIBLE);
+			comp_delete = (ImageButton) findViewById(R.id.btn_comp_delete);
+			comp_delete.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { delete(); } });
+			comp_refresh = (ImageButton) findViewById(R.id.btn_comp_refresh);
+			comp_refresh.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { refresh(); } });
+			comp_edit = (ImageButton) findViewById(R.id.btn_comp_edit);
+			comp_edit.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { edit(); } });
+		}
 		
 		fs_iv = (ImageView) findViewById(R.id.fullscreen_iv);
 		
@@ -116,10 +128,10 @@ public class Activity_Grid extends Activity {
 	
 	private void hidePreview() {
 		grid.currentlyOpenedPlugin = null;
-		menu_refresh.setVisible(true);
-		menu_edit.setVisible(true);
-		menu_period.setVisible(true);
-		menu_open.setVisible(false);
+		if (menu_refresh != null)	menu_refresh.setVisible(true);
+		if (menu_edit != null)		menu_edit.setVisible(true);
+		if (menu_period != null)	menu_period.setVisible(true);
+		if (menu_open != null)		menu_open.setVisible(false);
 		
 		AlphaAnimation a = new AlphaAnimation(1.0f, 0.0f);
 		a.setDuration(300);
@@ -153,6 +165,8 @@ public class Activity_Grid extends Activity {
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			getActionBar().setTitle(getText(R.string.text75) + " " + grid.name);
+		else
+			((TextView) findViewById(R.id.viewTitle)).setText(getText(R.string.text75) + " " + grid.name);
 		
 		grid.setupLayout(this);
 		container.addView(grid.buildLayout(this));
@@ -196,7 +210,7 @@ public class Activity_Grid extends Activity {
 		menu_delete.setVisible(editing);
 		menu_refresh.setVisible(!editing);
 		if (editing)	menu_edit.setIcon(R.drawable.navigation_accept_dark);
-		else 			menu_edit.setIcon(R.drawable.content_edit);
+		else 			menu_edit.setIcon(R.drawable.content_edit_dark);
 	}
 	
 	private void edit() {
@@ -206,11 +220,13 @@ public class Activity_Grid extends Activity {
 		
 		if (editing) {
 			grid.cancelEdit(this, this);
-			if (menu_edit != null) menu_edit.setIcon(R.drawable.content_edit);
+			if (menu_edit != null) menu_edit.setIcon(R.drawable.content_edit_dark);
+			if (comp_edit != null) comp_edit.setImageResource(R.drawable.ic_action_edit);
 			muninFoo.sqlite.dbHlpr.saveGridItems(grid);
 		} else {
 			grid.edit(this);
 			if (menu_edit != null) menu_edit.setIcon(R.drawable.navigation_accept_dark);
+			if (comp_edit != null) comp_edit.setImageResource(R.drawable.navigation_accept);
 		}
 		
 		editing = !editing;
