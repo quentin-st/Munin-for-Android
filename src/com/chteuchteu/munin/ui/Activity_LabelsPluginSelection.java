@@ -78,7 +78,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 			}
 		} else {
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.alerts_pluginselection);
+			setContentView(R.layout.labels_pluginselection);
 			super.setTheme(R.style.ListFont);
 			((TextView) this.findViewById(R.id.viewTitle)).setText(label.getName());
 		}

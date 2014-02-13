@@ -63,7 +63,7 @@ public class Activity_GridSelection extends ListActivity {
 			}
 		} else {
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.pluginselection);
+			setContentView(R.layout.gridselection);
 			super.setTheme(R.style.ListFont);
 		}
 		
