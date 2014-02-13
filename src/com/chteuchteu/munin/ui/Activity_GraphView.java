@@ -17,19 +17,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.media.MediaScannerConnection;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -65,6 +61,7 @@ import com.chteuchteu.munin.GraphView_Adapter;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
@@ -102,9 +99,9 @@ public class Activity_GraphView extends Activity {
 		Crashlytics.start(this);
 		
 		
-		if (getPref("graphview_orientation").equals("vertical"))
+		if (Util.getPref(this, "graphview_orientation").equals("vertical"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		else if (getPref("graphview_orientation").equals("horizontal"))
+		else if (Util.getPref(this, "graphview_orientation").equals("horizontal"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
@@ -130,16 +127,16 @@ public class Activity_GraphView extends Activity {
 			btn_list = (ImageButton) findViewById(R.id.comp_list);
 			
 			btn_previous.setOnClickListener(new OnClickListener() { @Override
-				public void onClick(View actualView) {	actionPrevious();	}
+				public void onClick(View actualView) { actionPrevious(); }
 			});
 			btn_next.setOnClickListener(new OnClickListener() { @Override
-				public void onClick(View actualView) {	actionNext();	}
+				public void onClick(View actualView) { actionNext(); }
 			});
 			findViewById(R.id.comp_refresh).setOnClickListener(new OnClickListener() { @Override
-				public void onClick(View actualView) {	actionRefresh();	}
+				public void onClick(View actualView) { actionRefresh(); }
 			});
 			btn_list.setOnClickListener(new OnClickListener() { @Override
-				public void onClick(View actualView) {	actionCompList();	}
+				public void onClick(View actualView) { actionCompList(); }
 			});
 		}
 		
@@ -234,8 +231,7 @@ public class Activity_GraphView extends Activity {
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
 		GraphView_Adapter adapter = new GraphView_Adapter(this);
 		viewFlow.setAdapter(adapter, pos);
-		viewFlow.setAnimationEnabled(getPref("transitions").equals("true"));
-		Log.v("", "animations : " + getPref("transitions").equals("true"));
+		viewFlow.setAnimationEnabled(Util.getPref(this, "transitions").equals("true"));
 		TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
 		indicator.setTitleProvider(adapter);
 		viewFlow.setFlowIndicator(indicator);
@@ -288,7 +284,7 @@ public class Activity_GraphView extends Activity {
 			}
 		});
 		
-		if (!isOnline())
+		if (!Util.isOnline(this))
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 	}
 	
@@ -804,7 +800,7 @@ public class Activity_GraphView extends Activity {
 	public void onResume() {
 		super.onResume();
 		
-		Activity_GraphView.load_period = getPref("defaultScale");
+		Activity_GraphView.load_period = Util.getPref(this, "defaultScale");
 		
 		// Venant de widget
 		Intent thisIntent = getIntent();
@@ -830,37 +826,8 @@ public class Activity_GraphView extends Activity {
 		}
 	}
 	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	public void setPref(String key, String value) {
-		if (value.equals(""))
-			removePref(key);
-		else {
-			SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(key, value);
-			editor.commit();
-		}
-	}
-	
-	public void removePref(String key) {
-		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key);
-		editor.commit();
-	}
-	
-	public boolean isOnline() {
-		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		if (netInfo != null && netInfo.isConnectedOrConnecting())
-			return true;
-		return false;
-	}
-	
 	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
+		if (Util.getPref(this, "transitions").equals("true")) {
 			if (level.equals("deeper"))
 				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
 			else if (level.equals("shallower"))

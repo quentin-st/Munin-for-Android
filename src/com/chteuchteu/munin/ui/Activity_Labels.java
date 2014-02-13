@@ -17,10 +17,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -56,6 +58,9 @@ public class Activity_Labels extends ListActivity {
 			setContentView(R.layout.labelselection);
 			super.setTheme(R.style.ListFont);
 		}
+		
+		if (!Util.isOnline(this))
+			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 	}
 	
 	public void updateListView() {

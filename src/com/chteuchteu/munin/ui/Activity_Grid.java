@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -153,6 +154,9 @@ public class Activity_Grid extends Activity {
 	
 	@SuppressLint("NewApi")
 	private void setupGrid() {
+		if (!Util.isOnline(this))
+			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
+		
 		container.removeAllViews();
 		
 		Intent thisIntent = getIntent();
@@ -240,6 +244,8 @@ public class Activity_Grid extends Activity {
 	}
 	
 	private void refresh() {
+		if (!Util.isOnline(this))
+			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 		grid.dHelper.period = this.currentPeriod;
 		grid.dHelper.start(true);
 	}
