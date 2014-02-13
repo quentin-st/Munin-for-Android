@@ -1,5 +1,12 @@
 package com.chteuchteu.munin.ui;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -13,7 +20,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,13 +38,6 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 public class Activity_Settings extends Activity {
 	private Spinner		spinner_scale;
 	private Spinner		spinner_lang;
@@ -52,11 +51,6 @@ public class Activity_Settings extends Activity {
 	private Menu 				menu;
 	private String				activityName;
 	private Context				context;
-	
-	private double onlineLastVersion = 0.0;
-	// Threading check version
-	protected	ProgressDialog	myProgressDialog; 
-	final 		Handler 		uiThreadCallback = new Handler();
 	
 	
 	@SuppressLint("NewApi")
@@ -397,44 +391,64 @@ public class Activity_Settings extends Activity {
 	}
 	
 	public void actionUpdate() {
-		final AlertDialog alert = new AlertDialog.Builder(Activity_Settings.this).create();
+		new CheckUpdate().execute();
+	}
+	
+	public class CheckUpdate extends AsyncTask<Void, Integer, Void> {
+		private double onlineLastVersion;
+		private ProgressDialog myProgressDialog;
 		
-		// Checking last version of Munin for Android…
-		myProgressDialog = ProgressDialog.show(Activity_Settings.this, "", getString(R.string.text03), true);
+		@Override
+		protected void onPreExecute() {
+			onlineLastVersion = 0;
+			// Checking last version of Munin for Android…
+			myProgressDialog = ProgressDialog.show(Activity_Settings.this, "", getString(R.string.text03), true);
+		}
 		
-		final Runnable runInUIThread = new Runnable() {
-			public void run() {
-				if (muninFoo.version < onlineLastVersion) {
-					// New version available
-					alert.setTitle(R.string.text04);
-					// A new version of Munin for Android is available online.\nPlease update it using Google Play.
-					alert.setMessage(getString(R.string.text05));
-				} else if (muninFoo.version == onlineLastVersion) {
-					// No update needed.
-					alert.setTitle(getString(R.string.text06));
-					// Munin for Android is up to date.
-					alert.setMessage(getString(R.string.text07));
-				} else {
-					// No update needed.
-					alert.setTitle(getString(R.string.text06));
-					// You're running a beta version of Munin for Android. You're the best!
-					alert.setMessage(getString(R.string.text08));
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			String source = "";
+			try {
+				URL adresse = new URL("http://chteuchteu.free.fr/MuninforAndroid/version.txt");
+				BufferedReader in = new BufferedReader(
+						new InputStreamReader(adresse.openStream()));
+				String inputLine;
+				while ((inputLine = in.readLine()) != null) {
+					source = source + inputLine + "\n";
 				}
-				
-				alert.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) { dialog.dismiss(); }
-				});
-				alert.show();
+				in.close();
+				onlineLastVersion = Double.parseDouble(source);
+			} catch (Exception e) { }
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			myProgressDialog.dismiss();
+			final AlertDialog alert = new AlertDialog.Builder(Activity_Settings.this).create();
+			if (muninFoo.version < onlineLastVersion) {
+				// New version available
+				alert.setTitle(R.string.text04);
+				// A new version of Munin for Android is available online.\nPlease update it using Google Play.
+				alert.setMessage(getString(R.string.text05));
+			} else if (muninFoo.version == onlineLastVersion) {
+				// No update needed.
+				alert.setTitle(getString(R.string.text06));
+				// Munin for Android is up to date.
+				alert.setMessage(getString(R.string.text07));
+			} else {
+				// No update needed.
+				alert.setTitle(getString(R.string.text06));
+				// You're running a beta version of Munin for Android. You're the best!
+				alert.setMessage(getString(R.string.text08));
 			}
-		};
-		new Thread() {
-			@Override public void run() {
-				// Traitement en arrière plan
-				grabVersion();
-				myProgressDialog.dismiss();
-				uiThreadCallback.post(runInUIThread);
-			}
-		}.start();
+			
+			alert.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) { dialog.dismiss(); }
+			});
+			alert.show();
+		}
 	}
 	
 	public void actionGPlay() {
@@ -455,44 +469,6 @@ public class Activity_Settings extends Activity {
 			ad.setIcon(R.drawable.alerts_and_states_error);
 			ad.show();
 		}
-	}
-	
-	public void grabVersion() {
-		onlineLastVersion = 0;
-		grabUrl check = new grabUrl();
-		check.execute();
-		int timeout = 0;
-		while (onlineLastVersion == 0) {
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			timeout++;
-			if (timeout > 40)
-				break;
-		}
-	}
-	
-	public class grabUrl extends AsyncTask<String, Void, Void> {
-		@Override
-		protected Void doInBackground(String... url) {
-			String source = "";
-			try {
-				URL adresse = new URL("http://chteuchteu.free.fr/MuninforAndroid/version.txt");
-				BufferedReader in = new BufferedReader(
-						new InputStreamReader(adresse.openStream()));
-				String inputLine;
-				while ((inputLine = in.readLine()) != null) {
-					source = source + inputLine + "\n";
-				}
-				in.close();  
-				onlineLastVersion = Double.parseDouble(source);
-			} catch (Exception e) { }
-			return null;
-		}
-		@Override
-		protected void onPostExecute(Void result) { }
 	}
 	
 	@Override
