@@ -199,7 +199,9 @@ body { text-align: justify; color: #555; font-size:0.95em; }
 <li>Steve Schnepp, lead dev. of Munin</li>
 <li>Alessandro <i>\"override\"</i></li>
 <li>#munin IRC: olasd</li>
-<li>Christian Petri, Lucas Garte, Jan Vonde: german translation</li> </ul>
+<li>Christian Petri, Lucas Garte, Jan Vonde: german translation</li>
+<li>Константин Баткин: перевод на русский язык</li>
+<li>Edwin van Ouwerkerk Moria</li> </ul>
 <br />
 </body>]]>
 	</string>
