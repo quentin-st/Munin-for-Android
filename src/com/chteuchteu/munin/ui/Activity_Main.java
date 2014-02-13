@@ -33,8 +33,8 @@ import android.widget.Toast;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
-import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.hlpr.Util.CustomFont;
+import com.chteuchteu.munin.hlpr.Util.Fonts;
+import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -70,9 +70,9 @@ public class Activity_Main extends Activity {
 			if (muninFoo.drawer) {
 				dh = new DrawerHelper(this, muninFoo);
 				dh.setDrawerActivity(dh.Activity_Main);
-				Util.setFont(this, (ViewGroup)findViewById(R.id.ll_splash), CustomFont.RobotoCondensed_Regular);
+				Fonts.setFont(this, (ViewGroup)findViewById(R.id.ll_splash), CustomFont.RobotoCondensed_Regular);
 			} else
-				Util.setFont(this, (ViewGroup)findViewById(R.id.buttonsContainer), CustomFont.RobotoCondensed_Regular);
+				Fonts.setFont(this, (ViewGroup)findViewById(R.id.buttonsContainer), CustomFont.RobotoCondensed_Regular);
 		} else {
 			setContentView(R.layout.main);
 			this.getWindow().getDecorView().setBackgroundColor(Color.WHITE);

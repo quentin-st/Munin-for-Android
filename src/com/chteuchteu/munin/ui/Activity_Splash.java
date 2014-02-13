@@ -28,11 +28,12 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.Widget_GraphWidget;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.hlpr.Util.CustomFont;
+import com.chteuchteu.munin.hlpr.Util.Fonts;
+import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.chteuchteu.munin.obj.Widget;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
+import com.chteuchteu.munin.obj.Widget;
 import com.crashlytics.android.Crashlytics;
 
 public class Activity_Splash extends Activity {
@@ -76,7 +77,7 @@ public class Activity_Splash extends Activity {
 				}
 			}
 			TextView text = (TextView)findViewById(R.id.splash_overlay_appname);
-			Util.setFont(this, text, CustomFont.RobotoCondensed_Regular);
+			Fonts.setFont(this, text, CustomFont.RobotoCondensed_Regular);
 			
 			AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
 			animation.setDuration(1300);

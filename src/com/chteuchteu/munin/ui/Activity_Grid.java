@@ -24,7 +24,8 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.GridDownloadHelper;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.hlpr.Util.CustomFont;
+import com.chteuchteu.munin.hlpr.Util.Fonts;
+import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.crashlytics.android.Crashlytics;
@@ -120,7 +121,7 @@ public class Activity_Grid extends Activity {
 			}
 		});
 		
-		Util.setFont(this, (TextView) findViewById(R.id.fullscreen_tv), CustomFont.RobotoCondensed_Regular);
+		Fonts.setFont(this, (TextView) findViewById(R.id.fullscreen_tv), CustomFont.RobotoCondensed_Regular);
 		
 		if (grid.items.size() == 0)
 			edit();

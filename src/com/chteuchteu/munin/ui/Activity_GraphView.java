@@ -129,16 +129,16 @@ public class Activity_GraphView extends Activity {
 			btn_next = (ImageButton) findViewById(R.id.comp_next);
 			btn_list = (ImageButton) findViewById(R.id.comp_list);
 			
-			btn_previous.setOnClickListener(new OnClickListener() {	@Override
+			btn_previous.setOnClickListener(new OnClickListener() { @Override
 				public void onClick(View actualView) {	actionPrevious();	}
 			});
-			btn_next.setOnClickListener(new OnClickListener() {		@Override
+			btn_next.setOnClickListener(new OnClickListener() { @Override
 				public void onClick(View actualView) {	actionNext();	}
 			});
-			findViewById(R.id.comp_refresh).setOnClickListener(new OnClickListener() {	@Override
+			findViewById(R.id.comp_refresh).setOnClickListener(new OnClickListener() { @Override
 				public void onClick(View actualView) {	actionRefresh();	}
 			});
-			btn_list.setOnClickListener(new OnClickListener() {	@Override
+			btn_list.setOnClickListener(new OnClickListener() { @Override
 				public void onClick(View actualView) {	actionCompList();	}
 			});
 		}

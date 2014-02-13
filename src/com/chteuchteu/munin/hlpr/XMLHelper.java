@@ -9,6 +9,7 @@ import com.chteuchteu.munin.obj.MuninServer;
  * Created 1.6
  * Implemented 1.7 (?)
  * Used for XML Import / Export
+ * Important : we could export the database as-is instead of using XML
  */
 
 public class XMLHelper {

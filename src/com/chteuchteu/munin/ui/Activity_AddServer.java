@@ -48,7 +48,8 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.hlpr.Util.CustomFont;
+import com.chteuchteu.munin.hlpr.Util.Fonts;
+import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
@@ -550,8 +551,8 @@ public class Activity_AddServer extends Activity {
 					loading = (LinearLayout) popup.getContentView().findViewById(R.id.popup_loading_avancement);
 					popup_title1 = (TextView) popup.getContentView().findViewById(R.id.popup_text_a);
 					popup_title2 = (TextView) popup.getContentView().findViewById(R.id.popup_text_b);
-					Util.setFont(context, popup_title1, CustomFont.Roboto_Thin);
-					Util.setFont(context, popup_title2, CustomFont.Roboto_Thin);
+					Fonts.setFont(context, popup_title1, CustomFont.Roboto_Thin);
+					Fonts.setFont(context, popup_title2, CustomFont.Roboto_Thin);
 					popupIsShown = true;
 					popup_title1.setText(getString(R.string.text43)); // Please wait...
 				}
@@ -645,10 +646,10 @@ public class Activity_AddServer extends Activity {
 				public void run() {
 					TextView popup_url_message = (TextView)popup.getContentView().findViewById(R.id.popup_url_message);
 					TextView popup_url_message2 = (TextView)popup.getContentView().findViewById(R.id.popup_url_message2);
-					Util.setFont(context, popup_url_message, CustomFont.Roboto_Thin);
-					Util.setFont(context, popup_url_message2, CustomFont.Roboto_Thin);
-					Util.setFont(context, cancel, CustomFont.RobotoCondensed_Regular);
-					Util.setFont(context, continu, CustomFont.RobotoCondensed_Regular);
+					Fonts.setFont(context, popup_url_message, CustomFont.Roboto_Thin);
+					Fonts.setFont(context, popup_url_message2, CustomFont.Roboto_Thin);
+					Fonts.setFont(context, cancel, CustomFont.RobotoCondensed_Regular);
+					Fonts.setFont(context, continu, CustomFont.RobotoCondensed_Regular);
 					popup_title1.setVisibility(View.GONE);
 					popup_title2.setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.GONE);
@@ -977,8 +978,8 @@ public class Activity_AddServer extends Activity {
 					popup_title2.setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_credentials).setVisibility(View.VISIBLE);
-					Util.setFont(context, cancel, CustomFont.RobotoCondensed_Regular);
-					Util.setFont(context, continu, CustomFont.RobotoCondensed_Regular);
+					Fonts.setFont(context, cancel, CustomFont.RobotoCondensed_Regular);
+					Fonts.setFont(context, continu, CustomFont.RobotoCondensed_Regular);
 					
 					// Remplissage spinner auth type
 					List<String> list2 = new ArrayList<String>();
@@ -1123,7 +1124,7 @@ public class Activity_AddServer extends Activity {
 			algo_state = AST_IDLE;
 			if (res != RES_UNDEFINED) {
 				Button b = (Button) popup.getContentView().findViewById(R.id.popup_button);
-				Util.setFont(context, b, CustomFont.RobotoCondensed_Regular);
+				Fonts.setFont(context, b, CustomFont.RobotoCondensed_Regular);
 				LinearLayout loading_bar = (LinearLayout) popup.getContentView().findViewById(R.id.popup_container_avancement);
 				if (res == RES_SERVER_SUCCESS) {
 					// Congratulations!			X plugins found!
