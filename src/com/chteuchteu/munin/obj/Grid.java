@@ -142,9 +142,9 @@ public class Grid {
 		reEnablePlusButtons();
 	}
 	
-	public void cancelEdit(Context c, Activity a) {
-		a.findViewById(R.id.add_line_bottom).setVisibility(View.GONE);
-		a.findViewById(R.id.add_column_right).setVisibility(View.GONE);
+	public void cancelEdit(Context c) {
+		((Activity) c).findViewById(R.id.add_line_bottom).setVisibility(View.GONE);
+		((Activity) c).findViewById(R.id.add_column_right).setVisibility(View.GONE);
 		for (GridItem i : items) {
 			if (i.editing)
 				i.cancelEdit();
@@ -168,6 +168,8 @@ public class Grid {
 		for (int x=nbColumns-1; x>=0; x--) {
 			if (isColumnEmpty(x))
 				removeEmptyColumn(c, x);
+			else // Stop removing columns when the target column isn't empty
+				return;
 		}
 	}
 	
@@ -175,6 +177,8 @@ public class Grid {
 		for (int y=nbLines-1; y>=0; y--) {
 			if (isLineEmpty(y))
 				removeEmptyLine(c, y);
+			else // Stop removing lines when the target line isn't empty
+				return;
 		}
 	}
 	
@@ -239,9 +243,9 @@ public class Grid {
 		}
 	}
 	
-	public void removeEmptyColumn(Context c, int x) {
+	public boolean removeEmptyColumn(Context c, int x) {
 		if (x >= nbColumns)
-			return;
+			return false;
 		
 		boolean canRemove = true;
 		
@@ -258,12 +262,14 @@ public class Grid {
 			}
 			nbColumns--;
 			updateAllGridSizes(c);
+			return true;
 		}
+		return false;
 	}
 	
-	public void removeEmptyLine(Context c, int y) {
+	public boolean removeEmptyLine(Context c, int y) {
 		if (y >= nbLines)
-			return;
+			return false;
 		
 		boolean canRemove = true;
 		
@@ -281,7 +287,9 @@ public class Grid {
 					nbLines--;
 				}
 			}
+			return true;
 		}
+		return false;
 	}
 	
 	public void remove(int x, int y) {
@@ -401,7 +409,7 @@ public class Grid {
 	}
 	
 	public boolean isColumnEmpty(int x) {
-		for (int y=0; y<getGridHeight(); y++) {
+		for (int y=0; y<nbLines; y++) {
 			if (get(x, y) != null)
 				return false;
 		}
@@ -409,7 +417,7 @@ public class Grid {
 	}
 	
 	public boolean isLineEmpty(int y) {
-		for (int x=0; x<getGridWidth(); x++) {
+		for (int x=0; x<nbColumns; x++) {
 			if (get(x, y) != null)
 				return false;
 		}

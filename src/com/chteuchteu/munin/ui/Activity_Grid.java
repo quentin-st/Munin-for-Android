@@ -221,12 +221,12 @@ public class Activity_Grid extends Activity {
 		if (menu_delete != null)	menu_delete.setVisible(!editing);
 		if (menu_period != null)	menu_period.setVisible(editing);
 		
-		if (editing) {
-			grid.cancelEdit(this, this);
+		if (editing) { // Cancel edit
+			grid.cancelEdit(this);
 			if (menu_edit != null) menu_edit.setIcon(R.drawable.content_edit_dark);
 			if (comp_edit != null) comp_edit.setImageResource(R.drawable.ic_action_edit);
 			muninFoo.sqlite.dbHlpr.saveGridItems(grid);
-		} else {
+		} else { // Edit
 			grid.edit(this);
 			if (menu_edit != null) menu_edit.setIcon(R.drawable.navigation_accept_dark);
 			if (comp_edit != null) comp_edit.setImageResource(R.drawable.navigation_accept);

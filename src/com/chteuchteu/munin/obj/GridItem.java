@@ -363,7 +363,6 @@ public class GridItem {
 			lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 			ac.setGravity(Gravity.CENTER_HORIZONTAL);
 			b.setImageResource(R.drawable.ic_action_collapse);
-			b.setBackgroundResource(0);
 			b.setContentDescription(c.getString(R.string.move_up));
 			b.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) {
 				grid.move(X, Y, X, Y-1);
@@ -373,7 +372,6 @@ public class GridItem {
 			lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 			ac.setGravity(Gravity.CENTER_VERTICAL);
 			b.setImageResource(R.drawable.ic_action_previous_item);
-			b.setBackgroundResource(0);
 			b.setContentDescription(c.getString(R.string.move_left));
 			b.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) {
 				grid.move(X, Y, X-1, Y);
@@ -383,7 +381,6 @@ public class GridItem {
 			lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 			ac.setGravity(Gravity.CENTER_HORIZONTAL);
 			b.setImageResource(R.drawable.ic_action_expand);
-			b.setBackgroundResource(0);
 			b.setContentDescription(c.getString(R.string.move_down));
 			b.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) {
 				grid.move(X, Y, X, Y+1);
@@ -393,7 +390,6 @@ public class GridItem {
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			ac.setGravity(Gravity.CENTER_VERTICAL);
 			b.setImageResource(R.drawable.ic_action_next_item);
-			b.setBackgroundResource(0);
 			b.setContentDescription(c.getString(R.string.move_right));
 			b.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) {
 				grid.move(X, Y, X+1, Y);
@@ -402,7 +398,6 @@ public class GridItem {
 			lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 			b.setImageResource(R.drawable.ic_action_remove);
-			b.setBackgroundResource(0);
 			b.setContentDescription(c.getString(R.string.delete));
 			b.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) {
 				remove();
