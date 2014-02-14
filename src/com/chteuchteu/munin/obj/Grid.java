@@ -234,7 +234,7 @@ public class Grid {
 			
 			for (GridItem i : items) {
 				if (i.editing)
-					i.updateActionButtons();
+					i.updateActionButtonsAfterAddingColumn();
 			}
 		}
 	}

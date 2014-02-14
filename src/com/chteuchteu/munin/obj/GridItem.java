@@ -18,7 +18,6 @@ import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -31,6 +30,7 @@ import android.widget.TextView;
 import com.chteuchteu.munin.IconListAdapter;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.ui.Activity_Grid;
 
@@ -333,9 +333,18 @@ public class GridItem {
 	}
 	
 	private void remove() {
+		grid.f.sqlite.dbHlpr.deleteGridItemRelation(grid.get(X, Y));
 		grid.remove(X, Y);
 		grid.swapViews(grid.getViewAt(X, Y), getEmptyView(grid, c, grid.f, X, Y));
-		grid.f.sqlite.dbHlpr.deleteGridItemRelation(grid.get(X, Y));
+	}
+	
+	public void updateActionButtonsAfterAddingColumn() {
+		removeActionButtons();
+		int deviceWidth = Util.getDeviceSize(c)[1];
+		int diff = deviceWidth / (grid.nbColumns-1) - deviceWidth / (grid.nbColumns);
+		int newContainerWidth = container.getWidth() - diff;
+		if (newContainerWidth > ICONS_MAX_WIDTH)
+			putActionButtons();
 	}
 	
 	public void updateActionButtons() {
@@ -348,7 +357,7 @@ public class GridItem {
 		LinearLayout ac = new LinearLayout(c);
 		ac.setTag("action");
 		RelativeLayout.LayoutParams lp = null;
-		ImageButton b = new ImageButton(c);
+		ImageView b = new ImageView(c);
 		if (button.equals("up")) {
 			lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 			lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);

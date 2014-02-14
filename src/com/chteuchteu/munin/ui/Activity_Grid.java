@@ -138,10 +138,8 @@ public class Activity_Grid extends Activity {
 		AlphaAnimation a = new AlphaAnimation(1.0f, 0.0f);
 		a.setDuration(300);
 		a.setAnimationListener(new AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) { }
-			@Override
-			public void onAnimationRepeat(Animation animation) { }
+			@Override public void onAnimationStart(Animation animation) { }
+			@Override public void onAnimationRepeat(Animation animation) { }
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				findViewById(R.id.fullscreen).setVisibility(View.GONE);
