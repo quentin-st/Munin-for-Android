@@ -724,6 +724,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(null, db);
 	}
 	
+	public void deleteGridItemRelation(GridItem i) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_GRIDITEMRELATIONS, KEY_ID + " = ?", new String[] { String.valueOf(i.id) });
+		close(null, db);
+	}
+	
 	public void deleteGridItemRelations(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });

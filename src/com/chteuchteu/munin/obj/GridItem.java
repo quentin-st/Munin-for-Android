@@ -51,7 +51,7 @@ public class GridItem {
 	public ProgressBar 	pb;
 	public boolean		isPersistant;
 	
-	public static int 		ICONS_MAX_WIDTH = 250;
+	public static int 		ICONS_MAX_WIDTH = 220;
 	public static float	ALPHA_EDITING = 0.2f;
 	
 	public GridItem(Grid g, MuninPlugin p, Context c) {
@@ -335,7 +335,7 @@ public class GridItem {
 	private void remove() {
 		grid.remove(X, Y);
 		grid.swapViews(grid.getViewAt(X, Y), getEmptyView(grid, c, grid.f, X, Y));
-		grid.f.sqlite.dbHlpr.saveGridItems(grid);
+		grid.f.sqlite.dbHlpr.deleteGridItemRelation(grid.get(X, Y));
 	}
 	
 	public void updateActionButtons() {

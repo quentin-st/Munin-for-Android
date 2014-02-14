@@ -285,8 +285,8 @@ public class Grid {
 	}
 	
 	public void remove(int x, int y) {
-		GridItem i;
-		if ((i = get(x, y)) != null)
+		GridItem i = get(x, y);
+		if (i != null)
 			items.remove(i);
 	}
 	
