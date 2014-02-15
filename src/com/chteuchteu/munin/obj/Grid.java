@@ -293,9 +293,7 @@ public class Grid {
 	}
 	
 	public void remove(int x, int y) {
-		GridItem i = get(x, y);
-		if (i != null)
-			items.remove(i);
+		items.remove(get(x, y));
 	}
 	
 	public void move(int x, int y, int newX, int newY) {

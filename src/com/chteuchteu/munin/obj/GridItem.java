@@ -333,7 +333,7 @@ public class GridItem {
 	}
 	
 	private void remove() {
-		grid.f.sqlite.dbHlpr.deleteGridItemRelation(grid.get(X, Y));
+		grid.f.sqlite.dbHlpr.deleteGridItemRelation(this);
 		grid.remove(X, Y);
 		grid.swapViews(grid.getViewAt(X, Y), getEmptyView(grid, c, grid.f, X, Y));
 	}

@@ -156,6 +156,7 @@ public class Activity_Grid extends Activity {
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 		
 		container.removeAllViews();
+		grid = null;
 		
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("gridName")) {

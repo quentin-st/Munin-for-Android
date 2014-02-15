@@ -15,8 +15,8 @@ import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.chteuchteu.munin.obj.Widget;
 
 
@@ -612,8 +612,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), f);
 			g.id = c.getInt(c.getColumnIndex(KEY_ID));
 			// Get all GridItems
-			List<GridItem> li = getGridItems(co, g);
-			g.items = li;
+			g.items = getGridItems(co, g);
 			
 			close(c, db);
 			return g;
