@@ -160,14 +160,20 @@ public class DrawerHelper {
 		a.findViewById(R.id.drawer_graphs_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				a.startActivity(new Intent(a, Activity_PluginSelection.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+				Intent i = new Intent(a, Activity_PluginSelection.class);
+				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				a.startActivity(i);
 				setTransition("deeper");
 			}
 		});
 		a.findViewById(R.id.drawer_grid_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				a.startActivity(new Intent(a, Activity_GridSelection.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+				Intent i = new Intent(a, Activity_GridSelection.class);
+				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				a.startActivity(i);
 				setTransition("deeper");
 			}
 		});
@@ -175,7 +181,10 @@ public class DrawerHelper {
 		a.findViewById(R.id.drawer_alerts_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				a.startActivity(new Intent(a, Activity_Alerts.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+				Intent i = new Intent(a, Activity_Alerts.class);
+				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				a.startActivity(i);
 				setTransition("deeper");
 			}
 		});
@@ -183,7 +192,10 @@ public class DrawerHelper {
 		a.findViewById(R.id.drawer_labels_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				a.startActivity(new Intent(a, Activity_Labels.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+				Intent i = new Intent(a, Activity_Labels.class);
+				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				a.startActivity(i);
 				setTransition("deeper");
 			}
 		});
@@ -191,7 +203,10 @@ public class DrawerHelper {
 		a.findViewById(R.id.drawer_servers_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				a.startActivity(new Intent(a, Activity_Servers.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+				Intent i = new Intent(a, Activity_Servers.class);
+				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				a.startActivity(i);
 				setTransition("deeper");
 			}
 		});
@@ -199,7 +214,10 @@ public class DrawerHelper {
 		a.findViewById(R.id.drawer_notifications_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				a.startActivity(new Intent(a, Activity_Notifications.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+				Intent i = new Intent(a, Activity_Notifications.class);
+				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				a.startActivity(i);
 				setTransition("deeper");
 			}
 		});
@@ -207,7 +225,10 @@ public class DrawerHelper {
 		a.findViewById(R.id.drawer_premium_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				a.startActivity(new Intent(a, Activity_GoPremium.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+				Intent i = new Intent(a, Activity_GoPremium.class);
+				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				a.startActivity(i);
 				setTransition("deeper");
 			}
 		});
@@ -422,8 +443,8 @@ public class DrawerHelper {
 				setFont((ViewGroup) v, font);
 		}
 	}
-	public void setLightFont(View v) {
+	/*public void setLightFont(View v) {
 		Typeface mFont = Typeface.createFromAsset(a.getAssets(), "Roboto-Thin.ttf");
 		((TextView) v).setTypeface(mFont);
-	}
+	}*/
 }

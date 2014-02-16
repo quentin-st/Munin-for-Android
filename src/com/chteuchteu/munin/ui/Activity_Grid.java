@@ -226,7 +226,7 @@ public class Activity_Grid extends Activity {
 			grid.cancelEdit(this);
 			if (menu_edit != null) menu_edit.setIcon(R.drawable.content_edit_dark);
 			if (comp_edit != null) comp_edit.setImageResource(R.drawable.ic_action_edit);
-			muninFoo.sqlite.dbHlpr.saveGridItems(grid);
+			muninFoo.sqlite.dbHlpr.saveGridItemsRelations(grid);
 		} else { // Edit
 			grid.edit(this);
 			if (menu_edit != null) menu_edit.setIcon(R.drawable.navigation_accept_dark);

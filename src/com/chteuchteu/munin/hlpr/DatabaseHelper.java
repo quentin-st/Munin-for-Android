@@ -270,13 +270,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return id;
 	}
 	
-	public void saveGridItems(Grid g) {
+	/*public void saveGridItems(Grid g) {
 		for (GridItem i : g.items) {
 			if (i.isPersistant)
 				updateGridItemRelation(i);
 			else
 				insertGridItemRelation(i);
 		}
+	}*/
+	
+	public void saveGridItemsRelations(Grid g) {
+		deleteGridItemRelations(g);
+		for (GridItem i : g.items)
+			insertGridItemRelation(i);
 	}
 	
 	public int updateMuninServer(MuninServer s) {

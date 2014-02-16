@@ -41,7 +41,7 @@ public class GridItem {
 	public MuninPlugin 	plugin;
 	public Period 		period;
 	public ImageView 	iv;
-	public String 		name;
+	//public String 		name;
 	public Grid 		grid;
 	private Context 	c;
 	public boolean 		editing = false;
@@ -58,8 +58,8 @@ public class GridItem {
 		this.X = 0;
 		this.Y = 0;
 		this.plugin = p;
-		if (p != null)
-			this.name = p.getFancyName() + " : " + p.getInstalledOn().getName();
+		//if (p != null)
+			//this.name = p.getFancyName() + " : " + p.getInstalledOn().getName();
 		this.period = Period.DAY;
 		this.grid = g;
 		this.c = c;
