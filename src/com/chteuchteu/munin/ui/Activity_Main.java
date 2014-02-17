@@ -188,7 +188,7 @@ public class Activity_Main extends Activity {
 			String action = thisIntent.getExtras().getString("action");
 			if (action != null && action.equals("settingsSave"))
 				// Settings saved successfully!
-				Toast.makeText(this, getString(R.string.text36), Toast.LENGTH_LONG).show();
+				Toast.makeText(this, getString(R.string.text36), Toast.LENGTH_SHORT).show();
 		}
 		
 		// Ask the user to rate the app
@@ -201,7 +201,7 @@ public class Activity_Main extends Activity {
 		.setNeutralButton(getText(R.string.not_now), null); // Not now
 		new AppRate(this)
 		.setCustomDialog(builder)
-		.setMinDaysUntilPrompt(10)
+		.setMinDaysUntilPrompt(8)
 		.setMinLaunchesUntilPrompt(10)
 		.init();
 	}

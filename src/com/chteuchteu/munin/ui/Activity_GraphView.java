@@ -26,6 +26,7 @@ import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -88,6 +89,9 @@ public class Activity_GraphView extends Activity {
 	private ImageButton		btn_list;
 	private Menu 			menu;
 	private String			activityName;
+	
+	private Handler			mHandler;
+	private Runnable		mHandlerTask;
 	
 	
 	@SuppressLint("NewApi")
@@ -288,6 +292,21 @@ public class Activity_GraphView extends Activity {
 		
 		if (!Util.isOnline(this))
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
+		
+		// Launch periodical check
+		if (Util.getPref(this, "autoRefresh").equals("true")) {
+			mHandler = new Handler();
+			final int INTERVAL = 1000 * 60 * 5;
+			mHandlerTask = new Runnable()
+			{
+				@Override 
+				public void run() {
+					actionRefresh();
+					mHandler.postDelayed(mHandlerTask, INTERVAL);
+				}
+			};
+			mHandlerTask.run();
+		}
 	}
 	
 	@Override

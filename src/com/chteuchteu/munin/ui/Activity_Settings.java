@@ -46,6 +46,7 @@ public class Activity_Settings extends Activity {
 	private View		checkable_drawer;
 	private View		checkable_splash;
 	private View		checkable_alwaysOn;
+	private View		checkable_autoRefresh;
 	
 	private MuninFoo 			muninFoo;
 	private DrawerHelper		dh;
@@ -90,6 +91,7 @@ public class Activity_Settings extends Activity {
 		checkable_splash = inflateCheckable((ViewGroup)findViewById(R.id.checkable_splash), getString(R.string.settings_splash_checkbox));
 		checkable_transitions = inflateCheckable((ViewGroup)findViewById(R.id.checkable_transitions), getString(R.string.settings_transitions_checkbox));
 		checkable_alwaysOn = inflateCheckable((ViewGroup)findViewById(R.id.checkable_screenalwayson), getString(R.string.settings_screenalwayson_checkbox));
+		checkable_autoRefresh = inflateCheckable((ViewGroup)findViewById(R.id.checkable_autorefresh), getString(R.string.settings_autorefresh_checkbox));
 		
 		
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
@@ -211,6 +213,11 @@ public class Activity_Settings extends Activity {
 		else
 			setPref("screenAlwaysOn", "false");
 		
+		if (getCheckableValue(checkable_autoRefresh))
+			setPref("autoRefresh", "true");
+		else
+			setPref("autoRefresh", "false");
+		
 		// Drawer
 		if (getCheckableValue(checkable_drawer)) {
 			setPref("drawer", "false");
@@ -281,8 +288,13 @@ public class Activity_Settings extends Activity {
 		if (getPref("drawer").equals("false"))
 			setChecked(checkable_drawer, true);
 		
+		// Always on
 		if (getPref("screenAlwaysOn").equals("true"))
 			setChecked(checkable_alwaysOn, true);
+		
+		// Auto refresh
+		if (getPref("autoRefresh").equals("true"))
+			setChecked(checkable_autoRefresh, true);
 	}
 	@SuppressLint("NewApi")
 	@Override

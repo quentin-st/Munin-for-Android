@@ -7,11 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -58,6 +59,10 @@ public class Activity_Grid extends Activity {
 	
 	private Period			currentPeriod;
 	
+	public static boolean	updating;
+	private Handler			mHandler;
+	private Runnable		mHandlerTask;
+	
 	@SuppressLint("NewApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,7 @@ public class Activity_Grid extends Activity {
 		c = this;
 		
 		editing = false;
+		updating = false;
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			ActionBar actionBar = getActionBar();
@@ -130,6 +136,22 @@ public class Activity_Grid extends Activity {
 		
 		if (grid.items.size() == 0)
 			edit();
+		
+		// Launch periodical check
+		if (Util.getPref(this, "autoRefresh").equals("true")) {
+			mHandler = new Handler();
+			final int INTERVAL = 1000 * 60 * 5;
+			mHandlerTask = new Runnable()
+			{
+				@Override 
+				public void run() {
+					if (!updating)
+						autoRefresh();
+					mHandler.postDelayed(mHandlerTask, INTERVAL);
+				}
+			};
+			mHandlerTask.run();
+		}
 	}
 	
 	private void hidePreview() {
@@ -249,6 +271,11 @@ public class Activity_Grid extends Activity {
 	private void refresh() {
 		if (!Util.isOnline(this))
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
+		grid.dHelper.period = this.currentPeriod;
+		grid.dHelper.start(true);
+	}
+	
+	private void autoRefresh() {
 		grid.dHelper.period = this.currentPeriod;
 		grid.dHelper.start(true);
 	}

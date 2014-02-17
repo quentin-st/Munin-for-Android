@@ -216,22 +216,6 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#666666"
                 android:textStyle="bold" />
-
-            <!-- Graph default scale -->
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/settings_default_scale"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/spinner_scale"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp" />
             
             <!-- Screen always on -->
 
@@ -251,6 +235,41 @@
                 android:layout_marginTop="8dp"
                 android:gravity="right"
                 android:orientation="vertical" />
+            
+            <!-- Auto refresh -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/settings_autorefresh_label"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/checkable_autorefresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="8dp"
+                android:gravity="right"
+                android:orientation="vertical" />
+
+            <!-- Graph default scale -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/settings_default_scale"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinner_scale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp" />
 
             <!-- Graphs screen orientation -->
 

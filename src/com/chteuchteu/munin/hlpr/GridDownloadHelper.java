@@ -10,6 +10,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
+import com.chteuchteu.munin.ui.Activity_Grid;
 
 public class GridDownloadHelper {
 	private Grid g;
@@ -33,10 +34,20 @@ public class GridDownloadHelper {
 		for (GridItem i : items)
 			i.pb.setVisibility(View.VISIBLE);
 		
+		onStart();
+		
 		for (int i=0; i<this.nbSimultaneousDownloads; i++) {
 			if (items.size() > i)
 				new DownloadBitmaps(i, forceUpdate).execute();
 		}
+	}
+	
+	private void onStart() {
+		Activity_Grid.updating = true;
+	}
+	
+	private void onStop() {
+		Activity_Grid.updating = false;
 	}
 	
 	public class DownloadBitmaps extends AsyncTask<Void, Integer, Void> {
@@ -60,6 +71,8 @@ public class GridDownloadHelper {
 		
 		@Override
 		protected void onPostExecute(Void result) {
+			if (i == g.items.size() - 1)
+				onStop();
 			if (i < g.items.size()) {
 				if (items.get(i) != null) {
 					if (b != null) {

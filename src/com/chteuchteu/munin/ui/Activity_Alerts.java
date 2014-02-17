@@ -62,6 +62,9 @@ public class Activity_Alerts extends Activity {
 	public static String	BG_COLOR_WARNING = "#FFAE5B";
 	public static String	BG_COLOR_CRITICAL = "#FF7B68";
 	
+	public static boolean	updating;
+	private Handler			mHandler;
+	private Runnable		mHandlerTask;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -114,6 +117,9 @@ public class Activity_Alerts extends Activity {
 		}
 		
 		int i = 0;
+		LinearLayout wholeContainer = new LinearLayout(this);
+		wholeContainer.setOrientation(LinearLayout.VERTICAL);
+		
 		for (final MuninServer server : servers) {
 			LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View v = vi.inflate(R.layout.alerts_part, null);
@@ -140,11 +146,13 @@ public class Activity_Alerts extends Activity {
 				}
 			});
 			
-			View insertPoint = findViewById(R.id.alerts_root_container);
-			((ViewGroup) insertPoint).addView(v);
+			wholeContainer.addView(v);
 			
 			i++;
 		}
+		
+		View insertPoint = findViewById(R.id.alerts_root_container);
+		((ViewGroup) insertPoint).addView(wholeContainer);
 		
 		updateStates();
 		
@@ -162,6 +170,21 @@ public class Activity_Alerts extends Activity {
 				}
 			}
 		});
+		
+		// Launch periodical check
+		if (Util.getPref(this, "autoRefresh").equals("true")) {
+			mHandler = new Handler();
+			final int INTERVAL = 1000 * 60 * 5;
+			mHandlerTask = new Runnable()
+			{
+				@Override 
+				public void run() {
+					updateStates();
+					mHandler.postDelayed(mHandlerTask, INTERVAL);
+				}
+			};
+			mHandlerTask.run();
+		}
 	}
 	
 	public void updateView(boolean hideNormal) {
