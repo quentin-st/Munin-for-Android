@@ -26,6 +26,8 @@
 	<string name="settings_drawer_label">Menu latéral</string>
 	<string name="settings_drawer_checkbox">Désactiver le menu latéral</string>
 	<string name="settings_delete_button">Supprimer</string>
+	<string name="settings_screenalwayson_label">Garder l\'écran allumé</string>
+	<string name="settings_screenalwayson_checkbox">Empêcher l\'écran de s\'éteindre lors de l\'affichage de graphs / alertes</string>
 	<string name="settings_titlelabel_app">APP</string>
 	<string name="settings_titlelabel_graphs">GRAPHS</string>
 	<string name="servers_btn_add_server">Ajouter un serveur</string>

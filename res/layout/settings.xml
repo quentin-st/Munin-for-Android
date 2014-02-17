@@ -232,6 +232,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp" />
+            
+            <!-- Screen always on -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/settings_screenalwayson_label"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/checkable_screenalwayson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="8dp"
+                android:gravity="right"
+                android:orientation="vertical" />
 
             <!-- Graphs screen orientation -->
 

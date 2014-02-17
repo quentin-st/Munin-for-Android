@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.crashlytics.android.Crashlytics;
@@ -84,6 +86,9 @@ public class Activity_Alerts extends Activity {
 			}
 		} else
 			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
+		
+		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		int nbS = muninFoo.getHowManyServers();
 		part_part 					= new LinearLayout[nbS];
@@ -408,5 +413,8 @@ public class Activity_Alerts extends Activity {
 		super.onStop();
 		if (!muninFoo.debug)
 			EasyTracker.getInstance(this).activityStop(this);
+		
+		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 }

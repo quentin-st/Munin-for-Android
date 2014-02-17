@@ -103,6 +103,8 @@ public class Activity_GraphView extends Activity {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		else if (Util.getPref(this, "graphview_orientation").equals("horizontal"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -847,5 +849,8 @@ public class Activity_GraphView extends Activity {
 		super.onStop();
 		if (!muninFoo.debug)
 			EasyTracker.getInstance(this).activityStop(this);
+		
+		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 }

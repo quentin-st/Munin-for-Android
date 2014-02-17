@@ -45,6 +45,7 @@ public class Activity_Settings extends Activity {
 	private View		checkable_transitions;
 	private View		checkable_drawer;
 	private View		checkable_splash;
+	private View		checkable_alwaysOn;
 	
 	private MuninFoo 			muninFoo;
 	private DrawerHelper		dh;
@@ -88,6 +89,7 @@ public class Activity_Settings extends Activity {
 		checkable_drawer = inflateCheckable((ViewGroup)findViewById(R.id.checkable_drawer), getString(R.string.settings_drawer_checkbox));
 		checkable_splash = inflateCheckable((ViewGroup)findViewById(R.id.checkable_splash), getString(R.string.settings_splash_checkbox));
 		checkable_transitions = inflateCheckable((ViewGroup)findViewById(R.id.checkable_transitions), getString(R.string.settings_transitions_checkbox));
+		checkable_alwaysOn = inflateCheckable((ViewGroup)findViewById(R.id.checkable_screenalwayson), getString(R.string.settings_screenalwayson_checkbox));
 		
 		
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
@@ -204,6 +206,11 @@ public class Activity_Settings extends Activity {
 		else
 			setPref("transitions", "false");
 		
+		if (getCheckableValue(checkable_alwaysOn))
+			setPref("screenAlwaysOn", "true");
+		else
+			setPref("screenAlwaysOn", "false");
+		
 		// Drawer
 		if (getCheckableValue(checkable_drawer)) {
 			setPref("drawer", "false");
@@ -273,6 +280,9 @@ public class Activity_Settings extends Activity {
 		// Drawer
 		if (getPref("drawer").equals("false"))
 			setChecked(checkable_drawer, true);
+		
+		if (getPref("screenAlwaysOn").equals("true"))
+			setChecked(checkable_alwaysOn, true);
 	}
 	@SuppressLint("NewApi")
 	@Override
@@ -362,6 +372,7 @@ public class Activity_Settings extends Activity {
 				setPref("defaultScale", "day");
 				setPref("log", "false");
 				setPref("addserver_history", "");
+				setPref("screenAlwaysOn", "");
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 					setPref("drawer", "true");
 				

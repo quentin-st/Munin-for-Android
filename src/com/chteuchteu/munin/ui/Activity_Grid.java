@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -91,6 +92,9 @@ public class Activity_Grid extends Activity {
 			comp_edit = (ImageButton) findViewById(R.id.btn_comp_edit);
 			comp_edit.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { edit(); } });
 		}
+		
+		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		fs_iv = (ImageView) findViewById(R.id.fullscreen_iv);
 		
@@ -358,5 +362,8 @@ public class Activity_Grid extends Activity {
 		super.onStop();
 		if (!muninFoo.debug)
 			EasyTracker.getInstance(this).activityStop(this);
+		
+		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 }
