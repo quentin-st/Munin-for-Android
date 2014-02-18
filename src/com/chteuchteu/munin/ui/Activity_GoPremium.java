@@ -26,6 +26,8 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -103,6 +105,11 @@ public class Activity_GoPremium extends Activity {
 			}
 		};
 		buyNow.setOnClickListener(buy);
+		
+		Util.Fonts.setFont(this, price1, CustomFont.Roboto_Thin);
+		Util.Fonts.setFont(this, price2, CustomFont.Roboto_Thin);
+		Util.Fonts.setFont(this, price3, CustomFont.Roboto_Thin);
+		Util.Fonts.setFont(this, buyNow, CustomFont.RobotoCondensed_Regular);
 	}
 	
 	@Override

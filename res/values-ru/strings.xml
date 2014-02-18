@@ -166,45 +166,6 @@ li { margin-bottom: 5px; }
 	<string name="button_grid">Сетка</string>
 	<string name="menu_pluginselection">Группировать по категории</string>
 	<string name="edit">Редактировать</string>
-	<string name="aboutText">
-<![CDATA[
-<head>
-<style>
-p { padding: 0px 15px; }
-h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 5px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; border: 2px solid #1578C4; border-width: 0px 0px 2px 0px; }
-body { text-align: justify; color: #555; font-size:0.95em; }
-</style>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-<br />
-<p>Если у вас есть предложения по улучшению <i>Munin for Android</i>, или если вы обнаружили ошибку, пожалуйста, пишите мне на <b><u>chteuchteu@gmail.com</u></b>. Спасибо! </p>
-<p>Я не имею отношения к команде разработчиков ПО munin для Linux</p>
-
-<h2>Вы используете<i>Munin for Android #version#</i></h2>
-<p>Посетите <a href="http://chteuchteu.com/munin-for-android/">chteuchteu.com/munin-for-android</a> для получения полной истории изменений и примечаний к релизам.</p>
-
-<h2>MfA #version# история изменений</h2>
-<ul>
-<li>Исправлен вылет приложения при загрузке устройства</li>
-<li>Исправлена проблема с виджетами при закрытии Munin for Android</li>
-</ul>
-<h2>Планируемые улучшения</h2>
-<ul>
-<li><a href="mailto:chteuchteu@gmail.com">Предложить новые возможности</a></li>
-</ul>
-<p>Следите за новостями!</p>
-<h2>Отдельное спасибо</h2>
-<ul>
-<li>Steve Schnepp, lead dev. of Munin</li>
-<li>Alessandro <i>\"override\"</i></li>
-<li>#munin IRC: olasd</li>
-<li>Christian Petri, Lucas Garte, Jan Vonde: german translation</li>
-<li>Константин Баткин: перевод на русский язык</li>
-<li>Edwin van Ouwerkerk Moria</li> </ul>
-<br />
-</body>]]>
-	</string>
 	<string name="text69">Имя сетки</string>
 	<string name="text70">Добавить сетку</string>
 	<string name="text70.2">Добавить метку</string>

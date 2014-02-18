@@ -181,35 +181,26 @@
 	<string name="rate_long">Si vous aimez l\'application, pourriez-vous prendre une minute pour la noter sur Google Play ? Merci !</string>
 	<string name="not_now">Pas maintenant</string>
 	
+	<string name="yourerunning">Vous utilisez</string>
+	
 	<string name="aboutText">
 	    <![CDATA[
    <head>
    <style>
    	p { padding: 0px 15px; }
-   	h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 5px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; border: 2px solid #1578C4; border-width: 0px 0px 2px 0px; }
-   	body { text-align: justify; color: #555; font-size:0.95em; }
+   	h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 6px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; }
+	body { text-align: justify; color: #555; font-size:0.95em; }
    </style>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
    </head>
    <body>
    <br />
-   <p>Si vous avez des suggestions d\'améliorations pour <i>Munin for Android</i>, ou si vous avez détecté un bug, veuillez m\'envoyer un mail à <b><u>chteuchteu@gmail.com</u></b>. Merci !</p>
-<p>Je ne suis pas affilié avec l\'équipe de développement du logiciel <i>munin</i>.</p>
-
-<h2>Vous utilisez <i>Munin for Android #version#</i></h2>
+   <p>Si vous voulez dire bonjour, si vous avez des idées d\'améliorations pour <i>Munin for Android</i> ou si vous avez trouvé un bug, vous pouvez m\'envoyer un mail à <b><u>chteuchteu@gmail.com</u></b>. Merci !</p>
+	<p>Munin for Android n\'est pas une appli officielle.</p>
+	<p></p>
 
    <p>Veuillez aller sur <a href="http://chteuchteu.com/munin-for-android/">chteuchteu.com/munin-for-android</a> pour lire l\'ensemble des changements.</p>
-   
-   <h2>MfA #version# changelog</h2>
-   <ul>
-   <li></li>
-   </ul>
-   
-   <h2>Améliorations prévues</h2>
-   <ul>
-   <li><a href="mailto:chteuchteu@gmail.com">Proposer une fonctionnalité</a></li>
-   </ul>
-   <p>Stay tuned!</p>
+
    
    <h2>Remerciements</h2>
    <ul>
@@ -237,7 +228,7 @@
   <body>
   <h2>Munin for Android Features Pack</h2>
   <ul>
-  <li>SSL Support</li>
+  <li>Grilles de graphs</li>
   <li>Support SSL</li>
   <li>Widgets</li>
   <li>Authentification digest</li>

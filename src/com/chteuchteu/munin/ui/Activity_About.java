@@ -14,10 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -30,7 +33,7 @@ public class Activity_About extends Activity {
 	private String			activityName;
 	
 	@SuppressWarnings("deprecation")
-	@SuppressLint("NewApi")
+	@SuppressLint({ "NewApi", "DefaultLocale" })
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
@@ -56,8 +59,7 @@ public class Activity_About extends Activity {
 		String content = getString(R.string.aboutText);
 		String versionName;
 		try {
-			versionName = getPackageManager()
-				    .getPackageInfo(getPackageName(), 0).versionName;
+			versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 		} catch (NameNotFoundException e) {
 			versionName = "";
 		}
@@ -69,6 +71,13 @@ public class Activity_About extends Activity {
 			wv.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 			wv.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
 		}
+		
+		TextView tv1 = (TextView) findViewById(R.id.about_txt1);
+		TextView tv2 = (TextView) findViewById(R.id.about_txt2);
+		Util.Fonts.setFont(this, tv1, CustomFont.RobotoCondensed_Regular);
+		Util.Fonts.setFont(this, tv2, CustomFont.RobotoCondensed_Regular);
+		tv1.setText(tv1.getText().toString().toUpperCase());
+		tv2.setText("Munin for Android " + versionName);
 	}
 	
 	
