@@ -128,20 +128,24 @@ public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
 		protected void onPostExecute(Void result) {
 			loading_spin.setVisibility(View.GONE);
 			
-			Integer nbr = (Integer)tiv.getTag();
+			Integer nbr = (Integer) tiv.getTag();
 			if (nbr >= 0 && nbr < Activity_GraphView.bitmaps.length) {
 				if (Activity_GraphView.bitmaps[nbr] != null) {
 					tiv.setImageBitmap(Activity_GraphView.bitmaps[nbr]);
 					PhotoViewAttacher mAttacher = new PhotoViewAttacher(tiv);
 					if (mAttacher.getMidScale() < 2f)
 						mAttacher.setMaxScale(2f);
+				} else {
+					// It seems that can actually fire OutOfMemoryError (BitmapFactory.nativeDecodeAsset)
+					try {
+						tiv.setImageResource(R.drawable.download_error);
+					} catch (Exception e) { }
 				}
-				else
-					tiv.setImageResource(R.drawable.download_error);
 			}
 		}
 	}
 	
+	// Volley thing
 	/*public void fetchBitmap(final int pos, final boolean retried) {
 		final String url = muninFoo.currentServer.getPlugin(pos).getImgUrl(Activity_GraphView.load_period);
 		Log.v("", "fetching bitmap " + pos + " (" + url + ")");
