@@ -46,7 +46,7 @@ public class Grid {
 		// Check if exists
 		boolean exists = false;
 		for (GridItem i : items) {
-			if (i.grid.name.equals(name) && i.plugin.equalsApprox(item.plugin))
+			if (i.grid.name.equals(this.name) && i.plugin != null && i.plugin.equals(item.plugin))
 				exists = true;
 		}
 		if (exists)
@@ -77,7 +77,7 @@ public class Grid {
 		// Check if exists
 		boolean exists = false;
 		for (GridItem i : items) {
-			if (i.grid.name.equals(name) && i.plugin.equalsApprox(item.plugin))
+			if (i.grid.name.equals(name) && i.plugin.equals(item.plugin))
 				exists = true;
 		}
 		if (exists)
@@ -300,16 +300,18 @@ public class Grid {
 		LinearLayout curView = (LinearLayout) getViewAt(x, y);
 		LinearLayout destView = (LinearLayout) getViewAt(newX, newY);
 		GridItem curItem = get(x, y);
-		GridItem destItem = get(newX, newY);
-		if (destItem != null) {
-			destItem.X = x;
-			destItem.Y = y;
+		if (curItem != null) {
+			GridItem destItem = get(newX, newY);
+			if (destItem != null) {
+				destItem.X = x;
+				destItem.Y = y;
+			}
+			curItem.X = newX;
+			curItem.Y = newY;
+			curItem.updateActionButtons();
+			
+			swapViews(curView, destView);
 		}
-		curItem.X = newX;
-		curItem.Y = newY;
-		curItem.updateActionButtons();
-		
-		swapViews(curView, destView);
 	}
 	
 	public void swapViews(LinearLayout view1, LinearLayout view2) {

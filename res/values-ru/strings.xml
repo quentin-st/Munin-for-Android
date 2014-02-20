@@ -52,8 +52,6 @@
 	<string name="text09">Ошибка!</string>
 	<string name="text10">На вашем устройстве не установлен Twitter</string>
 	<string name="text11">На вашем устройстве не установлен Google Play</string>
-	<string name="text12">demo.munin-monitoring.org (одиночный сервер)</string>
-	<string name="text13">demo.munin-monitoring.org (3 суб-сервера)</string>
 	<string name="text14">Текстовые поля очищены</string>
 	<string name="text16">Некорректный URL. Пожалуйста, проверьте настройки</string>
 	<string name="text18">Готово!</string>

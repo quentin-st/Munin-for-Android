@@ -119,8 +119,13 @@ public final class Util {
 	
 	public static Bitmap removeBitmapBorder(Bitmap original) {
 		if (original != null) {
-			if (original.getPixel(0, 0) == 0xFFCFCFCF)
-				return Bitmap.createBitmap(original, 2, 2, original.getWidth()-4, original.getHeight()-4);
+			if (original.getPixel(0, 0) == 0xFFCFCFCF) {
+				try {
+					return Bitmap.createBitmap(original, 2, 2, original.getWidth()-4, original.getHeight()-4);
+				} catch (Exception ignored) {
+					return original;
+				}
+			}
 			else
 				return original;
 		}

@@ -85,8 +85,6 @@
 	<string name="text09">Erreur</string>
 	<string name="text10">L\'application Twitter ne semble pas être installée sur votre appareil</string>
 	<string name="text11">L\'application Google Play ne semble pas être installée sur votre appareil</string>
-	<string name="text12">demo.munin-monitoring.org (serveur unique)</string>
-	<string name="text13">demo.munin-monitoring.org (3 sous-serveurs)</string>
 	<string name="text14">Champs effacés</string>
 	<string name="text16">L\'URL semble être incorrecte. Veuillez la vérifier</string>
 	<string name="text18">Félicitations !</string>

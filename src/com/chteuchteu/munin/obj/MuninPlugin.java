@@ -138,13 +138,18 @@ public class MuninPlugin {
 	public void setState(AlertState s) {
 		this.state = s;
 	}
+	
 	public boolean equals(MuninPlugin p) {
+		if (p == null)
+			return false;
 		if (this.name.equals(p.name) && this.fancyName.equals(p.fancyName) && this.installedOn.equalsApprox(p.installedOn))
 			return true;
 		return false;
 	}
 	
 	public boolean equalsApprox(MuninPlugin p) {
+		if (p == null)
+			return false;
 		if (this.name.equals(p.name) && this.fancyName.equals(p.fancyName))
 			return true;
 		return false;

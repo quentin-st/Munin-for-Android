@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -202,8 +203,8 @@ public class GridItem {
 				int maxWidth = g.nbColumns;
 				for (Integer i : selectedItems) {
 					MuninPlugin p = s.getPlugin(i);
-					GridItem item = new GridItem(g, p, c);
-					if (!alreadyAdded(g, item)) {
+					if (!alreadyAdded(g, p)) {
+						GridItem item = new GridItem(g, p, c);
 						int[] pos = g.getNextAvailable(X, Y, maxWidth, c);
 						item.X = pos[0];
 						item.Y = pos[1];
@@ -212,10 +213,10 @@ public class GridItem {
 					}
 				}
 				
-				f.sqlite.saveGridItemRelations(g);
-				
-				if (selectedItems.size() > 0)
+				if (selectedItems.size() > 0) {
+					f.sqlite.saveGridItemRelations(g);
 					g.dHelper.start(false);
+				}
 			}
 		})
 		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -228,9 +229,9 @@ public class GridItem {
 		dialog.show();
 	}
 	
-	private static boolean alreadyAdded(Grid g, GridItem i) {
+	private static boolean alreadyAdded(Grid g, MuninPlugin p) {
 		for (GridItem item : g.items) {
-			if (item.plugin.equals(i.plugin))
+			if (item.plugin.equals(p))
 				return true;
 		}
 		return false;

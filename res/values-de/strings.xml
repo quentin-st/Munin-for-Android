@@ -51,8 +51,6 @@
 	<string name="text09">Fehler!</string>
 	<string name="text10">Die Twitter-App scheint nicht auf deinem Telefon installiert zu sein.</string>
 	<string name="text11">Google Play scheint auf deinem Telefon installiert zu sein.</string>
-	<string name="text12">demo.munin-monitoring.org (einzelner Server)</string>
-	<string name="text13">demo.munin-monitoring.org (4 unter-Server)</string>
 	<string name="text14">Textfelder geleert</string>
 	<string name="text16">Diese URL scheint fehlerhaft zu sein. Bitte prüfen.</string>
 	<string name="text18">Glückwunsch!</string>

@@ -203,16 +203,16 @@ public class Activity_AddServer extends Activity {
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
 		});
 		
-		// Remplissage spinner sample server
+		// Sample server
 		List<String> list = new ArrayList<String>();
 		list.add("");
-		list.add(getString(R.string.text12)); // demo.munin-monitoring.org (single server)
-		list.add(getString(R.string.text13)); // demo.munin-monitoring.org (3 sub-servers)
+		list.add("demo.munin-monitoring.org");
+		list.add("munin.ping.uio.no");
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(dataAdapter);
 		
-		// Remplissage spinner auth type
+		// Auth type
 		List<String> list2 = new ArrayList<String>();
 		list2.add("Basic");
 		list2.add("Digest");
@@ -221,7 +221,6 @@ public class Activity_AddServer extends Activity {
 		sp_authType.setAdapter(dataAdapter2);
 		
 		
-		// Event spinner
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
@@ -232,24 +231,22 @@ public class Activity_AddServer extends Activity {
 				} else
 					launching = false;
 				if (view != null) {
-					if (((TextView)view).getText().toString().equals(getString(R.string.text12)))
-						tb_serverUrl.setText("http://demo.munin-monitoring.org/munin-monitoring.org/demo.munin-monitoring.org/");
-					else if (((TextView)view).getText().toString().equals(getString(R.string.text13)))
+					String selectedItem = ((TextView)view).getText().toString();
+					if (selectedItem.equals("demo.munin-monitoring.org"))
 						tb_serverUrl.setText("http://demo.munin-monitoring.org/");
+					else if (selectedItem.equals("munin.ping.uio.no"))
+						tb_serverUrl.setText("http://munin.ping.uio.no/");
 				}
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> parentView) { }
 		});
-		// Fin event spinner
 		
-		// Bouton clear
 		final Button clear_button = (Button) findViewById(R.id.btn_server_clear);
 		clear_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {	actionClear();	}
 		});
 		
-		// Bouton delete
 		final Button delete_button = (Button) findViewById(R.id.btn_server_delete);
 		if (contextServerUrl.equals(""))
 			delete_button.setVisibility(View.GONE);
@@ -259,7 +256,6 @@ public class Activity_AddServer extends Activity {
 			});
 		}
 		
-		// Bouton sauvegarder
 		final Button save_button = (Button) findViewById(R.id.btn_server_save);
 		save_button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
