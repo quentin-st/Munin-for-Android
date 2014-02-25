@@ -1,6 +1,7 @@
 package com.chteuchteu.munin.obj;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 
@@ -106,12 +107,16 @@ public class MuninPlugin {
 		return this.getInstalledOn().getGraphURL() + this.getName() + "-" + period + ".png";
 	}
 	
+	public String getImgUrl(Period period) {
+		return this.getInstalledOn().getGraphURL() + this.getName() + "-" + period.name() + ".png";
+	}
+	
 	public String getPluginUrl() {
 		return this.getInstalledOn().getServerUrl() + this.getName() + ".html";
 	}
 	
 	public Bitmap getGraph(Period period) {
-		return MuninFoo.grabBitmap(this.installedOn, getImgUrl(period.name()));
+		return MuninFoo.grabBitmap(this.installedOn, getImgUrl(period));
 	}
 	
 	public Bitmap getGraph(String url) {
@@ -137,6 +142,17 @@ public class MuninPlugin {
 	}
 	public void setState(AlertState s) {
 		this.state = s;
+	}
+	
+	public String getGraphInformationHtml() {
+		String html = "";
+		// Download graph page html code
+		Log.v("", "img url : " + this.getImgUrl(Period.DAY));
+		// Get table (id="legend")
+		
+		// Do things
+		
+		return html;
 	}
 	
 	public boolean equals(MuninPlugin p) {

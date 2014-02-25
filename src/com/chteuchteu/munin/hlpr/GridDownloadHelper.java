@@ -63,8 +63,10 @@ public class GridDownloadHelper {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			if (i < g.items.size()) {
-				if (forceUpdate || items.get(i).iv.getDrawable() == null)
-					b = Util.removeBitmapBorder(MuninFoo.grabBitmap(items.get(i).plugin.getInstalledOn(), items.get(i).plugin.getImgUrl(period.toString())));
+				if (forceUpdate || items.get(i).iv.getDrawable() == null) {
+					if (items.get(i) != null && items.get(i).plugin != null)
+						b = Util.removeBitmapBorder(MuninFoo.grabBitmap(items.get(i).plugin.getInstalledOn(), items.get(i).plugin.getImgUrl(period.toString())));
+				}
 			}
 			return null;
 		}

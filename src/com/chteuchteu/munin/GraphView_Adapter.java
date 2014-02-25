@@ -53,12 +53,14 @@ public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
 		((ImageView) convertView.findViewById(R.id.tiv)).setTag(position);
 		
 		boolean downloaded = false;
-		if ((this.position > 0 && Activity_GraphView.bitmaps[this.position-1] == null) // -1 == null
-				|| (Activity_GraphView.bitmaps[this.position] == null) // 0 == null
-				|| (this.position < Activity_GraphView.bitmaps.length-1 && Activity_GraphView.bitmaps[this.position+1] == null)) { // +1 == null
-			applyBitmap task = new applyBitmap((ImageView) convertView.findViewById(R.id.tiv), (ProgressBar) convertView.findViewById(R.id.loading_spin));
-			task.execute();
-			downloaded = true;
+		if (this.position >= 0 && this.position < Activity_GraphView.bitmaps.length) {
+			if ((this.position > 0 && Activity_GraphView.bitmaps[this.position-1] == null) // -1 == null
+					|| (Activity_GraphView.bitmaps[this.position] == null) // 0 == null
+					|| (this.position < Activity_GraphView.bitmaps.length-1 && Activity_GraphView.bitmaps[this.position+1] == null)) { // +1 == null
+				applyBitmap task = new applyBitmap((ImageView) convertView.findViewById(R.id.tiv), (ProgressBar) convertView.findViewById(R.id.loading_spin));
+				task.execute();
+				downloaded = true;
+			}
 		}
 		
 		if (!downloaded) { // Le téléchargement n'a pas été effectué, donc les bitmaps n'ont pas été placées
