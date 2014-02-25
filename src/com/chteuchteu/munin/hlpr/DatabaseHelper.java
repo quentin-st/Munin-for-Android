@@ -21,7 +21,7 @@ import com.chteuchteu.munin.obj.Widget;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 	private static final String DATABASE_NAME = "muninForAndroid2.db";
 	
 	// Table names
@@ -51,6 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_MUNINPLUGINS_FANCYNAME = "fancyName";
 	private static final String KEY_MUNINPLUGINS_SERVER = "server";
 	private static final String KEY_MUNINPLUGINS_CATEGORY = "category";
+	private static final String KEY_MUNINPLUGINS_PLUGINPAGEURL = "pluginPageUrl";
 	
 	private static final String KEY_LABELS_NAME = "name";
 	
@@ -89,7 +90,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_MUNINPLUGINS_NAME + " TEXT,"
 			+ KEY_MUNINPLUGINS_FANCYNAME + " TEXT,"
 			+ KEY_MUNINPLUGINS_SERVER + " INTEGER,"
-			+ KEY_MUNINPLUGINS_CATEGORY + " TEXT)";
+			+ KEY_MUNINPLUGINS_CATEGORY + " TEXT,"
+			+ KEY_MUNINPLUGINS_PLUGINPAGEURL + " TEXT)";
 	
 	private static final String CREATE_TABLE_LABELS = "CREATE TABLE " + TABLE_LABELS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
@@ -136,11 +138,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if (newVersion == 2)
+		if (oldVersion < 2) // From 1 to 2
 			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_NAME + " TEXT");
-		else if (newVersion == 3) {
+		if (oldVersion < 3) { // From 2 to 3
 			db.execSQL(CREATE_TABLE_GRIDS);
 			db.execSQL(CREATE_TABLE_GRIDITEMRELATIONS);
+		}
+		if (oldVersion == 4) { // From 3 to 4
+			db.execSQL("ALTER TABLE " + TABLE_MUNINPLUGINS + " ADD COLUMN " + KEY_MUNINPLUGINS_PLUGINPAGEURL + " TEXT");
 		}
 	}
 	
@@ -187,6 +192,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINPLUGINS_FANCYNAME, p.getFancyName());
 		values.put(KEY_MUNINPLUGINS_SERVER, p.getInstalledOn().getId());
 		values.put(KEY_MUNINPLUGINS_CATEGORY, p.getCategory());
+		values.put(KEY_MUNINPLUGINS_PLUGINPAGEURL, p.getPluginPageUrl());
 		
 		long id = db.insert(TABLE_MUNINPLUGINS, null, values);
 		p.setId(id);
@@ -313,6 +319,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINPLUGINS_FANCYNAME, p.getFancyName());
 		values.put(KEY_MUNINPLUGINS_SERVER, p.getInstalledOn().getId());
 		values.put(KEY_MUNINPLUGINS_CATEGORY, p.getCategory());
+		values.put(KEY_MUNINPLUGINS_PLUGINPAGEURL, p.getPluginPageUrl());
 		
 		int nbRows = db.update(TABLE_MUNINPLUGINS, values, KEY_ID + " = ?", new String[] { String.valueOf(p.getId()) });
 		close(null, db);
@@ -383,6 +390,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 				p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
 				p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_CATEGORY)));
+				p.setPluginPageUrl(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_PLUGINPAGEURL)));
 				p.setInstalledOn(s);
 				p.isPersistant = true;
 				l.add(p);
@@ -406,6 +414,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			p.setName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_NAME)));
 			p.setFancyName(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_FANCYNAME)));
 			p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_CATEGORY)));
+			p.setPluginPageUrl(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_PLUGINPAGEURL)));
 			p.setInstalledOn(getServer(c.getInt(c.getColumnIndex(KEY_MUNINPLUGINS_SERVER))));
 			p.isPersistant = true;
 			close(c, db);

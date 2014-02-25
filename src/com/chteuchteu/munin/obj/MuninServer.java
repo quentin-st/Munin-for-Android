@@ -145,6 +145,7 @@ public class MuninServer {
 			currentPl = new MuninPlugin(null, this);
 			String fancyName;
 			String nomPlugin;
+			String pluginPageUrl;
 			
 			for (Element image : images) {
 				nomPlugin = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
@@ -155,6 +156,10 @@ public class MuninServer {
 				nomPlugin = nomPlugin.replace(",", "");
 				nomPlugin = nomPlugin.replace(";", "");
 				fancyName = image.attr("alt");
+				
+				// Récupération de la page du graph
+				Element link = image.parent();
+				pluginPageUrl = link.attr("abs:href");
 				
 				// Récupération du nom du groupe
 				// Munin 2.X
@@ -185,6 +190,7 @@ public class MuninServer {
 					fancyName = fancyName.replaceAll("\"", "");
 					currentPl.setFancyName(fancyName);
 					currentPl.setCategory(group);
+					currentPl.setPluginPageUrl(pluginPageUrl);
 					
 					mp.add(currentPl);
 					

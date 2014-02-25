@@ -12,6 +12,7 @@ public class MuninPlugin {
 	private MuninServer installedOn;
 	private String category;
 	private AlertState state;
+	private String pluginPageUrl;
 	public boolean isPersistant;
 	
 	public MuninPlugin () {
@@ -19,6 +20,7 @@ public class MuninPlugin {
 		this.state = AlertState.UNDEFINED;
 		this.isPersistant = false;
 		this.category = "";
+		this.pluginPageUrl = "";
 	}
 	public MuninPlugin (String name, MuninServer server) {
 		this.name = name;
@@ -26,6 +28,7 @@ public class MuninPlugin {
 		this.state = AlertState.UNDEFINED;
 		this.category = "";
 		this.isPersistant = false;
+		this.pluginPageUrl = "";
 	}
 	public MuninPlugin (String name, String fancyName, MuninServer installedOn, String category) {
 		this.name = name;
@@ -33,6 +36,7 @@ public class MuninPlugin {
 		this.installedOn = installedOn;
 		this.category = category;
 		this.isPersistant = false;
+		this.pluginPageUrl = "";
 	}
 	
 	public enum Period {
@@ -123,6 +127,14 @@ public class MuninPlugin {
 		return MuninFoo.grabBitmap(this.installedOn, url);
 	}
 	
+	public void setPluginPageUrl(String url) {
+		this.pluginPageUrl = url;
+	}
+	
+	public String getPluginPageUrl() {
+		return this.pluginPageUrl;
+	}
+	
 	public AlertState getState() {
 		return this.state;
 	}
@@ -144,6 +156,7 @@ public class MuninPlugin {
 		this.state = s;
 	}
 	
+	// TODO
 	public String getGraphInformationHtml() {
 		String html = "";
 		// Download graph page html code
