@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,18 +43,18 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.chteuchteu.munin.hlpr.DigestUtils;
 import com.chteuchteu.munin.hlpr.SQLite;
+import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.HTTPResponse;
 import com.chteuchteu.munin.obj.Label;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
@@ -66,6 +65,8 @@ public class MuninFoo {
 	
 	private List<MuninServer> servers;
 	public List<Label> labels;
+	public List<MuninMaster> masters;
+	
 	public SQLite sqlite;
 	public MuninServer currentServer;
 	public RequestQueue requestQueue;
@@ -78,11 +79,11 @@ public class MuninFoo {
 	// android:versionCode: 	|  1		 2		 3		 4		 5		 6		 7	 	 8	  	 10		11		12		13		14		15		16		17	|
 	// MfA version:				| 1.1		1.2		1.3		1.4		1.5		1.6		1.7  	1.8   	1.9		2.0		2.1 	2.2		2.3		2.4		2.5		2.6	|
 	//							--------------------------------------------------------------------------------------------------------------------------------
-	//							| 2.6.1		2.6.2	2.6.3	2.6.4	2.6.5	2.7		2.7.1
-	//							|  18		 19		20		21		22		23		24
-	//							|  2.7		2.8		2.9		3.0		3.1		3.2		3.3
+	//							| 2.6.1		2.6.2	2.6.3	2.6.4	2.6.5	2.7		2.7.1	2.7.5
+	//							|  18		 19		20		21		22		23		24		25
+	//							|  2.7		2.8		2.9		3.0		3.1		3.2		3.3		3.4
 	
-	public double version = 3.3;
+	public double version = 3.4;
 	// =============== //
 	public boolean debug = true;
 	public boolean premium;
@@ -92,6 +93,7 @@ public class MuninFoo {
 		drawer = false;
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<Label>();
+		masters = new ArrayList<MuninMaster>();
 		sqlite = new SQLite(null, this);
 		instance = null;
 		loadInstance();
@@ -102,6 +104,7 @@ public class MuninFoo {
 		drawer = false;
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<Label>();
+		masters = new ArrayList<MuninMaster>();
 		sqlite = new SQLite(c, this);
 		instance = null;
 		requestQueue = Volley.newRequestQueue(c);
@@ -109,8 +112,11 @@ public class MuninFoo {
 	}
 	
 	public void loadInstance() {
-		this.servers = sqlite.dbHlpr.getServers();
+		this.masters = sqlite.dbHlpr.getMasters(this.masters);
+		this.servers = sqlite.dbHlpr.getServers(this.masters);
 		this.labels = sqlite.dbHlpr.getLabels();
+		
+		attachOrphanServers();
 		
 		if (servers.size() > 0)
 			currentServer = getServerFromFlatPosition(0);
@@ -118,14 +124,14 @@ public class MuninFoo {
 			currentServer = null;
 		
 		if (debug)
-			sqlite.logServersTable();
+			sqlite.logMasters();
 	}
 	
 	public void loadInstance(Context c) {
 		loadInstance();
 		if (c != null) {
 			this.premium = isPremium(c);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && !getPref("drawer", c).equals("false"))
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && ! Util.getPref(c, "drawer").equals("false"))
 				this.drawer = true;
 			else
 				this.drawer = false;
@@ -151,9 +157,29 @@ public class MuninFoo {
 		return instance;
 	}
 	
+	/**
+	 * Set a common parent to the servers which does not
+	 * have one after getting them
+	 */
+	private void attachOrphanServers() {
+		int n = 0;
+		MuninMaster defMaster = new MuninMaster("Default");
+		defMaster.defaultMaster = true;
+		
+		for (MuninServer s : this.servers) {
+			if (s.getParent() == null) {
+				s.setParent(defMaster);
+				n++;
+			}
+		}
+		
+		if (n > 0)
+			this.masters.add(defMaster);
+	}
+	
 	public void loadLanguage(Context c) {
-		if (!getPref("lang", c).equals("")) {
-			String lang = getPref("lang", c);
+		if (!Util.getPref(c, "lang").equals("")) {
+			String lang = Util.getPref(c, "lang");
 			// lang == "en" || "fr" || "de" || "ru"
 			if (!(lang.equals("en") || lang.equals("fr") || lang.equals("de") || lang.equals("ru"))) {
 				lang = "en";
@@ -188,6 +214,10 @@ public class MuninFoo {
 	}
 	public void deleteServer(MuninServer s) {
 		deleteServer(s.getServerUrl());
+	}
+	public void deleteMuninMaster(MuninMaster m) {
+		if (this.masters.remove(m))
+			sqlite.dbHlpr.deleteMaster(this, m, false);
 	}
 	public boolean addLabel(Label l) {
 		boolean contains = false;
@@ -354,17 +384,22 @@ public class MuninFoo {
 		return null;
 	}
 	
+	/**
+	 * Old way to get the servers from a master one
+	 * @deprecated use {@link fetchServersListRecursive(MuninServer s)} instead.
+	 */
+	@Deprecated
 	public int fetchServersList(MuninServer server) {
 		int nbServers = 0;
-		List<MuninServer> mp = new ArrayList<MuninServer>();
-		//MuninServer[] mp = new MuninServer[300];
+		//List<MuninServer> mp = new ArrayList<MuninServer>();
+		
 		// Graph html content
 		String html = "";
 		try {
 			html = grabUrl(server).html;
 		} catch (Exception e) { }
 		
-		if (html != null && html != "" && html != "error") {
+		if (!html.equals("") && !html.equals("error")) {
 			MuninServer currentServ;
 			Document doc = Jsoup.parse(html, server.getServerUrl());
 			
@@ -381,12 +416,60 @@ public class MuninFoo {
 				}
 				currentServ.setSSL(server.getSSL());
 				
-				mp.add(currentServ);
-				//mp[nbServers] = currentServ;
+				//mp.add(currentServ);
 				addServer(currentServ);
 				nbServers++;
 			}
 		}
+		return nbServers;
+	}
+	
+	public int fetchServersListRecursive(MuninServer s) {
+		int nbServers = 0;
+		MuninMaster master = new MuninMaster(s.getName());
+		master.setUrl(s.getServerUrl());
+		master.setParent(null);
+		
+		// Grab HTML content
+		String html = "";
+		try {
+			html = grabUrl(s).html;
+		} catch (Exception e) { }
+		
+		if (!html.equals("") && !html.equals("error")) {
+			Document doc = Jsoup.parse(html, s.getServerUrl());
+			
+			Elements domains = doc.select("span.domain");
+			
+			// I like you, Steve Schnepp, but fuck you for that fucked up HTML.
+			for (Element domain : domains) {
+				MuninMaster m = new MuninMaster();
+				// Get the domain name
+				Element a = domain.child(0);
+				m.setName(a.text());
+				m.setUrl(a.attr("abs:href"));
+				m.setParent(master);
+				this.masters.add(m);
+				
+				// Get every host for that domain
+				Elements hosts = domain.parent().select("span.host");
+				for (Element host : hosts) {
+					MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
+					if (s.isAuthNeeded()) {
+						serv.setAuthIds(s.getAuthLogin(), s.getAuthPassword(), s.getAuthType());
+						serv.setAuthType(s.getAuthType());
+						serv.setAuthString(s.getAuthString());
+					}
+					serv.setSSL(s.getSSL());
+					serv.setParent(m);
+					this.addServer(serv);
+					nbServers++;
+				}
+			}
+			
+			this.masters.add(master);
+		}
+		
 		return nbServers;
 	}
 	
@@ -654,44 +737,9 @@ public class MuninFoo {
 			if (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")
 					== PackageManager.SIGNATURE_MATCH) {
 				return true;
-			} else {
-				if (debug)
-					log("FeaturesPack", "SignaturesMismatch");
 			}
 			return false;
 		}
 		return false;
-	}
-	
-	
-	// UTILITIES
-	public void log(String nature, String value) {
-		Log.v("log", nature + " - " + value);
-		String url = "http://chteuchteu.com/muninForAndroid/send.php?";
-		url += "identificator=0&";
-		url += "version=" 		+ String.valueOf(this.version) 	+ "&";
-		url += "nature=" 		+ nature 						+ "&";
-		url += "value=" 		+ value;
-		pingUrl(url);
-	}
-	public void pingUrl(String url) {
-		pingUrl check = new pingUrl();
-		check.execute(url);
-	}
-	public class pingUrl extends AsyncTask<String, Void, Void> {
-		@Override
-		protected Void doInBackground(String... url) {
-			try {       
-				URL adresse = new URL(url[0]);
-				BufferedReader in = new BufferedReader(new InputStreamReader(adresse.openStream()));
-				in.close();     
-			} catch (Exception e) { }
-			return null;
-		}
-		@Override
-		protected void onPostExecute(Void result) { }
-	}
-	public String getPref(String key, Context c) {
-		return c.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
 	}
 }

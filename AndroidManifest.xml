@@ -2,8 +2,8 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.chteuchteu.munin"
-	android:versionCode="24"
-	android:versionName="2.7.1">
+	android:versionCode="25"
+	android:versionName="2.7.5">
 
 	<!-- SDK Version -->
 	<uses-sdk

@@ -10,6 +10,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
@@ -24,7 +25,7 @@ public class SQLite {
 	}
 	
 	public MuninServer getBDDInstance(MuninServer s) {
-		for (MuninServer serv : dbHlpr.getServers()) {
+		for (MuninServer serv : dbHlpr.getServers(muninFoo.masters)) {
 			if (s.equalsApprox(serv))
 				return serv;
 		}
@@ -86,7 +87,7 @@ public class SQLite {
 		// Suppression des serveurs à supprimer
 		List<MuninServer> toBeDeleted = new ArrayList<MuninServer>();
 		List<MuninServer> localObj = muninFoo.getServers();
-		for (MuninServer dbS : dbHlpr.getServers()) {
+		for (MuninServer dbS : dbHlpr.getServers(muninFoo.masters)) {
 			int nb = 0;
 			for (MuninServer s : localObj) {
 				if (dbS.equalsApprox(s)) {
@@ -96,14 +97,18 @@ public class SQLite {
 			if (nb == 0)
 				toBeDeleted.add(dbS);
 		}
-		for (MuninServer s : toBeDeleted)
+		for (MuninServer s : toBeDeleted) {
+			s.deleteSelf(this.muninFoo);
 			dbHlpr.deleteServer(s);
+		}
 		
-		List<MuninServer> bdd = dbHlpr.getServers();
+		List<MuninServer> bdd = dbHlpr.getServers(muninFoo.masters);
 		for (MuninServer s : muninFoo.getServers()) {
+			dbHlpr.saveMuninMaster(s.master);
+			
 			MuninServer bddInstance = null;
 			
-			// Recherche si serveur présent en bdd
+			// Getting BDD Instance
 			for (MuninServer se : bdd) {
 				if (s.equalsApprox(se)) {
 					bddInstance = se; break;
@@ -164,6 +169,17 @@ public class SQLite {
 				}
 			}
 		}
+		
+		List<MuninMaster> toBeDeleted2 = new ArrayList<MuninMaster>();
+		// Delete masters if necessary
+		for (MuninMaster m : this.muninFoo.masters) {
+			if (m.getChildren().size() == 0) { // If removed and no more children in children list, remove master
+				toBeDeleted2.add(m);
+				this.dbHlpr.deleteMaster(this.muninFoo, m, false);
+			}
+		}
+		for (MuninMaster m : toBeDeleted2)
+			this.muninFoo.masters.remove(m);
 	}
 	
 	public void saveLabels() {
@@ -189,8 +205,8 @@ public class SQLite {
 	
 	public void logServers() {
 		Log.v("SQLite_old", "==========================================");
-		if (dbHlpr.getServers().size() > 0) {
-			for (MuninServer s : dbHlpr.getServers()) {
+		if (dbHlpr.getServers(muninFoo.masters).size() > 0) {
+			for (MuninServer s : dbHlpr.getServers(muninFoo.masters)) {
 				Log.v("SQLite_old", s.getName() + "\t  " + s.getServerUrl());
 			}
 		} else
@@ -207,7 +223,7 @@ public class SQLite {
 			Log.v("SQLite_old", "No plugins in the database.");
 		Log.v("SQLite_old", "==========================================");
 	}*/
-	public void logLine(int nb) {
+	private void logLine(int nb) {
 		if (nb == 0)
 			logLine(88);
 		else {
@@ -217,16 +233,28 @@ public class SQLite {
 			log(s);
 		}
 	}
-	public void log(String txt) {
+	private void log(String txt) {
 		Log.v("", txt);
 	}
+	
+	public void logMasters() {
+		log("");
+		logLine(60);
+		for (MuninMaster m : this.muninFoo.masters) {
+			log("[" + m.getName() + "]");
+			for (MuninServer s : m.getChildren())
+				log("  - " + s.getName());
+		}
+		logLine(60);
+	}
+	
 	public void logServersTable() {
 		log("");
 		logLine(60);
-		log("Total servers: " + dbHlpr.getServers().size() + "\t Total plugins: " + dbHlpr.getServers().size());
+		log("Total servers: " + dbHlpr.getServers(muninFoo.masters).size() + "\t Total plugins: " + dbHlpr.getServers(muninFoo.masters).size());
 		log("| name                              | nbPlugins | position |");
 		logLine(60);
-		for (MuninServer s : dbHlpr.getServers()) {
+		for (MuninServer s : dbHlpr.getServers(muninFoo.masters)) {
 			String[] fields = {s.getName(), s.getPlugins().size() + "", s.getPosition() + "" };
 			int[] space = { 33, 9, 8 };
 			

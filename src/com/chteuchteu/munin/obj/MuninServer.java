@@ -53,16 +53,11 @@ public class MuninServer {
 	private int position;
 	private AuthType authType;
 	private String authString;
-	private String parent;
 	public boolean isPersistant;
+	public MuninMaster master;
 	
 	private List<MuninPlugin> 	erroredPlugins;
 	private List<MuninPlugin> 	warnedPlugins;
-	
-	/*public static int AUTH_UNKNOWN = -2;
-	public static int AUTH_NONE = -1;
-	public static int AUTH_BASIC = 1;
-	public static int AUTH_DIGEST = 2;*/
 	
 	public MuninServer() {
 		this.name = "";
@@ -127,6 +122,17 @@ public class MuninServer {
 	
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public void deleteSelf(MuninFoo f) {
+		if (this.master != null) {
+			if (this.master.deleteChild(this)) { // Try to remove the server from the children list
+				if (this.master.getChildren().size() == 0) { // If removed and no more children in children list, remove master
+					f.masters.remove(this.master);
+					f.sqlite.dbHlpr.deleteMaster(f, this.master, false);
+				}
+			}
+		}
 	}
 	
 	public void fetchPluginsList() {
@@ -271,7 +277,7 @@ public class MuninServer {
 		this.position = source.position;
 		this.erroredPlugins = source.erroredPlugins;
 		this.warnedPlugins = source.warnedPlugins;
-		this.parent = source.parent;
+		this.master = source.master;
 	}
 	
 	public String detectPageType() {
@@ -507,12 +513,14 @@ public class MuninServer {
 		return this.position;
 	}
 	
-	public void setParent(String p) {
-		this.parent = p;
+	public void setParent(MuninMaster p) {
+		this.master = p;
+		if (p != null)
+			p.addChild(this);
 	}
 	
-	public String getParent() {
-		return this.parent;
+	public MuninMaster getParent() {
+		return this.master;
 	}
 	
 	public void generatePosition() {

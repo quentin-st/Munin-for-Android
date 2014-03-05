@@ -192,10 +192,10 @@ public class Activity_AddServer extends Activity {
 		tb_serverUrl.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(Editable arg0) {
-				if (!tb_serverUrl.getText().toString().contains("demo.munin-monitoring.org")) {
-					if (spinner.getSelectedItemPosition() == 1 || spinner.getSelectedItemPosition() == 2)
+				if (spinner.getSelectedItemPosition() != 0 &&
+						!tb_serverUrl.getText().toString().contains("demo.munin-monitoring.org")
+						&& !tb_serverUrl.getText().toString().contains("munin.ping.uio.no"))
 						spinner.setSelection(0);
-				}
 			}
 			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
@@ -855,7 +855,7 @@ public class Activity_AddServer extends Activity {
 				
 				boolean fetchSuccess = false;
 				try {
-					nbNewServers = muninFoo.fetchServersList(settingsServer);
+					nbNewServers = muninFoo.fetchServersListRecursive(settingsServer);
 					fetchSuccess = true;
 				} catch (Exception ex) {  }
 				if (nbNewServers > 0)
@@ -1155,6 +1155,8 @@ public class Activity_AddServer extends Activity {
 					});
 				}
 			}
+			if (muninFoo.debug)
+				muninFoo.sqlite.logMasters();
 			if (!Util.isOnline(context))
 				Toast.makeText(Activity_AddServer.this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 		}
