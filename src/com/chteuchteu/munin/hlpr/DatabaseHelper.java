@@ -20,6 +20,7 @@ import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.chteuchteu.munin.obj.Widget;
+import com.crashlytics.android.Crashlytics;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -395,24 +396,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public List<MuninMaster> getMasters(List<MuninMaster> currentMasters) {
 		List<MuninMaster> l = new ArrayList<MuninMaster>();
-		String selectQuery = "SELECT * FROM " + TABLE_MUNINMASTERS;
-		
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.rawQuery(selectQuery, null);
-		
-		if (c != null && c.moveToFirst()) {
-			do {
-				MuninMaster m = new MuninMaster();
-				m.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-				m.setName(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_NAME)));
-				Log.v("", "getting master = " + m.getName());
-				m.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_PARENT)), currentMasters));
-				m.setUrl(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_URL)));
-				l.add(m);
-			} while (c.moveToNext());
+		try {
+			String selectQuery = "SELECT * FROM " + TABLE_MUNINMASTERS;
+			
+			SQLiteDatabase db = this.getReadableDatabase();
+			Cursor c = db.rawQuery(selectQuery, null);
+			
+			if (c != null && c.moveToFirst()) {
+				do {
+					MuninMaster m = new MuninMaster();
+					m.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+					m.setName(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_NAME)));
+					Log.v("", "getting master = " + m.getName());
+					m.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_PARENT)), currentMasters));
+					m.setUrl(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_URL)));
+					l.add(m);
+				} while (c.moveToNext());
+			}
+			
+			close(c, db);
+		} catch (Exception ex) {
+			Crashlytics.logException(ex);
 		}
-		
-		close(c, db);
 		return l;
 	}
 	
@@ -447,35 +452,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public List<MuninServer> getServers(List<MuninMaster> currentMasters) {
 		List<MuninServer> l = new ArrayList<MuninServer>();
-		String selectQuery = "SELECT * FROM " + TABLE_MUNINSERVERS;
-		
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.rawQuery(selectQuery, null);
-		
-		if (c != null && c.moveToFirst()) {
-			do {
-				MuninServer s = new MuninServer();
-				s.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-				s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
-				s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
-				s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
-						c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
-						AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE))));
-				s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
-				if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
-					s.setSSL(true);
-				else
-					s.setSSL(false);
-				s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
-				s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
-				s.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_MASTER)), currentMasters));
-				s.setPluginsList(getPlugins(s));
-				s.isPersistant = true;
-				l.add(s);
-			} while (c.moveToNext());
+			try {
+			String selectQuery = "SELECT * FROM " + TABLE_MUNINSERVERS;
+			
+			SQLiteDatabase db = this.getReadableDatabase();
+			Cursor c = db.rawQuery(selectQuery, null);
+			
+			if (c != null && c.moveToFirst()) {
+				do {
+					MuninServer s = new MuninServer();
+					s.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+					s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
+					s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
+					s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
+							c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
+							AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE))));
+					s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
+					if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
+						s.setSSL(true);
+					else
+						s.setSSL(false);
+					s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
+					s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
+					s.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_MASTER)), currentMasters));
+					s.setPluginsList(getPlugins(s));
+					s.isPersistant = true;
+					l.add(s);
+				} while (c.moveToNext());
+			}
+			
+			close(c, db);
+		} catch (Exception ex) {
+			Crashlytics.logException(ex);
 		}
-		
-		close(c, db);
 		return l;
 	}
 	
@@ -613,21 +622,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public List<Label> getLabels() {
 		List<Label> list = new ArrayList<Label>();
-		String selectQuery = "SELECT * FROM " + TABLE_LABELS;
-		
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.rawQuery(selectQuery, null);
-		
-		if (c != null && c.moveToFirst()) {
-			do {
-				Label l = new Label();
-				l.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-				l.setName(c.getString(c.getColumnIndex(KEY_LABELS_NAME)));
-				l.setPlugins(getPlugins(l));
-				list.add(l);
-			} while (c.moveToNext());
+			try {
+			String selectQuery = "SELECT * FROM " + TABLE_LABELS;
+			
+			SQLiteDatabase db = this.getReadableDatabase();
+			Cursor c = db.rawQuery(selectQuery, null);
+			
+			if (c != null && c.moveToFirst()) {
+				do {
+					Label l = new Label();
+					l.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+					l.setName(c.getString(c.getColumnIndex(KEY_LABELS_NAME)));
+					l.setPlugins(getPlugins(l));
+					list.add(l);
+				} while (c.moveToNext());
+			}
+			close(c, db);
+		} catch (Exception ex) {
+			Crashlytics.logException(ex);
 		}
-		close(c, db);
 		return list;
 	}
 	

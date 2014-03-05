@@ -118,10 +118,9 @@ public class MuninFoo {
 		
 		attachOrphanServers();
 		
+		currentServer = null;
 		if (servers.size() > 0)
 			currentServer = getServerFromFlatPosition(0);
-		else
-			currentServer = null;
 		
 		if (debug)
 			sqlite.logMasters();
