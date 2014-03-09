@@ -299,7 +299,7 @@ public class MuninFoo {
 			return getOrderedServers().get(position);
 		return null;
 	}
-	@Deprecated
+	/*@Deprecated
 	public List<MuninServer> getOrderedServers() {
 		List<MuninServer> l = new ArrayList<MuninServer>();
 		int pos = 0;
@@ -319,6 +319,26 @@ public class MuninFoo {
 			pos++;
 		}
 		
+		return l;
+	}*/
+	public MuninServer getServersInstanceFromMuninMasterInstance(MuninServer s) {
+		for (MuninServer server : this.servers) {
+			if (server.getId() == s.getId())
+				return server;
+		}
+		// Couldn't get server from its id, trying with equals method
+		for (MuninServer server : this.servers) {
+			if (server.equalsApprox(s))
+				return server;
+		}
+		return null;
+	}
+	public List<MuninServer> getOrderedServers() {
+		List<MuninServer> l = new ArrayList<MuninServer>();
+		for (MuninMaster m : this.masters) {
+			for (MuninServer s : m.getOrderedChildren())
+				l.add(getServersInstanceFromMuninMasterInstance(s));
+		}
 		return l;
 	}
 	public List<MuninServer> getServersFromPlugin(MuninPlugin pl) {

@@ -317,7 +317,7 @@ public class DrawerHelper {
 		LayoutInflater vi = (LayoutInflater) a.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		for (MuninMaster master : m.masters) {
-			for (final MuninServer s : master.getOrderedServers()) {
+			for (final MuninServer s : master.getOrderedChildren()) {
 				View v = vi.inflate(R.layout.drawer_subbutton, null);
 				LinearLayout l = (LinearLayout)v.findViewById(R.id.button_container);
 				TextView b = (TextView)v.findViewById(R.id.button);

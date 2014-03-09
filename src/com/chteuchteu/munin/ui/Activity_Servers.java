@@ -98,7 +98,7 @@ public class Activity_Servers extends Activity {
 		
 		for (MuninMaster m : muninFoo.masters) {
 			List<String> childList = new ArrayList<String>();
-			for (MuninServer s : m.getOrderedServers())
+			for (MuninServer s : m.getOrderedChildren())
 				childList.add(s.getName());
 			serversCollection.put(m.getName(), childList);
 		}

@@ -78,7 +78,6 @@ public class SQLite {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void saveServers() {
 		// Vérification des positions
 		for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
@@ -177,8 +176,10 @@ public class SQLite {
 			if (m.manualRebuildChildren(this.muninFoo))
 				toBeDeleted3.add(m);
 		}
-		for (MuninMaster m : toBeDeleted3)
+		for (MuninMaster m : toBeDeleted3) {
 			this.muninFoo.masters.remove(m);
+			this.dbHlpr.deleteMaster(this.muninFoo, m, false);
+		}
 		for (MuninMaster m : this.muninFoo.masters) {
 			if (m.getChildren().size() == 0) { // If removed and no more children in children list, remove master
 				toBeDeleted2.add(m);

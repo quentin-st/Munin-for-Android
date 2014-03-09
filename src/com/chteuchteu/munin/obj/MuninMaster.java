@@ -99,8 +99,8 @@ public class MuninMaster {
 	public MuninServer getServerFromFlatPosition(int position) {
 		// si pos -> 0 1 4 8 9 11
 		// gSFFP(2) -> 4 (!= null)
-		if (position >= 0 && position < getOrderedServers().size())
-			return getOrderedServers().get(position);
+		if (position >= 0 && position < getOrderedChildren().size())
+			return getOrderedChildren().get(position);
 		return null;
 	}
 	
@@ -120,7 +120,7 @@ public class MuninMaster {
 		return m;
 	}
 	
-	public List<MuninServer> getOrderedServers() {
+	public List<MuninServer> getOrderedChildren() {
 		List<MuninServer> l = new ArrayList<MuninServer>();
 		int pos = 0;
 		int remainingServers = this.children.size();

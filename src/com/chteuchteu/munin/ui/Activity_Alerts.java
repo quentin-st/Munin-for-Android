@@ -116,9 +116,9 @@ public class Activity_Alerts extends Activity {
 		servers = new ArrayList<MuninServer>();
 		// Populating servers list
 		for (MuninMaster master : muninFoo.masters) {
-			for (int i=0; i<master.getOrderedServers().size(); i++) {
-				if (master.getOrderedServers().get(i) != null)
-					servers.add(master.getOrderedServers().get(i));
+			for (int i=0; i<master.getOrderedChildren().size(); i++) {
+				if (master.getOrderedChildren().get(i) != null)
+					servers.add(master.getOrderedChildren().get(i));
 			}
 		}
 		
@@ -148,7 +148,7 @@ public class Activity_Alerts extends Activity {
 				public void onClick (View v) {
 					muninFoo.currentServer = server;
 					startActivity(new Intent(Activity_Alerts.this, Activity_AlertsPluginSelection.class));
-					overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			
@@ -409,11 +409,10 @@ public class Activity_Alerts extends Activity {
 	
 	public void enableArrow(boolean b, int p) {
 		if (p >= 0 && p < part_serverName.length) {
-			if (b) {
+			if (b)
 				part_serverName[p].setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow, 0);
-			} else {
+			else
 				part_serverName[p].setCompoundDrawables(null, null, null, null);
-			}
 		}
 	}
 	

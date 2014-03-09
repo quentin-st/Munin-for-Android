@@ -249,12 +249,10 @@ public class MuninServer {
 	public void fetchPluginsStates() {
 		erroredPlugins = new ArrayList<MuninPlugin>();
 		warnedPlugins = new ArrayList<MuninPlugin>();
-		String html = "";
-		try {
-			html = grabUrl(this.getServerUrl()).html;
-		} catch (Exception e) { }
 		
-		if (html != "") {
+		String html = grabUrl(this.getServerUrl()).html;
+		
+		if (!html.equals("")) {
 			Document doc = Jsoup.parse(html, this.getServerUrl());
 			Elements images = doc.select("img[src$=-day.png]");
 			String nomPlugin = "";
@@ -544,7 +542,6 @@ public class MuninServer {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public int getFlatPosition() {
 		// si pos -> 0 1 4 8 9 11
 		// gFP(2) -> 4 (!= null)

@@ -70,6 +70,7 @@ public class Activity_PluginSelection extends ListActivity {
 	private int MODE_GROUPED = 1;
 	private int MODE_FLAT = 2;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
