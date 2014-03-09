@@ -42,7 +42,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	private static final String KEY_MUNINMASTERS_NAME = "name";
 	private static final String KEY_MUNINMASTERS_URL = "url";
-	private static final String KEY_MUNINMASTERS_PARENT = "parent";
 	
 	private static final String KEY_MUNINSERVERS_SERVERURL = "serverUrl";
 	private static final String KEY_MUNINSERVERS_NAME = "name";
@@ -84,8 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String CREATE_TABLE_MUNINMASTERS = "CREATE TABLE " + TABLE_MUNINMASTERS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
 			+ KEY_MUNINMASTERS_NAME + " TEXT,"
-			+ KEY_MUNINMASTERS_URL + " TEXT,"
-			+ KEY_MUNINMASTERS_PARENT + " INTEGER)";
+			+ KEY_MUNINMASTERS_URL + " TEXT)";
 	
 	private static final String CREATE_TABLE_MUNINSERVERS = "CREATE TABLE " + TABLE_MUNINSERVERS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
@@ -178,7 +176,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_MUNINMASTERS_NAME, m.getName());
 		values.put(KEY_MUNINMASTERS_URL, m.getUrl());
-		values.put(KEY_MUNINMASTERS_PARENT, m.getParent().getId());
 		
 		long id = db.insert(TABLE_MUNINMASTERS, null, values);
 		m.setId(id);
@@ -230,6 +227,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		long id = db.insert(TABLE_MUNINPLUGINS, null, values);
 		p.setId(id);
+		p.isPersistant = true;
 		close(null, db);
 		return id;
 	}
@@ -337,7 +335,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_MUNINMASTERS_NAME, m.getName());
 		values.put(KEY_MUNINMASTERS_URL, m.getUrl());
-		values.put(KEY_MUNINMASTERS_PARENT, m.getParent().getId());
 		
 		int nbRows = db.update(TABLE_MUNINMASTERS, values, KEY_ID + " = ?", new String[] { String.valueOf(m.getId()) });
 		close(null, db);
@@ -407,8 +404,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					MuninMaster m = new MuninMaster();
 					m.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 					m.setName(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_NAME)));
-					Log.v("", "getting master = " + m.getName());
-					m.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_PARENT)), currentMasters));
 					m.setUrl(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_URL)));
 					l.add(m);
 				} while (c.moveToNext());
@@ -441,7 +436,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			MuninMaster m = new MuninMaster();
 			m.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 			m.setName(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_NAME)));
-			m.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_PARENT)), currentMasters));
 			m.setUrl(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_URL)));
 			close(c, db);
 			return m;
@@ -656,7 +650,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			l.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 			l.setName(c.getString(c.getColumnIndex(KEY_LABELS_NAME)));
 			l.setPlugins(getPlugins(l));
-			l.isPersistant = true;
 			close(c, db);
 			return l;
 		}
@@ -788,8 +781,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		if (recursive) {
 			for (MuninServer s : m.getServersChildren(f))
 				deleteServer(s);
-			for (MuninMaster mas : m.getMastersChildren(f))
-				deleteMaster(f, mas, true);
 		}
 	}
 	

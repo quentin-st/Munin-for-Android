@@ -1,5 +1,9 @@
 package com.chteuchteu.munin.ui;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -7,7 +11,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,17 +35,16 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.Service_Notifications;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Activity_Notifications extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
+	private Context			c;
 	
 	private Menu 			menu;
 	private String			activityName;
@@ -54,6 +56,7 @@ public class Activity_Notifications extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		c = this;
 		setContentView(R.layout.notifications);
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -90,16 +93,16 @@ public class Activity_Notifications extends Activity {
 		
 		
 		// A partir des paramètres
-		if (getPref("notifications").equals("true"))			cb_notifications.setChecked(true);
-		if (getPref("notifs_wifiOnly").equals("true"))			cb_wifiOnly.setChecked(true);
+		if (Util.getPref(c, "notifications").equals("true"))			cb_notifications.setChecked(true);
+		if (Util.getPref(c, "notifs_wifiOnly").equals("true"))			cb_wifiOnly.setChecked(true);
 		
-		if (getPref("notifs_refreshRate").equals("10"))			sp_refreshRate.setSelection(0);
-		else if (getPref("notifs_refreshRate").equals("30"))	sp_refreshRate.setSelection(1);
-		else if (getPref("notifs_refreshRate").equals("60"))	sp_refreshRate.setSelection(2);
-		else if (getPref("notifs_refreshRate").equals("120"))	sp_refreshRate.setSelection(3);
-		else if (getPref("notifs_refreshRate").equals("300"))	sp_refreshRate.setSelection(4);
-		else if (getPref("notifs_refreshRate").equals("600"))	sp_refreshRate.setSelection(5);
-		else if (getPref("notifs_refreshRate").equals("1440"))	sp_refreshRate.setSelection(6);
+		if (Util.getPref(c, "notifs_refreshRate").equals("10"))			sp_refreshRate.setSelection(0);
+		else if (Util.getPref(c, "notifs_refreshRate").equals("30"))	sp_refreshRate.setSelection(1);
+		else if (Util.getPref(c, "notifs_refreshRate").equals("60"))	sp_refreshRate.setSelection(2);
+		else if (Util.getPref(c, "notifs_refreshRate").equals("120"))	sp_refreshRate.setSelection(3);
+		else if (Util.getPref(c, "notifs_refreshRate").equals("300"))	sp_refreshRate.setSelection(4);
+		else if (Util.getPref(c, "notifs_refreshRate").equals("600"))	sp_refreshRate.setSelection(5);
+		else if (Util.getPref(c, "notifs_refreshRate").equals("1440"))	sp_refreshRate.setSelection(6);
 		else													sp_refreshRate.setSelection(2);
 		
 		
@@ -107,19 +110,19 @@ public class Activity_Notifications extends Activity {
 			@Override
 			public void onCheckedChanged(CompoundButton btn, boolean isChecked) {
 				if (isChecked) {
-					setPref("notifications", "true");
+					Util.setPref(c, "notifications", "true");
 					enableNotifications();
 				} else {
-					setPref("notifications", "false");
+					Util.setPref(c, "notifications", "false");
 					disableNotifications();
 				}
 				
-				if (cb_wifiOnly.isChecked())	setPref("notifs_wifiOnly", "true");
-				else							setPref("notifs_wifiOnly", "false");
+				if (cb_wifiOnly.isChecked())	Util.setPref(c, "notifs_wifiOnly", "true");
+				else							Util.setPref(c, "notifs_wifiOnly", "false");
 				
 				String[] values = {"10", "30", "60", "120", "300", "600", "1440"};
 				if (sp_refreshRate.getSelectedItemPosition() >= 0 && sp_refreshRate.getSelectedItemPosition() < values.length)
-					setPref("notifs_refreshRate", values[sp_refreshRate.getSelectedItemPosition()]);
+					Util.setPref(c, "notifs_refreshRate", values[sp_refreshRate.getSelectedItemPosition()]);
 				computeEstimatedConsumption();
 			}
 		});
@@ -127,9 +130,9 @@ public class Activity_Notifications extends Activity {
 			@Override
 			public void onCheckedChanged(CompoundButton btn, boolean isChecked) {
 				if (isChecked)
-					setPref("notifs_wifiOnly", "true");
+					Util.setPref(c, "notifs_wifiOnly", "true");
 				else
-					setPref("notifs_wifiOnly", "false");
+					Util.setPref(c, "notifs_wifiOnly", "false");
 			}
 		});
 		sp_refreshRate.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -137,7 +140,7 @@ public class Activity_Notifications extends Activity {
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int pos, long id) {
 				String[] values = {"10", "30", "60", "120", "300", "600", "1440"};
 				if (pos >= 0 && pos < values.length)
-					setPref("notifs_refreshRate", values[pos]);
+					Util.setPref(c, "notifs_refreshRate", values[pos]);
 				computeEstimatedConsumption();
 			}
 			
@@ -148,8 +151,8 @@ public class Activity_Notifications extends Activity {
 		checkboxes = new CheckBox[muninFoo.getOrderedServers().size()];
 		
 		String watchedServers = "";
-		if (!getPref("notifs_serversList").equals(""))
-			watchedServers = getPref("notifs_serversList");
+		if (!Util.getPref(c, "notifs_serversList").equals(""))
+			watchedServers = Util.getPref(c, "notifs_serversList");
 		
 		for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
 			LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -201,10 +204,10 @@ public class Activity_Notifications extends Activity {
 
 	public void enableNotifications() {
 		if (muninFoo.premium) {
-			setPref("lastNotificationText", "");
+			Util.setPref(c, "lastNotificationText", "");
 			int min = 0;
-			if (!getPref("notifs_refreshRate").equals(""))
-				min = Integer.parseInt(getPref("notifs_refreshRate"));
+			if (!Util.getPref(c, "notifs_refreshRate").equals(""))
+				min = Integer.parseInt(Util.getPref(c, "notifs_refreshRate"));
 			AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 			Intent i = new Intent(this, Service_Notifications.class);
 			PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
@@ -219,7 +222,7 @@ public class Activity_Notifications extends Activity {
 	}
 	
 	public void disableNotifications() {
-		setPref("lastNotificationText", "");
+		Util.setPref(c, "lastNotificationText", "");
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		Intent i = new Intent(this, Service_Notifications.class);
 		PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
@@ -238,7 +241,7 @@ public class Activity_Notifications extends Activity {
 			}
 			i++;
 		}
-		setPref("notifs_serversList", servers);
+		Util.setPref(c, "notifs_serversList", servers);
 		Toast.makeText(getApplicationContext(), getString(R.string.text36), Toast.LENGTH_LONG).show();
 	}
 	
@@ -251,7 +254,7 @@ public class Activity_Notifications extends Activity {
 			Intent intent = new Intent(this, Activity_Main.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			setTransition("shallower");
+			Util.setTransition(c, TransitionStyle.SHALLOWER);
 		}
 	}
 	
@@ -267,8 +270,8 @@ public class Activity_Notifications extends Activity {
 		//double pageWeight = 29.5;
 		double pageWeight = 12.25;
 		int refreshRate;
-		if (!getPref("notifs_refreshRate").equals(""))
-			refreshRate = Integer.parseInt(getPref("notifs_refreshRate"));
+		if (!Util.getPref(c, "notifs_refreshRate").equals(""))
+			refreshRate = Integer.parseInt(Util.getPref(c, "notifs_refreshRate"));
 		else
 			refreshRate = 60;
 		int nbServers = 0;
@@ -307,17 +310,17 @@ public class Activity_Notifications extends Activity {
 						Intent intent = new Intent(this, Activity_Main.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
-						setTransition("shallower");
+						Util.setTransition(c, TransitionStyle.SHALLOWER);
 					}
 					return true;
 				}
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Notifications.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_Notifications.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -352,37 +355,6 @@ public class Activity_Notifications extends Activity {
 	
 	private void createOptionsMenu() {
 		menu.clear();
-	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setPref(String key, String value) {
-		if (value.equals(""))
-			removePref(key);
-		else {
-			SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(key, value);
-			editor.commit();
-		}
-	}
-	
-	public void removePref(String key) {
-		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key);
-		editor.commit();
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-		}
 	}
 	
 	@Override

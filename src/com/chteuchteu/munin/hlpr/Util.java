@@ -80,11 +80,13 @@ public final class Util {
 		return r;
 	}
 	
-	public static void setTransition(Context c, String level) {
+	public enum TransitionStyle { DEEPER, SHALLOWER }
+	
+	public static void setTransition(Context c, TransitionStyle ts) {
 		if (getPref(c, "transitions").equals("true")) {
-			if (level.equals("deeper"))
+			if (ts == TransitionStyle.DEEPER)
 				((Activity) c).overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
+			else if (ts == TransitionStyle.SHALLOWER)
 				((Activity) c).overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
 		}
 	}

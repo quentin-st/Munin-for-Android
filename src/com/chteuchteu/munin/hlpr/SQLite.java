@@ -78,6 +78,7 @@ public class SQLite {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void saveServers() {
 		// Vérification des positions
 		for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
@@ -97,10 +98,8 @@ public class SQLite {
 			if (nb == 0)
 				toBeDeleted.add(dbS);
 		}
-		for (MuninServer s : toBeDeleted) {
-			s.deleteSelf(this.muninFoo);
+		for (MuninServer s : toBeDeleted)
 			dbHlpr.deleteServer(s);
-		}
 		
 		List<MuninServer> bdd = dbHlpr.getServers(muninFoo.masters);
 		for (MuninServer s : muninFoo.getServers()) {
@@ -172,6 +171,14 @@ public class SQLite {
 		
 		List<MuninMaster> toBeDeleted2 = new ArrayList<MuninMaster>();
 		// Delete masters if necessary
+		// First, rebuild children
+		List<MuninMaster> toBeDeleted3 = new ArrayList<MuninMaster>();
+		for (MuninMaster m : this.muninFoo.masters) {
+			if (m.manualRebuildChildren(this.muninFoo))
+				toBeDeleted3.add(m);
+		}
+		for (MuninMaster m : toBeDeleted3)
+			this.muninFoo.masters.remove(m);
 		for (MuninMaster m : this.muninFoo.masters) {
 			if (m.getChildren().size() == 0) { // If removed and no more children in children list, remove master
 				toBeDeleted2.add(m);

@@ -63,6 +63,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
@@ -75,6 +76,7 @@ public class Activity_GraphView extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh = null;
 	private	int				previousPos = -1;
+	private Context			c;
 	
 	public static String	load_period;
 	public static ViewFlow	viewFlow;
@@ -99,6 +101,7 @@ public class Activity_GraphView extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		c = this;
 		// Point d'entrée: widgets
 		Crashlytics.start(this);
 		
@@ -376,7 +379,7 @@ public class Activity_GraphView extends Activity {
 								Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
 								intent.putExtra("label", thisIntent.getExtras().getString("label"));
 								startActivity(intent);
-								setTransition("shallower");
+								Util.setTransition(c, TransitionStyle.SHALLOWER);
 							}
 						} else if (from.equals("alerts")) {
 							if (thisIntent.getExtras().containsKey("server")) {
@@ -384,14 +387,14 @@ public class Activity_GraphView extends Activity {
 									muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
 								Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
 								startActivity(intent);
-								setTransition("shallower");
+								Util.setTransition(c, TransitionStyle.SHALLOWER);
 							}
 						}
 					} else {
 						Intent intent = new Intent(this, Activity_PluginSelection.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
-						setTransition("shallower");
+						Util.setTransition(c, TransitionStyle.SHALLOWER);
 					}
 				}
 				return true;
@@ -405,11 +408,11 @@ public class Activity_GraphView extends Activity {
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_GraphView.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_GraphView.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:	return super.onOptionsItemSelected(item);
 		}
@@ -426,7 +429,7 @@ public class Activity_GraphView extends Activity {
 					Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
 					intent.putExtra("label", thisIntent.getExtras().getString("label"));
 					startActivity(intent);
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 			} else if (from.equals("alerts")) {
 				if (thisIntent.getExtras().containsKey("server")) {
@@ -434,24 +437,24 @@ public class Activity_GraphView extends Activity {
 						muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
 					Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
 					startActivity(intent);
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 			} else if (from.equals("grid")) {
 				if (thisIntent.getExtras().containsKey("fromGrid")) {
 					Intent intent = new Intent(Activity_GraphView.this, Activity_Grid.class);
 					intent.putExtra("gridName", thisIntent.getExtras().getString("fromGrid"));
 					startActivity(intent);
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				} else {
 					startActivity(new Intent(Activity_GraphView.this, Activity_GridSelection.class));
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 			}
 		} else {
 			Intent intent = new Intent(this, Activity_PluginSelection.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			setTransition("shallower");
+			Util.setTransition(c, TransitionStyle.SHALLOWER);
 		}
 	}
 	
@@ -519,7 +522,7 @@ public class Activity_GraphView extends Activity {
 					intent.putExtra("contextServerUrl", url.getText().toString());
 					intent.putExtra("position", muninFoo.currentServer.getPosition(plugin) + "");
 					startActivity(intent);
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				} else
 					actionServerSwitchQuit();
 			}
@@ -844,15 +847,6 @@ public class Activity_GraphView extends Activity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			if (muninFoo.currentServer != null)
 				getActionBar().setTitle(muninFoo.currentServer.getName());
-		}
-	}
-	
-	public void setTransition(String level) {
-		if (Util.getPref(this, "transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
 		}
 	}
 	

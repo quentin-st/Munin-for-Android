@@ -11,7 +11,7 @@
 	<string name="button_grid">Grilles</string>
 	<string name="button_notifications">Notifications</string>
 	<string name="settings_URL_label">Munin-master URL</string>
-	<string name="settings_URL_label2">ex: 88.180.108.192/munin/localdomain/localhost.localdomain/, ou 88.180.108.192:80/munin/</string>
+	<string name="settings_URL_label2">ex: 88.180.108.192:80/munin/</string>
 	<string name="settings_text">… ou choisissez un serveur d\'exemple</string>
 	<string name="settings_http_auth2">Authentification HTTP requise</string>
 	<string name="settings_auth_type">Type d\'authentification</string>

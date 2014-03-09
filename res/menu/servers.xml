@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-	<item
-		android:id="@+id/menu_edit"
-		android:icon="@drawable/content_edit_dark"
-		android:showAsAction="ifRoom"
-		android:title="@string/editServersTitle"/>
 	
 	<item
 		android:id="@+id/menu_add"

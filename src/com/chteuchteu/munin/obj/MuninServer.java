@@ -53,8 +53,8 @@ public class MuninServer {
 	private int position;
 	private AuthType authType;
 	private String authString;
-	public boolean isPersistant;
 	public MuninMaster master;
+	public boolean isPersistant = false;
 	
 	private List<MuninPlugin> 	erroredPlugins;
 	private List<MuninPlugin> 	warnedPlugins;
@@ -70,7 +70,6 @@ public class MuninServer {
 		this.authType = AuthType.UNKNOWN;
 		this.position = -1;
 		this.authString = "";
-		this.isPersistant = false;
 	}
 	public MuninServer (String name, String serverUrl) {
 		this.name = name;
@@ -83,7 +82,6 @@ public class MuninServer {
 		this.authType = AuthType.UNKNOWN;
 		this.position = -1;
 		this.authString = "";
-		this.isPersistant = false;
 		generatePosition();
 	}
 	public MuninServer (String name, String serverUrl, String authLogin, String authPassword, String graphUrl,
@@ -98,7 +96,6 @@ public class MuninServer {
 		this.position = position;
 		this.authType = authType;
 		this.authString = authString;
-		this.isPersistant = false;
 	}
 	
 	public enum AuthType {
@@ -116,97 +113,138 @@ public class MuninServer {
 		}
 	}
 	
-	public long getId() {
-		return this.id;
-	}
+	public void setId(long id) { this.id = id; }
+	public long getId() { return this.id; }
 	
-	public void setId(long id) {
-		this.id = id;
-	}
+	public void setServerUrl(String u) { this.serverUrl = u; }
+	public String getServerUrl() { return this.serverUrl; }
 	
-	public void deleteSelf(MuninFoo f) {
-		if (this.master != null) {
-			if (this.master.deleteChild(this)) { // Try to remove the server from the children list
-				if (this.master.getChildren().size() == 0) { // If removed and no more children in children list, remove master
-					f.masters.remove(this.master);
-					f.sqlite.dbHlpr.deleteMaster(f, this.master, false);
-				}
-			}
-		}
-	}
+	public void setName(String n) { this.name = n; }
+	public String getName() { return this.name; }
 	
-	public void fetchPluginsList() {
+	public void setGraphURL(String url) { this.graphURL = url; }
+	public String getGraphURL() { return this.graphURL; }
+	
+	public void setPluginsList(List<MuninPlugin> pL) { this.plugins = pL; }
+	public List<MuninPlugin> getPlugins() { return this.plugins; }
+	
+	public void setAuthType(AuthType t) { this.authType = t; }
+	public AuthType getAuthType() { return this.authType; }
+	public boolean isAuthNeeded() { return this.authType == AuthType.NONE; }
+	public void setAuthIds(String login, String password) {
+		this.authLogin = login;
+		this.authPassword = password;
+		
+		if (login.equals("") && password.equals(""))
+			this.authType = AuthType.NONE;
+	}
+	public void setAuthIds(String login, String password, AuthType authType) {
+		setAuthIds(login, password);
+		
+		if (login.equals("") || password.equals(""))
+			this.authType = AuthType.NONE;
+		else
+			this.authType = authType;
+	}
+	public String getAuthLogin() { return this.authLogin; }
+	public String getAuthPassword() { return this.authPassword; }
+	
+	public void setAuthString(String s) { this.authString = s; }
+	public String getAuthString() { return this.authString; }
+	
+	public void setSSL(boolean value) { this.ssl = value; }
+	public boolean getSSL() { return this.ssl; }
+	
+	public void setPosition(int position) { this.position = position; }
+	public int getPosition() { return this.position; }
+	
+	public void setErroredPlugins(List<MuninPlugin> mp) { this.erroredPlugins = mp; }
+	public List<MuninPlugin> getErroredPlugins() { return this.erroredPlugins; }
+	public void setWarnedPlugins(List<MuninPlugin> mp) { this.warnedPlugins = mp; }
+	public List<MuninPlugin> getWarnedPlugins() { return this.warnedPlugins; }
+	
+	public void setParent(MuninMaster p) {
+		this.master = p;
+		if (p != null)
+			p.addChild(this);
+	}
+	public MuninMaster getParent() { return this.master; }
+
+	
+	public boolean fetchPluginsList() {
 		List<MuninPlugin> mp = new ArrayList<MuninPlugin>();
 		String html = grabUrl(this.getServerUrl()).html;
 		
-		if (html == null || html == "" || html == "error") {
+		if (html == "" || html == "error") {
 			this.plugins = new ArrayList<MuninPlugin>();
-		} else {
-			MuninPlugin currentPl;
+			return false;
+		}
+		
+		MuninPlugin currentPl;
+		
+		//						   code  base_uri
+		Document doc = Jsoup.parse(html, this.getServerUrl());
+		Elements images = doc.select("img[src$=-day.png]");
+		
+		currentPl = new MuninPlugin(null, this);
+		String fancyName;
+		String nomPlugin;
+		String pluginPageUrl;
+		
+		for (Element image : images) {
+			nomPlugin = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
+			// Suppression des caractères spéciaux
+			nomPlugin = nomPlugin.replace("&", "");
+			nomPlugin = nomPlugin.replace("^", "");
+			nomPlugin = nomPlugin.replace("\"", "");
+			nomPlugin = nomPlugin.replace(",", "");
+			nomPlugin = nomPlugin.replace(";", "");
+			fancyName = image.attr("alt");
 			
-			//						   code  base_uri
-			Document doc = Jsoup.parse(html, this.getServerUrl());
-			Elements images = doc.select("img[src$=-day.png]");
+			// Récupération de la page du graph
+			Element link = image.parent();
+			pluginPageUrl = link.attr("abs:href");
 			
-			currentPl = new MuninPlugin(null, this);
-			String fancyName;
-			String nomPlugin;
-			String pluginPageUrl;
-			
-			for (Element image : images) {
-				nomPlugin = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
-				// Suppression des caractères spéciaux
-				nomPlugin = nomPlugin.replace("&", "");
-				nomPlugin = nomPlugin.replace("^", "");
-				nomPlugin = nomPlugin.replace("\"", "");
-				nomPlugin = nomPlugin.replace(",", "");
-				nomPlugin = nomPlugin.replace(";", "");
-				fancyName = image.attr("alt");
-				
-				// Récupération de la page du graph
-				Element link = image.parent();
-				pluginPageUrl = link.attr("abs:href");
-				
-				// Récupération du nom du groupe
-				// Munin 2.X
-				boolean is2 = true;
-				Element table = image.parent().parent().parent().parent().parent();
-				String group = "";
-				if (table != null) {
-					Element h3 = table.previousElementSibling();
-					if (h3 != null)
-						group = h3.html();
-					else
-						is2 = false;
-				} else
+			// Récupération du nom du groupe
+			// Munin 2.X
+			boolean is2 = true;
+			Element table = image.parent().parent().parent().parent().parent();
+			String group = "";
+			if (table != null) {
+				Element h3 = table.previousElementSibling();
+				if (h3 != null)
+					group = h3.html();
+				else
 					is2 = false;
-				
-				// Munin 1.4
-				if (!is2) {
-					try {
-						Element h3 = image.parent().parent().parent().parent().child(0).child(0).child(0);
-						group = h3.html();
-					}
-					catch (Exception e) { }
+			} else
+				is2 = false;
+			
+			// Munin 1.4
+			if (!is2) {
+				try {
+					Element h3 = image.parent().parent().parent().parent().child(0).child(0).child(0);
+					group = h3.html();
 				}
-				
-				if (nomPlugin != null && !nomPlugin.equals("")) {
-					currentPl = new MuninPlugin(nomPlugin, this);
-					// Deleting quotes
-					fancyName = fancyName.replaceAll("\"", "");
-					currentPl.setFancyName(fancyName);
-					currentPl.setCategory(group);
-					currentPl.setPluginPageUrl(pluginPageUrl);
-					
-					mp.add(currentPl);
-					
-					if (this.graphURL == null || (this.graphURL != null && this.graphURL.equals("")))
-						this.graphURL = image.attr("abs:src").substring(0, image.attr("abs:src").lastIndexOf('/') + 1);
-				}
+				catch (Exception e) { }
 			}
 			
-			this.plugins = mp;
+			if (nomPlugin != null && !nomPlugin.equals("")) {
+				currentPl = new MuninPlugin(nomPlugin, this);
+				// Deleting quotes
+				fancyName = fancyName.replaceAll("\"", "");
+				currentPl.setFancyName(fancyName);
+				currentPl.setCategory(group);
+				currentPl.setPluginPageUrl(pluginPageUrl);
+				
+				mp.add(currentPl);
+				
+				if (this.graphURL == null || (this.graphURL != null && this.graphURL.equals("")))
+					this.graphURL = image.attr("abs:src").substring(0, image.attr("abs:src").lastIndexOf('/') + 1);
+			}
 		}
+		
+		this.plugins = mp;
+		return true;
 	}
 	public void fetchPluginsStates() {
 		erroredPlugins = new ArrayList<MuninPlugin>();
@@ -250,18 +288,6 @@ public class MuninServer {
 			if (this.getPlugin(i) != null && (this.getPlugin(i).getState() == null || (this.getPlugin(i).getState() != null && this.getPlugin(i).getState().equals(""))))
 				this.getPlugin(i).setState(AlertState.UNDEFINED);
 		}
-	}
-	
-	public void setGraphURL(String url) {
-		this.graphURL = url;
-	}
-	public String getGraphURL() {
-		if (this.graphURL != null)
-			return this.graphURL;
-		return "";
-	}
-	public AuthType getAuthType() {
-		return this.authType;
 	}
 	
 	public void importData(MuninServer source) {
@@ -477,15 +503,7 @@ public class MuninServer {
 		return resp;
 	}
 	
-	public List<MuninPlugin> getPlugins() {
-		if (this.plugins == null)
-			this.plugins = new ArrayList<MuninPlugin>();
-		return this.plugins;
-	}
 	
-	public String getName() {
-		return this.name;
-	}
 	
 	public MuninPlugin getPlugin(int pos) {
 		if (pos < this.plugins.size() && pos >= 0)
@@ -495,33 +513,13 @@ public class MuninServer {
 	}
 	
 	public int getPosition(MuninPlugin p) {
-		int i = 0;
-		
-		for (MuninPlugin pl : plugins) {
-			if (pl.equalsApprox(p))
+		for (int i=0; i<this.plugins.size(); i++) {
+			if (p.equalsApprox(this.plugins.get(i)))
 				return i;
-			i++;
 		}
 		return 0;
 	}
 	
-	public boolean getSSL() {
-		return this.ssl;
-	}
-	
-	public int getPosition() {
-		return this.position;
-	}
-	
-	public void setParent(MuninMaster p) {
-		this.master = p;
-		if (p != null)
-			p.addChild(this);
-	}
-	
-	public MuninMaster getParent() {
-		return this.master;
-	}
 	
 	public void generatePosition() {
 		MuninFoo muninFoo = MuninFoo.getInstance();
@@ -546,6 +544,7 @@ public class MuninServer {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public int getFlatPosition() {
 		// si pos -> 0 1 4 8 9 11
 		// gFP(2) -> 4 (!= null)
@@ -556,36 +555,6 @@ public class MuninServer {
 		return 0;
 	}
 	
-	public boolean isAuthNeeded() {
-		if (this.authType == AuthType.NONE && this.authLogin.equals("") && this.authPassword.equals(""))
-			return false;
-		else
-			return true;
-	}
-	
-	public String getAuthLogin() {
-		return this.authLogin;
-	}
-	
-	public String getAuthPassword() {
-		return this.authPassword;
-	}
-	
-	public String getAuthString() {
-		return this.authString;
-	}
-	
-	public String getServerUrl() {
-		return this.serverUrl;
-	}
-	
-	public List<MuninPlugin> getErroredPlugins() {
-		return this.erroredPlugins;
-	}
-	
-	public List<MuninPlugin> getWarnedPlugins() {
-		return this.warnedPlugins;
-	}
 	
 	public List<MuninPlugin> getPluginsByCategory(String c) {
 		List<MuninPlugin> l = new ArrayList<MuninPlugin>();
@@ -629,61 +598,6 @@ public class MuninServer {
 		return 0;
 	}
 	
-	public MuninServer setPluginsList(List<MuninPlugin> pL) {
-		this.plugins = pL;
-		
-		return this;
-	}
-	
-	public void setName(String n) {
-		this.name = n;
-	}
-	
-	public void setServerUrl(String u) {
-		if (u != null)
-			this.serverUrl = u;
-	}
-	
-	public void setAuthString(String s) {
-		this.authString = s;
-	}
-	
-	public void setSSL(boolean value) {
-		this.ssl = value;
-	}
-	
-	public void setErroredPlugins(List<MuninPlugin> mp) {
-		this.erroredPlugins = mp;
-	}
-	
-	public void setWarnedPlugins(List<MuninPlugin> mp) {
-		this.warnedPlugins = mp;
-	}
-	
-	public void setAuthIds(String login, String password) {
-		this.authLogin = login;
-		this.authPassword = password;
-		
-		if (login.equals("") && password.equals(""))
-			this.authType = AuthType.NONE;
-	}
-	
-	public void setAuthIds(String login, String password, AuthType authType) {
-		setAuthIds(login, password);
-		
-		if (login.equals("") || password.equals(""))
-			this.authType = AuthType.NONE;
-		else
-			this.authType = authType;
-	}
-	
-	public void setAuthType(AuthType t) {
-		this.authType = t;
-	}
-	
-	public void setPosition(int position) {
-		this.position = position;
-	}
 	
 	public boolean equalsApprox (MuninServer server2) {
 		String address1 = this.getServerUrl();

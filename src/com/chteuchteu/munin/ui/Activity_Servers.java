@@ -1,11 +1,13 @@
 package com.chteuchteu.munin.ui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,27 +18,30 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
+import com.chteuchteu.munin.ExpandableListViewAdapter;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
-public class Activity_Servers extends ListActivity {
+public class Activity_Servers extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
+	private Context			c;
 	
-	private SimpleAdapter 	sa;
-	ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+	Map<String, List<String>> serversCollection;
+	ExpandableListView		expListView;
 	public static Button 	addServer;
 	private Menu 			menu;
 	private String			activityName;
@@ -48,6 +53,7 @@ public class Activity_Servers extends ListActivity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		c = this;
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			setContentView(R.layout.servers);
@@ -69,41 +75,49 @@ public class Activity_Servers extends ListActivity {
 		}
 		
 		addServer = (Button)findViewById(R.id.servers_btn_add_a_server);
-		
 		addServer.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View actualView) {
 				Intent intent = new Intent(Activity_Servers.this, Activity_AddServer.class);
 				intent.putExtra("contextServerUrl", "");
 				startActivity(intent);
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 			}
 		});
 		
-		list.clear();
-		HashMap<String,String> item;
-		for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
-			item = new HashMap<String,String>();
-			item.put("line1", muninFoo.getOrderedServers().get(i).getName());
-			item.put("line2", muninFoo.getOrderedServers().get(i).getServerUrl());
-			list.add(item);
+		Intent i = getIntent();
+		MuninMaster fromServersEdit = null;
+		if (i.getExtras() != null && i.getExtras().containsKey("fromMaster"))
+			fromServersEdit = muninFoo.getMasterById((int) i.getExtras().getLong("fromMaster"));
+		
+		expListView = (ExpandableListView) findViewById(R.id.servers_list);
+		
+		List<String> masters = muninFoo.getMastersNames();
+		// Create collection
+		serversCollection = new LinkedHashMap<String, List<String>>();
+		
+		for (MuninMaster m : muninFoo.masters) {
+			List<String> childList = new ArrayList<String>();
+			for (MuninServer s : m.getOrderedServers())
+				childList.add(s.getName());
+			serversCollection.put(m.getName(), childList);
 		}
-		sa = new SimpleAdapter(this, list, R.layout.servers_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
-		setListAdapter(sa);
+		final ExpandableListViewAdapter expListAdapter = new ExpandableListViewAdapter(this, masters, serversCollection, muninFoo);
+		expListView.setAdapter(expListAdapter);
 		
+		if (fromServersEdit != null)
+			expListView.expandGroup(muninFoo.getMasterPosition(fromServersEdit));
 		
-		getListView().setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-				//TextView name = (TextView) view.findViewById(R.id.line_a);
-				TextView url = (TextView) view.findViewById(R.id.line_b);
-				MuninServer s = muninFoo.getServer(url.getText().toString());
-				if (s != null)
-					muninFoo.currentServer = s;
+		expListView.setOnChildClickListener(new OnChildClickListener() {
+			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+				//final String selected = (String) expListAdapter.getChild(groupPosition, childPosition);
+				MuninServer s = muninFoo.masters.get(groupPosition).getServerFromFlatPosition(childPosition);
 				Intent intent = new Intent(Activity_Servers.this, Activity_AddServer.class);
-				intent.putExtra("contextServerUrl", url.getText().toString());
+				intent.putExtra("contextServerUrl", s.getServerUrl());
 				intent.putExtra("action", "edit");
 				startActivity(intent);
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
+				return true;
 			}
 		});
 		
@@ -140,9 +154,6 @@ public class Activity_Servers extends ListActivity {
 		menu.clear();
 		getMenuInflater().inflate(R.menu.servers, menu);
 		addServer.setVisibility(View.GONE);
-		
-		if (muninFoo.getServers().size() == 0)
-			menu.findItem(R.id.menu_edit).setVisible(false);
 	}
 	
 	@Override
@@ -158,26 +169,22 @@ public class Activity_Servers extends ListActivity {
 					intent = new Intent(this, Activity_Main.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_add:
 				intent = new Intent(this, Activity_AddServer.class);
 				intent.putExtra("contextServerUrl", "");
 				startActivity(intent);
-				setTransition("deeper");
-				return true;
-			case R.id.menu_edit:
-				startActivity(new Intent(this, Activity_ServersEdit.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Servers.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_Servers.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -189,20 +196,7 @@ public class Activity_Servers extends ListActivity {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		setTransition("shallower");
-	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-		}
+		Util.setTransition(c, TransitionStyle.SHALLOWER);
 	}
 	
 	@Override

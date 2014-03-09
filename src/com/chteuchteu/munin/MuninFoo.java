@@ -212,7 +212,15 @@ public class MuninFoo {
 		}
 	}
 	public void deleteServer(MuninServer s) {
-		deleteServer(s.getServerUrl());
+		s.getParent().rebuildChildren(this);
+		for (int i=0; i<this.servers.size(); i++) {
+			if (this.servers.get(i).equalsApprox(s)) {
+				this.servers.remove(i); break;
+			}
+		}
+		s.getParent().rebuildChildren(this);
+		if (this.currentServer.equals(s) && this.servers.size() > 0)
+			this.currentServer = this.servers.get(0);
 	}
 	public void deleteMuninMaster(MuninMaster m) {
 		if (this.masters.remove(m))
@@ -253,17 +261,6 @@ public class MuninFoo {
 		}
 		this.servers = newServers;
 	}
-	public void deleteServer(String serverAddress) {
-		// Vérifie si un serveur correspond à cette adresse
-		for (int i=0; i<servers.size(); i++) {
-			if (servers.get(i) != null && servers.get(i).equalsApprox(serverAddress))
-				servers.remove(i);
-		}
-		if (getHowManyServers() == 0)
-			currentServer = null;
-		else
-			currentServer = servers.get(0);
-	}
 	public void deleteServer(int pos) {
 		if (pos >= 0 && pos < servers.size()) {
 			servers.remove(pos);
@@ -286,6 +283,7 @@ public class MuninFoo {
 		else
 			return null;
 	}
+	@Deprecated
 	public MuninServer getServerFromPosition(int position) {
 		for (MuninServer s : servers) {
 			if (s != null && s.getPosition() == position)
@@ -293,6 +291,7 @@ public class MuninFoo {
 		}
 		return null;
 	}
+	@Deprecated
 	public MuninServer getServerFromFlatPosition(int position) {
 		// si pos -> 0 1 4 8 9 11
 		// gSFFP(2) -> 4 (!= null)
@@ -300,6 +299,7 @@ public class MuninFoo {
 			return getOrderedServers().get(position);
 		return null;
 	}
+	@Deprecated
 	public List<MuninServer> getOrderedServers() {
 		List<MuninServer> l = new ArrayList<MuninServer>();
 		int pos = 0;
@@ -367,6 +367,31 @@ public class MuninFoo {
 		return 0;
 	}
 	
+	public List<String> getMastersNames() {
+		List<String> l = new ArrayList<String>();
+		for (MuninMaster m : this.masters)
+			l.add(m.getName());
+		return l;
+	}
+	
+	public MuninMaster getMasterById(int id) {
+		for (MuninMaster m : this.masters) {
+			if (m.getId() == id)
+				return m;
+		}
+		return null;
+	}
+	
+	public int getMasterPosition(MuninMaster m) {
+		int i = 0;
+		for (MuninMaster mas : this.masters) {
+			if (mas.getId() == m.getId())
+				return i;
+			i++;
+		}
+		return 0;
+	}
+	
 	public boolean containsLabel(String lname) {
 		for (Label l : labels) {
 			if (l.getName().equals(lname))
@@ -425,15 +450,9 @@ public class MuninFoo {
 	
 	public int fetchServersListRecursive(MuninServer s) {
 		int nbServers = 0;
-		MuninMaster master = new MuninMaster(s.getName());
-		master.setUrl(s.getServerUrl());
-		master.setParent(null);
 		
 		// Grab HTML content
-		String html = "";
-		try {
-			html = grabUrl(s).html;
-		} catch (Exception e) { }
+		String html = grabUrl(s).html;
 		
 		if (!html.equals("") && !html.equals("error")) {
 			Document doc = Jsoup.parse(html, s.getServerUrl());
@@ -447,7 +466,6 @@ public class MuninFoo {
 				Element a = domain.child(0);
 				m.setName(a.text());
 				m.setUrl(a.attr("abs:href"));
-				m.setParent(master);
 				this.masters.add(m);
 				
 				// Get every host for that domain
@@ -465,8 +483,6 @@ public class MuninFoo {
 					nbServers++;
 				}
 			}
-			
-			this.masters.add(master);
 		}
 		
 		return nbServers;

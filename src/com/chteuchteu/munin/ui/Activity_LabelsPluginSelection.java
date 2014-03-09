@@ -28,6 +28,8 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.SeparatedListAdapter;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
@@ -38,6 +40,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_LabelsPluginSelection extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
+	private Context			c;
 	private Label			label;
 	private String			activityName;
 	private List<List<MuninPlugin>> labelsListCat;
@@ -50,6 +53,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		c = this;
 		
 		// Getting current label
 		Intent thisIntent = getIntent();
@@ -120,7 +124,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 				intent.putExtra("from", "labels");
 				intent.putExtra("label", label.getName());
 				startActivity(intent);
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 			}
 		});
 	}
@@ -142,21 +146,21 @@ public class Activity_LabelsPluginSelection extends Activity {
 					dh.getDrawer().toggle(true);
 				else {
 					startActivity(new Intent(this, Activity_Labels.class));
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_delete:
 				muninFoo.removeLabel(label);
 				startActivity(new Intent(this, Activity_Labels.class));
-				setTransition("shallower");
+				Util.setTransition(c, TransitionStyle.SHALLOWER);
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:	return super.onOptionsItemSelected(item);
 		}
@@ -197,19 +201,6 @@ public class Activity_LabelsPluginSelection extends Activity {
 		Intent intent = new Intent(this, Activity_Labels.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		setTransition("shallower");
-	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-		}
+		Util.setTransition(c, TransitionStyle.SHALLOWER);
 	}
 }

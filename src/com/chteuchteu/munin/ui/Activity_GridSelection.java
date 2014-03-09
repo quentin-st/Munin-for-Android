@@ -30,6 +30,8 @@ import android.widget.Toast;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
@@ -93,7 +95,7 @@ public class Activity_GridSelection extends ListActivity {
 					Intent intent = new Intent(Activity_GridSelection.this, Activity_Grid.class);
 					intent.putExtra("gridName", gridName.getText().toString());
 					startActivity(intent);
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 		}
@@ -166,7 +168,7 @@ public class Activity_GridSelection extends ListActivity {
 					Intent intent = new Intent(this, Activity_Main.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_add:
@@ -174,11 +176,11 @@ public class Activity_GridSelection extends ListActivity {
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_GridSelection.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_GridSelection.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -196,20 +198,7 @@ public class Activity_GridSelection extends ListActivity {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		setTransition("shallower");
-	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-		}
+		Util.setTransition(c, TransitionStyle.SHALLOWER);
 	}
 	
 	@Override
@@ -250,7 +239,7 @@ public class Activity_GridSelection extends ListActivity {
 					Intent i = new Intent(Activity_GridSelection.this, Activity_Grid.class);
 					i.putExtra("gridName", value);
 					startActivity(i);
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 				else
 					Toast.makeText(c, getString(R.string.text74), Toast.LENGTH_LONG).show();

@@ -13,7 +13,6 @@ import android.app.ActionBar.OnNavigationListener;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -38,6 +37,8 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.SeparatedListAdapter;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -49,6 +50,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_PluginSelection extends ListActivity {
 	private MuninFoo			muninFoo;
 	private DrawerHelper		dh;
+	private Context				c;
 	
 	private SimpleAdapter 		sa;
 	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
@@ -73,6 +75,7 @@ public class Activity_PluginSelection extends ListActivity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		c = this;
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			setContentView(R.layout.pluginselection);
@@ -176,7 +179,7 @@ public class Activity_PluginSelection extends ListActivity {
 		if (muninFoo.currentServer.getPluginsListWithCategory().size() < 2)
 			mode = MODE_FLAT;
 		else {
-			if (getPref("listViewMode").equals("flat"))
+			if (Util.getPref(c, "listViewMode").equals("flat"))
 				mode = MODE_FLAT;
 			else
 				mode = MODE_GROUPED;
@@ -186,9 +189,9 @@ public class Activity_PluginSelection extends ListActivity {
 	
 	public void switchListViewMode(int mode) {
 		if (mode == MODE_FLAT)
-			setPref("listViewMode", "flat");
+			Util.setPref(c, "listViewMode", "flat");
 		else
-			setPref("listViewMode", "grouped");
+			Util.setPref(c, "listViewMode", "grouped");
 	}
 	
 	public void updateListView() {
@@ -227,7 +230,7 @@ public class Activity_PluginSelection extends ListActivity {
 					}
 					intent.putExtra("position", p + "");
 					startActivity(intent);
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 		} else {
@@ -264,7 +267,7 @@ public class Activity_PluginSelection extends ListActivity {
 					}
 					intent.putExtra("position", p + "");
 					startActivity(intent);
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			
@@ -372,7 +375,7 @@ public class Activity_PluginSelection extends ListActivity {
 					Intent intent = new Intent(this, Activity_Main.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_filter:
@@ -398,11 +401,11 @@ public class Activity_PluginSelection extends ListActivity {
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_PluginSelection.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_PluginSelection.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -428,38 +431,7 @@ public class Activity_PluginSelection extends ListActivity {
 			Intent intent = new Intent(this, Activity_Main.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			setTransition("shallower");
-		}
-	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setPref(String key, String value) {
-		if (value.equals(""))
-			removePref(key);
-		else {
-			SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(key, value);
-			editor.commit();
-		}
-	}
-	
-	public void removePref(String key) {
-		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key);
-		editor.commit();
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
+			Util.setTransition(c, TransitionStyle.SHALLOWER);
 		}
 	}
 	

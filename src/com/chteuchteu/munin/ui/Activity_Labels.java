@@ -23,6 +23,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -32,6 +33,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_Labels extends ListActivity {
 	private MuninFoo			muninFoo;
 	private DrawerHelper		dh;
+	private Context				c;
 	
 	private SimpleAdapter 		sa;
 	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
@@ -43,6 +45,7 @@ public class Activity_Labels extends ListActivity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		c = this;
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			setContentView(R.layout.labelselection);
@@ -130,16 +133,16 @@ public class Activity_Labels extends ListActivity {
 					Intent intent = new Intent(this, Activity_Main.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Labels.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_Labels.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -151,7 +154,7 @@ public class Activity_Labels extends ListActivity {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		setTransition("shallower");
+		Util.setTransition(c, TransitionStyle.SHALLOWER);
 	}
 	
 	@Override
@@ -164,19 +167,6 @@ public class Activity_Labels extends ListActivity {
 			Intent intent = new Intent(this, Activity_Main.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-		}
-	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
 		}
 	}
 	

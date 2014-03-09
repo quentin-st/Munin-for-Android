@@ -10,7 +10,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +27,7 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -39,6 +39,7 @@ public class Activity_GoPremium extends Activity {
 	private DrawerHelper 	dh;
 	private Menu			menu;
 	private String			activityName;
+	private Context			c;
 	
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class Activity_GoPremium extends Activity {
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
 		setContentView(R.layout.go_premium);
+		c = this;
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			ActionBar actionBar = getActionBar();
@@ -122,16 +124,16 @@ public class Activity_GoPremium extends Activity {
 					dh.getDrawer().toggle(true);
 				else {
 					startActivity(new Intent(this, Activity_Main.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_GoPremium.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_GoPremium.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:	return super.onOptionsItemSelected(item);
 		}
@@ -171,38 +173,7 @@ public class Activity_GoPremium extends Activity {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		setTransition("shallower");
-	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setPref(String key, String value) {
-		if (value.equals(""))
-			removePref(key);
-		else {
-			SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(key, value);
-			editor.commit();
-		}
-	}
-	
-	public void removePref(String key) {
-		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key);
-		editor.commit();
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-		}
+		Util.setTransition(c, TransitionStyle.SHALLOWER);
 	}
 	
 	@Override

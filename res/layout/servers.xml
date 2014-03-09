@@ -47,10 +47,19 @@
 				android:layout_alignParentRight="true"
 				android:text="@string/servers_btn_add_server" />
 
-			<ListView
+			<!-- <ListView
 				android:id="@+id/android:list"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_above="@id/servers_btn_add_a_server"
+				android:layout_alignParentTop="true"
+				android:paddingLeft="@dimen/listview_horizontal_margin"
+				android:paddingRight="@dimen/listview_horizontal_margin" />-->
+			
+			<ExpandableListView
+				android:id="@+id/servers_list"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
 				android:layout_above="@id/servers_btn_add_a_server"
 				android:layout_alignParentTop="true"
 				android:paddingLeft="@dimen/listview_horizontal_margin"

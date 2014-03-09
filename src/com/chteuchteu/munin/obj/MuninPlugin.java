@@ -6,19 +6,18 @@ import android.util.Log;
 import com.chteuchteu.munin.MuninFoo;
 
 public class MuninPlugin {
-	private long id;
-	private String name;
-	private String fancyName;
+	private long 		id;
+	private String 		name;
+	private String 		fancyName;
 	private MuninServer installedOn;
-	private String category;
-	private AlertState state;
-	private String pluginPageUrl;
-	public boolean isPersistant;
+	private String 		category;
+	private AlertState 	state;
+	private String 		pluginPageUrl;
+	public boolean 		isPersistant = false;
 	
 	public MuninPlugin () {
 		this.name = "unknown";
 		this.state = AlertState.UNDEFINED;
-		this.isPersistant = false;
 		this.category = "";
 		this.pluginPageUrl = "";
 	}
@@ -27,7 +26,6 @@ public class MuninPlugin {
 		this.installedOn = server;
 		this.state = AlertState.UNDEFINED;
 		this.category = "";
-		this.isPersistant = false;
 		this.pluginPageUrl = "";
 	}
 	public MuninPlugin (String name, String fancyName, MuninServer installedOn, String category) {
@@ -35,7 +33,6 @@ public class MuninPlugin {
 		this.fancyName = fancyName;
 		this.installedOn = installedOn;
 		this.category = category;
-		this.isPersistant = false;
 		this.pluginPageUrl = "";
 	}
 	
@@ -69,23 +66,11 @@ public class MuninPlugin {
 		}
 	}
 	
-	@Override
-	public String toString() {
-		return this.getFancyName();
-	}
+	public void setId(long id) { this.id = id; }
+	public long getId() { return this.id; }
 	
-	public long getId() {
-		return this.id;
-	}
-	
-	public void setId(long id) {
-		this.id = id;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
+	public void setName(String name) { this.name = name; }
+	public String getName() { return this.name; }
 	public String getShortName() {
 		if (this.name.length() > 12)
 			return this.name.toString().substring(0, 11) + "...";
@@ -93,19 +78,22 @@ public class MuninPlugin {
 			return this.name;
 	}
 	
-	public String getCategory() {
-		if (category != null)
-			return this.category;
-		return "";
-	}
+	public void setCategory(String category) { this.category = category; }
+	public String getCategory() { return this.category; }
 	
-	public String getFancyName() {
-		return this.fancyName;
-	}
+	public void setFancyName(String fName) { this.fancyName = fName; }
+	public String getFancyName() { return this.fancyName; }
 	
-	public MuninServer getInstalledOn() {
-		return this.installedOn;
-	}
+	public void setInstalledOn(MuninServer s) { this.installedOn = s; }
+	public MuninServer getInstalledOn() { return this.installedOn; }
+	
+	public void setPluginPageUrl(String url) { this.pluginPageUrl = url; }
+	public String getPluginPageUrl() { return this.pluginPageUrl; }
+	
+	public void setState(AlertState s) { this.state = s; }
+	public AlertState getState() { return this.state; }
+	
+	
 	
 	public String getImgUrl(String period) {
 		return this.getInstalledOn().getGraphURL() + this.getName() + "-" + period + ".png";
@@ -127,34 +115,6 @@ public class MuninPlugin {
 		return MuninFoo.grabBitmap(this.installedOn, url);
 	}
 	
-	public void setPluginPageUrl(String url) {
-		this.pluginPageUrl = url;
-	}
-	
-	public String getPluginPageUrl() {
-		return this.pluginPageUrl;
-	}
-	
-	public AlertState getState() {
-		return this.state;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	public void setFancyName(String fn) {
-		this.fancyName = fn;
-	}
-	public MuninPlugin setInstalledOn(MuninServer s) {
-		this.installedOn = s;
-		return this;
-	}
-	public void setCategory(String c) {
-		this.category = c;
-	}
-	public void setState(AlertState s) {
-		this.state = s;
-	}
 	
 	// TODO
 	public String getGraphInformationHtml() {

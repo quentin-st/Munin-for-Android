@@ -9,7 +9,6 @@ public class MuninMaster {
 	private long id;
 	private String name;
 	private String url;
-	private MuninMaster parent;
 	private List<MuninServer> children;
 	
 	public boolean defaultMaster;
@@ -29,82 +28,51 @@ public class MuninMaster {
 		this.children = new ArrayList<MuninServer>();
 	}
 	
-	/*/**
-	 * Allows to determine the MuninMaster type, since it can be :
-	 * 		- ROOT : 	0 parent	1-* MuninMaster children
-	 * 		- BRANCH : 	1 parent	1-* MuninMaster children
-	 * 		- LEAF :	1 parent	1-* MuninServer children
-	 */
-	/*public enum MasterType { ROOT, BRANCH, LEAF };*/
-	
-	@Override
-	public String toString() {
-		return this.getName();
+	public void rebuildChildren(MuninFoo f) {
+		this.children = new ArrayList<MuninServer>();
+		for (MuninServer s : f.getServers()) {
+			if (s.getParent().getId() == this.id)
+				this.children.add(s);
+		}
+		if (this.children.size() == 0)
+			deleteSelf(f);
 	}
 	
-	public long getId() {
-		return this.id;
+	public boolean manualRebuildChildren(MuninFoo f) {
+		this.children = new ArrayList<MuninServer>();
+		for (MuninServer s : f.getServers()) {
+			if (s.getParent().getId() == this.id)
+				this.children.add(s);
+		}
+		return this.children.size() == 0; // true = to be deleted
 	}
 	
-	public void setId(long id) {
-		this.id = id;
+	public void deleteSelf(MuninFoo f) {
+		// If there's no more server under this, delete self.
+		f.deleteMuninMaster(this);
 	}
 	
-	public String getName() {
-		return this.name;
-	}
+	public void setId(long id) { this.id = id; }
+	public long getId() { return this.id; }
 	
-	public String getShortName() {
-		if (this.name.length() > 12)
-			return this.name.toString().substring(0, 11) + "...";
-		else
-			return this.name;
-	}
+	public void setName(String name) { this.name = name; }
+	public String getName() { return this.name; }
 	
-	public void setName(String name) {
-		this.name = name;
-	}
+	public void setUrl(String url) { this.url = url; }
+	public String getUrl() { return this.url; }
 	
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	
-	public String getUrl() {
-		return this.url;
-	}
-	
-	public void setParent(MuninMaster p) {
-		this.parent = p;
-	}
-	
-	public MuninMaster getParent() {
-		return this.parent;
-	}
-	
-	public List<MuninServer> getChildren() {
-		return this.children;
-	}
-	
-	public void setChildren(List<MuninServer> l) {
-		this.children = l;
-	}
-	
+	public void setChildren(List<MuninServer> l) { this.children = l; }
+	public List<MuninServer> getChildren() { return this.children; }
 	public void addChild(MuninServer s) {
 		this.children.add(s);
 	}
-	
 	public boolean deleteChild(MuninServer s) {
 		return this.children.remove(s);
 	}
-	
 	public MuninServer getChildAt(int i) {
 		if (i >= 0 && i < this.children.size())
 			return this.children.get(i);
 		return null;
-	}
-	
-	public boolean isTopParent() {
-		return this.parent == null;
 	}
 	
 	public boolean equalsApprox(MuninMaster p) {
@@ -128,19 +96,49 @@ public class MuninMaster {
 		return l;
 	}
 	
-	public List<MuninMaster> getMastersChildren(MuninFoo f) {
-		List<MuninMaster> l = new ArrayList<MuninMaster>();
-		for (MuninMaster m : f.masters) {
-			if (m.getParent() != null && m.getParent().getId() == this.id)
-				l.add(m);
-		}
-		return l;
+	public MuninServer getServerFromFlatPosition(int position) {
+		// si pos -> 0 1 4 8 9 11
+		// gSFFP(2) -> 4 (!= null)
+		if (position >= 0 && position < getOrderedServers().size())
+			return getOrderedServers().get(position);
+		return null;
 	}
 	
-	/*public MasterType getMasterType(MuninFoo f) {
-		int nbServersChildren = getServersChildren(f).size();
-		if (nbServersChildren > 0)	return MasterType.LEAF;
-		int nbMastersChildren = getMastersChildren(f).size();
+	public MuninServer getServerFromPosition(int position) {
+		for (MuninServer s : this.children) {
+			if (s != null && s.getPosition() == position)
+				return s;
+		}
+		return null;
+	}
+	
+	public MuninMaster copy() {
+		MuninMaster m = new MuninMaster(this.name);
+		m.setId(this.id);
+		m.setUrl(this.getUrl());
+		m.setChildren(this.children);
+		return m;
+	}
+	
+	public List<MuninServer> getOrderedServers() {
+		List<MuninServer> l = new ArrayList<MuninServer>();
+		int pos = 0;
+		int remainingServers = this.children.size();
 		
-	}*/
+		int maxPos = 0;
+		for (MuninServer s : this.children) {
+			if (s.getPosition() > maxPos)
+				maxPos = s.getPosition();
+		}
+		
+		while(remainingServers > 0 && pos <= maxPos) {
+			if (getServerFromPosition(pos) != null) {
+				l.add(getServerFromPosition(pos));
+				remainingServers--;
+			}
+			pos++;
+		}
+		
+		return l;
+	}
 }

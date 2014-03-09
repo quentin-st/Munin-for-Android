@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
@@ -36,6 +38,7 @@ public class Activity_AlertsPluginSelection extends Activity {
 	private DrawerHelper	dh;
 	private String			activityName;
 	private Menu			menu;
+	private Context			c;
 	
 	private static List<MuninPlugin> plugins;
 	
@@ -44,6 +47,7 @@ public class Activity_AlertsPluginSelection extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		c = this;
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			setContentView(R.layout.alerts_pluginselection);
@@ -96,7 +100,7 @@ public class Activity_AlertsPluginSelection extends Activity {
 							i.putExtra("server", muninFoo.currentServer.getServerUrl());
 							i.putExtra("from", "alerts");
 							startActivity(i);
-							setTransition("deeper");
+							Util.setTransition(c, TransitionStyle.DEEPER);
 						}
 					});
 					
@@ -118,16 +122,16 @@ public class Activity_AlertsPluginSelection extends Activity {
 					dh.getDrawer().toggle(true);
 				else {
 					startActivity(new Intent(this, Activity_Alerts.class));
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_AlertsPluginSelection.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_AlertsPluginSelection.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:	return super.onOptionsItemSelected(item);
 		}
@@ -168,19 +172,6 @@ public class Activity_AlertsPluginSelection extends Activity {
 		Intent intent = new Intent(this, Activity_Alerts.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		setTransition("shallower");
-	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-		}
+		Util.setTransition(c, TransitionStyle.SHALLOWER);
 	}
 }

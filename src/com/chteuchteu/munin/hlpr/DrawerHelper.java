@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_AddServer;
@@ -315,30 +316,32 @@ public class DrawerHelper {
 		a.findViewById(R.id.drawer_scrollviewServers).setVisibility(View.VISIBLE);
 		LayoutInflater vi = (LayoutInflater) a.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
-		for (final MuninServer s : m.getOrderedServers()) {
-			View v = vi.inflate(R.layout.drawer_subbutton, null);
-			LinearLayout l = (LinearLayout)v.findViewById(R.id.button_container);
-			TextView b = (TextView)v.findViewById(R.id.button);
-			b.setText(s.getName());
-			
-			if (n == Activity_AddServer_Edit && s.equalsApprox(m.currentServer)) {
-				l.setPadding(4, 0, 0, 0);
-				b.setTextColor(c.getResources().getColor(R.color.cffffff));
-			}
-			
-			b.setOnClickListener(new OnClickListener() {
-				public void onClick (View v) {
-					m.currentServer = s;
-					Intent intent = new Intent(a, Activity_AddServer.class);
-					intent.putExtra("contextServerUrl", s.getServerUrl());
-					intent.putExtra("action", "edit");
-					a.startActivity(intent);
-					a.overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
+		for (MuninMaster master : m.masters) {
+			for (final MuninServer s : master.getOrderedServers()) {
+				View v = vi.inflate(R.layout.drawer_subbutton, null);
+				LinearLayout l = (LinearLayout)v.findViewById(R.id.button_container);
+				TextView b = (TextView)v.findViewById(R.id.button);
+				b.setText(s.getName());
+				
+				if (n == Activity_AddServer_Edit && s.equalsApprox(m.currentServer)) {
+					l.setPadding(4, 0, 0, 0);
+					b.setTextColor(c.getResources().getColor(R.color.cffffff));
 				}
-			});
-			
-			View insertPoint = a.findViewById(R.id.drawer_scrollviewServers);
-			((ViewGroup) insertPoint).addView(v);
+				
+				b.setOnClickListener(new OnClickListener() {
+					public void onClick (View v) {
+						m.currentServer = s;
+						Intent intent = new Intent(a, Activity_AddServer.class);
+						intent.putExtra("contextServerUrl", s.getServerUrl());
+						intent.putExtra("action", "edit");
+						a.startActivity(intent);
+						a.overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
+					}
+				});
+				
+				View insertPoint = a.findViewById(R.id.drawer_scrollviewServers);
+				((ViewGroup) insertPoint).addView(v);
+			}
 		}
 	}
 	

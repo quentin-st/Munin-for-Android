@@ -28,6 +28,7 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.GridDownloadHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
@@ -265,7 +266,7 @@ public class Activity_Grid extends Activity {
 	private void delete() {
 		muninFoo.sqlite.dbHlpr.deleteGrid(grid);
 		startActivity(new Intent(Activity_Grid.this, Activity_GridSelection.class));
-		setTransition("shallower");
+		Util.setTransition(c, TransitionStyle.SHALLOWER);
 	}
 	
 	private void refresh() {
@@ -289,7 +290,7 @@ public class Activity_Grid extends Activity {
 		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("gridName"))
 			i.putExtra("fromGrid", gridIntent.getExtras().getString("gridName"));
 		c.startActivity(i);
-		Util.setTransition(c, "deeper");
+		Util.setTransition(c, TransitionStyle.DEEPER);
 	}
 	
 	@Override
@@ -304,7 +305,7 @@ public class Activity_Grid extends Activity {
 					Intent intent = new Intent(this, Activity_GridSelection.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_refresh:
@@ -337,11 +338,11 @@ public class Activity_Grid extends Activity {
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Grid.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_Grid.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -359,22 +360,9 @@ public class Activity_Grid extends Activity {
 				Intent intent = new Intent(this, Activity_GridSelection.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				setTransition("shallower");
+				Util.setTransition(c, TransitionStyle.SHALLOWER);
 			}
 		}
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-		}
-	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
 	}
 	
 	@Override

@@ -16,9 +16,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,6 +27,8 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.crashlytics.android.Crashlytics;
@@ -37,6 +39,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_Alerts extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
+	private Context			c;
 	
 	private boolean		hideNormalStateServers;
 	private int 			nb_loadings;
@@ -73,6 +76,7 @@ public class Activity_Alerts extends Activity {
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
 		setContentView(R.layout.alerts);
+		c = this;
 		Crashlytics.start(this);
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -111,9 +115,11 @@ public class Activity_Alerts extends Activity {
 		
 		servers = new ArrayList<MuninServer>();
 		// Populating servers list
-		for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
-			if (muninFoo.getOrderedServers().get(i) != null)
-				servers.add(muninFoo.getOrderedServers().get(i));
+		for (MuninMaster master : muninFoo.masters) {
+			for (int i=0; i<master.getOrderedServers().size(); i++) {
+				if (master.getOrderedServers().get(i) != null)
+					servers.add(master.getOrderedServers().get(i));
+			}
 		}
 		
 		int i = 0;
@@ -374,7 +380,7 @@ public class Activity_Alerts extends Activity {
 					Intent intent = new Intent(this, Activity_Main.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_refresh:
@@ -382,11 +388,11 @@ public class Activity_Alerts extends Activity {
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Alerts.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_Alerts.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -398,7 +404,7 @@ public class Activity_Alerts extends Activity {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		setTransition("shallower");
+		Util.setTransition(c, TransitionStyle.SHALLOWER);
 	}
 	
 	public void enableArrow(boolean b, int p) {
@@ -408,19 +414,6 @@ public class Activity_Alerts extends Activity {
 			} else {
 				part_serverName[p].setCompoundDrawables(null, null, null, null);
 			}
-		}
-	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
 		}
 	}
 	

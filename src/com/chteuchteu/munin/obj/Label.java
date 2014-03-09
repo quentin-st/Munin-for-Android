@@ -8,28 +8,21 @@ import com.chteuchteu.munin.MuninFoo;
 public class Label {
 	private long id;
 	private String name;
-	public boolean isPersistant;
 	
 	public List<MuninPlugin> plugins;
 	
 	public Label() {
 		this.plugins = new ArrayList<MuninPlugin>();
-		this.isPersistant = false;
 	}
 	
 	public Label(String name) {
 		this.name = name;
 		this.plugins = new ArrayList<MuninPlugin>();
-		this.isPersistant = false;
 	}
 	
-	public long getId() {
-		return this.id;
-	}
+	public void setId(long id) { this.id = id; }
+	public long getId() { return this.id; }
 	
-	public void setId(long id) {
-		this.id = id;
-	}
 	
 	// Returns a List of List of MuninPlugin, sorted by server.
 	// To be displayed in Activity_LabelsPluginSelection

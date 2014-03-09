@@ -13,7 +13,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
@@ -33,8 +32,10 @@ import android.widget.Toast;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -43,6 +44,7 @@ import com.tjeannin.apprate.AppRate;
 public class Activity_Main extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
+	private Context			c;
 	
 	public static Button 	buttonGraphs;
 	public static Button	buttonAlerts;
@@ -58,6 +60,7 @@ public class Activity_Main extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		c = this;
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			if (muninFoo.drawer)
@@ -78,22 +81,22 @@ public class Activity_Main extends Activity {
 			this.getWindow().getDecorView().setBackgroundColor(Color.WHITE);
 		}
 		
-		if (Locale.getDefault().getLanguage().equals("de") && getPref("suggestLanguage").equals("") && (getPref("lang").equals("fr") || getPref("lang").equals("en"))) {
+		if (Locale.getDefault().getLanguage().equals("de") && Util.getPref(c, "suggestLanguage").equals("") && (Util.getPref(c, "lang").equals("fr") || Util.getPref(c, "lang").equals("en"))) {
 			AlertDialog.Builder builder2 = new AlertDialog.Builder(Activity_Main.this);
 			builder2.setMessage("Die App ist nun auch auf Deutsch verfügbar. Möchten Sie die Sprache wechseln?")
 			.setCancelable(true)
 			// Yes
 			.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-					setPref("lang", "de");
-					setPref("suggestLanguage", "true");
+					Util.setPref(c, "lang", "de");
+					Util.setPref(c, "suggestLanguage", "true");
 					startActivity(new Intent(Activity_Main.this, Activity_Main.class));
 				}
 			})
 			// No
 			.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-					setPref("suggestLanguage", "true");
+					Util.setPref(c, "suggestLanguage", "true");
 					dialog.cancel();
 				}
 			});
@@ -116,35 +119,35 @@ public class Activity_Main extends Activity {
 				@Override
 				public void onClick(View actualView) {
 					startActivity(new Intent(Activity_Main.this, Activity_PluginSelection.class));
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonGrids.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View actualView) {
 					startActivity(new Intent(Activity_Main.this, Activity_GridSelection.class));
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonAlerts.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View actualView) {
 					startActivity(new Intent(Activity_Main.this, Activity_Alerts.class));
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonLabels.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View actualView) {
 					startActivity(new Intent(Activity_Main.this, Activity_Labels.class));
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonServer.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View actualView) {
 					startActivity(new Intent(Activity_Main.this, Activity_Servers.class));
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonNotifications.setOnClickListener(new OnClickListener() {
@@ -152,7 +155,7 @@ public class Activity_Main extends Activity {
 				public void onClick(View actualView) {
 					if (muninFoo.premium) {
 						startActivity(new Intent(Activity_Main.this, Activity_Notifications.class));
-						setTransition("deeper");
+						Util.setTransition(c, TransitionStyle.DEEPER);
 					}
 				}
 			});
@@ -160,21 +163,21 @@ public class Activity_Main extends Activity {
 				@Override
 				public void onClick(View actualView) {
 					startActivity(new Intent(Activity_Main.this, Activity_Settings.class));
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonAbout.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View actualView) {
 					startActivity(new Intent(Activity_Main.this, Activity_About.class));
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonPremium.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View actualView) {
 					startActivity(new Intent(Activity_Main.this, Activity_GoPremium.class));
-					setTransition("deeper");
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			
@@ -236,11 +239,11 @@ public class Activity_Main extends Activity {
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Main.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_Main.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -284,44 +287,13 @@ public class Activity_Main extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 	}
 	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setPref(String key, String value) {
-		if (value.equals(""))
-			removePref(key);
-		else {
-			SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(key, value);
-			editor.commit();
-		}
-	}
-	
-	public void removePref(String key) {
-		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key);
-		editor.commit();
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-		}
-	}
-	
 	public class verifUpdate extends AsyncTask<String, Void, Void> {
 		double onlineLastVersion = -1;
 		@SuppressLint("SimpleDateFormat")
 		@Override
 		protected Void doInBackground(String... url) {
 			String timeStamp = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
-			if (!getPref("lastAppUpdateCheck").equals(timeStamp)) {
+			if (!Util.getPref(c, "lastAppUpdateCheck").equals(timeStamp)) {
 				String source = "";
 				try {
 					URL adresse = new URL("http://chteuchteu.free.fr/MuninforAndroid/version.txt");
@@ -335,7 +307,7 @@ public class Activity_Main extends Activity {
 					onlineLastVersion = Double.parseDouble(source);
 				} catch (Exception e) { }
 			}
-			setPref("lastAppUpdateCheck", timeStamp);
+			Util.setPref(c, "lastAppUpdateCheck", timeStamp);
 			return null;
 		}
 		@Override

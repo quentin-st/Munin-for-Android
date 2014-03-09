@@ -9,10 +9,10 @@ import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -22,6 +22,9 @@ import android.widget.SimpleAdapter;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
@@ -32,7 +35,9 @@ import com.mobeta.android.dslv.SimpleFloatViewManager;
 public class Activity_ServersEdit extends ListActivity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
+	private Context			c;
 	
+	private MuninMaster		m;
 	private SimpleAdapter 	sa;
 	ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 	List<MuninServer> 		serversList;
@@ -46,6 +51,7 @@ public class Activity_ServersEdit extends ListActivity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		c = this;
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			setContentView(R.layout.servers_edit);
@@ -64,11 +70,15 @@ public class Activity_ServersEdit extends ListActivity {
 			setContentView(R.layout.servers_edit);
 		}
 		
+		long masterId = getIntent().getExtras().getLong("masterId");
+		Log.v("", "trying to retrieve from id " + masterId);
+		m = muninFoo.getMasterById((int) masterId);
+		
 		deletedServers = new ArrayList<MuninServer>();
 		serversList = new ArrayList<MuninServer>();
-		for(int i=0; i<muninFoo.getOrderedServers().size(); i++) {
-			serversList.add(muninFoo.getOrderedServers().get(i));
-		}
+		
+		for (MuninServer s : m.getChildren())
+			serversList.add(s);
 		
 		updateList(true);
 		
@@ -103,9 +113,8 @@ public class Activity_ServersEdit extends ListActivity {
 	}
 	
 	public void actionSave() {
-		for (MuninServer s: deletedServers) {
+		for (MuninServer s: deletedServers)
 			muninFoo.deleteServer(s);
-		}
 		
 		for (int i=0; i<serversList.size(); i++)
 			muninFoo.getServer(serversList.get(i).getServerUrl()).setPosition(i);
@@ -175,31 +184,34 @@ public class Activity_ServersEdit extends ListActivity {
 					dh.getDrawer().toggle(true);
 				else {
 					intent = new Intent(this, Activity_Servers.class);
+					intent.putExtra("fromMaster", m.getId());
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
-					setTransition("shallower");
+					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_revert:
 				intent = new Intent(this, Activity_Servers.class);
+				intent.putExtra("fromMaster", m.getId());
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				setTransition("shallower");
+				Util.setTransition(c, TransitionStyle.SHALLOWER);
 				return true;
 			case R.id.menu_save:
 				actionSave();
 				intent = new Intent(this, Activity_Servers.class);
+				intent.putExtra("fromMaster", m.getId());
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				setTransition("shallower");
+				Util.setTransition(c, TransitionStyle.SHALLOWER);
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_ServersEdit.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_ServersEdit.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -209,40 +221,10 @@ public class Activity_ServersEdit extends ListActivity {
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent(this, Activity_Servers.class);
+		intent.putExtra("fromMaster", m.getId());
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		setTransition("shallower");
-	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setPref(String key, String value) {
-		if (value.equals(""))
-			removePref(key);
-		else {
-			SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(key, value);
-			editor.commit();
-		}
-	}
-	
-	public void removePref(String key) {
-		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key);
-		editor.commit();
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-		}
+		Util.setTransition(c, TransitionStyle.SHALLOWER);
 	}
 	
 	@Override
