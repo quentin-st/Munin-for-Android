@@ -56,7 +56,6 @@ public class Widget_Configure extends Activity {
 			setContentView(R.layout.widget_configuration);
 			
 			if (muninFoo != null) {
-				// Paramétrage des actions
 				final ListView lv1 = (ListView) findViewById(R.id.listview1); // servers
 				final ListView lv2 = (ListView) findViewById(R.id.listview2); // plugins
 				final ListView lv3 = (ListView) findViewById(R.id.listview3); // period
@@ -139,15 +138,14 @@ public class Widget_Configure extends Activity {
 										ll.setVisibility(View.VISIBLE);
 										ll.requestFocus();
 										final CheckBox cb = (CheckBox) findViewById(R.id.checkbox_wifi);
+										final CheckBox cb2 = (CheckBox) findViewById(R.id.checkbox_hidetitle);
 										Button btn = (Button) findViewById(R.id.save);
 										
 										btn.setOnClickListener(new View.OnClickListener() {
 											public void onClick(View v) {
 												// Save & close
-												if (cb.isChecked())
-													widget.setWifiOnly(true);
-												else
-													widget.setWifiOnly(false);
+												widget.setWifiOnly(cb.isChecked());
+												widget.setHideServerName(cb2.isChecked());
 												
 												muninFoo.sqlite.dbHlpr.insertWidget(widget);
 												//muninFoo.sqlite.logWidgets();

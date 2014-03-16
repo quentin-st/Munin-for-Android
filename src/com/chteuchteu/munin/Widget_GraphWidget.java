@@ -6,9 +6,8 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -52,7 +51,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 		awm = appWidgetManager;
 		widgetId = appWidgetId;
 		
-		boolean premium = checkPremium(context);
+		boolean premium = MuninFoo.isPremium(context);
 		
 		// Updating widget
 		views = new RemoteViews(context.getPackageName(), R.layout.graphwidget_layout);
@@ -75,7 +74,12 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 			widget = sqlite.dbHlpr.getWidget(appWidgetId);
 			
 			if (widget != null && widget.getPlugin() != null && widget.getPlugin().getInstalledOn() != null) {
-				views.setTextViewText(R.id.widget_servername, widget.getPlugin().getInstalledOn().getName());
+				if (!widget.getHideServerName())
+					views.setTextViewText(R.id.widget_servername, widget.getPlugin().getInstalledOn().getName());
+				else {
+					views.setViewVisibility(R.id.widget_legend, View.GONE);
+					views.setInt(R.id.widget_graph, "setBackgroundColor", Color.TRANSPARENT);
+				}
 				
 				// Update action
 				Intent intent = new Intent(context, Widget_GraphWidget.class);
@@ -195,7 +199,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 		}
 	}
 	
-	public static boolean checkPremium(Context context) {
+	/*public static boolean checkPremium(Context context) {
 		if (isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", context)) {
 			PackageManager manager = context.getPackageManager();
 			if (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")
@@ -214,7 +218,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 			return false;
 		}
 		return true;
-	}
+	}*/
 	
 	
 	@Override

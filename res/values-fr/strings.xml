@@ -72,6 +72,7 @@
 
 	<string name="widget_configuration1">Félicitations! Le widget a été ajouté avec succès à votre écran d\'accueil. Conseil: vous pouvez actualiser le graph en tapant sur la barre horizontale grise en-dessous de celui-ci.</string>
 	<string name="widget_configuration2">Rafraîchissement auto du graph par Wifi uniquement (1 par heure)</string>
+	<string name="widget_configuration3">Masquer le nom du serveur</string>
 
 
 	<string name="text01">Les paramètres vont être remis à zéro. Etes-vous sûr(e) ?</string>

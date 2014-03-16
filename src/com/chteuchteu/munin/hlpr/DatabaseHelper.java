@@ -69,6 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_WIDGETS_PLUGIN = "plugin";
 	private static final String KEY_WIDGETS_PERIOD = "period";
 	private static final String KEY_WIDGETS_WIFIONLY = "wifiOnly";
+	private static final String KEY_WIDGETS_HIDESERVERNAME = "hideServerName";
 	private static final String KEY_WIDGETS_WIDGETID = "widgetId";
 	
 	private static final String KEY_GRIDS_NAME = "name";
@@ -120,7 +121,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_WIDGETS_WIDGETID + " INTEGER,"
 			+ KEY_WIDGETS_PLUGIN + " INTEGER,"
 			+ KEY_WIDGETS_PERIOD + " TEXT,"
-			+ KEY_WIDGETS_WIFIONLY + " INTEGER)";
+			+ KEY_WIDGETS_WIFIONLY + " INTEGER,"
+			+ KEY_WIDGETS_HIDESERVERNAME + " INTEGER)";
 	
 	private static final String CREATE_TABLE_GRIDS = "CREATE TABLE " + TABLE_GRIDS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
@@ -162,6 +164,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_MUNINPLUGINS + " ADD COLUMN " + KEY_MUNINPLUGINS_PLUGINPAGEURL + " TEXT");
 			db.execSQL(CREATE_TABLE_MUNINMASTERS);
 			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_MASTER + " INTEGER");
+			db.execSQL("ALTER TABLE " + TABLE_WIDGETS + " ADD COLUMN " + KEY_WIDGETS_HIDESERVERNAME + " INTEGER");
 		}
 	}
 	
@@ -273,6 +276,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_WIDGETS_PERIOD, w.getPeriod());
 		values.put(KEY_WIDGETS_WIFIONLY, w.isWifiOnly());
 		values.put(KEY_WIDGETS_WIDGETID, w.getWidgetId());
+		values.put(KEY_WIDGETS_HIDESERVERNAME, w.getHideServerName());
 		
 		long id = db.insert(TABLE_WIDGETS, null, values);
 		w.setId(id);
@@ -575,6 +579,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIDGETID)));
 				w.setPlugin(getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN))));
 				w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)));
+				w.setHideServerName(c.getInt(c.getColumnIndex(KEY_WIDGETS_HIDESERVERNAME)));
 				w.isPersistant = true;
 				l.add(w);
 			} while (c.moveToNext());
@@ -598,6 +603,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIDGETID)));
 			w.setPlugin(getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN))));
 			w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)));
+			w.setHideServerName(c.getInt(c.getColumnIndex(KEY_WIDGETS_HIDESERVERNAME)));
 			w.isPersistant = true;
 			close(c, db);
 			return w;
@@ -920,9 +926,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(null, db);
 	}
 	
-	/**
-	 * Generic requests
-	 */
+	
 	public static class GenericQueries {
 		/**
 		 * Returns the number of lines returned by a SELECT COUNT(*) FROM _table WHERE _cond

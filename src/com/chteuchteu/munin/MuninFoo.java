@@ -85,7 +85,7 @@ public class MuninFoo {
 	
 	public double version = 3.4;
 	// =============== //
-	public boolean debug = true;
+	public static boolean debug = true;
 	public boolean premium;
 	
 	private MuninFoo() {
@@ -754,7 +754,7 @@ public class MuninFoo {
 		return false;
 	}
 	
-	public boolean isPackageInstalled (String packageName, Context c) {
+	public static boolean isPackageInstalled (String packageName, Context c) {
 		PackageManager pm = c.getPackageManager();
 		try {
 			pm.getPackageInfo(packageName, PackageManager.GET_META_DATA);
@@ -764,7 +764,7 @@ public class MuninFoo {
 		return true;
 	}
 	
-	public boolean isPremium(Context c) {
+	public static boolean isPremium(Context c) {
 		if (isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
 			if (debug)
 				return true;

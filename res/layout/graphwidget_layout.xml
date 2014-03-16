@@ -31,10 +31,7 @@
 		android:orientation="horizontal"
 		android:layout_marginLeft="9dp"
 		android:layout_marginRight="9dp">
-
-		<!-- Plugin name already displayed on graph -->
-		<!-- <TextView android:id="@+id/widget_pluginname" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="4dp" android:layout_marginLeft="6dp" android:layout_marginRight="4dp" android:layout_marginTop="2dp" android:textColor="#dbdbdb" /> -->
-
+		
 		<TextView
 			android:id="@+id/widget_servername"
 			android:layout_width="match_parent"
