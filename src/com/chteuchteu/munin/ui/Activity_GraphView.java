@@ -66,6 +66,7 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
+import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -78,7 +79,7 @@ public class Activity_GraphView extends Activity {
 	private	int				previousPos = -1;
 	private Context			c;
 	
-	public static String	load_period;
+	public static Period	load_period;
 	public static ViewFlow	viewFlow;
 	public static int		position;
 	public static Bitmap[]	bitmaps;
@@ -104,7 +105,6 @@ public class Activity_GraphView extends Activity {
 		c = this;
 		// Point d'entrée: widgets
 		Crashlytics.start(this);
-		
 		
 		if (Util.getPref(this, "graphview_orientation").equals("vertical"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -165,22 +165,16 @@ public class Activity_GraphView extends Activity {
 				&& thisIntent.getExtras().containsKey("server")
 				&& thisIntent.getExtras().containsKey("plugin")
 				&& thisIntent.getExtras().containsKey("period")) {
-			
 			String server = thisIntent.getExtras().getString("server");
 			String plugin = thisIntent.getExtras().getString("plugin");
 			String period = thisIntent.getExtras().getString("period");
 			// Setting currentServer
-			for (MuninServer s : muninFoo.getServers()) {
-				if (s.getServerUrl().equals(server)) {
-					muninFoo.currentServer = s; break;
-				}
-			}
+			muninFoo.currentServer = muninFoo.getServer(server);
 			
 			// Giving position of plugin in list to GraphView
 			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-				if (muninFoo.currentServer.getPlugins().get(i) != null && muninFoo.currentServer.getPlugins().get(i).getName().equals(plugin)) {
+				if (muninFoo.currentServer.getPlugins().get(i) != null && muninFoo.currentServer.getPlugins().get(i).getName().equals(plugin))
 					thisIntent.putExtra("position", "" + i);
-				}
 			}
 			
 			if (period.equals("day"))		spinner.setSelection(0);
@@ -222,11 +216,11 @@ public class Activity_GraphView extends Activity {
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
 				bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
-				if (position == 0)	Activity_GraphView.load_period = "day";
-				else if (position == 1)	Activity_GraphView.load_period = "week";
-				else if (position == 2)	Activity_GraphView.load_period = "month";
-				else if (position == 3)	Activity_GraphView.load_period = "year";
-				else 					Activity_GraphView.load_period = "day";
+				if (position == 0)	Activity_GraphView.load_period = Period.DAY;
+				else if (position == 1)	Activity_GraphView.load_period = Period.WEEK;
+				else if (position == 2)	Activity_GraphView.load_period = Period.MONTH;
+				else if (position == 3)	Activity_GraphView.load_period = Period.YEAR;
+				else 					Activity_GraphView.load_period = Period.DAY;
 				
 				if (viewFlow != null) // Update Viewflow
 					viewFlow.setSelection(viewFlow.getSelectedItemPosition());
@@ -824,24 +818,23 @@ public class Activity_GraphView extends Activity {
 	public void onResume() {
 		super.onResume();
 		
-		Activity_GraphView.load_period = Util.getPref(this, "defaultScale");
+		Activity_GraphView.load_period = Period.get(Util.getPref(this, "defaultScale"));
 		
 		// Venant de widget
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("period"))
-			Activity_GraphView.load_period = thisIntent.getExtras().getString("period");
+			Activity_GraphView.load_period = Period.get(thisIntent.getExtras().getString("period"));
 		
+		if (Activity_GraphView.load_period == null)
+			Activity_GraphView.load_period = Period.DAY;
 		
-		if (Activity_GraphView.load_period == null || Activity_GraphView.load_period.equals(""))
-			Activity_GraphView.load_period = "day";
-		
-		if (Activity_GraphView.load_period.equals("day"))
+		if (Activity_GraphView.load_period == Period.DAY)
 			spinner.setSelection(0, true);
-		else if (Activity_GraphView.load_period.equals("week"))
+		else if (Activity_GraphView.load_period == Period.WEEK)
 			spinner.setSelection(1, true);
-		else if (Activity_GraphView.load_period.equals("month"))
+		else if (Activity_GraphView.load_period == Period.MONTH)
 			spinner.setSelection(2, true);
-		else if (Activity_GraphView.load_period.equals("year"))
+		else if (Activity_GraphView.load_period == Period.YEAR)
 			spinner.setSelection(3, true);
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -853,14 +846,14 @@ public class Activity_GraphView extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (!muninFoo.debug)
+		if (!MuninFoo.debug)
 			EasyTracker.getInstance(this).activityStart(this);
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		if (!muninFoo.debug)
+		if (!MuninFoo.debug)
 			EasyTracker.getInstance(this).activityStop(this);
 		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))

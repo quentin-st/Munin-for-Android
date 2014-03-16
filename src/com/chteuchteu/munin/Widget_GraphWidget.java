@@ -130,8 +130,8 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 			} else if (intent.getAction().equals(ACTION_START_ACTIVITY)) {
 				Bundle extras = intent.getExtras();
 				if (extras != null) {
-					if (widget == null || widget.getPlugin() == null || widget.getPlugin().getInstalledOn() == null)
-						widget = sqlite.dbHlpr.getWidget(extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID));
+					int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+					widget = sqlite.dbHlpr.getWidget(widgetId);
 					Intent intent2 = new Intent(context, Activity_GraphView.class);
 					intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent2.putExtra("server", widget.getPlugin().getInstalledOn().getServerUrl());

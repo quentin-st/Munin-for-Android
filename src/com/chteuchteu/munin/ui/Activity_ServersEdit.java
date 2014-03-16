@@ -230,14 +230,14 @@ public class Activity_ServersEdit extends ListActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (!muninFoo.debug)
+		if (!MuninFoo.debug)
 			EasyTracker.getInstance(this).activityStart(this);
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		if (!muninFoo.debug)
+		if (!MuninFoo.debug)
 			EasyTracker.getInstance(this).activityStop(this);
 	}
 }

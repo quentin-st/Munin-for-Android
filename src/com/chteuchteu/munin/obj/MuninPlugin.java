@@ -100,7 +100,7 @@ public class MuninPlugin {
 	}
 	
 	public String getImgUrl(Period period) {
-		return this.getInstalledOn().getGraphURL() + this.getName() + "-" + period.name() + ".png";
+		return this.getInstalledOn().getGraphURL() + this.getName() + "-" + period + ".png";
 	}
 	
 	public String getPluginUrl() {

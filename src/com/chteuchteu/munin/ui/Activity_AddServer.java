@@ -1137,7 +1137,7 @@ public class Activity_AddServer extends Activity {
 					});
 				}
 			}
-			if (muninFoo.debug)
+			if (MuninFoo.debug)
 				muninFoo.sqlite.logMasters();
 			if (!Util.isOnline(c))
 				Toast.makeText(Activity_AddServer.this, getString(R.string.text30), Toast.LENGTH_LONG).show();
@@ -1168,14 +1168,14 @@ public class Activity_AddServer extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (!muninFoo.debug)
+		if (!MuninFoo.debug)
 			EasyTracker.getInstance(this).activityStart(this);
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		if (!muninFoo.debug)
+		if (!MuninFoo.debug)
 			EasyTracker.getInstance(this).activityStop(this);
 	}
 }

@@ -13,13 +13,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +52,7 @@ public class Activity_Main extends Activity {
 	public static Button	buttonGrids;
 	private Menu 			menu;
 	private String			activityName;
+	private boolean		doubleBackPressed;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -117,42 +117,42 @@ public class Activity_Main extends Activity {
 			
 			buttonGraphs.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View actualView) {
+				public void onClick(View v) {
 					startActivity(new Intent(Activity_Main.this, Activity_PluginSelection.class));
 					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonGrids.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View actualView) {
+				public void onClick(View v) {
 					startActivity(new Intent(Activity_Main.this, Activity_GridSelection.class));
 					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonAlerts.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View actualView) {
+				public void onClick(View v) {
 					startActivity(new Intent(Activity_Main.this, Activity_Alerts.class));
 					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonLabels.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View actualView) {
+				public void onClick(View v) {
 					startActivity(new Intent(Activity_Main.this, Activity_Labels.class));
 					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonServer.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View actualView) {
+				public void onClick(View v) {
 					startActivity(new Intent(Activity_Main.this, Activity_Servers.class));
 					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonNotifications.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View actualView) {
+				public void onClick(View v) {
 					if (muninFoo.premium) {
 						startActivity(new Intent(Activity_Main.this, Activity_Notifications.class));
 						Util.setTransition(c, TransitionStyle.DEEPER);
@@ -161,21 +161,21 @@ public class Activity_Main extends Activity {
 			});
 			buttonSettings.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View actualView) {
+				public void onClick(View v) {
 					startActivity(new Intent(Activity_Main.this, Activity_Settings.class));
 					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonAbout.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View actualView) {
+				public void onClick(View v) {
 					startActivity(new Intent(Activity_Main.this, Activity_About.class));
 					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 			buttonPremium.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onClick(View actualView) {
+				public void onClick(View v) {
 					startActivity(new Intent(Activity_Main.this, Activity_GoPremium.class));
 					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
@@ -226,6 +226,27 @@ public class Activity_Main extends Activity {
 				buttonGrids.setEnabled(false);
 			}
 		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if (doubleBackPressed) {
+			// Close the app when tapping twice on it.
+			// Useful when going in GraphView from widgets
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+		}
+		
+		doubleBackPressed = true;
+		
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				doubleBackPressed = false;
+			}
+		}, 2000);
 	}
 	
 	@Override
@@ -325,26 +346,18 @@ public class Activity_Main extends Activity {
 			});
 		}
 	}
-	public boolean isPackageInstalled (String packageName) {
-		PackageManager pm = getPackageManager();
-		try {
-			pm.getPackageInfo(packageName, PackageManager.GET_META_DATA);
-		} catch (NameNotFoundException e) {
-			return false;
-		}
-		return true;
-	}
+	
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (!muninFoo.debug)
+		if (!MuninFoo.debug)
 			EasyTracker.getInstance(this).activityStart(this);
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		if (!muninFoo.debug)
+		if (!MuninFoo.debug)
 			EasyTracker.getInstance(this).activityStop(this);
 	}
 }

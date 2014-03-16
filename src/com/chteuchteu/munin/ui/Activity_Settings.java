@@ -538,14 +538,14 @@ public class Activity_Settings extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (!muninFoo.debug)
+		if (!MuninFoo.debug)
 			EasyTracker.getInstance(this).activityStart(this);
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		if (!muninFoo.debug)
+		if (!MuninFoo.debug)
 			EasyTracker.getInstance(this).activityStop(this);
 	}
 }

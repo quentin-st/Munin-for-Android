@@ -353,23 +353,12 @@ public class MuninFoo {
 		return l;
 	}
 	public MuninServer getServer(String url) {
-		if (!url.equals("")) {
-			for (MuninServer s : servers) {
-				if (s.getServerUrl().equals(url))
-					return s;
-			}
+		for (MuninServer s : servers) {
+			if (s.getServerUrl().equals(url))
+				return s;
 		}
 		return null;
 	}
-	/*public MuninServer getServerByName(String name) {<<<<<<< HEAD
-		if (!name.equals("")) {
-			for (MuninServer s : servers) {
-				if (s.getName().equals(name))
-					return s;
-			}
-		}
-		return null;
-	}*/
 	
 	public int getServerRange(MuninServer server) {
 		for (int i=0; i<getHowManyServers(); i++) {
@@ -727,7 +716,7 @@ public class MuninFoo {
 					s.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
 					return grabBitmap(s, url, true);
 				} else
-					throw new IOException("Download failed :s HTTP response code "
+					throw new IOException("Download failed for URL " + url + " HTTP response code "
 							+ statusCode + " - " + statusLine.getReasonPhrase());
 			}
 		}
