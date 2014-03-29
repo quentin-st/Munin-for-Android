@@ -148,6 +148,7 @@ public class GridItem {
 		add_serversListDialog(c, f, g, X, Y);
 	}
 	
+	@SuppressWarnings("deprecation")
 	private static void add_serversListDialog(final Context c, final MuninFoo f, final Grid g, final int X, final int Y) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(c);
 		builder.setTitle(c.getText(R.string.text71));
@@ -171,6 +172,7 @@ public class GridItem {
 	}
 	
 	private static void add_pluginsListDialog(final Context c, int pos, final MuninFoo f, final Grid g, final int X, final int Y) {
+		@SuppressWarnings("deprecation")
 		final MuninServer s = f.getServerFromFlatPosition(pos);
 		List<MuninPlugin> l = s.getPlugins();
 		

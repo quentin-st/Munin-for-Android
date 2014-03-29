@@ -80,8 +80,9 @@ public class SQLite {
 	
 	public void saveServers() {
 		// Vérification des positions
-		for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
-			muninFoo.getOrderedServers().get(i).setPosition(i);
+		for (MuninMaster m : muninFoo.masters) {
+			for (int i=0; i<m.getOrderedChildren().size(); i++)
+				m.getOrderedChildren().get(i).setPosition(i);
 		}
 		
 		// Suppression des serveurs à supprimer

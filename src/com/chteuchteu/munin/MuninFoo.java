@@ -477,6 +477,7 @@ public class MuninFoo {
 				m.setUrl(a.attr("abs:href"));
 				this.masters.add(m);
 				
+				int pos = 0;
 				// Get every host for that domain
 				Elements hosts = domain.parent().select("span.host");
 				for (Element host : hosts) {
@@ -488,6 +489,8 @@ public class MuninFoo {
 					}
 					serv.setSSL(s.getSSL());
 					serv.setParent(m);
+					serv.setPosition(pos);
+					pos++;
 					this.addServer(serv);
 					nbServers++;
 				}

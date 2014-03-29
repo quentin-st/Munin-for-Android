@@ -130,7 +130,7 @@ public class MuninServer {
 	
 	public void setAuthType(AuthType t) { this.authType = t; }
 	public AuthType getAuthType() { return this.authType; }
-	public boolean isAuthNeeded() { return this.authType == AuthType.NONE; }
+	public boolean isAuthNeeded() { return this.authType != AuthType.NONE; }
 	public void setAuthIds(String login, String password) {
 		this.authLogin = login;
 		this.authPassword = password;
@@ -304,11 +304,14 @@ public class MuninServer {
 		this.master = source.master;
 	}
 	
+	/**
+	 * Get the type of the given page:
+	 * 	- munin/		: list of servers
+	 * 	- munin/x/		: list of plugins
+	 * 	- err_code		: if error -> error code
+	 * @return
+	 */
 	public String detectPageType() {
-		// Returns the type of the page:
-		//	- munin/		: list of servers
-		//	- munin/x/		: list of plugins
-		//  - err_code		: if error -> error code
 		HTTPResponse res = grabUrl(this.serverUrl);
 		String page = res.html;
 		if (!res.header_wwwauthenticate.equals("")) {

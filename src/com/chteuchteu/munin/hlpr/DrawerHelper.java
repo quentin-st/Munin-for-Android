@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -165,7 +166,7 @@ public class DrawerHelper {
 				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				a.startActivity(i);
-				setTransition("deeper");
+				Util.setTransition(a, TransitionStyle.DEEPER);
 			}
 		});
 		a.findViewById(R.id.drawer_grid_btn).setOnClickListener(new OnClickListener() {
@@ -175,7 +176,7 @@ public class DrawerHelper {
 				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				a.startActivity(i);
-				setTransition("deeper");
+				Util.setTransition(a, TransitionStyle.DEEPER);
 			}
 		});
 		// Alerts
@@ -186,7 +187,7 @@ public class DrawerHelper {
 				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				a.startActivity(i);
-				setTransition("deeper");
+				Util.setTransition(a, TransitionStyle.DEEPER);
 			}
 		});
 		// Labels
@@ -197,7 +198,7 @@ public class DrawerHelper {
 				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				a.startActivity(i);
-				setTransition("deeper");
+				Util.setTransition(a, TransitionStyle.DEEPER);
 			}
 		});
 		// Servers
@@ -208,7 +209,7 @@ public class DrawerHelper {
 				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				a.startActivity(i);
-				setTransition("deeper");
+				Util.setTransition(a, TransitionStyle.DEEPER);
 			}
 		});
 		// Notifications
@@ -219,7 +220,7 @@ public class DrawerHelper {
 				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				a.startActivity(i);
-				setTransition("deeper");
+				Util.setTransition(a, TransitionStyle.DEEPER);
 			}
 		});
 		// Premium
@@ -230,7 +231,7 @@ public class DrawerHelper {
 				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				a.startActivity(i);
-				setTransition("deeper");
+				Util.setTransition(a, TransitionStyle.DEEPER);
 			}
 		});
 		
@@ -418,18 +419,6 @@ public class DrawerHelper {
 		}
 	}
 	
-	
-	private void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				a.overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				a.overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-		}
-	}
-	private String getPref(String key) {
-		return a.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
 	
 	public void setFont(ViewGroup g, String font) {
 		Typeface mFont = Typeface.createFromAsset(a.getAssets(), font);

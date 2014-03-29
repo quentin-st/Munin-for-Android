@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
+import com.chteuchteu.munin.obj.MuninServer;
 
 public final class Util {
 	private Util() { }
@@ -184,6 +186,14 @@ public final class Util {
 			Date today = Calendar.getInstance().getTime();        
 			return df.format(today);
 		}
+	}
+	
+	public static boolean serversListContainsPos(List<MuninServer> l, int pos) {
+		for (MuninServer s : l) {
+			if (s.getPosition() == pos)
+				return true;
+		}
+		return false;
 	}
 	
 	/*public void log(String nature, String value) {

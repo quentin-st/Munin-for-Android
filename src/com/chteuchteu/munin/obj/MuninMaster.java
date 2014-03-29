@@ -3,7 +3,10 @@ package com.chteuchteu.munin.obj;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.hlpr.Util;
 
 public class MuninMaster {
 	private long id;
@@ -121,24 +124,43 @@ public class MuninMaster {
 	}
 	
 	public List<MuninServer> getOrderedChildren() {
-		List<MuninServer> l = new ArrayList<MuninServer>();
-		int pos = 0;
-		int remainingServers = this.children.size();
+		Log.v("normal list:", "================================");
+		for (MuninServer s : this.children)
+			Log.v("" ,s.getName() + " (" + s.getPosition() + ")");
+		Log.v("", "======================");
 		
-		int maxPos = 0;
-		for (MuninServer s : this.children) {
-			if (s.getPosition() > maxPos)
-				maxPos = s.getPosition();
-		}
+		// Let's first sort the list.
+		// We'll then clean the positions
+		List<MuninServer> source = new ArrayList<MuninServer>(this.children);
+		List<MuninServer> newList = new ArrayList<MuninServer>();
 		
-		while(remainingServers > 0 && pos <= maxPos) {
-			if (getServerFromPosition(pos) != null) {
-				l.add(getServerFromPosition(pos));
-				remainingServers--;
+		int curPos = 0;
+		while (source.size() > 0) {
+			while (Util.serversListContainsPos(source, curPos)) {
+				List<MuninServer> toBeDeleted = new ArrayList<MuninServer>();
+				
+				for (MuninServer s : source) {
+					if (s.getPosition() == curPos) {
+						newList.add(s);
+						toBeDeleted.add(s);
+					}
+				}
+				
+				for (MuninServer s : toBeDeleted)
+					source.remove(s);
 			}
-			pos++;
+			curPos++;
 		}
 		
-		return l;
+		// We now have a sorted list in newList. Let's restablish the pos
+		for (int i=0; i<newList.size(); i++)
+			newList.get(i).setPosition(i);
+		
+		Log.v("sorted list:", "================================");
+		for (MuninServer s : newList)
+			Log.v("" ,s.getName()+ " (" + s.getPosition() + ")");
+		Log.v("", "======================");
+		
+		return newList;
 	}
 }
