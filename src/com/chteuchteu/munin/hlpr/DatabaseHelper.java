@@ -52,7 +52,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_MUNINSERVERS_POSITION = "position";
 	private static final String KEY_MUNINSERVERS_AUTHTYPE = "authType";
 	private static final String KEY_MUNINSERVERS_AUTHSTRING = "authString";
-	//private static final String KEY_MUNINSERVERS_PARENT = "parent";
 	private static final String KEY_MUNINSERVERS_MASTER = "master";
 	
 	private static final String KEY_MUNINPLUGINS_NAME = "name";
@@ -160,7 +159,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL(CREATE_TABLE_GRIDS);
 			db.execSQL(CREATE_TABLE_GRIDITEMRELATIONS);
 		}
-		if (oldVersion == 4) { // From 3 to 4
+		if (oldVersion < 4) { // From 3 to 4
 			db.execSQL("ALTER TABLE " + TABLE_MUNINPLUGINS + " ADD COLUMN " + KEY_MUNINPLUGINS_PLUGINPAGEURL + " TEXT");
 			db.execSQL(CREATE_TABLE_MUNINMASTERS);
 			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_MASTER + " INTEGER");

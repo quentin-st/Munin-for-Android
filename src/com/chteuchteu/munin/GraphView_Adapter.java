@@ -63,7 +63,7 @@ public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
 			}
 		}
 		
-		if (!downloaded) { // Le téléchargement n'a pas été effectué, donc les bitmaps n'ont pas été placées
+		if (!downloaded) { // Download hasn't been done, so the bitmaps hasn't been set
 			ImageView iv = (ImageView) convertView.findViewById(R.id.tiv);
 			Integer nbr = (Integer)iv.getTag();
 			if (nbr >= 0 && nbr < Activity_GraphView.bitmaps.length) {
@@ -141,7 +141,7 @@ public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
 					// It seems that can actually fire OutOfMemoryError (BitmapFactory.nativeDecodeAsset)
 					try {
 						tiv.setImageResource(R.drawable.download_error);
-					} catch (Exception e) { }
+					} catch (Exception e) { e.printStackTrace(); }
 				}
 			}
 		}

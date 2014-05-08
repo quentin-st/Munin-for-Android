@@ -15,7 +15,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -34,6 +33,8 @@ import android.widget.Toast;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -83,8 +84,8 @@ public class Activity_Settings extends Activity {
 			findViewById(R.id.btn_gplay).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionGPlay(); } });
 		}
 		
-		spinner_scale = 	(Spinner)findViewById(R.id.spinner_scale);
-		spinner_lang =		(Spinner)findViewById(R.id.spinner_lang);
+		spinner_scale = (Spinner)findViewById(R.id.spinner_scale);
+		spinner_lang = (Spinner)findViewById(R.id.spinner_lang);
 		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);
 		
 		checkable_drawer = inflateCheckable((ViewGroup)findViewById(R.id.checkable_drawer), getString(R.string.settings_drawer_checkbox));
@@ -99,7 +100,7 @@ public class Activity_Settings extends Activity {
 			checkable_drawer.setVisibility(View.GONE);
 		}
 		
-		// Bouton sauvegarder
+		// Save button
 		findViewById(R.id.btn_settings_save).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				actionSave();
@@ -233,7 +234,7 @@ public class Activity_Settings extends Activity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.putExtra("action", "settingsSave");
 		startActivity(intent);
-		setTransition("shallower");
+		Util.setTransition(this, TransitionStyle.SHALLOWER);
 	}
 	
 	@Override
@@ -338,7 +339,7 @@ public class Activity_Settings extends Activity {
 					Intent intent = new Intent(this, Activity_Main.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
-					setTransition("shallower");
+					Util.setTransition(this, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_save:	actionSave();	return true;
@@ -347,11 +348,11 @@ public class Activity_Settings extends Activity {
 			case R.id.menu_gplay:	actionGPlay();	return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Settings.this, Activity_Settings.class));
-				setTransition("deeper");
+				Util.setTransition(this, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_Settings.this, Activity_About.class));
-				setTransition("deeper");
+				Util.setTransition(this, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -425,7 +426,7 @@ public class Activity_Settings extends Activity {
 		@Override
 		protected void onPreExecute() {
 			onlineLastVersion = 0;
-			// Checking last version of Munin for Android…
+			// Checking last version of Munin for Android
 			myProgressDialog = ProgressDialog.show(Activity_Settings.this, "", getString(R.string.text03), true);
 		}
 		
@@ -500,7 +501,7 @@ public class Activity_Settings extends Activity {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		setTransition("shallower");
+		Util.setTransition(this, TransitionStyle.SHALLOWER);
 	}
 	
 	public String getPref(String key) {
@@ -508,30 +509,11 @@ public class Activity_Settings extends Activity {
 	}
 	
 	public void setPref(String key, String value) {
-		if (value.equals(""))
-			removePref(key);
-		else {
-			SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(key, value);
-			editor.commit();
-		}
+		Util.setPref(this, key, value);
 	}
 	
 	public void removePref(String key) {
-		SharedPreferences prefs = this.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key);
-		editor.commit();
-	}
-	
-	public void setTransition(String level) {
-		if (getPref("transitions").equals("true")) {
-			if (level.equals("deeper"))
-				overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (level.equals("shallower"))
-				overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-		}
+		Util.removePref(this, key);
 	}
 	
 	

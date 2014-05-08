@@ -94,7 +94,7 @@ public class Activity_Splash extends Activity {
 		if (updateOperations) {
 			if (myProgressDialog == null || (myProgressDialog != null && !myProgressDialog.isShowing()))
 				myProgressDialog = ProgressDialog.show(Activity_Splash.this, "", getString(R.string.text39), true);
-			// Please wait while the app does some update operations…
+			// Please wait while the app does some update operations
 			new UpdateOperations().execute();
 		} else
 			updating = false;
@@ -122,7 +122,7 @@ public class Activity_Splash extends Activity {
 	
 	public void updateActions() {
 		if (Util.getPref(c, "lastMFAVersion").equals("1.3") || Util.getPref(c, "lastMFAVersion").equals("1.4") || Util.getPref(c, "lastMFAVersion").equals("1.5") || Util.getPref(c, "lastMFAVersion").equals("1.6")) {
-			// Nettoyage de la base de données
+			// Cleaning database
 			String serverNumber = "";
 			for (int i=0; i<100; i++) {
 				if (i<10)	serverNumber = "0" + i;
@@ -138,8 +138,8 @@ public class Activity_Splash extends Activity {
 				}
 			}
 		}
-		// Mise à jour de 1.3 a 1.4: modification du serveur
-		if (!Util.getPref(c, "serverUrl").equals("")) {	// Qqch dans les anciens settings
+		// 1.3 to 1.4
+		if (!Util.getPref(c, "serverUrl").equals("")) {
 			MuninServer migrationServ = new MuninServer(Util.getPref(c, "serverName"), Util.getPref(c, "serverUrl"));
 			
 			// Nouvelle recherche de plugins (vrais noms des plugins)

@@ -71,12 +71,11 @@ public class Activity_AlertsPluginSelection extends Activity {
 		
 		plugins = new ArrayList<MuninPlugin>();
 		if (muninFoo.currentServer != null && muninFoo.currentServer.getPlugins() != null && muninFoo.currentServer.getPlugins().size() > 0) {
-			// Construction de plugins - liste des plugins à afficher
 			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
 				if (muninFoo.currentServer.getPlugin(i) != null && 
 						(muninFoo.currentServer.getPlugin(i).getState() == AlertState.WARNING || muninFoo.currentServer.getPlugin(i).getState() == AlertState.CRITICAL)) {
 					plugins.add(muninFoo.currentServer.getPlugin(i));
-					// Construction de la vue
+					
 					LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 					View v = vi.inflate(R.layout.pluginselection_list_dark, null);
 					
@@ -87,11 +86,11 @@ public class Activity_AlertsPluginSelection extends Activity {
 					else if (muninFoo.currentServer.getPlugin(i).getState() == AlertState.CRITICAL)
 						((LinearLayout)v.findViewById(R.id.pluginselection_part_ll)).setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_CRITICAL));
 					
-					((LinearLayout)v.findViewById(R.id.pluginselection_part_ll)).setOnClickListener(new OnClickListener() {
+					v.findViewById(R.id.pluginselection_part_ll).setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							Intent i = new Intent(Activity_AlertsPluginSelection.this, Activity_GraphView.class);
 							i.putExtra("plugin", ((TextView)v.findViewById(R.id.line_b)).getText().toString());
-							// Récupération de la position du plugin dans la liste
+							// Get plugin index in list
 							for (int y=0; y<muninFoo.currentServer.getPlugins().size(); y++) {
 								if (muninFoo.currentServer.getPlugin(y) != null && muninFoo.currentServer.getPlugin(y).getName().equals(((TextView)v.findViewById(R.id.line_b)).getText().toString())) {
 									i.putExtra("position", y + ""); break;

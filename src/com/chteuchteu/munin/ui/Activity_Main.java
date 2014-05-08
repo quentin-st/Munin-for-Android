@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
@@ -207,6 +206,10 @@ public class Activity_Main extends Activity {
 		.setMinDaysUntilPrompt(8)
 		.setMinLaunchesUntilPrompt(10)
 		.init();
+		
+		// Display the "follow on Twitter" message
+		// after 3 launches
+		displayTwitterAlertIfNeeded();
 	}
 	
 	@Override
@@ -302,8 +305,8 @@ public class Activity_Main extends Activity {
 	private void createOptionsMenu() {
 		menu.clear();
 		if (!muninFoo.drawer) {
-			((Button)findViewById(R.id.settingsContainer)).setVisibility(View.GONE);
-			((Button)findViewById(R.id.aboutContainer)).setVisibility(View.GONE);
+			findViewById(R.id.settingsContainer).setVisibility(View.GONE);
+			findViewById(R.id.aboutContainer).setVisibility(View.GONE);
 		}
 		getMenuInflater().inflate(R.menu.main, menu);
 	}
@@ -318,11 +321,10 @@ public class Activity_Main extends Activity {
 				String source = "";
 				try {
 					URL adresse = new URL("http://chteuchteu.free.fr/MuninforAndroid/version.txt");
-					BufferedReader in = new BufferedReader(
-							new InputStreamReader(adresse.openStream()));
+					BufferedReader in = new BufferedReader(new InputStreamReader(adresse.openStream()));
 					String inputLine;
 					while ((inputLine = in.readLine()) != null) {
-						source = source + inputLine + "\n";
+						source += inputLine;
 					}
 					in.close();  
 					onlineLastVersion = Double.parseDouble(source);
@@ -334,9 +336,9 @@ public class Activity_Main extends Activity {
 		@Override
 		protected void onPostExecute(Void result) {
 			if (onlineLastVersion != -1 && muninFoo.version < onlineLastVersion)
-				((LinearLayout)findViewById(R.id.updateNotification)).setVisibility(View.VISIBLE);
+				findViewById(R.id.updateNotification).setVisibility(View.VISIBLE);
 			
-			((LinearLayout)findViewById(R.id.updateNotification)).setOnClickListener(new OnClickListener() {
+			findViewById(R.id.updateNotification).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View actualView) {
 					Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -344,6 +346,43 @@ public class Activity_Main extends Activity {
 					startActivity(intent);
 				}
 			});
+		}
+	}
+	
+	public void displayTwitterAlertIfNeeded() {
+		String nbLaunches = Util.getPref(this, "twitter_nbLaunches");
+		if (nbLaunches.equals(""))
+			Util.setPref(this, "twitter_nbLaunches", "1");
+		else if (!nbLaunches.equals("ok")) {
+			int n = Integer.parseInt(nbLaunches);
+			if (n == 3) {
+				// Display message
+				AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Main.this);
+				builder.setMessage("Be the first to try beta versions of the app, and learn cool news like upcoming updates and known issues!")
+				.setTitle("Follow Munin for Android on Twitter")
+				.setCancelable(true)
+				// Yes
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						try {
+						   startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=muninforandroid")));
+						} catch (Exception e) {
+						   startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/muninforandroid")));
+						}
+					}
+				})
+				// No
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				AlertDialog alert = builder.create();
+				alert.show();
+				Util.setPref(this, "twitter_nbLaunches", "ok");
+			} else {
+				Util.setPref(this, "twitter_nbLaunches", String.valueOf(n+1));
+			}
 		}
 	}
 	

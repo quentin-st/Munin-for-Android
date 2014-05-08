@@ -84,8 +84,8 @@ public class Activity_Alerts extends Activity {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 			actionBar.setTitle(getString(R.string.alertsTitle));
 			
-			((TextView)findViewById(R.id.viewTitle)).setVisibility(View.GONE);
-			((LinearLayout)findViewById(R.id.viewTitleSep)).setVisibility(View.GONE);
+			findViewById(R.id.viewTitle).setVisibility(View.GONE);
+			findViewById(R.id.viewTitleSep).setVisibility(View.GONE);
 			
 			if (muninFoo.drawer) {
 				dh = new DrawerHelper(this, muninFoo);
@@ -162,7 +162,7 @@ public class Activity_Alerts extends Activity {
 		
 		updateStates();
 		
-		((TextView) findViewById(R.id.hideNoAlerts)).setOnClickListener(new OnClickListener() {
+		findViewById(R.id.hideNoAlerts).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				if (hideNormalStateServers) {
