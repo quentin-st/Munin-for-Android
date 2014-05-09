@@ -97,7 +97,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 				
 				if (!widget.isWifiOnly() || forceUpdate) {
 					// Launching Asyntask
-					applyBitmap task = new applyBitmap((MuninServer) widget.getPlugin().getInstalledOn(), widget.getPlugin().getImgUrl(widget.getPeriod()), views, awm, appWidgetId);
+					ApplyBitmap task = new ApplyBitmap(widget.getPlugin().getInstalledOn(), widget.getPlugin().getImgUrl(widget.getPeriod()), views, awm, appWidgetId);
 					task.execute();
 				} else {
 					// Automatic update -> let's check if on wifi or data
@@ -120,12 +120,15 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 		
 		if (intent.getAction() != null) {
 			if (intent.getAction().equals(ACTION_UPDATE_GRAPH)) {
-				Bundle extras = intent.getExtras();
-				if (extras != null) {
-					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-					int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-					
-					updateAppWidget(context, appWidgetManager, widgetId, true);
+				// Check if connection is available
+				if (Util.isOnline(context)) {
+					Bundle extras = intent.getExtras();
+					if (extras != null) {
+						AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+						int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+						
+						updateAppWidget(context, appWidgetManager, widgetId, true);
+					}
 				}
 			} else if (intent.getAction().equals(ACTION_START_ACTIVITY)) {
 				Bundle extras = intent.getExtras();
@@ -155,7 +158,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 		super.onEnabled(context);
 	}
 	
-	static class applyBitmap extends AsyncTask<Void, Integer, Void> {
+	static class ApplyBitmap extends AsyncTask<Void, Integer, Void> {
 		private Bitmap	bm;
 		
 		private MuninServer	serv;
@@ -165,7 +168,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 		private AppWidgetManager awm;
 		private	int		widgetId;
 		
-		public applyBitmap(MuninServer s, String ad, RemoteViews v, AppWidgetManager a, int w) {
+		public ApplyBitmap(MuninServer s, String ad, RemoteViews v, AppWidgetManager a, int w) {
 			super();
 			this.serv = s;
 			this.url = ad;
@@ -198,28 +201,6 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 			this.awm.updateAppWidget(this.widgetId, this.views);
 		}
 	}
-	
-	/*public static boolean checkPremium(Context context) {
-		if (isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", context)) {
-			PackageManager manager = context.getPackageManager();
-			if (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")
-					== PackageManager.SIGNATURE_MATCH) {
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
-	public static boolean isPackageInstalled (String packageName, Context context) {
-		PackageManager pm = context.getPackageManager();
-		try {
-			pm.getPackageInfo(packageName, PackageManager.GET_META_DATA);
-		} catch (NameNotFoundException e) {
-			return false;
-		}
-		return true;
-	}*/
-	
 	
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
