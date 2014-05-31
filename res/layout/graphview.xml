@@ -111,7 +111,7 @@
 			android:id="@+id/serverSwitch_mask"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:background="#44000000"
+			android:background="#88000000"
 			android:orientation="vertical"
 			android:visibility="gone" />
 

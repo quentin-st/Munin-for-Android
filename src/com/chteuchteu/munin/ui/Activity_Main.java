@@ -208,7 +208,7 @@ public class Activity_Main extends Activity {
 		.init();
 		
 		// Display the "follow on Twitter" message
-		// after 3 launches
+		// after X launches
 		displayTwitterAlertIfNeeded();
 	}
 	
@@ -350,12 +350,13 @@ public class Activity_Main extends Activity {
 	}
 	
 	public void displayTwitterAlertIfNeeded() {
+		int NB_LAUNCHES = 3;
 		String nbLaunches = Util.getPref(this, "twitter_nbLaunches");
 		if (nbLaunches.equals(""))
 			Util.setPref(this, "twitter_nbLaunches", "1");
 		else if (!nbLaunches.equals("ok")) {
 			int n = Integer.parseInt(nbLaunches);
-			if (n == 3) {
+			if (n == NB_LAUNCHES) {
 				// Display message
 				AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Main.this);
 				builder.setMessage("Be the first to try beta versions of the app, and learn cool news like upcoming updates and known issues!")
@@ -380,9 +381,8 @@ public class Activity_Main extends Activity {
 				AlertDialog alert = builder.create();
 				alert.show();
 				Util.setPref(this, "twitter_nbLaunches", "ok");
-			} else {
+			} else
 				Util.setPref(this, "twitter_nbLaunches", String.valueOf(n+1));
-			}
 		}
 	}
 	
