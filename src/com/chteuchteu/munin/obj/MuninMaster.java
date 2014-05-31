@@ -3,8 +3,6 @@ package com.chteuchteu.munin.obj;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.hlpr.Util;
 

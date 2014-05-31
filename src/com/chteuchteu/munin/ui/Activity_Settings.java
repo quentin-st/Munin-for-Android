@@ -465,8 +465,8 @@ public class Activity_Settings extends Activity {
 			} else {
 				// No update needed.
 				alert.setTitle(getString(R.string.text06));
-				// You're running a beta version of Munin for Android. You're the best!
-				alert.setMessage(getString(R.string.text08));
+				// Munin for Android is up to date.
+				alert.setMessage(getString(R.string.text07));
 			}
 			
 			alert.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
