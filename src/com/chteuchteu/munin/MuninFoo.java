@@ -86,7 +86,7 @@ public class MuninFoo {
 	
 	public double version = 3.7;
 	// =============== //
-	//public static boolean debug = true;
+	public static boolean debug = false;
 	public boolean premium;
 	
 	private MuninFoo() {

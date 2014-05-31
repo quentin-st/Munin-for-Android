@@ -103,7 +103,7 @@ public class Activity_GraphView extends Activity {
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
 		c = this;
-		// Point d'entrée: widgets
+		// Entry point: widgets
 		Crashlytics.start(this);
 		
 		if (Util.getPref(this, "graphview_orientation").equals("vertical"))
@@ -294,8 +294,7 @@ public class Activity_GraphView extends Activity {
 		if (Util.getPref(this, "autoRefresh").equals("true")) {
 			mHandler = new Handler();
 			final int INTERVAL = 1000 * 60 * 5;
-			mHandlerTask = new Runnable()
-			{
+			mHandlerTask = new Runnable() {
 				@Override 
 				public void run() {
 					actionRefresh();
@@ -350,7 +349,8 @@ public class Activity_GraphView extends Activity {
 		if (viewFlow.getSelectedItemPosition() == 0) {
 			item_previous.setIcon(R.drawable.blank);
 			item_previous.setEnabled(false);
-		} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
+		}
+		if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
 			item_next.setIcon(R.drawable.blank);
 			item_next.setEnabled(false);
 		}
