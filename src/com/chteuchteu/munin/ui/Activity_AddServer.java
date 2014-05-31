@@ -70,13 +70,13 @@ public class Activity_AddServer extends Activity {
 	private String		activityName;
 	private EditText 	tb_auth_login;
 	private EditText 	tb_auth_password;
-	private Spinner		sp_authType;
+	private Spinner	sp_authType;
 	private CheckBox 	cb_auth;
 	private Spinner  	spinner;
 	private AutoCompleteTextView 	tb_serverUrl;
 	private LinearLayout ll_auth;
 	private LinearLayout loading;
-	private int			loading_width;
+	private int		loading_width;
 	private TextView 	popup_title1;
 	private TextView 	popup_title2;
 	private int 		popup_width;
@@ -89,20 +89,20 @@ public class Activity_AddServer extends Activity {
 	private MuninServer settingsServer;
 	
 	// Algo
-	private String 		serverUrl;
+	private String 	serverUrl;
 	private boolean 	SSL;
 	private List<String> oldServers;
 	private List<String> newServers;
-	private String 		type;
-	private String 		message_title;
-	private String 		message_text;
+	private String 	type;
+	private String 	message_title;
+	private String 	message_text;
 	Activity_AddServer_Algorithm task;
 	private boolean	canCancel = true;
-	private int			algo_state = 0;
-	private int			AST_IDLE = 0;
-	private int			AST_RUNNING = 1;
-	private int			AST_WAITING_FOR_URL = 2;
-	private int			AST_WAITING_FOR_CREDENTIALS = 3;
+	private int		algo_state = 0;
+	private int		AST_IDLE = 0;
+	private int		AST_RUNNING = 1;
+	private int		AST_WAITING_FOR_URL = 2;
+	private int		AST_WAITING_FOR_CREDENTIALS = 3;
 	
 	
 	@SuppressWarnings("deprecation")
@@ -571,7 +571,8 @@ public class Activity_AddServer extends Activity {
 				setPopupText("", getString(R.string.text42));
 				
 				type = "";
-				serverUrl = tb_serverUrl.getText().toString();
+				if (serverUrl == null || serverUrl.equals(""))
+					serverUrl = tb_serverUrl.getText().toString();
 				boolean letsFetch = false;
 				SSL = false;
 				
@@ -652,7 +653,7 @@ public class Activity_AddServer extends Activity {
 					//if (settingsServer != null)
 						//et_url.setText(settingsServer.getServerUrl());
 					//else
-					et_url.setText(tb_serverUrl.getText().toString());
+					et_url.setText(serverUrl);
 					//InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					//imm.showSoftInput(this, 0);
 				}
@@ -685,6 +686,7 @@ public class Activity_AddServer extends Activity {
 				@Override
 				public void onClick(View v) {
 					final String url = et_url.getText().toString();
+					serverUrl = url;
 					
 					if (!muninFoo.premium && url.contains("https://")) {
 						cancelFetch(RES_NOT_PREMIUM);

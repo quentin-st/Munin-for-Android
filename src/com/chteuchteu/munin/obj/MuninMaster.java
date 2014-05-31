@@ -124,11 +124,6 @@ public class MuninMaster {
 	}
 	
 	public List<MuninServer> getOrderedChildren() {
-		Log.v("normal list:", "================================");
-		for (MuninServer s : this.children)
-			Log.v("" ,s.getName() + " (" + s.getPosition() + ")");
-		Log.v("", "======================");
-		
 		// Let's first sort the list.
 		// We'll then clean the positions
 		List<MuninServer> source = new ArrayList<MuninServer>(this.children);
@@ -155,11 +150,6 @@ public class MuninMaster {
 		// We now have a sorted list in newList. Let's restablish the pos
 		for (int i=0; i<newList.size(); i++)
 			newList.get(i).setPosition(i);
-		
-		Log.v("sorted list:", "================================");
-		for (MuninServer s : newList)
-			Log.v("" ,s.getName()+ " (" + s.getPosition() + ")");
-		Log.v("", "======================");
 		
 		return newList;
 	}
