@@ -122,18 +122,15 @@ public final class Util {
 	}
 	
 	public static Bitmap removeBitmapBorder(Bitmap original) {
-		if (original != null) {
-			if (original.getPixel(0, 0) == 0xFFCFCFCF) {
-				try {
-					return Bitmap.createBitmap(original, 2, 2, original.getWidth()-4, original.getHeight()-4);
-				} catch (Exception ignored) {
-					return original;
-				}
-			}
-			else
+		if (original != null && original.getPixel(0, 0) == 0xFFCFCFCF) {
+			try {
+				return Bitmap.createBitmap(original, 2, 2, original.getWidth()-4, original.getHeight()-4);
+			} catch (Exception ignored) {
 				return original;
+			}
 		}
-		return null;
+		// if null of does not needs to be cropped
+		return original;
 	}
 	
 	public static String getPref(Context c, String key) {
@@ -195,31 +192,4 @@ public final class Util {
 		}
 		return false;
 	}
-	
-	/*public void log(String nature, String value) {
-		Log.v("log", nature + " - " + value);
-		String url = "http://chteuchteu.com/muninForAndroid/send.php?";
-		url += "identificator=0&";
-		url += "version=" 		+ String.valueOf(this.version) 	+ "&";
-		url += "nature=" 		+ nature 						+ "&";
-		url += "value=" 		+ value;
-		pingUrl(url);
-	}*/
-	/*public static void pingUrl(String url) {
-		pingUrl check = new pingUrl();
-		check.execute(url);
-	}
-	public static class pingUrl extends AsyncTask<String, Void, Void> {
-		@Override
-		protected Void doInBackground(String... url) {
-			try {       
-				URL adresse = new URL(url[0]);
-				BufferedReader in = new BufferedReader(new InputStreamReader(adresse.openStream()));
-				in.close();     
-			} catch (Exception e) { }
-			return null;
-		}
-		@Override
-		protected void onPostExecute(Void result) { }
-	}*/
 }

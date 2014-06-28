@@ -210,7 +210,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public long saveMuninServer(MuninServer s) {
-		saveMuninMaster(s.getParent());
+		if (s.getParent() != null)
+			saveMuninMaster(s.getParent());
 		if (s.isPersistant)
 			return updateMuninServer(s);
 		else

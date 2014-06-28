@@ -103,7 +103,8 @@ public class SQLite {
 		
 		List<MuninServer> bdd = dbHlpr.getServers(muninFoo.masters);
 		for (MuninServer s : muninFoo.getServers()) {
-			dbHlpr.saveMuninMaster(s.master);
+			if (s.master != null)
+				dbHlpr.saveMuninMaster(s.master);
 			
 			MuninServer bddInstance = null;
 			
