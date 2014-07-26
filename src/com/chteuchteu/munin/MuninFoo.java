@@ -47,8 +47,6 @@ import android.os.Build;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.chteuchteu.munin.hlpr.DigestUtils;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Util;
@@ -69,7 +67,6 @@ public class MuninFoo {
 	
 	public SQLite sqlite;
 	public MuninServer currentServer;
-	public RequestQueue requestQueue;
 	
 	public boolean drawer;
 	
@@ -108,7 +105,6 @@ public class MuninFoo {
 		masters = new ArrayList<MuninMaster>();
 		sqlite = new SQLite(c, this);
 		instance = null;
-		requestQueue = Volley.newRequestQueue(c);
 		loadInstance(c);
 	}
 	

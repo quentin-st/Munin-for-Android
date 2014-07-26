@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +13,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
@@ -418,25 +415,4 @@ public class DrawerHelper {
 			pos++;
 		}
 	}
-	
-	
-	public void setFont(ViewGroup g, String font) {
-		Typeface mFont = Typeface.createFromAsset(a.getAssets(), font);
-		setFont(g, mFont);
-	}
-	public void setFont(ViewGroup group, Typeface font) {
-		int count = group.getChildCount();
-		View v;
-		for (int i = 0; i < count; i++) {
-			v = group.getChildAt(i);
-			if (v instanceof TextView || v instanceof EditText || v instanceof Button) {
-				((TextView) v).setTypeface(font);
-			} else if (v instanceof ViewGroup)
-				setFont((ViewGroup) v, font);
-		}
-	}
-	/*public void setLightFont(View v) {
-		Typeface mFont = Typeface.createFromAsset(a.getAssets(), "Roboto-Thin.ttf");
-		((TextView) v).setTypeface(mFont);
-	}*/
 }

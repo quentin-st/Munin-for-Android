@@ -199,7 +199,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
 		values.put(KEY_MUNINSERVERS_AUTHTYPE, s.getAuthType().getVal());
 		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
-		values.put(KEY_MUNINSERVERS_MASTER, s.master.getId());
+		if (s.master != null)
+			values.put(KEY_MUNINSERVERS_MASTER, s.master.getId());
+		else
+			values.put(KEY_MUNINSERVERS_MASTER, -1);
 		
 		long id = db.insert(TABLE_MUNINSERVERS, null, values);
 		s.setId(id);
