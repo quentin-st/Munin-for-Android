@@ -3,7 +3,9 @@ package com.chteuchteu.munin.ui;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,8 +30,8 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.GridDownloadHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts;
-import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.crashlytics.android.Crashlytics;
@@ -264,9 +266,19 @@ public class Activity_Grid extends Activity {
 	}
 	
 	private void delete() {
-		muninFoo.sqlite.dbHlpr.deleteGrid(grid);
-		startActivity(new Intent(Activity_Grid.this, Activity_GridSelection.class));
-		Util.setTransition(c, TransitionStyle.SHALLOWER);
+		new AlertDialog.Builder(this)
+		.setTitle(R.string.delete)
+		.setMessage(R.string.text80)
+		.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				muninFoo.sqlite.dbHlpr.deleteGrid(grid);
+				startActivity(new Intent(Activity_Grid.this, Activity_GridSelection.class));
+				Util.setTransition(c, TransitionStyle.SHALLOWER);
+			}
+		})
+		.setNegativeButton(R.string.text34, null)
+		.show();
 	}
 	
 	private void refresh() {

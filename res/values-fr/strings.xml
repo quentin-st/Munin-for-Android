@@ -162,6 +162,8 @@
 	<string name="text78">Ajoutez-en une maintenant en appuyant sur +</string>
 	<string name="text79">Ouvrir</string>
 	
+	<string name="text80">Cette grille va être supprimée. Êtes-vous sûr(e) ?</string>
+	
 	<string name="settings_lang">Langue de l\'application</string>
 	<string name="lang_french">Français</string>
 	<string name="lang_german">Allemand</string>
