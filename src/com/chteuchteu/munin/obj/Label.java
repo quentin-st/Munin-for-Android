@@ -36,7 +36,8 @@ public class Label {
 			curList = new ArrayList<MuninPlugin>();
 			
 			for (MuninPlugin p : plugins) {
-				if (p.getInstalledOn().equalsApprox(s))
+				if (p.getInstalledOn() != null &&
+						p.getInstalledOn().equalsApprox(s))
 					curList.add(p);
 			}
 			

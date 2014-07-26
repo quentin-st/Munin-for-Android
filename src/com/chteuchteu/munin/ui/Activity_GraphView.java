@@ -170,6 +170,8 @@ public class Activity_GraphView extends Activity {
 			String period = thisIntent.getExtras().getString("period");
 			// Setting currentServer
 			muninFoo.currentServer = muninFoo.getServer(server);
+			if (muninFoo.currentServer == null)
+				muninFoo.currentServer = muninFoo.getFirstServer();
 			
 			// Giving position of plugin in list to GraphView
 			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
@@ -185,7 +187,7 @@ public class Activity_GraphView extends Activity {
 		}
 		
 		if (muninFoo.currentServer == null)
-			muninFoo.currentServer = muninFoo.getServer(0);
+			muninFoo.currentServer = muninFoo.getFirstServer();
 		
 		int pos = 0;
 		

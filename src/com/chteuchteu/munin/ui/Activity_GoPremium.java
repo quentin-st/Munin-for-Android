@@ -66,7 +66,13 @@ public class Activity_GoPremium extends Activity {
 		Button buyNow = (Button)findViewById(R.id.buyNow);
 		WebView benefits = (WebView)findViewById(R.id.benefits);
 		
-		Currency currency = Currency.getInstance(Locale.getDefault());
+		Currency currency = null;
+		try {
+			currency = Currency.getInstance(Locale.getDefault());
+		} catch (IllegalArgumentException ex) {
+			ex.printStackTrace();
+			currency = Currency.getInstance(Locale.ENGLISH);
+		}
 		if (currency.toString().equals("EUR")) {
 			price1.setText("1");
 			price2.setText("49");

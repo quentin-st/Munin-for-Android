@@ -674,8 +674,10 @@ public class ViewFlow extends AdapterView<Adapter> {
 		requestLayout();
 		setVisibleView(mCurrentBufferIndex, true);
 		if (mIndicator != null) {
-			mIndicator.onSwitched(mLoadedViews.get(mCurrentBufferIndex),
-					mCurrentAdapterIndex);
+			try {
+				mIndicator.onSwitched(mLoadedViews.get(mCurrentBufferIndex),
+						mCurrentAdapterIndex);
+			} catch (Exception ex) { ex.printStackTrace(); }
 		}
 		if (mViewSwitchListener != null) {
 			mViewSwitchListener

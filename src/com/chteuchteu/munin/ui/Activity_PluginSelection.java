@@ -177,6 +177,9 @@ public class Activity_PluginSelection extends ListActivity {
 	}
 	
 	public int getListViewMode() {
+		if (muninFoo.currentServer == null)
+			muninFoo.currentServer = muninFoo.getFirstServer();
+		
 		if (muninFoo.currentServer.getPluginsListWithCategory().size() < 2)
 			mode = MODE_FLAT;
 		else {

@@ -169,7 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	private void close(Cursor c, SQLiteDatabase db) {
 		if (c != null)	c.close();
-		if (db != null) db.close();
+		if (db != null)	db.close();
 	}
 	
 	public long insertMuninMaster(MuninMaster m) {
@@ -187,6 +187,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public long insertMuninServer(MuninServer s) {
+		if (s == null)
+			return -1;
+		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();

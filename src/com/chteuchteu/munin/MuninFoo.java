@@ -280,6 +280,13 @@ public class MuninFoo {
 		else
 			return null;
 	}
+	public MuninServer getFirstServer() {
+		for (MuninServer server : servers) {
+			if (server != null)
+				return server;
+		}
+		return null;
+	}
 	@Deprecated
 	public MuninServer getServerFromPosition(int position) {
 		for (MuninServer s : servers) {

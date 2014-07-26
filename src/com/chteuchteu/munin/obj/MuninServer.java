@@ -169,7 +169,7 @@ public class MuninServer {
 			p.addChild(this);
 	}
 	public MuninMaster getParent() { return this.master; }
-
+	
 	
 	public boolean fetchPluginsList() {
 		List<MuninPlugin> mp = new ArrayList<MuninPlugin>();
@@ -559,7 +559,7 @@ public class MuninServer {
 	public List<MuninPlugin> getPluginsByCategory(String c) {
 		List<MuninPlugin> l = new ArrayList<MuninPlugin>();
 		for (MuninPlugin p : plugins) {
-			if (p.getCategory().equals(c))
+			if (p.getCategory() != null && p.getCategory().equals(c))
 				l.add(p);
 		}
 		return l;
