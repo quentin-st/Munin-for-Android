@@ -1,5 +1,11 @@
 package com.chteuchteu.munin.hlpr;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -167,8 +173,8 @@ public final class Util {
 		try {
 			_url = new URL(url);
 		} catch (MalformedURLException e) {
-	        return url;
-	    }
+			return url;
+		}
 		if (url == null)
 			return url;
 		if (_url.getPort() == port)
@@ -191,5 +197,44 @@ public final class Util {
 				return true;
 		}
 		return false;
+	}
+	
+	public static void writeToFile(Context context, String str) {
+		try {
+			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("Munin for Android export.txt", Context.MODE_PRIVATE));
+			outputStreamWriter.write(str);
+			outputStreamWriter.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static String readFromFile(Context context) {
+		String ret = "";
+		
+		try {
+			InputStream inputStream = context.openFileInput("config.txt");
+			
+			if (inputStream != null) {
+				InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+				String receiveString = "";
+				StringBuilder stringBuilder = new StringBuilder();
+				
+				while ((receiveString = bufferedReader.readLine()) != null) {
+					stringBuilder.append(receiveString);
+				}
+				
+				inputStream.close();
+				ret = stringBuilder.toString();
+			}
+		}
+		catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		return ret;
 	}
 }

@@ -83,7 +83,7 @@ public class MuninFoo {
 	
 	public double version = 4.0;
 	// =============== //
-	public static boolean debug = false;
+	public static boolean debug = true;
 	public boolean premium;
 	
 	private MuninFoo() {
@@ -379,6 +379,8 @@ public class MuninFoo {
 		}
 		return 0;
 	}
+	
+	public ArrayList<MuninMaster> getMasters() { return (ArrayList<MuninMaster>) this.masters; }
 	
 	public List<String> getMastersNames() {
 		List<String> l = new ArrayList<String>();

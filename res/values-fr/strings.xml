@@ -164,6 +164,14 @@
 	
 	<string name="text80">Cette grille va être supprimée. Êtes-vous sûr(e) ?</string>
 	
+	<string name="import_servers">Importer</string>
+	<string name="export_servers">Exporter</string>
+	<string name="export_failed">Erreur lors de l\'export...</string>
+	<string name="export_subject">Munin for Android Export</string>
+	<string name="export_shareusing">Exporter via...</string>
+	<string name="import_title">Importation</string>
+	<string name="import_sentence">Veuillez copier-coller le texte généré lors de l\'export dans le champ ci-dessous</string>
+	
 	<string name="settings_lang">Langue de l\'application</string>
 	<string name="lang_french">Français</string>
 	<string name="lang_german">Allemand</string>

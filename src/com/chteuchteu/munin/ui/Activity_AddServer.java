@@ -549,22 +549,6 @@ public class Activity_AddServer extends Activity {
 		
 		private int start() {
 			int ret = RES_UNDEFINED;
-			// Background blur
-			/*try {
-				ScrollView l = (ScrollView) findViewById(R.id.scrollView1);
-				View v1 = l.getRootView();
-				v1.setDrawingCacheEnabled(true);
-				tmpBmp = Bitmap.createBitmap(v1.getDrawingCache());
-				v1.setDrawingCacheEnabled(false);
-				tmpBmp = Util.fastblur(tmpBmp, 7);
-				runOnUiThread(new Runnable() {
-					@SuppressWarnings("deprecation")
-					public void run() {
-						((LinearLayout)popup.getContentView().findViewById(R.id.popup)).setBackgroundDrawable(new BitmapDrawable(getResources(), tmpBmp));
-					}
-				});
-			}
-			catch (Exception ex) { }*/
 			
 			if (Util.isOnline(c)) {
 				setPopupState(0);
@@ -584,37 +568,6 @@ public class Activity_AddServer extends Activity {
 				if (serverUrl.length() > 10 && !serverUrl.substring(serverUrl.length()-1).equals("/") && !serverUrl.contains("/index.html"))
 					serverUrl = serverUrl + "/index.html";
 				
-				// Vérification de l'URL
-				/*String[] schemes = {"http", "https"};
-				UrlValidator urlValidator = new UrlValidator(schemes);
-				try {
-					if (urlValidator.isValid(serverUrl))
-						letsFetch = true;
-					else
-						return RES_MALFORMED_URL;
-				} catch (Exception ex) {
-					return RES_MALFORMED_URL;
-				}*/
-				
-				// On vérifie encore si premium (a peut-être acheté Features Pack entre temps)
-				/*if (!muninFoo.premium) {
-					boolean pi = true;
-					PackageManager pm = getPackageManager();
-					try {
-						pm.getPackageInfo("com.chteuchteu.muninforandroidfeaturespack", PackageManager.GET_META_DATA);
-					} catch (NameNotFoundException e) {
-						pi = false;
-					}
-					if (pi) {
-						PackageManager manager = getPackageManager();
-						if (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")
-								== PackageManager.SIGNATURE_MATCH) {
-							Activity_Main.premium = true;
-						} else
-							Activity_Main.premium = false;
-					} else
-						Activity_Main.premium = false;
-				}*/
 				if (letsFetch && SSL && !muninFoo.premium)
 					return RES_NOT_PREMIUM;
 				
@@ -815,7 +768,7 @@ public class Activity_AddServer extends Activity {
 		
 		private String initialization() {
 			oldServers = new ArrayList<String>();
-			// Création de la liste des serveurs courants (pour diff)Util.FONT_
+			// Création de la liste des serveurs courants (pour diff)
 			for (MuninServer s : muninFoo.getServers())
 				oldServers.add(s.getServerUrl());
 			newServers = new ArrayList<String>();

@@ -394,6 +394,8 @@ public class MuninServer {
 					HttpParams params = new BasicHttpParams();
 					HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
 					HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+					HttpConnectionParams.setConnectionTimeout(params, 5000);
+					HttpConnectionParams.setSoTimeout(params, 7000);
 					
 					SchemeRegistry registry = new SchemeRegistry();
 					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));

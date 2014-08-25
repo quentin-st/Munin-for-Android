@@ -2,9 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 	
 	<item
+		android:id="@+id/menu_importexport"
+		android:icon="@drawable/ic_action_import_export"
+		android:showAsAction="always">
+		<menu>
+			<item
+				android:id="@+id/menu_import"
+				android:title="@string/import_servers" />
+			<item
+				android:id="@+id/menu_export"
+				android:title="@string/export_servers" />
+		</menu>
+	</item>
+	
+	<item
 		android:id="@+id/menu_add"
 		android:icon="@drawable/content_new_dark"
 		android:showAsAction="ifRoom"
-		android:title="@string/addServerTitle"/> <!-- Texte et icône: ifRoom|withText -->
+		android:title="@string/addServerTitle"/>
 
 </menu>

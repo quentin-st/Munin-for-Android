@@ -231,6 +231,14 @@
 	<string name="text79">Open</string>
 	<string name="text80">This grid will be deleted. Are you sure?</string>
 	
+	<string name="import_servers">Import</string>
+	<string name="export_servers">Export</string>
+	<string name="export_failed">Export failed...</string>
+	<string name="export_subject">Munin for Android Export</string>
+	<string name="export_shareusing">Export using...</string>
+	<string name="import_title">Import</string>
+	<string name="import_sentence">Please copy and paste the text generated during the export in the field below</string>
+	
 	
 	<string name="delete">Delete</string>
 	<string name="move_up">Move up</string>

@@ -8,7 +8,9 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -19,14 +21,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.chteuchteu.munin.ExpandableListViewAdapter;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.JSONHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
@@ -38,12 +43,13 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_Servers extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
-	private Context			c;
+	private Context		c;
 	
 	Map<String, List<String>> serversCollection;
 	ExpandableListView		expListView;
 	public static Button 	addServer;
 	private Menu 			menu;
+	private MenuItem		importExportMenuItem;
 	private String			activityName;
 	
 	public static boolean	menu_firstLoad = true;
@@ -125,10 +131,49 @@ public class Activity_Servers extends Activity {
 			((LinearLayout)findViewById(R.id.servers_noserver)).setVisibility(View.VISIBLE);
 	}
 	
+	private void displayImportDialog() {
+		final View dialogView = View.inflate(this, R.layout.importdialog_layout, null);
+		new AlertDialog.Builder(this)
+			.setTitle(R.string.import_title)
+			.setView(dialogView)
+			.setCancelable(true)
+			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String jsonTxt = ((EditText) dialogView.findViewById(R.id.json_input)).getText().toString();
+					ArrayList<MuninMaster> newMasters = JSONHelper.getMastersFromJSONString(jsonTxt);
+					for (MuninMaster newMaster : newMasters) {
+						MuninFoo.getInstance().getMasters().add(newMaster);
+						for (MuninServer server : newMaster.getChildren())
+							MuninFoo.getInstance().addServer(server);
+					} // TODO
+					MuninFoo.getInstance().sqlite.saveServers();
+				}
+			})
+			.setNegativeButton(R.string.text64, null)
+			.show();
+	}
+	
+	private void displayExportDialog() {
+		String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance().getMasters(), true);
+		if (json.equals(""))
+			Toast.makeText(this, R.string.export_failed, Toast.LENGTH_SHORT).show();
+		else {
+			// Send json by mail or something
+			Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+			sharingIntent.setType("text/plain");
+			//sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.export_subject);
+			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, ":)");
+			startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.export_shareusing)));
+			// TODO
+		}
+	}
+	
 	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
+		
 		if (muninFoo.drawer) {
 			dh.getDrawer().setOnOpenListener(new OnOpenListener() {
 				@Override
@@ -154,6 +199,9 @@ public class Activity_Servers extends Activity {
 		menu.clear();
 		getMenuInflater().inflate(R.menu.servers, menu);
 		addServer.setVisibility(View.GONE);
+		this.importExportMenuItem = menu.findItem(R.id.menu_importexport);
+		if (!MuninFoo.isPremium(this))
+			importExportMenuItem.setVisible(false);
 	}
 	
 	@Override
@@ -177,6 +225,12 @@ public class Activity_Servers extends Activity {
 				intent.putExtra("contextServerUrl", "");
 				startActivity(intent);
 				Util.setTransition(c, TransitionStyle.DEEPER);
+				return true;
+			case R.id.menu_import:
+				displayImportDialog();
+				return true;
+			case R.id.menu_export:
+				displayExportDialog();
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Servers.this, Activity_Settings.class));
