@@ -19,7 +19,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -351,7 +350,6 @@ public class Activity_AddServer extends Activity {
 			if (muninFoo.currentServer.getParent() != null && muninFoo.currentServer.getParent().getChildren().size() > 1)
 				m = muninFoo.currentServer.getParent();
 			
-			Log.v("", "delete server " + contextServerUrl);
 			MuninServer curServer = muninFoo.getServer(contextServerUrl);
 			muninFoo.sqlite.dbHlpr.deleteServer(curServer);
 			muninFoo.deleteServer(curServer);
@@ -690,7 +688,7 @@ public class Activity_AddServer extends Activity {
 			algo_state = AST_IDLE;
 			
 			if (res == RES_NOT_PREMIUM) {
-				// SSL Support is available with the Munin for Android Features Pack ($0.99 or free with conditions). Do you want to purchase it on Google Play?
+				// SSL Support is available with the Munin for Android Features Pack. Do you want to purchase it on Google Play?
 				message_title = "";
 				if (s.equals("digest"))
 					message_text = getString(R.string.text65_1);
@@ -789,6 +787,13 @@ public class Activity_AddServer extends Activity {
 			settingsServer.setSSL(SSL);
 			
 			type = settingsServer.detectPageType();
+			
+			// The first connection to the server has been done : settingsServer.ssl has been set to true if necessary.
+			// If not premium :
+			// If ssl was true : we're not supposed to be there.
+			// If ssl was false and is now true : display error msg.
+			if (!muninFoo.premium && settingsServer.getSSL())
+				type = "RES_NOT_PREMIUM";
 			
 			return type;
 		}
@@ -1028,6 +1033,9 @@ public class Activity_AddServer extends Activity {
 				String res2 = initialization();
 				if (!res2.equals("munin/") && !res2.equals("munin/x/")) {
 					if (res2.length() > 3) {
+						if (res2.equals("RES_NOT_PREMIUM"))
+							cancelFetch(RES_NOT_PREMIUM);
+						
 						String result = res2.substring(0, 3);
 						if (result.equals("401"))
 							askForCredentials();

@@ -83,7 +83,8 @@ public class MuninFoo {
 	
 	public double version = 4.0;
 	// =============== //
-	public static boolean debug = true;
+	public static final boolean debug = true;
+	public static final boolean forceNotPremium = false;
 	public boolean premium;
 	
 	private MuninFoo() {
@@ -762,8 +763,11 @@ public class MuninFoo {
 		return true;
 	}
 	
+	@SuppressWarnings("unused")
 	public static boolean isPremium(Context c) {
 		if (isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
+			if (debug && forceNotPremium)
+				return false;
 			if (debug)
 				return true;
 			PackageManager manager = c.getPackageManager();

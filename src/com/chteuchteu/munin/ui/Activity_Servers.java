@@ -200,7 +200,7 @@ public class Activity_Servers extends Activity {
 		getMenuInflater().inflate(R.menu.servers, menu);
 		addServer.setVisibility(View.GONE);
 		this.importExportMenuItem = menu.findItem(R.id.menu_importexport);
-		if (!MuninFoo.isPremium(this))
+		if (!muninFoo.premium)
 			importExportMenuItem.setVisible(false);
 	}
 	
