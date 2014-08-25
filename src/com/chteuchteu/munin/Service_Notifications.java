@@ -87,9 +87,9 @@ public class Service_Notifications extends Service {
 				}
 			}
 			
-			for (MuninServer s: servers) {
+			for (MuninServer s: servers)
 				s.fetchPluginsStates();
-			}
+			
 			
 			for (MuninServer s: servers) {
 				boolean throatingServer = false;

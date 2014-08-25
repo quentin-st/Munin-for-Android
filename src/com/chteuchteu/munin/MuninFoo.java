@@ -76,14 +76,14 @@ public class MuninFoo {
 	// android:versionCode: 	|  1		 2		 3		 4		 5		 6		 7	 	 8	  	 10		11		12		13		14		15		16		17	|
 	// MfA version:				| 1.1		1.2		1.3		1.4		1.5		1.6		1.7  	1.8   	1.9		2.0		2.1 	2.2		2.3		2.4		2.5		2.6	|
 	//							--------------------------------------------------------------------------------------------------------------------------------
-	//							| 2.6.1		2.6.2	2.6.3	2.6.4	2.6.5	2.7		2.7.1	2.7.5	2.7.6	2.7.7	2.8		2.8.1	2.8.2	2.8.3
-	//							|  18		 19		20		21		22		23		24		25		26		27		28		29		30		31
-	//							|  2.7		2.8		2.9		3.0		3.1		3.2		3.3		3.4		3.5		3.6		3.7		3.8		3.9		4.0
-	//																						beta	beta	beta			fix		fix		fix
+	//							| 2.6.1		2.6.2	2.6.3	2.6.4	2.6.5	2.7		2.7.1	2.7.5	2.7.6	2.7.7	2.8		2.8.1	2.8.2	2.8.3	2.8.4
+	//							|  18		 19		20		21		22		23		24		25		26		27		28		29		30		31		32
+	//							|  2.7		2.8		2.9		3.0		3.1		3.2		3.3		3.4		3.5		3.6		3.7		3.8		3.9		4.0		4.1
+	//																						beta	beta	beta			fix		fix		fix		fix
 	
-	public double version = 4.0;
+	public double version = 4.1;
 	// =============== //
-	public static final boolean debug = true;
+	public static final boolean debug = false;
 	public static final boolean forceNotPremium = false;
 	public boolean premium;
 	

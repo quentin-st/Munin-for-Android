@@ -4,7 +4,8 @@
 	<item
 		android:id="@+id/menu_importexport"
 		android:icon="@drawable/ic_action_import_export"
-		android:showAsAction="always">
+		android:showAsAction="always"
+		android:visible="false">
 		<menu>
 			<item
 				android:id="@+id/menu_import"
