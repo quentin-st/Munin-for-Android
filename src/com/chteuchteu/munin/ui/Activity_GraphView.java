@@ -20,10 +20,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.media.MediaScannerConnection;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -33,7 +31,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -106,10 +103,6 @@ public class Activity_GraphView extends Activity {
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			this.getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-		}
 		setContentView(R.layout.graphview);
 		
 		ActionBar actionBar = getActionBar();
@@ -214,11 +207,9 @@ public class Activity_GraphView extends Activity {
 		indicator.setTitleProvider(adapter);
 		viewFlow.setFlowIndicator(indicator);
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			if (dh != null) {
-				dh.setViewFlow(viewFlow);
-				dh.initPluginsList();
-			}
+		if (dh != null) {
+			dh.setViewFlow(viewFlow);
+			dh.initPluginsList();
 		}
 		
 		viewFlow.setOnViewSwitchListener(new ViewSwitchListener() {
@@ -651,10 +642,8 @@ public class Activity_GraphView extends Activity {
 			
 			((TextView)v.findViewById(R.id.line_a)).setText(l.getName());
 			
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
-				((CheckBox) v.findViewById(R.id.line_0)).setButtonDrawable(id);
-			}
+			int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
+			((CheckBox) v.findViewById(R.id.line_0)).setButtonDrawable(id);
 			
 			checkboxesContainer.addView(v);
 			i++;
@@ -720,10 +709,8 @@ public class Activity_GraphView extends Activity {
 		else if (Activity_GraphView.load_period == Period.YEAR)
 			spinner.setSelection(3, true);
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			if (muninFoo.currentServer != null)
-				getActionBar().setTitle(muninFoo.currentServer.getName());
-		}
+		if (muninFoo.currentServer != null)
+			getActionBar().setTitle(muninFoo.currentServer.getName());
 	}
 	
 	@Override

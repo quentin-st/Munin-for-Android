@@ -6,7 +6,6 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -159,7 +158,7 @@ public class Grid {
 	@SuppressLint("NewApi")
 	public void cancelAlpha(Context c) {
 		for (GridItem i : items) {
-			if (i.iv != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && i.iv.getAlpha() != 1.0f)
+			if (i.iv != null && i.iv.getAlpha() != 1.0f)
 				i.iv.setAlpha(1f);
 		}
 	}

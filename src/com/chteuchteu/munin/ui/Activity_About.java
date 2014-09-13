@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,8 +18,8 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -66,12 +65,9 @@ public class Activity_About extends Activity {
 		}
 		content = content.replaceAll("#version#", versionName);
 		wv.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);
-		// Eviter le clignotement pendant le scroll
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			wv.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-			wv.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-			wv.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-		}
+		wv.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		wv.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+		wv.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
 		
 		TextView tv1 = (TextView) findViewById(R.id.about_txt1);
 		TextView tv2 = (TextView) findViewById(R.id.about_txt2);

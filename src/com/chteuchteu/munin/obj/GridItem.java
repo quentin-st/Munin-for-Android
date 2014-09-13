@@ -10,7 +10,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,7 +40,6 @@ public class GridItem {
 	public MuninPlugin 	plugin;
 	public Period 		period;
 	public ImageView 	iv;
-	//public String 		name;
 	public Grid 		grid;
 	private Context 	c;
 	public boolean 		editing = false;
@@ -58,8 +56,6 @@ public class GridItem {
 		this.X = 0;
 		this.Y = 0;
 		this.plugin = p;
-		//if (p != null)
-			//this.name = p.getFancyName() + " : " + p.getInstalledOn().getName();
 		this.period = Period.DAY;
 		this.grid = g;
 		this.c = c;
@@ -243,7 +239,7 @@ public class GridItem {
 		if (container.getWidth() > ICONS_MAX_WIDTH) {
 			editing = true;
 			putActionButtons();
-			if (iv != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			if (iv != null)
 				iv.setAlpha(ALPHA_EDITING);
 		} else {
 			final List<String> items_l = new ArrayList<String>();
@@ -291,7 +287,7 @@ public class GridItem {
 	@SuppressLint("NewApi")
 	public void cancelEdit() {
 		if (editing) {
-			if (iv != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			if (iv != null)
 				iv.setAlpha(1f);
 			removeActionButtons();
 		}
@@ -300,7 +296,7 @@ public class GridItem {
 	@SuppressLint("NewApi")
 	private void removeActionButtons() {
 		editing = false;
-		if (iv != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		if (iv != null)
 			iv.setAlpha(1f);
 		List<View> toBeRemoved = new ArrayList<View>();
 		for (int i=0; i<container.getChildCount(); i++) {
@@ -320,7 +316,7 @@ public class GridItem {
 		}
 		editing = true;
 		
-		if (iv != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		if (iv != null)
 			iv.setAlpha(ALPHA_EDITING);
 		
 		if (Y != 0)

@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,9 +83,7 @@ public class Activity_GoPremium extends Activity {
 		benefits.setBackgroundColor(0x00000000);
 		benefits.getSettings().setDefaultTextEncodingName("utf-8");
 		benefits.loadDataWithBaseURL(null, getString(R.string.goPremiumBenefits), "text/html", "utf-8", null);
-		// Eviter le clignotement pendant le scroll
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			benefits.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		benefits.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 		benefits.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 		benefits.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
 		

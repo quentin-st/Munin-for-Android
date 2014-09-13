@@ -43,7 +43,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 
@@ -128,7 +127,7 @@ public class MuninFoo {
 		loadInstance();
 		if (c != null) {
 			this.premium = isPremium(c);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && ! Util.getPref(c, "drawer").equals("false"))
+			if (!Util.getPref(c, "drawer").equals("false"))
 				this.drawer = true;
 			else
 				this.drawer = false;

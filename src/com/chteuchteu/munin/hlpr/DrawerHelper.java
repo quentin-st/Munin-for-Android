@@ -235,12 +235,10 @@ public class DrawerHelper {
 		if (!m.premium) {
 			a.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_grid_btn).setEnabled(false);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				a.findViewById(R.id.drawer_notifications_img).setAlpha(0.5f);
-				a.findViewById(R.id.drawer_notifications_txt).setAlpha(0.5f);
-				a.findViewById(R.id.drawer_grid_img).setAlpha(0.5f);
-				a.findViewById(R.id.drawer_grid_txt).setAlpha(0.5f);
-			}
+			a.findViewById(R.id.drawer_notifications_img).setAlpha(0.5f);
+			a.findViewById(R.id.drawer_notifications_txt).setAlpha(0.5f);
+			a.findViewById(R.id.drawer_grid_img).setAlpha(0.5f);
+			a.findViewById(R.id.drawer_grid_txt).setAlpha(0.5f);
 			a.findViewById(R.id.drawer_button_premium_ll).setVisibility(View.VISIBLE);
 		}
 		if (m.getHowManyServers() == 0) {

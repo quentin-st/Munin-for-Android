@@ -12,7 +12,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
@@ -152,10 +151,8 @@ public class Activity_Notifications extends Activity {
 			View v = vi.inflate(R.layout.servers_list_checkbox, null);
 			
 			checkboxes[i] = (CheckBox) v.findViewById(R.id.line_0);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
-				checkboxes[i].setButtonDrawable(id);
-			}
+			int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
+			checkboxes[i].setButtonDrawable(id);
 			
 			if (watchedServers.contains(muninFoo.getOrderedServers().get(i).getServerUrl()))
 				checkboxes[i].setChecked(true);
@@ -183,14 +180,12 @@ public class Activity_Notifications extends Activity {
 			findViewById(R.id.list_container).setVisibility(View.VISIBLE);
 			findViewById(R.id.list_scrollview).setVisibility(View.VISIBLE);
 			findViewById(R.id.view1).setVisibility(View.GONE);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-				getActionBar().setTitle(getString(R.string.text56));
+			getActionBar().setTitle(getString(R.string.text56));
 		} else {
 			findViewById(R.id.list_container).setVisibility(View.GONE);
 			findViewById(R.id.list_scrollview).setVisibility(View.GONE);
 			findViewById(R.id.view1).setVisibility(View.VISIBLE);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-				getActionBar().setTitle(getString(R.string.notificationsTitle));
+			getActionBar().setTitle(getString(R.string.notificationsTitle));
 			computeEstimatedConsumption();
 		}
 	}

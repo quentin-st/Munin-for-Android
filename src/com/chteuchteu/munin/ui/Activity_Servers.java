@@ -12,7 +12,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -102,7 +101,7 @@ public class Activity_Servers extends Activity {
 			}
 		});
 		
-		if (muninFoo.getHowManyServers() == 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		if (muninFoo.getHowManyServers() == 0)
 			((LinearLayout)findViewById(R.id.servers_noserver)).setVisibility(View.VISIBLE);
 	}
 	

@@ -17,7 +17,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -84,11 +82,6 @@ public class Activity_Settings extends Activity {
 		checkable_autoRefresh = inflateCheckable((ViewGroup)findViewById(R.id.checkable_autorefresh), getString(R.string.settings_autorefresh_checkbox));
 		
 		
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-			findViewById(R.id.switch_drawer_tv).setVisibility(View.GONE);
-			checkable_drawer.setVisibility(View.GONE);
-		}
-		
 		// Save button
 		findViewById(R.id.btn_settings_save).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -127,33 +120,19 @@ public class Activity_Settings extends Activity {
 	}
 	
 	public View inflateCheckable(ViewGroup container, String label) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			de.ankri.views.Switch sw = new de.ankri.views.Switch(this);
-			sw.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-			sw.setText(label);
-			container.addView(sw);
-			return sw;
-		} else {
-			CheckBox cb = new CheckBox(this);
-			cb.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-			cb.setText(label);
-			container.addView(cb);
-			return cb;
-		}
+		de.ankri.views.Switch sw = new de.ankri.views.Switch(this);
+		sw.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		sw.setText(label);
+		container.addView(sw);
+		return sw;
 	}
 	
 	public boolean getCheckableValue(View reference) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			return ((de.ankri.views.Switch)reference).isChecked();
-		else
-			return ((CheckBox)reference).isChecked();
+		return ((de.ankri.views.Switch)reference).isChecked();
 	}
 	
 	public void setChecked(View reference, boolean checked) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			((de.ankri.views.Switch)reference).setChecked(checked);
-		else
-			((CheckBox)reference).setChecked(checked);
+		((de.ankri.views.Switch)reference).setChecked(checked);
 	}
 	
 	public void actionSave() {
@@ -375,8 +354,7 @@ public class Activity_Settings extends Activity {
 				setPref("log", "false");
 				setPref("addserver_history", "");
 				setPref("screenAlwaysOn", "");
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-					setPref("drawer", "true");
+				setPref("drawer", "true");
 				
 				
 				muninFoo.sqlite.dbHlpr.deleteWidgets();
