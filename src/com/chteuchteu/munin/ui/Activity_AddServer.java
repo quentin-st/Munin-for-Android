@@ -15,7 +15,6 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -112,39 +111,23 @@ public class Activity_AddServer extends Activity {
 		muninFoo.loadLanguage(this);
 		c = this;
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setContentView(R.layout.addserver);
-			findViewById(R.id.viewTitle).setVisibility(View.GONE);
-			findViewById(R.id.viewTitleSep).setVisibility(View.GONE);
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			Intent thisIntent = getIntent();
-			if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("contextServerUrl"))
-				contextServerUrl = thisIntent.getExtras().getString("contextServerUrl");
+		setContentView(R.layout.addserver);
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		Intent thisIntent = getIntent();
+		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("contextServerUrl"))
+			contextServerUrl = thisIntent.getExtras().getString("contextServerUrl");
+		if (contextServerUrl != null && contextServerUrl.equals(""))
+			actionBar.setTitle(getString(R.string.addServerTitle)); // Add a server
+		else
+			actionBar.setTitle(R.string.editServerTitle); // Edit a server
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
 			if (contextServerUrl != null && contextServerUrl.equals(""))
-				actionBar.setTitle(getString(R.string.addServerTitle)); // Add a server
+				dh.setDrawerActivity(dh.Activity_AddServer_Add);
 			else
-				actionBar.setTitle(R.string.editServerTitle); // Edit a server
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				if (contextServerUrl != null && contextServerUrl.equals(""))
-					dh.setDrawerActivity(dh.Activity_AddServer_Add);
-				else
-					dh.setDrawerActivity(dh.Activity_AddServer_Edit);
-			}
-		} else {
-			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
-			setContentView(R.layout.addserver);
-			
-			Intent thisIntent = getIntent();
-			if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("contextServerUrl"))
-				contextServerUrl = thisIntent.getExtras().getString("contextServerUrl");
-			TextView tmptv = (TextView)findViewById(R.id.viewTitle);
-			if (contextServerUrl != null && contextServerUrl.equals(""))
-				tmptv.setText(getString(R.string.addServerTitle)); // Add a server
-			else
-				tmptv.setText(R.string.editServerTitle); // Edit a server
+				dh.setDrawerActivity(dh.Activity_AddServer_Edit);
 		}
 		
 		if (contextServerUrl != null && !contextServerUrl.equals(""))
@@ -165,7 +148,6 @@ public class Activity_AddServer extends Activity {
 		ArrayAdapter<String> addServerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, getHistory());
 		tb_serverUrl.setAdapter(addServerAdapter);
 		
-		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("contextServerUrl"))
 			contextServerUrl = thisIntent.getExtras().getString("contextServerUrl");
 		

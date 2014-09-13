@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -18,7 +17,6 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,9 +54,6 @@ public class Activity_Grid extends Activity {
 	private MenuItem		menu_delete;
 	public static MenuItem	menu_period;
 	public static MenuItem	menu_open;
-	public static ImageButton comp_delete;
-	public static ImageButton comp_refresh;
-	public static ImageButton comp_edit;
 	
 	private Period			currentPeriod;
 	
@@ -79,27 +74,13 @@ public class Activity_Grid extends Activity {
 		editing = false;
 		updating = false;
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setTitle(getString(R.string.button_grid));
-			
-			((TextView)findViewById(R.id.viewTitle)).setVisibility(View.GONE);
-			((LinearLayout)findViewById(R.id.viewTitleSep)).setVisibility(View.GONE);
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_Grid);
-			}
-		} else {
-			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
-			findViewById(R.id.comp_actions).setVisibility(View.VISIBLE);
-			comp_delete = (ImageButton) findViewById(R.id.btn_comp_delete);
-			comp_delete.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { delete(); } });
-			comp_refresh = (ImageButton) findViewById(R.id.btn_comp_refresh);
-			comp_refresh.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { refresh(); } });
-			comp_edit = (ImageButton) findViewById(R.id.btn_comp_edit);
-			comp_edit.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { edit(); } });
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(getString(R.string.button_grid));
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_Grid);
 		}
 		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
@@ -196,10 +177,7 @@ public class Activity_Grid extends Activity {
 		if (grid == null)
 			startActivity(new Intent(this, Activity_GridSelection.class));
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			getActionBar().setTitle(getText(R.string.text75) + " " + grid.name);
-		else
-			((TextView) findViewById(R.id.viewTitle)).setText(getText(R.string.text75) + " " + grid.name);
+		getActionBar().setTitle(getText(R.string.text75) + " " + grid.name);
 		
 		grid.setupLayout(this);
 		container.addView(grid.buildLayout(this));
@@ -254,12 +232,10 @@ public class Activity_Grid extends Activity {
 		if (editing) { // Cancel edit
 			grid.cancelEdit(this);
 			if (menu_edit != null) menu_edit.setIcon(R.drawable.content_edit_dark);
-			if (comp_edit != null) comp_edit.setImageResource(R.drawable.ic_action_edit);
 			muninFoo.sqlite.dbHlpr.saveGridItemsRelations(grid);
 		} else { // Edit
 			grid.edit(this);
 			if (menu_edit != null) menu_edit.setIcon(R.drawable.navigation_accept_dark);
-			if (comp_edit != null) comp_edit.setImageResource(R.drawable.navigation_accept);
 		}
 		
 		editing = !editing;

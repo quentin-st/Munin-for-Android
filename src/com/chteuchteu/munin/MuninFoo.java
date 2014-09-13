@@ -623,7 +623,6 @@ public class MuninFoo {
 	}
 	
 	public static Bitmap grabBitmap(MuninServer s, String url) {
-		//Log.v("", "Downloading image " + url);
 		return grabBitmap(s, url, false);
 	}
 	

@@ -49,15 +49,13 @@ public class Activity_GoPremium extends Activity {
 		setContentView(R.layout.go_premium);
 		c = this;
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setTitle(getString(R.string.goPremiumTitle));
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_GoPremium);
-			}
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(getString(R.string.goPremiumTitle));
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_GoPremium);
 		}
 		
 		TextView price1 = (TextView)findViewById(R.id.price1);

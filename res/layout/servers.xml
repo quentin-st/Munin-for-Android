@@ -4,66 +4,17 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical" >
 
-	<!-- ### TITLE ### -->
-
-	<TextView
-		android:id="@+id/viewTitle"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:background="#dedfde"
-		android:gravity="center"
-		android:padding="8dp"
-		android:text="@string/serversTitle"
-		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:textColor="#7a7a7a" />
-
-	<LinearLayout
-		android:id="@+id/viewTitleSep"
-		android:layout_width="match_parent"
-		android:layout_height="0.5dp"
-		android:background="#a5a6a5"
-		android:orientation="horizontal" >
-	</LinearLayout>
-	<!-- ### TITLE ### -->
-
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical" >
-
-		<RelativeLayout
-			android:id="@+id/servers_listview"
+		
+		<ExpandableListView
+			android:id="@+id/servers_list"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical" >
-
-			<Button
-				android:id="@+id/servers_btn_add_a_server"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentBottom="true"
-				android:layout_alignParentRight="true"
-				android:text="@string/servers_btn_add_server" />
-
-			<!-- <ListView
-				android:id="@+id/android:list"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_above="@id/servers_btn_add_a_server"
-				android:layout_alignParentTop="true"
-				android:paddingLeft="@dimen/listview_horizontal_margin"
-				android:paddingRight="@dimen/listview_horizontal_margin" />-->
-			
-			<ExpandableListView
-				android:id="@+id/servers_list"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:layout_above="@id/servers_btn_add_a_server"
-				android:layout_alignParentTop="true"
-				android:paddingLeft="@dimen/listview_horizontal_margin"
-				android:paddingRight="@dimen/listview_horizontal_margin" />
-		</RelativeLayout>
+			android:layout_height="match_parent"
+			android:paddingLeft="@dimen/listview_horizontal_margin"
+			android:paddingRight="@dimen/listview_horizontal_margin" />
 
 		<LinearLayout
 			android:id="@+id/servers_noserver"

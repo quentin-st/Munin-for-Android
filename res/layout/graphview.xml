@@ -55,58 +55,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content" />
 		</RelativeLayout>
-
-		<!-- Compatibility - Top bar for Android 2.X -->
-
-		<RelativeLayout
-			android:id="@+id/comp_relativelayout"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
-			android:visibility="gone" >
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentLeft="true"
-				android:orientation="horizontal" >
-
-				<ImageButton
-					android:id="@+id/comp_previous"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:contentDescription="@string/menu_graph_previous"
-					android:src="@drawable/ic_menu_back" />
-
-				<ImageButton
-					android:id="@+id/comp_list"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:src="@drawable/ic_action_overflow" />
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:orientation="horizontal" >
-
-				<ImageButton
-					android:id="@+id/comp_refresh"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:contentDescription="@string/menu_graph_refresh"
-					android:src="@drawable/ic_menu_refresh" />
-
-				<ImageButton
-					android:id="@+id/comp_next"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:contentDescription="@string/menu_graph_next"
-					android:src="@drawable/ic_menu_forward" />
-			</LinearLayout>
-		</RelativeLayout>
-
+		
 		<LinearLayout
 			android:id="@+id/serverSwitch_mask"
 			android:layout_width="match_parent"

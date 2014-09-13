@@ -59,20 +59,13 @@ public class Activity_Notifications extends Activity {
 		c = this;
 		setContentView(R.layout.notifications);
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setTitle(getString(R.string.notificationsTitle));
-			
-			findViewById(R.id.viewTitle).setVisibility(View.GONE);
-			findViewById(R.id.viewTitleSep).setVisibility(View.GONE);
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_Notifications);
-			}
-		} else {
-			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(getString(R.string.notificationsTitle));
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_Notifications);
 		}
 		
 		final Spinner sp_refreshRate = 		(Spinner) findViewById(R.id.spinner_refresh);

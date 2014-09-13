@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
@@ -65,23 +64,13 @@ public class Activity_Settings extends Activity {
 		
 		setContentView(R.layout.settings);
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			findViewById(R.id.viewTitle).setVisibility(View.GONE);
-			findViewById(R.id.viewTitleSep).setVisibility(View.GONE);
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setTitle(getString(R.string.settingsTitle));
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_Settings);
-			}
-		} else {
-			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
-			findViewById(R.id.layout_actions).setVisibility(View.VISIBLE);
-			findViewById(R.id.btn_eraseData).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionReset(); } });
-			findViewById(R.id.btn_checkUpdates).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionUpdate(); } });
-			findViewById(R.id.btn_gplay).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionGPlay(); } });
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(getString(R.string.settingsTitle));
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_Settings);
 		}
 		
 		spinner_scale = (Spinner)findViewById(R.id.spinner_scale);

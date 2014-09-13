@@ -13,10 +13,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -42,7 +40,7 @@ import com.tjeannin.apprate.AppRate;
 public class Activity_Main extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
-	private Context			c;
+	private Context		c;
 	
 	public static Button 	buttonGraphs;
 	public static Button	buttonAlerts;
@@ -61,24 +59,19 @@ public class Activity_Main extends Activity {
 		muninFoo.loadLanguage(this);
 		c = this;
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			if (muninFoo.drawer)
-				setContentView(R.layout.main_clear);
-			else
-				setContentView(R.layout.main);
-			getActionBar().setDisplayHomeAsUpEnabled(false);
-			getActionBar().setTitle("");
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_Main);
-				Fonts.setFont(this, (ViewGroup)findViewById(R.id.ll_splash), CustomFont.RobotoCondensed_Regular);
-			} else
-				Fonts.setFont(this, (ViewGroup)findViewById(R.id.buttonsContainer), CustomFont.RobotoCondensed_Regular);
-		} else {
+		if (muninFoo.drawer)
+			setContentView(R.layout.main_clear);
+		else
 			setContentView(R.layout.main);
-			this.getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-		}
+		getActionBar().setDisplayHomeAsUpEnabled(false);
+		getActionBar().setTitle("");
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_Main);
+			Fonts.setFont(this, (ViewGroup)findViewById(R.id.ll_splash), CustomFont.RobotoCondensed_Regular);
+		} else
+			Fonts.setFont(this, (ViewGroup)findViewById(R.id.buttonsContainer), CustomFont.RobotoCondensed_Regular);
 		
 		if (Locale.getDefault().getLanguage().equals("de") && Util.getPref(c, "suggestLanguage").equals("") && (Util.getPref(c, "lang").equals("fr") || Util.getPref(c, "lang").equals("en"))) {
 			AlertDialog.Builder builder2 = new AlertDialog.Builder(Activity_Main.this);

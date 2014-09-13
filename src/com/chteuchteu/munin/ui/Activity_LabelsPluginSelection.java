@@ -11,17 +11,14 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
@@ -68,23 +65,15 @@ public class Activity_LabelsPluginSelection extends Activity {
 		} else
 			startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_Labels.class));
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setContentView(R.layout.labels_pluginselection);
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			findViewById(R.id.viewTitle).setVisibility(View.GONE);
-			findViewById(R.id.viewTitleSep).setVisibility(View.GONE);
-			actionBar.setTitle(label.getName());
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_LabelsPluginSelection);
-			}
-		} else {
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.labels_pluginselection);
-			super.setTheme(R.style.ListFont);
-			((TextView) this.findViewById(R.id.viewTitle)).setText(label.getName());
+		
+		setContentView(R.layout.labels_pluginselection);
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(label.getName());
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_LabelsPluginSelection);
 		}
 		
 		labelsListCat = label.getPluginsSortedByServer(muninFoo);

@@ -10,12 +10,9 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.SimpleAdapter;
 
@@ -53,25 +50,18 @@ public class Activity_ServersEdit extends ListActivity {
 		muninFoo.loadLanguage(this);
 		c = this;
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setContentView(R.layout.servers_edit);
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setTitle(getString(R.string.editServersTitle));
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_ServersEdit);
-			}
-		} else {
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			this.getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-			super.setTheme(R.style.ListFont);
-			setContentView(R.layout.servers_edit);
+		
+		setContentView(R.layout.servers_edit);
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(getString(R.string.editServersTitle));
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_ServersEdit);
 		}
 		
 		long masterId = getIntent().getExtras().getLong("masterId");
-		Log.v("", "trying to retrieve from id " + masterId);
 		m = muninFoo.getMasterById((int) masterId);
 		
 		deletedServers = new ArrayList<MuninServer>();

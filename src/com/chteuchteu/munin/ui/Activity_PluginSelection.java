@@ -13,14 +13,12 @@ import android.app.ActionBar.OnNavigationListener;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -78,65 +76,48 @@ public class Activity_PluginSelection extends ListActivity {
 		muninFoo.loadLanguage(this);
 		c = this;
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setContentView(R.layout.pluginselection);
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-			findViewById(R.id.ll_serverSpinner).setVisibility(View.GONE);
+		setContentView(R.layout.pluginselection);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		this.actionBar = getActionBar();
+		
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		actionBar.setDisplayShowTitleEnabled(false);
+		
+		if (muninFoo != null && muninFoo.getHowManyServers() > 0) {
+			if (muninFoo.currentServer == null) // hotfix
+				muninFoo.currentServer = muninFoo.getServer(0);
 			
-			this.actionBar = getActionBar();
+			actionBarSpinnerIndex = muninFoo.currentServer.getFlatPosition();
+			List<String> list2 = new ArrayList<String>();
+			List<MuninServer> l1 = muninFoo.getOrderedServers();
+			for (MuninServer s : l1)
+				list2.add(s.getName());
 			
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-			actionBar.setDisplayShowTitleEnabled(false);
+			SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list2);
 			
-			if (muninFoo != null && muninFoo.getHowManyServers() > 0) {
-				if (muninFoo.currentServer == null) // hotfix
-					muninFoo.currentServer = muninFoo.getServer(0);
-				
-				actionBarSpinnerIndex = muninFoo.currentServer.getFlatPosition();
-				List<String> list2 = new ArrayList<String>();
-				List<MuninServer> l1 = muninFoo.getOrderedServers();
-				for (MuninServer s : l1) {
-					list2.add(s.getName());
-				}
-				SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list2);
-				
-				
-				ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
-					@Override
-					public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-						if (itemPosition != actionBarSpinnerIndex) {
-							if (muninFoo.getServerFromFlatPosition(itemPosition) != null) {
-								muninFoo.currentServer = muninFoo.getServerFromFlatPosition(itemPosition);
-								
-								actionBarSpinnerIndex = itemPosition;
-								
-								updateListView();
-							}
+			
+			ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+				@Override
+				public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+					if (itemPosition != actionBarSpinnerIndex) {
+						if (muninFoo.getServerFromFlatPosition(itemPosition) != null) {
+							muninFoo.currentServer = muninFoo.getServerFromFlatPosition(itemPosition);
+							
+							actionBarSpinnerIndex = itemPosition;
+							
+							updateListView();
 						}
-						return false;
 					}
-				};
-				actionBar.setListNavigationCallbacks(spinnerAdapter, navigationListener);
-				actionBar.setSelectedNavigationItem(actionBarSpinnerIndex);
-			}
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_PluginSelection);
-			}
-		} else {
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.pluginselection);
-			super.setTheme(R.style.ListFont);
-			
-			sp  = (Spinner) this.findViewById(R.id.spinner_server);
-			
-			List<String> list = new ArrayList<String>();
-			for (int i=0; i<muninFoo.getHowManyServers(); i++) {
-				list.add(muninFoo.getServer(i).getName());
-			}
-			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
-			dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			sp.setAdapter(dataAdapter);
+					return false;
+				}
+			};
+			actionBar.setListNavigationCallbacks(spinnerAdapter, navigationListener);
+			actionBar.setSelectedNavigationItem(actionBarSpinnerIndex);
+		}
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_PluginSelection);
 		}
 		
 		mode = getListViewMode();

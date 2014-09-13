@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,23 +47,14 @@ public class Activity_AlertsPluginSelection extends Activity {
 		muninFoo.loadLanguage(this);
 		c = this;
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setContentView(R.layout.alerts_pluginselection);
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			findViewById(R.id.viewTitle).setVisibility(View.GONE);
-			findViewById(R.id.viewTitleSep).setVisibility(View.GONE);
-			actionBar.setTitle(muninFoo.currentServer.getName());
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_AlertsPluginSelection);
-			}
-		} else {
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.alerts_pluginselection);
-			super.setTheme(R.style.ListFont);
-			((TextView) this.findViewById(R.id.viewTitle)).setText(muninFoo.currentServer.getName());
+		setContentView(R.layout.alerts_pluginselection);
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(muninFoo.currentServer.getName());
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_AlertsPluginSelection);
 		}
 		
 		

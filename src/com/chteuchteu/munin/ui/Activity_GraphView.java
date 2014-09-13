@@ -33,13 +33,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -49,10 +47,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -87,9 +83,6 @@ public class Activity_GraphView extends Activity {
 	private Spinner 		spinner;
 	private MenuItem		item_previous;
 	private MenuItem		item_next;
-	private ImageButton 	btn_previous;
-	private ImageButton 	btn_next;
-	private ImageButton		btn_list;
 	private Menu 			menu;
 	private String			activityName;
 	
@@ -119,34 +112,14 @@ public class Activity_GraphView extends Activity {
 		}
 		setContentView(R.layout.graphview);
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			if (muninFoo.currentServer != null)
-				actionBar.setTitle(muninFoo.currentServer.getName());
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_GraphView);
-			}
-		} else {
-			findViewById(R.id.comp_relativelayout).setVisibility(View.VISIBLE);
-			btn_previous = (ImageButton) findViewById(R.id.comp_previous);
-			btn_next = (ImageButton) findViewById(R.id.comp_next);
-			btn_list = (ImageButton) findViewById(R.id.comp_list);
-			
-			btn_previous.setOnClickListener(new OnClickListener() { @Override
-				public void onClick(View actualView) { actionPrevious(); }
-			});
-			btn_next.setOnClickListener(new OnClickListener() { @Override
-				public void onClick(View actualView) { actionNext(); }
-			});
-			findViewById(R.id.comp_refresh).setOnClickListener(new OnClickListener() { @Override
-				public void onClick(View actualView) { actionRefresh(); }
-			});
-			btn_list.setOnClickListener(new OnClickListener() { @Override
-				public void onClick(View actualView) { actionCompList(); }
-			});
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		if (muninFoo.currentServer != null)
+			actionBar.setTitle(muninFoo.currentServer.getName());
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_GraphView);
 		}
 		
 		spinner = (Spinner)findViewById(R.id.spinner);
@@ -251,29 +224,20 @@ public class Activity_GraphView extends Activity {
 		viewFlow.setOnViewSwitchListener(new ViewSwitchListener() {
 			public void onSwitched(View v, int position) {
 				Activity_GraphView.position = position;
-				if (item_previous != null && item_next != null) {
-					if (viewFlow.getSelectedItemPosition() == 0) {
-						item_previous.setIcon(R.drawable.blank);
-						item_previous.setEnabled(false);
-					} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
-						item_next.setIcon(R.drawable.blank);
-						item_next.setEnabled(false);
-					} else {
-						item_previous.setIcon(R.drawable.navigation_previous_item_dark);
-						item_next.setIcon(R.drawable.navigation_next_item_dark);
-						item_previous.setEnabled(true);
-						item_next.setEnabled(true);
-					}
-				} else if (btn_previous != null && btn_next != null) {
-					if (viewFlow.getSelectedItemPosition() == 0)
-						btn_previous.setVisibility(View.GONE);
-					else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1)
-						btn_next.setVisibility(View.GONE);
-					else {
-						btn_previous.setVisibility(View.VISIBLE);
-						btn_next.setVisibility(View.VISIBLE);
-					}
+				
+				if (viewFlow.getSelectedItemPosition() == 0) {
+					item_previous.setIcon(R.drawable.blank);
+					item_previous.setEnabled(false);
+				} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
+					item_next.setIcon(R.drawable.blank);
+					item_next.setEnabled(false);
+				} else {
+					item_previous.setIcon(R.drawable.navigation_previous_item_dark);
+					item_next.setIcon(R.drawable.navigation_next_item_dark);
+					item_previous.setEnabled(true);
+					item_next.setEnabled(true);
 				}
+					
 				if (muninFoo.drawer && dh != null) {
 					int scroll = dh.getDrawerScrollY();
 					if (previousPos != -1) {
@@ -538,56 +502,36 @@ public class Activity_GraphView extends Activity {
 	}
 	
 	public void actionPrevious() {
-		if (item_previous != null && item_next != null) {
-			if (viewFlow.getSelectedItemPosition() == 0) {
-				item_previous.setIcon(R.drawable.blank);
-				item_previous.setEnabled(false);
-			} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
-				item_next.setIcon(R.drawable.blank);
-				item_next.setEnabled(false);
-			} else {
-				item_previous.setIcon(R.drawable.navigation_previous_item_dark);
-				item_next.setIcon(R.drawable.navigation_next_item_dark);
-				item_previous.setEnabled(true);
-				item_next.setEnabled(true);
-			}
-		} else if (btn_previous != null && btn_next != null) {
-			if (viewFlow.getSelectedItemPosition() == 0) {
-				btn_previous.setVisibility(View.GONE);
-			} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
-				btn_next.setVisibility(View.GONE);
-			} else {
-				btn_previous.setVisibility(View.VISIBLE);
-				btn_next.setVisibility(View.VISIBLE);
-			}
+		if (viewFlow.getSelectedItemPosition() == 0) {
+			item_previous.setIcon(R.drawable.blank);
+			item_previous.setEnabled(false);
+		} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
+			item_next.setIcon(R.drawable.blank);
+			item_next.setEnabled(false);
+		} else {
+			item_previous.setIcon(R.drawable.navigation_previous_item_dark);
+			item_next.setIcon(R.drawable.navigation_next_item_dark);
+			item_previous.setEnabled(true);
+			item_next.setEnabled(true);
 		}
+		
 		if (viewFlow.getSelectedItemPosition() != 0)
 			viewFlow.setSelection(viewFlow.getSelectedItemPosition() - 1);
 	}
 	public void actionNext() {
-		if (item_previous != null && item_next != null) {
-			if (viewFlow.getSelectedItemPosition() == 0) {
-				item_previous.setIcon(R.drawable.blank);
-				item_previous.setEnabled(false);
-			} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
-				item_next.setIcon(R.drawable.blank);
-				item_next.setEnabled(false);
-			} else {
-				item_previous.setIcon(R.drawable.navigation_previous_item_dark);
-				item_next.setIcon(R.drawable.navigation_next_item_dark);
-				item_previous.setEnabled(true);
-				item_next.setEnabled(true);
-			}
-		} else if (btn_previous != null && btn_next != null) {
-			if (viewFlow.getSelectedItemPosition() == 0) {
-				btn_previous.setVisibility(View.GONE);
-			} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
-				btn_next.setVisibility(View.GONE);
-			} else {
-				btn_previous.setVisibility(View.VISIBLE);
-				btn_next.setVisibility(View.VISIBLE);
-			}
+		if (viewFlow.getSelectedItemPosition() == 0) {
+			item_previous.setIcon(R.drawable.blank);
+			item_previous.setEnabled(false);
+		} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
+			item_next.setIcon(R.drawable.blank);
+			item_next.setEnabled(false);
+		} else {
+			item_previous.setIcon(R.drawable.navigation_previous_item_dark);
+			item_next.setIcon(R.drawable.navigation_next_item_dark);
+			item_previous.setEnabled(true);
+			item_next.setEnabled(true);
 		}
+		
 		if (viewFlow.getSelectedItemPosition() != muninFoo.currentServer.getPlugins().size()-1)
 			viewFlow.setSelection(viewFlow.getSelectedItemPosition() + 1);
 	}
@@ -641,69 +585,6 @@ public class Activity_GraphView extends Activity {
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public void actionCompList() {
-		List<String> actions = new ArrayList<String>();
-		actions.add(getString(R.string.menu_graph_save) + "::0");
-		actions.add(getString(R.string.menu_graph_switch) + "::1");
-		actions.add(getString(R.string.button_labels) + "::2");
-		
-		String[] popupActionsItems = new String[actions.size()];
-		actions.toArray(popupActionsItems);
-		//popupActions = popupActions();
-		final PopupWindow popupActions = new PopupWindow(this);
-		ListView lv = new ListView(this);
-		lv.setAdapter(actionsAdapter(popupActionsItems));
-		lv.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Animation fadeInAnimation = AnimationUtils.loadAnimation(arg1.getContext(), android.R.anim.fade_in);
-				fadeInAnimation.setDuration(10);
-				arg1.startAnimation(fadeInAnimation);
-				popupActions.dismiss();
-				int id = Integer.parseInt(((TextView) arg1).getTag().toString());
-				switch (id) {
-					case 0:
-						actionSave();
-						break;
-					case 1:
-						actionServerSwitch();
-						break;
-					case 2:
-						actionLabels();
-						break;
-				}
-			}
-		});
-		popupActions.setFocusable(true);
-		popupActions.setWidth(500);
-		popupActions.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-		popupActions.setContentView(lv);
-		
-		popupActions.showAsDropDown(btn_list, -5, 0);
-	}
-	
-	private ArrayAdapter<String> actionsAdapter(String[] actionsArray) {
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, actionsArray) {
-			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				// setting the ID and text for every items in the list
-				String item = getItem(position);
-				String[] itemArr = item.split("::");
-				String text = itemArr[0];
-				String id = itemArr[1];
-				// visual settings for the list item
-				TextView listItem = new TextView(Activity_GraphView.this);
-				listItem.setText(text);
-				listItem.setTag(id);
-				listItem.setTextSize(22);
-				listItem.setPadding(10, 10, 10, 10);
-				listItem.setTextColor(Color.WHITE);
-				return listItem;
-			}
-		};
-		return adapter;
 	}
 	
 	public void actionAddLabel() {

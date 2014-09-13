@@ -7,12 +7,10 @@ import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleAdapter;
@@ -33,7 +31,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_Labels extends ListActivity {
 	private MuninFoo			muninFoo;
 	private DrawerHelper		dh;
-	private Context				c;
+	private Context			c;
 	
 	private SimpleAdapter 		sa;
 	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
@@ -47,19 +45,13 @@ public class Activity_Labels extends ListActivity {
 		muninFoo.loadLanguage(this);
 		c = this;
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setContentView(R.layout.labelselection);
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-			getActionBar().setTitle(getString(R.string.button_labels));
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_Labels);
-			}
-		} else {
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.labelselection);
-			super.setTheme(R.style.ListFont);
+		setContentView(R.layout.labelselection);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setTitle(getString(R.string.button_labels));
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_Labels);
 		}
 		
 		if (!Util.isOnline(this))

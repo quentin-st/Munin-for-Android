@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -39,7 +38,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_Alerts extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
-	private Context			c;
+	private Context		c;
 	
 	private boolean		hideNormalStateServers;
 	private int 			nb_loadings;
@@ -49,16 +48,16 @@ public class Activity_Alerts extends Activity {
 	
 	private List<MuninServer> servers;
 	
-	private LinearLayout[]	part_part;
+	private LinearLayout[]		part_part;
 	private TextView[] 		part_serverName;
 	private LinearLayout[] 	part_criticals;
 	private TextView[] 		part_criticalsNumber;
 	private TextView[] 		part_criticalsLabel;
-	private TextView[]		part_criticalsPluginsList;
+	private TextView[]			part_criticalsPluginsList;
 	private LinearLayout[] 	part_warnings;
 	private TextView[] 		part_warningsNumber;
 	private TextView[] 		part_warningsLabel;
-	private TextView[]		part_warningsPluginsList;
+	private TextView[]			part_warningsPluginsList;
 	
 	public static String	BG_COLOR_UNDEFINED = "#B2B2B2";
 	public static String	BG_COLOR_OK = "#8EC842";
@@ -79,20 +78,14 @@ public class Activity_Alerts extends Activity {
 		c = this;
 		Crashlytics.start(this);
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setTitle(getString(R.string.alertsTitle));
-			
-			findViewById(R.id.viewTitle).setVisibility(View.GONE);
-			findViewById(R.id.viewTitleSep).setVisibility(View.GONE);
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_Alerts);
-			}
-		} else
-			this.getWindow().getDecorView().setBackgroundColor(getResources().getColor(R.color.grayBackground));
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(getString(R.string.alertsTitle));
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_Alerts);
+		}
 		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

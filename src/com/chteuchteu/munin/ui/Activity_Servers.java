@@ -12,15 +12,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -47,7 +43,6 @@ public class Activity_Servers extends Activity {
 	
 	Map<String, List<String>> serversCollection;
 	ExpandableListView		expListView;
-	public static Button 	addServer;
 	private Menu 			menu;
 	private MenuItem		importExportMenuItem;
 	private String			activityName;
@@ -61,35 +56,15 @@ public class Activity_Servers extends Activity {
 		muninFoo.loadLanguage(this);
 		c = this;
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setContentView(R.layout.servers);
-			findViewById(R.id.viewTitle).setVisibility(View.GONE);
-			findViewById(R.id.viewTitleSep).setVisibility(View.GONE);
-			ActionBar actionBar = getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setTitle(getString(R.string.serversTitle));
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_Servers);
-			}
-		} else {
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			this.getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-			super.setTheme(R.style.ListFont);
-			setContentView(R.layout.servers);
-		}
+		setContentView(R.layout.servers);
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(getString(R.string.serversTitle));
 		
-		addServer = (Button)findViewById(R.id.servers_btn_add_a_server);
-		addServer.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View actualView) {
-				Intent intent = new Intent(Activity_Servers.this, Activity_AddServer.class);
-				intent.putExtra("contextServerUrl", "");
-				startActivity(intent);
-				Util.setTransition(c, TransitionStyle.DEEPER);
-			}
-		});
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_Servers);
+		}
 		
 		Intent i = getIntent();
 		MuninMaster fromServersEdit = null;
@@ -198,7 +173,6 @@ public class Activity_Servers extends Activity {
 	private void createOptionsMenu() {
 		menu.clear();
 		getMenuInflater().inflate(R.menu.servers, menu);
-		addServer.setVisibility(View.GONE);
 		this.importExportMenuItem = menu.findItem(R.id.menu_importexport);
 		if (!muninFoo.premium)
 			importExportMenuItem.setVisible(false);

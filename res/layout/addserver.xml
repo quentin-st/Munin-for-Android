@@ -9,30 +9,6 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical" >
 
-		<!-- ### TITLE ### -->
-
-		<TextView
-			android:id="@+id/viewTitle"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:background="#dedfde"
-			android:gravity="center"
-			android:padding="8dp"
-			android:text="@string/addServerTitle"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:textColor="#7a7a7a" />
-
-		<LinearLayout
-			android:id="@+id/viewTitleSep"
-			android:layout_width="match_parent"
-			android:layout_height="0.5dp"
-			android:background="#a5a6a5"
-			android:orientation="horizontal" >
-		</LinearLayout>
-		<!-- ### TITLE ### -->
-
-
 		<!-- Munin URL -->
 
 		<LinearLayout

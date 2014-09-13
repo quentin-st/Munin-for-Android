@@ -11,13 +11,10 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -55,22 +52,13 @@ public class Activity_GridSelection extends ListActivity {
 		muninFoo.loadLanguage(this);
 		c = this;
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			setContentView(R.layout.gridselection);
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-			getActionBar().setTitle(getString(R.string.button_grid));
-			
-			if (muninFoo.drawer) {
-				dh = new DrawerHelper(this, muninFoo);
-				dh.setDrawerActivity(dh.Activity_GridSelection);
-			}
-		} else {
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.gridselection);
-			super.setTheme(R.style.ListFont);
-			Button add_comp = (Button) findViewById(R.id.comp_add_grid);
-			add_comp.setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { add(); } });
-			add_comp.setVisibility(View.VISIBLE);
+		setContentView(R.layout.gridselection);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setTitle(getString(R.string.button_grid));
+		
+		if (muninFoo.drawer) {
+			dh = new DrawerHelper(this, muninFoo);
+			dh.setDrawerActivity(dh.Activity_GridSelection);
 		}
 		
 		List<Grid> gridsList = muninFoo.sqlite.dbHlpr.getGrids(this, muninFoo);
