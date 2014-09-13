@@ -83,7 +83,6 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
 				android:layout_marginBottom="30dp"
-				android:alpha="0.9"
 				android:contentDescription="@string/splashDesc"
 				android:src="@drawable/splash_overlay_logo" />
 
@@ -94,13 +93,13 @@
 				android:layout_gravity="center"
 				android:layout_marginBottom="10dp"
 				android:contentDescription="@string/splashDesc"
-				android:shadowColor="#222222"
+				android:shadowColor="#888888"
 				android:shadowDx="0"
 				android:shadowDy="1"
 				android:shadowRadius="2"
 				android:text="@string/app_name"
 				android:textColor="#ffffff"
-				android:textSize="40sp" />
+				android:textSize="47sp" />
 		</LinearLayout>
 	</RelativeLayout>
 

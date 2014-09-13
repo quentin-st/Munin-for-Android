@@ -71,6 +71,8 @@ public class Activity_Settings extends Activity {
 			dh.setDrawerActivity(dh.Activity_Settings);
 		}
 		
+		Util.UI.applySwag(this);
+		
 		spinner_scale = (Spinner)findViewById(R.id.spinner_scale);
 		spinner_lang = (Spinner)findViewById(R.id.spinner_lang);
 		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);

@@ -5,56 +5,56 @@
 	android:layout_height="match_parent"
 	android:background="#F0F0F0"
 	android:orientation="vertical" >
-
+	
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="#333333"
-		android:paddingTop="6dp" >
-
+		android:paddingTop="4dp"
+		android:orientation="vertical" >
+		<TextView
+			android:id="@+id/serverName"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:shadowColor="#111111"
+			android:shadowDx="0"
+			android:shadowDy="1"
+			android:shadowRadius="2"
+			android:textAllCaps="true"
+			android:textColor="#DDDDDD"
+			android:textSize="16sp"
+			android:gravity="center"
+			android:layout_marginLeft="20dp" />
+		
 		<org.taptwo.android.widget.TitleFlowIndicator
 			android:id="@+id/viewflowindic"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			app:clipPadding="2dp"
+			android:layout_marginTop="6dp"
+			app:clipPadding="6dp"
 			app:customTypeface="RobotoCondensed-Regular.ttf"
 			app:footerColor="#f0f0f0"
 			app:footerLineHeight="0dp"
 			app:footerTriangleHeight="5dp"
 			app:selectedColor="#f0f0f0"
-			app:selectedSize="14dp"
+			app:selectedSize="15dp"
 			app:textColor="#cccccc"
-			app:textSize="12sp"
-			app:textSize2="12sp"
-			app:titlePadding="30dp" />
+			app:textSize="13sp"
+			app:textSize2="13sp"
+			app:titlePadding="40dp" />
 	</LinearLayout>
-
+	
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical" >
-
+		
 		<org.taptwo.android.widget.ViewFlow
 			android:id="@+id/viewflow"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			app:sidebuffer="1" />
-
-		<!-- Sélection de la période -->
-
-		<RelativeLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_alignParentRight="true"
-			android:background="#DDF0F0F0"
-			android:orientation="vertical" >
-
-			<Spinner
-				android:id="@+id/spinner"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content" />
-		</RelativeLayout>
+		
 		
 		<LinearLayout
 			android:id="@+id/serverSwitch_mask"
@@ -63,7 +63,7 @@
 			android:background="#88000000"
 			android:orientation="vertical"
 			android:visibility="gone" />
-
+		
 		<ListView
 			android:id="@+id/serverSwitch_listview"
 			android:layout_width="match_parent"
@@ -72,5 +72,5 @@
 			android:background="#88FFFFFF"
 			android:visibility="gone" />
 	</RelativeLayout>
-
+	
 </LinearLayout>

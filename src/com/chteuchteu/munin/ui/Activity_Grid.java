@@ -78,6 +78,8 @@ public class Activity_Grid extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.button_grid));
 		
+		Util.UI.applySwag(this);
+		
 		if (muninFoo.drawer) {
 			dh = new DrawerHelper(this, muninFoo);
 			dh.setDrawerActivity(dh.Activity_Grid);

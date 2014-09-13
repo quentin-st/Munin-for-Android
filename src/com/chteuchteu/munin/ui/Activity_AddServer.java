@@ -130,6 +130,8 @@ public class Activity_AddServer extends Activity {
 				dh.setDrawerActivity(dh.Activity_AddServer_Edit);
 		}
 		
+		Util.UI.applySwag(this);
+		
 		if (contextServerUrl != null && !contextServerUrl.equals(""))
 			findViewById(R.id.ll_sampleServer).setVisibility(View.GONE);
 		

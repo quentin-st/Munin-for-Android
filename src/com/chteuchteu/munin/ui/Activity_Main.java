@@ -66,6 +66,8 @@ public class Activity_Main extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(false);
 		getActionBar().setTitle("");
 		
+		Util.UI.applySwag(this);
+		
 		if (muninFoo.drawer) {
 			dh = new DrawerHelper(this, muninFoo);
 			dh.setDrawerActivity(dh.Activity_Main);

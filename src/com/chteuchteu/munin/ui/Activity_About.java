@@ -51,6 +51,8 @@ public class Activity_About extends Activity {
 			dh.setDrawerActivity(dh.Activity_About);
 		}
 		
+		Util.UI.applySwag(this);
+		
 		
 		WebView wv = (WebView)findViewById(R.id.webView1);
 		wv.setVerticalScrollBarEnabled(true);

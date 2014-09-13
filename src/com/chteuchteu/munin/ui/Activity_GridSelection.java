@@ -61,6 +61,8 @@ public class Activity_GridSelection extends ListActivity {
 			dh.setDrawerActivity(dh.Activity_GridSelection);
 		}
 		
+		Util.UI.applySwag(this);
+		
 		List<Grid> gridsList = muninFoo.sqlite.dbHlpr.getGrids(this, muninFoo);
 		
 		if (gridsList.size() == 0)

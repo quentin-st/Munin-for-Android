@@ -54,6 +54,8 @@ public class Activity_Labels extends ListActivity {
 			dh.setDrawerActivity(dh.Activity_Labels);
 		}
 		
+		Util.UI.applySwag(this);
+		
 		if (!Util.isOnline(this))
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 	}

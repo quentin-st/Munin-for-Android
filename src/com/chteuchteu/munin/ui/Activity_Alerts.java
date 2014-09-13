@@ -87,6 +87,8 @@ public class Activity_Alerts extends Activity {
 			dh.setDrawerActivity(dh.Activity_Alerts);
 		}
 		
+		Util.UI.applySwag(this);
+		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		

@@ -57,6 +57,8 @@ public class Activity_GoPremium extends Activity {
 			dh.setDrawerActivity(dh.Activity_GoPremium);
 		}
 		
+		Util.UI.applySwag(this);
+		
 		TextView price1 = (TextView)findViewById(R.id.price1);
 		TextView price2 = (TextView)findViewById(R.id.price2);
 		TextView price3 = (TextView)findViewById(R.id.price3);

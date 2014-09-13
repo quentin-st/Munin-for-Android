@@ -38,7 +38,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -47,7 +46,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,21 +67,21 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_GraphView extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh = null;
-	private	int				previousPos = -1;
-	private Context			c;
+	private	int			previousPos = -1;
+	private Context		context;
 	
 	public static Period	load_period;
 	public static ViewFlow	viewFlow;
 	public static int		position;
 	public static Bitmap[]	bitmaps;
 	
-	private Spinner 		spinner;
 	private MenuItem		item_previous;
 	private MenuItem		item_next;
+	private MenuItem		item_period;
 	private Menu 			menu;
 	private String			activityName;
 	
-	private Handler			mHandler;
+	private Handler		mHandler;
 	private Runnable		mHandlerTask;
 	
 	
@@ -92,7 +90,7 @@ public class Activity_GraphView extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
-		c = this;
+		context = this;
 		// Entry point: widgets
 		Crashlytics.start(this);
 		
@@ -108,22 +106,16 @@ public class Activity_GraphView extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		if (muninFoo.currentServer != null)
-			actionBar.setTitle(muninFoo.currentServer.getName());
+			((TextView) findViewById(R.id.serverName)).setText(muninFoo.currentServer.getName());
+		actionBar.setTitle("");
 		
 		if (muninFoo.drawer) {
 			dh = new DrawerHelper(this, muninFoo);
 			dh.setDrawerActivity(dh.Activity_GraphView);
 		}
 		
-		spinner = (Spinner)findViewById(R.id.spinner);
-		// Remplissage spinner period
-		List<String> list = new ArrayList<String>();
-		list.add(getString(R.string.text47_1)); list.add(getString(R.string.text47_2));
-		list.add(getString(R.string.text47_3)); list.add(getString(R.string.text47_4));
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(dataAdapter);
-		// Fin remplissage spinner
+		Util.UI.applySwag(this);
+		
 		
 		// Coming from widget
 		Intent thisIntent = getIntent();
@@ -133,7 +125,6 @@ public class Activity_GraphView extends Activity {
 				&& thisIntent.getExtras().containsKey("period")) {
 			String server = thisIntent.getExtras().getString("server");
 			String plugin = thisIntent.getExtras().getString("plugin");
-			String period = thisIntent.getExtras().getString("period");
 			// Setting currentServer
 			muninFoo.currentServer = muninFoo.getServer(server);
 			if (muninFoo.currentServer == null)
@@ -144,12 +135,6 @@ public class Activity_GraphView extends Activity {
 				if (muninFoo.currentServer.getPlugins().get(i) != null && muninFoo.currentServer.getPlugins().get(i).getName().equals(plugin))
 					thisIntent.putExtra("position", "" + i);
 			}
-			
-			if (period.equals("day"))		spinner.setSelection(0);
-			else if (period.equals("week"))	spinner.setSelection(1);
-			else if (period.equals("month"))	spinner.setSelection(2);
-			else if (period.equals("year"))	spinner.setSelection(3);
-			else							spinner.setSelection(0);
 		}
 		
 		if (muninFoo.currentServer == null)
@@ -181,21 +166,6 @@ public class Activity_GraphView extends Activity {
 			pos = savedInstanceState.getInt("position");
 		
 		
-		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
-				bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
-				if (position == 0)	Activity_GraphView.load_period = Period.DAY;
-				else if (position == 1)	Activity_GraphView.load_period = Period.WEEK;
-				else if (position == 2)	Activity_GraphView.load_period = Period.MONTH;
-				else if (position == 3)	Activity_GraphView.load_period = Period.YEAR;
-				else 					Activity_GraphView.load_period = Period.DAY;
-				
-				if (viewFlow != null) // Update Viewflow
-					viewFlow.setSelection(viewFlow.getSelectedItemPosition());
-			}
-			public void onNothingSelected(AdapterView<?> parentView) { }
-		});
-		
 		// Viewflow
 		position = pos;
 		bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
@@ -222,7 +192,7 @@ public class Activity_GraphView extends Activity {
 				} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
 					item_next.setIcon(R.drawable.blank);
 					item_next.setEnabled(false);
-				} else {
+				} else if (item_previous != null && item_next != null) {
 					item_previous.setIcon(R.drawable.navigation_previous_item_dark);
 					item_next.setIcon(R.drawable.navigation_next_item_dark);
 					item_previous.setEnabled(true);
@@ -301,6 +271,7 @@ public class Activity_GraphView extends Activity {
 		
 		item_previous = menu.findItem(R.id.menu_previous);
 		item_next = menu.findItem(R.id.menu_next);
+		item_period = menu.findItem(R.id.menu_period);
 		
 		// Grisage eventuel des boutons next et previous
 		if (viewFlow.getSelectedItemPosition() == 0) {
@@ -311,6 +282,8 @@ public class Activity_GraphView extends Activity {
 			item_next.setIcon(R.drawable.blank);
 			item_next.setEnabled(false);
 		}
+		
+		item_period.setTitle(load_period.getLabel(context));
 	}
 	
 	@Override
@@ -330,7 +303,7 @@ public class Activity_GraphView extends Activity {
 								Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
 								intent.putExtra("label", thisIntent.getExtras().getString("label"));
 								startActivity(intent);
-								Util.setTransition(c, TransitionStyle.SHALLOWER);
+								Util.setTransition(context, TransitionStyle.SHALLOWER);
 							}
 						} else if (from.equals("alerts")) {
 							if (thisIntent.getExtras().containsKey("server")) {
@@ -338,14 +311,14 @@ public class Activity_GraphView extends Activity {
 									muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
 								Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
 								startActivity(intent);
-								Util.setTransition(c, TransitionStyle.SHALLOWER);
+								Util.setTransition(context, TransitionStyle.SHALLOWER);
 							}
 						}
 					} else {
 						Intent intent = new Intent(this, Activity_PluginSelection.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
-						Util.setTransition(c, TransitionStyle.SHALLOWER);
+						Util.setTransition(context, TransitionStyle.SHALLOWER);
 					}
 				}
 				return true;
@@ -359,11 +332,37 @@ public class Activity_GraphView extends Activity {
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_GraphView.this, Activity_Settings.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_GraphView.this, Activity_About.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
+				return true;
+			case R.id.menu_period:
+				AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
+				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+						this, android.R.layout.simple_list_item_1);
+				arrayAdapter.add(getString(R.string.text47_1).toUpperCase());
+				arrayAdapter.add(getString(R.string.text47_2).toUpperCase());
+				arrayAdapter.add(getString(R.string.text47_3).toUpperCase());
+				arrayAdapter.add(getString(R.string.text47_4).toUpperCase());
+				
+				builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int position) {
+						bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
+						if (position == 0)			load_period = Period.DAY;
+						else if (position == 1)		load_period = Period.WEEK;
+						else if (position == 2)		load_period = Period.MONTH;
+						else if (position == 3)		load_period = Period.YEAR;
+						
+						if (viewFlow != null) // Update Viewflow
+							viewFlow.setSelection(viewFlow.getSelectedItemPosition());
+						
+						item_period.setTitle(load_period.getLabel(context).toUpperCase());
+					}
+				});
+				builderSingle.show();
 				return true;
 			default:	return super.onOptionsItemSelected(item);
 		}
@@ -380,7 +379,7 @@ public class Activity_GraphView extends Activity {
 					Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
 					intent.putExtra("label", thisIntent.getExtras().getString("label"));
 					startActivity(intent);
-					Util.setTransition(c, TransitionStyle.SHALLOWER);
+					Util.setTransition(context, TransitionStyle.SHALLOWER);
 				}
 			} else if (from.equals("alerts")) {
 				if (thisIntent.getExtras().containsKey("server")) {
@@ -388,24 +387,24 @@ public class Activity_GraphView extends Activity {
 						muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
 					Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
 					startActivity(intent);
-					Util.setTransition(c, TransitionStyle.SHALLOWER);
+					Util.setTransition(context, TransitionStyle.SHALLOWER);
 				}
 			} else if (from.equals("grid")) {
 				if (thisIntent.getExtras().containsKey("fromGrid")) {
 					Intent intent = new Intent(Activity_GraphView.this, Activity_Grid.class);
 					intent.putExtra("gridName", thisIntent.getExtras().getString("fromGrid"));
 					startActivity(intent);
-					Util.setTransition(c, TransitionStyle.SHALLOWER);
+					Util.setTransition(context, TransitionStyle.SHALLOWER);
 				} else {
 					startActivity(new Intent(Activity_GraphView.this, Activity_GridSelection.class));
-					Util.setTransition(c, TransitionStyle.SHALLOWER);
+					Util.setTransition(context, TransitionStyle.SHALLOWER);
 				}
 			}
 		} else {
 			Intent intent = new Intent(this, Activity_PluginSelection.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			Util.setTransition(c, TransitionStyle.SHALLOWER);
+			Util.setTransition(context, TransitionStyle.SHALLOWER);
 		}
 	}
 	
@@ -473,7 +472,7 @@ public class Activity_GraphView extends Activity {
 					intent.putExtra("contextServerUrl", url.getText().toString());
 					intent.putExtra("position", muninFoo.currentServer.getPosition(plugin) + "");
 					startActivity(intent);
-					Util.setTransition(c, TransitionStyle.DEEPER);
+					Util.setTransition(context, TransitionStyle.DEEPER);
 				} else
 					actionServerSwitchQuit();
 			}
@@ -543,7 +542,7 @@ public class Activity_GraphView extends Activity {
 			
 			String pluginName = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition()).getFancyName();
 			
-			String fileName1 = muninFoo.currentServer.getName() + " - " + pluginName + " by " + spinner.getSelectedItem().toString();
+			String fileName1 = muninFoo.currentServer.getName() + " - " + pluginName + " by " + item_period.getTitle().toString();
 			String fileName2 = "01.png";
 			File file = new File(dir, fileName1 + fileName2);
 			int i = 1; 	String i_s = "";
@@ -690,27 +689,18 @@ public class Activity_GraphView extends Activity {
 	public void onResume() {
 		super.onResume();
 		
-		Activity_GraphView.load_period = Period.get(Util.getPref(this, "defaultScale"));
+		load_period = Period.get(Util.getPref(this, "defaultScale"));
 		
 		// Venant de widget
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("period"))
-			Activity_GraphView.load_period = Period.get(thisIntent.getExtras().getString("period"));
+			load_period = Period.get(thisIntent.getExtras().getString("period"));
 		
-		if (Activity_GraphView.load_period == null)
-			Activity_GraphView.load_period = Period.DAY;
+		if (load_period == null)
+			load_period = Period.DAY;
 		
-		if (Activity_GraphView.load_period == Period.DAY)
-			spinner.setSelection(0, true);
-		else if (Activity_GraphView.load_period == Period.WEEK)
-			spinner.setSelection(1, true);
-		else if (Activity_GraphView.load_period == Period.MONTH)
-			spinner.setSelection(2, true);
-		else if (Activity_GraphView.load_period == Period.YEAR)
-			spinner.setSelection(3, true);
-		
-		if (muninFoo.currentServer != null)
-			getActionBar().setTitle(muninFoo.currentServer.getName());
+		if (item_period != null)
+			item_period.setTitle(load_period.getLabel(context));
 	}
 	
 	@Override

@@ -61,6 +61,8 @@ public class Activity_ServersEdit extends ListActivity {
 			dh.setDrawerActivity(dh.Activity_ServersEdit);
 		}
 		
+		Util.UI.applySwag(this);
+		
 		long masterId = getIntent().getExtras().getLong("masterId");
 		m = muninFoo.getMasterById((int) masterId);
 		

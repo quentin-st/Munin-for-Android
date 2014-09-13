@@ -67,6 +67,8 @@ public class Activity_Notifications extends Activity {
 			dh.setDrawerActivity(dh.Activity_Notifications);
 		}
 		
+		Util.UI.applySwag(this);
+		
 		final Spinner sp_refreshRate = 		(Spinner) findViewById(R.id.spinner_refresh);
 		final CheckBox cb_notifications = 	(CheckBox) findViewById(R.id.checkbox_notifications);
 		final CheckBox cb_wifiOnly = 		(CheckBox) findViewById(R.id.checkbox_wifiOnly);

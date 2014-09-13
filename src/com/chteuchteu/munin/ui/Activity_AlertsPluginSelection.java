@@ -57,6 +57,7 @@ public class Activity_AlertsPluginSelection extends Activity {
 			dh.setDrawerActivity(dh.Activity_AlertsPluginSelection);
 		}
 		
+		Util.UI.applySwag(this);
 		
 		plugins = new ArrayList<MuninPlugin>();
 		if (muninFoo.currentServer != null && muninFoo.currentServer.getPlugins() != null && muninFoo.currentServer.getPlugins().size() > 0) {

@@ -77,7 +77,7 @@
 <head>
 <style>
 p { padding: 0px 15px; }
-h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 5px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; border: 2px solid #1578C4; border-width: 0px 0px 2px 0px; }
+h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 5px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; }
  body { text-align: justify; color: #555; font-size:1em; }
 li { margin-bottom: 5px; }
 </style>

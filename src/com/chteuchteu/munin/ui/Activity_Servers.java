@@ -65,6 +65,8 @@ public class Activity_Servers extends Activity {
 			dh.setDrawerActivity(dh.Activity_Servers);
 		}
 		
+		Util.UI.applySwag(this);
+		
 		Intent i = getIntent();
 		MuninMaster fromServersEdit = null;
 		if (i.getExtras() != null && i.getExtras().containsKey("fromMaster"))

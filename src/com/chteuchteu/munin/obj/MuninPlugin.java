@@ -1,9 +1,11 @@
 package com.chteuchteu.munin.obj;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.R;
 
 public class MuninPlugin {
 	private long 		id;
@@ -49,6 +51,16 @@ public class MuninPlugin {
 				if (p.name.equals(name))
 					return p;
 			return DAY;
+		}
+		
+		public String getLabel(Context context) {
+			switch (this) {
+				case DAY:	return context.getString(R.string.text47_1);
+				case WEEK:	return context.getString(R.string.text47_2);
+				case MONTH:	return context.getString(R.string.text47_3);
+				case YEAR:	return context.getString(R.string.text47_4);
+			}
+			return "";
 		}
 	}
 	

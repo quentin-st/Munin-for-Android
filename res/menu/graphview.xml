@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item
+	
+	<item
+		android:id="@+id/menu_period"
+		android:showAsAction="always" />
+	<item
 		android:id="@+id/menu_labels"
 		android:icon="@drawable/collections_labels"
 		android:showAsAction="always"
@@ -30,5 +33,5 @@
 		android:id="@+id/menu_switchServer"
 		android:showAsAction="withText"
 		android:title="@string/menu_graph_switch" />
-
+	
 </menu>

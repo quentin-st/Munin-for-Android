@@ -84,6 +84,8 @@ public class Activity_PluginSelection extends ListActivity {
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		actionBar.setDisplayShowTitleEnabled(false);
 		
+		Util.UI.applySwag(this);
+		
 		if (muninFoo != null && muninFoo.getHowManyServers() > 0) {
 			if (muninFoo.currentServer == null) // hotfix
 				muninFoo.currentServer = muninFoo.getServer(0);

@@ -23,4 +23,8 @@
     <color name="cdddddd">#dddddd</color>
     <color name="ceeeeee">#eeeeee</color>
     <color name="cffffff">#ffffff</color>
+    
+    <!-- PrimaryColorDark -->
+    <color name="statusBarColor">#1184C3</color>
+    <color name="actionBarColor">#12A1E3</color>
 </resources>

@@ -76,6 +76,8 @@ public class Activity_LabelsPluginSelection extends Activity {
 			dh.setDrawerActivity(dh.Activity_LabelsPluginSelection);
 		}
 		
+		Util.UI.applySwag(this);
+		
 		labelsListCat = label.getPluginsSortedByServer(muninFoo);
 		correspondance = new ArrayList<MuninPlugin>();
 		correspondanceServers = new ArrayList<String>();

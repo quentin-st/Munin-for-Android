@@ -27,7 +27,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="2dp"
             android:maxLines="2"
-            android:textColor="#252525"
+            android:textColor="#222222"
             android:textSize="22sp" />
 
         <TextView
