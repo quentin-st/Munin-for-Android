@@ -160,6 +160,7 @@ public class Activity_AlertsPluginSelection extends Activity {
 	public void onBackPressed() {
 		Intent intent = new Intent(this, Activity_Alerts.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.putExtra("dontCheckAgain", true);
 		startActivity(intent);
 		Util.setTransition(c, TransitionStyle.SHALLOWER);
 	}

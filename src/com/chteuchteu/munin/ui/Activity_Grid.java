@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class Activity_Grid extends Activity {
 	private DrawerHelper	dh;
 	private String			activityName;
 	private Menu			menu;
-	private Context			c;
+	private Context			context;
 	
 	public static boolean	editing;
 	private Grid			grid;
@@ -69,7 +70,7 @@ public class Activity_Grid extends Activity {
 		muninFoo.loadLanguage(this);
 		setContentView(R.layout.grid);
 		Crashlytics.start(this);
-		c = this;
+		context = this;
 		
 		editing = false;
 		updating = false;
@@ -92,6 +93,8 @@ public class Activity_Grid extends Activity {
 		
 		container = (LinearLayout) findViewById(R.id.grid_root_container);
 		currentPeriod = Util.getDefaultPeriod(this);
+		if (menu_period != null)
+			menu_period.setTitle(currentPeriod.getLabel(this));
 		setupGrid();
 		
 		grid.dHelper = new GridDownloadHelper(grid);
@@ -102,13 +105,13 @@ public class Activity_Grid extends Activity {
 		findViewById(R.id.add_line_bottom).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				grid.addLine(c, true);
+				grid.addLine(context, true);
 			}
 		});
 		findViewById(R.id.add_column_right).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				grid.addColumn(c, true);
+				grid.addColumn(context, true);
 			}
 		});
 		findViewById(R.id.fullscreen).setOnClickListener(new OnClickListener() {
@@ -156,7 +159,7 @@ public class Activity_Grid extends Activity {
 			public void onAnimationEnd(Animation animation) {
 				findViewById(R.id.fullscreen).setVisibility(View.GONE);
 				fs_iv.setImageBitmap(null);
-				((TextView) ((Activity) c).findViewById(R.id.fullscreen_tv)).setText("");
+				((TextView) ((Activity) context).findViewById(R.id.fullscreen_tv)).setText("");
 			}
 		});
 		findViewById(R.id.fullscreen).startAnimation(a);
@@ -224,6 +227,7 @@ public class Activity_Grid extends Activity {
 		menu_refresh.setVisible(!editing);
 		if (editing)	menu_edit.setIcon(R.drawable.navigation_accept_dark);
 		else 			menu_edit.setIcon(R.drawable.content_edit_dark);
+		menu_period.setTitle(currentPeriod.getLabel(this));
 	}
 	
 	private void edit() {
@@ -252,7 +256,7 @@ public class Activity_Grid extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				muninFoo.sqlite.dbHlpr.deleteGrid(grid);
 				startActivity(new Intent(Activity_Grid.this, Activity_GridSelection.class));
-				Util.setTransition(c, TransitionStyle.SHALLOWER);
+				Util.setTransition(context, TransitionStyle.SHALLOWER);
 			}
 		})
 		.setNegativeButton(R.string.text34, null)
@@ -273,14 +277,14 @@ public class Activity_Grid extends Activity {
 	
 	private void openGraph() {
 		grid.f.currentServer = grid.currentlyOpenedPlugin.getInstalledOn();
-		Intent i = new Intent(c, Activity_GraphView.class);
+		Intent i = new Intent(context, Activity_GraphView.class);
 		i.putExtra("plugin", grid.currentlyOpenedPlugin.getName());
 		i.putExtra("from", "grid");
-		Intent gridIntent = ((Activity) c).getIntent();
+		Intent gridIntent = ((Activity) context).getIntent();
 		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("gridName"))
 			i.putExtra("fromGrid", gridIntent.getExtras().getString("gridName"));
-		c.startActivity(i);
-		Util.setTransition(c, TransitionStyle.DEEPER);
+		context.startActivity(i);
+		Util.setTransition(context, TransitionStyle.DEEPER);
 	}
 	
 	@Override
@@ -295,7 +299,7 @@ public class Activity_Grid extends Activity {
 					Intent intent = new Intent(this, Activity_GridSelection.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
-					Util.setTransition(c, TransitionStyle.SHALLOWER);
+					Util.setTransition(context, TransitionStyle.SHALLOWER);
 				}
 				return true;
 			case R.id.menu_refresh:
@@ -307,32 +311,41 @@ public class Activity_Grid extends Activity {
 			case R.id.menu_delete:
 				delete();
 				return true;
-			case R.id.period_day:
-				this.currentPeriod = Period.DAY;
-				refresh();
-				return true;
-			case R.id.period_week:
-				this.currentPeriod = Period.WEEK;
-				refresh();
-				return true;
-			case R.id.period_month:
-				this.currentPeriod = Period.MONTH;
-				refresh();
-				return true;
-			case R.id.period_year:
-				this.currentPeriod = Period.YEAR;
-				refresh();
+			case R.id.menu_period:
+				AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
+				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+						this, android.R.layout.simple_list_item_1);
+				arrayAdapter.add(getString(R.string.text47_1).toUpperCase());
+				arrayAdapter.add(getString(R.string.text47_2).toUpperCase());
+				arrayAdapter.add(getString(R.string.text47_3).toUpperCase());
+				arrayAdapter.add(getString(R.string.text47_4).toUpperCase());
+				
+				builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int position) {
+						
+						if (position == 0)			currentPeriod = Period.DAY;
+						else if (position == 1)		currentPeriod = Period.WEEK;
+						else if (position == 2)		currentPeriod = Period.MONTH;
+						else if (position == 3)		currentPeriod = Period.YEAR;
+						
+						menu_period.setTitle(currentPeriod.getLabel(context).toUpperCase());
+						
+						refresh();
+					}
+				});
+				builderSingle.show();
 				return true;
 			case R.id.menu_open:
 				openGraph();
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Grid.this, Activity_Settings.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_Grid.this, Activity_About.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -350,7 +363,7 @@ public class Activity_Grid extends Activity {
 				Intent intent = new Intent(this, Activity_GridSelection.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				Util.setTransition(c, TransitionStyle.SHALLOWER);
+				Util.setTransition(context, TransitionStyle.SHALLOWER);
 			}
 		}
 	}

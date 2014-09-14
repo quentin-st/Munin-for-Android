@@ -13,11 +13,6 @@
         android:showAsAction="withText"
         android:title="@string/about_eraseData"/>
     <item
-        android:id="@+id/menu_updates"
-        android:icon="@drawable/navigation_previous_item_dark"
-        android:showAsAction="withText"
-        android:title="@string/about_checkUpdates"/>
-    <item
         android:id="@+id/menu_gplay"
         android:icon="@drawable/navigation_refresh_dark"
         android:showAsAction="withText"

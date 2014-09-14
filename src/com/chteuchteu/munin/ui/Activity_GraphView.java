@@ -49,7 +49,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.GraphView_Adapter;
+import com.chteuchteu.munin.Adapter_GraphView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -170,7 +170,7 @@ public class Activity_GraphView extends Activity {
 		position = pos;
 		bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
-		GraphView_Adapter adapter = new GraphView_Adapter(this);
+		Adapter_GraphView adapter = new Adapter_GraphView(this);
 		viewFlow.setAdapter(adapter, pos);
 		viewFlow.setAnimationEnabled(Util.getPref(this, "transitions").equals("true"));
 		TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);

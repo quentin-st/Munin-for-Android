@@ -2,7 +2,9 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical">
+	android:orientation="vertical"
+	android:paddingLeft="@dimen/listview_horizontal_margin"
+	android:paddingRight="@dimen/listview_horizontal_margin">
 
 	<LinearLayout
 		android:id="@+id/view1"
@@ -131,6 +133,5 @@
 			android:visibility="gone"
 			android:orientation="vertical" />
 	</ScrollView>
-	<!-- <ListView android:id="@+id/list" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone" android:background="#ffffff" /> -->
 
 </RelativeLayout>

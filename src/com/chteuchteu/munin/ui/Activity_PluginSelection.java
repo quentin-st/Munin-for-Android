@@ -22,18 +22,16 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
-import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.chteuchteu.munin.Adapter_SeparatedList;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.SeparatedListAdapter;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -57,7 +55,6 @@ public class Activity_PluginSelection extends ListActivity {
 	private MuninPlugin[] 		pluginsFilter;
 	private int					actionBarSpinnerIndex;
 	
-	private Spinner 		sp;
 	private LinearLayout	ll_filter;
 	private EditText		filter;
 	private	ActionBar		actionBar;
@@ -136,26 +133,6 @@ public class Activity_PluginSelection extends ListActivity {
 			Intent intent = new Intent(this, Activity_Main.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-		}
-		
-		if (sp != null) { // Servers spinner: compatibility
-			sp.setSelection(muninFoo.getServerFlatRange(muninFoo.currentServer), true);
-			if (muninFoo.getHowManyServers() == 1) {
-				sp.setEnabled(false);
-				sp.setClickable(false);
-			} else {
-				sp.setOnItemSelectedListener(new OnItemSelectedListener() {
-					@Override
-					public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
-						if (muninFoo.getServerFromFlatPosition(position) != null) {
-							muninFoo.currentServer = muninFoo.getServerFromFlatPosition(position);
-							updateListView();
-						}
-					}
-					@Override
-					public void onNothingSelected(AdapterView<?> parentView) { }
-				});
-			}
 		}
 	}
 	
@@ -258,7 +235,7 @@ public class Activity_PluginSelection extends ListActivity {
 				}
 			});
 			
-			SeparatedListAdapter adapter = new SeparatedListAdapter(this);
+			Adapter_SeparatedList adapter = new Adapter_SeparatedList(this);
 			for (List<MuninPlugin> l : pluginsListCat) {
 				List<Map<String,?>> elements = new LinkedList<Map<String,?>>();
 				String categoryName = "";

@@ -1,10 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
@@ -14,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -280,15 +274,12 @@ public class Activity_Main extends Activity {
 				public void onOpen() {
 					activityName = getActionBar().getTitle().toString();
 					getActionBar().setTitle("Munin for Android");
-					//menu.clear();
-					//getMenuInflater().inflate(R.menu.main, menu);
 				}
 			});
 			dh.getDrawer().setOnCloseListener(new OnCloseListener() {
 				@Override
 				public void onClose() {
 					getActionBar().setTitle(activityName);
-					//createOptionsMenu();
 				}
 			});
 		}
@@ -304,44 +295,6 @@ public class Activity_Main extends Activity {
 			findViewById(R.id.aboutContainer).setVisibility(View.GONE);
 		}
 		getMenuInflater().inflate(R.menu.main, menu);
-	}
-	
-	public class verifUpdate extends AsyncTask<String, Void, Void> {
-		double onlineLastVersion = -1;
-		@SuppressLint("SimpleDateFormat")
-		@Override
-		protected Void doInBackground(String... url) {
-			String timeStamp = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
-			if (!Util.getPref(c, "lastAppUpdateCheck").equals(timeStamp)) {
-				String source = "";
-				try {
-					URL adresse = new URL("http://chteuchteu.free.fr/MuninforAndroid/version.txt");
-					BufferedReader in = new BufferedReader(new InputStreamReader(adresse.openStream()));
-					String inputLine;
-					while ((inputLine = in.readLine()) != null) {
-						source += inputLine;
-					}
-					in.close();  
-					onlineLastVersion = Double.parseDouble(source);
-				} catch (Exception e) { }
-			}
-			Util.setPref(c, "lastAppUpdateCheck", timeStamp);
-			return null;
-		}
-		@Override
-		protected void onPostExecute(Void result) {
-			if (onlineLastVersion != -1 && muninFoo.version < onlineLastVersion)
-				findViewById(R.id.updateNotification).setVisibility(View.VISIBLE);
-			
-			findViewById(R.id.updateNotification).setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View actualView) {
-					Intent intent = new Intent(Intent.ACTION_VIEW);
-					intent.setData(Uri.parse("market://details?id=com.chteuchteu.munin"));
-					startActivity(intent);
-				}
-			});
-		}
 	}
 	
 	public void displayTwitterAlertIfNeeded() {

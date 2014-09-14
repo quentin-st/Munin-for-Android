@@ -10,15 +10,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class IconListAdapter extends ArrayAdapter<String> {
+public class Adapter_IconList extends ArrayAdapter<String> {
 	private List<Integer> images;
 	
-	public IconListAdapter(Context context, List<String> items, List<Integer> images) {
+	public Adapter_IconList(Context context, List<String> items, List<Integer> images) {
 		super(context, android.R.layout.select_dialog_item, items);
 		this.images = images;
 	}
 	
-	public IconListAdapter(Context context, String[] items, Integer[] images) {
+	public Adapter_IconList(Context context, String[] items, Integer[] images) {
 		super(context, android.R.layout.select_dialog_item, items);
 		this.images = Arrays.asList(images);
 	}

@@ -77,11 +77,6 @@
 
 	<string name="text01">Les paramètres vont être remis à zéro. Etes-vous sûr(e) ?</string>
 	<string name="text02">Remise à zéro effectuée.</string>
-	<string name="text03">Vérification de la dernière version de Munin for Android…</string>
-	<string name="text04">Nouvelle version disponible</string>
-	<string name="text05">Une nouvelle version de l\'application est disponible en ligne. Veuillez la mettre à jour via Google Play.</string>
-	<string name="text06">Aucune nouvelle version</string>
-	<string name="text07">Munin for Android est à jour.</string>
 	<string name="text09">Erreur</string>
 	<string name="text10">L\'application Twitter ne semble pas être installée sur votre appareil</string>
 	<string name="text11">L\'application Google Play ne semble pas être installée sur votre appareil</string>

@@ -135,6 +135,7 @@ public class Activity_AddServer extends Activity {
 		if (contextServerUrl != null && !contextServerUrl.equals(""))
 			findViewById(R.id.ll_sampleServer).setVisibility(View.GONE);
 		
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.muninMasterUrlLabel), CustomFont.RobotoCondensed_Regular);
 		
 		tb_auth_login = 	(EditText)findViewById(R.id.auth_login);
 		tb_auth_password = 	(EditText)findViewById(R.id.auth_password);
@@ -227,26 +228,6 @@ public class Activity_AddServer extends Activity {
 			public void onNothingSelected(AdapterView<?> parentView) { }
 		});
 		
-		final Button clear_button = (Button) findViewById(R.id.btn_server_clear);
-		clear_button.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {	actionClear();	}
-		});
-		
-		final Button delete_button = (Button) findViewById(R.id.btn_server_delete);
-		if (contextServerUrl.equals(""))
-			delete_button.setVisibility(View.GONE);
-		else {
-			delete_button.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {	actionDelete();	}
-			});
-		}
-		
-		final Button save_button = (Button) findViewById(R.id.btn_server_save);
-		save_button.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				actionSave();
-			}
-		});
 		
 		// Popup
 		int screenH = 0;
@@ -389,8 +370,6 @@ public class Activity_AddServer extends Activity {
 			menu.findItem(R.id.menu_delete).setVisible(false);
 		if (Util.getPref(c, "addserver_history").equals(""))
 			menu.findItem(R.id.menu_clear_history).setVisible(false);
-		
-		findViewById(R.id.actionsButtons).setVisibility(View.GONE);
 	}
 	
 	public void onResume() {

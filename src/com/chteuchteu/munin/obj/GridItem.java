@@ -26,7 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.chteuchteu.munin.IconListAdapter;
+import com.chteuchteu.munin.Adapter_IconList;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
@@ -267,7 +267,7 @@ public class GridItem {
 			
 			final String[] items = items_l.toArray(new String[items_l.size()]);
 			final Integer[] icons = icons_l.toArray(new Integer[icons_l.size()]);
-			ListAdapter adapter = new IconListAdapter(c, items, icons);
+			ListAdapter adapter = new Adapter_IconList(c, items, icons);
 			
 			new AlertDialog.Builder(c)
 			.setAdapter(adapter, new DialogInterface.OnClickListener() {

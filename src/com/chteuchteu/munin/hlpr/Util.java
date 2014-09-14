@@ -55,6 +55,16 @@ public final class Util {
 				}
 			}
 		}
+		
+		/**
+		 * Show loading spinner on actionbar
+			activity.requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		 * @param val
+		 * @param activity
+		 */
+		public static void setLoading(boolean val, Activity activity) {
+			activity.setProgressBarIndeterminateVisibility(val);
+		}
 	}
 	
 	public static final class Fonts {

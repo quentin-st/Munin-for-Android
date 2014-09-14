@@ -1,8 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -11,12 +8,10 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,20 +32,20 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 public class Activity_Settings extends Activity {
-	private Spinner		spinner_scale;
-	private Spinner		spinner_lang;
-	private Spinner		spinner_orientation;
+	private Spinner	spinner_scale;
+	private Spinner	spinner_lang;
+	private Spinner	spinner_orientation;
 	private View		checkable_transitions;
 	private View		checkable_drawer;
 	private View		checkable_splash;
 	private View		checkable_alwaysOn;
 	private View		checkable_autoRefresh;
 	
-	private MuninFoo 			muninFoo;
-	private DrawerHelper		dh;
-	private Menu 				menu;
-	private String				activityName;
-	private Context				context;
+	private MuninFoo 		muninFoo;
+	private DrawerHelper	dh;
+	private Menu 			menu;
+	private String			activityName;
+	private Context		context;
 	
 	
 	@SuppressLint("NewApi")
@@ -314,7 +309,6 @@ public class Activity_Settings extends Activity {
 				return true;
 			case R.id.menu_save:	actionSave();	return true;
 			case R.id.menu_reset:	actionReset();	return true;
-			case R.id.menu_updates: actionUpdate(); return true;
 			case R.id.menu_gplay:	actionGPlay();	return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Settings.this, Activity_Settings.class));
@@ -382,67 +376,6 @@ public class Activity_Settings extends Activity {
 		});
 		AlertDialog alert = builder.create();
 		alert.show();
-	}
-	
-	public void actionUpdate() {
-		new CheckUpdate().execute();
-	}
-	
-	public class CheckUpdate extends AsyncTask<Void, Integer, Void> {
-		private double onlineLastVersion;
-		private ProgressDialog myProgressDialog;
-		
-		@Override
-		protected void onPreExecute() {
-			onlineLastVersion = 0;
-			// Checking last version of Munin for Android
-			myProgressDialog = ProgressDialog.show(Activity_Settings.this, "", getString(R.string.text03), true);
-		}
-		
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			String source = "";
-			try {
-				URL adresse = new URL("http://chteuchteu.free.fr/MuninforAndroid/version.txt");
-				BufferedReader in = new BufferedReader(
-						new InputStreamReader(adresse.openStream()));
-				String inputLine;
-				while ((inputLine = in.readLine()) != null) {
-					source = source + inputLine + "\n";
-				}
-				in.close();
-				onlineLastVersion = Double.parseDouble(source);
-			} catch (Exception e) { }
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Void result) {
-			myProgressDialog.dismiss();
-			final AlertDialog alert = new AlertDialog.Builder(Activity_Settings.this).create();
-			if (muninFoo.version < onlineLastVersion) {
-				// New version available
-				alert.setTitle(R.string.text04);
-				// A new version of Munin for Android is available online.\nPlease update it using Google Play.
-				alert.setMessage(getString(R.string.text05));
-			} else if (muninFoo.version == onlineLastVersion) {
-				// No update needed.
-				alert.setTitle(getString(R.string.text06));
-				// Munin for Android is up to date.
-				alert.setMessage(getString(R.string.text07));
-			} else {
-				// No update needed.
-				alert.setTitle(getString(R.string.text06));
-				// Munin for Android is up to date.
-				alert.setMessage(getString(R.string.text07));
-			}
-			
-			alert.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) { dialog.dismiss(); }
-			});
-			alert.show();
-		}
 	}
 	
 	public void actionGPlay() {

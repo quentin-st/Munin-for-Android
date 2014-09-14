@@ -14,13 +14,13 @@ import android.widget.TextView;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 
-public class SeparatedListAdapter extends BaseAdapter {
+public class Adapter_SeparatedList extends BaseAdapter {
 	private Context context;
 	public final Map<String,Adapter> sections = new LinkedHashMap<String,Adapter>();
 	public final ArrayAdapter<String> headers;
 	public final static int TYPE_SECTION_HEADER = 0;
 	
-	public SeparatedListAdapter(Context context) {
+	public Adapter_SeparatedList(Context context) {
 		this.headers = new ArrayAdapter<String>(context, R.layout.list_header);
 		this.context = context;
 	}

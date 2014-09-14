@@ -2,11 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/scrollView1"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content" >
+	android:layout_height="match_parent" >
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:paddingLeft="@dimen/listview_horizontal_margin"
+		android:paddingRight="@dimen/listview_horizontal_margin"
 		android:orientation="vertical" >
 
 		<!-- Munin URL -->
@@ -31,18 +33,12 @@
 			android:padding="20dp" >
 
 			<TextView
+				android:id="@+id/muninMasterUrlLabel"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/settings_URL_label"
+				android:textSize="24sp"
 				android:textAppearance="?android:attr/textAppearanceMedium" />
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:paddingLeft="5dp"
-				android:text="@string/settings_URL_label2"
-				android:textColor="#787878"
-				android:textSize="12sp" />
 
 			<AutoCompleteTextView
 				android:id="@+id/textbox_serverUrl"
@@ -53,7 +49,39 @@
 				android:ems="10"
 				android:inputType="textUri"
 				android:nextFocusLeft="@id/textbox_serverUrl"
-				android:nextFocusUp="@id/textbox_serverUrl" />
+				android:nextFocusUp="@id/textbox_serverUrl"
+				android:hint="@string/settings_URL_label2" />
+			
+			<!-- ... or select a sample server -->
+			<LinearLayout
+				android:id="@+id/ll_sampleServer"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+				
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:layout_marginTop="15dp"
+					android:layout_marginBottom="10dp"
+					android:background="#d7d7d7" />
+				
+				<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/settings_text"
+						android:textAppearance="?android:attr/textAppearanceMedium" />
+				
+				<Spinner
+					android:id="@+id/spinner"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="13dp"
+					android:layout_marginTop="8dp" />
+				
+			</LinearLayout>
+			
+			
 		</LinearLayout>
 
 		<LinearLayout
@@ -64,63 +92,12 @@
 			android:layout_marginRight="10dp"
 			android:background="#d7d7d7" />
 
-		<!-- ... or select a sample server -->
-
-		<LinearLayout
-			android:id="@+id/ll_sampleServer"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical" >
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
-				android:layout_marginTop="3dp"
-				android:background="#eaeaea" />
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
-				android:background="#ffffff"
-				android:orientation="vertical"
-				android:paddingBottom="5dp"
-				android:paddingLeft="20dp"
-				android:paddingRight="20dp"
-				android:paddingTop="5dp" >
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/settings_text"
-					android:textAppearance="?android:attr/textAppearanceMedium" />
-
-				<Spinner
-					android:id="@+id/spinner"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="13dp"
-					android:layout_marginTop="8dp" />
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="2dp"
-				android:layout_marginBottom="3dp"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
-				android:background="#d7d7d7" />
-		</LinearLayout>
-
 		<!-- HTTP Auth -->
 		<LinearLayout
-		    android:id="@+id/addserver_auth"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical">
+			android:id="@+id/addserver_auth"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="1dp"
@@ -223,35 +200,6 @@
 				android:layout_marginLeft="10dp"
 				android:layout_marginRight="10dp"
 				android:background="#d7d7d7" />
-		</LinearLayout>
-
-		<!-- Compatibility: buttons -->
-
-		<LinearLayout
-			android:id="@+id/actionsButtons"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:layout_marginTop="25dp"
-			android:orientation="horizontal" >
-
-			<Button
-				android:id="@+id/btn_server_save"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/save_button" />
-
-			<Button
-				android:id="@+id/btn_server_clear"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/settings_clear_button" />
-
-			<Button
-				android:id="@+id/btn_server_delete"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/settings_delete_button" />
 		</LinearLayout>
 	</LinearLayout>
 

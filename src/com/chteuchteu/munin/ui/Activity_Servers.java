@@ -22,7 +22,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.ExpandableListViewAdapter;
+import com.chteuchteu.munin.Adapter_ExpandableListView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -84,7 +84,7 @@ public class Activity_Servers extends Activity {
 				childList.add(s.getName());
 			serversCollection.put(m.getName(), childList);
 		}
-		final ExpandableListViewAdapter expListAdapter = new ExpandableListViewAdapter(this, masters, serversCollection, muninFoo);
+		final Adapter_ExpandableListView expListAdapter = new Adapter_ExpandableListView(this, masters, serversCollection, muninFoo);
 		expListView.setAdapter(expListAdapter);
 		
 		if (fromServersEdit != null)

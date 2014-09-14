@@ -3,24 +3,7 @@
 
 	<item
 		android:id="@+id/menu_period"
-		android:icon="@drawable/ic_period"
-		android:showAsAction="always"
-		android:title="@string/text76">
-		<menu>
-			<item
-				android:id="@+id/period_day"
-				android:title="@string/text47.1" />
-			<item
-				android:id="@+id/period_week"
-				android:title="@string/text47.2" />
-			<item
-				android:id="@+id/period_month"
-				android:title="@string/text47.3" />
-			<item
-				android:id="@+id/period_year"
-				android:title="@string/text47.4" />
-		</menu>
-	</item>
+		android:showAsAction="always" />
 	<item
 	    android:id="@+id/menu_open"
 	    android:icon="@drawable/content_graph"

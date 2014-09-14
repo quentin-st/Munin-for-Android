@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.SeparatedListAdapter;
+import com.chteuchteu.munin.Adapter_SeparatedList;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -81,7 +81,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 		labelsListCat = label.getPluginsSortedByServer(muninFoo);
 		correspondance = new ArrayList<MuninPlugin>();
 		correspondanceServers = new ArrayList<String>();
-		SeparatedListAdapter adapter = new SeparatedListAdapter(this);
+		Adapter_SeparatedList adapter = new Adapter_SeparatedList(this);
 		for (List<MuninPlugin> l : labelsListCat) {
 			correspondanceServers.add("");
 			correspondance.add(new MuninPlugin());

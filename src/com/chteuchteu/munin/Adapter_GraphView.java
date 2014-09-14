@@ -15,13 +15,13 @@ import android.widget.ProgressBar;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 
-public class GraphView_Adapter extends BaseAdapter implements TitleProvider {
+public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	private MuninFoo		muninFoo;
 	
 	private LayoutInflater	mInflater;
 	private int 			position;
 	
-	public GraphView_Adapter(Context context) {
+	public Adapter_GraphView(Context context) {
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		muninFoo = MuninFoo.getInstance(context);
 	}

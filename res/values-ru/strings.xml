@@ -42,11 +42,6 @@
 	<string name="aboutTitle">О программе Munin for Android</string>
 	<string name="text01">Будет произведен сброс настроек. Вы уверены?</string>
 	<string name="text02">Сброс выполнен</string>
-	<string name="text03">Проверка обновлений…</string>
-	<string name="text04">Доступна новая версия</string>
-	<string name="text05">Доступна новая версия Munin for Android. Пожалуйста, обновите приложение через Google Play</string>
-	<string name="text06">Обновление не требуется</string>
-	<string name="text07">Установлена актуальная версия Munin for Android</string>
 	<string name="text09">Ошибка!</string>
 	<string name="text10">На вашем устройстве не установлен Twitter</string>
 	<string name="text11">На вашем устройстве не установлен Google Play</string>

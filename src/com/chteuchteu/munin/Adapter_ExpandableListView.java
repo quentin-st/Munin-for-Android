@@ -20,13 +20,13 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.ui.Activity_ServersEdit;
 
-public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
+public class Adapter_ExpandableListView extends BaseExpandableListAdapter {
 	private Activity context;
 	private Map<String, List<String>> serversCollection;
 	private List<String> servers;
 	private MuninFoo muninFoo;
 	
-	public ExpandableListViewAdapter(Activity context, List<String> servers,
+	public Adapter_ExpandableListView(Activity context, List<String> servers,
 			Map<String, List<String>> serversCollection, MuninFoo f) {
 		this.context = context;
 		this.serversCollection = serversCollection;

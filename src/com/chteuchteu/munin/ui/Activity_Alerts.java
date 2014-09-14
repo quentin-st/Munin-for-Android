@@ -17,15 +17,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
@@ -42,7 +43,6 @@ public class Activity_Alerts extends Activity {
 	
 	private boolean		hideNormalStateServers;
 	private int 			nb_loadings;
-	private ProgressBar 	loading;
 	private Menu 			menu;
 	private String			activityName;
 	
@@ -59,10 +59,10 @@ public class Activity_Alerts extends Activity {
 	private TextView[] 		part_warningsLabel;
 	private TextView[]			part_warningsPluginsList;
 	
-	public static String	BG_COLOR_UNDEFINED = "#B2B2B2";
-	public static String	BG_COLOR_OK = "#8EC842";
-	public static String	BG_COLOR_WARNING = "#FFAE5B";
-	public static String	BG_COLOR_CRITICAL = "#FF7B68";
+	public static final String	BG_COLOR_UNDEFINED = "#B2B2B2";
+	public static final String	BG_COLOR_OK = "#8EC842";
+	public static final String	BG_COLOR_WARNING = "#FFAE5B";
+	public static final String	BG_COLOR_CRITICAL = "#FF7B68";
 	
 	public static boolean	updating;
 	private Handler			mHandler;
@@ -72,6 +72,7 @@ public class Activity_Alerts extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
 		setContentView(R.layout.alerts);
@@ -105,8 +106,6 @@ public class Activity_Alerts extends Activity {
 		part_warningsPluginsList 	= new TextView[nbS];
 		
 		hideNormalStateServers = true;
-		loading = (ProgressBar) findViewById(R.id.loading_spin);
-		loading.setIndeterminate(true);
 		
 		servers = new ArrayList<MuninServer>();
 		// Populating servers list
@@ -147,6 +146,8 @@ public class Activity_Alerts extends Activity {
 				}
 			});
 			
+			Util.Fonts.setFont(this, (ViewGroup) v, CustomFont.RobotoCondensed_Regular);
+			
 			wholeContainer.addView(v);
 			
 			i++;
@@ -155,7 +156,12 @@ public class Activity_Alerts extends Activity {
 		View insertPoint = findViewById(R.id.alerts_root_container);
 		((ViewGroup) insertPoint).addView(wholeContainer);
 		
-		updateStates();
+		// If coming from PluginSelection : don't check again
+		Intent thisIntent = getIntent();
+		if (thisIntent.hasExtra("dontCheckAgain") && thisIntent.getExtras().getBoolean("dontCheckAgain"))
+			updateStates(false);
+		else
+			updateStates(true);
 		
 		findViewById(R.id.hideNoAlerts).setOnClickListener(new OnClickListener() {
 			@Override
@@ -176,11 +182,10 @@ public class Activity_Alerts extends Activity {
 		if (Util.getPref(this, "autoRefresh").equals("true")) {
 			mHandler = new Handler();
 			final int INTERVAL = 1000 * 60 * 5;
-			mHandlerTask = new Runnable()
-			{
+			mHandlerTask = new Runnable() {
 				@Override 
 				public void run() {
-					updateStates();
+					updateStates(true);
 					mHandler.postDelayed(mHandlerTask, INTERVAL);
 				}
 			};
@@ -241,17 +246,21 @@ public class Activity_Alerts extends Activity {
 		}
 	}
 	
-	public void updateStates() {
+	/**
+	 * Update UI
+	 * @param fetch Use cached data or not
+	 */
+	public void updateStates(boolean fetch) {
 		nb_loadings = 0;
-		loading.setVisibility(View.VISIBLE);
+		Util.UI.setLoading(true, this);
 		for (int i = 0; i < muninFoo.getHowManyServers(); i++) {
 			part_criticals[i].setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
 			part_warnings[i].setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
-			updateState(i);
+			updateState(i, fetch);
 		}
 	}
 	
-	public void updateState(int i) {
+	private void updateState(int i, final boolean fetch) {
 		nb_loadings++;
 		final int z = i;
 		
@@ -316,15 +325,15 @@ public class Activity_Alerts extends Activity {
 					
 					nb_loadings--;
 					if (nb_loadings == 0)
-						loading.setVisibility(View.INVISIBLE);
+						Util.UI.setLoading(false, Activity_Alerts.this);
 					
 					updateView(hideNormalStateServers);
 				}
 			};
 			new Thread() {
 				@Override public void run() {
-					// Traitement en arrière plan
-					muninFoo.getServer(z).fetchPluginsStates();
+					if (fetch)
+						muninFoo.getServer(z).fetchPluginsStates();
 					
 					uiThreadCallback.post(runInUIThread);
 				}
@@ -379,7 +388,7 @@ public class Activity_Alerts extends Activity {
 				}
 				return true;
 			case R.id.menu_refresh:
-				updateStates();
+				updateStates(true);
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Alerts.this, Activity_Settings.class));

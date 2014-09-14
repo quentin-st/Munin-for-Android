@@ -4,66 +4,6 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
 
-	<!-- Update notification -->
-
-	<LinearLayout
-		android:id="@+id/updateNotification"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:clickable="true"
-		android:onClick="onClick"
-		android:orientation="vertical"
-		android:visibility="gone" >
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="#333333"
-			android:orientation="horizontal" >
-
-			<ImageView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:padding="15dp"
-				android:src="@drawable/ic_dr_warning" />
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:orientation="vertical" >
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingBottom="2dp"
-					android:paddingLeft="3dp"
-					android:paddingTop="6dp"
-					android:text="@string/updateNotificationTitle"
-					android:textAppearance="?android:attr/textAppearanceMedium"
-					android:textColor="#ffffff" />
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingBottom="6dp"
-					android:paddingLeft="3dp"
-					android:paddingRight="10dp"
-					android:paddingTop="2dp"
-					android:text="@string/updateNotificationText"
-					android:textAppearance="?android:attr/textAppearanceMedium"
-					android:textColor="#ffffff"
-					android:textSize="12sp" />
-			</LinearLayout>
-		</LinearLayout>
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="0.5dp"
-			android:background="#aaaaaa"
-			android:orientation="horizontal" />
-	</LinearLayout>
-	<!-- Fin update notification -->
-
 	<ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
