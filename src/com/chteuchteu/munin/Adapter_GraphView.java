@@ -56,7 +56,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 			if ((this.position > 0 && Activity_GraphView.bitmaps[this.position-1] == null) // -1 == null
 					|| (Activity_GraphView.bitmaps[this.position] == null) // 0 == null
 					|| (this.position < Activity_GraphView.bitmaps.length-1 && Activity_GraphView.bitmaps[this.position+1] == null)) { // +1 == null
-				applyBitmap task = new applyBitmap((ImageView) convertView.findViewById(R.id.tiv), (ProgressBar) convertView.findViewById(R.id.loading_spin));
+				ApplyBitmap task = new ApplyBitmap((ImageView) convertView.findViewById(R.id.tiv), (ProgressBar) convertView.findViewById(R.id.loading_spin));
 				task.execute();
 			}
 		}
@@ -64,11 +64,11 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		return convertView;
 	}
 	
-	public class applyBitmap extends AsyncTask<Void, Integer, Void> {
+	public class ApplyBitmap extends AsyncTask<Void, Integer, Void> {
 		private ImageView 	tiv;
 		private ProgressBar loading_spin;
 		
-		public applyBitmap (ImageView iv, ProgressBar ls) {
+		public ApplyBitmap (ImageView iv, ProgressBar ls) {
 			super();
 			this.tiv = iv;
 			this.loading_spin = ls;

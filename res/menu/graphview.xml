@@ -38,5 +38,10 @@
 		android:showAsAction="withText"
 		android:title="@string/openInBrowser"
 		android:visible="false" />
+	<item
+		android:id="@+id/menu_fieldsDescription"
+		android:showAsAction="withText"
+		android:title="@string/fieldsDescription"
+		android:visible="false" />
 	
 </menu>

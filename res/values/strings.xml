@@ -58,6 +58,7 @@
 	<string name="edit">Edit</string>
 	<string name="yourerunning">You\'re running</string>
 	<string name="openInBrowser">Open in browser</string>
+	<string name="fieldsDescription">Fields description</string>
 	<string name="aboutText">
 <![CDATA[
 	    <head>
@@ -245,4 +246,20 @@
 	<string name="rate">Rate the app</string>
 	<string name="rate_long">If you like the app, would you mind rating it on Google Play? Thank you!</string>
 	<string name="not_now">Not now</string>
+	
+	<string name="fieldsDescriptionWrapper"><![CDATA[
+		<head>
+		<style>
+			table { display: block; margin: auto; }
+			th { border-bottom: 1px solid #999; }
+			td { padding: 5px 10px; margin: 1px;border-bottom: 1px solid #d8d8d8; min-width: 30px; }
+			td.lastrow { padding-bottom-width: 0px; }
+		</style>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		</head>
+		<body>
+		INSERT_HERE
+		</body>
+		]]>
+	</string>
 </resources>

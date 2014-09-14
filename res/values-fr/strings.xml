@@ -186,6 +186,7 @@
 	
 	<string name="yourerunning">Vous utilisez</string>
 	<string name="openInBrowser">Afficher dans le navigateur</string>
+	<string name="fieldsDescription">Description des champs</string>
 	
 	<string name="aboutText">
 	    <![CDATA[

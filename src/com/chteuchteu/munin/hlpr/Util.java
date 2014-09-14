@@ -42,6 +42,11 @@ public final class Util {
 	private Util() { }
 	
 	public static final class UI {
+		/**
+		 * Applies the following UI tweaks :
+		 * 		- Colors the status bar background (KitKat+)
+		 * @param activity
+		 */
 		public static void applySwag(Activity activity) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 				int id = activity.getResources().getIdentifier("config_enableTranslucentDecor", "bool", "android");

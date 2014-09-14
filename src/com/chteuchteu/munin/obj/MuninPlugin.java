@@ -1,8 +1,11 @@
 package com.chteuchteu.munin.obj;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -129,16 +132,18 @@ public class MuninPlugin {
 	}
 	
 	
-	// TODO
-	public String getGraphInformationHtml() {
-		String html = "";
-		// Download graph page html code
-		Log.v("", "img url : " + this.getImgUrl(Period.DAY));
-		// Get table (id="legend")
+	public String getFieldsDescriptionHtml() {
+		if (this.pluginPageUrl.equals(""))
+			return "";
 		
-		// Do things
+		String html = this.installedOn.grabUrl(this.pluginPageUrl).html;
 		
-		return html;
+		// Get <table id="legend">
+		Document doc = Jsoup.parse(html, this.pluginPageUrl);
+		Element table = doc.select("table#legend").first();
+		table.select("a").unwrap();
+		
+		return table.outerHtml();
 	}
 	
 	public boolean equals(MuninPlugin p) {

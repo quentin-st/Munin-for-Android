@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -32,11 +33,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -80,6 +84,7 @@ public class Activity_GraphView extends Activity {
 	private MenuItem		item_next;
 	private MenuItem		item_period;
 	private MenuItem		item_openInBrowser;
+	private MenuItem		item_fieldsDescription;
 	private Menu 			menu;
 	private String			activityName;
 	
@@ -92,6 +97,7 @@ public class Activity_GraphView extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		context = this;
 		// Entry point: widgets
 		Crashlytics.start(this);
@@ -275,11 +281,14 @@ public class Activity_GraphView extends Activity {
 		item_next = menu.findItem(R.id.menu_next);
 		item_period = menu.findItem(R.id.menu_period);
 		item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
+		item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
 		
 		if (muninFoo.currentServer != null
 				&& muninFoo.currentServer.getPlugins().size() > 0
-				&& muninFoo.currentServer.getPlugin(0).hasPluginPageUrl())
+				&& muninFoo.currentServer.getPlugin(0).hasPluginPageUrl()) {
 			item_openInBrowser.setVisible(true);
+			item_fieldsDescription.setVisible(true);
+		}
 		
 		// Grisage eventuel des boutons next et previous
 		if (viewFlow.getSelectedItemPosition() == 0) {
@@ -335,6 +344,7 @@ public class Activity_GraphView extends Activity {
 			case R.id.menu_refresh:		actionRefresh(); 		return true;
 			case R.id.menu_save:		actionSave();			return true;
 			case R.id.menu_switchServer:actionServerSwitch();	return true;
+			case R.id.menu_fieldsDescription: actionFieldsDescription(); return true;
 			case R.id.menu_labels:
 				actionLabels();
 				return true;
@@ -385,7 +395,6 @@ public class Activity_GraphView extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		//recycleBitmaps();
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")) {
 			String from = thisIntent.getExtras().getString("from");
@@ -425,7 +434,7 @@ public class Activity_GraphView extends Activity {
 	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
-	public void actionServerSwitch() {
+	private void actionServerSwitch() {
 		ListView switch_server = (ListView) findViewById(R.id.serverSwitch_listview);
 		switch_server.setVisibility(View.VISIBLE);
 		findViewById(R.id.serverSwitch_mask).setVisibility(View.VISIBLE);
@@ -493,7 +502,7 @@ public class Activity_GraphView extends Activity {
 			}
 		});
 	}
-	public void actionServerSwitchQuit() {
+	private void actionServerSwitchQuit() {
 		ListView switch_server = (ListView) findViewById(R.id.serverSwitch_listview);
 		switch_server.setVisibility(View.GONE);
 		findViewById(R.id.serverSwitch_mask).setVisibility(View.GONE);
@@ -506,7 +515,7 @@ public class Activity_GraphView extends Activity {
 		findViewById(R.id.serverSwitch_mask).startAnimation(a);
 	}
 	
-	public void actionPrevious() {
+	private void actionPrevious() {
 		if (viewFlow.getSelectedItemPosition() == 0) {
 			item_previous.setIcon(R.drawable.blank);
 			item_previous.setEnabled(false);
@@ -523,7 +532,7 @@ public class Activity_GraphView extends Activity {
 		if (viewFlow.getSelectedItemPosition() != 0)
 			viewFlow.setSelection(viewFlow.getSelectedItemPosition() - 1);
 	}
-	public void actionNext() {
+	private void actionNext() {
 		if (viewFlow.getSelectedItemPosition() == 0) {
 			item_previous.setIcon(R.drawable.blank);
 			item_previous.setEnabled(false);
@@ -540,12 +549,12 @@ public class Activity_GraphView extends Activity {
 		if (viewFlow.getSelectedItemPosition() != muninFoo.currentServer.getPlugins().size()-1)
 			viewFlow.setSelection(viewFlow.getSelectedItemPosition() + 1);
 	}
-	public void actionRefresh() {
+	private void actionRefresh() {
 		bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
 		if (viewFlow != null)
 			viewFlow.setSelection(viewFlow.getSelectedItemPosition());
 	}
-	public void actionSave() {
+	private void actionSave() {
 		Bitmap image = null;
 		if (viewFlow.getSelectedItemPosition() >= 0 && viewFlow.getSelectedItemPosition() < bitmaps.length)
 			image = bitmaps[viewFlow.getSelectedItemPosition()];
@@ -592,7 +601,7 @@ public class Activity_GraphView extends Activity {
 		}
 	}
 	
-	public void actionAddLabel() {
+	private void actionAddLabel() {
 		final LinearLayout ll = new LinearLayout(this);
 		ll.setOrientation(LinearLayout.VERTICAL);
 		ll.setPadding(10, 30, 10, 10);
@@ -615,7 +624,7 @@ public class Activity_GraphView extends Activity {
 		}).show();
 	}
 	
-	public void actionLabels() {
+	private void actionLabels() {
 		final CharSequence[] items = new CharSequence[muninFoo.labels.size()];
 		for (int i=0; i<muninFoo.labels.size(); i++)
 			items[i] = muninFoo.labels.get(i).getName();
@@ -698,6 +707,74 @@ public class Activity_GraphView extends Activity {
 		});
 		dialog = builder.create();
 		dialog.show();
+	}
+	
+	private void actionFieldsDescription() {
+		MuninPlugin plugin = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
+		new FieldsDescriptionFetcher(plugin, this).execute();
+	}
+	
+	private class FieldsDescriptionFetcher extends AsyncTask<Void, Integer, Void> {
+		private MuninPlugin plugin;
+		private Activity activity;
+		private String html;
+		
+		public FieldsDescriptionFetcher (MuninPlugin plugin, Activity activity) {
+			super();
+			this.plugin = plugin;
+			this.activity = activity;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			
+			Util.UI.setLoading(true, activity);
+		}
+		
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			
+			this.html = plugin.getFieldsDescriptionHtml();
+			
+			return null;
+		}
+		
+		@SuppressWarnings("deprecation")
+		@Override
+		protected void onPostExecute(Void result) {
+			Util.UI.setLoading(false, activity);
+			
+			// Prepare HTML
+			String wrapper = getText(R.string.fieldsDescriptionWrapper).toString();
+			String wrappedHtml = wrapper.replace("INSERT_HERE", html);
+			
+			// Inflate and populate view
+			LayoutInflater inflater = getLayoutInflater();
+			View customView = inflater.inflate(R.layout.dialog_webview, null);
+			WebView webView = (WebView) customView.findViewById(R.id.webview);
+			webView.setVerticalScrollBarEnabled(true);
+			webView.getSettings().setDefaultTextEncodingName("utf-8");
+			webView.setBackgroundColor(0x00000000);
+			webView.loadDataWithBaseURL(null, wrappedHtml, "text/html", "utf-8", null);
+			webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+			webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+			webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+			
+			// Create alertdialog
+			AlertDialog dialog;
+			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+			builder.setView(customView);
+			builder.setTitle(getText(R.string.fieldsDescription));
+			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.dismiss();
+				}
+			});
+			dialog = builder.create();
+			dialog.show();
+		}
 	}
 	
 	@SuppressLint("NewApi")
