@@ -57,6 +57,7 @@
 	<string name="updateNotificationText">Please update the app to take advantage of new features and bug fixes.</string>
 	<string name="edit">Edit</string>
 	<string name="yourerunning">You\'re running</string>
+	<string name="openInBrowser">Open in browser</string>
 	<string name="aboutText">
 <![CDATA[
 	    <head>

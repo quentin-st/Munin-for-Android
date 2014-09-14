@@ -99,6 +99,7 @@ public class MuninPlugin {
 	public void setInstalledOn(MuninServer s) { this.installedOn = s; }
 	public MuninServer getInstalledOn() { return this.installedOn; }
 	
+	public boolean hasPluginPageUrl() { return !this.pluginPageUrl.equals(""); }
 	public void setPluginPageUrl(String url) { this.pluginPageUrl = url; }
 	public String getPluginPageUrl() { return this.pluginPageUrl; }
 	

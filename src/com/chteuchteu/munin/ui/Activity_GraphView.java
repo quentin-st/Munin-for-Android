@@ -22,6 +22,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -78,6 +79,7 @@ public class Activity_GraphView extends Activity {
 	private MenuItem		item_previous;
 	private MenuItem		item_next;
 	private MenuItem		item_period;
+	private MenuItem		item_openInBrowser;
 	private Menu 			menu;
 	private String			activityName;
 	
@@ -272,6 +274,12 @@ public class Activity_GraphView extends Activity {
 		item_previous = menu.findItem(R.id.menu_previous);
 		item_next = menu.findItem(R.id.menu_next);
 		item_period = menu.findItem(R.id.menu_period);
+		item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
+		
+		if (muninFoo.currentServer != null
+				&& muninFoo.currentServer.getPlugins().size() > 0
+				&& muninFoo.currentServer.getPlugin(0).hasPluginPageUrl())
+			item_openInBrowser.setVisible(true);
 		
 		// Grisage eventuel des boutons next et previous
 		if (viewFlow.getSelectedItemPosition() == 0) {
@@ -363,6 +371,13 @@ public class Activity_GraphView extends Activity {
 					}
 				});
 				builderSingle.show();
+				return true;
+			case R.id.menu_openinbrowser:
+				try {
+					MuninPlugin plugin = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(plugin.getPluginPageUrl()));
+					startActivity(browserIntent);
+				} catch (Exception ex) { ex.printStackTrace(); }
 				return true;
 			default:	return super.onOptionsItemSelected(item);
 		}

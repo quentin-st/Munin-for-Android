@@ -33,5 +33,10 @@
 		android:id="@+id/menu_switchServer"
 		android:showAsAction="withText"
 		android:title="@string/menu_graph_switch" />
+	<item
+		android:id="@+id/menu_openinbrowser"
+		android:showAsAction="withText"
+		android:title="@string/openInBrowser"
+		android:visible="false" />
 	
 </menu>

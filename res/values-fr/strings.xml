@@ -185,6 +185,7 @@
 	<string name="not_now">Pas maintenant</string>
 	
 	<string name="yourerunning">Vous utilisez</string>
+	<string name="openInBrowser">Afficher dans le navigateur</string>
 	
 	<string name="aboutText">
 	    <![CDATA[
