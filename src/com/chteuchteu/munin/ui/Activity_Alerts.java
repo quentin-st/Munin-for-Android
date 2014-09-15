@@ -45,6 +45,8 @@ public class Activity_Alerts extends Activity {
 	private int 			nb_loadings;
 	private Menu 			menu;
 	private String			activityName;
+	/* If the menu items are flat / expanded */
+	private boolean		listMode_flat;
 	
 	private List<MuninServer> servers;
 	
@@ -59,12 +61,12 @@ public class Activity_Alerts extends Activity {
 	private TextView[] 		part_warningsLabel;
 	private TextView[]			part_warningsPluginsList;
 	
-	public static final String	BG_COLOR_UNDEFINED = "#B2B2B2";
-	public static final String	BG_COLOR_OK = "#8EC842";
+	private static final String	BG_COLOR_UNDEFINED = "#B2B2B2";
+	private static final String	BG_COLOR_OK = "#8EC842";
 	public static final String	BG_COLOR_WARNING = "#FFAE5B";
 	public static final String	BG_COLOR_CRITICAL = "#FF7B68";
+	private static final String	TEXT_COLOR = "#333333";
 	
-	public static boolean	updating;
 	private Handler			mHandler;
 	private Runnable		mHandlerTask;
 	
@@ -78,6 +80,7 @@ public class Activity_Alerts extends Activity {
 		setContentView(R.layout.alerts);
 		c = this;
 		Crashlytics.start(this);
+		listMode_flat = false;
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -342,6 +345,48 @@ public class Activity_Alerts extends Activity {
 		}
 	}
 	
+	/**
+	 * Switchs from flat to expanded list mode
+	 */
+	private void switchListMode() {
+		if (this.listMode_flat) {
+			// Expand
+			for (LinearLayout ll : this.part_criticals)
+				ll.setVisibility(View.VISIBLE);
+			for (LinearLayout ll : this.part_warnings)
+				ll.setVisibility(View.VISIBLE);
+			
+			for (int i=0; i<this.part_part.length; i++) {
+				this.part_serverName[i].setTextColor(Color.parseColor(TEXT_COLOR));
+				this.part_serverName[i].setBackgroundColor(Color.WHITE);
+			}
+			
+			this.listMode_flat = false;
+		} else {
+			// Reduce
+			for (LinearLayout ll : this.part_criticals)
+				ll.setVisibility(View.GONE);
+			for (LinearLayout ll : this.part_warnings)
+				ll.setVisibility(View.GONE);
+			
+			// Set the background color so we can see the server state
+			for (int i=0; i<this.part_part.length; i++) {
+				int criticalsNumber = Integer.parseInt(this.part_criticalsNumber[i].getText().toString());
+				int warningsNumber = Integer.parseInt(this.part_warningsNumber[i].getText().toString());
+				if (criticalsNumber > 0 || warningsNumber > 0) {
+					if (criticalsNumber > 0)
+						this.part_serverName[i].setBackgroundColor(Color.parseColor(BG_COLOR_CRITICAL));
+					else if (warningsNumber > 0)
+						this.part_serverName[i].setBackgroundColor(Color.parseColor(BG_COLOR_WARNING));
+					
+					this.part_serverName[i].setTextColor(Color.WHITE);
+				}
+			}
+			
+			this.listMode_flat = true;
+		}
+	}
+	
 	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
@@ -387,6 +432,9 @@ public class Activity_Alerts extends Activity {
 					startActivity(intent);
 					Util.setTransition(c, TransitionStyle.SHALLOWER);
 				}
+				return true;
+			case R.id.menu_flatlist:
+				switchListMode();
 				return true;
 			case R.id.menu_refresh:
 				updateStates(true);

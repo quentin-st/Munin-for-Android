@@ -30,7 +30,7 @@ public class Activity_About extends Activity {
 	private DrawerHelper 	dh;
 	private Menu 			menu;
 	private String			activityName;
-	private Context			c;
+	private Context		c;
 	
 	@SuppressWarnings("deprecation")
 	@SuppressLint({ "NewApi", "DefaultLocale" })
