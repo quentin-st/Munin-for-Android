@@ -163,6 +163,7 @@ public class Activity_Alerts extends Activity {
 		else
 			updateStates(true);
 		
+		
 		findViewById(R.id.hideNoAlerts).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {

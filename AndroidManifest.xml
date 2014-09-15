@@ -42,12 +42,13 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="com.chteuchteu.munin.ui.Activity_About" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Alerts" />
+		<activity android:name="com.chteuchteu.munin.ui.Activity_Alerts"
+			android:configChanges="orientation|screenSize|keyboardHidden" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_AlertsPluginSelection" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_AddServer"
-			android:configChanges="orientation|keyboardHidden" />
+			android:configChanges="orientation|screenSize|keyboardHidden" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GraphView" 
-		    android:configChanges="keyboardHidden|orientation" />
+		    android:configChanges="orientation|screenSize|keyboardHidden" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Grid" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GridSelection" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Labels" />
