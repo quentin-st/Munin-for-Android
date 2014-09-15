@@ -161,9 +161,9 @@
 	
 	<string name="import_servers">Importer</string>
 	<string name="export_servers">Exporter</string>
-	<string name="export_failed">Erreur lors de l\'export...</string>
+	<string name="export_failed">Erreur lors de l\'export…</string>
 	<string name="export_subject">Munin for Android Export</string>
-	<string name="export_shareusing">Exporter via...</string>
+	<string name="export_shareusing">Exporter via…</string>
 	<string name="import_title">Importation</string>
 	<string name="import_sentence">Veuillez copier-coller le texte généré lors de l\'export dans le champ ci-dessous</string>
 	

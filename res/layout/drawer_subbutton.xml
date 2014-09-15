@@ -6,21 +6,6 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	android:background="#2BA1E4">
-	<!-- <Button
-		android:id="@+id/button"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:paddingLeft="20dp"
-		android:paddingTop="10dp"
-		android:paddingBottom="10dp"
-		android:textSize="15sp"
-		android:textColor="#bbbbbb"
-		android:shadowColor="#000000"
-		android:shadowDx="0"
-		android:shadowDy="1"
-		android:shadowRadius="2"
-		android:gravity="left"
-		android:background="@drawable/drawer_dark_subbutton" />-->
 		
 	<TextView
 		android:id="@+id/button"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
 	<string name="app_name">Munin for Android</string>
 	<string name="button_graphs">Graphs</string>
@@ -48,13 +48,10 @@
 	<string name="loading">Loading…</string>
 	<string name="search">Search</string>
 	<string name="about_eraseData">Reset app</string>
-	<string name="about_checkUpdates">Check for updates</string>
 	<string name="about_gplay">Google Play: note!</string>
 	<string name="menu_serversedit_revert">Revert servers</string>
 	<string name="servers_noservers_1">No server yet</string>
 	<string name="servers_noservers_2">Add yours or sample ones now by tapping on +</string>
-	<string name="updateNotificationTitle">Update available</string>
-	<string name="updateNotificationText">Please update the app to take advantage of new features and bug fixes.</string>
 	<string name="edit">Edit</string>
 	<string name="yourerunning">You\'re running</string>
 	<string name="openInBrowser">Open in browser</string>
@@ -230,9 +227,9 @@
 	
 	<string name="import_servers">Import</string>
 	<string name="export_servers">Export</string>
-	<string name="export_failed">Export failed...</string>
+	<string name="export_failed">Export failed…</string>
 	<string name="export_subject">Munin for Android Export</string>
-	<string name="export_shareusing">Export using...</string>
+	<string name="export_shareusing">Export using…</string>
 	<string name="import_title">Import</string>
 	<string name="import_sentence">Please copy and paste the text generated during the export in the field below</string>
 	
@@ -247,7 +244,7 @@
 	<string name="rate_long">If you like the app, would you mind rating it on Google Play? Thank you!</string>
 	<string name="not_now">Not now</string>
 	
-	<string name="fieldsDescriptionWrapper"><![CDATA[
+	<string name="fieldsDescriptionWrapper" tools:ignore="MissingTranslation"><![CDATA[
 		<head>
 		<style>
 			table { display: block; margin: auto; }

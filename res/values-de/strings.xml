@@ -98,8 +98,6 @@
 	<string name="menu_serversedit_revert">Server zurücksetzen</string>
 	<string name="servers_noservers_1">Noch keine Server</string>
 	<string name="servers_noservers_2">Eigene oder Beispielserver mit einem Klick auf + hinzufügen</string>
-	<string name="updateNotificationTitle">Update verfügbar</string>
-	<string name="updateNotificationText">Bitte aktualisiere die App um neue Features und Bugfixes zu erhalten</string>
 	<string name="editServersTitle">Server löschen / reorganisieren</string>
 	<string name="alertsTitle">Alarme</string>
 	<string name="notificationsTitle">Benachrichtigungen</string>
