@@ -4,7 +4,8 @@
 	<item
 		android:id="@+id/menu_flatlist"
 		android:icon="@drawable/ic_action_view_as_list"
-		android:showAsAction="always"/>
+		android:showAsAction="always"
+		android:visible="false"/>
 	
 	<item
 		android:id="@+id/menu_refresh"

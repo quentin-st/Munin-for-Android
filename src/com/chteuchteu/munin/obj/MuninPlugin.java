@@ -134,9 +134,11 @@ public class MuninPlugin {
 	
 	public String getFieldsDescriptionHtml() {
 		if (this.pluginPageUrl.equals(""))
-			return "";
+			return null;
 		
 		String html = this.installedOn.grabUrl(this.pluginPageUrl).html;
+		if (html.equals(""))
+			return null;
 		
 		// Get <table id="legend">
 		Document doc = Jsoup.parse(html, this.pluginPageUrl);

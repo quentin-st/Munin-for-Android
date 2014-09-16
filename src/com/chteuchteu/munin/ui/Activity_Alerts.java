@@ -44,6 +44,7 @@ public class Activity_Alerts extends Activity {
 	private boolean		hideNormalStateServers;
 	private int 			nb_loadings;
 	private Menu 			menu;
+	private MenuItem		menu_flatList;
 	private String			activityName;
 	/* If the menu items are flat / expanded */
 	private boolean		listMode_flat;
@@ -332,6 +333,10 @@ public class Activity_Alerts extends Activity {
 						Util.UI.setLoading(false, Activity_Alerts.this);
 					
 					updateView(hideNormalStateServers);
+					
+					// Can't flat the list before the first loading is finished
+					if (z == muninFoo.getHowManyServers()-1)
+						menu_flatList.setVisible(true);
 				}
 			};
 			new Thread() {
@@ -416,6 +421,7 @@ public class Activity_Alerts extends Activity {
 	private void createOptionsMenu() {
 		menu.clear();
 		getMenuInflater().inflate(R.menu.alerts, menu);
+		this.menu_flatList = menu.findItem(R.id.menu_flatlist);
 	}
 	
 	@Override
