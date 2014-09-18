@@ -72,8 +72,9 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_GraphView extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh = null;
-	private	int			previousPos = -1;
+	private int			previousPos = -1;
 	private Context		context;
+	private static Activity activity;
 	
 	public static Period	load_period;
 	public static ViewFlow	viewFlow;
@@ -91,6 +92,8 @@ public class Activity_GraphView extends Activity {
 	private Handler		mHandler;
 	private Runnable		mHandlerTask;
 	
+	private static int currentlyDownloading = 0;
+	
 	
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -99,6 +102,7 @@ public class Activity_GraphView extends Activity {
 		muninFoo.loadLanguage(this);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		context = this;
+		activity = this;
 		// Entry point: widgets
 		Crashlytics.start(this);
 		
@@ -240,6 +244,18 @@ public class Activity_GraphView extends Activity {
 			};
 			mHandlerTask.run();
 		}
+	}
+	
+	public static void currentlyDownloading_begin() {
+		currentlyDownloading++;
+		if (currentlyDownloading == 1)
+			Util.UI.setLoading(true, activity);
+	}
+	
+	public static void currentlyDownloading_finished() {
+		currentlyDownloading--;
+		if (currentlyDownloading == 0)
+			Util.UI.setLoading(false, activity);
 	}
 	
 	@Override

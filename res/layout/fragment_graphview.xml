@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical" >
-
-	<ProgressBar
-		android:id="@+id/loading_spin"
-		style="?android:attr/progressBarStyleHorizontal"
-		android:layout_width="match_parent"
-		android:layout_height="10dp"
-		android:maxHeight="10dp"
-		android:minHeight="10dp" />
+	android:layout_height="match_parent" >
 
 	<ImageView
 		android:id="@+id/tiv"
@@ -22,4 +13,4 @@
 		android:gravity="center"
 		android:scaleType="fitCenter" />
 
-</LinearLayout>
+</RelativeLayout>

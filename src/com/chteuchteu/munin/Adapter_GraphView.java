@@ -5,13 +5,11 @@ import org.taptwo.android.widget.TitleProvider;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.ui.Activity_GraphView;
@@ -45,16 +43,13 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Log.v("", "getView(" + position + ")");
-		
 		if (convertView == null)
 			convertView = mInflater.inflate(R.layout.fragment_graphview, null);
 		
-		ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.loading_spin);
 		ImageView imageView = (ImageView) convertView.findViewById(R.id.tiv);
 		
 		if (Activity_GraphView.bitmaps[position] == null) {
-			new BitmapFetcher(imageView, progressBar, position).execute();
+			new BitmapFetcher(imageView, position).execute();
 		} else {
 			imageView.setImageBitmap(Activity_GraphView.bitmaps[position]);
 		}
@@ -64,13 +59,11 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	
 	public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 		private ImageView imageView;
-		private ProgressBar loading_spin;
 		private int position;
 		
-		public BitmapFetcher (ImageView iv, ProgressBar ls, int position) {
+		public BitmapFetcher (ImageView iv, int position) {
 			super();
 			this.imageView = iv;
-			this.loading_spin = ls;
 			this.position = position;
 		}
 		
@@ -79,8 +72,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 			super.onPreExecute();
 			imageView.setImageBitmap(null);
 			
-			loading_spin.setIndeterminate(true);
-			loading_spin.setVisibility(View.VISIBLE);
+			Activity_GraphView.currentlyDownloading_begin();
 		}
 		
 		@Override
@@ -96,7 +88,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			loading_spin.setVisibility(View.GONE);
+			Activity_GraphView.currentlyDownloading_finished();
 			
 			if (Activity_GraphView.bitmaps[position] != null) {
 				imageView.setImageBitmap(Activity_GraphView.bitmaps[position]);
