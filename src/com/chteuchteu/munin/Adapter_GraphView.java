@@ -5,6 +5,7 @@ import org.taptwo.android.widget.TitleProvider;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,18 +20,17 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	private MuninFoo		muninFoo;
 	
 	private LayoutInflater	mInflater;
-	private int 			position;
+	private int			count;
 	
-	public Adapter_GraphView(Context context) {
+	public Adapter_GraphView(Context context, int count) {
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		muninFoo = MuninFoo.getInstance(context);
+		this.count = count;
 	}
 	
 	@Override
 	public int getCount() {
-		if (muninFoo == null)
-			muninFoo = MuninFoo.getInstance();
-		return muninFoo.currentServer.getPlugins().size();
+		return count;
 	}
 	
 	@Override
@@ -45,63 +45,52 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// Loading pos -1, 0 and +1
+		Log.v("", "getView(" + position + ")");
+		
 		if (convertView == null)
 			convertView = mInflater.inflate(R.layout.fragment_graphview, null);
-		this.position = position;
 		
-		((ImageView) convertView.findViewById(R.id.tiv)).setTag(position);
+		ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.loading_spin);
+		ImageView imageView = (ImageView) convertView.findViewById(R.id.tiv);
 		
-		if (this.position >= 0 && this.position < Activity_GraphView.bitmaps.length) {
-			if ((this.position > 0 && Activity_GraphView.bitmaps[this.position-1] == null) // -1 == null
-					|| (Activity_GraphView.bitmaps[this.position] == null) // 0 == null
-					|| (this.position < Activity_GraphView.bitmaps.length-1 && Activity_GraphView.bitmaps[this.position+1] == null)) { // +1 == null
-				ApplyBitmap task = new ApplyBitmap((ImageView) convertView.findViewById(R.id.tiv), (ProgressBar) convertView.findViewById(R.id.loading_spin));
-				task.execute();
-			}
+		if (Activity_GraphView.bitmaps[position] == null) {
+			new BitmapFetcher(imageView, progressBar, position).execute();
+		} else {
+			imageView.setImageBitmap(Activity_GraphView.bitmaps[position]);
 		}
 		
 		return convertView;
 	}
 	
-	public class ApplyBitmap extends AsyncTask<Void, Integer, Void> {
-		private ImageView 	tiv;
+	public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
+		private ImageView imageView;
 		private ProgressBar loading_spin;
+		private int position;
 		
-		public ApplyBitmap (ImageView iv, ProgressBar ls) {
+		public BitmapFetcher (ImageView iv, ProgressBar ls, int position) {
 			super();
-			this.tiv = iv;
+			this.imageView = iv;
 			this.loading_spin = ls;
+			this.position = position;
 		}
 		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			tiv.setImageBitmap(null);
+			imageView.setImageBitmap(null);
 			
-			if (Activity_GraphView.bitmaps[position] == null) {
-				loading_spin.setIndeterminate(true);
-				loading_spin.setVisibility(View.VISIBLE);
-			}
+			loading_spin.setIndeterminate(true);
+			loading_spin.setVisibility(View.VISIBLE);
 		}
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			int pos = Activity_GraphView.viewFlow.getSelectedItemPosition();
-			
-			if (Activity_GraphView.load_period != null && muninFoo.currentServer != null && Activity_GraphView.bitmaps != null) {
-				// Fetch pos 0
-				if (Activity_GraphView.bitmaps[pos] == null)
-					Activity_GraphView.bitmaps[pos] = Util.removeBitmapBorder(MuninFoo.grabBitmap(muninFoo.currentServer, muninFoo.currentServer.getPlugin(pos).getImgUrl(Activity_GraphView.load_period)));
+			if (Activity_GraphView.bitmaps[position] == null)
+				Activity_GraphView.bitmaps[position] = 
+					Util.removeBitmapBorder(
+							MuninFoo.grabBitmap(muninFoo.currentServer, muninFoo.currentServer.getPlugin(position).getImgUrl(Activity_GraphView.load_period))
+				);
 				
-				// Fetch pos -1
-				if (pos != 0 && Activity_GraphView.bitmaps[pos-1] == null)
-					Activity_GraphView.bitmaps[pos-1] = Util.removeBitmapBorder(MuninFoo.grabBitmap(muninFoo.currentServer, muninFoo.currentServer.getPlugin(pos-1).getImgUrl(Activity_GraphView.load_period)));
-				
-				// Fetch pos +1
-				if (pos != Activity_GraphView.bitmaps.length-1 && Activity_GraphView.bitmaps[pos+1] == null)
-					Activity_GraphView.bitmaps[pos+1] = Util.removeBitmapBorder(MuninFoo.grabBitmap(muninFoo.currentServer, muninFoo.currentServer.getPlugin(pos+1).getImgUrl(Activity_GraphView.load_period)));
-			}
 			return null;
 		}
 		
@@ -109,19 +98,16 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		protected void onPostExecute(Void result) {
 			loading_spin.setVisibility(View.GONE);
 			
-			Integer nbr = (Integer) tiv.getTag();
-			if (nbr >= 0 && nbr < Activity_GraphView.bitmaps.length) {
-				if (Activity_GraphView.bitmaps[nbr] != null) {
-					tiv.setImageBitmap(Activity_GraphView.bitmaps[nbr]);
-					PhotoViewAttacher mAttacher = new PhotoViewAttacher(tiv);
-					if (mAttacher.getMidScale() < 2f)
-						mAttacher.setMaxScale(2f);
-				} else {
-					// It seems that can actually fire OutOfMemoryError (BitmapFactory.nativeDecodeAsset)
-					try {
-						tiv.setImageResource(R.drawable.download_error);
-					} catch (Exception e) { e.printStackTrace(); }
-				}
+			if (Activity_GraphView.bitmaps[position] != null) {
+				imageView.setImageBitmap(Activity_GraphView.bitmaps[position]);
+				PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
+				if (mAttacher.getMidScale() < 2f)
+					mAttacher.setMaxScale(2f);
+			} else {
+				// It seems that can actually fire OutOfMemoryError (BitmapFactory.nativeDecodeAsset)
+				try {
+					imageView.setImageResource(R.drawable.download_error);
+				} catch (Exception e) { e.printStackTrace(); }
 			}
 		}
 	}

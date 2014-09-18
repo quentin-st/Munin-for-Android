@@ -124,6 +124,7 @@ public class Activity_GraphView extends Activity {
 		
 		Util.UI.applySwag(this);
 		
+		load_period = Period.get(Util.getPref(this, "defaultScale"));
 		
 		// Coming from widget
 		Intent thisIntent = getIntent();
@@ -176,9 +177,10 @@ public class Activity_GraphView extends Activity {
 		
 		// Viewflow
 		position = pos;
-		bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
+		int nbPlugins = muninFoo.currentServer.getPlugins().size();
+		bitmaps = new Bitmap[nbPlugins];
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
-		Adapter_GraphView adapter = new Adapter_GraphView(this);
+		Adapter_GraphView adapter = new Adapter_GraphView(this, nbPlugins);
 		viewFlow.setAdapter(adapter, pos);
 		viewFlow.setAnimationEnabled(Util.getPref(this, "transitions").equals("true"));
 		TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
@@ -781,8 +783,6 @@ public class Activity_GraphView extends Activity {
 	@SuppressLint("NewApi")
 	public void onResume() {
 		super.onResume();
-		
-		load_period = Period.get(Util.getPref(this, "defaultScale"));
 		
 		// Venant de widget
 		Intent thisIntent = getIntent();
