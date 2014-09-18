@@ -4,10 +4,11 @@
 	android:layout_height="match_parent"
 	android:background="#F2F2F2"
 	android:orientation="vertical" >
-	
+
 	<ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content" >
+
 		<LinearLayout
 			android:id="@+id/alerts_pluginselection_inserthere"
 			android:layout_width="match_parent"

@@ -4,27 +4,28 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
-	
+
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="#333333"
-		android:paddingTop="4dp"
-		android:orientation="vertical" >
+		android:orientation="vertical"
+		android:paddingTop="4dp" >
+
 		<TextView
 			android:id="@+id/serverName"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:layout_marginLeft="20dp"
+			android:gravity="center"
 			android:shadowColor="#111111"
 			android:shadowDx="0"
 			android:shadowDy="1"
 			android:shadowRadius="2"
 			android:textAllCaps="true"
 			android:textColor="#DDDDDD"
-			android:textSize="16sp"
-			android:gravity="center"
-			android:layout_marginLeft="20dp" />
-		
+			android:textSize="16sp" />
+
 		<org.taptwo.android.widget.TitleFlowIndicator
 			android:id="@+id/viewflowindic"
 			android:layout_width="match_parent"
@@ -42,19 +43,18 @@
 			app:textSize2="13sp"
 			app:titlePadding="40dp" />
 	</LinearLayout>
-	
+
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical" >
-		
+
 		<org.taptwo.android.widget.ViewFlow
 			android:id="@+id/viewflow"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			app:sidebuffer="1" />
-		
-		
+
 		<LinearLayout
 			android:id="@+id/serverSwitch_mask"
 			android:layout_width="match_parent"
@@ -62,7 +62,7 @@
 			android:background="#88000000"
 			android:orientation="vertical"
 			android:visibility="gone" />
-		
+
 		<ListView
 			android:id="@+id/serverSwitch_listview"
 			android:layout_width="match_parent"
@@ -71,5 +71,5 @@
 			android:background="#88FFFFFF"
 			android:visibility="gone" />
 	</RelativeLayout>
-	
+
 </LinearLayout>

@@ -3,7 +3,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
-	
+
 	<TextView
 		android:id="@+id/hideNoAlerts"
 		android:layout_width="match_parent"
@@ -17,21 +17,21 @@
 		android:text="@string/text49.2"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:textColor="#ffffff" />
-	
+
 	<ScrollView
 		android:id="@+id/alerts_scrollview"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:background="#f2f2f2"
 		android:orientation="vertical" >
-		
+
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			android:paddingLeft="@dimen/listview_horizontal_margin"
 			android:paddingRight="@dimen/listview_horizontal_margin" >
-			
+
 			<LinearLayout
 				android:id="@+id/alerts_root_container"
 				android:layout_width="match_parent"
@@ -39,4 +39,5 @@
 				android:orientation="vertical" />
 		</LinearLayout>
 	</ScrollView>
+
 </LinearLayout>

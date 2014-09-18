@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/popup"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:layout_gravity="center"
 	android:gravity="center"
-	android:orientation="vertical">
+	android:orientation="vertical" >
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -14,7 +13,7 @@
 		android:layout_gravity="center"
 		android:background="#9933343B"
 		android:gravity="center"
-		android:orientation="vertical">
+		android:orientation="vertical" >
 
 		<LinearLayout
 			android:id="@+id/popup_credentials"
@@ -22,36 +21,37 @@
 			android:layout_height="wrap_content"
 			android:gravity="center"
 			android:orientation="vertical"
-			android:visibility="gone"
-			android:padding="@dimen/addserver_popup_margin_horiz">
+			android:padding="@dimen/addserver_popup_margin_horiz"
+			android:visibility="gone" >
 
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_thin"
 				android:background="#66ffffff"
-				android:orientation="vertical"
-				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_thin">
+				android:orientation="vertical" >
+
 				<Spinner
 					android:id="@+id/popup_credentials_authtype"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:spinnerMode="dialog"
-					android:padding="10dp" />
+					android:padding="10dp"
+					android:spinnerMode="dialog" />
 			</LinearLayout>
 
 			<TextView
 				android:id="@+id/popup_credentials_premium"
-				android:text="@string/text65"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_horizontal"
-				android:gravity="center_horizontal"
-				android:textColor="#ffffff"
 				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_thin"
-				android:textSize="16sp"
-				android:visibility="gone"
+				android:background="#33ff0000"
+				android:gravity="center_horizontal"
 				android:padding="10dp"
-				android:background="#33ff0000" />
+				android:text="@string/text65"
+				android:textColor="#ffffff"
+				android:textSize="16sp"
+				android:visibility="gone" />
 
 			<EditText
 				android:id="@+id/popup_credentials_login"
@@ -76,7 +76,7 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal">
+				android:orientation="horizontal" >
 
 				<Button
 					android:id="@+id/popup_credentials_cancel"
@@ -114,27 +114,27 @@
 			android:gravity="center"
 			android:orientation="vertical"
 			android:padding="@dimen/addserver_popup_margin_horiz"
-			android:visibility="gone">
+			android:visibility="gone" >
 
 			<TextView
 				android:id="@+id/popup_url_message"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_thin"
 				android:gravity="center_horizontal"
-				android:textColor="#ffffff"
-				android:textSize="@dimen/addserver_popup_fontsize2"
 				android:text="@string/text16"
-				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_thin" />
+				android:textColor="#ffffff"
+				android:textSize="@dimen/addserver_popup_fontsize2" />
 
 			<TextView
 				android:id="@+id/popup_url_message2"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_large"
 				android:gravity="center_horizontal"
-				android:textColor="#ffffff"
-				android:textSize="@dimen/addserver_popup_fontsize3"
 				android:text="@string/text16"
-				android:layout_marginBottom="@dimen/addserver_popup_margin_verti_large" />
+				android:textColor="#ffffff"
+				android:textSize="@dimen/addserver_popup_fontsize3" />
 
 			<EditText
 				android:id="@+id/popup_url_edittext"
@@ -149,7 +149,7 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal">
+				android:orientation="horizontal" >
 
 				<Button
 					android:id="@+id/popup_url_cancel"
@@ -197,7 +197,7 @@
 			android:layout_marginLeft="@dimen/addserver_popup_margin_horiz"
 			android:layout_marginRight="@dimen/addserver_popup_margin_horiz"
 			android:background="#55FFFFFF"
-			android:orientation="vertical">
+			android:orientation="vertical" >
 
 			<LinearLayout
 				android:id="@+id/popup_loading_avancement"

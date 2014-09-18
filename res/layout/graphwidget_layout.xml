@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/graph_widget"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:layout_margin="4dp"
-	android:orientation="vertical"
-	android:gravity="center_horizontal">
+	android:gravity="center_horizontal"
+	android:orientation="vertical" >
 
 	<ImageView
 		android:id="@+id/widget_graph"
@@ -14,24 +13,24 @@
 		android:layout_height="0dp"
 		android:layout_weight="1"
 		android:adjustViewBounds="true"
-		android:contentDescription="@string/graphView_ImageViewDescription"
-		android:scaleType="fitCenter"
 		android:background="@drawable/widget_glow"
-		android:paddingTop="10dp"
+		android:contentDescription="@string/graphView_ImageViewDescription"
 		android:paddingLeft="10dp"
-		android:paddingRight="10dp" />
+		android:paddingRight="10dp"
+		android:paddingTop="10dp"
+		android:scaleType="fitCenter" />
 
 	<LinearLayout
 		android:id="@+id/widget_legend"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginLeft="9dp"
+		android:layout_marginRight="9dp"
 		android:background="@drawable/widget_border2"
 		android:clickable="true"
 		android:focusable="true"
-		android:orientation="horizontal"
-		android:layout_marginLeft="9dp"
-		android:layout_marginRight="9dp">
-		
+		android:orientation="horizontal" >
+
 		<TextView
 			android:id="@+id/widget_servername"
 			android:layout_width="match_parent"
@@ -41,8 +40,8 @@
 			android:layout_marginRight="6dp"
 			android:layout_marginTop="2dp"
 			android:gravity="right"
-			android:textSize="16sp"
-			android:textColor="#dbdbdb" />
+			android:textColor="#dbdbdb"
+			android:textSize="16sp" />
 
 		<TextView
 			android:id="@+id/widget_loading"

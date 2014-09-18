@@ -7,9 +7,9 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:orientation="vertical"
 		android:paddingLeft="@dimen/listview_horizontal_margin"
-		android:paddingRight="@dimen/listview_horizontal_margin"
-		android:orientation="vertical" >
+		android:paddingRight="@dimen/listview_horizontal_margin" >
 
 		<!-- Munin URL -->
 
@@ -37,8 +37,8 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/settings_URL_label"
-				android:textSize="24sp"
-				android:textAppearance="?android:attr/textAppearanceMedium" />
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:textSize="24sp" />
 
 			<AutoCompleteTextView
 				android:id="@+id/textbox_serverUrl"
@@ -47,41 +47,39 @@
 				android:layout_marginLeft="0dp"
 				android:layout_marginTop="8dp"
 				android:ems="10"
+				android:hint="@string/settings_URL_label2"
 				android:inputType="textUri"
 				android:nextFocusLeft="@id/textbox_serverUrl"
-				android:nextFocusUp="@id/textbox_serverUrl"
-				android:hint="@string/settings_URL_label2" />
-			
+				android:nextFocusUp="@id/textbox_serverUrl" />
+
 			<!-- ... or select a sample server -->
+
 			<LinearLayout
 				android:id="@+id/ll_sampleServer"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="vertical">
-				
+				android:orientation="vertical" >
+
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="1dp"
-					android:layout_marginTop="15dp"
 					android:layout_marginBottom="10dp"
+					android:layout_marginTop="15dp"
 					android:background="#d7d7d7" />
-				
+
 				<TextView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:text="@string/settings_text"
-						android:textAppearance="?android:attr/textAppearanceMedium" />
-				
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/settings_text"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+
 				<Spinner
 					android:id="@+id/spinner"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="13dp"
 					android:layout_marginTop="8dp" />
-				
 			</LinearLayout>
-			
-			
 		</LinearLayout>
 
 		<LinearLayout
@@ -93,11 +91,13 @@
 			android:background="#d7d7d7" />
 
 		<!-- HTTP Auth -->
+
 		<LinearLayout
 			android:id="@+id/addserver_auth"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical">
+			android:orientation="vertical" >
+
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="1dp"
@@ -105,7 +105,7 @@
 				android:layout_marginRight="10dp"
 				android:layout_marginTop="3dp"
 				android:background="#eaeaea" />
-	
+
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
 				android:paddingLeft="20dp"
 				android:paddingRight="20dp"
 				android:paddingTop="5dp" >
-	
+
 				<CheckBox
 					android:id="@+id/checkbox_http_auth"
 					android:layout_width="match_parent"
@@ -126,26 +126,26 @@
 					android:text="@string/settings_http_auth2"
 					android:textAppearance="?android:attr/textAppearanceMedium"
 					android:textColor="#2A2A2A" />
-	
+
 				<LinearLayout
 					android:id="@+id/authIds"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="horizontal" >
-	
+
 					<LinearLayout
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
 						android:orientation="vertical" >
-						
-					    <TextView
+
+						<TextView
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:layout_weight="1"
 							android:gravity="center"
 							android:text="@string/settings_auth_type"
 							android:textColor="#2A2A2A" />
-	
+
 						<TextView
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
 							android:gravity="center"
 							android:text="@string/settings_login"
 							android:textColor="#2A2A2A" />
-	
+
 						<TextView
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
@@ -162,18 +162,18 @@
 							android:text="@string/settings_password"
 							android:textColor="#2A2A2A" />
 					</LinearLayout>
-	
+
 					<LinearLayout
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:orientation="vertical" >
-						
-					    <Spinner
+
+						<Spinner
 							android:id="@+id/spinner_auth_type"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:layout_marginLeft="15dp" />
-	
+
 						<EditText
 							android:id="@+id/auth_login"
 							android:layout_width="match_parent"
@@ -181,7 +181,7 @@
 							android:layout_marginLeft="15dp"
 							android:ems="10"
 							android:inputType="text" />
-	
+
 						<EditText
 							android:id="@+id/auth_password"
 							android:layout_width="match_parent"
@@ -192,7 +192,7 @@
 					</LinearLayout>
 				</LinearLayout>
 			</LinearLayout>
-	
+
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="2dp"
