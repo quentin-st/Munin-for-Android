@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:state_pressed="true" android:drawable="@color/c26262A" />
-	<item android:state_selected="true" android:drawable="@color/c26262A" />
-	<item android:state_hovered="true" android:drawable="@color/c26262A" />
-	<item android:state_focused="true" android:drawable="@color/c26262A" />
-	<item android:state_enabled="false" android:drawable="@color/c26262A" />
+	<item
+		android:state_pressed="true"
+		android:drawable="@color/c26262A" />
+	<item
+		android:state_selected="true"
+		android:drawable="@color/c26262A" />
+	<item
+		android:state_hovered="true"
+		android:drawable="@color/c26262A" />
+	<item
+		android:state_focused="true"
+		android:drawable="@color/c26262A" />
+	<item
+		android:state_enabled="false"
+		android:drawable="@color/c26262A" />
 	<item android:drawable="@color/c34353C" />
 </selector>
