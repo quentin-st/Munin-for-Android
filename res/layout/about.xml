@@ -47,6 +47,8 @@
 	<WebView
 		android:id="@+id/webView1"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="@dimen/listview_horizontal_margin"
+		android:layout_marginRight="@dimen/listview_horizontal_margin" />
 
 </LinearLayout>

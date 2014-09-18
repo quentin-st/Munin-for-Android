@@ -81,6 +81,8 @@
 	<WebView
 		android:id="@+id/benefits"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content" />
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="@dimen/listview_horizontal_margin"
+		android:layout_marginRight="@dimen/listview_horizontal_margin" />
 
 </LinearLayout>

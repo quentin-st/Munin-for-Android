@@ -79,13 +79,6 @@ public class Activity_Settings extends Activity {
 		checkable_autoRefresh = inflateCheckable((ViewGroup)findViewById(R.id.checkable_autorefresh), getString(R.string.settings_autorefresh_checkbox));
 		
 		
-		// Save button
-		findViewById(R.id.btn_settings_save).setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				actionSave();
-			}
-		});
-		
 		// Spinner default period
 		List<String> list = new ArrayList<String>();
 		list.add(getString(R.string.text47_1)); list.add(getString(R.string.text47_2));
@@ -290,7 +283,6 @@ public class Activity_Settings extends Activity {
 	private void createOptionsMenu() {
 		menu.clear();
 		getMenuInflater().inflate(R.menu.settings, menu);
-		findViewById(R.id.btn_settings_save).setVisibility(View.GONE);
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
