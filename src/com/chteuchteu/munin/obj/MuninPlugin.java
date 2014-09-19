@@ -140,12 +140,14 @@ public class MuninPlugin {
 		if (html.equals(""))
 			return null;
 		
-		// Get <table id="legend">
-		Document doc = Jsoup.parse(html, this.pluginPageUrl);
-		Element table = doc.select("table#legend").first();
-		table.select("a").unwrap();
-		
-		return table.outerHtml();
+		try {
+			// Get <table id="legend">
+			Document doc = Jsoup.parse(html, this.pluginPageUrl);
+			Element table = doc.select("table#legend").first();
+			table.select("a").unwrap();
+			
+			return table.outerHtml();
+		} catch (Exception ex) { return null; }
 	}
 	
 	public boolean equals(MuninPlugin p) {
