@@ -472,33 +472,64 @@ public class MuninFoo {
 		if (!html.equals("") && !html.equals("error")) {
 			Document doc = Jsoup.parse(html, s.getServerUrl());
 			
-			Elements domains = doc.select("span.domain");
-			
-			// I like you, Steve Schnepp, but fuck you for that fucked up HTML.
-			for (Element domain : domains) {
-				MuninMaster m = new MuninMaster();
-				// Get the domain name
-				Element a = domain.child(0);
-				m.setName(a.text());
-				m.setUrl(a.attr("abs:href"));
-				this.masters.add(m);
+			// Check if Munin or MunStrap
+			if (doc.select("ul.groupview").size() > 0) { // Munstrap
+				Elements domains = doc.select("ul.groupview > li > a");
 				
-				int pos = 0;
-				// Get every host for that domain
-				Elements hosts = domain.parent().select("span.host");
-				for (Element host : hosts) {
-					MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
-					if (s.isAuthNeeded()) {
-						serv.setAuthIds(s.getAuthLogin(), s.getAuthPassword(), s.getAuthType());
-						serv.setAuthType(s.getAuthType());
-						serv.setAuthString(s.getAuthString());
+				for (Element domain : domains) {
+					MuninMaster m = new MuninMaster();
+					// Get the domain name
+					m.setName(domain.text());
+					m.setUrl(domain.attr("abs:href"));
+					this.masters.add(m);
+					
+					int pos = 0;
+					// Get every host for that domain
+					Elements hosts = domain.parent().select("ul>li");
+					for (Element host : hosts) {
+						MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
+						if (s.isAuthNeeded()) {
+							serv.setAuthIds(s.getAuthLogin(), s.getAuthPassword(), s.getAuthType());
+							serv.setAuthType(s.getAuthType());
+							serv.setAuthString(s.getAuthString());
+						}
+						serv.setSSL(s.getSSL());
+						serv.setParent(m);
+						serv.setPosition(pos);
+						pos++;
+						this.addServer(serv);
+						nbServers++;
 					}
-					serv.setSSL(s.getSSL());
-					serv.setParent(m);
-					serv.setPosition(pos);
-					pos++;
-					this.addServer(serv);
-					nbServers++;
+				}
+			} else { // Munin
+				Elements domains = doc.select("span.domain");
+				
+				// I like you, Steve Schnepp, but fuck you for that fucked up HTML.
+				for (Element domain : domains) {
+					MuninMaster m = new MuninMaster();
+					// Get the domain name
+					Element a = domain.child(0);
+					m.setName(a.text());
+					m.setUrl(a.attr("abs:href"));
+					this.masters.add(m);
+					
+					int pos = 0;
+					// Get every host for that domain
+					Elements hosts = domain.parent().select("span.host");
+					for (Element host : hosts) {
+						MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
+						if (s.isAuthNeeded()) {
+							serv.setAuthIds(s.getAuthLogin(), s.getAuthPassword(), s.getAuthType());
+							serv.setAuthType(s.getAuthType());
+							serv.setAuthString(s.getAuthString());
+						}
+						serv.setSSL(s.getSSL());
+						serv.setParent(m);
+						serv.setPosition(pos);
+						pos++;
+						this.addServer(serv);
+						nbServers++;
+					}
 				}
 			}
 		}

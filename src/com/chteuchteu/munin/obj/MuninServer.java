@@ -34,6 +34,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.util.Base64;
+import android.util.Log;
 
 import com.chteuchteu.munin.CustomSSLFactory;
 import com.chteuchteu.munin.MuninFoo;
@@ -332,9 +333,13 @@ public class MuninServer {
 			if (images.size() > 0)
 				return "munin/x/";
 			else {
-				Elements hosts = doc.select("span.host");
+				// Munin normal
+				Elements muninHosts = doc.select("span.host");
 				
-				if (hosts.size() > 0)
+				// MunStrap
+				Elements munstrapHosts = doc.select("ul.groupview");
+				
+				if (muninHosts.size() > 0 || munstrapHosts.size() > 0)
 					return "munin/";
 				else
 					return res.responseCode + " - " + res.responseReason;
@@ -480,11 +485,12 @@ public class MuninServer {
 			in.close();
 			
 			resp.html = str.toString();
+			if (MuninFoo.debug)
+				Log.v("", "Downloaded content : " + resp.html);
 			resp.responseReason = response.getStatusLine().getReasonPhrase();
 			resp.responseCode = response.getStatusLine().getStatusCode();
-			if (response.getHeaders("WWW-Authenticate").length > 0) {
+			if (response.getHeaders("WWW-Authenticate").length > 0)
 				resp.header_wwwauthenticate = response.getHeaders("WWW-Authenticate")[0].getValue();
-			}
 		}
 		catch (SocketTimeoutException e) { e.printStackTrace(); resp.timeout = true; }
 		catch (ConnectTimeoutException e) { e.printStackTrace(); resp.timeout = true; }
