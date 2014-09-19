@@ -79,8 +79,8 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		protected Void doInBackground(Void... arg0) {
 			if (Activity_GraphView.bitmaps[position] == null)
 				Activity_GraphView.bitmaps[position] = 
-					Util.removeBitmapBorder(
-							MuninFoo.grabBitmap(muninFoo.currentServer, muninFoo.currentServer.getPlugin(position).getImgUrl(Activity_GraphView.load_period))
+					Util.dropShadow(Util.removeBitmapBorder(
+							MuninFoo.grabBitmap(muninFoo.currentServer, muninFoo.currentServer.getPlugin(position).getImgUrl(Activity_GraphView.load_period)))
 				);
 				
 			return null;

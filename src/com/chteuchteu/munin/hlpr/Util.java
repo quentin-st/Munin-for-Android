@@ -19,6 +19,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BlurMaskFilter;
+import android.graphics.BlurMaskFilter.Blur;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -169,8 +174,40 @@ public final class Util {
 				return original;
 			}
 		}
-		// if null of does not needs to be cropped
+		// if null or does not needs to be cropped
 		return original;
+	}
+	
+	public static Bitmap dropShadow(Bitmap src) {
+		if (src == null)
+			return null;
+		
+		try {
+			// Parameters
+			int verticalPadding = 10;
+			int horizontalPadding = 10;
+			int radius = 3;
+			int color = 0x44000000;
+			
+			// Create result bitmap
+			Bitmap bmOut = Bitmap.createBitmap(src.getWidth() + horizontalPadding, src.getHeight() + verticalPadding, Bitmap.Config.ARGB_8888);
+			Canvas canvas = new Canvas(bmOut);
+			canvas.drawColor(0, PorterDuff.Mode.CLEAR);
+			Paint ptBlur = new Paint();
+			ptBlur.setMaskFilter(new BlurMaskFilter(radius, Blur.OUTER));
+			int[] offsetXY = new int[2];
+			// Capture alpha into a bitmap
+			Bitmap bmAlpha = src.extractAlpha(ptBlur, offsetXY);
+			Paint ptAlphaColor = new Paint();
+			ptAlphaColor.setColor(color);
+			canvas.drawBitmap(bmAlpha, 0, 0, ptAlphaColor);
+			bmAlpha.recycle();
+			// Paint image source
+			canvas.drawBitmap(src, radius, radius, null);
+			return bmOut;
+		} catch (Exception ex) {
+			return src;
+		}
 	}
 	
 	public static String getPref(Context c, String key) {
