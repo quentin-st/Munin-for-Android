@@ -63,30 +63,24 @@
 				android:layout_marginTop="3dp" />
 		</LinearLayout>
 
-		<LinearLayout
+		<TextView
+			android:id="@+id/btn_selectServersToWatch"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="10dp"
 			android:layout_marginRight="10dp"
 			android:layout_marginTop="25dp"
 			android:background="@drawable/card"
-			android:orientation="vertical"
-			android:padding="5dp" >
-
-			<TextView
-				android:id="@+id/btn_selectServersToWatch"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/alerts_hover"
-				android:clickable="true"
-				android:drawableRight="@drawable/arrow"
-				android:focusable="true"
-				android:gravity="center_vertical"
-				android:padding="20dp"
-				android:text="@string/text56"
-				android:textColor="#333333"
-				android:textSize="19sp" />
-		</LinearLayout>
+			android:clickable="true"
+			android:drawableRight="@drawable/arrow"
+			android:focusable="true"
+			android:gravity="center_vertical"
+			android:padding="20dp"
+			android:paddingBottom="20dp"
+			android:paddingTop="20dp"
+			android:text="@string/text56"
+			android:textColor="#333333"
+			android:textSize="19sp" />
 	</LinearLayout>
 
 	<ScrollView
