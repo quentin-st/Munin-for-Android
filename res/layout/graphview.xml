@@ -35,13 +35,13 @@
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="vertical"
-		android:paddingBottom="5dp" >
+		android:orientation="vertical" >
 
 		<org.taptwo.android.widget.ViewFlow
 			android:id="@+id/viewflow"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:paddingTop="5dp"
 			app:sidebuffer="1" />
 
 		<LinearLayout

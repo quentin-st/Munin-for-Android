@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.chteuchteu.munin"
 	android:versionCode="33"
-	android:versionName="3">
+	android:versionName="3" >
 
 	<!-- SDK Version -->
 	<uses-sdk
@@ -34,21 +33,26 @@
 		<activity
 			android:name="com.chteuchteu.munin.ui.Activity_Splash"
 			android:label="@string/app_name"
-			android:theme="@style/NoActionBar"
-			android:noHistory="true" >
+			android:noHistory="true"
+			android:theme="@style/NoActionBar" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
+
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 		<activity android:name="com.chteuchteu.munin.ui.Activity_About" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Alerts"
+		<activity
+			android:name="com.chteuchteu.munin.ui.Activity_Alerts"
 			android:configChanges="orientation|screenSize|keyboardHidden" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_AlertsPluginSelection" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_AddServer"
+		<activity
+			android:name="com.chteuchteu.munin.ui.Activity_AddServer"
 			android:configChanges="orientation|screenSize|keyboardHidden" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_GraphView" 
-		    android:configChanges="orientation|screenSize|keyboardHidden" />
+		<activity
+			android:name="com.chteuchteu.munin.ui.Activity_GraphView"
+			android:configChanges="orientation|screenSize|keyboardHidden"
+			android:theme="@style/GraphViewTheme" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Grid" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GridSelection" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Labels" />
@@ -62,7 +66,7 @@
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GoPremium" />
 
 		<!-- Widget -->
-		<receiver android:name="com.chteuchteu.munin.Widget_GraphWidget">
+		<receiver android:name="com.chteuchteu.munin.Widget_GraphWidget" >
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 				<action android:name="android.appwidget.action.APPWIDGET_DELETED" />
@@ -75,25 +79,29 @@
 				android:name="android.appwidget.provider"
 				android:resource="@xml/graph_widget_meta" />
 		</receiver>
+
 		<activity
 			android:name="com.chteuchteu.munin.Widget_Configure"
-			android:theme="@android:style/Theme.Dialog">
+			android:theme="@android:style/Theme.Dialog" >
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 			</intent-filter>
 		</activity>
 
 		<!-- Notifications -->
-		<receiver android:name=".BootReceiver">
+		<receiver android:name=".BootReceiver" >
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
+
 		<service
 			android:name=".Service_Notifications"
 			android:enabled="true" />
-			
-		<meta-data android:name="com.crashlytics.ApiKey" android:value="b7bc84aa870bd35d3de03f69309f1748a52354a4"/>
+
+		<meta-data
+			android:name="com.crashlytics.ApiKey"
+			android:value="b7bc84aa870bd35d3de03f69309f1748a52354a4" />
 	</application>
 
 </manifest>
