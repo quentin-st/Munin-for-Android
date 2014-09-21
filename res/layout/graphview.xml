@@ -8,23 +8,12 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="#333333"
+		android:layout_marginBottom="5dp"
+		android:background="#12A1E3"
 		android:orientation="vertical"
 		android:paddingTop="4dp" >
 
-		<TextView
-			android:id="@+id/serverName"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="20dp"
-			android:gravity="center"
-			android:shadowColor="#111111"
-			android:shadowDx="0"
-			android:shadowDy="1"
-			android:shadowRadius="2"
-			android:textAllCaps="true"
-			android:textColor="#DDDDDD"
-			android:textSize="16sp" />
+		<include layout="@layout/graphview_servername" />
 
 		<org.taptwo.android.widget.TitleFlowIndicator
 			android:id="@+id/viewflowindic"
@@ -38,7 +27,7 @@
 			app:footerTriangleHeight="5dp"
 			app:selectedColor="#f0f0f0"
 			app:selectedSize="15dp"
-			app:textColor="#cccccc"
+			app:textColor="#f0f0f0"
 			app:textSize="13sp"
 			app:textSize2="13sp"
 			app:titlePadding="40dp" />

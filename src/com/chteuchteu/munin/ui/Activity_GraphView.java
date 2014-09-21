@@ -117,9 +117,16 @@ public class Activity_GraphView extends Activity {
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		if (muninFoo.currentServer != null)
-			((TextView) findViewById(R.id.serverName)).setText(muninFoo.currentServer.getName());
-		actionBar.setTitle("");
+		if (muninFoo.currentServer != null) {
+			TextView serverName = (TextView) findViewById(R.id.serverName);
+			if (serverName != null) {
+				serverName.setText(muninFoo.currentServer.getName());
+				actionBar.setTitle("");
+			} else {
+				actionBar.setTitle(muninFoo.currentServer.getName());
+			}
+		}
+		
 		
 		if (muninFoo.drawer) {
 			dh = new DrawerHelper(this, muninFoo);
