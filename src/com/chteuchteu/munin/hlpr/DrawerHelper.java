@@ -73,10 +73,6 @@ public class DrawerHelper {
 		initDrawer();
 	}
 	
-	public SlidingMenu getDrawer() {
-		return this.sm;
-	}
-	
 	public void setDrawerActivity(int act) {
 		this.n = act;
 		switch (act) {
@@ -126,15 +122,14 @@ public class DrawerHelper {
 		}
 	}
 	
-	public void setViewFlow(ViewFlow v) {
-		this.vf = v;
-	}
+	public void setViewFlow(ViewFlow v) { this.vf = v; }
+	
+	public SlidingMenu getDrawer() { return this.sm; }
 	
 	public void reInitDrawer() {
 		initDrawer();
 	}
 	
-	@SuppressLint("NewApi")
 	private void initDrawer() {
 		sm = new SlidingMenu(a);
 		sm.setMode(SlidingMenu.LEFT);
@@ -143,7 +138,7 @@ public class DrawerHelper {
 		else
 			sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		sm.setShadowWidthRes(R.dimen.shadow_width);
-		sm.setFadeEnabled(false);
+		sm.setFadeEnabled(true);
 		sm.setSelectorEnabled(true);
 		sm.setBehindScrollScale(0.25f);
 		//sm.setShadowDrawable(R.drawable.drawer_shadow);
