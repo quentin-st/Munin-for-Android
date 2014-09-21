@@ -43,7 +43,7 @@ public class TitleFlowIndicator extends TextView implements FlowIndicator {
 	private static final float CLIP_PADDING = 0.0f;
 	private static final int SELECTED_COLOR = 0xFFFFC445;
 	private static final boolean SELECTED_BOLD = false;
-	private static final int TEXT_COLOR = 0xFFAAAAAA;
+	private static final int TEXT_COLOR = 0xCCF0F0F0;
 	private static final int TEXT_SIZE = 15;
 	private static final float FOOTER_LINE_HEIGHT = 4.0f;
 	private static final int FOOTER_COLOR = 0xFFFFC445;
