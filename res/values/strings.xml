@@ -224,7 +224,6 @@
 	<string name="text78">Add one now by tapping on +</string>
 	<string name="text79">Open</string>
 	<string name="text80">This grid will be deleted. Are you sure?</string>
-	
 	<string name="import_servers">Import</string>
 	<string name="export_servers">Export</string>
 	<string name="export_failed">Export failed…</string>
@@ -232,25 +231,21 @@
 	<string name="export_shareusing">Export using…</string>
 	<string name="import_title">Import</string>
 	<string name="import_sentence">Please copy and paste the text generated during the export in the field below</string>
-	
-	
 	<string name="delete">Delete</string>
 	<string name="move_up">Move up</string>
 	<string name="move_right">Move right</string>
 	<string name="move_down">Move down</string>
 	<string name="move_left">Move left</string>
-	
 	<string name="rate">Rate the app</string>
 	<string name="rate_long">If you like the app, would you mind rating it on Google Play? Thank you!</string>
 	<string name="not_now">Not now</string>
-	
-	<string name="fieldsDescriptionWrapper" tools:ignore="MissingTranslation"><![CDATA[
+	<string name="fieldsDescriptionWrapper" tools:ignore="MissingTranslation">
+<![CDATA[
 		<head>
 		<style>
-			table { display: block; margin: auto; }
 			th { border-bottom: 1px solid #999; }
 			td { padding: 5px 10px; margin: 1px;border-bottom: 1px solid #d8d8d8; min-width: 30px; }
-			td.lastrow { padding-bottom-width: 0px; }
+			td.lastrow { border-bottom-width: 0px; }
 		</style>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		</head>
@@ -259,4 +254,5 @@
 		</body>
 		]]>
 	</string>
+
 </resources>
