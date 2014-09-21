@@ -93,7 +93,8 @@ public class Activity_PluginSelection extends ListActivity {
 			for (MuninServer s : l1)
 				list2.add(s.getName());
 			
-			SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list2);
+			SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(getActionBar().getThemedContext(),
+					android.R.layout.simple_spinner_dropdown_item, list2);
 			
 			
 			ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
