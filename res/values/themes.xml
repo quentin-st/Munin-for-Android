@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<style name="MyAppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+		<item name="switchStyle">@style/switch_light</item>
+		<item name="textAppearance">@style/TextAppearance</item>
+		<item name="android:actionBarStyle">@style/ActionBar</item>
+		<item name="android:spinnerDropDownItemStyle">@style/ActionBarDropDownStyle</item>
+	</style>
+
+	<style name="NoActionBar" parent="@android:style/Theme.Holo.Light">
+		<item name="android:windowActionBar">false</item>
+		<item name="android:windowNoTitle">true</item>
+	</style>
+
 	<!-- ACTION BAR -->
 	<style name="ActionBar" parent="@android:style/Widget.Holo.ActionBar">
 		<item name="android:background">@color/actionBarColor</item>
@@ -10,28 +22,21 @@
 		<item name="android:actionMenuTextColor">#fff</item>
 	</style>
 
+	<style name="ActionBarDropDownStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+		<item name="android:textAppearance">@style/ActionBarDropDownTextStyle</item>
+	</style>
+
+	<style name="ActionBarDropDownTextStyle" parent="@android:style/Widget">
+		<item name="android:textColor">#ffffff</item>
+		<item name="android:textSize">18dip</item>
+	</style>
+
 	<style name="ActionBarTitleAppearance" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
 		<item name="android:textColor">#ffffff</item>
 	</style>
 
 	<style name="ActionBarSubtitleAppearance" parent="android:TextAppearance.Holo.Widget.ActionBar.Subtitle">
 		<item name="android:textColor">#ffffff</item>
-	</style>
-
-	<style name="ActionBarSpinnerAppearance" parent="android:style/Widget.Holo.Light.Spinner">
-		<item name="android:textColor">#ffffff</item>
-	</style>
-	
-	<style name="MyAppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-		<item name="switchStyle">@style/switch_light</item>
-		<item name="textAppearance">@style/TextAppearance</item>
-		<item name="android:actionBarStyle">@style/ActionBar</item>
-		<item name="android:actionDropDownStyle">@style/ActionBarSpinnerAppearance</item>
-	</style>
-
-	<style name="NoActionBar" parent="@android:style/Theme.Holo.Light">
-		<item name="android:windowActionBar">false</item>
-		<item name="android:windowNoTitle">true</item>
 	</style>
 
 </resources>

@@ -1,8 +1,7 @@
 <resources>
-	
+
 	<dimen name="listview_horizontal_margin">60dp</dimen>
-	
-	<dimen name="slidingmenu_offset">450dp</dimen>
+	<dimen name="slidingmenu_offset">550dp</dimen>
 	<dimen name="item_padding">13dp</dimen>
 
 </resources>
