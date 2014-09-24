@@ -509,8 +509,6 @@ public class Activity_AddServer extends Activity {
 		}
 		
 		private int start() {
-			int ret = RES_UNDEFINED;
-			
 			if (Util.isOnline(c)) {
 				setPopupState(0);
 				setPopupText("", getString(R.string.text42));
@@ -518,7 +516,7 @@ public class Activity_AddServer extends Activity {
 				type = "";
 				if (serverUrl == null || serverUrl.equals(""))
 					serverUrl = tb_serverUrl.getText().toString();
-				boolean letsFetch = false;
+				
 				SSL = false;
 				
 				// Modifications de l'URL
@@ -529,14 +527,12 @@ public class Activity_AddServer extends Activity {
 				if (serverUrl.length() > 10 && !serverUrl.substring(serverUrl.length()-1).equals("/") && !serverUrl.contains("/index.html"))
 					serverUrl = serverUrl + "/index.html";
 				
-				if (letsFetch && SSL && !muninFoo.premium)
+				if (SSL && !muninFoo.premium)
 					return RES_NOT_PREMIUM;
 				
-				if (letsFetch)
-					return RES_OK;
+				return RES_OK;
 			} else
 				return RES_NO_CONNECTION;
-			return ret;
 		}
 		
 		private void askAgainForUrl(final String err) {

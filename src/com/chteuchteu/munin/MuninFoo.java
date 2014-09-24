@@ -473,7 +473,8 @@ public class MuninFoo {
 			Document doc = Jsoup.parse(html, s.getServerUrl());
 			
 			// Check if Munin or MunStrap
-			if (doc.select("ul.groupview").size() > 0) { // Munstrap
+			if (doc.select("ul.groupview").size() > 0
+					&& doc.select("ul.groupview > li > a").size() > 0) { // Munstrap
 				Elements domains = doc.select("ul.groupview > li > a");
 				
 				for (Element domain : domains) {
