@@ -192,6 +192,7 @@ public class MuninServer {
 		String nomPlugin;
 		String pluginPageUrl;
 		
+		
 		for (Element image : images) {
 			nomPlugin = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
 			// Suppression des caractères spéciaux
@@ -207,26 +208,32 @@ public class MuninServer {
 			pluginPageUrl = link.attr("abs:href");
 			
 			// Récupération du nom du groupe
-			// Munin 2.X
-			boolean is2 = true;
-			Element table = image.parent().parent().parent().parent().parent();
 			String group = "";
-			if (table != null) {
-				Element h3 = table.previousElementSibling();
-				if (h3 != null)
-					group = h3.html();
-				else
+			if (html.contains("MunStrap")) {
+				Element tab = image.parent().parent().parent().parent();
+				group = tab.id();
+			} else {
+				// Munin 2.X
+				boolean is2 = true;
+				Element table = image.parent().parent().parent().parent().parent();
+				
+				if (table != null) {
+					Element h3 = table.previousElementSibling();
+					if (h3 != null)
+						group = h3.html();
+					else
+						is2 = false;
+				} else
 					is2 = false;
-			} else
-				is2 = false;
-			
-			// Munin 1.4
-			if (!is2) {
-				try {
-					Element h3 = image.parent().parent().parent().parent().child(0).child(0).child(0);
-					group = h3.html();
+				
+				// Munin 1.4
+				if (!is2) {
+					try {
+						Element h3 = image.parent().parent().parent().parent().child(0).child(0).child(0);
+						group = h3.html();
+					}
+					catch (Exception e) { }
 				}
-				catch (Exception e) { }
 			}
 			
 			if (nomPlugin != null && !nomPlugin.equals("")) {
@@ -239,7 +246,7 @@ public class MuninServer {
 				
 				mp.add(currentPl);
 				
-				if (this.graphURL == null || (this.graphURL != null && this.graphURL.equals("")))
+				if (this.graphURL == null || this.graphURL.equals(""))
 					this.graphURL = image.attr("abs:src").substring(0, image.attr("abs:src").lastIndexOf('/') + 1);
 			}
 		}
