@@ -306,26 +306,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_GRIDITEMRELATIONS_GRID, i.grid.id);
-		values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.plugin.getId());
-		values.put(KEY_GRIDITEMRELATIONS_DEFAULTPERIOD, i.period.toString());
-		values.put(KEY_GRIDITEMRELATIONS_X, i.X);
-		values.put(KEY_GRIDITEMRELATIONS_Y, i.Y);
+		try {
+			values.put(KEY_GRIDITEMRELATIONS_GRID, i.grid.id);
+			values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.plugin.getId());
+			values.put(KEY_GRIDITEMRELATIONS_DEFAULTPERIOD, i.period.toString());
+			values.put(KEY_GRIDITEMRELATIONS_X, i.X);
+			values.put(KEY_GRIDITEMRELATIONS_Y, i.Y);
+		} catch (NullPointerException ex) {
+			ex.printStackTrace();
+			return -1;
+		}
 		
 		long id = db.insert(TABLE_GRIDITEMRELATIONS, null, values);
 		i.id = id;
 		close(null, db);
 		return id;
 	}
-	
-	/*public void saveGridItems(Grid g) {
-		for (GridItem i : g.items) {
-			if (i.isPersistant)
-				updateGridItemRelation(i);
-			else
-				insertGridItemRelation(i);
-		}
-	}*/
 	
 	public void saveGridItemsRelations(Grid g) {
 		deleteGridItemRelations(g);
