@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
 	<string name="app_name">Munin for Android</string>
 	<string name="button_graphs">Graphiques</string>
 	<string name="button_server">Serveurs</string>
@@ -30,6 +31,7 @@
 	<string name="settings_screenalwayson_checkbox">Empêcher l\'écran de s\'éteindre lors de l\'affichage de graphs / alertes</string>
 	<string name="settings_autorefresh_label">Actualisation automatique</string>
 	<string name="settings_autorefresh_checkbox">Actualiser automatiquement les graphs / alertes toutes les 5 minutes lorsqu\'ils sont affichés</string>
+	<string name="settings_enablegraphszoom">Activer le zoom sur les graphs</string>
 	<string name="settings_titlelabel_app">APP</string>
 	<string name="settings_titlelabel_graphs">GRAPHS</string>
 	<string name="servers_btn_add_server">Ajouter un serveur</string>
@@ -69,12 +71,9 @@
 	<string name="buy_now">BUY NOW</string>
 	<string name="splashDesc">Loading</string>
 	<string name="edit">Editer</string>
-
 	<string name="widget_configuration1">Félicitations! Le widget a été ajouté avec succès à votre écran d\'accueil. Conseil: vous pouvez actualiser le graph en tapant sur la barre horizontale grise en-dessous de celui-ci.</string>
 	<string name="widget_configuration2">Rafraîchissement auto du graph par Wifi uniquement (1 par heure)</string>
 	<string name="widget_configuration3">Masquer le nom du serveur</string>
-
-
 	<string name="text01">Les paramètres vont être remis à zéro. Etes-vous sûr(e) ?</string>
 	<string name="text02">Remise à zéro effectuée.</string>
 	<string name="text09">Erreur</string>
@@ -97,30 +96,25 @@
 	<string name="text36">Paramètres enregistrés avec succès !</string>
 	<string name="text37">Aucun serveur paramétré… Veuillez en configurer un dans \'Serveurs\'.</string>
 	<string name="text39">Veuillez patienter pendant la réalisation d\'opérations de mise à jour…</string>
-
 	<string name="text41">Le support SSL est disponible avec le pack de fonctionnalités (1,49€). Voulez-vous l\'acheter sur Google Play ?</string>
 	<string name="text42">Chargement…</string>
 	<string name="text43">Veuillez patienter…</string>
 	<string name="text44">Récupération de l\'URL…</string>
 	<string name="text45">Enregistrement !</string>
 	<string name="text46">Connexion au serveur </string>
-
 	<string name="text47.1">jour</string>
 	<string name="text47.2">semaine</string>
 	<string name="text47.3">mois</string>
 	<string name="text47.4">année</string>
-
 	<string name="text48.1">Horizontal</string>
 	<string name="text48.2">Vertical</string>
 	<string name="text48.3">Auto</string>
-
 	<string name="text49.1">Masquer les serveurs d\'état normal</string>
 	<string name="text49.2">Afficher les serveurs d\'état normal</string>
 	<string name="text50.1">critique</string>
 	<string name="text50.2">critiques</string>
 	<string name="text51.1">avertissement</string>
 	<string name="text51.2">avertissements</string>
-
 	<string name="text52">Activer les notifications</string>
 	<string name="text53">Mettre à jour par Wifi uniquement</string>
 	<string name="text54">Consommation de data estimée: ?? /jour</string>
@@ -140,25 +134,19 @@
 	<string name="text66.1">Historique effacé.</string>
 	<string name="text67">Aucun label</string>
 	<string name="text68">Timeout - Le serveur a mis trop longtemps à répondre</string>
-	
 	<string name="text69">Nom de la grille</string>
 	<string name="text70">Ajouter une grille</string>
 	<string name="text73">Supprimer cette grille</string>
-	
 	<string name="text70.2">Ajouter un label</string>
-	
 	<string name="text71">Sélectionnez un serveur</string>
 	<string name="text72">Sélectionnez les plugins à ajouter</string>
 	<string name="text74">Une grille portant ce nom existe déjà.</string>
 	<string name="text75">Grille</string>
 	<string name="text76">Changer la période…</string>
-	
 	<string name="text77">Aucune grille</string>
 	<string name="text78">Ajoutez-en une maintenant en appuyant sur +</string>
 	<string name="text79">Ouvrir</string>
-	
 	<string name="text80">Cette grille va être supprimée. Êtes-vous sûr(e) ?</string>
-	
 	<string name="import_servers">Importer</string>
 	<string name="export_servers">Exporter</string>
 	<string name="export_failed">Erreur lors de l\'export…</string>
@@ -166,30 +154,24 @@
 	<string name="export_shareusing">Exporter via…</string>
 	<string name="import_title">Importation</string>
 	<string name="import_sentence">Veuillez copier-coller le texte généré lors de l\'export dans le champ ci-dessous</string>
-	
 	<string name="settings_lang">Langue de l\'application</string>
 	<string name="lang_french">Français</string>
 	<string name="lang_german">Allemand</string>
 	<string name="lang_english">Anglais</string>
 	<string name="lang_russian">Russian</string>
-
-	
 	<string name="delete">Supprimer</string>
 	<string name="move_up">Déplacer vers le haut</string>
 	<string name="move_right">Déplacer vers la droite</string>
 	<string name="move_down">Déplacer vers le bas</string>
 	<string name="move_left">Déplacer vers la gauche</string>
-
 	<string name="rate">Noter l\'application</string>
 	<string name="rate_long">Si vous aimez l\'application, pourriez-vous prendre une minute pour la noter sur Google Play ? Merci !</string>
 	<string name="not_now">Pas maintenant</string>
-	
 	<string name="yourerunning">Vous utilisez</string>
 	<string name="openInBrowser">Afficher dans le navigateur</string>
 	<string name="fieldsDescription">Description des champs</string>
-	
 	<string name="aboutText">
-	    <![CDATA[
+<![CDATA[
    <head>
    <style>
    	p { padding: 0px 15px; }
@@ -219,7 +201,7 @@
    </body>]]>
 	</string>
 	<string name="goPremiumBenefits">
-    <![CDATA[
+<![CDATA[
   <head>
   <style>
   	p { padding: 0px 15px; }
@@ -242,5 +224,7 @@
   <li>Et plus encore, à venir ! Veuillez vous assurer d\'accepter les mises à jour automatiques afin de recevoir automatiquement les prochaines fonctionnalités premium !</li>
   </ul>
   <br />
-  </body>]]></string>
+  </body>]]>
+	</string>
+
 </resources>

@@ -40,6 +40,7 @@ public class Activity_Settings extends Activity {
 	private View		checkable_splash;
 	private View		checkable_alwaysOn;
 	private View		checkable_autoRefresh;
+	private View		checkable_graphsZoom;
 	
 	private MuninFoo 		muninFoo;
 	private DrawerHelper	dh;
@@ -77,6 +78,7 @@ public class Activity_Settings extends Activity {
 		checkable_transitions = inflateCheckable((ViewGroup)findViewById(R.id.checkable_transitions), getString(R.string.settings_transitions_checkbox));
 		checkable_alwaysOn = inflateCheckable((ViewGroup)findViewById(R.id.checkable_screenalwayson), getString(R.string.settings_screenalwayson_checkbox));
 		checkable_autoRefresh = inflateCheckable((ViewGroup)findViewById(R.id.checkable_autorefresh), getString(R.string.settings_autorefresh_checkbox));
+		checkable_graphsZoom = inflateCheckable((ViewGroup)findViewById(R.id.checkable_enablegraphszoom), getString(R.string.settings_enablegraphszoom));
 		
 		
 		// Spinner default period
@@ -177,6 +179,11 @@ public class Activity_Settings extends Activity {
 		else
 			setPref("autoRefresh", "false");
 		
+		if (getCheckableValue(checkable_graphsZoom))
+			setPref("graphsZoom", "true");
+		else
+			setPref("graphsZoom", "false");
+		
 		// Drawer
 		if (getCheckableValue(checkable_drawer)) {
 			setPref("drawer", "false");
@@ -254,6 +261,10 @@ public class Activity_Settings extends Activity {
 		// Auto refresh
 		if (getPref("autoRefresh").equals("true"))
 			setChecked(checkable_autoRefresh, true);
+		
+		// Graph zoom
+		if (getPref("graphsZoom").equals("true"))
+			setChecked(checkable_graphsZoom, true);
 	}
 	@SuppressLint("NewApi")
 	@Override
@@ -343,6 +354,7 @@ public class Activity_Settings extends Activity {
 				setPref("addserver_history", "");
 				setPref("screenAlwaysOn", "");
 				setPref("drawer", "true");
+				setPref("graphsZoom", "false");
 				
 				
 				muninFoo.sqlite.dbHlpr.deleteWidgets();

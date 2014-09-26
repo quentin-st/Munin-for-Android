@@ -16,6 +16,7 @@ import com.chteuchteu.munin.ui.Activity_GraphView;
 
 public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	private MuninFoo		muninFoo;
+	private Context		context;
 	
 	private LayoutInflater	mInflater;
 	private int			count;
@@ -24,6 +25,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		muninFoo = MuninFoo.getInstance(context);
 		this.count = count;
+		this.context = context;
 	}
 	
 	@Override
@@ -92,9 +94,11 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 			
 			if (Activity_GraphView.bitmaps[position] != null) {
 				imageView.setImageBitmap(Activity_GraphView.bitmaps[position]);
-				PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
-				if (mAttacher.getMidScale() < 2f)
-					mAttacher.setMaxScale(2f);
+				if (Util.getPref(context, "graphsZoom").equals("true")) {
+					PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
+					if (mAttacher.getMidScale() < 2f)
+						mAttacher.setMaxScale(2f);
+				}
 			} else {
 				// It seems that can actually fire OutOfMemoryError (BitmapFactory.nativeDecodeAsset)
 				try {
