@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -68,6 +69,7 @@ public class Activity_Grid extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.grid);
 		Crashlytics.start(this);
 		context = this;
@@ -130,8 +132,7 @@ public class Activity_Grid extends Activity {
 		if (Util.getPref(this, "autoRefresh").equals("true")) {
 			mHandler = new Handler();
 			final int INTERVAL = 1000 * 60 * 5;
-			mHandlerTask = new Runnable()
-			{
+			mHandlerTask = new Runnable() {
 				@Override 
 				public void run() {
 					if (!updating)

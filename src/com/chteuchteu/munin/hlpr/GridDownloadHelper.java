@@ -63,16 +63,14 @@ public class GridDownloadHelper {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			if (i < g.items.size()) {
-				if (forceUpdate || items.get(i).iv.getDrawable() == null) {
-					if (items.get(i) != null && items.get(i).plugin != null)
+				GridItem gridItem = items.get(i);
+				if (forceUpdate || gridItem.iv.getDrawable() == null) {
+					if (gridItem != null && gridItem.plugin != null) {
+						String graphUrl = gridItem.plugin.getImgUrl(period);
 						b = Util.dropShadow(
-								Util.removeBitmapBorder(
-										MuninFoo.grabBitmap(
-												items.get(i).plugin.getInstalledOn(),
-												items.get(i).plugin.getImgUrl(period.toString())
-										)
-								)
+								Util.removeBitmapBorder(MuninFoo.grabBitmap(gridItem.plugin.getInstalledOn(), graphUrl))
 						);
+					}
 				}
 			}
 			return null;

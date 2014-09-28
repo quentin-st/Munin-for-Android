@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +32,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
+import com.chteuchteu.munin.obj.MuninServer.HDGraphs;
 import com.chteuchteu.munin.ui.Activity_Grid;
 
 public class GridItem {
@@ -48,6 +50,7 @@ public class GridItem {
 	public Bitmap 		graph;
 	public ProgressBar 	pb;
 	public boolean		isPersistant;
+	private HDGraphDownloader hdGraphDownloader;
 	
 	public static int 		ICONS_MAX_WIDTH = 220;
 	public static float	ALPHA_EDITING = 0.2f;
@@ -60,6 +63,7 @@ public class GridItem {
 		this.grid = g;
 		this.c = c;
 		this.isPersistant = false;
+		this.hdGraphDownloader = null;
 	}
 	
 	public LinearLayout getView(final Context c) {
@@ -97,20 +101,81 @@ public class GridItem {
 	
 	public void preview(final Context c) {
 		if (graph != null) {
-			if (Activity_Grid.menu_open != null) 	Activity_Grid.menu_open.setVisible(true);
-			if (Activity_Grid.menu_period != null)	Activity_Grid.menu_period.setVisible(false);
-			if (Activity_Grid.menu_refresh != null)	Activity_Grid.menu_refresh.setVisible(false);
-			if (Activity_Grid.menu_edit != null)	Activity_Grid.menu_edit.setVisible(false);
+			Activity_Grid.menu_open.setVisible(true);
+			Activity_Grid.menu_period.setVisible(false);
+			Activity_Grid.menu_refresh.setVisible(false);
+			Activity_Grid.menu_edit.setVisible(false);
 			
 			grid.currentlyOpenedPlugin = plugin;
-			((ImageView) ((Activity) c).findViewById(R.id.fullscreen_iv)).setImageBitmap(graph);
+			ImageView fullscreenImageView = (ImageView) ((Activity) c).findViewById(R.id.fullscreen_iv); 
+			fullscreenImageView.setImageBitmap(graph);
 			((TextView) ((Activity) c).findViewById(R.id.fullscreen_tv)).setText(plugin.getInstalledOn().getName());
 			View fs = ((Activity) c).findViewById(R.id.fullscreen);
 			fs.setVisibility(View.VISIBLE);
 			AlphaAnimation a = new AlphaAnimation(0.0f, 1.0f);
 			a.setDuration(300);
 			fs.startAnimation(a);
+			
+			// Download HD graph if possible
+			if (grid.currentlyOpenedPlugin.getInstalledOn().getHDGraphs() == HDGraphs.TRUE) {
+				if (this.hdGraphDownloader != null && this.hdGraphDownloader.isDownloading())
+					this.hdGraphDownloader.killDownload();
+				
+				this.hdGraphDownloader = new HDGraphDownloader(grid.currentlyOpenedPlugin, fullscreenImageView);
+				this.hdGraphDownloader.execute();
+			}
 		}
+	}
+	
+	public class HDGraphDownloader extends AsyncTask<Void, Integer, Void> {
+		private MuninPlugin plugin;
+		private ImageView imageView;
+		private Bitmap bitmap;
+		private boolean downloadKilled;
+		private boolean isDownloading;
+		
+		public HDGraphDownloader (MuninPlugin plugin, ImageView imageView) {
+			super();
+			this.plugin = plugin;
+			this.imageView = imageView;
+			this.bitmap = null;
+			this.downloadKilled = false;
+			this.isDownloading = false;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			Util.UI.setLoading(true, (Activity) c);
+			this.isDownloading = true;
+		}
+		
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			int[] dim = Util.HDGraphs.getBestImageDimensions(imageView, c);
+			String graphUrl = plugin.getHDImgUrl(period, true, dim[0], dim[1]);
+			bitmap = Util.dropShadow(
+					Util.removeBitmapBorder(MuninFoo.grabBitmap(plugin.getInstalledOn(), graphUrl))
+			);
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			Util.UI.setLoading(false, (Activity) c);
+			isDownloading = false;
+			
+			if (!downloadKilled)
+				imageView.setImageBitmap(bitmap);
+		}
+		
+		public void killDownload() {
+			Util.UI.setLoading(false, (Activity) c);
+			downloadKilled = true;
+			isDownloading = false;
+		}
+		public boolean isDownloading() { return this.isDownloading; }
 	}
 	
 	public static LinearLayout getEmptyView(final Grid g, final Context c, final MuninFoo f, final int X, final int Y) {

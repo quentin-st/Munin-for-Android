@@ -382,6 +382,11 @@ public class MuninServer {
 			return res.responseCode + " - " + res.responseReason;
 	}
 	
+	/**
+	 * Checks if dynazoom is available.
+	 * Warning : this has to be done on a thread
+	 * @return
+	 */
 	public boolean isDynazoomAvailable() {
 		MuninPlugin plugin = this.getPlugin(0);
 		if (plugin == null)

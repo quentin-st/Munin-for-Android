@@ -36,7 +36,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
@@ -315,7 +314,7 @@ public final class Util {
 			return context.getResources().getDisplayMetrics().density;
 		}
 		
-		public static int[] getBestImageDimensions(ImageView imageView, Context context) {
+		public static int[] getBestImageDimensions(View imageView, Context context) {
 			int[] res = new int[2];
 			
 			float screenDensity = getScreenDensity(context);
