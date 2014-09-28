@@ -1,5 +1,7 @@
 package com.chteuchteu.munin.obj;
 
+import java.util.Calendar;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -117,6 +119,40 @@ public class MuninPlugin {
 	
 	public String getImgUrl(Period period) {
 		return this.getInstalledOn().getGraphURL() + this.getName() + "-" + period + ".png";
+	}
+	
+	public String getHDImgUrl(Period period) {
+		return getHDImgUrl(period, false, 0, 0);
+	}
+	
+	public String getHDImgUrl(Period period,
+			boolean forceSize, int size_x, int size_y) {
+		// From
+		Calendar cal = Calendar.getInstance();
+		switch (period) {
+			case DAY:
+				cal.add(Calendar.HOUR, -24);
+				break;
+			case WEEK:
+				cal.add(Calendar.DAY_OF_MONTH, -7);
+				break;
+			case MONTH:
+				cal.add(Calendar.DAY_OF_MONTH, -30);
+				break;
+			case YEAR:
+				cal.add(Calendar.YEAR, -1);
+				break;
+		}
+		long pinPoint1 = cal.getTime().getTime() / 1000;
+		long pinPoint2 = Calendar.getInstance().getTime().getTime() / 1000;
+		
+		
+		String url = this.getInstalledOn().getGraphURL() + this.getName()
+				+ "-pinpoint=" + pinPoint1 + "," + pinPoint2 + ".png";
+		if (forceSize)
+			url += "?size_x=" + size_x + "&size_y=" + size_y;
+		
+		return url;
 	}
 	
 	public String getPluginUrl() {

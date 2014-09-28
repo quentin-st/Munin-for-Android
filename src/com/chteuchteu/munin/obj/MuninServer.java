@@ -41,6 +41,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.hlpr.DigestUtils;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
+import com.chteuchteu.munin.obj.MuninPlugin.Period;
 
 public class MuninServer {
 	private long id;
@@ -56,6 +57,7 @@ public class MuninServer {
 	private String authString;
 	public MuninMaster master;
 	public boolean isPersistant = false;
+	private HDGraphs hdGraphs;
 	
 	private List<MuninPlugin> 	erroredPlugins;
 	private List<MuninPlugin> 	warnedPlugins;
@@ -71,6 +73,7 @@ public class MuninServer {
 		this.authType = AuthType.UNKNOWN;
 		this.position = -1;
 		this.authString = "";
+		this.hdGraphs = HDGraphs.AUTO_DETECT;
 	}
 	public MuninServer (String name, String serverUrl) {
 		this.name = name;
@@ -83,10 +86,11 @@ public class MuninServer {
 		this.authType = AuthType.UNKNOWN;
 		this.position = -1;
 		this.authString = "";
+		this.hdGraphs = HDGraphs.AUTO_DETECT;
 		generatePosition();
 	}
 	public MuninServer (String name, String serverUrl, String authLogin, String authPassword, String graphUrl,
-			boolean SSL, int position, AuthType authType, String authString) {
+			boolean SSL, int position, AuthType authType, String authString, HDGraphs hdGraphs) {
 		this.name = name;
 		this.serverUrl = serverUrl;
 		this.plugins = new ArrayList<MuninPlugin>();
@@ -97,6 +101,7 @@ public class MuninServer {
 		this.position = position;
 		this.authType = authType;
 		this.authString = authString;
+		this.hdGraphs = hdGraphs;
 	}
 	
 	public enum AuthType {
@@ -111,6 +116,24 @@ public class MuninServer {
 				if (t.val == val)
 					return t;
 			return UNKNOWN;
+		}
+	}
+	
+	public enum HDGraphs {
+		AUTO_DETECT(""), FALSE("false"), TRUE("true");
+		private String val = "";
+		HDGraphs(String val) { this.val = val; }
+		public String getVal() { return this.val; }
+		public String toString() { return this.val; }
+		public static HDGraphs get(String val) {
+			for (HDGraphs g : HDGraphs.values())
+				if (g.val.equals(val))
+					return g;
+			return AUTO_DETECT;
+		}
+		public static HDGraphs get(boolean val) {
+			if (val)	return TRUE;
+			else		return FALSE;
 		}
 	}
 	
@@ -170,6 +193,9 @@ public class MuninServer {
 			p.addChild(this);
 	}
 	public MuninMaster getParent() { return this.master; }
+	
+	public void setHDGraphs(HDGraphs val) { this.hdGraphs = val; }
+	public HDGraphs getHDGraphs() { return this.hdGraphs; }
 	
 	
 	public boolean fetchPluginsList() {
@@ -310,6 +336,7 @@ public class MuninServer {
 		this.erroredPlugins = source.erroredPlugins;
 		this.warnedPlugins = source.warnedPlugins;
 		this.master = source.master;
+		this.hdGraphs = source.hdGraphs;
 	}
 	
 	/**
@@ -353,6 +380,16 @@ public class MuninServer {
 			}
 		} else
 			return res.responseCode + " - " + res.responseReason;
+	}
+	
+	public boolean isDynazoomAvailable() {
+		MuninPlugin plugin = this.getPlugin(0);
+		if (plugin == null)
+			return false;
+		
+		HTTPResponse res = grabUrl(plugin.getHDImgUrl(Period.DAY));
+		
+		return res.timeout == false && res.responseCode == 200;
 	}
 	
 	public void createTitle () {

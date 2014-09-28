@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.obj.MuninServer.HDGraphs;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 
 public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
@@ -48,12 +49,13 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		if (convertView == null)
 			convertView = mInflater.inflate(R.layout.fragment_graphview, null);
 		
-		ImageView imageView = (ImageView) convertView.findViewById(R.id.tiv);
-		
-		if (Activity_GraphView.bitmaps[position] == null) {
-			new BitmapFetcher(imageView, position).execute();
-		} else {
-			imageView.setImageBitmap(Activity_GraphView.bitmaps[position]);
+		if (Activity_GraphView.loadGraphs) {
+			ImageView imageView = (ImageView) convertView.findViewById(R.id.tiv);
+			
+			if (Activity_GraphView.bitmaps[position] == null)
+				new BitmapFetcher(imageView, position).execute();
+			else
+				imageView.setImageBitmap(Activity_GraphView.bitmaps[position]);
 		}
 		
 		return convertView;
@@ -79,12 +81,22 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			if (Activity_GraphView.bitmaps[position] == null)
+			if (Activity_GraphView.bitmaps[position] == null) {
+				String imgUrl = "";
+				if (muninFoo.currentServer.getHDGraphs() == HDGraphs.TRUE) {
+					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
+					imgUrl = muninFoo.currentServer.getPlugin(position).getHDImgUrl(
+							Activity_GraphView.load_period, true, graphsDimensions[0], graphsDimensions[1]);
+				} else
+					imgUrl = muninFoo.currentServer.getPlugin(position).getImgUrl(Activity_GraphView.load_period);
+				
+				
 				Activity_GraphView.bitmaps[position] = 
 					Util.dropShadow(Util.removeBitmapBorder(
-							MuninFoo.grabBitmap(muninFoo.currentServer, muninFoo.currentServer.getPlugin(position).getImgUrl(Activity_GraphView.load_period)))
+							MuninFoo.grabBitmap(muninFoo.currentServer, imgUrl))
 				);
-				
+			}
+			
 			return null;
 		}
 		

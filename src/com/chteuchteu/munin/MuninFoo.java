@@ -473,8 +473,7 @@ public class MuninFoo {
 			Document doc = Jsoup.parse(html, s.getServerUrl());
 			
 			// Check if Munin or MunStrap
-			if (doc.select("ul.groupview").size() > 0
-					&& doc.select("ul.groupview > li > a").size() > 0) { // Munstrap
+			if (html.contains("MunStrap")) { // Munstrap
 				Elements domains = doc.select("ul.groupview > li > a");
 				
 				for (Element domain : domains) {
@@ -653,16 +652,16 @@ public class MuninFoo {
 		return resp;
 	}
 	
-	public static Bitmap grabBitmap(MuninServer s, String url) {
-		return grabBitmap(s, url, false);
+	public static Bitmap grabBitmap(MuninServer server, String url) {
+		return grabBitmap(server, url, false);
 	}
 	
-	public static Bitmap grabBitmap(MuninServer s, String url, boolean retried) {
+	public static Bitmap grabBitmap(MuninServer server, String url, boolean retried) {
 		Bitmap b = null;
 		
 		try {
 			HttpClient client = null;
-			if (s.getSSL()) {
+			if (server.getSSL()) {
 				try {
 					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 					trustStore.load(null, null);
@@ -683,19 +682,19 @@ public class MuninFoo {
 					client = new DefaultHttpClient(ccm, params);
 				} catch (Exception e) {
 					client = new DefaultHttpClient();
-					s.setSSL(false);
+					server.setSSL(false);
 				}
 			} else
 				client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(url);
 			
-			if (s.isAuthNeeded()) {
-				if (s.getAuthType() == AuthType.BASIC)
-					request.setHeader("Authorization", "Basic " + Base64.encodeToString((s.getAuthLogin() + ":" + s.getAuthPassword()).getBytes(), Base64.NO_WRAP));
-				else if (s.getAuthType() == AuthType.DIGEST) {
+			if (server.isAuthNeeded()) {
+				if (server.getAuthType() == AuthType.BASIC)
+					request.setHeader("Authorization", "Basic " + Base64.encodeToString((server.getAuthLogin() + ":" + server.getAuthPassword()).getBytes(), Base64.NO_WRAP));
+				else if (server.getAuthType() == AuthType.DIGEST) {
 					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-					String userName = s.getAuthLogin();
-					String password = s.getAuthPassword();
+					String userName = server.getAuthLogin();
+					String password = server.getAuthPassword();
 					String realmName = "";
 					String nonce = "";
 					String algorithm = "MD5";
@@ -708,10 +707,10 @@ public class MuninFoo {
 					
 					cnonce = DigestUtils.newCnonce();
 					// Parser le header
-					realmName = DigestUtils.match(s.getAuthString(), "realm");
-					nonce = DigestUtils.match(s.getAuthString(), "nonce");
-					opaque = DigestUtils.match(s.getAuthString(), "opaque");
-					qop = DigestUtils.match(s.getAuthString(), "qop");
+					realmName = DigestUtils.match(server.getAuthString(), "realm");
+					nonce = DigestUtils.match(server.getAuthString(), "nonce");
+					opaque = DigestUtils.match(server.getAuthString(), "opaque");
+					qop = DigestUtils.match(server.getAuthString(), "qop");
 					
 					String a1 = DigestUtils.md5Hex(userName + ":" + realmName + ":" + password);
 					String a2 = DigestUtils.md5Hex(methodName + ":" + uri);
@@ -753,8 +752,8 @@ public class MuninFoo {
 				b = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 			} else {
 				if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried && response.getHeaders("WWW-Authenticate").length > 0) {
-					s.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
-					return grabBitmap(s, url, true);
+					server.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
+					return grabBitmap(server, url, true);
 				} else
 					throw new IOException("Download failed for URL " + url + " HTTP response code "
 							+ statusCode + " - " + statusLine.getReasonPhrase());

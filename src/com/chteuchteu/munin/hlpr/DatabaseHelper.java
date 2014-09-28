@@ -19,12 +19,13 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
+import com.chteuchteu.munin.obj.MuninServer.HDGraphs;
 import com.chteuchteu.munin.obj.Widget;
 import com.crashlytics.android.Crashlytics;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 	private static final String DATABASE_NAME = "muninForAndroid2.db";
 	
 	// Table names
@@ -53,6 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_MUNINSERVERS_AUTHTYPE = "authType";
 	private static final String KEY_MUNINSERVERS_AUTHSTRING = "authString";
 	private static final String KEY_MUNINSERVERS_MASTER = "master";
+	private static final String KEY_MUNINSERVERS_HDGRAPHS = "hdGraphs";
 	
 	private static final String KEY_MUNINPLUGINS_NAME = "name";
 	private static final String KEY_MUNINPLUGINS_FANCYNAME = "fancyName";
@@ -96,7 +98,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_MUNINSERVERS_POSITION + " INTEGER,"
 			+ KEY_MUNINSERVERS_AUTHTYPE + " INTEGER,"
 			+ KEY_MUNINSERVERS_AUTHSTRING + " TEXT,"
-			+ KEY_MUNINSERVERS_MASTER + " INTEGER)";
+			+ KEY_MUNINSERVERS_MASTER + " INTEGER,"
+			+ KEY_MUNINSERVERS_HDGRAPHS + " TEXT)";
 	
 	private static final String CREATE_TABLE_MUNINPLUGINS = "CREATE TABLE " + TABLE_MUNINPLUGINS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
@@ -165,6 +168,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_MASTER + " INTEGER");
 			db.execSQL("ALTER TABLE " + TABLE_WIDGETS + " ADD COLUMN " + KEY_WIDGETS_HIDESERVERNAME + " INTEGER");
 		}
+		if (oldVersion < 5) { // From 4 to 5
+			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_HDGRAPHS + " TEXT");
+		}
 	}
 	
 	private void close(Cursor c, SQLiteDatabase db) {
@@ -206,6 +212,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			values.put(KEY_MUNINSERVERS_MASTER, s.master.getId());
 		else
 			values.put(KEY_MUNINSERVERS_MASTER, -1);
+		values.put(KEY_MUNINSERVERS_HDGRAPHS, s.getHDGraphs().getVal());
 		
 		long id = db.insert(TABLE_MUNINSERVERS, null, values);
 		s.setId(id);
@@ -361,6 +368,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_AUTHTYPE, s.getAuthType().getVal());
 		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
 		values.put(KEY_MUNINSERVERS_MASTER, s.master.getId());
+		values.put(KEY_MUNINSERVERS_HDGRAPHS, s.getHDGraphs().getVal());
 		
 		int nbRows = db.update(TABLE_MUNINSERVERS, values, KEY_ID + " = ?", new String[] { String.valueOf(s.getId()) });
 		close(null, db);
@@ -476,6 +484,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 					s.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_MASTER)), currentMasters));
 					s.setPluginsList(getPlugins(s));
+					s.setHDGraphs(HDGraphs.get(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHS))));
 					s.isPersistant = true;
 					l.add(s);
 				} while (c.moveToNext());
@@ -559,6 +568,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
 			s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 			s.setPluginsList(getPlugins(s));
+			s.setHDGraphs(HDGraphs.get(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHS))));
 			s.isPersistant = true;
 			close(c, db);
 			return s;

@@ -33,6 +33,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -64,6 +66,7 @@ import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninServer.HDGraphs;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
@@ -91,6 +94,10 @@ public class Activity_GraphView extends Activity {
 	
 	private Handler		mHandler;
 	private Runnable		mHandlerTask;
+	
+	// If the Adapter_GraphView:getView method should
+	// load the graphs
+	public static boolean	loadGraphs = false;
 	
 	private static int currentlyDownloading = 0;
 	
@@ -250,6 +257,66 @@ public class Activity_GraphView extends Activity {
 				}
 			};
 			mHandlerTask.run();
+		}
+		
+		switch (muninFoo.currentServer.getHDGraphs()) {
+			case AUTO_DETECT:
+				new DynaZoomDetector(muninFoo.currentServer).execute();
+				break;
+			case FALSE:
+				// Load as before
+				loadGraphs = true;
+				actionRefresh();
+				break;
+			case TRUE:
+				// Attach a ViewTreeObserver. This is needed since
+				// the ImageView dimensions aren't known right now.
+				ViewTreeObserver vtObserver = viewFlow.getViewTreeObserver();
+				if (vtObserver.isAlive()) {
+					vtObserver.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+						@Override
+						public void onGlobalLayout() {
+							viewFlow.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+							// Now we have the dimensions.
+							loadGraphs = true;
+							actionRefresh();
+						}
+					});
+				}
+				break;
+		}
+	}
+	
+	public class DynaZoomDetector extends AsyncTask<Void, Integer, Void> {
+		private MuninServer server;
+		private boolean dynazoomAvailable;
+		
+		public DynaZoomDetector (MuninServer server) {
+			super();
+			this.server = server;
+			this.dynazoomAvailable = false;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			currentlyDownloading_begin();
+		}
+		
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			dynazoomAvailable = server.isDynazoomAvailable();
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			currentlyDownloading_finished();
+			
+			server.setHDGraphs(HDGraphs.get(dynazoomAvailable));
+			muninFoo.sqlite.dbHlpr.saveMuninServer(server);
+			loadGraphs = true;
+			actionRefresh();
 		}
 	}
 	

@@ -36,6 +36,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
@@ -307,5 +308,27 @@ public final class Util {
 		}
 		
 		return ret;
+	}
+	
+	public static final class HDGraphs {
+		public static float getScreenDensity(Context context) {
+			return context.getResources().getDisplayMetrics().density;
+		}
+		
+		public static int[] getBestImageDimensions(ImageView imageView, Context context) {
+			int[] res = new int[2];
+			
+			float screenDensity = getScreenDensity(context);
+			if (screenDensity < 1)
+				screenDensity = 1;
+			
+			int dimens_x = imageView.getMeasuredWidth();
+			int dimens_y = imageView.getMeasuredHeight();
+			
+			res[0] = (int) (dimens_x/screenDensity);
+			res[1] = (int) (dimens_y/screenDensity);
+			
+			return res;
+		}
 	}
 }
