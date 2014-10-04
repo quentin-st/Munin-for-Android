@@ -33,7 +33,6 @@ import com.chteuchteu.munin.ui.Activity_Notifications;
 import com.chteuchteu.munin.ui.Activity_PluginSelection;
 import com.chteuchteu.munin.ui.Activity_Servers;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.actionbar.ActionBarSlideIcon;
 
 
 public class DrawerHelper {
@@ -145,8 +144,9 @@ public class DrawerHelper {
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		//sm.attachToActivity(a, SlidingMenu.SLIDING_WINDOW);
 		sm.attachToActivity(a, SlidingMenu.SLIDING_CONTENT);
-		if (Util.deviceHasBackKey(c));
-		sm.setActionBarSlideIcon(new ActionBarSlideIcon(a, R.drawable.ic_navigation_drawer, R.string.text63_1, R.string.text63_2));
+		
+		//sm.setActionBarSlideIcon(new ActionBarSlideIcon(a, R.drawable.ic_navigation_drawer, R.string.text63_1, R.string.text63_2));
+		a.getActionBar().setDisplayHomeAsUpEnabled(false);
 		
 		sm.setMenu(R.layout.drawer);
 		
