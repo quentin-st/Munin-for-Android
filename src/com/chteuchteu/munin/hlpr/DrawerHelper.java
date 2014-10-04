@@ -310,12 +310,11 @@ public class DrawerHelper {
 		for (MuninMaster master : m.masters) {
 			for (final MuninServer s : master.getOrderedChildren()) {
 				View v = vi.inflate(R.layout.drawer_subbutton, null);
-				LinearLayout l = (LinearLayout)v.findViewById(R.id.button_container);
 				TextView b = (TextView)v.findViewById(R.id.button);
 				b.setText(s.getName());
 				
 				if (n == Activity_AddServer_Edit && s.equalsApprox(m.currentServer)) {
-					l.setPadding(4, 0, 0, 0);
+					b.setBackgroundResource(R.drawable.drawer_selectedsubbutton);
 					b.setTextColor(c.getResources().getColor(R.color.cffffff));
 				}
 				

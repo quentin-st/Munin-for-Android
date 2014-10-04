@@ -188,13 +188,6 @@
 			</LinearLayout>
 
 			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="#474A53"
-				android:orientation="vertical"
-				android:visibility="gone" />
-
-			<LinearLayout
 				android:id="@+id/drawer_button_labels_ll"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -297,6 +290,7 @@
 				android:id="@+id/drawer_scrollviewServers"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:background="@color/c2A2A30"
 				android:orientation="vertical"
 				android:visibility="gone" >
 			</LinearLayout>
