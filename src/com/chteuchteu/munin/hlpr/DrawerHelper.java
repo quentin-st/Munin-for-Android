@@ -1,5 +1,8 @@
 package com.chteuchteu.munin.hlpr;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.taptwo.android.widget.ViewFlow;
 
 import android.annotation.SuppressLint;
@@ -7,13 +10,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -21,9 +33,12 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.SearchResult;
+import com.chteuchteu.munin.obj.SearchResult.SearchResultType;
 import com.chteuchteu.munin.ui.Activity_AddServer;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
@@ -61,6 +76,10 @@ public class DrawerHelper {
 	private MuninFoo m;
 	private int n;
 	private SlidingMenu sm;
+	private EditText search;
+	private ListView search_results;
+	private SearchAdapter search_results_adapter;
+	private ArrayList<SearchResult> search_results_array;
 	
 	// GraphView
 	private ViewFlow vf;
@@ -245,6 +264,85 @@ public class DrawerHelper {
 		}
 		
 		Util.Fonts.setFont(c, (ViewGroup) a.findViewById(R.id.drawer_scrollview), CustomFont.RobotoCondensed_Regular);
+		
+		search = (EditText) a.findViewById(R.id.drawer_search);
+		search_results = (ListView) a.findViewById(R.id.drawer_search_results);
+		search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH)
+					return true;
+				return false;
+			}
+		});
+		search.addTextChangedListener(new TextWatcher() {
+			@SuppressLint("DefaultLocale")
+			@Override
+			public void afterTextChanged(Editable s) {
+				String search = s.toString().toLowerCase();
+				
+				if (search.length() == 0) {
+					a.findViewById(R.id.drawer_scrollview).setVisibility(View.VISIBLE);
+					a.findViewById(R.id.drawer_search_results).setVisibility(View.GONE);
+					return;
+				} else {
+					a.findViewById(R.id.drawer_scrollview).setVisibility(View.GONE);
+					a.findViewById(R.id.drawer_search_results).setVisibility(View.VISIBLE);
+				}
+				
+				if (search_results_adapter != null) {
+					search_results_array.clear();
+					search_results_adapter.notifyDataSetChanged();
+				} else {
+					search_results_array = new ArrayList<SearchResult>();
+					search_results_adapter = new SearchAdapter(a, search_results_array);
+					search_results.setAdapter(search_results_adapter);
+				}
+				
+				// Search in plugins and servers
+				for (MuninServer server : MuninFoo.getInstance().getServers()) {
+					String serverName = server.getName().toLowerCase();
+					String serverUrl = server.getServerUrl().toLowerCase();
+					
+					if (serverName.contains(search) || serverUrl.contains(search))
+						search_results_array.add(new SearchResult(SearchResultType.SERVER, server, c));
+					
+					
+					for (MuninPlugin plugin : server.getPlugins()) {
+						if (plugin.getName().toLowerCase().contains(search)
+								|| plugin.getFancyName().toLowerCase().contains(search))
+							search_results_array.add(new SearchResult(SearchResultType.PLUGIN, plugin, c));
+					}
+				}
+				
+				// Search in grids
+				List<String> grids = MuninFoo.getInstance().sqlite.dbHlpr.getGridsNames();
+				for (String grid : grids) {
+					if (grid.toLowerCase().contains(search))
+						search_results_array.add(new SearchResult(SearchResultType.GRID, grid, c));
+				}
+				
+				// Search in labels
+				for (Label label : MuninFoo.getInstance().labels) {
+					if (label.getName().toLowerCase().contains(search))
+						search_results_array.add(new SearchResult(SearchResultType.LABEL, label, c));
+				}
+				
+				search_results_adapter.notifyDataSetChanged();
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) { }
+		});
+		search_results.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
+				SearchResult searchResult = (SearchResult) search_results_array.get(position);
+				searchResult.onClick(a);
+			}
+		});
 	}
 	
 	public void closeDrawerIfOpened() {
@@ -305,6 +403,7 @@ public class DrawerHelper {
 	
 	private void initServersList() {
 		a.findViewById(R.id.drawer_scrollviewServers).setVisibility(View.VISIBLE);
+		a.findViewById(R.id.drawer_button_notifications_border1).setVisibility(View.VISIBLE);
 		LayoutInflater vi = (LayoutInflater) a.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		for (MuninMaster master : m.masters) {
@@ -404,6 +503,41 @@ public class DrawerHelper {
 			View insertPoint = a.findViewById(R.id.drawer_containerPlugins);
 			((ViewGroup) insertPoint).addView(v);
 			pos++;
+		}
+	}
+	
+	public class SearchAdapter extends BaseAdapter {
+		private ArrayList<SearchResult> searchArrayList;
+		private Context context;
+		private LayoutInflater mInflater;
+		
+		public SearchAdapter(Context context, ArrayList<SearchResult> results) {
+			this.searchArrayList = results;
+			this.mInflater = LayoutInflater.from(context);
+			this.context = context;
+		}
+		
+		public int getCount() { return this.searchArrayList.size(); }
+		public Object getItem(int position) { return this.searchArrayList.get(position); }
+		public long getItemId(int position) { return position; }
+		
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if (convertView == null)
+				convertView = mInflater.inflate(R.layout.twolineslist, null);
+			
+			TextView ed_line_a = (TextView) convertView.findViewById(R.id.line_a);
+			ed_line_a.setText(searchArrayList.get(position).getLine1());
+			String line_b = searchArrayList.get(position).getLine2();
+			TextView ed_line_b = ((TextView) convertView.findViewById(R.id.line_b));
+			if (line_b != null && line_b.equals(""))
+				ed_line_b.setVisibility(View.GONE);
+			else
+				ed_line_b.setText(line_b);
+			
+			Util.Fonts.setFont(context, ed_line_a, CustomFont.RobotoCondensed_Regular);
+			Util.Fonts.setFont(context, ed_line_b, CustomFont.RobotoCondensed_Regular);
+			
+			return convertView;
 		}
 	}
 }

@@ -201,4 +201,18 @@ public class MuninPlugin {
 			return true;
 		return false;
 	}
+	
+	public int getIndex() {
+		if (this.installedOn == null)
+			return -1;
+		
+		int i=0;
+		for (MuninPlugin plugin : this.installedOn.getPlugins()) {
+			if (plugin.equals(this))
+				return i;
+			i++;
+		}
+		
+		return -1;
+	}
 }

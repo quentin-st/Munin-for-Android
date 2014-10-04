@@ -2,19 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:background="#34353C"
 	android:orientation="vertical" >
+
+	<!-- Search -->
 
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="3dp"
-		android:background="#145F9D" />
+		android:layout_height="wrap_content"
+		android:background="#1184C3"
+		android:focusableInTouchMode="true"
+		android:orientation="vertical"
+		android:paddingBottom="5dp"
+		android:paddingLeft="6dp"
+		android:paddingRight="6dp"
+		android:paddingTop="7dp" >
+
+		<EditText
+			android:id="@+id/drawer_search"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/drawer_search_background"
+			android:drawableLeft="@drawable/drawer_search"
+			android:hint="Search..."
+			android:imeOptions="actionSearch"
+			android:inputType="text|textNoSuggestions"
+			android:paddingBottom="2dp"
+			android:paddingLeft="5dp"
+			android:paddingRight="5dp"
+			android:paddingTop="2dp"
+			android:textColor="#eeeeee"
+			android:textColorHint="#aaeeeeee" />
+	</LinearLayout>
+
+	<ListView
+		android:id="@+id/drawer_search_results"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" />
 
 	<ScrollView
 		android:id="@+id/drawer_scrollview"
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="1"
-		android:background="#34353C" >
+		android:layout_height="match_parent" >
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -302,6 +331,14 @@
 				android:background="#2BA1E4"
 				android:orientation="vertical"
 				android:paddingLeft="0dp" >
+
+				<LinearLayout
+					android:id="@+id/drawer_button_notifications_border1"
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="#474A53"
+					android:orientation="vertical"
+					android:visibility="gone" />
 
 				<LinearLayout
 					android:id="@+id/drawer_notifications_btn"

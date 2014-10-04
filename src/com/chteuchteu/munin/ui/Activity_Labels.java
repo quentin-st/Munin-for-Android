@@ -79,7 +79,7 @@ public class Activity_Labels extends ListActivity {
 					Intent intent = new Intent(Activity_Labels.this, Activity_LabelsPluginSelection.class);
 					intent.putExtra("label", label.getText().toString());
 					startActivity(intent);
-					overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
+					Util.setTransition(c, TransitionStyle.DEEPER);
 				}
 			});
 		}

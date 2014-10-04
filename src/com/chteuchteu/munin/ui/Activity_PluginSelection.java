@@ -303,7 +303,8 @@ public class Activity_PluginSelection extends ListActivity {
 					
 					pluginsFilter = new MuninPlugin[pluginsList.size()];
 					for (int i=0; i<pluginsList.size(); i++) {
-						if (pluginsList.get(i).getFancyName().toLowerCase(Locale.ENGLISH).contains(search.toLowerCase(Locale.ENGLISH)) || pluginsList.get(i).getName().toLowerCase(Locale.ENGLISH).contains(search.toLowerCase(Locale.ENGLISH)))
+						if (pluginsList.get(i).getFancyName().toLowerCase(Locale.ENGLISH).contains(search.toLowerCase(Locale.ENGLISH))
+								|| pluginsList.get(i).getName().toLowerCase(Locale.ENGLISH).contains(search.toLowerCase(Locale.ENGLISH)))
 							pluginsFilter[i] = pluginsList.get(i);
 					}
 					

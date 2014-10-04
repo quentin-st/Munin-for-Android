@@ -99,9 +99,10 @@ public class Activity_LabelsPluginSelection extends Activity {
 					new String[] { "title", "caption" }, new int[] { R.id.line_a, R.id.line_b }));
 		}
 		
-		((ListView)findViewById(R.id.labels_listview)).setAdapter(adapter);
+		ListView labels_listView = (ListView) findViewById(R.id.labels_listview);
 		
-		((ListView)findViewById(R.id.labels_listview)).setOnItemClickListener(new OnItemClickListener() {
+		labels_listView.setAdapter(adapter);
+		labels_listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 				//TextView line_a = (TextView) view.findViewById(R.id.line_a);
 				//TextView line_b = (TextView) view.findViewById(R.id.line_b);
