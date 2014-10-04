@@ -74,6 +74,7 @@
 				android:id="@+id/drawer_containerPlugins"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:background="@color/c2A2A30"
 				android:minHeight="100dp"
 				android:orientation="vertical"
 				android:visibility="gone" >

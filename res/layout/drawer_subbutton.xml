@@ -3,13 +3,13 @@
 	android:id="@+id/button_container"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="#2BA1E4"
 	android:orientation="vertical" >
 
 	<TextView
 		android:id="@+id/button"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginLeft="20dp"
 		android:background="@drawable/drawer_dark_subbutton"
 		android:gravity="left"
 		android:paddingBottom="10dp"
@@ -21,10 +21,5 @@
 		android:shadowRadius="2"
 		android:textColor="#bbbbbb"
 		android:textSize="15sp" />
-
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="1dp"
-		android:background="#33343B" />
 
 </LinearLayout>

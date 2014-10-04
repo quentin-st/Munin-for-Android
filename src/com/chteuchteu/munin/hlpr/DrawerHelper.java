@@ -358,17 +358,16 @@ public class DrawerHelper {
 		a.findViewById(R.id.drawer_containerPlugins).setVisibility(View.VISIBLE);
 		LayoutInflater vi = (LayoutInflater) a.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
+		int vfpos = vf.getSelectedItemPosition();
 		int pos = 0;
 		for (final MuninPlugin mp : m.currentServer.getPlugins()) {
 			View v = vi.inflate(R.layout.drawer_subbutton, null);
-			LinearLayout l = (LinearLayout)v.findViewById(R.id.button_container);
 			final TextView b = (TextView)v.findViewById(R.id.button);
 			b.setText(mp.getFancyName());
 			
-			int vfpos = vf.getSelectedItemPosition();
 			if (vfpos == pos) {
 				final int position = pos;
-				l.setPadding(4, 0, 0, 0);
+				b.setBackgroundResource(R.drawable.drawer_selectedsubbutton);
 				b.setTextColor(c.getResources().getColor(R.color.cffffff));
 				// setScrollY
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {

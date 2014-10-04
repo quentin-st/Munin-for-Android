@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="c34353C">#34353C</color>
-    <color name="c26262A">#26262A</color>
-    <color name="c212125">#212125</color>
-    <color name="c2A2A30">#2A2A30</color>
-    
-    <color name="cbbbbbb">#bbbbbb</color>
-    <color name="cdddddd">#dddddd</color>
-    <color name="cffffff">#ffffff</color>
-    
-    <!-- PrimaryColorDark -->
-    <color name="statusBarColor">#1184C3</color>
-    <color name="actionBarColor">#12A1E3</color>
+
+	<color name="c34353C">#34353C</color>
+	<color name="c26262A">#26262A</color>
+	<color name="c212125">#212125</color>
+	<color name="c2A2A30">#2A2A30</color>
+	<color name="c55FFFFFF">#55FFFFFF</color>
+	<color name="c77FFFFFF">#77FFFFFF</color>
+	<color name="cbbbbbb">#bbbbbb</color>
+	<color name="cdddddd">#dddddd</color>
+	<color name="cffffff">#ffffff</color>
+
+	<!-- PrimaryColorDark -->
+	<color name="statusBarColor">#1184C3</color>
+	<color name="actionBarColor">#12A1E3</color>
+
 </resources>
