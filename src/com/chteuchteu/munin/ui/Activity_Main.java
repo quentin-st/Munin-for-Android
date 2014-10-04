@@ -57,7 +57,7 @@ public class Activity_Main extends Activity {
 			setContentView(R.layout.main_clear);
 		else
 			setContentView(R.layout.main);
-		getActionBar().setDisplayHomeAsUpEnabled(false);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setTitle("");
 		
 		Util.UI.applySwag(this);

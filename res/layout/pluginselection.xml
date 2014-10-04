@@ -10,12 +10,13 @@
 		android:id="@+id/ll_filter"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="#dedfde"
+		android:background="#12A1E3"
 		android:orientation="vertical"
 		android:visibility="gone" >
 
 		<EditText
 			android:id="@+id/filter"
+			style="@style/LightEditText"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="4dp"
@@ -23,28 +24,15 @@
 			android:layout_marginRight="8dp"
 			android:layout_marginTop="4dp"
 			android:ems="10"
-			android:inputType="text" />
-
-		<LinearLayout
-			android:id="@+id/filterSep"
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:background="#a5a6a5"
-			android:orientation="horizontal" />
+			android:inputType="text"
+			android:textColor="#fff" />
 	</LinearLayout>
 
-	<RelativeLayout
+	<ListView
+		android:id="@+id/android:list"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical" >
-
-		<ListView
-			android:id="@+id/android:list"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
-			android:paddingLeft="@dimen/listview_horizontal_margin"
-			android:paddingRight="@dimen/listview_horizontal_margin" />
-	</RelativeLayout>
+		android:paddingLeft="@dimen/listview_horizontal_margin"
+		android:paddingRight="@dimen/listview_horizontal_margin" />
 
 </LinearLayout>

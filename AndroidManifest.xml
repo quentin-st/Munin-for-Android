@@ -52,14 +52,16 @@
 		<activity
 			android:name="com.chteuchteu.munin.ui.Activity_GraphView"
 			android:configChanges="orientation|screenSize|keyboardHidden"
-			android:theme="@style/GraphViewTheme" />
+			android:theme="@style/NoActionBarShadow" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Grid" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GridSelection" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Labels" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_LabelsPluginSelection" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Main" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Notifications" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_PluginSelection" />
+		<activity
+			android:name="com.chteuchteu.munin.ui.Activity_PluginSelection"
+			android:theme="@style/NoActionBarShadow" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_ServersEdit" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Servers" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Settings" />
