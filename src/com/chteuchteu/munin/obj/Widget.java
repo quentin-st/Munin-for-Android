@@ -1,14 +1,13 @@
 package com.chteuchteu.munin.obj;
 
 
-
 public class Widget {
 	private long id;
 	private String period;
 	private boolean wifiOnly;
 	private boolean hideServerName;
-	private MuninPlugin	plugin;
-	private int	 widgetId;
+	private MuninPlugin plugin;
+	private int widgetId;
 	public boolean isPersistant;
 	
 	public Widget() {

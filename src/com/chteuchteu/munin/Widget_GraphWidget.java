@@ -97,7 +97,7 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 				
 				if (!widget.isWifiOnly() || forceUpdate) {
 					// Launching Asyntask
-					ApplyBitmap task = new ApplyBitmap(widget.getPlugin().getInstalledOn(), widget.getPlugin().getImgUrl(widget.getPeriod()), views, awm, appWidgetId);
+					ApplyBitmap task = new ApplyBitmap(widget, views, awm, appWidgetId);
 					task.execute();
 				} else {
 					// Automatic update -> let's check if on wifi or data
@@ -158,20 +158,22 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 		super.onEnabled(context);
 	}
 	
-	static class ApplyBitmap extends AsyncTask<Void, Integer, Void> {
-		private Bitmap	bm;
+	private static class ApplyBitmap extends AsyncTask<Void, Integer, Void> {
+		private Bitmap bm;
 		
-		private MuninServer	serv;
-		private String	url;
+		private MuninServer serv;
+		private String url;
+		private Widget widget;
 		
-		private RemoteViews	views;
+		private RemoteViews views;
 		private AppWidgetManager awm;
-		private	int		widgetId;
+		private int widgetId;
 		
-		public ApplyBitmap(MuninServer s, String ad, RemoteViews v, AppWidgetManager a, int w) {
+		public ApplyBitmap(Widget widget, RemoteViews v, AppWidgetManager a, int w) {
 			super();
-			this.serv = s;
-			this.url = ad;
+			this.serv = widget.getPlugin().getInstalledOn();
+			this.url = widget.getPlugin().getImgUrl(widget.getPeriod());
+			this.widget = widget;
 			this.views = v;
 			this.awm = a;
 			this.widgetId = w;
@@ -189,6 +191,8 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 		protected Void doInBackground(Void... arg0) {
 			bm = serv.getPlugin(0).getGraph(url);
 			bm = Util.removeBitmapBorder(bm);
+			if (widget.getHideServerName())
+				bm = Util.dropShadow(bm);
 			return null;
 		}
 		
