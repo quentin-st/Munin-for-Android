@@ -117,7 +117,7 @@ public class GridItem {
 			fs.startAnimation(a);
 			
 			// Download HD graph if possible
-			if (grid.currentlyOpenedPlugin.getInstalledOn().getHDGraphs() == HDGraphs.TRUE) {
+			if (grid.currentlyOpenedPlugin.getInstalledOn().getHDGraphs() == HDGraphs.TRUE && !Util.getPref(c, "hdGraphs").equals("false")) {
 				if (this.hdGraphDownloader != null && this.hdGraphDownloader.isDownloading())
 					this.hdGraphDownloader.killDownload();
 				

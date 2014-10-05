@@ -53,7 +53,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 			ImageView imageView = (ImageView) convertView.findViewById(R.id.tiv);
 			
 			if (Activity_GraphView.bitmaps[position] == null)
-				new BitmapFetcher(imageView, position).execute();
+				new BitmapFetcher(imageView, position, context).execute();
 			else
 				imageView.setImageBitmap(Activity_GraphView.bitmaps[position]);
 		}
@@ -64,11 +64,13 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 		private ImageView imageView;
 		private int position;
+		private Context context;
 		
-		public BitmapFetcher (ImageView iv, int position) {
+		public BitmapFetcher (ImageView iv, int position, Context context) {
 			super();
 			this.imageView = iv;
 			this.position = position;
+			this.context = context;
 		}
 		
 		@Override
@@ -83,7 +85,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		protected Void doInBackground(Void... arg0) {
 			if (Activity_GraphView.bitmaps[position] == null) {
 				String imgUrl = "";
-				if (muninFoo.currentServer.getHDGraphs() == HDGraphs.TRUE) {
+				if (muninFoo.currentServer.getHDGraphs() == HDGraphs.TRUE && !Util.getPref(context, "hdGraphs").equals("false")) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 					imgUrl = muninFoo.currentServer.getPlugin(position).getHDImgUrl(
 							Activity_GraphView.load_period, true, graphsDimensions[0], graphsDimensions[1]);

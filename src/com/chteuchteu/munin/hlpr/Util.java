@@ -213,23 +213,23 @@ public final class Util {
 		}
 	}
 	
-	public static String getPref(Context c, String key) {
-		return c.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
+	public static String getPref(Context context, String key) {
+		return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
 	}
 	
-	public static void setPref(Context c, String key, String value) {
+	public static void setPref(Context context, String key, String value) {
 		if (value.equals(""))
-			removePref(c, key);
+			removePref(context, key);
 		else {
-			SharedPreferences prefs = c.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
+			SharedPreferences prefs = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putString(key, value);
 			editor.commit();
 		}
 	}
 	
-	public static void removePref(Context c, String key) {
-		SharedPreferences prefs = c.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
+	public static void removePref(Context context, String key) {
+		SharedPreferences prefs = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.remove(key);
 		editor.commit();
