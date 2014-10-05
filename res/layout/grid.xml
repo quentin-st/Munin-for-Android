@@ -71,12 +71,7 @@
 		<ImageView
 			android:id="@+id/fullscreen_iv"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:layout_gravity="center_vertical|center_horizontal"
-			android:paddingBottom="10dp"
-			android:paddingLeft="10dp"
-			android:paddingRight="10dp"
-			android:paddingTop="40dp" />
+			android:layout_height="match_parent" />
 
 		<TextView
 			android:id="@+id/fullscreen_tv"

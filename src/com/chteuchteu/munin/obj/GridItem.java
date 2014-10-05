@@ -116,6 +116,17 @@ public class GridItem {
 			a.setDuration(300);
 			fs.startAnimation(a);
 			
+			
+			// Translation animation between origin imageview location and fullscreen location
+			// Set original imageview location
+			/*int[] originalImageLocation = new int[2];
+			iv.getLocationOnScreen(originalImageLocation);
+			originalImageLocation[1] -= (Util.getStatusBarHeight(c) + Util.getActionBarHeight(c));
+			
+			LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(iv.getWidth(), iv.getHeight());
+			lParams.setMargins(originalImageLocation[0], originalImageLocation[1], 0, 0);
+			fullscreenImageView.setLayoutParams(lParams);*/
+			
 			// Download HD graph if possible
 			if (grid.currentlyOpenedPlugin.getInstalledOn().getHDGraphs() == HDGraphs.TRUE && !Util.getPref(c, "hdGraphs").equals("false")) {
 				if (this.hdGraphDownloader != null && this.hdGraphDownloader.isDownloading())
@@ -156,7 +167,7 @@ public class GridItem {
 			String graphUrl = plugin.getHDImgUrl(period, true, dim[0], dim[1]);
 			bitmap = Util.dropShadow(
 					Util.removeBitmapBorder(MuninFoo.grabBitmap(plugin.getInstalledOn(), graphUrl))
-			);
+					);
 			
 			return null;
 		}

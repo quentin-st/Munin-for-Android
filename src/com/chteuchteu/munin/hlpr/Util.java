@@ -18,6 +18,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.BlurMaskFilter.Blur;
@@ -156,6 +157,14 @@ public final class Util {
 		if (resourceId > 0)
 			result = c.getResources().getDimensionPixelSize(resourceId);
 		return result;
+	}
+	
+	public static int getActionBarHeight(Context c) {
+		final TypedArray styledAttributes = c.getTheme().obtainStyledAttributes(
+				new int[] { android.R.attr.actionBarSize });
+		int height = (int) styledAttributes.getDimension(0, 0);
+		styledAttributes.recycle();
+		return height;
 	}
 	
 	public static boolean isOnline(Context c) {
