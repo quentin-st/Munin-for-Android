@@ -1,7 +1,10 @@
 package com.chteuchteu.munin.ui;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,8 +21,10 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,9 +81,7 @@ public class Activity_Grid extends Activity {
 		editing = false;
 		updating = false;
 		
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(getString(R.string.button_grid));
+		
 		
 		Util.UI.applySwag(this);
 		
@@ -96,7 +99,50 @@ public class Activity_Grid extends Activity {
 		currentPeriod = Util.getDefaultPeriod(this);
 		if (menu_period != null)
 			menu_period.setTitle(currentPeriod.getLabel(this));
+		
 		setupGrid();
+		
+		
+		// ActionBar spinner if needed
+		ActionBar actionBar = getActionBar();
+		final List<String> gridsNames = muninFoo.sqlite.dbHlpr.getGridsNames();
+		if (gridsNames.size() > 1) {
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+			actionBar.setDisplayShowTitleEnabled(false);
+			
+			// Get current index
+			int index = -1;
+			int i=0;
+			for (String gridName : gridsNames) {
+				if (gridName.equals(grid.name))
+					index = i;
+				i++;
+			}
+			final int currentSelectedIndex = index;
+			
+			SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(getActionBar().getThemedContext(),
+					android.R.layout.simple_spinner_dropdown_item, gridsNames);
+			
+			ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+				@Override
+				public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+					if (itemPosition != currentSelectedIndex) {
+						Intent intent = new Intent(Activity_Grid.this, Activity_Grid.class);
+						intent.putExtra("gridName", gridsNames.get(itemPosition));
+						startActivity(intent);
+						// Animation : RTL / LTR
+						if (itemPosition > currentSelectedIndex)
+							Util.setTransition(context, TransitionStyle.DEEPER);
+						else
+							Util.setTransition(context, TransitionStyle.SHALLOWER);
+					}
+					return false;
+				}
+			};
+			actionBar.setListNavigationCallbacks(spinnerAdapter, navigationListener);
+			if (currentSelectedIndex != -1)
+				actionBar.setSelectedNavigationItem(currentSelectedIndex);
+		}
 		
 		grid.dHelper = new GridDownloadHelper(grid);
 		grid.dHelper.init(3, currentPeriod);
