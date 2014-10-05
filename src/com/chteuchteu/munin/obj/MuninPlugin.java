@@ -183,7 +183,7 @@ public class MuninPlugin {
 			table.select("a").unwrap();
 			
 			return table.outerHtml();
-		} catch (Exception ex) { return null; }
+		} catch (Exception ex) { return ""; }
 	}
 	
 	public boolean equals(MuninPlugin p) {

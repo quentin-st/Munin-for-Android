@@ -835,35 +835,41 @@ public class Activity_GraphView extends Activity {
 			Util.UI.setLoading(false, activity);
 			
 			if (this.html != null) {
-				// Prepare HTML
-				String wrapper = getText(R.string.fieldsDescriptionWrapper).toString();
-				String wrappedHtml = wrapper.replace("INSERT_HERE", html);
-				
-				// Inflate and populate view
-				LayoutInflater inflater = getLayoutInflater();
-				View customView = inflater.inflate(R.layout.dialog_webview, null);
-				WebView webView = (WebView) customView.findViewById(R.id.webview);
-				webView.setVerticalScrollBarEnabled(true);
-				webView.getSettings().setDefaultTextEncodingName("utf-8");
-				webView.setBackgroundColor(0x00000000);
-				webView.loadDataWithBaseURL(null, wrappedHtml, "text/html", "utf-8", null);
-				webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-				webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-				webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-				
-				// Create alertdialog
-				AlertDialog dialog;
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setView(customView);
-				builder.setTitle(getText(R.string.fieldsDescription));
-				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.dismiss();
-					}
-				});
-				dialog = builder.create();
-				dialog.show();
+				if (!this.html.equals("")) {
+					// Prepare HTML
+					String wrapper = getText(R.string.fieldsDescriptionWrapper).toString();
+					String wrappedHtml = wrapper.replace("INSERT_HERE", html);
+					
+					// Inflate and populate view
+					LayoutInflater inflater = getLayoutInflater();
+					View customView = inflater.inflate(R.layout.dialog_webview, null);
+					WebView webView = (WebView) customView.findViewById(R.id.webview);
+					webView.setVerticalScrollBarEnabled(true);
+					webView.getSettings().setDefaultTextEncodingName("utf-8");
+					webView.setBackgroundColor(0x00000000);
+					webView.loadDataWithBaseURL(null, wrappedHtml, "text/html", "utf-8", null);
+					webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+					webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+					webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+					
+					// Create alertdialog
+					AlertDialog dialog;
+					AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+					builder.setView(customView);
+					builder.setTitle(getText(R.string.fieldsDescription));
+					builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.dismiss();
+						}
+					});
+					dialog = builder.create();
+					dialog.show();
+				} else {
+					Toast.makeText(context, getString(R.string.text81), Toast.LENGTH_SHORT).show();
+				}
+			} else {
+				Toast.makeText(context, getString(R.string.text09), Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

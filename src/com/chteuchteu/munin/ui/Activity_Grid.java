@@ -75,6 +75,7 @@ public class Activity_Grid extends Activity {
 		muninFoo.loadLanguage(this);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.grid);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		Crashlytics.start(this);
 		context = this;
 		
