@@ -5,7 +5,6 @@ import org.taptwo.android.widget.TitleProvider;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +89,6 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 					imgUrl = muninFoo.currentServer.getPlugin(position).getHDImgUrl(
 							Activity_GraphView.load_period, true, graphsDimensions[0], graphsDimensions[1]);
-					Log.v("", "imgurl = " + imgUrl);
 				} else
 					imgUrl = muninFoo.currentServer.getPlugin(position).getImgUrl(Activity_GraphView.load_period);
 				

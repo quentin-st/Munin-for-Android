@@ -368,8 +368,10 @@ public class DrawerHelper {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					if (event.getX() >= (search.getRight() - search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width()))
+					if (event.getX() >= (search.getRight() - search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
 						search.setText("");
+						Util.hideKeyboard(a, search);
+					}
 				}
 				
 				return false;

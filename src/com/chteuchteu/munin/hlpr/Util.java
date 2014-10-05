@@ -29,12 +29,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -332,9 +332,6 @@ public final class Util {
 			dimens_x = (int) (dimens_x/screenDensity);
 			dimens_y = (int) (dimens_y/screenDensity);
 			
-
-			Log.v("", "initial dimensions : " + dimens_x + ", " + dimens_y);
-			
 			// Limit ratio
 			if (dimens_y != 0) {
 				double minRatio = ((double)360) / 210;
@@ -345,10 +342,15 @@ public final class Util {
 					dimens_y = (int) (dimens_x/minRatio);
 				}
 			}
-			Log.v("", "Final dimensions : " + dimens_x + ", " + dimens_y);
+			
 			res[0] = dimens_x;
 			res[1] = dimens_y;
 			return res;
 		}
+	}
+	
+	public static void hideKeyboard(Activity activity, EditText editText) {
+		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
 }
