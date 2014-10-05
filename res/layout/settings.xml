@@ -22,13 +22,16 @@
 			android:layout_marginTop="10dp"
 			android:background="@drawable/card"
 			android:orientation="vertical"
-			android:padding="20dp" >
+			android:paddingBottom="20dp"
+			android:paddingLeft="20dp"
+			android:paddingRight="20dp"
+			android:paddingTop="10dp" >
 
 			<TextView
+				android:id="@+id/title1"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:gravity="center"
 				android:text="@string/settings_titlelabel_app"
 				android:textAppearance="?android:attr/textAppearanceLarge"
 				android:textColor="#666666"
@@ -37,6 +40,7 @@
 			<!-- App language -->
 
 			<TextView
+				android:id="@+id/title3"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="10dp"
@@ -53,6 +57,7 @@
 			<!-- Splash screen -->
 
 			<TextView
+				android:id="@+id/title4"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="15dp"
@@ -72,6 +77,7 @@
 			<!-- Transitions -->
 
 			<TextView
+				android:id="@+id/title5"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="15dp"
@@ -91,7 +97,7 @@
 			<!-- Drawer -->
 
 			<TextView
-				android:id="@+id/switch_drawer_tv"
+				android:id="@+id/title6"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="15dp"
@@ -119,13 +125,16 @@
 			android:layout_marginTop="15dp"
 			android:background="@drawable/card"
 			android:orientation="vertical"
-			android:padding="20dp" >
+			android:paddingBottom="20dp"
+			android:paddingLeft="20dp"
+			android:paddingRight="20dp"
+			android:paddingTop="10dp" >
 
 			<TextView
+				android:id="@+id/title2"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
-				android:gravity="center"
 				android:text="@string/settings_titlelabel_graphs"
 				android:textAppearance="?android:attr/textAppearanceLarge"
 				android:textColor="#666666"
@@ -134,6 +143,7 @@
 			<!-- Screen always on -->
 
 			<TextView
+				android:id="@+id/title7"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="15dp"
@@ -153,6 +163,7 @@
 			<!-- Auto refresh -->
 
 			<TextView
+				android:id="@+id/title8"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="15dp"
@@ -172,6 +183,7 @@
 			<!-- Graph zoom -->
 
 			<TextView
+				android:id="@+id/title9"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="15dp"
@@ -188,9 +200,30 @@
 				android:gravity="right"
 				android:orientation="vertical" />
 
+			<!-- HD Graphs -->
+
+			<TextView
+				android:id="@+id/title10"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="15dp"
+				android:text="@string/settings_hdgraphs"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:textStyle="bold" />
+
+			<LinearLayout
+				android:id="@+id/checkable_hdgraphs"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="13dp"
+				android:layout_marginTop="8dp"
+				android:gravity="right"
+				android:orientation="vertical" />
+
 			<!-- Graph default scale -->
 
 			<TextView
+				android:id="@+id/title11"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="10dp"
@@ -207,6 +240,7 @@
 			<!-- Graphs screen orientation -->
 
 			<TextView
+				android:id="@+id/title12"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="15dp"

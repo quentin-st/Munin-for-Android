@@ -25,8 +25,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -83,7 +81,7 @@ public class Activity_AddServer extends Activity {
 	private boolean 	popupIsShown;
 	
 	private boolean 	launching;
-	private String 		contextServerUrl;	// Si modification de serveur: URL du serveur a modifier
+	private String 	contextServerUrl;	// Si modification de serveur: URL du serveur a modifier
 	private MuninServer settingsServer;
 	
 	// Algo
@@ -157,21 +155,10 @@ public class Activity_AddServer extends Activity {
 		cb_auth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (isChecked && ll_auth.getVisibility() == View.GONE) {
+				if (isChecked && ll_auth.getVisibility() == View.GONE)
 					ll_auth.setVisibility(View.VISIBLE);
-					AlphaAnimation a2 = new AlphaAnimation(0.0f, 1.0f);
-					a2.setDuration(500);
-					a2.setFillAfter(true);
-					a2.setInterpolator(new AccelerateDecelerateInterpolator());
-					ll_auth.startAnimation(a2);
-				} else if (!isChecked && ll_auth.getVisibility() == View.VISIBLE) {
-					AlphaAnimation a2 = new AlphaAnimation(1.0f, 0.0f);
-					a2.setDuration(500);
-					a2.setFillAfter(true);
-					a2.setInterpolator(new AccelerateDecelerateInterpolator());
-					ll_auth.startAnimation(a2);
+				else if (!isChecked && ll_auth.getVisibility() == View.VISIBLE)
 					ll_auth.setVisibility(View.GONE);
-				}
 			}
 		});
 		

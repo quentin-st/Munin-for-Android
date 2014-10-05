@@ -80,7 +80,10 @@ public final class Util {
 	public static final class Fonts {
 		/* ENUM Custom Fonts */
 		public enum CustomFont {
-			RobotoCondensed_Regular("RobotoCondensed-Regular.ttf"), Roboto_Thin("Roboto-Thin.ttf");
+			RobotoCondensed_Regular("RobotoCondensed-Regular.ttf"),
+			RobotoCondensed_Bold("RobotoCondensed-Bold.ttf"),
+			Roboto_Thin("Roboto-Thin.ttf");
+			
 			final String file;
 			private CustomFont(String fileName) { this.file = fileName; }
 			public String getValue() { return this.file; }

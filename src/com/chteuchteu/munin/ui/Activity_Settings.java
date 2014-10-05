@@ -20,12 +20,14 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
@@ -41,6 +43,7 @@ public class Activity_Settings extends Activity {
 	private View		checkable_alwaysOn;
 	private View		checkable_autoRefresh;
 	private View		checkable_graphsZoom;
+	private View		checkable_hdGraphs;
 	
 	private MuninFoo 		muninFoo;
 	private DrawerHelper	dh;
@@ -79,6 +82,7 @@ public class Activity_Settings extends Activity {
 		checkable_alwaysOn = inflateCheckable((ViewGroup)findViewById(R.id.checkable_screenalwayson), getString(R.string.settings_screenalwayson_checkbox));
 		checkable_autoRefresh = inflateCheckable((ViewGroup)findViewById(R.id.checkable_autorefresh), getString(R.string.settings_autorefresh_checkbox));
 		checkable_graphsZoom = inflateCheckable((ViewGroup)findViewById(R.id.checkable_enablegraphszoom), getString(R.string.settings_enablegraphszoom));
+		checkable_hdGraphs = inflateCheckable((ViewGroup)findViewById(R.id.checkable_hdgraphs), getString(R.string.settings_hdgraphs_text));
 		
 		
 		// Spinner default period
@@ -109,6 +113,20 @@ public class Activity_Settings extends Activity {
 		ArrayAdapter<String> dataAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list3);
 		dataAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_orientation.setAdapter(dataAdapter3);
+		
+		// Set fonts
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title1), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title2), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title3), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title4), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title5), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title6), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title7), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title8), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title9), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title10), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title11), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title12), CustomFont.RobotoCondensed_Bold);
 	}
 	
 	public View inflateCheckable(ViewGroup container, String label) {
@@ -194,6 +212,11 @@ public class Activity_Settings extends Activity {
 			muninFoo.drawer = true;
 		}
 		
+		if (getCheckableValue(checkable_hdGraphs))
+			setPref("hdGraphs", "true");
+		else
+			setPref("hdGraphs", "false");
+		
 		// After saving -> go back to reality
 		Intent intent = new Intent(Activity_Settings.this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -265,6 +288,12 @@ public class Activity_Settings extends Activity {
 		// Graph zoom
 		if (getPref("graphsZoom").equals("true"))
 			setChecked(checkable_graphsZoom, true);
+		
+		// HD Graphs
+		if (getPref("hdGraphs").equals("false"))
+			setChecked(checkable_hdGraphs, false);
+		else
+			setChecked(checkable_hdGraphs, true);
 	}
 	@SuppressLint("NewApi")
 	@Override
@@ -355,6 +384,7 @@ public class Activity_Settings extends Activity {
 				setPref("screenAlwaysOn", "");
 				setPref("drawer", "true");
 				setPref("graphsZoom", "false");
+				setPref("hdGraphs", "true");
 				
 				
 				muninFoo.sqlite.dbHlpr.deleteWidgets();
