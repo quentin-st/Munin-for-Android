@@ -12,13 +12,12 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -277,6 +276,8 @@ public class Activity_Grid extends Activity {
 	}
 	
 	private void openGraph() {
+		if (grid.currentlyOpenedPlugin == null)
+			return;
 		grid.f.currentServer = grid.currentlyOpenedPlugin.getInstalledOn();
 		Intent i = new Intent(context, Activity_GraphView.class);
 		i.putExtra("plugin", grid.currentlyOpenedPlugin.getName());
@@ -312,30 +313,25 @@ public class Activity_Grid extends Activity {
 			case R.id.menu_delete:
 				delete();
 				return true;
-			case R.id.menu_period:
-				AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
-				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-						this, android.R.layout.simple_list_item_1);
-				arrayAdapter.add(getString(R.string.text47_1).toUpperCase());
-				arrayAdapter.add(getString(R.string.text47_2).toUpperCase());
-				arrayAdapter.add(getString(R.string.text47_3).toUpperCase());
-				arrayAdapter.add(getString(R.string.text47_4).toUpperCase());
-				
-				builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int position) {
-						
-						if (position == 0)			currentPeriod = Period.DAY;
-						else if (position == 1)		currentPeriod = Period.WEEK;
-						else if (position == 2)		currentPeriod = Period.MONTH;
-						else if (position == 3)		currentPeriod = Period.YEAR;
-						
-						menu_period.setTitle(currentPeriod.getLabel(context).toUpperCase());
-						
-						refresh();
-					}
-				});
-				builderSingle.show();
+			case R.id.period_day:
+				this.currentPeriod = Period.DAY;
+				menu_period.setTitle(currentPeriod.getLabel(context));
+				refresh();
+				return true;
+			case R.id.period_week:
+				this.currentPeriod = Period.WEEK;
+				menu_period.setTitle(currentPeriod.getLabel(context));
+				refresh();
+				return true;
+			case R.id.period_month:
+				this.currentPeriod = Period.MONTH;
+				menu_period.setTitle(currentPeriod.getLabel(context));
+				refresh();
+				return true;
+			case R.id.period_year:
+				this.currentPeriod = Period.YEAR;
+				menu_period.setTitle(currentPeriod.getLabel(context));
+				refresh();
 				return true;
 			case R.id.menu_open:
 				openGraph();

@@ -1,47 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-	
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
 	<item
 		android:id="@+id/menu_period"
-		android:showAsAction="always" />
+		android:showAsAction="always"
+		android:title="@string/text76">
+		<menu>
+			<item
+				android:id="@+id/period_day"
+				android:title="@string/text47.1"/>
+			<item
+				android:id="@+id/period_week"
+				android:title="@string/text47.2"/>
+			<item
+				android:id="@+id/period_month"
+				android:title="@string/text47.3"/>
+			<item
+				android:id="@+id/period_year"
+				android:title="@string/text47.4"/>
+		</menu>
+	</item>
 	<item
 		android:id="@+id/menu_labels"
 		android:icon="@drawable/collections_labels"
 		android:showAsAction="always"
-		android:title="@string/button_labels" />
+		android:title="@string/button_labels"/>
 	<item
 		android:id="@+id/menu_save"
 		android:icon="@drawable/content_save_dark"
 		android:showAsAction="withText"
-		android:title="@string/menu_graph_save" />
+		android:title="@string/menu_graph_save"/>
 	<item
 		android:id="@+id/menu_previous"
 		android:icon="@drawable/navigation_previous_item_dark"
 		android:showAsAction="always"
-		android:title="@string/menu_graph_previous" />
+		android:title="@string/menu_graph_previous"/>
 	<item
 		android:id="@+id/menu_next"
 		android:icon="@drawable/navigation_next_item_dark"
 		android:showAsAction="always"
-		android:title="@string/menu_graph_next" />
+		android:title="@string/menu_graph_next"/>
 	<item
 		android:id="@+id/menu_refresh"
 		android:icon="@drawable/navigation_refresh_dark"
 		android:showAsAction="withText"
-		android:title="@string/menu_graph_refresh" /><!-- Texte et icône: ifRoom|withText -->
+		android:title="@string/menu_graph_refresh"/> <!-- Texte et icône: ifRoom|withText -->
 	<item
 		android:id="@+id/menu_switchServer"
 		android:showAsAction="withText"
-		android:title="@string/menu_graph_switch" />
+		android:title="@string/menu_graph_switch"/>
 	<item
 		android:id="@+id/menu_openinbrowser"
 		android:showAsAction="withText"
 		android:title="@string/openInBrowser"
-		android:visible="false" />
+		android:visible="false"/>
 	<item
 		android:id="@+id/menu_fieldsDescription"
 		android:showAsAction="withText"
 		android:title="@string/fieldsDescription"
-		android:visible="false" />
-	
+		android:visible="false"/>
+
 </menu>

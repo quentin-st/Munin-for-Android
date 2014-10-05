@@ -397,6 +397,17 @@ public class Activity_GraphView extends Activity {
 		item_period.setTitle(load_period.getLabel(context));
 	}
 	
+	private void changePeriod(Period newPeriod) {
+		bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
+		
+		load_period = newPeriod;
+		
+		if (viewFlow != null) // Update Viewflow
+			viewFlow.setSelection(viewFlow.getSelectedItemPosition());
+		
+		item_period.setTitle(load_period.getLabel(context).toUpperCase());
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() != android.R.id.home && dh != null)
@@ -450,31 +461,17 @@ public class Activity_GraphView extends Activity {
 				startActivity(new Intent(Activity_GraphView.this, Activity_About.class));
 				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
-			case R.id.menu_period:
-				AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
-				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-						this, android.R.layout.simple_list_item_1);
-				arrayAdapter.add(getString(R.string.text47_1).toUpperCase());
-				arrayAdapter.add(getString(R.string.text47_2).toUpperCase());
-				arrayAdapter.add(getString(R.string.text47_3).toUpperCase());
-				arrayAdapter.add(getString(R.string.text47_4).toUpperCase());
-				
-				builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int position) {
-						bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
-						if (position == 0)			load_period = Period.DAY;
-						else if (position == 1)		load_period = Period.WEEK;
-						else if (position == 2)		load_period = Period.MONTH;
-						else if (position == 3)		load_period = Period.YEAR;
-						
-						if (viewFlow != null) // Update Viewflow
-							viewFlow.setSelection(viewFlow.getSelectedItemPosition());
-						
-						item_period.setTitle(load_period.getLabel(context).toUpperCase());
-					}
-				});
-				builderSingle.show();
+			case R.id.period_day:
+				changePeriod(Period.DAY);
+				return true;
+			case R.id.period_week:
+				changePeriod(Period.WEEK);
+				return true;
+			case R.id.period_month:
+				changePeriod(Period.MONTH);
+				return true;
+			case R.id.period_year:
+				changePeriod(Period.YEAR);
 				return true;
 			case R.id.menu_openinbrowser:
 				try {
