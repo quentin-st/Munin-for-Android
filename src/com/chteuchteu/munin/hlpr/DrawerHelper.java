@@ -14,8 +14,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -265,8 +267,18 @@ public class DrawerHelper {
 		
 		Util.Fonts.setFont(c, (ViewGroup) a.findViewById(R.id.drawer_scrollview), CustomFont.RobotoCondensed_Regular);
 		
+		// Init search
 		search = (EditText) a.findViewById(R.id.drawer_search);
 		search_results = (ListView) a.findViewById(R.id.drawer_search_results);
+		
+
+		// Cancel button
+		final int DRAWABLE_LEFT = 0;
+		final int DRAWABLE_TOP = 1;
+		final int DRAWABLE_RIGHT = 2;
+		final int DRAWABLE_BOTTOM = 3;
+		search.getCompoundDrawables()[DRAWABLE_RIGHT].setAlpha(0);
+		
 		search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -275,19 +287,22 @@ public class DrawerHelper {
 				return false;
 			}
 		});
+		final List<String> grids = MuninFoo.getInstance().sqlite.dbHlpr.getGridsNames();
 		search.addTextChangedListener(new TextWatcher() {
 			@SuppressLint("DefaultLocale")
 			@Override
 			public void afterTextChanged(Editable s) {
-				String search = s.toString().toLowerCase();
+				String string = s.toString().toLowerCase();
 				
-				if (search.length() == 0) {
+				if (string.length() == 0) {
 					a.findViewById(R.id.drawer_scrollview).setVisibility(View.VISIBLE);
 					a.findViewById(R.id.drawer_search_results).setVisibility(View.GONE);
+					search.getCompoundDrawables()[DRAWABLE_RIGHT].setAlpha(0);
 					return;
 				} else {
 					a.findViewById(R.id.drawer_scrollview).setVisibility(View.GONE);
 					a.findViewById(R.id.drawer_search_results).setVisibility(View.VISIBLE);
+					search.getCompoundDrawables()[DRAWABLE_RIGHT].setAlpha(255);
 				}
 				
 				if (search_results_adapter != null) {
@@ -304,27 +319,26 @@ public class DrawerHelper {
 					String serverName = server.getName().toLowerCase();
 					String serverUrl = server.getServerUrl().toLowerCase();
 					
-					if (serverName.contains(search) || serverUrl.contains(search))
+					if (serverName.contains(string) || serverUrl.contains(string))
 						search_results_array.add(new SearchResult(SearchResultType.SERVER, server, c));
 					
 					
 					for (MuninPlugin plugin : server.getPlugins()) {
-						if (plugin.getName().toLowerCase().contains(search)
-								|| plugin.getFancyName().toLowerCase().contains(search))
+						if (plugin.getName().toLowerCase().contains(string)
+								|| plugin.getFancyName().toLowerCase().contains(string))
 							search_results_array.add(new SearchResult(SearchResultType.PLUGIN, plugin, c));
 					}
 				}
 				
 				// Search in grids
-				List<String> grids = MuninFoo.getInstance().sqlite.dbHlpr.getGridsNames();
 				for (String grid : grids) {
-					if (grid.toLowerCase().contains(search))
+					if (grid.toLowerCase().contains(string))
 						search_results_array.add(new SearchResult(SearchResultType.GRID, grid, c));
 				}
 				
 				// Search in labels
 				for (Label label : MuninFoo.getInstance().labels) {
-					if (label.getName().toLowerCase().contains(search))
+					if (label.getName().toLowerCase().contains(string))
 						search_results_array.add(new SearchResult(SearchResultType.LABEL, label, c));
 				}
 				
@@ -341,6 +355,19 @@ public class DrawerHelper {
 			public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
 				SearchResult searchResult = (SearchResult) search_results_array.get(position);
 				searchResult.onClick(a);
+			}
+		});
+		
+		// Cancel button listener
+		search.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					if (event.getX() >= (search.getRight() - search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width()))
+						search.setText("");
+				}
+				
+				return false;
 			}
 		});
 	}
