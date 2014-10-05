@@ -29,6 +29,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
@@ -273,9 +274,9 @@ public final class Util {
 		return false;
 	}
 	
-	public static void writeToFile(Context context, String str) {
+	public static void writeToFile(Context context, String str, String file) {
 		try {
-			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("Munin for Android export.txt", Context.MODE_PRIVATE));
+			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(file, Context.MODE_PRIVATE));
 			outputStreamWriter.write(str);
 			outputStreamWriter.close();
 		} catch (IOException ex) {
@@ -283,11 +284,11 @@ public final class Util {
 		}
 	}
 	
-	public static String readFromFile(Context context) {
+	public static String readFromFile(Context context, String file) {
 		String ret = "";
 		
 		try {
-			InputStream inputStream = context.openFileInput("config.txt");
+			InputStream inputStream = context.openFileInput(file);
 			
 			if (inputStream != null) {
 				InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -327,9 +328,26 @@ public final class Util {
 			int dimens_x = imageView.getMeasuredWidth();
 			int dimens_y = imageView.getMeasuredHeight();
 			
-			res[0] = (int) (dimens_x/screenDensity);
-			res[1] = (int) (dimens_y/screenDensity);
+			// Apply density
+			dimens_x = (int) (dimens_x/screenDensity);
+			dimens_y = (int) (dimens_y/screenDensity);
 			
+
+			Log.v("", "initial dimensions : " + dimens_x + ", " + dimens_y);
+			
+			// Limit ratio
+			if (dimens_y != 0) {
+				double minRatio = ((double)360) / 210;
+				double currentRatio = ((double)dimens_x) / dimens_y;
+				
+				if (currentRatio < minRatio) {
+					// Adjust height
+					dimens_y = (int) (dimens_x/minRatio);
+				}
+			}
+			Log.v("", "Final dimensions : " + dimens_x + ", " + dimens_y);
+			res[0] = dimens_x;
+			res[1] = dimens_y;
 			return res;
 		}
 	}

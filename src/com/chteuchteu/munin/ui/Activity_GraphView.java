@@ -214,17 +214,19 @@ public class Activity_GraphView extends Activity {
 			public void onSwitched(View v, int position) {
 				Activity_GraphView.position = position;
 				
-				if (viewFlow.getSelectedItemPosition() == 0) {
-					item_previous.setIcon(R.drawable.blank);
-					item_previous.setEnabled(false);
-				} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
-					item_next.setIcon(R.drawable.blank);
-					item_next.setEnabled(false);
-				} else if (item_previous != null && item_next != null) {
-					item_previous.setIcon(R.drawable.navigation_previous_item_dark);
-					item_next.setIcon(R.drawable.navigation_next_item_dark);
-					item_previous.setEnabled(true);
-					item_next.setEnabled(true);
+				if (item_previous != null && item_next != null) {
+					if (viewFlow.getSelectedItemPosition() == 0) {
+						item_previous.setIcon(R.drawable.blank);
+						item_previous.setEnabled(false);
+					} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
+						item_next.setIcon(R.drawable.blank);
+						item_next.setEnabled(false);
+					} else {
+						item_previous.setIcon(R.drawable.navigation_previous_item_dark);
+						item_next.setIcon(R.drawable.navigation_next_item_dark);
+						item_previous.setEnabled(true);
+						item_next.setEnabled(true);
+					}
 				}
 					
 				if (muninFoo.drawer && dh != null) {
