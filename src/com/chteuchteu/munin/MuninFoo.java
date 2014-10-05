@@ -74,13 +74,19 @@ public class MuninFoo {
 	// android:versionName:		| 1.1		1.2		1.3		1.4		1.4.1	1.4.2	1.4.5	1.4.6	2.0		2.0.1	2.1		2.2		2.3		2.4		2.5		2.6 |
 	// android:versionCode: 	|  1		 2		 3		 4		 5		 6		 7	 	 8	  	 10		11		12		13		14		15		16		17	|
 	// MfA version:				| 1.1		1.2		1.3		1.4		1.5		1.6		1.7  	1.8   	1.9		2.0		2.1 	2.2		2.3		2.4		2.5		2.6	|
-	//							--------------------------------------------------------------------------------------------------------------------------------
-	//							| 2.6.1		2.6.2	2.6.3	2.6.4	2.6.5	2.7		2.7.1	2.7.5	2.7.6	2.7.7	2.8		2.8.1	2.8.2	2.8.3	2.8.4
-	//							|  18		 19		20		21		22		23		24		25		26		27		28		29		30		31		32
-	//							|  2.7		2.8		2.9		3.0		3.1		3.2		3.3		3.4		3.5		3.6		3.7		3.8		3.9		4.0		4.1
-	//																						beta	beta	beta			fix		fix		fix		fix
+	//							|-------------------------------------------------------------------------------------------------------------------------------|
+	//							| 2.6.1		2.6.2	2.6.3	2.6.4	2.6.5	2.7		2.7.1	2.7.5	2.7.6	2.7.7	2.8		2.8.1	2.8.2	2.8.3	2.8.4	3.0 |
+	//							|  18		 19		20		21		22		23		24		25		26		27		28		29		30		31		32		33  |
+	//							|  2.7		2.8		2.9		3.0		3.1		3.2		3.3		3.4		3.5		3.6		3.7		3.8		3.9		4.0		4.1		4.2 |
+	//							|															beta	beta	beta			fix		fix		fix		fix			|
+	//							|-------------------------------------------------------------------------------------------------------------------------------|
+	//							|																																|
+	//							|																																|
+	//							|																																|
+	//							|																																|
+	//							|-------------------------------------------------------------------------------------------------------------------------------|
 	
-	public double version = 4.1;
+	public double version = 4.2;
 	// =============== //
 	public static final boolean debug = true;
 	public static final boolean forceNotPremium = false;
@@ -126,6 +132,15 @@ public class MuninFoo {
 	public void loadInstance(Context c) {
 		loadInstance();
 		if (c != null) {
+			// Set default server
+			String defaultServerUrl = Util.getPref(c, "defaultServer");
+			if (!defaultServerUrl.equals("")) {
+				for (MuninServer server : this.servers) {
+					if (server.getServerUrl().equals(defaultServerUrl))
+						currentServer = server;
+				}
+			}
+			
 			this.premium = isPremium(c);
 			if (!Util.getPref(c, "drawer").equals("false"))
 				this.drawer = true;
@@ -303,28 +318,6 @@ public class MuninFoo {
 			return getOrderedServers().get(position);
 		return null;
 	}
-	/*@Deprecated
-	public List<MuninServer> getOrderedServers() {
-		List<MuninServer> l = new ArrayList<MuninServer>();
-		int pos = 0;
-		int remainingServers = getHowManyServers();
-		
-		int maxPos = 0;
-		for (MuninServer s : getServers()) {
-			if (s.getPosition() > maxPos)
-				maxPos = s.getPosition();
-		}
-		
-		while(remainingServers > 0 && pos <= maxPos) {
-			if (getServerFromPosition(pos) != null) {
-				l.add(getServerFromPosition(pos));
-				remainingServers--;
-			}
-			pos++;
-		}
-		
-		return l;
-	}*/
 	public MuninServer getServersInstanceFromMuninMasterInstance(MuninServer s) {
 		for (MuninServer server : this.servers) {
 			if (server.getId() == s.getId())

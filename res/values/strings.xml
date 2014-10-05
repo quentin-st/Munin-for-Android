@@ -149,6 +149,7 @@
 	<string name="widget_configuration1">Success! The widget has been added to your home screen. Tip: you can update the graph by taping on the grey bar at the bottom of the widget!</string>
 	<string name="widget_configuration2">Auto-update the graph only by Wifi (1 update per hour)</string>
 	<string name="widget_configuration3">Hide server name</string>
+	<string name="settings_defaultserver">Default server</string>
 	<string name="settings_lang">App language</string>
 	<string name="lang_english">English</string>
 	<string name="lang_french">French</string>

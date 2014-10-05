@@ -156,6 +156,7 @@
 	<string name="export_shareusing">Exporter via…</string>
 	<string name="import_title">Importation</string>
 	<string name="import_sentence">Veuillez copier-coller le texte généré lors de l\'export dans le champ ci-dessous</string>
+	<string name="settings_defaultserver">Default server</string>
 	<string name="settings_lang">Langue de l\'application</string>
 	<string name="lang_french">Français</string>
 	<string name="lang_german">Allemand</string>

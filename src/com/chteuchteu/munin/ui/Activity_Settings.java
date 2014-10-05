@@ -29,12 +29,14 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.MuninServer;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 public class Activity_Settings extends Activity {
 	private Spinner	spinner_scale;
+	private Spinner	spinner_defaultServer;
 	private Spinner	spinner_lang;
 	private Spinner	spinner_orientation;
 	private View		checkable_transitions;
@@ -73,6 +75,7 @@ public class Activity_Settings extends Activity {
 		Util.UI.applySwag(this);
 		
 		spinner_scale = (Spinner)findViewById(R.id.spinner_scale);
+		spinner_defaultServer = (Spinner)findViewById(R.id.spinner_defaultserver);
 		spinner_lang = (Spinner)findViewById(R.id.spinner_lang);
 		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);
 		
@@ -93,6 +96,15 @@ public class Activity_Settings extends Activity {
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_scale.setAdapter(dataAdapter);
 		
+		
+		// Spinner default server
+		List<String> serversList = new ArrayList<String>();
+		serversList.add(getString(R.string.text48_3));
+		for (MuninServer server : muninFoo.getOrderedServers())
+			serversList.add(server.getName());
+		ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, serversList);
+		dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner_defaultServer.setAdapter(dataAdapter1);
 		
 		// Spinner language
 		List<String> list2 = new ArrayList<String>();
@@ -127,6 +139,7 @@ public class Activity_Settings extends Activity {
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title10), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title11), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title12), CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title13), CustomFont.RobotoCondensed_Bold);
 	}
 	
 	public View inflateCheckable(ViewGroup container, String label) {
@@ -217,6 +230,15 @@ public class Activity_Settings extends Activity {
 		else
 			setPref("hdGraphs", "false");
 		
+		// Default server
+		int defaultServerPosition = spinner_defaultServer.getSelectedItemPosition()-1;
+		if (defaultServerPosition == -1)
+			Util.removePref(this, "defaultServer");
+		else {
+			MuninServer defaultServer = muninFoo.getOrderedServers().get(defaultServerPosition);
+			Util.setPref(this, "defaultServer", defaultServer.getServerUrl());
+		}
+		
 		// After saving -> go back to reality
 		Intent intent = new Intent(Activity_Settings.this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -294,6 +316,22 @@ public class Activity_Settings extends Activity {
 			setChecked(checkable_hdGraphs, false);
 		else
 			setChecked(checkable_hdGraphs, true);
+		
+		// Defaut server
+		String defaultServerUrl = Util.getPref(this, "defaultServer");
+		if (!defaultServerUrl.equals("")) {
+			int pos = -1;
+			int i = 0;
+			for (MuninServer server : muninFoo.getOrderedServers()) {
+				if (server.getServerUrl().equals(defaultServerUrl)) {
+					pos = i;
+					break;
+				}
+				i++;
+			}
+			if (pos != -1)
+				spinner_defaultServer.setSelection(pos+1);
+		}
 	}
 	@SuppressLint("NewApi")
 	@Override

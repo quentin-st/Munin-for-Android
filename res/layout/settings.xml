@@ -37,6 +37,23 @@
 				android:textColor="#666666"
 				android:textStyle="bold" />
 
+			<!-- Default server -->
+
+			<TextView
+				android:id="@+id/title13"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:text="@string/settings_defaultserver"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:textStyle="bold" />
+
+			<Spinner
+				android:id="@+id/spinner_defaultserver"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="8dp" />
+
 			<!-- App language -->
 
 			<TextView
