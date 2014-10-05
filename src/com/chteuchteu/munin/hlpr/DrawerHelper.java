@@ -78,10 +78,12 @@ public class DrawerHelper {
 	private MuninFoo m;
 	private int n;
 	private SlidingMenu sm;
+	
 	private EditText search;
 	private ListView search_results;
 	private SearchAdapter search_results_adapter;
 	private ArrayList<SearchResult> search_results_array;
+	private List<String> search_cachedGridsList;
 	
 	// GraphView
 	private ViewFlow vf;
@@ -273,10 +275,10 @@ public class DrawerHelper {
 		
 
 		// Cancel button
-		final int DRAWABLE_LEFT = 0;
-		final int DRAWABLE_TOP = 1;
+		//final int DRAWABLE_LEFT = 0;
+		//final int DRAWABLE_TOP = 1;
 		final int DRAWABLE_RIGHT = 2;
-		final int DRAWABLE_BOTTOM = 3;
+		//final int DRAWABLE_BOTTOM = 3;
 		search.getCompoundDrawables()[DRAWABLE_RIGHT].setAlpha(0);
 		
 		search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -287,7 +289,7 @@ public class DrawerHelper {
 				return false;
 			}
 		});
-		final List<String> grids = MuninFoo.getInstance().sqlite.dbHlpr.getGridsNames();
+		
 		search.addTextChangedListener(new TextWatcher() {
 			@SuppressLint("DefaultLocale")
 			@Override
@@ -331,7 +333,10 @@ public class DrawerHelper {
 				}
 				
 				// Search in grids
-				for (String grid : grids) {
+				if (search_cachedGridsList == null)
+					search_cachedGridsList = MuninFoo.getInstance().sqlite.dbHlpr.getGridsNames();
+				
+				for (String grid : search_cachedGridsList) {
 					if (grid.toLowerCase().contains(string))
 						search_results_array.add(new SearchResult(SearchResultType.GRID, grid, c));
 				}
