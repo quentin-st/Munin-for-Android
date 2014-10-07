@@ -21,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -256,6 +257,11 @@ public class Activity_Alerts extends Activity {
 	 * @param fetch Use cached data or not
 	 */
 	public void updateStates(boolean fetch) {
+		if (fetch && !Util.isOnline(this)) {
+			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
+			return;
+		}
+		
 		nb_loadings = 0;
 		Util.UI.setLoading(true, this);
 		for (int i = 0; i < muninFoo.getHowManyServers(); i++) {
