@@ -10,6 +10,7 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
+import com.chteuchteu.munin.obj.MuninServer.HDGraphs;
 
 public class JSONHelper {
 	public static String getMastersJSONString(ArrayList<MuninMaster> masters, boolean includePasswords) {
@@ -54,6 +55,7 @@ public class JSONHelper {
 						jsonServer.put("serverUrl", server.getServerUrl());
 						jsonServer.put("position", server.getPosition());
 						jsonServer.put("graphURL", server.getGraphURL());
+						jsonServer.put("hdGraphs", server.getHDGraphs().name());
 						
 						JSONArray jsonPlugins = new JSONArray();
 						for (MuninPlugin plugin : server.getPlugins()) {
@@ -111,6 +113,7 @@ public class JSONHelper {
 					server.setServerUrl(jsonServer.getString("serverUrl"));
 					server.setPosition(jsonServer.getInt("position"));
 					server.setGraphURL(jsonServer.getString("graphURL"));
+					server.setHDGraphs(HDGraphs.get(jsonServer.getString("hdGraphs")));
 					
 					String authType = jsonMaster.getString("authType");
 					if (authType.equals("none")) {
