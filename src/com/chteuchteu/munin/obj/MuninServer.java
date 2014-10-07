@@ -534,7 +534,7 @@ public class MuninServer {
 			in.close();
 			
 			resp.html = str.toString();
-			if (MuninFoo.debug)
+			if (MuninFoo.DEBUG)
 				Log.v("", "Downloaded content : " + resp.html);
 			resp.responseReason = response.getStatusLine().getReasonPhrase();
 			resp.responseCode = response.getStatusLine().getStatusCode();

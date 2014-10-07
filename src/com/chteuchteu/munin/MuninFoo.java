@@ -88,8 +88,8 @@ public class MuninFoo {
 	
 	public double version = 4.2;
 	// =============== //
-	public static final boolean debug = true;
-	public static final boolean forceNotPremium = false;
+	public static final boolean DEBUG = true;
+	public static final boolean FORCE_NOT_PREMIUM = false;
 	public boolean premium;
 	
 	private MuninFoo() {
@@ -125,7 +125,7 @@ public class MuninFoo {
 		if (servers.size() > 0)
 			currentServer = getServerFromFlatPosition(0);
 		
-		if (debug)
+		if (DEBUG)
 			sqlite.logMasters();
 	}
 	
@@ -788,9 +788,9 @@ public class MuninFoo {
 	@SuppressWarnings("unused")
 	public static boolean isPremium(Context c) {
 		if (isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
-			if (debug && forceNotPremium)
+			if (DEBUG && FORCE_NOT_PREMIUM)
 				return false;
-			if (debug)
+			if (DEBUG)
 				return true;
 			PackageManager manager = c.getPackageManager();
 			if (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")

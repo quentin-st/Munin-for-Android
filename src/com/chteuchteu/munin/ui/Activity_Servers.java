@@ -177,6 +177,8 @@ public class Activity_Servers extends Activity {
 		this.importExportMenuItem = menu.findItem(R.id.menu_importexport);
 		if (!muninFoo.premium)
 			importExportMenuItem.setVisible(false);
+		// TODO : remove when available
+		importExportMenuItem.setVisible(MuninFoo.DEBUG);
 	}
 	
 	@Override
@@ -231,14 +233,14 @@ public class Activity_Servers extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (!MuninFoo.debug)
+		if (!MuninFoo.DEBUG)
 			EasyTracker.getInstance(this).activityStart(this);
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		if (!MuninFoo.debug)
+		if (!MuninFoo.DEBUG)
 			EasyTracker.getInstance(this).activityStop(this);
 	}
 }

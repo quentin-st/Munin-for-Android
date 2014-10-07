@@ -404,14 +404,14 @@ public class Activity_PluginSelection extends ListActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (!MuninFoo.debug)
+		if (!MuninFoo.DEBUG)
 			EasyTracker.getInstance(this).activityStart(this);
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		if (!MuninFoo.debug)
+		if (!MuninFoo.DEBUG)
 			EasyTracker.getInstance(this).activityStop(this);
 	}
 }
