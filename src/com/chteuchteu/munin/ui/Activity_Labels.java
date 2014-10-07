@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -55,9 +54,6 @@ public class Activity_Labels extends ListActivity {
 		}
 		
 		Util.UI.applySwag(this);
-		
-		if (!Util.isOnline(this))
-			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 	}
 	
 	public void updateListView() {

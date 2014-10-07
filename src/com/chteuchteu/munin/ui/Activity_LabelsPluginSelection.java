@@ -9,7 +9,9 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -121,6 +123,22 @@ public class Activity_LabelsPluginSelection extends Activity {
 		});
 	}
 	
+	private void deleteLabel() {
+		new AlertDialog.Builder(this)
+		.setTitle(R.string.delete)
+		.setMessage(R.string.text82)
+		.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				muninFoo.removeLabel(label);
+				startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_Labels.class));
+				Util.setTransition(c, TransitionStyle.SHALLOWER);
+			}
+		})
+		.setNegativeButton(R.string.text34, null)
+		.show();
+	}
+	
 	public Map<String,?> createItem(String title, String caption) {  
 		Map<String,String> item = new HashMap<String,String>();  
 		item.put("title", title);  
@@ -142,9 +160,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 				}
 				return true;
 			case R.id.menu_delete:
-				muninFoo.removeLabel(label);
-				startActivity(new Intent(this, Activity_Labels.class));
-				Util.setTransition(c, TransitionStyle.SHALLOWER);
+				deleteLabel();
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_Settings.class));
