@@ -20,7 +20,6 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -32,11 +31,12 @@ import com.chteuchteu.munin.ui.Activity_Servers;
 import com.crashlytics.android.Crashlytics;
 
 public class ImportExportHelper {
+	public static final String ENCRYPTION_SEED = "$$MFA!!";
+	
 	public static class Export {
 		private static String sendExportRequest(String jsonString) {
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpPost httpPost = new HttpPost(MuninFoo.IMPORT_EXPORT_URI+"?export");
-			Log.v("", "Calling url " + MuninFoo.IMPORT_EXPORT_URI+"?export");
 			
 			try {
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -52,7 +52,6 @@ public class ImportExportHelper {
 				    builder.append(line).append("\n");
 				
 				String body = builder.toString();
-				Log.v("", "Return json is " + body);
 				
 				JSONObject jsonResult = new JSONObject(body);
 				
@@ -96,7 +95,7 @@ public class ImportExportHelper {
 			protected void onPreExecute() {
 				super.onPreExecute();
 				
-				this.progressDialog = ProgressDialog.show(context, context.getString(R.string.loading), "", true);
+				this.progressDialog = ProgressDialog.show(context, "", context.getString(R.string.loading), true);
 			}
 			
 			@Override
@@ -120,19 +119,15 @@ public class ImportExportHelper {
 	}
 	
 	public static class Import {
-		public static void applyImportation(JSONObject jsonObject) {
-			ArrayList<MuninMaster> newMasters = JSONHelper.getMastersFromJSON(jsonObject);
+		public static void applyImportation(JSONObject jsonObject, String code) {
+			ArrayList<MuninMaster> newMasters = JSONHelper.getMastersFromJSON(jsonObject, code);
 			removeIds(newMasters);
 			
-			Log.v("", "Let's add things");
 			// Add masters
 			for (MuninMaster newMaster : newMasters) {
-				Log.v("", "Adding master " + newMaster.getName());
 				MuninFoo.getInstance().getMasters().add(newMaster);
-				for (MuninServer server : newMaster.getChildren()) {
-					Log.v("", "Adding server " + server.getName());
+				for (MuninServer server : newMaster.getChildren())
 					MuninFoo.getInstance().addServer(server);
-				}
 			}
 			MuninFoo.getInstance().sqlite.saveServers();
 		}
@@ -196,7 +191,7 @@ public class ImportExportHelper {
 			protected void onPreExecute() {
 				super.onPreExecute();
 				
-				this.progressDialog = ProgressDialog.show(context, context.getString(R.string.loading), "", true);
+				this.progressDialog = ProgressDialog.show(context, "", context.getString(R.string.loading), true);
 			}
 			
 			@Override
@@ -205,7 +200,7 @@ public class ImportExportHelper {
 				result = jsonObject != null;
 				
 				if (result)
-					applyImportation(jsonObject);
+					applyImportation(jsonObject, ENCRYPTION_SEED);
 				
 				return null;
 			}

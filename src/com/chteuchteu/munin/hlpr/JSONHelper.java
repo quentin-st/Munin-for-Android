@@ -13,7 +13,14 @@ import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.chteuchteu.munin.obj.MuninServer.HDGraphs;
 
 public class JSONHelper {
-	public static String getMastersJSONString(ArrayList<MuninMaster> masters, boolean includePasswords) {
+	/**
+	 * Serializes the Masters objects tree
+	 * Encrypts the password using the Util.Encryption util methods
+	 * @param masters
+	 * @param code Seed used in order to encrypt passwords
+	 * @return
+	 */
+	public static String getMastersJSONString(ArrayList<MuninMaster> masters, String seed) {
 		try {
 			JSONObject obj = new JSONObject();
 			JSONArray jsonMasters = new JSONArray();
@@ -34,14 +41,16 @@ public class JSONHelper {
 						case BASIC:
 							jsonMaster.put("authType", "basic");
 							jsonMaster.put("authLogin", firstServer.getAuthLogin());
-							if (includePasswords)
-								jsonMaster.put("authPassword", firstServer.getAuthPassword());
+							String basicPassword = firstServer.getAuthPassword();
+							String encryptedBasicPassword = Util.Encryption.encrypt(seed, basicPassword);
+							jsonMaster.put("authPassword", encryptedBasicPassword);
 							break;
 						case DIGEST:
 							jsonMaster.put("authType", "digest");
 							jsonMaster.put("authLogin", firstServer.getAuthLogin());
-							if (includePasswords)
-								jsonMaster.put("authPassword", firstServer.getAuthPassword());
+							String digestPassword = firstServer.getAuthPassword();
+							String encryptedDigestPassword = Util.Encryption.encrypt(seed, digestPassword);
+							jsonMaster.put("authPassword", encryptedDigestPassword);
 							jsonMaster.put("authString", firstServer.getAuthString());
 							break;
 					}
@@ -55,7 +64,7 @@ public class JSONHelper {
 						jsonServer.put("serverUrl", server.getServerUrl());
 						jsonServer.put("position", server.getPosition());
 						jsonServer.put("graphURL", server.getGraphURL());
-						jsonServer.put("hdGraphs", server.getHDGraphs().name());
+						jsonServer.put("hdGraphs", server.getHDGraphs().getVal());
 						
 						JSONArray jsonPlugins = new JSONArray();
 						for (MuninPlugin plugin : server.getPlugins()) {
@@ -87,10 +96,13 @@ public class JSONHelper {
 		} catch (NullPointerException ex) {
 			ex.printStackTrace();
 			return "";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
 		}
 	}
 	
-	public static ArrayList<MuninMaster> getMastersFromJSON(JSONObject obj) {
+	public static ArrayList<MuninMaster> getMastersFromJSON(JSONObject obj, String seed) {
 		try {
 			ArrayList<MuninMaster> muninMasters = new ArrayList<MuninMaster>();
 			
@@ -120,17 +132,15 @@ public class JSONHelper {
 					} else if (authType.equals("basic")) {
 						server.setAuthType(AuthType.BASIC);
 						String login = jsonMaster.getString("authLogin");
-						String password = "UNKNOWN";
-						if (jsonMaster.has("authPassword"))
-							password = jsonMaster.getString("authPassword");
-						server.setAuthIds(login, password);
+						String encryptedBasicPassword = jsonMaster.getString("authPassword");
+						String decryptedBasicPassword = Util.Encryption.decrypt(seed, encryptedBasicPassword);
+						server.setAuthIds(login, decryptedBasicPassword);
 					} else if (authType.equals("digest")) {
 						server.setAuthType(AuthType.DIGEST);
 						String login = jsonMaster.getString("authLogin");
-						String password = "UNKNOWN";
-						if (jsonMaster.has("authPassword"))
-							password = jsonMaster.getString("authPassword");
-						server.setAuthIds(login, password);
+						String encryptedDigestPassword = jsonMaster.getString("authPassword");
+						String decryptedDigestPassword = Util.Encryption.decrypt(seed, encryptedDigestPassword);
+						server.setAuthIds(login, decryptedDigestPassword);
 						server.setAuthString(jsonMaster.getString("authString"));
 					}
 					
@@ -156,6 +166,9 @@ public class JSONHelper {
 			
 			return muninMasters;
 		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}

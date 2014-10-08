@@ -28,6 +28,7 @@ import com.chteuchteu.munin.Adapter_ExpandableListView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.ImportExportHelper;
 import com.chteuchteu.munin.hlpr.ImportExportHelper.Export.ExportRequestMaker;
 import com.chteuchteu.munin.hlpr.ImportExportHelper.Import.ImportRequestMaker;
 import com.chteuchteu.munin.hlpr.JSONHelper;
@@ -170,11 +171,27 @@ public class Activity_Servers extends Activity {
 	}
 	
 	private void displayExportDialog() {
-		String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance().getMasters(), true);
-		if (json.equals(""))
-			Toast.makeText(this, R.string.export_failed, Toast.LENGTH_SHORT).show();
-		else
-			new ExportRequestMaker(json, c).execute();
+		new AlertDialog.Builder(c)
+			.setTitle(R.string.export_servers)
+			.setMessage(R.string.export_explanation)
+			.setCancelable(true)
+			.setPositiveButton("OK", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance().getMasters(), ImportExportHelper.ENCRYPTION_SEED);
+					if (json.equals(""))
+						Toast.makeText(c, R.string.export_failed, Toast.LENGTH_SHORT).show();
+					else
+						new ExportRequestMaker(json, c).execute();
+				}
+			})
+			.setNegativeButton(R.string.text64, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			})
+			.show();
 	}
 	
 	@SuppressLint("NewApi")

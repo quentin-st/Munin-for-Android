@@ -245,6 +245,9 @@
 	<string name="rate">Rate the app</string>
 	<string name="rate_long">If you like the app, would you mind rating it on Google Play? Thank you!</string>
 	<string name="not_now">Not now</string>
+	<string name="export_explanation">Your configuration will be uploaded so it can be retrieved from your secondary device. If there are, passwords
+		will be encrypted. At the end of the export, a randomly generated code will allow you to download the configuration on your other device.
+		The configuration will be deleted from the Munin for Android server as soon as you download it, or after 24 hours if you don\'t.</string>
 	<string name="export_success_title">Export successful</string>
 	<string name="export_success_txt1">Your servers configuration in the app has successfully been uploaded.
 	    Please use the following code into your secondary device in order to import it.</string>

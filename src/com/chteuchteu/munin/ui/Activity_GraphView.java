@@ -128,9 +128,8 @@ public class Activity_GraphView extends Activity {
 			if (serverName != null) {
 				serverName.setText(muninFoo.currentServer.getName());
 				actionBar.setTitle("");
-			} else {
+			} else
 				actionBar.setTitle(muninFoo.currentServer.getName());
-			}
 		}
 		
 		
