@@ -21,7 +21,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -59,6 +58,7 @@ import com.chteuchteu.munin.Adapter_GraphView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.MediaScannerUtil;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Label;
@@ -679,8 +679,9 @@ public class Activity_GraphView extends Activity {
 				image.compress(Bitmap.CompressFormat.PNG, 100, out);
 				out.flush();
 				out.close();
-				String filePath = dir + fileName1 + fileName2;
-				MediaScannerConnection.scanFile(Activity_GraphView.this, new String[] { filePath }, null, null);
+				
+				// Make the image appear in gallery
+				new MediaScannerUtil(Activity_GraphView.this, file).execute();
 				// Graph saved as /muninForAndroid/[...]
 				Toast.makeText(this, getString(R.string.text28) + fileName1 + fileName2, Toast.LENGTH_LONG).show();
 			} catch (Exception e) {
