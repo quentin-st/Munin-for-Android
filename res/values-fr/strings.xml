@@ -175,6 +175,9 @@
 	<string name="yourerunning">Vous utilisez</string>
 	<string name="openInBrowser">Afficher dans le navigateur</string>
 	<string name="fieldsDescription">Description des champs</string>
+	<string name="export_success_title">Export réussi</string>
+	<string name="export_success_txt1">La configuration de vos serveurs dans l\'application a été exportée avec succès.
+	    Veuillez utiliser le code suivant dans votre autre appareil Android afin de l\'importer.</string>
 	<string name="aboutText">
 <![CDATA[
    <head>

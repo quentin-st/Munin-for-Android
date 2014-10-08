@@ -92,6 +92,10 @@ public class MuninFoo {
 	public static final boolean FORCE_NOT_PREMIUM = false;
 	public boolean premium;
 	
+	// Import/Export webservice
+	public static final String IMPORT_EXPORT_URI = "http://munin-for-android.com/importExport.php";
+	public static final int IMPORT_EXPORT_VERSION = 1;
+	
 	private MuninFoo() {
 		premium = false;
 		drawer = false;

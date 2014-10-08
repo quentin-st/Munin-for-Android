@@ -20,15 +20,18 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.Adapter_ExpandableListView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.ImportExportHelper.ExportRequestMaker;
 import com.chteuchteu.munin.hlpr.JSONHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -38,7 +41,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_Servers extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
-	private Context		c;
+	private static Context		c;
 	
 	Map<String, List<String>> serversCollection;
 	ExpandableListView		expListView;
@@ -108,7 +111,7 @@ public class Activity_Servers extends Activity {
 	}
 	
 	private void displayImportDialog() {
-		final View dialogView = View.inflate(this, R.layout.importdialog_layout, null);
+		final View dialogView = View.inflate(this, R.layout.dialog_import, null);
 		new AlertDialog.Builder(this)
 			.setTitle(R.string.import_title)
 			.setView(dialogView)
@@ -130,19 +133,30 @@ public class Activity_Servers extends Activity {
 			.show();
 	}
 	
+	public static void onExportSuccess(String pswd) {
+		final View dialogView = View.inflate(c, R.layout.dialog_export_success, null);
+		TextView code = (TextView) dialogView.findViewById(R.id.export_succes_code);
+		Util.Fonts.setFont(c, code, CustomFont.RobotoCondensed_Bold);
+		code.setText(pswd);
+		
+		new AlertDialog.Builder(c)
+			.setTitle(R.string.export_success_title)
+			.setView(dialogView)
+			.setCancelable(true)
+			.setPositiveButton("OK", null)
+			.show();
+	}
+	
+	public static void onExportError() {
+		// TODO
+	}
+	
 	private void displayExportDialog() {
 		String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance().getMasters(), true);
 		if (json.equals(""))
 			Toast.makeText(this, R.string.export_failed, Toast.LENGTH_SHORT).show();
-		else {
-			// Send json by mail or something
-			Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-			sharingIntent.setType("text/plain");
-			//sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.export_subject);
-			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, ":)");
-			startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.export_shareusing)));
-			// TODO
-		}
+		else
+			new ExportRequestMaker(json).execute();
 	}
 	
 	@SuppressLint("NewApi")
@@ -175,10 +189,8 @@ public class Activity_Servers extends Activity {
 		menu.clear();
 		getMenuInflater().inflate(R.menu.servers, menu);
 		this.importExportMenuItem = menu.findItem(R.id.menu_importexport);
-		if (!muninFoo.premium)
+		if (!muninFoo.premium || muninFoo.getHowManyServers() == 0)
 			importExportMenuItem.setVisible(false);
-		// TODO : remove when available
-		importExportMenuItem.setVisible(MuninFoo.DEBUG);
 	}
 	
 	@Override
