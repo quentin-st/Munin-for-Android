@@ -712,7 +712,7 @@ public class Activity_AddServer extends Activity {
 		
 		private String initialization() {
 			oldServers = new ArrayList<String>();
-			// Création de la liste des serveurs courants (pour diff)
+			// Create current servers list (diff)
 			for (MuninServer s : muninFoo.getServers())
 				oldServers.add(s.getServerUrl());
 			newServers = new ArrayList<String>();
@@ -722,7 +722,7 @@ public class Activity_AddServer extends Activity {
 			/* 			DETECTION DU TYPE D'URL 		*/
 			if (settingsServer == null)
 				settingsServer = new MuninServer("", serverUrl);
-			settingsServer.createTitle(); // à partir de l'URL
+			settingsServer.createTitle();
 			if (findViewById(R.id.addserver_auth).getVisibility() == View.VISIBLE && cb_auth.isChecked() && !tb_auth_login.getText().toString().equals("")) {
 				settingsServer.setAuthIds(tb_auth_login.getText().toString(), tb_auth_password.getText().toString());
 				if (sp_authType.getSelectedItemPosition() == 0)
@@ -756,7 +756,7 @@ public class Activity_AddServer extends Activity {
 					int popupstate = 30;
 					setPopupState(popupstate);
 					
-					// Recherche des plugins pour chaque serveur
+					// Plugins lookup for each server
 					int tmpNewServer = 1;
 					for (int i=0; i<muninFoo.getHowManyServers(); i++) {
 						if (muninFoo.getServer(i) != null && muninFoo.getServer(i).getPlugins().size() == 0) {
@@ -779,7 +779,7 @@ public class Activity_AddServer extends Activity {
 							}
 						}
 					}
-					if (nbNewServers > 0) {	// on a ajouté 1/des serveurs
+					if (nbNewServers > 0) {	// Added 1 server or more
 						setPopupState(100);
 						setPopupText(getString(R.string.text45), " ");
 						

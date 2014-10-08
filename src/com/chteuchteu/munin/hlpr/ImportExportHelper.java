@@ -16,91 +16,226 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.exc.ImportExportWebserviceException;
+import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninPlugin;
+import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_Servers;
 import com.crashlytics.android.Crashlytics;
 
 public class ImportExportHelper {
-	public static String sendExportRequest(String jsonString) {
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(MuninFoo.IMPORT_EXPORT_URI);
+	public static class Export {
+		private static String sendExportRequest(String jsonString) {
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpPost httpPost = new HttpPost(MuninFoo.IMPORT_EXPORT_URI+"?export");
+			Log.v("", "Calling url " + MuninFoo.IMPORT_EXPORT_URI+"?export");
+			
+			try {
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+				nameValuePairs.add(new BasicNameValuePair("dataString", jsonString));
+				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				
+				// Execute HTTP Post Request
+				HttpResponse response = httpClient.execute(httpPost);
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+				StringBuilder builder = new StringBuilder();
+				for (String line = null; (line = reader.readLine()) != null;)
+				    builder.append(line).append("\n");
+				
+				String body = builder.toString();
+				Log.v("", "Return json is " + body);
+				
+				JSONObject jsonResult = new JSONObject(body);
+				
+				boolean success = jsonResult.getBoolean("success");
+				
+				if (success) {
+					return jsonResult.getString("password");
+				} else {
+					String error = jsonResult.getString("error");
+					Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
+				}
+				
+				return null;
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+				return null;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
 		
-		try {
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-			nameValuePairs.add(new BasicNameValuePair("jsonString", jsonString));
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		public static class ExportRequestMaker extends AsyncTask<Void, Integer, Void> {
+			private String jsonString;
+			private boolean result;
+			private String pswd;
+			private ProgressDialog progressDialog;
+			private Context context;
 			
-			// Execute HTTP Post Request
-			HttpResponse response = httpclient.execute(httppost);
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-			StringBuilder builder = new StringBuilder();
-			for (String line = null; (line = reader.readLine()) != null;)
-			    builder.append(line).append("\n");
-			
-			JSONTokener tokener = new JSONTokener(builder.toString());
-			JSONObject jsonResult = new JSONObject(tokener);
-			
-			boolean success = jsonResult.getBoolean("success");
-			
-			if (success) {
-				return jsonResult.getString("password");
-			} else {
-				String error = jsonResult.getString("error");
-				Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
+			public ExportRequestMaker (String jsonString, Context context) {
+				super();
+				this.jsonString = jsonString;
+				this.result = false;
+				this.context = context;
 			}
 			
-			return null;
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				
+				this.progressDialog = ProgressDialog.show(context, context.getString(R.string.loading), "", true);
+			}
+			
+			@Override
+			protected Void doInBackground(Void... arg0) {
+				pswd = sendExportRequest(jsonString);
+				result = pswd != null && !pswd.equals("");
+				
+				return null;
+			}
+			
+			@Override
+			protected void onPostExecute(Void res) {
+				this.progressDialog.dismiss();
+				
+				if (result)
+					Activity_Servers.onExportSuccess(pswd);
+				else
+					Activity_Servers.onExportError();
+			}
 		}
 	}
 	
-	public static class ExportRequestMaker extends AsyncTask<Void, Integer, Void> {
-		private String jsonString;
-		private boolean result;
-		private String pswd;
-		
-		public ExportRequestMaker (String jsonString) {
-			super();
-			this.jsonString = jsonString;
-			result = false;
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
+	public static class Import {
+		public static void applyImportation(JSONObject jsonObject) {
+			ArrayList<MuninMaster> newMasters = JSONHelper.getMastersFromJSON(jsonObject);
+			removeIds(newMasters);
 			
+			Log.v("", "Let's add things");
+			// Add masters
+			for (MuninMaster newMaster : newMasters) {
+				Log.v("", "Adding master " + newMaster.getName());
+				MuninFoo.getInstance().getMasters().add(newMaster);
+				for (MuninServer server : newMaster.getChildren()) {
+					Log.v("", "Adding server " + server.getName());
+					MuninFoo.getInstance().addServer(server);
+				}
+			}
+			MuninFoo.getInstance().sqlite.saveServers();
 		}
 		
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			pswd = sendExportRequest(jsonString);
-			result = pswd != null && !pswd.equals("");
+		private static JSONObject sendImportRequest(String code) {
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpPost httpPost = new HttpPost(MuninFoo.IMPORT_EXPORT_URI+"?import");
 			
-			return null;
+			try {
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+				nameValuePairs.add(new BasicNameValuePair("pswd", code));
+				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				
+				// Execute HTTP Post Request
+				HttpResponse response = httpClient.execute(httpPost);
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+				StringBuilder builder = new StringBuilder();
+				for (String line = null; (line = reader.readLine()) != null;)
+				    builder.append(line).append("\n");
+				
+				JSONObject jsonResult = new JSONObject(builder.toString());
+				
+				boolean success = jsonResult.getBoolean("success");
+				
+				if (success) {
+					return jsonResult.getJSONArray("data").getJSONObject(0);
+				} else {
+					String error = jsonResult.getString("error");
+					Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
+				}
+				
+				return null;
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+				return null;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 		
-		@Override
-		protected void onPostExecute(Void res) {
-			// TODO
-			result = true;
-			if (result)
-				Activity_Servers.onExportSuccess(pswd);
-			else
-				Activity_Servers.onExportError();
+		public static class ImportRequestMaker extends AsyncTask<Void, Integer, Void> {
+			private JSONObject jsonObject;
+			private String code;
+			private boolean result;
+			private Context context;
+			private ProgressDialog progressDialog;
+			
+			public ImportRequestMaker (String code, Context context) {
+				super();
+				this.code = code;
+				this.result = false;
+				this.context = context;
+			}
+			
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				
+				this.progressDialog = ProgressDialog.show(context, context.getString(R.string.loading), "", true);
+			}
+			
+			@Override
+			protected Void doInBackground(Void... arg0) {
+				jsonObject = sendImportRequest(code);
+				result = jsonObject != null;
+				
+				if (result)
+					applyImportation(jsonObject);
+				
+				return null;
+			}
+			
+			@Override
+			protected void onPostExecute(Void res) {
+				this.progressDialog.dismiss();
+				
+				if (result)
+					Activity_Servers.onImportSuccess();
+				else
+					Activity_Servers.onImportError();
+			}
+		}
+	}
+	
+	/**
+	 * Removes the ids contained in the structure given as parameter
+	 */
+	private static void removeIds(ArrayList<MuninMaster> masters) {
+		for (MuninMaster master : masters) {
+			master.setId(-1);
+			for (MuninServer server : master.getChildren()) {
+				server.setId(-1);
+				server.isPersistant = false;
+				for (MuninPlugin plugin : server.getPlugins()) {
+					plugin.setId(-1);
+					plugin.isPersistant = false;
+				}
+			}
 		}
 	}
 }

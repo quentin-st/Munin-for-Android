@@ -11,10 +11,12 @@
 		android:text="@string/import_sentence" />
 
 	<EditText
-		android:id="@+id/json_input"
+		android:id="@+id/import_code"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:gravity="left"
-		android:lines="10" />
+		android:layout_height="wrap_content"
+		android:gravity="center"
+	    android:layout_margin="20dp"
+		android:textSize="40sp"
+		android:maxLength="6" />
 
 </LinearLayout>

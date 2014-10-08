@@ -153,11 +153,11 @@
 	<string name="text82">Ce label va être supprimé. Êtes-vous sûr(e) ?</string>
 	<string name="import_servers">Importer</string>
 	<string name="export_servers">Exporter</string>
+	<string name="import_export">Importer / Exporter</string>
 	<string name="export_failed">Erreur lors de l\'export…</string>
 	<string name="export_subject">Munin for Android Export</string>
-	<string name="export_shareusing">Exporter via…</string>
 	<string name="import_title">Importation</string>
-	<string name="import_sentence">Veuillez copier-coller le texte généré lors de l\'export dans le champ ci-dessous</string>
+	<string name="import_sentence">Veuillez entrer le code généré sur le premier appareil</string>
 	<string name="settings_defaultserver">Default server</string>
 	<string name="settings_lang">Langue de l\'application</string>
 	<string name="lang_french">Français</string>
@@ -178,6 +178,8 @@
 	<string name="export_success_title">Export réussi</string>
 	<string name="export_success_txt1">La configuration de vos serveurs dans l\'application a été exportée avec succès.
 	    Veuillez utiliser le code suivant dans votre autre appareil Android afin de l\'importer.</string>
+	<string name="import_success_title">Import réussi</string>
+	<string name="import_success_txt1">L\'importation des serveurs a réussi</string>
 	<string name="aboutText">
 <![CDATA[
    <head>

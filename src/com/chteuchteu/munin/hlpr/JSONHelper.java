@@ -90,9 +90,8 @@ public class JSONHelper {
 		}
 	}
 	
-	public static ArrayList<MuninMaster> getMastersFromJSONString(String jsonString) {
+	public static ArrayList<MuninMaster> getMastersFromJSON(JSONObject obj) {
 		try {
-			JSONObject obj = new JSONObject(jsonString);
 			ArrayList<MuninMaster> muninMasters = new ArrayList<MuninMaster>();
 			
 			JSONArray jsonMasters = obj.getJSONArray("masters");
@@ -151,6 +150,8 @@ public class JSONHelper {
 					server.setParent(master);
 					master.addChild(server);
 				}
+				
+				muninMasters.add(master);
 			}
 			
 			return muninMasters;

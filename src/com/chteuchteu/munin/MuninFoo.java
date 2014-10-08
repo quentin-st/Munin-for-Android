@@ -93,7 +93,7 @@ public class MuninFoo {
 	public boolean premium;
 	
 	// Import/Export webservice
-	public static final String IMPORT_EXPORT_URI = "http://munin-for-android.com/importExport.php";
+	public static final String IMPORT_EXPORT_URI = "http://munin-for-android.com/ws/importExport.php";
 	public static final int IMPORT_EXPORT_VERSION = 1;
 	
 	private MuninFoo() {
@@ -216,7 +216,7 @@ public class MuninFoo {
 				contains = true; pos = i; break;
 			}
 		}
-		if (contains) // Remplacement
+		if (contains) // Replacement
 			servers.set(pos, server);
 		else
 			servers.add(server);

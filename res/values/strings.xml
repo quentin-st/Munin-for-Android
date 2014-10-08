@@ -232,11 +232,11 @@
 	<string name="text82">This label will be deleted. Are you sure?</string>
 	<string name="import_servers">Import</string>
 	<string name="export_servers">Export</string>
+	<string name="import_export">Import / Export</string>
 	<string name="export_failed">Export failed…</string>
 	<string name="export_subject">Munin for Android Export</string>
-	<string name="export_shareusing">Export using…</string>
 	<string name="import_title">Import</string>
-	<string name="import_sentence">Please copy and paste the text generated during the export in the field below</string>
+	<string name="import_sentence">Please enter the code generated on the first device</string>
 	<string name="delete">Delete</string>
 	<string name="move_up">Move up</string>
 	<string name="move_right">Move right</string>
@@ -248,6 +248,8 @@
 	<string name="export_success_title">Export successful</string>
 	<string name="export_success_txt1">Your servers configuration in the app has successfully been uploaded.
 	    Please use the following code into your secondary device in order to import it.</string>
+	<string name="import_success_title">Import successful</string>
+	<string name="import_success_txt1">The servers importation has succeeded</string>
 	<string name="fieldsDescriptionWrapper" tools:ignore="MissingTranslation">
 <![CDATA[
 		<head>

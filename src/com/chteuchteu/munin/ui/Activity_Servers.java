@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,11 +28,12 @@ import com.chteuchteu.munin.Adapter_ExpandableListView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
-import com.chteuchteu.munin.hlpr.ImportExportHelper.ExportRequestMaker;
+import com.chteuchteu.munin.hlpr.ImportExportHelper.Export.ExportRequestMaker;
+import com.chteuchteu.munin.hlpr.ImportExportHelper.Import.ImportRequestMaker;
 import com.chteuchteu.munin.hlpr.JSONHelper;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
+import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -47,6 +49,7 @@ public class Activity_Servers extends Activity {
 	ExpandableListView		expListView;
 	private Menu 			menu;
 	private MenuItem		importExportMenuItem;
+	private MenuItem		exportMenuItem;
 	private String			activityName;
 	
 	public static boolean	menu_firstLoad = true;
@@ -119,14 +122,9 @@ public class Activity_Servers extends Activity {
 			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					String jsonTxt = ((EditText) dialogView.findViewById(R.id.json_input)).getText().toString();
-					ArrayList<MuninMaster> newMasters = JSONHelper.getMastersFromJSONString(jsonTxt);
-					for (MuninMaster newMaster : newMasters) {
-						MuninFoo.getInstance().getMasters().add(newMaster);
-						for (MuninServer server : newMaster.getChildren())
-							MuninFoo.getInstance().addServer(server);
-					} // TODO
-					MuninFoo.getInstance().sqlite.saveServers();
+					String code = ((EditText) dialogView.findViewById(R.id.import_code)).getText().toString();
+					new ImportRequestMaker(code, c).execute();
+					dialog.dismiss();
 				}
 			})
 			.setNegativeButton(R.string.text64, null)
@@ -148,6 +146,26 @@ public class Activity_Servers extends Activity {
 	}
 	
 	public static void onExportError() {
+		Toast.makeText(c, "Error", Toast.LENGTH_SHORT).show();
+		// TODO
+	}
+	
+	public static void onImportSuccess() {
+		new AlertDialog.Builder(c)
+			.setTitle(R.string.import_success_title)
+			.setMessage(R.string.import_success_txt1)
+			.setCancelable(true)
+			.setPositiveButton("OK", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					c.startActivity(new Intent(c, Activity_Servers.class));
+				}
+			})
+			.show();
+	}
+	
+	public static void onImportError() {
+		Toast.makeText(c, "Error", Toast.LENGTH_SHORT).show();
 		// TODO
 	}
 	
@@ -156,7 +174,7 @@ public class Activity_Servers extends Activity {
 		if (json.equals(""))
 			Toast.makeText(this, R.string.export_failed, Toast.LENGTH_SHORT).show();
 		else
-			new ExportRequestMaker(json).execute();
+			new ExportRequestMaker(json, c).execute();
 	}
 	
 	@SuppressLint("NewApi")
@@ -189,8 +207,11 @@ public class Activity_Servers extends Activity {
 		menu.clear();
 		getMenuInflater().inflate(R.menu.servers, menu);
 		this.importExportMenuItem = menu.findItem(R.id.menu_importexport);
-		if (!muninFoo.premium || muninFoo.getHowManyServers() == 0)
+		this.exportMenuItem = menu.findItem(R.id.menu_export);
+		if (!MuninFoo.isPremium(c))
 			importExportMenuItem.setVisible(false);
+		if (muninFoo.getHowManyServers() == 0)
+			exportMenuItem.setVisible(false);
 	}
 	
 	@Override

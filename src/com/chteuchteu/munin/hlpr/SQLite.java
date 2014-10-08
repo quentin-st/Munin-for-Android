@@ -79,13 +79,13 @@ public class SQLite {
 	}
 	
 	public void saveServers() {
-		// Vérification des positions
+		// Positions checks
 		for (MuninMaster m : muninFoo.masters) {
 			for (int i=0; i<m.getOrderedChildren().size(); i++)
 				m.getOrderedChildren().get(i).setPosition(i);
 		}
 		
-		// Suppression des serveurs à supprimer
+		// Delete servers to be deleted
 		List<MuninServer> toBeDeleted = new ArrayList<MuninServer>();
 		List<MuninServer> localObj = muninFoo.getServers();
 		for (MuninServer dbS : dbHlpr.getServers(muninFoo.masters)) {
@@ -148,7 +148,7 @@ public class SQLite {
 				for (MuninPlugin mp : s.getPlugins()) {
 					boolean add = true;
 					for (MuninPlugin mp2 : bddInstance.getPlugins()) {
-						// Vérifie si mp est dans la liste
+						// Check if mp is in list
 						if (mp2.equalsApprox(mp))
 							add = false;
 					}
