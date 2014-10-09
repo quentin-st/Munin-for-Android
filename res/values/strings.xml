@@ -41,7 +41,6 @@
 	<string name="menu_graph_save">Save graph to SD card</string>
 	<string name="menu_graph_switch">Switch server</string>
 	<string name="menu_addserver_save">Save server</string>
-	<string name="menu_addserver_reset">Reset fields</string>
 	<string name="menu_addserver_delete">Delete server</string>
 	<string name="menu_pluginselection">Group by category</string>
 	<string name="loading">Loading…</string>
@@ -140,7 +139,6 @@
 	<string name="text09">Error!</string>
 	<string name="text10">Twitter app seems to be missing on your phone.</string>
 	<string name="text11">Google Play app seems to be missing on your phone.</string>
-	<string name="text14">Textfields cleared</string>
 	<string name="text16">The URL doesn\'t seems to be good. Please check it again.</string>
 	<string name="text18">Success!</string>
 	<string name="text21.1"> sub-server</string>

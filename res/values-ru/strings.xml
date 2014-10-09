@@ -22,7 +22,6 @@
 	<string name="menu_graph_refresh">Обновить</string>
 	<string name="menu_graph_save">Сохранить график на SD-карту</string>
 	<string name="menu_addserver_save">Сохранить</string>
-	<string name="menu_addserver_reset">Очистить поля</string>
 	<string name="menu_addserver_delete">Удалить</string>
 	<string name="loading">Загрузка…</string>
 	<string name="search">Поиск</string>
@@ -43,7 +42,6 @@
 	<string name="text09">Ошибка!</string>
 	<string name="text10">На вашем устройстве не установлен Twitter</string>
 	<string name="text11">На вашем устройстве не установлен Google Play</string>
-	<string name="text14">Текстовые поля очищены</string>
 	<string name="text16">Некорректный URL. Пожалуйста, проверьте настройки</string>
 	<string name="text18">Готово!</string>
 	<string name="text21.1">Суб-сервер</string>

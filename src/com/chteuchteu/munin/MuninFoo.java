@@ -104,14 +104,14 @@ public class MuninFoo {
 		loadInstance();
 	}
 	
-	public MuninFoo(Context c) {
+	public MuninFoo(Context context) {
 		premium = false;
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<Label>();
 		masters = new ArrayList<MuninMaster>();
-		sqlite = new SQLite(c, this);
+		sqlite = new SQLite(context, this);
 		instance = null;
-		loadInstance(c);
+		loadInstance(context);
 	}
 	
 	public void loadInstance() {
@@ -129,11 +129,11 @@ public class MuninFoo {
 			sqlite.logMasters();
 	}
 	
-	public void loadInstance(Context c) {
+	public void loadInstance(Context context) {
 		loadInstance();
-		if (c != null) {
+		if (context != null) {
 			// Set default server
-			String defaultServerUrl = Util.getPref(c, "defaultServer");
+			String defaultServerUrl = Util.getPref(context, "defaultServer");
 			if (!defaultServerUrl.equals("")) {
 				for (MuninServer server : this.servers) {
 					if (server.getServerUrl().equals(defaultServerUrl))
@@ -141,15 +141,15 @@ public class MuninFoo {
 				}
 			}
 			
-			this.premium = isPremium(c);
+			this.premium = isPremium(context);
 		}
 	}
 	
-	public void resetInstance(Context c) {
+	public void resetInstance(Context context) {
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<Label>();
-		sqlite = new SQLite(c, this);
-		loadInstance(c);
+		sqlite = new SQLite(context, this);
+		loadInstance(context);
 	}
 	
 	public static synchronized MuninFoo getInstance() {
@@ -158,9 +158,9 @@ public class MuninFoo {
 		return instance;
 	}
 	
-	public static synchronized MuninFoo getInstance(Context c) {
+	public static synchronized MuninFoo getInstance(Context context) {
 		if (instance == null)
-			instance = new MuninFoo(c);
+			instance = new MuninFoo(context);
 		return instance;
 	}
 	
@@ -184,14 +184,14 @@ public class MuninFoo {
 			this.masters.add(defMaster);
 	}
 	
-	public void loadLanguage(Context c) {
-		if (!Util.getPref(c, "lang").equals("")) {
-			String lang = Util.getPref(c, "lang");
+	public void loadLanguage(Context context) {
+		if (!Util.getPref(context, "lang").equals("")) {
+			String lang = Util.getPref(context, "lang");
 			// lang == "en" || "fr" || "de" || "ru"
-			if (!(lang.equals("en") || lang.equals("fr") || lang.equals("de") || lang.equals("ru"))) {
+			if (!(lang.equals("en") || lang.equals("fr") || lang.equals("de") || lang.equals("ru")))
 				lang = "en";
-			}
-			Resources res = c.getApplicationContext().getResources();
+			
+			Resources res = context.getApplicationContext().getResources();
 			DisplayMetrics dm = res.getDisplayMetrics();
 			Configuration conf = res.getConfiguration();
 			conf.locale = new Locale(lang);

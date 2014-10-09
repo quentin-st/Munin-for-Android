@@ -84,6 +84,9 @@ public class Activity_Server extends Activity {
 	private String 	contextServerUrl;	// Si modification de serveur: URL du serveur a modifier
 	private MuninServer settingsServer;
 	
+	private Activity_Mode mode;
+	private enum Activity_Mode { ADD_SERVER, EDIT_SERVER }
+	
 	// Algo
 	private String 	serverUrl;
 	private boolean 	SSL;
@@ -110,27 +113,30 @@ public class Activity_Server extends Activity {
 		c = this;
 		
 		setContentView(R.layout.addserver);
+		
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
 		Intent thisIntent = getIntent();
-		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("contextServerUrl"))
+		contextServerUrl = "";
+		if (thisIntent != null && thisIntent.getExtras().containsKey("contextServerUrl"))
 			contextServerUrl = thisIntent.getExtras().getString("contextServerUrl");
-		if (contextServerUrl != null && contextServerUrl.equals(""))
-			actionBar.setTitle(getString(R.string.addServerTitle)); // Add a server
-		else
-			actionBar.setTitle(R.string.editServerTitle); // Edit a server
 		
 		dh = new DrawerHelper(this, muninFoo);
-		if (contextServerUrl != null && contextServerUrl.equals(""))
-			dh.setDrawerActivity(dh.Activity_AddServer_Add);
-		else
-			dh.setDrawerActivity(dh.Activity_AddServer_Edit);
+		if (contextServerUrl.equals("")) {
+			mode = Activity_Mode.ADD_SERVER;
+			actionBar.setTitle(getString(R.string.addServerTitle)); // Add a server
+			dh.setDrawerActivity(dh.Activity_Server_Add);
+			findViewById(R.id.addserver_auth).setVisibility(View.GONE);
+		}
+		else {
+			mode = Activity_Mode.EDIT_SERVER;
+			actionBar.setTitle(R.string.editServerTitle); // Edit a server
+			dh.setDrawerActivity(dh.Activity_Server_Edit);
+			findViewById(R.id.ll_sampleServer).setVisibility(View.GONE);
+		}
 		
 		Util.UI.applySwag(this);
-		
-		if (contextServerUrl != null && !contextServerUrl.equals(""))
-			findViewById(R.id.ll_sampleServer).setVisibility(View.GONE);
-		
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.muninMasterUrlLabel), CustomFont.RobotoCondensed_Regular);
 		
 		tb_auth_login = 	(EditText)findViewById(R.id.auth_login);
@@ -142,23 +148,10 @@ public class Activity_Server extends Activity {
 		sp_authType =		(Spinner)findViewById(R.id.spinner_auth_type);
 		
 		launching = true;
-		contextServerUrl = "";
 		
+		// Servers history
 		ArrayAdapter<String> addServerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, getHistory());
 		tb_serverUrl.setAdapter(addServerAdapter);
-		
-		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("contextServerUrl"))
-			contextServerUrl = thisIntent.getExtras().getString("contextServerUrl");
-		
-		cb_auth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (isChecked && ll_auth.getVisibility() == View.GONE)
-					ll_auth.setVisibility(View.VISIBLE);
-				else if (!isChecked && ll_auth.getVisibility() == View.VISIBLE)
-					ll_auth.setVisibility(View.GONE);
-			}
-		});
 		
 		tb_serverUrl.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -166,7 +159,7 @@ public class Activity_Server extends Activity {
 				if (spinner.getSelectedItemPosition() != 0 &&
 						!tb_serverUrl.getText().toString().contains("demo.munin-monitoring.org")
 						&& !tb_serverUrl.getText().toString().contains("munin.ping.uio.no"))
-						spinner.setSelection(0);
+					spinner.setSelection(0);
 			}
 			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
@@ -174,47 +167,82 @@ public class Activity_Server extends Activity {
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
 		});
 		
-		// Sample server
-		List<String> list = new ArrayList<String>();
-		list.add("");
-		list.add("demo.munin-monitoring.org");
-		list.add("munin.ping.uio.no");
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(dataAdapter);
-		
-		// Auth type
-		List<String> list2 = new ArrayList<String>();
-		list2.add("Basic");
-		list2.add("Digest");
-		ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
-		dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		sp_authType.setAdapter(dataAdapter2);
-		
-		
-		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
-				if (!launching) {
-					cb_auth.setChecked(false);
-					tb_auth_login.setText("");
-					tb_auth_password.setText("");
-				} else
-					launching = false;
-				if (view != null) {
-					String selectedItem = ((TextView)view).getText().toString();
-					if (selectedItem.equals("demo.munin-monitoring.org"))
-						tb_serverUrl.setText("http://demo.munin-monitoring.org/");
-					else if (selectedItem.equals("munin.ping.uio.no"))
-						tb_serverUrl.setText("http://munin.ping.uio.no/");
+		if (mode == Activity_Mode.ADD_SERVER) {
+			// Sample server
+			List<String> list = new ArrayList<String>();
+			list.add("");
+			list.add("demo.munin-monitoring.org");
+			list.add("munin.ping.uio.no");
+			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+			dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner.setAdapter(dataAdapter);
+			
+			spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+				@Override
+				public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
+					if (!launching) {
+						cb_auth.setChecked(false);
+						tb_auth_login.setText("");
+						tb_auth_password.setText("");
+					} else
+						launching = false;
+					if (view != null) {
+						String selectedItem = ((TextView)view).getText().toString();
+						if (selectedItem.equals("demo.munin-monitoring.org"))
+							tb_serverUrl.setText("http://demo.munin-monitoring.org/");
+						else if (selectedItem.equals("munin.ping.uio.no"))
+							tb_serverUrl.setText("http://munin.ping.uio.no/");
+					}
 				}
+				@Override
+				public void onNothingSelected(AdapterView<?> parentView) { }
+			});
+		}
+		
+		if (mode == Activity_Mode.EDIT_SERVER) {
+			cb_auth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					if (isChecked && ll_auth.getVisibility() == View.GONE)
+						ll_auth.setVisibility(View.VISIBLE);
+					else if (!isChecked && ll_auth.getVisibility() == View.VISIBLE)
+						ll_auth.setVisibility(View.GONE);
+				}
+			});
+			
+			// Auth type
+			List<String> list2 = new ArrayList<String>();
+			list2.add("Basic");
+			list2.add("Digest");
+			ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
+			dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			sp_authType.setAdapter(dataAdapter2);
+			
+			// Fill server URL field
+			tb_serverUrl.setText(contextServerUrl);
+			
+			// settingsServer lookup
+			for (int i=0; i<muninFoo.getHowManyServers(); i++) {
+				if (muninFoo.getServer(i) != null && muninFoo.getServer(i).equalsApprox(contextServerUrl))
+					settingsServer = muninFoo.getServer(i);
 			}
-			@Override
-			public void onNothingSelected(AdapterView<?> parentView) { }
-		});
+			
+			
+			if (settingsServer.isAuthNeeded()) {
+				cb_auth.setChecked(true);
+				
+				tb_auth_login.setText(settingsServer.getAuthLogin());
+				tb_auth_password.setText(settingsServer.getAuthPassword());
+				if (settingsServer.getAuthType() == AuthType.BASIC)
+					sp_authType.setSelection(0);
+				else if (settingsServer.getAuthType() == AuthType.DIGEST)
+					sp_authType.setSelection(1);
+			} else
+				ll_auth.setVisibility(View.GONE);
+		}
 		
 		
-		// Popup
+		// POPUP INITIALIZATION
 		int screenH = 0;
 		int screenW = 0;
 		if (android.os.Build.VERSION.SDK_INT >= 13) {
@@ -237,11 +265,7 @@ public class Activity_Server extends Activity {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layout_popup = layoutInflater.inflate(R.layout.addserver_popup, viewGroup);
 		
-		if (contextServerUrl == null || (contextServerUrl != null && contextServerUrl.equals("")))
-			findViewById(R.id.addserver_auth).setVisibility(View.GONE);
-		
-		
-		// Creating the PopupWindow
+		// Create the PopupWindow
 		popup = new PopupWindow(c);
 		popup.setContentView(layout_popup);
 		popup.setWidth(popup_width);
@@ -250,7 +274,6 @@ public class Activity_Server extends Activity {
 		popup.setOutsideTouchable(false);
 		popup.setBackgroundDrawable(new BitmapDrawable());
 		popup.setFocusable(true);
-		//popup.update();
 		popupIsShown = false;
 	}
 	
@@ -282,19 +305,8 @@ public class Activity_Server extends Activity {
 		}
 	}
 	
-	public void actionClear() {
-		tb_serverUrl.setText("");
-		tb_auth_login.setText("");
-		tb_auth_password.setText("");
-		cb_auth.setChecked(false);
-		spinner.setSelection(0, true);
-		sp_authType.setSelection(0, true);
-		// Textfields cleared
-		Toast.makeText(getApplicationContext(), getString(R.string.text14), Toast.LENGTH_SHORT).show();
-	}
-	
 	public void actionDelete() {
-		if (contextServerUrl != null && !contextServerUrl.equals("")) {
+		if (!contextServerUrl.equals("")) {
 			// When going back : expand the list to the current master if possible
 			MuninMaster m = null;
 			if (muninFoo.currentServer.getParent() != null && muninFoo.currentServer.getParent().getChildren().size() > 1)
@@ -348,42 +360,13 @@ public class Activity_Server extends Activity {
 	
 	private void createOptionsMenu() {
 		menu.clear();
-		getMenuInflater().inflate(R.menu.addserver, menu);
+		getMenuInflater().inflate(R.menu.server, menu);
 		
-		// Masquage éventuel du bouton delete
-		if (contextServerUrl == null || (contextServerUrl != null && contextServerUrl.equals("")))
+		// Hide delete button if necessary
+		if (mode == Activity_Mode.ADD_SERVER)
 			menu.findItem(R.id.menu_delete).setVisible(false);
 		if (Util.getPref(c, "addserver_history").equals(""))
 			menu.findItem(R.id.menu_clear_history).setVisible(false);
-	}
-	
-	public void onResume() {
-		super.onResume();
-		
-		// Afficher dans les cases ce qu'il y a actuellement dans les settings
-		tb_serverUrl.setText(contextServerUrl);
-		
-		// Recherche de settingsServer
-		for (int i=0; i<muninFoo.getHowManyServers(); i++) {
-			if (muninFoo.getServer(i) != null && muninFoo.getServer(i).equalsApprox(contextServerUrl))
-				settingsServer = muninFoo.getServer(i);
-		}
-		
-		if (settingsServer != null) {
-			if (settingsServer.isAuthNeeded()) { // Parametres auth renseignes
-				cb_auth.setChecked(true);
-				//ll_auth.setVisibility(View.VISIBLE);
-				
-				tb_auth_login.setText(settingsServer.getAuthLogin());
-				tb_auth_password.setText(settingsServer.getAuthPassword());
-				if (settingsServer.getAuthType() == AuthType.BASIC)
-					sp_authType.setSelection(0);
-				else if (settingsServer.getAuthType() == AuthType.DIGEST)
-					sp_authType.setSelection(1);
-			} else
-				ll_auth.setVisibility(View.GONE);
-		} else
-			ll_auth.setVisibility(View.GONE);
 	}
 	
 	@Override
@@ -395,7 +378,6 @@ public class Activity_Server extends Activity {
 				dh.getDrawer().toggle(true);
 				return true;
 			case R.id.menu_save:	actionSave();		return true;
-			case R.id.menu_clear:	actionClear();		return true;
 			case R.id.menu_delete:	actionDelete(); 	return true;
 			case R.id.menu_clear_history:
 				Util.setPref(c, "addserver_history", "");
@@ -540,7 +522,7 @@ public class Activity_Server extends Activity {
 					else
 						popup_url_message.setVisibility(View.GONE);
 					//if (settingsServer != null)
-						//et_url.setText(settingsServer.getServerUrl());
+					//et_url.setText(settingsServer.getServerUrl());
 					//else
 					et_url.setText(serverUrl);
 					//InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1045,7 +1027,7 @@ public class Activity_Server extends Activity {
 		}
 	}
 	
-	public void addInHistory(String url) {
+	private void addInHistory(String url) {
 		boolean contains = false;
 		for (String s : getHistory()) {
 			if (s.equals(url))
@@ -1058,7 +1040,7 @@ public class Activity_Server extends Activity {
 		}
 	}
 	
-	public String[] getHistory() {
+	private String[] getHistory() {
 		String his = Util.getPref(c, "addserver_history");
 		if (his.equals(""))
 			return new String[0];

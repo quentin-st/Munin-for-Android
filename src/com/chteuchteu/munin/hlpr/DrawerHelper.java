@@ -54,8 +54,6 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class DrawerHelper {
 	public int Activity_About = -1;
-	public int Activity_AddServer_Add = 1;
-	public int Activity_AddServer_Edit = 8;
 	public int Activity_Alerts = 2;
 	public int Activity_AlertsPluginSelection = 2;
 	public int Activity_Labels = 9;
@@ -67,6 +65,8 @@ public class DrawerHelper {
 	public int Activity_Main = 0;
 	public int Activity_Notifications = 4;
 	public int Activity_PluginSelection = 7;
+	public int Activity_Server_Add = 1;
+	public int Activity_Server_Edit = 8;
 	public int Activity_Servers = 5;
 	public int Activity_ServersEdit = 5;
 	public int Activity_Settings = 6;
@@ -442,7 +442,7 @@ public class DrawerHelper {
 				TextView b = (TextView)v.findViewById(R.id.button);
 				b.setText(s.getName());
 				
-				if (n == Activity_AddServer_Edit && s.equalsApprox(m.currentServer)) {
+				if (n == Activity_Server_Edit && s.equalsApprox(m.currentServer)) {
 					b.setBackgroundResource(R.drawable.drawer_selectedsubbutton);
 					b.setTextColor(c.getResources().getColor(R.color.cffffff));
 				}

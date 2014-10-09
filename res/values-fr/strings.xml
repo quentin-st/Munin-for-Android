@@ -41,7 +41,6 @@
 	<string name="menu_graph_save">Sauvegarder le graph sur la carte SD</string>
 	<string name="menu_graph_switch">Changer de serveur…</string>
 	<string name="menu_addserver_save">Sauvegarder le serveur</string>
-	<string name="menu_addserver_reset">Vider les champs</string>
 	<string name="menu_addserver_delete">Supprimer le serveur</string>
 	<string name="menu_pluginselection">Grouper par catégorie</string>
 	<string name="loading">Chargement…</string>
@@ -77,7 +76,6 @@
 	<string name="text09">Erreur</string>
 	<string name="text10">L\'application Twitter ne semble pas être installée sur votre appareil</string>
 	<string name="text11">L\'application Google Play ne semble pas être installée sur votre appareil</string>
-	<string name="text14">Champs effacés</string>
 	<string name="text16">L\'URL semble être incorrecte. Veuillez la vérifier</string>
 	<string name="text18">Félicitations !</string>
 	<string name="text21.1"> sous-serveur</string>

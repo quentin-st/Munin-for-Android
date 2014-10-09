@@ -154,7 +154,9 @@ public class MuninServer {
 	
 	public void setAuthType(AuthType t) { this.authType = t; }
 	public AuthType getAuthType() { return this.authType; }
-	public boolean isAuthNeeded() { return this.authType != AuthType.NONE; }
+	public boolean isAuthNeeded() {
+		return this.authType == AuthType.BASIC || this.authType == AuthType.DIGEST;
+	}
 	public void setAuthIds(String login, String password) {
 		this.authLogin = login;
 		this.authPassword = password;

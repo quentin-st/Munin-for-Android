@@ -40,7 +40,7 @@ public class Activity_Init extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = new MuninFoo(this);
+		muninFoo = MuninFoo.getInstance(this);
 		context = this;
 		Crashlytics.start(this);
 		
