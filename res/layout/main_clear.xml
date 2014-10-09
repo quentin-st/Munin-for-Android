@@ -1,45 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent" >
+	android:layout_height="match_parent"
+	android:gravity="center_vertical"
+	android:orientation="vertical" >
+	
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_marginBottom="30dp"
+		android:contentDescription="@string/splashDesc"
+		android:src="@drawable/splash_overlay_logo" />
 
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:background="@drawable/splash_gradient"
-		android:orientation="vertical" >
-
-		<LinearLayout
-			android:id="@+id/ll_splash"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:gravity="center_vertical"
-			android:orientation="vertical" >
-
-			<ImageView
-				android:id="@+id/overlay_icon"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:layout_marginBottom="30dp"
-				android:contentDescription="@string/splashDesc"
-				android:src="@drawable/splash_overlay_logo" />
-
-			<TextView
-				android:id="@+id/splash_overlay_appname"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:layout_marginBottom="10dp"
-				android:contentDescription="@string/splashDesc"
-				android:shadowColor="#888888"
-				android:shadowDx="0"
-				android:shadowDy="1"
-				android:shadowRadius="2"
-				android:text="@string/app_name"
-				android:textColor="#ffffff"
-				android:textSize="47sp" />
-		</LinearLayout>
-	</RelativeLayout>
-
-</FrameLayout>
+	<TextView
+	    android:id="@+id/main_clear_appname"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_marginBottom="10dp"
+		android:contentDescription="@string/splashDesc"
+		android:shadowColor="#888888"
+		android:shadowDx="0"
+		android:shadowDy="1"
+		android:shadowRadius="2"
+		android:text="@string/app_name"
+		android:textColor="#ffffff"
+		android:textSize="47sp" />
+	
+</LinearLayout>

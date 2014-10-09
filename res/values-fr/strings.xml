@@ -20,8 +20,6 @@
 	<string name="settings_auth_type">Type d\'authentification</string>
 	<string name="settings_login">Identifiant</string>
 	<string name="settings_password">Mot de passe</string>
-	<string name="settings_splash_label">Écran de démarrage</string>
-	<string name="settings_splash_checkbox">Désactiver l\'écran de démarrage</string>
 	<string name="settings_default_scale">Période par défaut des graphs</string>
 	<string name="settings_graphview_orientation">Orientation de l\'écran des graphs</string>
 	<string name="settings_transitions_label">Transitions</string>

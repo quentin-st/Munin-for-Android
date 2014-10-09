@@ -41,7 +41,6 @@ public class Activity_Settings extends Activity {
 	private Spinner	spinner_orientation;
 	private View		checkable_transitions;
 	private View		checkable_drawer;
-	private View		checkable_splash;
 	private View		checkable_alwaysOn;
 	private View		checkable_autoRefresh;
 	private View		checkable_graphsZoom;
@@ -80,7 +79,6 @@ public class Activity_Settings extends Activity {
 		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);
 		
 		checkable_drawer = inflateCheckable((ViewGroup)findViewById(R.id.checkable_drawer), getString(R.string.settings_drawer_checkbox));
-		checkable_splash = inflateCheckable((ViewGroup)findViewById(R.id.checkable_splash), getString(R.string.settings_splash_checkbox));
 		checkable_transitions = inflateCheckable((ViewGroup)findViewById(R.id.checkable_transitions), getString(R.string.settings_transitions_checkbox));
 		checkable_alwaysOn = inflateCheckable((ViewGroup)findViewById(R.id.checkable_screenalwayson), getString(R.string.settings_screenalwayson_checkbox));
 		checkable_autoRefresh = inflateCheckable((ViewGroup)findViewById(R.id.checkable_autorefresh), getString(R.string.settings_autorefresh_checkbox));
@@ -130,7 +128,6 @@ public class Activity_Settings extends Activity {
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title1), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title2), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title3), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title4), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title5), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title6), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title7), CustomFont.RobotoCondensed_Bold);
@@ -159,12 +156,6 @@ public class Activity_Settings extends Activity {
 	}
 	
 	public void actionSave() {
-		// Disable splash
-		if (getCheckableValue(checkable_splash))
-			setPref("splash", "false");
-		else
-			setPref("splash", "true");
-		
 		// Graph default scale
 		if (spinner_scale.getSelectedItemPosition() == 0)
 			setPref("defaultScale", "day");
@@ -250,10 +241,6 @@ public class Activity_Settings extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		// Disable splash
-		if (getPref("splash").equals("false"))
-			setChecked(checkable_splash, true);
 		
 		// Graph default scale
 		if (getPref("defaultScale").equals("day"))

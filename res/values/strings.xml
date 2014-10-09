@@ -20,8 +20,6 @@
 	<string name="settings_auth_type">Auth type</string>
 	<string name="settings_login">Login</string>
 	<string name="settings_password">Password</string>
-	<string name="settings_splash_label">Splash screen</string>
-	<string name="settings_splash_checkbox">Disable splash screen on launch</string>
 	<string name="settings_default_scale">Graph default scale</string>
 	<string name="settings_graphview_orientation">Graphs screen orientation</string>
 	<string name="settings_transitions_label">Transitions</string>

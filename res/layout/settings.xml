@@ -71,26 +71,6 @@
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="8dp" />
 
-			<!-- Splash screen -->
-
-			<TextView
-				android:id="@+id/title4"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="15dp"
-				android:text="@string/settings_splash_label"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:textStyle="bold" />
-
-			<LinearLayout
-				android:id="@+id/checkable_splash"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="13dp"
-				android:layout_marginTop="8dp"
-				android:gravity="right"
-				android:orientation="vertical" />
-
 			<!-- Transitions -->
 
 			<TextView

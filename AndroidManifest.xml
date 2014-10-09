@@ -31,7 +31,7 @@
 		android:label="@string/app_name"
 		android:theme="@style/MyAppTheme" >
 		<activity
-			android:name="com.chteuchteu.munin.ui.Activity_Splash"
+			android:name="com.chteuchteu.munin.ui.Activity_Init"
 			android:label="@string/app_name"
 			android:noHistory="true"
 			android:theme="@style/NoActionBar" >

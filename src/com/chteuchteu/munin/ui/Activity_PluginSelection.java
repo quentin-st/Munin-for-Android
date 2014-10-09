@@ -75,6 +75,7 @@ public class Activity_PluginSelection extends ListActivity {
 		c = this;
 		setContentView(R.layout.pluginselection);
 		this.actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		Util.UI.applySwag(this);
 		
 		// Create ActionBar spinner (dropdown) if needed

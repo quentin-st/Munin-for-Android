@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
@@ -65,7 +66,7 @@ public class Activity_Main extends Activity {
 		if (muninFoo.drawer) {
 			dh = new DrawerHelper(this, muninFoo);
 			dh.setDrawerActivity(dh.Activity_Main);
-			Fonts.setFont(this, (ViewGroup)findViewById(R.id.ll_splash), CustomFont.RobotoCondensed_Regular);
+			Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.RobotoCondensed_Regular);
 		} else
 			Fonts.setFont(this, (ViewGroup)findViewById(R.id.buttonsContainer), CustomFont.RobotoCondensed_Regular);
 		

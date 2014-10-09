@@ -12,8 +12,6 @@
 	<string name="settings_http_auth2">необходима HTTP аутентификация</string>
 	<string name="settings_login">Логин</string>
 	<string name="settings_password">Пароль</string>
-	<string name="settings_splash_label">Заставка</string>
-	<string name="settings_splash_checkbox">Отключить заставку при запуске</string>
 	<string name="settings_default_scale">масштаб графика по умолчанию</string>
 	<string name="settings_delete_button">Удалить</string>
 	<string name="servers_btn_add_server">Добавить сервер</string>
