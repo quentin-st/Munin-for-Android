@@ -41,7 +41,7 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.SearchResult;
 import com.chteuchteu.munin.obj.SearchResult.SearchResultType;
-import com.chteuchteu.munin.ui.Activity_AddServer;
+import com.chteuchteu.munin.ui.Activity_Server;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
 import com.chteuchteu.munin.ui.Activity_GridSelection;
@@ -147,10 +147,6 @@ public class DrawerHelper {
 	public void setViewFlow(ViewFlow v) { this.vf = v; }
 	
 	public SlidingMenu getDrawer() { return this.sm; }
-	
-	public void reInitDrawer() {
-		initDrawer();
-	}
 	
 	private void initDrawer() {
 		sm = new SlidingMenu(a);
@@ -454,7 +450,7 @@ public class DrawerHelper {
 				b.setOnClickListener(new OnClickListener() {
 					public void onClick (View v) {
 						m.currentServer = s;
-						Intent intent = new Intent(a, Activity_AddServer.class);
+						Intent intent = new Intent(a, Activity_Server.class);
 						intent.putExtra("contextServerUrl", s.getServerUrl());
 						intent.putExtra("action", "edit");
 						a.startActivity(intent);

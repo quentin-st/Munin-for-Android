@@ -57,7 +57,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 
 @SuppressLint("CommitPrefEdits")
-public class Activity_AddServer extends Activity {
+public class Activity_Server extends Activity {
 	private MuninFoo	muninFoo;
 	private DrawerHelper dh;
 	private Context 	c;
@@ -403,11 +403,11 @@ public class Activity_AddServer extends Activity {
 				Toast.makeText(getApplicationContext(), getString(R.string.text66_1), Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_settings:
-				startActivity(new Intent(Activity_AddServer.this, Activity_Settings.class));
+				startActivity(new Intent(Activity_Server.this, Activity_Settings.class));
 				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
-				startActivity(new Intent(Activity_AddServer.this, Activity_About.class));
+				startActivity(new Intent(Activity_Server.this, Activity_About.class));
 				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:	return super.onOptionsItemSelected(item);
@@ -635,7 +635,7 @@ public class Activity_AddServer extends Activity {
 				
 				runOnUiThread(new Runnable() {
 					public void run() {
-						AlertDialog.Builder builder = new AlertDialog.Builder(Activity_AddServer.this);
+						AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Server.this);
 						builder.setMessage(message_text)
 						.setCancelable(false)
 						// Yes
@@ -646,7 +646,7 @@ public class Activity_AddServer extends Activity {
 									intent.setData(Uri.parse("market://details?id=com.chteuchteu.muninforandroidfeaturespack"));
 									startActivity(intent);
 								} catch (Exception ex) {
-									final AlertDialog ad = new AlertDialog.Builder(Activity_AddServer.this).create();
+									final AlertDialog ad = new AlertDialog.Builder(Activity_Server.this).create();
 									// Error!
 									ad.setTitle(getString(R.string.text09));
 									ad.setMessage(getString(R.string.text11));
@@ -661,7 +661,7 @@ public class Activity_AddServer extends Activity {
 						// Learn more...
 						.setNeutralButton(getString(R.string.text35), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								Intent intent = new Intent(Activity_AddServer.this, Activity_GoPremium.class);
+								Intent intent = new Intent(Activity_Server.this, Activity_GoPremium.class);
 								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 								startActivity(intent);
 							}
@@ -679,13 +679,13 @@ public class Activity_AddServer extends Activity {
 			} else if (res == RES_NO_CONNECTION) {
 				runOnUiThread(new Runnable() {
 					public void run() {
-						Toast.makeText(Activity_AddServer.this, getString(R.string.text30), Toast.LENGTH_LONG).show();
+						Toast.makeText(Activity_Server.this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 					}
 				});
 			}
 			else if (res == RES_MALFORMED_URL) {
 				// Popup pas ouverte à cet endroit -> dialog
-				AlertDialog.Builder builder = new AlertDialog.Builder(Activity_AddServer.this);
+				AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Server.this);
 				builder.setMessage(getString(R.string.text16))
 				.setCancelable(true)
 				// OK
@@ -1014,7 +1014,7 @@ public class Activity_AddServer extends Activity {
 						@Override
 						public void onClick(View v) {
 							popup.dismiss();
-							Intent intent = new Intent(Activity_AddServer.this, Activity_Servers.class);
+							Intent intent = new Intent(Activity_Server.this, Activity_Servers.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
 							Util.setTransition(c, TransitionStyle.SHALLOWER);
@@ -1029,7 +1029,7 @@ public class Activity_AddServer extends Activity {
 						@Override
 						public void onClick(View v) {
 							popup.dismiss();
-							Intent intent = new Intent(Activity_AddServer.this, Activity_Servers.class);
+							Intent intent = new Intent(Activity_Server.this, Activity_Servers.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
 							Util.setTransition(c, TransitionStyle.SHALLOWER);
@@ -1041,7 +1041,7 @@ public class Activity_AddServer extends Activity {
 			if (MuninFoo.DEBUG)
 				muninFoo.sqlite.logMasters();
 			if (!Util.isOnline(c))
-				Toast.makeText(Activity_AddServer.this, getString(R.string.text30), Toast.LENGTH_LONG).show();
+				Toast.makeText(Activity_Server.this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 		}
 	}
 	

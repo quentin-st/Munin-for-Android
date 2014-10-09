@@ -13,7 +13,6 @@
 
 ## Activities ##
 * Activity_About
-* Activity_AddServer
 * Activity_Alerts
 * Activity_AlertsPluginSelection
 * Activity_GoPremium
@@ -26,6 +25,7 @@
 * Activity_Main
 * Activity_Notifications
 * Activity_PluginSelection
+* Activity_Server
 * Activity_Servers
 * Activity_ServersEdit
 * Activity_Settings

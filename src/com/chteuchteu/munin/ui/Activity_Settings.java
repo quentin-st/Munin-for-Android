@@ -395,10 +395,10 @@ public class Activity_Settings extends Activity {
 				
 				muninFoo.resetInstance(context);
 				
-				dh.reInitDrawer();
-				
 				// Reset performed.
 				Toast.makeText(getApplicationContext(), getString(R.string.text02), Toast.LENGTH_SHORT).show();
+				
+				startActivity(new Intent(Activity_Settings.this, Activity_Settings.class));
 			}
 		})
 		.setNegativeButton("No", new DialogInterface.OnClickListener() {

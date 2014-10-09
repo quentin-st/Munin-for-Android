@@ -100,7 +100,7 @@ public class Activity_Servers extends Activity {
 			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 				//final String selected = (String) expListAdapter.getChild(groupPosition, childPosition);
 				MuninServer s = muninFoo.masters.get(groupPosition).getServerFromFlatPosition(childPosition);
-				Intent intent = new Intent(Activity_Servers.this, Activity_AddServer.class);
+				Intent intent = new Intent(Activity_Servers.this, Activity_Server.class);
 				intent.putExtra("contextServerUrl", s.getServerUrl());
 				intent.putExtra("action", "edit");
 				startActivity(intent);
@@ -240,7 +240,7 @@ public class Activity_Servers extends Activity {
 				dh.getDrawer().toggle(true);
 				return true;
 			case R.id.menu_add:
-				intent = new Intent(this, Activity_AddServer.class);
+				intent = new Intent(this, Activity_Server.class);
 				intent.putExtra("contextServerUrl", "");
 				startActivity(intent);
 				Util.setTransition(c, TransitionStyle.DEEPER);
