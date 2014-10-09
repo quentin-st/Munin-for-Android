@@ -7,6 +7,16 @@
 
 	<!-- Search -->
 
+
+	<!-- Do not remove this : important for focus clearing -->
+
+	<View
+		android:id="@+id/focusClearer"
+		android:layout_width="0px"
+		android:layout_height="0px"
+		android:focusable="true"
+		android:focusableInTouchMode="true" />
+
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -18,20 +28,11 @@
 		android:paddingRight="6dp"
 		android:paddingTop="7dp" >
 
-		<!-- Do not remove this : important for focus clearing -->
-
-		<LinearLayout
-			android:id="@+id/focusClearer"
-			android:layout_width="0px"
-			android:layout_height="0px"
-			android:focusable="true"
-			android:focusableInTouchMode="true" />
-
 		<EditText
 			android:id="@+id/drawer_search"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@drawable/drawer_search_background"
+			android:background="@null"
 			android:drawableLeft="@drawable/drawer_search"
 			android:drawableRight="@drawable/drawer_search_cancel"
 			android:hint="@string/search"
