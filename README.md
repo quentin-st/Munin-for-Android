@@ -8,6 +8,7 @@
 * Grid
 * GridItem
 * Label
+* SearchResult
 * Widget
 
 ## Activities ##
@@ -36,6 +37,7 @@
 * DrawerHelper
 * GridDownloadHelper *- Grids simultaneous downloads helper*
 * JSONHelper *- JSON import/export - not used for now*
+* MediaScannerUtil *- warns Android system about a new picture on the filesystem*
 * SQLite *- SQLite database top-level methods (saveServers(), ...)*
 * Util *- Generic util methods*
 
@@ -52,3 +54,13 @@
 * Service_Notifications
 * Widget_Configure
 * Widget_GraphWidget
+
+## Custom Exceptions ##
+* ImportExportWebServiceException
+
+## WebServices ##
+### Import / Export ###
+Import/export servers configuration  
+Target : munin-for-android.com/ws/importExport.php  
+Generic Import/Export class : src / com / chteuchteu / munin / hlpr / ImportExportHelper.java  
+Read more : importExport.php
