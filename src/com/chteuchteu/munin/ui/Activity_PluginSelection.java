@@ -58,6 +58,7 @@ public class Activity_PluginSelection extends ListActivity {
 	private LinearLayout	ll_filter;
 	private EditText		filter;
 	private	ActionBar		actionBar;
+	private boolean			actionBarListEnabled;
 	private Menu 			menu;
 	private String			activityName;
 	
@@ -72,30 +73,30 @@ public class Activity_PluginSelection extends ListActivity {
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
 		c = this;
-		
 		setContentView(R.layout.pluginselection);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
 		this.actionBar = getActionBar();
-		
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		actionBar.setDisplayShowTitleEnabled(false);
-		
 		Util.UI.applySwag(this);
 		
-		if (muninFoo != null && muninFoo.getHowManyServers() > 0) {
+		// Create ActionBar spinner (dropdown) if needed
+		actionBarSpinnerIndex = -1;
+		actionBarListEnabled = false;
+		
+		if (muninFoo.getHowManyServers() > 1) {
+			actionBar.setDisplayShowTitleEnabled(false);
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+			actionBarListEnabled = true;
+			
 			if (muninFoo.currentServer == null) // hotfix
 				muninFoo.currentServer = muninFoo.getServer(0);
 			
-			actionBarSpinnerIndex = muninFoo.currentServer.getFlatPosition();
+			actionBarSpinnerIndex = muninFoo.currentServer.getFlatPosition(muninFoo);
 			List<String> list2 = new ArrayList<String>();
 			List<MuninServer> l1 = muninFoo.getOrderedServers();
 			for (MuninServer s : l1)
 				list2.add(s.getName());
-			
+			// TODO
 			SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(getActionBar().getThemedContext(),
 					android.R.layout.simple_spinner_dropdown_item, list2);
-			
 			
 			ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
 				@Override
@@ -114,7 +115,11 @@ public class Activity_PluginSelection extends ListActivity {
 			};
 			actionBar.setListNavigationCallbacks(spinnerAdapter, navigationListener);
 			actionBar.setSelectedNavigationItem(actionBarSpinnerIndex);
+		} else if (muninFoo.getHowManyServers() == 1) {
+			actionBar.setTitle(getString(R.string.button_graphs));
+			actionBar.setSubtitle(muninFoo.currentServer.getName());
 		}
+		
 		if (muninFoo.drawer) {
 			dh = new DrawerHelper(this, muninFoo);
 			dh.setDrawerActivity(dh.Activity_PluginSelection);
@@ -126,8 +131,8 @@ public class Activity_PluginSelection extends ListActivity {
 			muninFoo.currentServer = muninFoo.getServer(0);
 		
 		if (muninFoo.currentServer != null && muninFoo.currentServer.getPlugins() != null && muninFoo.currentServer.getPlugins().size() > 0) {
-			if (actionBar != null)
-				actionBar.setSelectedNavigationItem(muninFoo.currentServer.getFlatPosition());
+			if (actionBarListEnabled)
+				actionBar.setSelectedNavigationItem(muninFoo.currentServer.getFlatPosition(muninFoo));
 			
 			updateListView();
 		} else {
@@ -199,7 +204,7 @@ public class Activity_PluginSelection extends ListActivity {
 				}
 			});
 		} else {
-			// Création de la liste des plugins
+			// Create plugins list
 			pluginsListCat = muninFoo.currentServer.getPluginsListWithCategory();
 			
 			pluginsList = new ArrayList<MuninPlugin>();
@@ -208,17 +213,6 @@ public class Activity_PluginSelection extends ListActivity {
 					pluginsList.add(muninFoo.currentServer.getPlugins().get(i));
 			}
 			
-			//list.clear();
-			/*HashMap<String,String> item;
-			for(int i=0; i<pluginsList.size(); i++){
-				item = new HashMap<String,String>();
-				item.put("line1", pluginsList.get(i).getFancyName());
-				item.put("line2", pluginsList.get(i).getName());
-				list.add(item);
-			}
-			sa = new SimpleAdapter(Activity_PluginSelection.this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
-			setListAdapter(sa);
-			 */
 			getListView().setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					TextView plu = (TextView) view.findViewById(R.id.line_b);
@@ -285,9 +279,6 @@ public class Activity_PluginSelection extends ListActivity {
 	}
 	private void createOptionsMenu() {
 		menu.clear();
-		// Sélection du serveur dans le spinner
-		//if (actionBar != null && Activity_Main.muninFoo != null && Activity_Main.currentServer != null)
-		//actionBar.setSelectedNavigationItem(Activity_Main.muninFoo.getServerRange(Activity_Main.currentServer));
 		getMenuInflater().inflate(R.menu.pluginselection, menu);
 		
 		ll_filter = (LinearLayout) this.findViewById(R.id.ll_filter);

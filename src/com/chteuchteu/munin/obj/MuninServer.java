@@ -602,11 +602,11 @@ public class MuninServer {
 		}
 	}
 	
-	public int getFlatPosition() {
+	public int getFlatPosition(MuninFoo muninFooInstance) {
 		// si pos -> 0 1 4 8 9 11
 		// gFP(2) -> 4 (!= null)
-		for (int i=0; i<MuninFoo.getInstance().getOrderedServers().size(); i++) {
-			if (MuninFoo.getInstance().getOrderedServers().get(i).equalsApprox(this))
+		for (int i=0; i<muninFooInstance.getOrderedServers().size(); i++) {
+			if (muninFooInstance.getOrderedServers().get(i).equalsApprox(this))
 				return i;
 		}
 		return 0;
