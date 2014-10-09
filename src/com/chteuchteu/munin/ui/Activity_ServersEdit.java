@@ -56,10 +56,8 @@ public class Activity_ServersEdit extends ListActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.editServersTitle));
 		
-		if (muninFoo.drawer) {
-			dh = new DrawerHelper(this, muninFoo);
-			dh.setDrawerActivity(dh.Activity_ServersEdit);
-		}
+		dh = new DrawerHelper(this, muninFoo);
+		dh.setDrawerActivity(dh.Activity_ServersEdit);
 		
 		Util.UI.applySwag(this);
 		
@@ -139,24 +137,24 @@ public class Activity_ServersEdit extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		if (muninFoo.drawer) {
-			dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-				@Override
-				public void onOpen() {
-					activityName = getActionBar().getTitle().toString();
-					getActionBar().setTitle("Munin for Android");
-					menu.clear();
-					getMenuInflater().inflate(R.menu.main, menu);
-				}
-			});
-			dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-				@Override
-				public void onClose() {
-					getActionBar().setTitle(activityName);
-					createOptionsMenu();
-				}
-			});
-		}
+		
+		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
+			@Override
+			public void onOpen() {
+				activityName = getActionBar().getTitle().toString();
+				getActionBar().setTitle("Munin for Android");
+				menu.clear();
+				getMenuInflater().inflate(R.menu.main, menu);
+			}
+		});
+		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
+			@Override
+			public void onClose() {
+				getActionBar().setTitle(activityName);
+				createOptionsMenu();
+			}
+		});
+		
 		createOptionsMenu();
 		return true;
 	}
@@ -172,15 +170,7 @@ public class Activity_ServersEdit extends ListActivity {
 		Intent intent;
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (muninFoo.drawer)
-					dh.getDrawer().toggle(true);
-				else {
-					intent = new Intent(this, Activity_Servers.class);
-					intent.putExtra("fromMaster", m.getId());
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-					Util.setTransition(c, TransitionStyle.SHALLOWER);
-				}
+				dh.getDrawer().toggle(true);
 				return true;
 			case R.id.menu_revert:
 				intent = new Intent(this, Activity_Servers.class);

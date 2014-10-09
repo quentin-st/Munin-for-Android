@@ -73,10 +73,8 @@ public class Activity_LabelsPluginSelection extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(label.getName());
 		
-		if (muninFoo.drawer) {
-			dh = new DrawerHelper(this, muninFoo);
-			dh.setDrawerActivity(dh.Activity_LabelsPluginSelection);
-		}
+		dh = new DrawerHelper(this, muninFoo);
+		dh.setDrawerActivity(dh.Activity_LabelsPluginSelection);
 		
 		Util.UI.applySwag(this);
 		
@@ -152,12 +150,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (muninFoo.drawer)
-					dh.getDrawer().toggle(true);
-				else {
-					startActivity(new Intent(this, Activity_Labels.class));
-					Util.setTransition(c, TransitionStyle.SHALLOWER);
-				}
+				dh.getDrawer().toggle(true);
 				return true;
 			case R.id.menu_delete:
 				deleteLabel();
@@ -177,24 +170,24 @@ public class Activity_LabelsPluginSelection extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		if (muninFoo.drawer) {
-			dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-				@Override
-				public void onOpen() {
-					activityName = getActionBar().getTitle().toString();
-					getActionBar().setTitle("Munin for Android");
-					menu.clear();
-					getMenuInflater().inflate(R.menu.main, menu);
-				}
-			});
-			dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-				@Override
-				public void onClose() {
-					getActionBar().setTitle(activityName);
-					createOptionsMenu();
-				}
-			});
-		}
+		
+		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
+			@Override
+			public void onOpen() {
+				activityName = getActionBar().getTitle().toString();
+				getActionBar().setTitle("Munin for Android");
+				menu.clear();
+				getMenuInflater().inflate(R.menu.main, menu);
+			}
+		});
+		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
+			@Override
+			public void onClose() {
+				getActionBar().setTitle(activityName);
+				createOptionsMenu();
+			}
+		});
+		
 		createOptionsMenu();
 		return true;
 	}

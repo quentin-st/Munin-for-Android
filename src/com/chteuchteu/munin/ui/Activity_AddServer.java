@@ -120,13 +120,11 @@ public class Activity_AddServer extends Activity {
 		else
 			actionBar.setTitle(R.string.editServerTitle); // Edit a server
 		
-		if (muninFoo.drawer) {
-			dh = new DrawerHelper(this, muninFoo);
-			if (contextServerUrl != null && contextServerUrl.equals(""))
-				dh.setDrawerActivity(dh.Activity_AddServer_Add);
-			else
-				dh.setDrawerActivity(dh.Activity_AddServer_Edit);
-		}
+		dh = new DrawerHelper(this, muninFoo);
+		if (contextServerUrl != null && contextServerUrl.equals(""))
+			dh.setDrawerActivity(dh.Activity_AddServer_Add);
+		else
+			dh.setDrawerActivity(dh.Activity_AddServer_Edit);
 		
 		Util.UI.applySwag(this);
 		
@@ -325,24 +323,24 @@ public class Activity_AddServer extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		if (muninFoo.drawer) {
-			dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-				@Override
-				public void onOpen() {
-					activityName = getActionBar().getTitle().toString();
-					getActionBar().setTitle("Munin for Android");
-					menu.clear();
-					getMenuInflater().inflate(R.menu.main, menu);
-				}
-			});
-			dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-				@Override
-				public void onClose() {
-					getActionBar().setTitle(activityName);
-					createOptionsMenu();
-				}
-			});
-		}
+		
+		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
+			@Override
+			public void onOpen() {
+				activityName = getActionBar().getTitle().toString();
+				getActionBar().setTitle("Munin for Android");
+				menu.clear();
+				getMenuInflater().inflate(R.menu.main, menu);
+			}
+		});
+		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
+			@Override
+			public void onClose() {
+				getActionBar().setTitle(activityName);
+				createOptionsMenu();
+			}
+		});
+		
 		createOptionsMenu();
 		
 		return true;
@@ -394,13 +392,7 @@ public class Activity_AddServer extends Activity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (muninFoo.drawer)
-					dh.getDrawer().toggle(true);
-				else {
-					Intent intent = new Intent(this, Activity_Servers.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-				}
+				dh.getDrawer().toggle(true);
 				return true;
 			case R.id.menu_save:	actionSave();		return true;
 			case R.id.menu_clear:	actionClear();		return true;

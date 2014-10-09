@@ -239,6 +239,12 @@ public class Activity_Init extends Activity {
 			}
 		}
 		
+		if (Util.hasPref(context, "drawer"))
+			Util.removePref(context, "drawer");
+		
+		if (Util.hasPref(context, "splash"))
+			Util.removePref(context, "splash");
+		
 		Util.setPref(context, "lastMFAVersion", muninFoo.version + "");
 		
 		muninFoo.resetInstance(this);

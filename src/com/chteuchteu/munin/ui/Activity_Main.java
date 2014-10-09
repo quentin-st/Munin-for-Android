@@ -13,10 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,11 +33,6 @@ public class Activity_Main extends Activity {
 	private DrawerHelper	dh;
 	private Context		c;
 	
-	public static Button 	buttonGraphs;
-	public static Button	buttonAlerts;
-	public static Button	buttonNotifications;
-	public static Button	buttonLabels;
-	public static Button	buttonGrids;
 	private Menu 			menu;
 	private String			activityName;
 	private boolean		doubleBackPressed;
@@ -53,22 +44,15 @@ public class Activity_Main extends Activity {
 		muninFoo = MuninFoo.getInstance(this);
 		muninFoo.loadLanguage(this);
 		c = this;
-		
-		if (muninFoo.drawer)
-			setContentView(R.layout.main_clear);
-		else
-			setContentView(R.layout.main);
+		setContentView(R.layout.main_clear);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setTitle("");
 		
 		Util.UI.applySwag(this);
 		
-		if (muninFoo.drawer) {
-			dh = new DrawerHelper(this, muninFoo);
-			dh.setDrawerActivity(dh.Activity_Main);
-			Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.RobotoCondensed_Regular);
-		} else
-			Fonts.setFont(this, (ViewGroup)findViewById(R.id.buttonsContainer), CustomFont.RobotoCondensed_Regular);
+		dh = new DrawerHelper(this, muninFoo);
+		dh.setDrawerActivity(dh.Activity_Main);
+		Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.RobotoCondensed_Regular);
 		
 		if (Locale.getDefault().getLanguage().equals("de") && Util.getPref(c, "suggestLanguage").equals("") && (Util.getPref(c, "lang").equals("fr") || Util.getPref(c, "lang").equals("en"))) {
 			AlertDialog.Builder builder2 = new AlertDialog.Builder(Activity_Main.this);
@@ -93,86 +77,6 @@ public class Activity_Main extends Activity {
 			alert2.show();
 		}
 		
-		if (!muninFoo.drawer) {
-			buttonGraphs					= (Button) findViewById(R.id.graphsContainer);
-			buttonAlerts					= (Button) findViewById(R.id.alertsContainer);
-			buttonNotifications				= (Button) findViewById(R.id.notificationsContainer);
-			buttonLabels					= (Button) findViewById(R.id.labelsContainer);
-			buttonGrids						= (Button) findViewById(R.id.gridsContainer);
-			final Button buttonSettings 	= (Button) findViewById(R.id.settingsContainer);
-			final Button buttonAbout 		= (Button) findViewById(R.id.aboutContainer);
-			final Button buttonServer 		= (Button) findViewById(R.id.serverContainer);
-			final Button buttonPremium		= (Button) findViewById(R.id.premiumContainer);
-			
-			buttonGraphs.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(Activity_Main.this, Activity_PluginSelection.class));
-					Util.setTransition(c, TransitionStyle.DEEPER);
-				}
-			});
-			buttonGrids.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(Activity_Main.this, Activity_GridSelection.class));
-					Util.setTransition(c, TransitionStyle.DEEPER);
-				}
-			});
-			buttonAlerts.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(Activity_Main.this, Activity_Alerts.class));
-					Util.setTransition(c, TransitionStyle.DEEPER);
-				}
-			});
-			buttonLabels.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(Activity_Main.this, Activity_Labels.class));
-					Util.setTransition(c, TransitionStyle.DEEPER);
-				}
-			});
-			buttonServer.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(Activity_Main.this, Activity_Servers.class));
-					Util.setTransition(c, TransitionStyle.DEEPER);
-				}
-			});
-			buttonNotifications.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (muninFoo.premium) {
-						startActivity(new Intent(Activity_Main.this, Activity_Notifications.class));
-						Util.setTransition(c, TransitionStyle.DEEPER);
-					}
-				}
-			});
-			buttonSettings.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(Activity_Main.this, Activity_Settings.class));
-					Util.setTransition(c, TransitionStyle.DEEPER);
-				}
-			});
-			buttonAbout.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(Activity_Main.this, Activity_About.class));
-					Util.setTransition(c, TransitionStyle.DEEPER);
-				}
-			});
-			buttonPremium.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(Activity_Main.this, Activity_GoPremium.class));
-					Util.setTransition(c, TransitionStyle.DEEPER);
-				}
-			});
-			
-			if (muninFoo.premium)
-				buttonPremium.setVisibility(View.GONE);
-		}
 		
 		// Display a message after settings save
 		Intent thisIntent = getIntent();
@@ -203,25 +107,6 @@ public class Activity_Main extends Activity {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
-		
-		if (!muninFoo.drawer) {
-			boolean enable = muninFoo.currentServer != null;
-			buttonGraphs.setEnabled(enable);
-			buttonGrids.setEnabled(enable);
-			buttonAlerts.setEnabled(enable);
-			buttonNotifications.setEnabled(enable);
-			buttonLabels.setEnabled(enable);
-			
-			if (!muninFoo.premium) {
-				buttonNotifications.setEnabled(false);
-				buttonGrids.setEnabled(false);
-			}
-		}
-	}
-	
-	@Override
 	public void onBackPressed() {
 		if (doubleBackPressed) {
 			// Close the app when tapping twice on it.
@@ -248,8 +133,7 @@ public class Activity_Main extends Activity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (muninFoo.drawer)
-					dh.getDrawer().toggle(true);
+				dh.getDrawer().toggle(true);
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Main.this, Activity_Settings.class));
@@ -269,37 +153,33 @@ public class Activity_Main extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		if (muninFoo.drawer) {
-			dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-				@Override
-				public void onOpen() {
-					activityName = getActionBar().getTitle().toString();
-					getActionBar().setTitle("Munin for Android");
-				}
-			});
-			dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-				@Override
-				public void onClose() {
-					getActionBar().setTitle(activityName);
-				}
-			});
-		}
+		
+		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
+			@Override
+			public void onOpen() {
+				activityName = getActionBar().getTitle().toString();
+				getActionBar().setTitle("Munin for Android");
+			}
+		});
+		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
+			@Override
+			public void onClose() {
+				getActionBar().setTitle(activityName);
+			}
+		});
+		
 		createOptionsMenu();
-		if (muninFoo.drawer)
-			dh.getDrawer().toggle(false);
+		
+		dh.getDrawer().toggle(false);
 		return true;
 	}
 	private void createOptionsMenu() {
 		menu.clear();
-		if (!muninFoo.drawer) {
-			findViewById(R.id.settingsContainer).setVisibility(View.GONE);
-			findViewById(R.id.aboutContainer).setVisibility(View.GONE);
-		}
 		getMenuInflater().inflate(R.menu.main, menu);
 	}
 	
 	public void displayTwitterAlertIfNeeded() {
-		int NB_LAUNCHES = 3;
+		int NB_LAUNCHES = 8;
 		String nbLaunches = Util.getPref(this, "twitter_nbLaunches");
 		if (nbLaunches.equals(""))
 			Util.setPref(this, "twitter_nbLaunches", "1");

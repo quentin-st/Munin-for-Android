@@ -52,10 +52,8 @@ public class Activity_GoPremium extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.goPremiumTitle));
 		
-		if (muninFoo.drawer) {
-			dh = new DrawerHelper(this, muninFoo);
-			dh.setDrawerActivity(dh.Activity_GoPremium);
-		}
+		dh = new DrawerHelper(this, muninFoo);
+		dh.setDrawerActivity(dh.Activity_GoPremium);
 		
 		Util.UI.applySwag(this);
 		
@@ -123,12 +121,7 @@ public class Activity_GoPremium extends Activity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (muninFoo.drawer)
-					dh.getDrawer().toggle(true);
-				else {
-					startActivity(new Intent(this, Activity_Main.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-					Util.setTransition(c, TransitionStyle.SHALLOWER);
-				}
+				dh.getDrawer().toggle(true);
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_GoPremium.this, Activity_Settings.class));
@@ -145,24 +138,24 @@ public class Activity_GoPremium extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		if (muninFoo.drawer) {
-			dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-				@Override
-				public void onOpen() {
-					activityName = getActionBar().getTitle().toString();
-					getActionBar().setTitle("Munin for Android");
-					menu.clear();
-					getMenuInflater().inflate(R.menu.main, menu);
-				}
-			});
-			dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-				@Override
-				public void onClose() {
-					getActionBar().setTitle(activityName);
-					createOptionsMenu();
-				}
-			});
-		}
+		
+		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
+			@Override
+			public void onOpen() {
+				activityName = getActionBar().getTitle().toString();
+				getActionBar().setTitle("Munin for Android");
+				menu.clear();
+				getMenuInflater().inflate(R.menu.main, menu);
+			}
+		});
+		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
+			@Override
+			public void onClose() {
+				getActionBar().setTitle(activityName);
+				createOptionsMenu();
+			}
+		});
+		
 		createOptionsMenu();
 		return true;
 	}

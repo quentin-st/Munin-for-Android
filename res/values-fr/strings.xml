@@ -24,8 +24,6 @@
 	<string name="settings_graphview_orientation">Orientation de l\'écran des graphs</string>
 	<string name="settings_transitions_label">Transitions</string>
 	<string name="settings_transitions_checkbox">Activer les animations de transition entre les pages de l\'application</string>
-	<string name="settings_drawer_label">Menu latéral</string>
-	<string name="settings_drawer_checkbox">Désactiver le menu latéral</string>
 	<string name="settings_delete_button">Supprimer</string>
 	<string name="settings_screenalwayson_label">Garder l\'écran allumé</string>
 	<string name="settings_screenalwayson_checkbox">Empêcher l\'écran de s\'éteindre lors de l\'affichage de graphs / alertes</string>

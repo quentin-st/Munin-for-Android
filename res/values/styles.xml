@@ -34,5 +34,20 @@
 		<item name="android:editTextStyle">@android:style/Widget.EditText</item>
 		<item name="android:editTextBackground">@android:drawable/edit_text</item>
 	</style>
+	
+    <!-- MAIN BUTTON -->
+    <style name="ButtonText">
+        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#145F9D</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
 
 </resources>

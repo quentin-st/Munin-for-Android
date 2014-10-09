@@ -48,10 +48,8 @@ public class Activity_Labels extends ListActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setTitle(getString(R.string.button_labels));
 		
-		if (muninFoo.drawer) {
-			dh = new DrawerHelper(this, muninFoo);
-			dh.setDrawerActivity(dh.Activity_Labels);
-		}
+		dh = new DrawerHelper(this, muninFoo);
+		dh.setDrawerActivity(dh.Activity_Labels);
 		
 		Util.UI.applySwag(this);
 	}
@@ -86,24 +84,24 @@ public class Activity_Labels extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		if (muninFoo.drawer) {
-			dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-				@Override
-				public void onOpen() {
-					activityName = getActionBar().getTitle().toString();
-					getActionBar().setTitle("Munin for Android");
-					menu.clear();
-					getMenuInflater().inflate(R.menu.main, menu);
-				}
-			});
-			dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-				@Override
-				public void onClose() {
-					getActionBar().setTitle(activityName);
-					createOptionsMenu();
-				}
-			});
-		}
+		
+		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
+			@Override
+			public void onOpen() {
+				activityName = getActionBar().getTitle().toString();
+				getActionBar().setTitle("Munin for Android");
+				menu.clear();
+				getMenuInflater().inflate(R.menu.main, menu);
+			}
+		});
+		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
+			@Override
+			public void onClose() {
+				getActionBar().setTitle(activityName);
+				createOptionsMenu();
+			}
+		});
+		
 		createOptionsMenu();
 		return true;
 	}
@@ -117,14 +115,7 @@ public class Activity_Labels extends ListActivity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (muninFoo.drawer)
-					dh.getDrawer().toggle(true);
-				else {
-					Intent intent = new Intent(this, Activity_Main.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-					Util.setTransition(c, TransitionStyle.SHALLOWER);
-				}
+				dh.getDrawer().toggle(true);
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Labels.this, Activity_Settings.class));

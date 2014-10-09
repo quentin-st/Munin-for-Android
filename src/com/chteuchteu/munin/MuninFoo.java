@@ -67,8 +67,6 @@ public class MuninFoo {
 	public SQLite sqlite;
 	public MuninServer currentServer;
 	
-	public boolean drawer;
-	
 	// === VERSION === //
 	// HISTORY		current:	 _______________________________________________________________________________________________________________________________
 	// android:versionName:		| 1.1		1.2		1.3		1.4		1.4.1	1.4.2	1.4.5	1.4.6	2.0		2.0.1	2.1		2.2		2.3		2.4		2.5		2.6 |
@@ -98,7 +96,6 @@ public class MuninFoo {
 	
 	private MuninFoo() {
 		premium = false;
-		drawer = false;
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<Label>();
 		masters = new ArrayList<MuninMaster>();
@@ -109,7 +106,6 @@ public class MuninFoo {
 	
 	public MuninFoo(Context c) {
 		premium = false;
-		drawer = false;
 		servers = new ArrayList<MuninServer>();
 		labels = new ArrayList<Label>();
 		masters = new ArrayList<MuninMaster>();
@@ -146,10 +142,6 @@ public class MuninFoo {
 			}
 			
 			this.premium = isPremium(c);
-			if (!Util.getPref(c, "drawer").equals("false"))
-				this.drawer = true;
-			else
-				this.drawer = false;
 		}
 	}
 	

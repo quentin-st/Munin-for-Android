@@ -133,11 +133,8 @@ public class Activity_GraphView extends Activity {
 				actionBar.setTitle(muninFoo.currentServer.getName());
 		}
 		
-		
-		if (muninFoo.drawer) {
-			dh = new DrawerHelper(this, muninFoo);
-			dh.setDrawerActivity(dh.Activity_GraphView);
-		}
+		dh = new DrawerHelper(this, muninFoo);
+		dh.setDrawerActivity(dh.Activity_GraphView);
 		
 		Util.UI.applySwag(this);
 		
@@ -227,19 +224,17 @@ public class Activity_GraphView extends Activity {
 						item_next.setEnabled(true);
 					}
 				}
-					
-				if (muninFoo.drawer && dh != null) {
-					int scroll = dh.getDrawerScrollY();
-					if (previousPos != -1) {
-						if (previousPos < viewFlow.getSelectedItemPosition())
-							scroll += 97;
-						else
-							scroll -= 97;
-					}
-					
-					dh.initPluginsList(scroll);
-					previousPos = viewFlow.getSelectedItemPosition();
+				
+				int scroll = dh.getDrawerScrollY();
+				if (previousPos != -1) {
+					if (previousPos < viewFlow.getSelectedItemPosition())
+						scroll += 97;
+					else
+						scroll -= 97;
 				}
+				
+				dh.initPluginsList(scroll);
+				previousPos = viewFlow.getSelectedItemPosition();
 			}
 		});
 		
@@ -344,24 +339,24 @@ public class Activity_GraphView extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		if (muninFoo.drawer) {
-			dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-				@Override
-				public void onOpen() {
-					activityName = getActionBar().getTitle().toString();
-					getActionBar().setTitle("Munin for Android");
-					menu.clear();
-					getMenuInflater().inflate(R.menu.main, menu);
-				}
-			});
-			dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-				@Override
-				public void onClose() {
-					getActionBar().setTitle(activityName);
-					createOptionsMenu();
-				}
-			});
-		}
+		
+		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
+			@Override
+			public void onOpen() {
+				activityName = getActionBar().getTitle().toString();
+				getActionBar().setTitle("Munin for Android");
+				menu.clear();
+				getMenuInflater().inflate(R.menu.main, menu);
+			}
+		});
+		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
+			@Override
+			public void onClose() {
+				getActionBar().setTitle(activityName);
+				createOptionsMenu();
+			}
+		});
+		
 		createOptionsMenu();
 		return true;
 	}
@@ -413,35 +408,7 @@ public class Activity_GraphView extends Activity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (muninFoo.drawer)
-					dh.getDrawer().toggle(true);
-				else {
-					Intent thisIntent = getIntent();
-					if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")) {
-						String from = thisIntent.getExtras().getString("from");
-						if (from.equals("labels")) {
-							if (thisIntent.getExtras().containsKey("label")) {
-								Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
-								intent.putExtra("label", thisIntent.getExtras().getString("label"));
-								startActivity(intent);
-								Util.setTransition(context, TransitionStyle.SHALLOWER);
-							}
-						} else if (from.equals("alerts")) {
-							if (thisIntent.getExtras().containsKey("server")) {
-								if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
-									muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
-								Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
-								startActivity(intent);
-								Util.setTransition(context, TransitionStyle.SHALLOWER);
-							}
-						}
-					} else {
-						Intent intent = new Intent(this, Activity_PluginSelection.class);
-						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						startActivity(intent);
-						Util.setTransition(context, TransitionStyle.SHALLOWER);
-					}
-				}
+				dh.getDrawer().toggle(true);
 				return true;
 			case R.id.menu_previous:	actionPrevious();		return true;
 			case R.id.menu_next:		actionNext();			return true;

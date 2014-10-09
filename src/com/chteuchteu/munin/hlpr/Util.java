@@ -230,6 +230,10 @@ public final class Util {
 		}
 	}
 	
+	public static boolean hasPref(Context context, String key) {
+		return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).contains(key);
+	}
+	
 	public static String getPref(Context context, String key) {
 		return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
 	}

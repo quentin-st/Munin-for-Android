@@ -40,7 +40,6 @@ public class Activity_Settings extends Activity {
 	private Spinner	spinner_lang;
 	private Spinner	spinner_orientation;
 	private View		checkable_transitions;
-	private View		checkable_drawer;
 	private View		checkable_alwaysOn;
 	private View		checkable_autoRefresh;
 	private View		checkable_graphsZoom;
@@ -66,10 +65,8 @@ public class Activity_Settings extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.settingsTitle));
 		
-		if (muninFoo.drawer) {
-			dh = new DrawerHelper(this, muninFoo);
-			dh.setDrawerActivity(dh.Activity_Settings);
-		}
+		dh = new DrawerHelper(this, muninFoo);
+		dh.setDrawerActivity(dh.Activity_Settings);
 		
 		Util.UI.applySwag(this);
 		
@@ -78,7 +75,6 @@ public class Activity_Settings extends Activity {
 		spinner_lang = (Spinner)findViewById(R.id.spinner_lang);
 		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);
 		
-		checkable_drawer = inflateCheckable((ViewGroup)findViewById(R.id.checkable_drawer), getString(R.string.settings_drawer_checkbox));
 		checkable_transitions = inflateCheckable((ViewGroup)findViewById(R.id.checkable_transitions), getString(R.string.settings_transitions_checkbox));
 		checkable_alwaysOn = inflateCheckable((ViewGroup)findViewById(R.id.checkable_screenalwayson), getString(R.string.settings_screenalwayson_checkbox));
 		checkable_autoRefresh = inflateCheckable((ViewGroup)findViewById(R.id.checkable_autorefresh), getString(R.string.settings_autorefresh_checkbox));
@@ -129,7 +125,6 @@ public class Activity_Settings extends Activity {
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title2), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title3), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title5), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title6), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title7), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title8), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title9), CustomFont.RobotoCondensed_Bold);
@@ -206,16 +201,6 @@ public class Activity_Settings extends Activity {
 		else
 			setPref("graphsZoom", "false");
 		
-		// Drawer
-		if (getCheckableValue(checkable_drawer)) {
-			setPref("drawer", "false");
-			muninFoo.drawer = false;
-		}
-		else {
-			removePref("drawer");
-			muninFoo.drawer = true;
-		}
-		
 		if (getCheckableValue(checkable_hdGraphs))
 			setPref("hdGraphs", "true");
 		else
@@ -282,10 +267,6 @@ public class Activity_Settings extends Activity {
 		else
 			setChecked(checkable_transitions, true);
 		
-		// Drawer
-		if (getPref("drawer").equals("false"))
-			setChecked(checkable_drawer, true);
-		
 		// Always on
 		if (getPref("screenAlwaysOn").equals("true"))
 			setChecked(checkable_alwaysOn, true);
@@ -324,24 +305,24 @@ public class Activity_Settings extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		if (muninFoo.drawer) {
-			dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-				@Override
-				public void onOpen() {
-					activityName = getActionBar().getTitle().toString();
-					getActionBar().setTitle("Munin for Android");
-					menu.clear();
-					getMenuInflater().inflate(R.menu.main, menu);
-				}
-			});
-			dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-				@Override
-				public void onClose() {
-					getActionBar().setTitle(activityName);
-					createOptionsMenu();
-				}
-			});
-		}
+		
+		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
+			@Override
+			public void onOpen() {
+				activityName = getActionBar().getTitle().toString();
+				getActionBar().setTitle("Munin for Android");
+				menu.clear();
+				getMenuInflater().inflate(R.menu.main, menu);
+			}
+		});
+		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
+			@Override
+			public void onClose() {
+				getActionBar().setTitle(activityName);
+				createOptionsMenu();
+			}
+		});
+		
 		createOptionsMenu();
 		return true;
 	}
@@ -355,14 +336,7 @@ public class Activity_Settings extends Activity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (muninFoo.drawer)
-					dh.getDrawer().toggle(true);
-				else {
-					Intent intent = new Intent(this, Activity_Main.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-					Util.setTransition(this, TransitionStyle.SHALLOWER);
-				}
+				dh.getDrawer().toggle(true);
 				return true;
 			case R.id.menu_save:	actionSave();	return true;
 			case R.id.menu_reset:	actionReset();	return true;
@@ -402,11 +376,10 @@ public class Activity_Settings extends Activity {
 						removePref("server" + serverNumber + "Position");
 					}
 				}
-				setPref("splash", "true");
+				
 				setPref("defaultScale", "day");
 				setPref("addserver_history", "");
 				setPref("screenAlwaysOn", "");
-				setPref("drawer", "true");
 				setPref("graphsZoom", "false");
 				setPref("hdGraphs", "true");
 				
@@ -422,8 +395,7 @@ public class Activity_Settings extends Activity {
 				
 				muninFoo.resetInstance(context);
 				
-				if (muninFoo.drawer)
-					dh.reInitDrawer();
+				dh.reInitDrawer();
 				
 				// Reset performed.
 				Toast.makeText(getApplicationContext(), getString(R.string.text02), Toast.LENGTH_SHORT).show();

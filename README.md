@@ -20,6 +20,7 @@
 * Activity_GraphView
 * Activity_Grid
 * Activity_GridSelection
+* Activity_Init
 * Activity_Labels
 * Activity_LabelsPluginSelection
 * Activity_Main
@@ -28,7 +29,6 @@
 * Activity_Servers
 * Activity_ServersEdit
 * Activity_Settings
-* Activity_Splash
 
 ## Helpers & Utils classes ##
 * DatabaseHelper_old *- kept here for migration reasons*

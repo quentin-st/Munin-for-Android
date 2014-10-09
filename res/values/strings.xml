@@ -24,8 +24,6 @@
 	<string name="settings_graphview_orientation">Graphs screen orientation</string>
 	<string name="settings_transitions_label">Transitions</string>
 	<string name="settings_transitions_checkbox">Enable transitions animations between app pages</string>
-	<string name="settings_drawer_label">Drawer menu</string>
-	<string name="settings_drawer_checkbox">Disable drawer menu</string>
 	<string name="settings_delete_button">Delete</string>
 	<string name="settings_screenalwayson_label">Screen always on</string>
 	<string name="settings_screenalwayson_checkbox">Prevent screen from turning off while displaying graphs / alerts</string>
@@ -128,22 +126,6 @@
 	<string name="notificationsTitle">Notifications</string>
 	<string name="textOn">ON</string>
 	<string name="textOff">OFF</string>
-
-	<!-- MAIN BUTTON -->
-	<style name="ButtonText">
-		<item name="android:layout_width">220dp</item>
-		<item name="android:layout_height">60dp</item>
-		<item name="android:textColor">#ffffff</item>
-		<item name="android:gravity">center</item>
-		<item name="android:layout_margin">5dp</item>
-		<item name="android:textSize">26sp</item>
-		<item name="android:textStyle">bold</item>
-		<item name="android:shadowColor">#145F9D</item>
-		<item name="android:shadowDx">0</item>
-		<item name="android:shadowDy">2</item>
-		<item name="android:shadowRadius">2</item>
-	</style>
-
 	<string name="widget_configuration1">Success! The widget has been added to your home screen. Tip: you can update the graph by taping on the grey bar at the bottom of the widget!</string>
 	<string name="widget_configuration2">Auto-update the graph only by Wifi (1 update per hour)</string>
 	<string name="widget_configuration3">Hide server name</string>

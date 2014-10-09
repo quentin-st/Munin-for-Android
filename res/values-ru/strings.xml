@@ -111,8 +111,6 @@ li { margin-bottom: 5px; }
 	<string name="settings_auth_type">Тип аутентификации</string>
 	<string name="settings_transitions_label">Переходы</string>
 	<string name="settings_transitions_checkbox">Анимация переключения страниц </string>
-	<string name="settings_drawer_label">Меню отрисовки</string>
-	<string name="settings_drawer_checkbox">Откл. меню отрисовки</string>
 	<string name="settings_titlelabel_app">ПРИЛОЖЕНИЕ</string>
 	<string name="settings_titlelabel_graphs">ГРАФИКИ</string>
 	<string name="menu_graph_switch">Сменить сервер</string>
