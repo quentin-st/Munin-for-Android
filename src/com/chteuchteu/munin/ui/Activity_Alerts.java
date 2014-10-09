@@ -37,6 +37,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
+@SuppressLint("InflateParams")
 public class Activity_Alerts extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;

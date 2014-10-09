@@ -417,7 +417,6 @@ public class Activity_Settings extends Activity {
 				}
 				setPref("splash", "true");
 				setPref("defaultScale", "day");
-				setPref("log", "false");
 				setPref("addserver_history", "");
 				setPref("screenAlwaysOn", "");
 				setPref("drawer", "true");

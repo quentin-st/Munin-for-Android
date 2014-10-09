@@ -124,6 +124,7 @@ public class Activity_Servers extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					String code = ((EditText) dialogView.findViewById(R.id.import_code)).getText().toString();
+					code = code.toLowerCase();
 					new ImportRequestMaker(code, c).execute();
 					dialog.dismiss();
 				}

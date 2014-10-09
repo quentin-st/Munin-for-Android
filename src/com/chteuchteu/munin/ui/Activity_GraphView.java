@@ -71,6 +71,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
+@SuppressLint({ "DefaultLocale", "InflateParams" })
 public class Activity_GraphView extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh = null;

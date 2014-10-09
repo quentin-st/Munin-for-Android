@@ -60,6 +60,7 @@ public final class Util {
 		 * 		- Colors the status bar background (KitKat+)
 		 * @param activity
 		 */
+		@SuppressLint("InlinedApi")
 		public static void applySwag(Activity activity) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 				int id = activity.getResources().getIdentifier("config_enableTranslucentDecor", "bool", "android");
@@ -369,6 +370,7 @@ public final class Util {
 		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
 	
+	@SuppressLint("TrulyRandom")
 	public static final class Encryption {
 		public static String encrypt(String seed, String cleartext) throws Exception {
 			byte[] rawKey = getRawKey(seed.getBytes());
