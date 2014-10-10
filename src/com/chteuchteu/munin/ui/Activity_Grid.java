@@ -72,7 +72,7 @@ public class Activity_Grid extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
-		muninFoo.loadLanguage(this);
+		MuninFoo.loadLanguage(this);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.grid);
 		getActionBar().setDisplayHomeAsUpEnabled(true);

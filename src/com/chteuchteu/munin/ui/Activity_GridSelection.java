@@ -49,7 +49,7 @@ public class Activity_GridSelection extends ListActivity {
 	@Override public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
-		muninFoo.loadLanguage(this);
+		MuninFoo.loadLanguage(this);
 		c = this;
 		
 		setContentView(R.layout.gridselection);

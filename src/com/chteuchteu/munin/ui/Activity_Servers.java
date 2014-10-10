@@ -45,10 +45,10 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_Servers extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
-	private static Context		c;
+	private static Context	c;
 	
-	Map<String, List<String>> serversCollection;
-	ExpandableListView		expListView;
+	private Map<String, List<String>> serversCollection;
+	private ExpandableListView expListView;
 	private Menu 			menu;
 	private MenuItem		importExportMenuItem;
 	private MenuItem		exportMenuItem;
@@ -60,7 +60,7 @@ public class Activity_Servers extends Activity {
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
-		muninFoo.loadLanguage(this);
+		MuninFoo.loadLanguage(this);
 		c = this;
 		
 		setContentView(R.layout.servers);

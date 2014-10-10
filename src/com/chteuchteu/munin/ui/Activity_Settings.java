@@ -56,7 +56,7 @@ public class Activity_Settings extends Activity {
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
-		muninFoo.loadLanguage(this);
+		MuninFoo.loadLanguage(this);
 		context = this;
 		
 		setContentView(R.layout.settings);
@@ -216,9 +216,9 @@ public class Activity_Settings extends Activity {
 		}
 		
 		// After saving -> go back to reality
+		Toast.makeText(this, getString(R.string.text36), Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(Activity_Settings.this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.putExtra("action", "settingsSave");
 		startActivity(intent);
 		Util.setTransition(this, TransitionStyle.SHALLOWER);
 	}

@@ -79,7 +79,7 @@ public class Activity_Alerts extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		muninFoo = MuninFoo.getInstance(this);
-		muninFoo.loadLanguage(this);
+		MuninFoo.loadLanguage(this);
 		setContentView(R.layout.alerts);
 		c = this;
 		Crashlytics.start(this);

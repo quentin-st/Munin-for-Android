@@ -44,7 +44,7 @@ public class Activity_GoPremium extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
-		muninFoo.loadLanguage(this);
+		MuninFoo.loadLanguage(this);
 		setContentView(R.layout.go_premium);
 		c = this;
 		

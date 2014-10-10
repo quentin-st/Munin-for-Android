@@ -41,7 +41,7 @@ public class Activity_Labels extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
-		muninFoo.loadLanguage(this);
+		MuninFoo.loadLanguage(this);
 		c = this;
 		
 		setContentView(R.layout.labelselection);

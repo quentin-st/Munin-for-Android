@@ -55,7 +55,7 @@ public class Activity_Notifications extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
-		muninFoo.loadLanguage(this);
+		MuninFoo.loadLanguage(this);
 		c = this;
 		setContentView(R.layout.notifications);
 		

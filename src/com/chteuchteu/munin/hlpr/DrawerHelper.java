@@ -52,6 +52,7 @@ import com.chteuchteu.munin.ui.Activity_Servers;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 
+@SuppressLint("InflateParams")
 public class DrawerHelper {
 	public int Activity_About = -1;
 	public int Activity_Alerts = 2;
@@ -95,9 +96,9 @@ public class DrawerHelper {
 		initDrawer();
 	}
 	
-	public void setDrawerActivity(int act) {
-		this.n = act;
-		switch (act) {
+	public void setDrawerActivity(int activity) {
+		this.n = activity;
+		switch (activity) {
 			case 0:
 				// Accueil: rien
 				setSelectedMenuItem("");
