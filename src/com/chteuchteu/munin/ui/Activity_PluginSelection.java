@@ -9,9 +9,11 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,6 +24,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -46,7 +49,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_PluginSelection extends ListActivity {
 	private MuninFoo			muninFoo;
 	private DrawerHelper		dh;
-	private Context				c;
+	private Context				context;
 	
 	private SimpleAdapter 		sa;
 	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
@@ -72,7 +75,7 @@ public class Activity_PluginSelection extends ListActivity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		MuninFoo.loadLanguage(this);
-		c = this;
+		context = this;
 		setContentView(R.layout.pluginselection);
 		this.actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -148,7 +151,7 @@ public class Activity_PluginSelection extends ListActivity {
 		if (muninFoo.currentServer.getPluginsListWithCategory().size() < 2)
 			mode = MODE_FLAT;
 		else {
-			if (Util.getPref(c, "listViewMode").equals("flat"))
+			if (Util.getPref(context, "listViewMode").equals("flat"))
 				mode = MODE_FLAT;
 			else
 				mode = MODE_GROUPED;
@@ -158,9 +161,9 @@ public class Activity_PluginSelection extends ListActivity {
 	
 	public void switchListViewMode(int mode) {
 		if (mode == MODE_FLAT)
-			Util.setPref(c, "listViewMode", "flat");
+			Util.setPref(context, "listViewMode", "flat");
 		else
-			Util.setPref(c, "listViewMode", "grouped");
+			Util.setPref(context, "listViewMode", "grouped");
 	}
 	
 	public void updateListView() {
@@ -185,23 +188,6 @@ public class Activity_PluginSelection extends ListActivity {
 			}
 			sa = new SimpleAdapter(this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 			setListAdapter(sa);
-			
-			getListView().setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-					TextView plu = (TextView) view.findViewById(R.id.line_b);
-					Intent intent = new Intent(Activity_PluginSelection.this, Activity_GraphView.class);
-					int p = 0;
-					for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-						if (muninFoo.currentServer.getPlugin(i) != null && muninFoo.currentServer.getPlugin(i).getName().equals(plu.getText().toString())) {
-							p = i;
-							break;
-						}
-					}
-					intent.putExtra("position", p + "");
-					startActivity(intent);
-					Util.setTransition(c, TransitionStyle.DEEPER);
-				}
-			});
 		} else {
 			// Create plugins list
 			pluginsListCat = muninFoo.currentServer.getPluginsListWithCategory();
@@ -211,23 +197,6 @@ public class Activity_PluginSelection extends ListActivity {
 				if (muninFoo.currentServer.getPlugins().get(i) != null)
 					pluginsList.add(muninFoo.currentServer.getPlugins().get(i));
 			}
-			
-			getListView().setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-					TextView plu = (TextView) view.findViewById(R.id.line_b);
-					Intent intent = new Intent(Activity_PluginSelection.this, Activity_GraphView.class);
-					int p = 0;
-					for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-						if (muninFoo.currentServer.getPlugin(i) != null && muninFoo.currentServer.getPlugin(i).getName().equals(plu.getText().toString())) {
-							p = i;
-							break;
-						}
-					}
-					intent.putExtra("position", p + "");
-					startActivity(intent);
-					Util.setTransition(c, TransitionStyle.DEEPER);
-				}
-			});
 			
 			Adapter_SeparatedList adapter = new Adapter_SeparatedList(this);
 			for (List<MuninPlugin> l : pluginsListCat) {
@@ -243,6 +212,66 @@ public class Activity_PluginSelection extends ListActivity {
 			}
 			this.getListView().setAdapter(adapter);
 		}
+		
+		getListView().setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
+				TextView plu = (TextView) view.findViewById(R.id.line_b);
+				Intent intent = new Intent(Activity_PluginSelection.this, Activity_GraphView.class);
+				int p = 0;
+				for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
+					if (muninFoo.currentServer.getPlugin(i) != null && muninFoo.currentServer.getPlugin(i).getName().equals(plu.getText().toString())) {
+						p = i;
+						break;
+					}
+				}
+				intent.putExtra("position", p + "");
+				startActivity(intent);
+				Util.setTransition(context, TransitionStyle.DEEPER);
+			}
+		});
+		
+		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapter, final View view, final int position, long arg) {
+				// Display actions list
+				AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+						context, android.R.layout.simple_list_item_1);
+				arrayAdapter.add(context.getString(R.string.delete_plugin));
+				
+				builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
+						case 0:
+							TextView plu = (TextView) view.findViewById(R.id.line_b);
+							for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
+								MuninPlugin plugin = muninFoo.currentServer.getPlugin(i);
+								if (plugin != null && plugin.getName().equals(plu.getText().toString())) {
+									muninFoo.currentServer.getPlugins().remove(plugin);
+									muninFoo.sqlite.dbHlpr.deleteMuninPlugin(plugin);
+									
+									// Save scroll state
+									int index = getListView().getFirstVisiblePosition();
+									View v = getListView().getChildAt(0);
+									int top = (v == null) ? 0 : v.getTop();
+									
+									updateListView();
+									
+									getListView().setSelectionFromTop(index, top);
+									break;
+								}
+							}
+							
+							break;
+						}
+					}
+				});
+				builderSingle.show();
+				
+				return true;
+			}
+		});
 	}
 	
 	public Map<String,?> createItem(String title, String caption) {  
@@ -271,7 +300,7 @@ public class Activity_PluginSelection extends ListActivity {
 				getActionBar().setTitle(activityName);
 				createOptionsMenu();
 			}
-			});
+		});
 		
 		createOptionsMenu();
 		return true;
@@ -350,11 +379,11 @@ public class Activity_PluginSelection extends ListActivity {
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_PluginSelection.this, Activity_Settings.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_PluginSelection.this, Activity_About.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -380,7 +409,7 @@ public class Activity_PluginSelection extends ListActivity {
 			Intent intent = new Intent(this, Activity_Main.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			Util.setTransition(c, TransitionStyle.SHALLOWER);
+			Util.setTransition(context, TransitionStyle.SHALLOWER);
 		}
 	}
 	

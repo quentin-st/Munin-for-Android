@@ -248,6 +248,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return id;
 	}
 	
+	public void deleteMuninPlugin(MuninPlugin p) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_MUNINPLUGINS, KEY_ID + " = ?", new String[] { String.valueOf(p.getId()) });
+		close(null, db);
+	}
+	
 	public long saveMuninPlugin(MuninPlugin p) {
 		if (p.isPersistant)
 			return updateMuninPlugin(p);

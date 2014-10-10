@@ -148,8 +148,7 @@ public class Activity_Servers extends Activity {
 	}
 	
 	public static void onExportError() {
-		Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-		// TODO
+		Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
 	}
 	
 	public static void onImportSuccess() {
@@ -167,8 +166,7 @@ public class Activity_Servers extends Activity {
 	}
 	
 	public static void onImportError() {
-		Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-		// TODO
+		Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
 	}
 	
 	private void displayExportDialog() {

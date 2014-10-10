@@ -232,6 +232,7 @@
 	    Please use the following code into your secondary device in order to import it.</string>
 	<string name="import_success_title">Import successful</string>
 	<string name="import_success_txt1">The servers importation has succeeded</string>
+	<string name="delete_plugin">Delete plugin</string>
 	<string name="fieldsDescriptionWrapper" tools:ignore="MissingTranslation">
 <![CDATA[
 		<head>

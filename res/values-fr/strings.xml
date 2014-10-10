@@ -178,6 +178,7 @@
 	    Veuillez utiliser le code suivant dans votre autre appareil Android afin de l\'importer.</string>
 	<string name="import_success_title">Import réussi</string>
 	<string name="import_success_txt1">L\'importation des serveurs a réussi</string>
+	<string name="delete_plugin">Supprimer le plugin</string>
 	<string name="aboutText">
 <![CDATA[
    <head>

@@ -162,6 +162,7 @@ public class Activity_Settings extends Activity {
 			setPref("defaultScale", "year");
 		
 		// App language
+		String currentLang = getPref("lang");
 		if (spinner_lang.getSelectedItemPosition() == 0)
 			setPref("lang", "en");
 		else if (spinner_lang.getSelectedItemPosition() == 1)
@@ -172,6 +173,9 @@ public class Activity_Settings extends Activity {
 			setPref("lang", "ru");
 		else
 			setPref("lang", "en");
+		String newLang = getPref("lang");
+		if (!currentLang.equals(newLang))
+			MuninFoo.loadLanguage(context, true);
 		
 		// Orientation
 		if (spinner_orientation.getSelectedItemPosition() == 0)

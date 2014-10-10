@@ -188,9 +188,10 @@ public class MuninFoo {
 			this.masters.add(defMaster);
 	}
 	
-	public static void loadLanguage(Context context) {
+	public static void loadLanguage(Context context) { loadLanguage(context, false); }
+	public static void loadLanguage(Context context, boolean forceLoad) {
 		if (!Util.getPref(context, "lang").equals("")) {
-			if (!languageLoaded) {
+			if (!languageLoaded || forceLoad) {
 				Log.v("", "Loading preffered language");
 				String lang = Util.getPref(context, "lang");
 				// lang == "en" || "fr" || "de" || "ru"
