@@ -37,7 +37,8 @@
 		<activity android:name="com.chteuchteu.munin.ui.Activity_AlertsPluginSelection" />
 		<activity
 			android:name="com.chteuchteu.munin.ui.Activity_Server"
-			android:configChanges="orientation|screenSize|keyboardHidden" />
+			android:configChanges="orientation|screenSize|keyboardHidden"
+			android:windowSoftInputMode="stateHidden|adjustResize" />
 		<activity
 			android:name="com.chteuchteu.munin.ui.Activity_GraphView"
 			android:configChanges="orientation|screenSize|keyboardHidden"
