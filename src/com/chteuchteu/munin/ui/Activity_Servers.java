@@ -45,7 +45,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_Servers extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
-	private static Context	c;
+	private static Context	context;
 	
 	private Map<String, List<String>> serversCollection;
 	private ExpandableListView expListView;
@@ -61,7 +61,7 @@ public class Activity_Servers extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		MuninFoo.loadLanguage(this);
-		c = this;
+		context = this;
 		
 		setContentView(R.layout.servers);
 		ActionBar actionBar = getActionBar();
@@ -97,14 +97,15 @@ public class Activity_Servers extends Activity {
 			expListView.expandGroup(muninFoo.getMasterPosition(fromServersEdit));
 		
 		expListView.setOnChildClickListener(new OnChildClickListener() {
-			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+			public boolean onChildClick(ExpandableListView parent, View v, final int groupPosition,
+					final int childPosition, long id) {
 				//final String selected = (String) expListAdapter.getChild(groupPosition, childPosition);
 				MuninServer s = muninFoo.masters.get(groupPosition).getServerFromFlatPosition(childPosition);
 				Intent intent = new Intent(Activity_Servers.this, Activity_Server.class);
 				intent.putExtra("contextServerUrl", s.getServerUrl());
 				intent.putExtra("action", "edit");
 				startActivity(intent);
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			}
 		});
@@ -124,7 +125,7 @@ public class Activity_Servers extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 					String code = ((EditText) dialogView.findViewById(R.id.import_code)).getText().toString();
 					code = code.toLowerCase();
-					new ImportRequestMaker(code, c).execute();
+					new ImportRequestMaker(code, context).execute();
 					dialog.dismiss();
 				}
 			})
@@ -133,12 +134,12 @@ public class Activity_Servers extends Activity {
 	}
 	
 	public static void onExportSuccess(String pswd) {
-		final View dialogView = View.inflate(c, R.layout.dialog_export_success, null);
+		final View dialogView = View.inflate(context, R.layout.dialog_export_success, null);
 		TextView code = (TextView) dialogView.findViewById(R.id.export_succes_code);
-		Util.Fonts.setFont(c, code, CustomFont.RobotoCondensed_Bold);
+		Util.Fonts.setFont(context, code, CustomFont.RobotoCondensed_Bold);
 		code.setText(pswd);
 		
-		new AlertDialog.Builder(c)
+		new AlertDialog.Builder(context)
 			.setTitle(R.string.export_success_title)
 			.setView(dialogView)
 			.setCancelable(true)
@@ -147,31 +148,31 @@ public class Activity_Servers extends Activity {
 	}
 	
 	public static void onExportError() {
-		Toast.makeText(c, "Error", Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
 		// TODO
 	}
 	
 	public static void onImportSuccess() {
-		new AlertDialog.Builder(c)
+		new AlertDialog.Builder(context)
 			.setTitle(R.string.import_success_title)
 			.setMessage(R.string.import_success_txt1)
 			.setCancelable(true)
 			.setPositiveButton("OK", new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					c.startActivity(new Intent(c, Activity_Servers.class));
+					context.startActivity(new Intent(context, Activity_Servers.class));
 				}
 			})
 			.show();
 	}
 	
 	public static void onImportError() {
-		Toast.makeText(c, "Error", Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
 		// TODO
 	}
 	
 	private void displayExportDialog() {
-		new AlertDialog.Builder(c)
+		new AlertDialog.Builder(context)
 			.setTitle(R.string.export_servers)
 			.setMessage(R.string.export_explanation)
 			.setCancelable(true)
@@ -180,9 +181,9 @@ public class Activity_Servers extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 					String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance().getMasters(), ImportExportHelper.ENCRYPTION_SEED);
 					if (json.equals(""))
-						Toast.makeText(c, R.string.export_failed, Toast.LENGTH_SHORT).show();
+						Toast.makeText(context, R.string.export_failed, Toast.LENGTH_SHORT).show();
 					else
-						new ExportRequestMaker(json, c).execute();
+						new ExportRequestMaker(json, context).execute();
 				}
 			})
 			.setNegativeButton(R.string.text64, new OnClickListener() {
@@ -224,7 +225,7 @@ public class Activity_Servers extends Activity {
 		getMenuInflater().inflate(R.menu.servers, menu);
 		this.importExportMenuItem = menu.findItem(R.id.menu_importexport);
 		this.exportMenuItem = menu.findItem(R.id.menu_export);
-		if (!MuninFoo.isPremium(c))
+		if (!MuninFoo.isPremium(context))
 			importExportMenuItem.setVisible(false);
 		if (muninFoo.getHowManyServers() == 0)
 			exportMenuItem.setVisible(false);
@@ -243,7 +244,7 @@ public class Activity_Servers extends Activity {
 				intent = new Intent(this, Activity_Server.class);
 				intent.putExtra("contextServerUrl", "");
 				startActivity(intent);
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_import:
 				displayImportDialog();
@@ -253,11 +254,11 @@ public class Activity_Servers extends Activity {
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Servers.this, Activity_Settings.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_Servers.this, Activity_About.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -269,7 +270,7 @@ public class Activity_Servers extends Activity {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		Util.setTransition(c, TransitionStyle.SHALLOWER);
+		Util.setTransition(context, TransitionStyle.SHALLOWER);
 	}
 	
 	@Override

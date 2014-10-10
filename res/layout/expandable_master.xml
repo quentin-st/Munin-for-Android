@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="64dp"
-	android:padding="10dp" >
+	android:layout_height="wrap_content"
+	android:background="#333333"
+	android:paddingLeft="10dp"
+	android:paddingRight="10dp"
+	android:paddingTop="10dp"
+	android:paddingBottom="10dp"
+	android:shadowColor="#111111"
+	android:shadowDx="0"
+	android:shadowDy="1"
+	android:shadowRadius="2"
+	android:textSize="18sp" >
 
 	<TextView
 		android:id="@+id/master"
@@ -13,14 +22,15 @@
 		android:layout_marginLeft="25dp"
 		android:layout_marginRight="8dp"
 		android:textSize="17sp"
-		android:textStyle="bold" />
+		android:textColor="#DDDDDD"
+		android:textAllCaps="true" />
 
 	<ImageView
 		android:id="@+id/edit"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_width="22dp"
+		android:layout_height="22dp"
 		android:layout_alignParentRight="true"
 		android:layout_centerVertical="true"
-		android:src="@drawable/ic_action_edit" />
+		android:src="@drawable/ic_action_overflow" />
 
 </RelativeLayout>

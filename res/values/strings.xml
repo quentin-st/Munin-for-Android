@@ -117,6 +117,7 @@
 	<string name="addServerTitle">Add a server</string>
 	<string name="editServerTitle">Edit a server</string>
 	<string name="editServersTitle">Reorganize / delete servers</string>
+	<string name="renameMaster">Rename master</string>
 	<string name="serversTitle">Servers</string>
 	<string name="settingsTitle">Settings</string>
 	<string name="aboutTitle">About Munin for Android</string>

@@ -49,6 +49,7 @@
 	<string name="about_checkUpdates">Vérifier les mises à jour</string>
 	<string name="about_gplay">Notez l\'application sur Google Play</string>
 	<string name="graphView_ImageViewDescription">Graphique</string>
+	<string name="renameMaster">Rename master</string>
 	<string name="addServerTitle">Ajouter un serveur</string>
 	<string name="serversTitle">Serveurs</string>
 	<string name="settingsTitle">Options</string>

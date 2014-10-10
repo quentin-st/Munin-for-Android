@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:background="#F2F2F2"
-	android:orientation="vertical" >
+	android:layout_height="match_parent" >
 
-	<ScrollView
+	<LinearLayout
+		android:id="@+id/alerts_pluginselection_inserthere"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content" >
-
-		<LinearLayout
-			android:id="@+id/alerts_pluginselection_inserthere"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:paddingLeft="@dimen/listview_horizontal_margin"
-			android:paddingRight="@dimen/listview_horizontal_margin" />
-	</ScrollView>
-
-</LinearLayout>
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:paddingLeft="@dimen/listview_horizontal_margin"
+		android:paddingRight="@dimen/listview_horizontal_margin" />
+</ScrollView>

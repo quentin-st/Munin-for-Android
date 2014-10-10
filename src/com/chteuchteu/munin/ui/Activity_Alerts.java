@@ -340,8 +340,11 @@ public class Activity_Alerts extends Activity {
 					updateView(hideNormalStateServers);
 					
 					// Can't flat the list before the first loading is finished
-					if (z == muninFoo.getHowManyServers()-1)
-						menu_flatList.setVisible(true);
+					if (z == muninFoo.getHowManyServers()-1) {
+						// menu_flatList can be null if onCreateMenu hasn't been called yet
+						if (menu_flatList != null)
+							menu_flatList.setVisible(true);
+					}
 				}
 			};
 			new Thread() {
