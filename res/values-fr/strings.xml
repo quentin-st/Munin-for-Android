@@ -133,10 +133,11 @@
 	<string name="text68">Timeout - Le serveur a mis trop longtemps à répondre</string>
 	<string name="text69">Nom de la grille</string>
 	<string name="text70">Ajouter une grille</string>
-	<string name="text73">Supprimer cette grille</string>
 	<string name="text70.2">Ajouter un label</string>
 	<string name="text71">Sélectionnez un serveur</string>
 	<string name="text72">Sélectionnez les plugins à ajouter</string>
+	<string name="text73">Supprimer cette grille</string>
+	<string name="rename_grid">Renommer la grille</string>
 	<string name="text74">Une grille portant ce nom existe déjà.</string>
 	<string name="text75">Grille</string>
 	<string name="text76">Changer la période…</string>

@@ -43,7 +43,7 @@ import com.chteuchteu.munin.obj.SearchResult;
 import com.chteuchteu.munin.obj.SearchResult.SearchResultType;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
-import com.chteuchteu.munin.ui.Activity_GridSelection;
+import com.chteuchteu.munin.ui.Activity_Grids;
 import com.chteuchteu.munin.ui.Activity_Labels;
 import com.chteuchteu.munin.ui.Activity_Notifications;
 import com.chteuchteu.munin.ui.Activity_PluginSelection;
@@ -62,7 +62,7 @@ public class DrawerHelper {
 	public int Activity_GoPremium = 10;
 	public int Activity_GraphView = 3;
 	public int Activity_Grid = 11;
-	public int Activity_GridSelection = 11;
+	public int Activity_Grids = 11;
 	public int Activity_Main = 0;
 	public int Activity_Notifications = 4;
 	public int Activity_PluginSelection = 7;
@@ -184,7 +184,7 @@ public class DrawerHelper {
 		a.findViewById(R.id.drawer_grid_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(a, Activity_GridSelection.class);
+				Intent i = new Intent(a, Activity_Grids.class);
 				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				a.startActivity(i);

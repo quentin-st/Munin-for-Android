@@ -411,6 +411,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return nbRows;
 	}
 	
+	public int updateGridName(String oldName, String newName) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_GRIDS_NAME, newName);
+		
+		int nbRows = db.update(TABLE_GRIDS, values, KEY_GRIDS_NAME + " = ?", new String[] { oldName });
+		close(null, db);
+		return nbRows;
+	}
+	
+	public boolean gridExists(String gridName) {
+		return GenericQueries.getNbLines(this, TABLE_GRIDS, KEY_GRIDS_NAME + " = '" + gridName + "'") > 0;
+	}
+	
 	public List<MuninMaster> getMasters(List<MuninMaster> currentMasters) {
 		List<MuninMaster> l = new ArrayList<MuninMaster>();
 		try {
@@ -744,13 +759,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	/**
 	 * Get a grid from its name
-	 * @param co Context
-	 * @param f MuninFoo instance
-	 * @param editView Should edit view ?
+	 * @param context Context
+	 * @param muninFoo MuninFoo instance
 	 * @param gridName Grid name
 	 * @return Grid
 	 */
-	public Grid getGrid(Context co, MuninFoo f, boolean editView, String gridName) {
+	public Grid getGrid(Context context, MuninFoo muninFoo, String gridName) {
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDS
 				+ " WHERE " + KEY_GRIDS_NAME + " = '" + gridName + "'";
 		
@@ -758,10 +772,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		Cursor c = db.rawQuery(selectQuery, null);
 		
 		if (c != null && c.moveToFirst()) {
-			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), f);
+			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), muninFoo);
 			g.id = c.getInt(c.getColumnIndex(KEY_ID));
 			// Get all GridItems
-			g.items = getGridItems(co, g);
+			g.items = getGridItems(context, g);
 			
 			close(c, db);
 			return g;
@@ -771,21 +785,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	/**
 	 * Get all grid items from a Grid
-	 * @param co
-	 * @param g
+	 * @param context
+	 * @param grid
 	 * @return
 	 */
-	public List<GridItem> getGridItems(Context co, Grid g) {
+	public List<GridItem> getGridItems(Context context, Grid grid) {
 		List<GridItem> l = new ArrayList<GridItem>();
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDITEMRELATIONS
-				+ " WHERE " + KEY_GRIDITEMRELATIONS_GRID + " = " + g.id;
+				+ " WHERE " + KEY_GRIDITEMRELATIONS_GRID + " = " + grid.id;
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
 		if (c != null && c.moveToFirst()) {
 			do {
-				GridItem i = new GridItem(g, getPlugin(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_PLUGIN))), co);
+				GridItem i = new GridItem(grid, getPlugin(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_PLUGIN))), context);
 				i.id = c.getInt(c.getColumnIndex(KEY_ID));
 				i.period = Period.get(c.getString(c.getColumnIndex(KEY_GRIDITEMRELATIONS_DEFAULTPERIOD)));
 				i.X = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X));

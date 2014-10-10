@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -35,10 +37,10 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 
-public class Activity_GridSelection extends ListActivity {
+public class Activity_Grids extends ListActivity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
-	private Context			c;
+	private Context			context;
 	private Menu			menu;
 	private String			activityName;
 	
@@ -50,14 +52,14 @@ public class Activity_GridSelection extends ListActivity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		MuninFoo.loadLanguage(this);
-		c = this;
+		context = this;
 		
 		setContentView(R.layout.gridselection);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setTitle(getString(R.string.button_grid));
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_GridSelection);
+		dh.setDrawerActivity(dh.Activity_Grids);
 		
 		Util.UI.applySwag(this);
 		
@@ -80,10 +82,77 @@ public class Activity_GridSelection extends ListActivity {
 			getListView().setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					TextView gridName = (TextView) view.findViewById(R.id.line_a);
-					Intent intent = new Intent(Activity_GridSelection.this, Activity_Grid.class);
+					Intent intent = new Intent(Activity_Grids.this, Activity_Grid.class);
 					intent.putExtra("gridName", gridName.getText().toString());
 					startActivity(intent);
-					Util.setTransition(c, TransitionStyle.DEEPER);
+					Util.setTransition(context, TransitionStyle.DEEPER);
+				}
+			});
+			
+			getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> adapter, final View view, int position, long arg) {
+					// Display actions list
+					AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+					final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+							context, android.R.layout.simple_list_item_1);
+					arrayAdapter.add(context.getString(R.string.rename_grid));
+					arrayAdapter.add(context.getString(R.string.text73)); // Delete grid
+					
+					builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							final TextView gridNameTextView = (TextView) view.findViewById(R.id.line_a);
+							final String gridName = gridNameTextView.getText().toString();
+							
+							switch (which) {
+							case 0: // Rename grid
+								final EditText input = new EditText(context);
+								input.setText(gridName);
+								
+								new AlertDialog.Builder(context)
+								.setTitle(R.string.rename_grid)
+								.setView(input)
+								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton) {
+										String value = input.getText().toString();
+										if (!value.equals(gridName)) {
+											// Check if there's a grid with this name
+											boolean alreadyExists = muninFoo.sqlite.dbHlpr.gridExists(value);
+											if (!alreadyExists) {
+												MuninFoo.getInstance(context).sqlite.dbHlpr.updateGridName(gridName, value);
+												gridNameTextView.setText(value);
+											} else
+												Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
+										}
+										dialog.dismiss();
+									}
+								}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton) { }
+								}).show();
+								break;
+							case 1: // Delete grid
+								new AlertDialog.Builder(context)
+								.setTitle(R.string.delete)
+								.setMessage(R.string.text80)
+								.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										Grid grid = muninFoo.sqlite.dbHlpr.getGrid(context, muninFoo, gridName);
+										muninFoo.sqlite.dbHlpr.deleteGrid(grid);
+										startActivity(new Intent(Activity_Grids.this, Activity_Grids.class));
+									}
+								})
+								.setNegativeButton(R.string.text34, null)
+								.show();
+								
+								break;
+							}
+						}
+					});
+					builderSingle.show();
+					
+					return true;
 				}
 			});
 		}
@@ -96,7 +165,7 @@ public class Activity_GridSelection extends ListActivity {
 		final EditText input = new EditText(this);
 		ll.addView(input);
 		
-		AlertDialog.Builder b = new AlertDialog.Builder(Activity_GridSelection.this)
+		AlertDialog.Builder b = new AlertDialog.Builder(Activity_Grids.this)
 		.setTitle(getText(R.string.text69))
 		.setView(ll)
 		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -156,12 +225,12 @@ public class Activity_GridSelection extends ListActivity {
 				add();
 				return true;
 			case R.id.menu_settings:
-				startActivity(new Intent(Activity_GridSelection.this, Activity_Settings.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				startActivity(new Intent(Activity_Grids.this, Activity_Settings.class));
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
-				startActivity(new Intent(Activity_GridSelection.this, Activity_About.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				startActivity(new Intent(Activity_Grids.this, Activity_About.class));
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -179,7 +248,7 @@ public class Activity_GridSelection extends ListActivity {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		Util.setTransition(c, TransitionStyle.SHALLOWER);
+		Util.setTransition(context, TransitionStyle.SHALLOWER);
 	}
 	
 	@Override
@@ -217,13 +286,13 @@ public class Activity_GridSelection extends ListActivity {
 				if (available) {
 					muninFoo.sqlite.dbHlpr.insertGrid(new Grid(value, muninFoo));
 					dialog.dismiss();
-					Intent i = new Intent(Activity_GridSelection.this, Activity_Grid.class);
+					Intent i = new Intent(Activity_Grids.this, Activity_Grid.class);
 					i.putExtra("gridName", value);
 					startActivity(i);
-					Util.setTransition(c, TransitionStyle.DEEPER);
+					Util.setTransition(context, TransitionStyle.DEEPER);
 				}
 				else
-					Toast.makeText(c, getString(R.string.text74), Toast.LENGTH_LONG).show();
+					Toast.makeText(context, getString(R.string.text74), Toast.LENGTH_LONG).show();
 			}
 		}
 	}

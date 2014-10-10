@@ -477,7 +477,7 @@ public class Activity_GraphView extends Activity {
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.SHALLOWER);
 				} else {
-					startActivity(new Intent(Activity_GraphView.this, Activity_GridSelection.class));
+					startActivity(new Intent(Activity_GraphView.this, Activity_Grids.class));
 					Util.setTransition(context, TransitionStyle.SHALLOWER);
 				}
 			}

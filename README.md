@@ -18,8 +18,7 @@
 * Activity_GoPremium
 * Activity_GraphView
 * Activity_Grid
-* Activity_GridSelection
-* Activity_Init
+* Activity_Grids
 * Activity_Labels
 * Activity_LabelsPluginSelection
 * Activity_Main

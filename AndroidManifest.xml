@@ -44,7 +44,7 @@
 			android:configChanges="orientation|screenSize|keyboardHidden"
 			android:theme="@style/NoActionBarShadow" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Grid" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_GridSelection" />
+		<activity android:name="com.chteuchteu.munin.ui.Activity_Grids" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Labels" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_LabelsPluginSelection" />
 		<activity

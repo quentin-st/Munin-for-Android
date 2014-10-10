@@ -6,9 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,7 +55,6 @@ public class Activity_Grid extends Activity {
 	
 	public static MenuItem	menu_refresh;
 	public static MenuItem	menu_edit;
-	private MenuItem		menu_delete;
 	public static MenuItem	menu_period;
 	public static MenuItem	menu_open;
 	
@@ -219,11 +216,11 @@ public class Activity_Grid extends Activity {
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("gridName")) {
 			String gridName = thisIntent.getExtras().getString("gridName");
-			grid = muninFoo.sqlite.dbHlpr.getGrid(this, muninFoo, true, gridName);
+			grid = muninFoo.sqlite.dbHlpr.getGrid(this, muninFoo, gridName);
 		}
 		
 		if (grid == null)
-			startActivity(new Intent(this, Activity_GridSelection.class));
+			startActivity(new Intent(this, Activity_Grids.class));
 		
 		getActionBar().setTitle(getText(R.string.text75) + " " + grid.name);
 		
@@ -263,10 +260,8 @@ public class Activity_Grid extends Activity {
 		getMenuInflater().inflate(R.menu.grid, menu);
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		menu_edit = menu.findItem(R.id.menu_edit);
-		menu_delete = menu.findItem(R.id.menu_delete);
 		menu_period = menu.findItem(R.id.menu_period);
 		menu_open = menu.findItem(R.id.menu_open);
-		menu_delete.setVisible(editing);
 		menu_refresh.setVisible(!editing);
 		if (editing)	menu_edit.setIcon(R.drawable.navigation_accept_dark);
 		else 			menu_edit.setIcon(R.drawable.content_edit_dark);
@@ -275,7 +270,6 @@ public class Activity_Grid extends Activity {
 	
 	private void edit() {
 		if (menu_refresh != null)	menu_refresh.setVisible(editing);
-		if (menu_delete != null)	menu_delete.setVisible(!editing);
 		if (menu_period != null)	menu_period.setVisible(editing);
 		
 		if (editing) { // Cancel edit
@@ -288,22 +282,6 @@ public class Activity_Grid extends Activity {
 		}
 		
 		editing = !editing;
-	}
-	
-	private void delete() {
-		new AlertDialog.Builder(this)
-		.setTitle(R.string.delete)
-		.setMessage(R.string.text80)
-		.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				muninFoo.sqlite.dbHlpr.deleteGrid(grid);
-				startActivity(new Intent(Activity_Grid.this, Activity_GridSelection.class));
-				Util.setTransition(context, TransitionStyle.SHALLOWER);
-			}
-		})
-		.setNegativeButton(R.string.text34, null)
-		.show();
 	}
 	
 	private void refresh() {
@@ -345,9 +323,6 @@ public class Activity_Grid extends Activity {
 				return true;
 			case R.id.menu_edit:
 				edit();
-				return true;
-			case R.id.menu_delete:
-				delete();
 				return true;
 			case R.id.period_day:
 				this.currentPeriod = Period.DAY;
@@ -393,7 +368,7 @@ public class Activity_Grid extends Activity {
 			if (editing)
 				edit(); // quit edit mode
 			else {
-				Intent intent = new Intent(this, Activity_GridSelection.class);
+				Intent intent = new Intent(this, Activity_Grids.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				Util.setTransition(context, TransitionStyle.SHALLOWER);

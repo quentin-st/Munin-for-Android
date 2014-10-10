@@ -199,7 +199,8 @@
 	<string name="text70.2">Add a label</string>
 	<string name="text71">Select a server</string>
 	<string name="text72">Select plugins to add</string>
-	<string name="text73">Delete this grid</string>
+	<string name="text73">Delete grid</string>
+	<string name="rename_grid">Rename grid</string>
 	<string name="text74">A grid with that name already exists.</string>
 	<string name="text75">Grid</string>
 	<string name="text76">Change period…</string>
