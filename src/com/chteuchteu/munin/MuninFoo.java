@@ -257,17 +257,17 @@ public class MuninFoo {
 	}
 	public boolean removeLabel(Label label) {
 		List<Label> list = new ArrayList<Label>();
-		boolean someThingDeleted = false;
+		boolean somthingDeleted = false;
 		for (Label l : labels) {
 			if (!l.equals(label))
 				list.add(l);
 			else
-				someThingDeleted = true;
+				somthingDeleted = true;
 		}
 		labels = list;
-		if (someThingDeleted)
+		if (somthingDeleted)
 			sqlite.saveLabels();
-		return someThingDeleted;
+		return somthingDeleted;
 	}
 	public void unLinkAll() {
 		// Permet d'éviter qu'une récupération de la BDD entraîne une modif locale

@@ -25,7 +25,7 @@ public class Label {
 	
 	
 	// Returns a List of List of MuninPlugin, sorted by server.
-	// To be displayed in Activity_LabelsPluginSelection
+	// To be displayed in Activity_Label
 	// The loop is made from MuninFoo's servers list (more easy than previous way)
 	//		, and made according to servers sorting positions
 	public List<List<MuninPlugin>> getPluginsSortedByServer(MuninFoo f) {

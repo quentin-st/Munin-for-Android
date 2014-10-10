@@ -46,7 +46,7 @@ import com.chteuchteu.munin.ui.Activity_GoPremium;
 import com.chteuchteu.munin.ui.Activity_Grids;
 import com.chteuchteu.munin.ui.Activity_Labels;
 import com.chteuchteu.munin.ui.Activity_Notifications;
-import com.chteuchteu.munin.ui.Activity_PluginSelection;
+import com.chteuchteu.munin.ui.Activity_Plugins;
 import com.chteuchteu.munin.ui.Activity_Server;
 import com.chteuchteu.munin.ui.Activity_Servers;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -57,22 +57,20 @@ public class DrawerHelper {
 	public int Activity_About = -1;
 	public int Activity_Alerts = 2;
 	public int Activity_AlertsPluginSelection = 2;
+	public int Activity_Label = 9;
 	public int Activity_Labels = 9;
-	public int Activity_LabelsPluginSelection = 9;
 	public int Activity_GoPremium = 10;
 	public int Activity_GraphView = 3;
 	public int Activity_Grid = 11;
 	public int Activity_Grids = 11;
 	public int Activity_Main = 0;
 	public int Activity_Notifications = 4;
-	public int Activity_PluginSelection = 7;
+	public int Activity_Plugins = 7;
 	public int Activity_Server_Add = 1;
 	public int Activity_Server_Edit = 8;
 	public int Activity_Servers = 5;
 	public int Activity_ServersEdit = 5;
 	public int Activity_Settings = 6;
-	public int Activity_Settings_Comp = 6;
-	public int Activity_Splash = -1;
 	
 	private Activity a;
 	private Context c;
@@ -174,7 +172,7 @@ public class DrawerHelper {
 		a.findViewById(R.id.drawer_graphs_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(a, Activity_PluginSelection.class);
+				Intent i = new Intent(a, Activity_Plugins.class);
 				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				a.startActivity(i);

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -21,6 +26,7 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.Label;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
@@ -28,21 +34,21 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 @SuppressLint("NewApi")
 public class Activity_Labels extends ListActivity {
-	private MuninFoo			muninFoo;
-	private DrawerHelper		dh;
-	private Context			c;
+	private MuninFoo		muninFoo;
+	private DrawerHelper	dh;
+	private Context			context;
 	
-	private SimpleAdapter 		sa;
+	private SimpleAdapter 	sa;
 	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
-	private Menu 				menu;
-	private String				activityName;
+	private Menu 			menu;
+	private String			activityName;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		MuninFoo.loadLanguage(this);
-		c = this;
+		context = this;
 		
 		setContentView(R.layout.labelselection);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -52,11 +58,15 @@ public class Activity_Labels extends ListActivity {
 		dh.setDrawerActivity(dh.Activity_Labels);
 		
 		Util.UI.applySwag(this);
+		
+		updateListView();
 	}
 	
 	public void updateListView() {
+		list.clear();
+		getListView().setAdapter(null);
+		
 		if (muninFoo.labels.size() > 0) {
-			list.clear();
 			HashMap<String,String> item;
 			for(int i=0; i<muninFoo.labels.size(); i++){
 				item = new HashMap<String,String>();
@@ -70,10 +80,75 @@ public class Activity_Labels extends ListActivity {
 			getListView().setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					TextView label = (TextView) view.findViewById(R.id.line_a);
-					Intent intent = new Intent(Activity_Labels.this, Activity_LabelsPluginSelection.class);
+					Intent intent = new Intent(Activity_Labels.this, Activity_Label.class);
 					intent.putExtra("label", label.getText().toString());
 					startActivity(intent);
-					Util.setTransition(c, TransitionStyle.DEEPER);
+					Util.setTransition(context, TransitionStyle.DEEPER);
+				}
+			});
+			
+			getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> adapter, View view, int pos, long arg) {
+					final TextView labelNameTextView = (TextView) view.findViewById(R.id.line_a);
+					final String labelName = labelNameTextView.getText().toString();
+					
+					// Display actions list
+					AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+					final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+							context, android.R.layout.simple_list_item_1);
+					arrayAdapter.add(context.getString(R.string.rename_label));
+					arrayAdapter.add(context.getString(R.string.delete));
+					
+					builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0:
+								final EditText input = new EditText(context);
+								input.setText(labelName);
+								
+								new AlertDialog.Builder(context)
+								.setTitle(R.string.rename_label)
+								.setView(input)
+								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton) {
+										String value = input.getText().toString();
+										if (!value.equals(labelName)) {
+											Label label = muninFoo.getLabel(labelName);
+											label.setName(value);
+											MuninFoo.getInstance(context).sqlite.dbHlpr.updateLabel(label);
+											labelNameTextView.setText(value);
+										}
+										dialog.dismiss();
+									}
+								}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton) { }
+								}).show();
+								break;
+							case 1:
+								new AlertDialog.Builder(context)
+								.setTitle(R.string.delete)
+								.setMessage(R.string.text82)
+								.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										Label label = muninFoo.getLabel(labelName);
+										
+										muninFoo.removeLabel(label);
+										updateListView();
+									}
+								})
+								.setNegativeButton(R.string.text34, null)
+								.show();
+								
+								break;
+							}
+						}
+					});
+					builderSingle.show();
+					
+					return true;
 				}
 			});
 		}
@@ -119,11 +194,11 @@ public class Activity_Labels extends ListActivity {
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Labels.this, Activity_Settings.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_Labels.this, Activity_About.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -135,20 +210,7 @@ public class Activity_Labels extends ListActivity {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		Util.setTransition(c, TransitionStyle.SHALLOWER);
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		
-		if (muninFoo.currentServer != null && muninFoo.currentServer.getPlugins() != null && muninFoo.currentServer.getPlugins().size() > 0) {
-			updateListView();
-		} else {
-			Intent intent = new Intent(this, Activity_Main.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-		}
+		Util.setTransition(context, TransitionStyle.SHALLOWER);
 	}
 	
 	@Override

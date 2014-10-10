@@ -20,10 +20,10 @@
 * Activity_Grid
 * Activity_Grids
 * Activity_Labels
-* Activity_LabelsPluginSelection
+* Activity_Labels
 * Activity_Main
 * Activity_Notifications
-* Activity_PluginSelection
+* Activity_Plugins
 * Activity_Server
 * Activity_Servers
 * Activity_ServersEdit

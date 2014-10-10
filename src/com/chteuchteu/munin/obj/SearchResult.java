@@ -10,8 +10,8 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 import com.chteuchteu.munin.ui.Activity_Grid;
-import com.chteuchteu.munin.ui.Activity_LabelsPluginSelection;
-import com.chteuchteu.munin.ui.Activity_PluginSelection;
+import com.chteuchteu.munin.ui.Activity_Label;
+import com.chteuchteu.munin.ui.Activity_Plugins;
 
 
 public class SearchResult {
@@ -70,7 +70,7 @@ public class SearchResult {
 			case LABEL:
 				Label label = (Label) object;
 				
-				intent = new Intent(activity, Activity_LabelsPluginSelection.class);
+				intent = new Intent(activity, Activity_Label.class);
 				intent.putExtra("label", label.getName().toString());
 				activity.startActivity(intent);
 				Util.setTransition(activity, TransitionStyle.DEEPER);
@@ -90,7 +90,7 @@ public class SearchResult {
 				MuninServer server = (MuninServer) object;
 				MuninFoo.getInstance().currentServer = server;
 				
-				activity.startActivity(new Intent(activity, Activity_PluginSelection.class));
+				activity.startActivity(new Intent(activity, Activity_Plugins.class));
 				Util.setTransition(activity, TransitionStyle.DEEPER);
 				
 				break;

@@ -9,9 +9,7 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,9 +21,9 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.chteuchteu.munin.Adapter_SeparatedList;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.Adapter_SeparatedList;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -36,7 +34,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 
 @SuppressLint("NewApi")
-public class Activity_LabelsPluginSelection extends Activity {
+public class Activity_Label extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
 	private Context			c;
@@ -62,10 +60,10 @@ public class Activity_LabelsPluginSelection extends Activity {
 			label = muninFoo.getLabel(labelName);
 			if (label == null) {
 				Toast.makeText(this, "Error while trying to display this list...", Toast.LENGTH_LONG).show();
-				startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_Labels.class));
+				startActivity(new Intent(Activity_Label.this, Activity_Labels.class));
 			}
 		} else
-			startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_Labels.class));
+			startActivity(new Intent(Activity_Label.this, Activity_Labels.class));
 		
 		
 		setContentView(R.layout.labels_pluginselection);
@@ -74,7 +72,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 		actionBar.setTitle(label.getName());
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_LabelsPluginSelection);
+		dh.setDrawerActivity(dh.Activity_Label);
 		
 		Util.UI.applySwag(this);
 		
@@ -109,7 +107,7 @@ public class Activity_LabelsPluginSelection extends Activity {
 				
 				MuninPlugin plugin = correspondance.get(position);
 				String serverUrl = correspondanceServers.get(position);
-				Intent intent = new Intent(Activity_LabelsPluginSelection.this, Activity_GraphView.class);
+				Intent intent = new Intent(Activity_Label.this, Activity_GraphView.class);
 				muninFoo.currentServer = muninFoo.getServer(serverUrl);
 				int pos = muninFoo.currentServer.getPluginPosition(plugin);
 				intent.putExtra("position", pos + "");
@@ -119,22 +117,6 @@ public class Activity_LabelsPluginSelection extends Activity {
 				Util.setTransition(c, TransitionStyle.DEEPER);
 			}
 		});
-	}
-	
-	private void deleteLabel() {
-		new AlertDialog.Builder(this)
-		.setTitle(R.string.delete)
-		.setMessage(R.string.text82)
-		.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				muninFoo.removeLabel(label);
-				startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_Labels.class));
-				Util.setTransition(c, TransitionStyle.SHALLOWER);
-			}
-		})
-		.setNegativeButton(R.string.text34, null)
-		.show();
 	}
 	
 	public Map<String,?> createItem(String title, String caption) {  
@@ -152,15 +134,12 @@ public class Activity_LabelsPluginSelection extends Activity {
 			case android.R.id.home:
 				dh.getDrawer().toggle(true);
 				return true;
-			case R.id.menu_delete:
-				deleteLabel();
-				return true;
 			case R.id.menu_settings:
-				startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_Settings.class));
+				startActivity(new Intent(Activity_Label.this, Activity_Settings.class));
 				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
-				startActivity(new Intent(Activity_LabelsPluginSelection.this, Activity_About.class));
+				startActivity(new Intent(Activity_Label.this, Activity_About.class));
 				Util.setTransition(c, TransitionStyle.DEEPER);
 				return true;
 			default:	return super.onOptionsItemSelected(item);
@@ -194,7 +173,6 @@ public class Activity_LabelsPluginSelection extends Activity {
 	
 	private void createOptionsMenu() {
 		menu.clear();
-		getMenuInflater().inflate(R.menu.labelspluginselection, menu);
 	}
 	
 	@Override

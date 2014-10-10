@@ -181,7 +181,7 @@ public class Activity_GraphView extends Activity {
 			String position = thisIntent.getExtras().getString("position");
 			pos = Integer.parseInt(position);
 		}/* else { // Vérification de l'intent ratée: redirection
-			Intent intent2 = new Intent(Activity_GraphView.this, Activity_PluginSelection.class);
+			Intent intent2 = new Intent(Activity_GraphView.this, Activity_Plugins.class);
 			startActivity(intent2);
 		}*/
 		
@@ -457,7 +457,7 @@ public class Activity_GraphView extends Activity {
 			String from = thisIntent.getExtras().getString("from");
 			if (from.equals("labels")) {
 				if (thisIntent.getExtras().containsKey("label")) {
-					Intent intent = new Intent(Activity_GraphView.this, Activity_LabelsPluginSelection.class);
+					Intent intent = new Intent(Activity_GraphView.this, Activity_Label.class);
 					intent.putExtra("label", thisIntent.getExtras().getString("label"));
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.SHALLOWER);
@@ -482,7 +482,7 @@ public class Activity_GraphView extends Activity {
 				}
 			}
 		} else {
-			Intent intent = new Intent(this, Activity_PluginSelection.class);
+			Intent intent = new Intent(this, Activity_Plugins.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			Util.setTransition(context, TransitionStyle.SHALLOWER);

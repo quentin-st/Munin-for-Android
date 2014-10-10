@@ -275,6 +275,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return id;
 	}
 	
+	public int updateLabel(Label label) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_LABELS_NAME, label.getName());
+		
+		int nbRows = db.update(TABLE_LABELS, values, KEY_ID + " = ?", new String[] { String.valueOf(label.getId()) });
+		close(null, db);
+		return nbRows;
+	}
+	
 	public long insertLabelRelation(MuninPlugin p, Label l) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		

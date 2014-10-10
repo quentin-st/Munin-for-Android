@@ -46,7 +46,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 
 @SuppressLint("NewApi")
-public class Activity_PluginSelection extends ListActivity {
+public class Activity_Plugins extends ListActivity {
 	private MuninFoo			muninFoo;
 	private DrawerHelper		dh;
 	private Context				context;
@@ -125,7 +125,7 @@ public class Activity_PluginSelection extends ListActivity {
 		}
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_PluginSelection);
+		dh.setDrawerActivity(dh.Activity_Plugins);
 		
 		mode = getListViewMode();
 		
@@ -216,7 +216,7 @@ public class Activity_PluginSelection extends ListActivity {
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 				TextView plu = (TextView) view.findViewById(R.id.line_b);
-				Intent intent = new Intent(Activity_PluginSelection.this, Activity_GraphView.class);
+				Intent intent = new Intent(Activity_Plugins.this, Activity_GraphView.class);
 				int p = 0;
 				for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
 					if (muninFoo.currentServer.getPlugin(i) != null && muninFoo.currentServer.getPlugin(i).getName().equals(plu.getText().toString())) {
@@ -336,7 +336,7 @@ public class Activity_PluginSelection extends ListActivity {
 							list.add(item);
 						}
 					}
-					sa = new SimpleAdapter(Activity_PluginSelection.this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+					sa = new SimpleAdapter(Activity_Plugins.this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 					setListAdapter(sa);
 				}
 			}
@@ -378,11 +378,11 @@ public class Activity_PluginSelection extends ListActivity {
 				updateListView();
 				return true;
 			case R.id.menu_settings:
-				startActivity(new Intent(Activity_PluginSelection.this, Activity_Settings.class));
+				startActivity(new Intent(Activity_Plugins.this, Activity_Settings.class));
 				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
-				startActivity(new Intent(Activity_PluginSelection.this, Activity_About.class));
+				startActivity(new Intent(Activity_Plugins.this, Activity_About.class));
 				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			default:

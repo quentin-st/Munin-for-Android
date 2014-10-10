@@ -234,6 +234,8 @@
 	<string name="import_success_title">Import successful</string>
 	<string name="import_success_txt1">The servers importation has succeeded</string>
 	<string name="delete_plugin">Delete plugin</string>
+	<string name="delete_label">Delete label</string>
+	<string name="rename_label">Rename label</string>
 	<string name="fieldsDescriptionWrapper" tools:ignore="MissingTranslation">
 <![CDATA[
 		<head>

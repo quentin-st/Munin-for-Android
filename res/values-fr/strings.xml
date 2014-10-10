@@ -180,6 +180,8 @@
 	<string name="import_success_title">Import réussi</string>
 	<string name="import_success_txt1">L\'importation des serveurs a réussi</string>
 	<string name="delete_plugin">Supprimer le plugin</string>
+	<string name="rename_label">Renommer ce label</string>
+	<string name="delete_label">Supprimer ce label</string>
 	<string name="aboutText">
 <![CDATA[
    <head>
