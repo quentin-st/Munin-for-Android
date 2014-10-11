@@ -33,6 +33,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.graphics.Bitmap;
 import android.util.Base64;
 import android.util.Log;
 
@@ -394,9 +395,18 @@ public class MuninServer {
 		if (plugin == null)
 			return false;
 		
-		HTTPResponse res = grabUrl(plugin.getHDImgUrl(Period.DAY));
+		String hdGraphUrl = plugin.getHDImgUrl(Period.DAY);
+		HTTPResponse res = grabUrl(hdGraphUrl);
 		
-		return res.timeout == false && res.responseCode == 200;
+		boolean seemsAvailable = res.timeout == false && res.responseCode == 200;
+		
+		if (!seemsAvailable)
+			return false;
+		
+		// At this point, the dynazoom seems available. Let's try to download a bitmap to
+		// see if we get a bitmap (instead of a custom 404 error)
+		Bitmap bitmap = MuninFoo.grabBitmap(this, hdGraphUrl);
+		return bitmap != null;
 	}
 	
 	public void createTitle () {
