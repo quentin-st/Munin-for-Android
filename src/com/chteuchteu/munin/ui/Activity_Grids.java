@@ -63,12 +63,18 @@ public class Activity_Grids extends ListActivity {
 		
 		Util.UI.applySwag(this);
 		
+		updateList();
+	}
+	
+	private void updateList() {
+		list.clear();
+		setListAdapter(null);
+		
 		List<Grid> gridsList = muninFoo.sqlite.dbHlpr.getGrids(this, muninFoo);
 		
 		if (gridsList.size() == 0)
 			findViewById(R.id.grids_nogrid).setVisibility(View.VISIBLE);
 		else {
-			list.clear();
 			HashMap<String,String> item;
 			for (Grid g : gridsList) {
 				item = new HashMap<String,String>();
@@ -140,7 +146,7 @@ public class Activity_Grids extends ListActivity {
 									public void onClick(DialogInterface dialog, int which) {
 										Grid grid = muninFoo.sqlite.dbHlpr.getGrid(context, muninFoo, gridName);
 										muninFoo.sqlite.dbHlpr.deleteGrid(grid);
-										startActivity(new Intent(Activity_Grids.this, Activity_Grids.class));
+										updateList();
 									}
 								})
 								.setNegativeButton(R.string.text34, null)
