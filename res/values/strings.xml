@@ -233,20 +233,5 @@
 	<string name="delete_label">Delete label</string>
 	<string name="rename_label">Rename label</string>
 	<string name="delete_master">Delete master and sub-servers</string>
-	<string name="fieldsDescriptionWrapper" tools:ignore="MissingTranslation">
-<![CDATA[
-		<head>
-		<style>
-			th { border-bottom: 1px solid #999; }
-			td { padding: 5px 10px; margin: 1px;border-bottom: 1px solid #d8d8d8; min-width: 30px; }
-			td.lastrow { border-bottom-width: 0px; }
-		</style>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		</head>
-		<body>
-		INSERT_HERE
-		</body>
-		]]>
-	</string>
 
 </resources>

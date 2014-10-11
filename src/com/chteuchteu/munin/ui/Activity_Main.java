@@ -101,7 +101,7 @@ public class Activity_Main extends Activity {
 			@Override
 			public void onOpen() {
 				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle("Munin for Android");
+				getActionBar().setTitle(R.string.app_name);
 			}
 		});
 		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
@@ -112,8 +112,6 @@ public class Activity_Main extends Activity {
 		});
 		
 		dh.getDrawer().toggle(true);
-		
-		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		// Inflate menu if not already done
 		if (preloading && !optionsMenuLoaded)

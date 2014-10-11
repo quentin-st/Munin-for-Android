@@ -44,7 +44,6 @@
 	<string name="loading">Chargement…</string>
 	<string name="search">Rechercher</string>
 	<string name="about_eraseData">Remise à zéro de l\'appli</string>
-	<string name="about_checkUpdates">Vérifier les mises à jour</string>
 	<string name="about_gplay">Notez l\'application sur Google Play</string>
 	<string name="graphView_ImageViewDescription">Graphique</string>
 	<string name="renameMaster">Rename master</string>
@@ -62,8 +61,6 @@
 	<string name="menu_serversedit_revert">Annuler les modifications</string>
 	<string name="servers_noservers_1">Aucun serveur</string>
 	<string name="servers_noservers_2">Ajoutez-en en cliquant sur +</string>
-	<string name="updateNotificationTitle">Mise à jour disponible</string>
-	<string name="updateNotificationText">Veuillez mettre à jour l\'application pour bénéficier des dernières fonctionnalités.</string>
 	<string name="buy_now">BUY NOW</string>
 	<string name="splashDesc">Loading</string>
 	<string name="edit">Editer</string>

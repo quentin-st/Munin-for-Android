@@ -312,7 +312,7 @@ public class Activity_Settings extends Activity {
 			@Override
 			public void onOpen() {
 				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle("Munin for Android");
+				getActionBar().setTitle(R.string.app_name);
 				menu.clear();
 				getMenuInflater().inflate(R.menu.main, menu);
 			}

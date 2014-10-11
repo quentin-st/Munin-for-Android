@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -102,6 +103,7 @@ public class Activity_GraphView extends Activity {
 	private static int currentlyDownloading = 0;
 	
 	
+	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
@@ -271,7 +273,8 @@ public class Activity_GraphView extends Activity {
 					vtObserver.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 						@Override
 						public void onGlobalLayout() {
-							viewFlow.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+								viewFlow.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 							// Now we have the dimensions.
 							loadGraphs = true;
 							actionRefresh();
@@ -342,7 +345,7 @@ public class Activity_GraphView extends Activity {
 			@Override
 			public void onOpen() {
 				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle("Munin for Android");
+				getActionBar().setTitle(R.string.app_name);
 				menu.clear();
 				getMenuInflater().inflate(R.menu.main, menu);
 			}
@@ -796,8 +799,13 @@ public class Activity_GraphView extends Activity {
 			if (this.html != null) {
 				if (!this.html.equals("")) {
 					// Prepare HTML
-					String wrapper = getText(R.string.fieldsDescriptionWrapper).toString();
-					String wrappedHtml = wrapper.replace("INSERT_HERE", html);
+					String wrappedHtml = "<head><style>" +
+							"td { padding: 5px 10px; margin: 1px;border-bottom: 1px solid #d8d8d8; min-width: 30px; }" +
+							"td.lastrow { border-bottom-width: 0px; } th { border-bottom: 1px solid #999; }" +
+							"</style>" +
+							"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />" +
+							"</head>" +
+							"<body>" + html + "</body>";
 					
 					// Inflate and populate view
 					LayoutInflater inflater = getLayoutInflater();

@@ -24,7 +24,6 @@
 	<string name="loading">Lade</string>
 	<string name="search">Suche</string>
 	<string name="about_eraseData">App zurücksetzen</string>
-	<string name="about_checkUpdates">Auf Updates überprüfen</string>
 	<string name="about_gplay">Google Play: note!</string>
 	<string name="splashDesc">Lade</string>
 	<string name="graphView_ImageViewDescription">Graph</string>

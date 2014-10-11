@@ -183,7 +183,7 @@ public class Service_Notifications extends Service {
 			if (nbCriticals > 0 || nbWarnings > 0) {
 				if (!getPref("lastNotificationText").equals(texteNotification)) {
 					NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-					Notification notification = new Notification(R.drawable.launcher_icon_mono, "Munin for Android", System.currentTimeMillis());
+					Notification notification = new Notification(R.drawable.launcher_icon_mono, getString(R.string.app_name), System.currentTimeMillis());
 					
 					PendingIntent pendingIntent = PendingIntent.getActivity(Service_Notifications.this, 0, new Intent(Service_Notifications.this, Activity_Alerts.class), 0);
 					notification.setLatestEventInfo(Service_Notifications.this, titreNotif, texteNotification, pendingIntent);

@@ -74,7 +74,7 @@ public class Activity_About extends Activity {
 		Util.Fonts.setFont(this, tv1, CustomFont.RobotoCondensed_Regular);
 		Util.Fonts.setFont(this, tv2, CustomFont.RobotoCondensed_Regular);
 		tv1.setText(tv1.getText().toString().toUpperCase());
-		tv2.setText("Munin for Android " + versionName);
+		tv2.setText(getString(R.string.app_name) + " " + versionName);
 	}
 	
 	
@@ -118,7 +118,7 @@ public class Activity_About extends Activity {
 			@Override
 			public void onOpen() {
 				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle("Munin for Android");
+				getActionBar().setTitle(R.string.app_name);
 				menu.clear();
 				getMenuInflater().inflate(R.menu.main, menu);
 			}

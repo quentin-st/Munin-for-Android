@@ -24,7 +24,6 @@
 	<string name="loading">Загрузка…</string>
 	<string name="search">Поиск</string>
 	<string name="about_eraseData">Перезапустить</string>
-	<string name="about_checkUpdates">Проверить обновления</string>
 	<string name="about_gplay">Подробнее о Google Play</string>
 	<string name="splashDesc">Загрузка</string>
 	<string name="graphView_ImageViewDescription">График</string>
