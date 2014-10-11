@@ -4,8 +4,6 @@
 	<string name="app_name">Munin for Android</string>
 	<string name="button_graphs">Graphiques</string>
 	<string name="button_server">Serveurs</string>
-	<string name="button_settings">Options</string>
-	<string name="button_about">A propos</string>
 	<string name="button_premium">Go premium</string>
 	<string name="button_alerts">Alertes</string>
 	<string name="button_labels">Labels</string>
@@ -75,7 +73,6 @@
 	<string name="text01">Les paramètres et la configuration des serveurs vont être remis à zéro. Etes-vous sûr(e) ?</string>
 	<string name="text02">Remise à zéro effectuée.</string>
 	<string name="text09">Erreur</string>
-	<string name="text10">L\'application Twitter ne semble pas être installée sur votre appareil</string>
 	<string name="text11">L\'application Google Play ne semble pas être installée sur votre appareil</string>
 	<string name="text16">L\'URL semble être incorrecte. Veuillez la vérifier</string>
 	<string name="text18">Félicitations !</string>
@@ -122,8 +119,6 @@
 	<string name="text60">Continuer</string>
 	<string name="text61">Ajouter</string>
 	<string name="text62">Aucun label</string>
-	<string name="text63.1">Ouvrir le menu</string>
-	<string name="text63.2">Fermer le menu</string>
 	<string name="text64">Annuler</string>
 	<string name="text65">L\'authentification de type Digest est disponible avec le pack de fonctionnalités (0.49€).</string>
 	<string name="text65.1">L\'authentification de type Digest est disponible avec le pack de fonctionnalités (0.49€). Voulez-vous l\'acheter sur Google Play ?</string>

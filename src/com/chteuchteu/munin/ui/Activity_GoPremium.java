@@ -3,7 +3,6 @@ package com.chteuchteu.munin.ui;
 import java.util.Currency;
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;

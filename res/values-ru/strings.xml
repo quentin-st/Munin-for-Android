@@ -4,8 +4,6 @@
 	<string name="app_name">Munin for Android</string>
 	<string name="button_graphs">Графики</string>
 	<string name="button_server">Серверы</string>
-	<string name="button_settings">Настройки</string>
-	<string name="button_about">О программе</string>
 	<string name="settings_URL_label">мастер-URL Munin</string>
 	<string name="settings_URL_label2">пример: 88.180.108.192:80/munin/</string>
 	<string name="settings_text">… либо выберите сервер согласно примеру</string>
@@ -40,7 +38,6 @@
 	<string name="text01">Будет произведен сброс настроек. Вы уверены?</string>
 	<string name="text02">Сброс выполнен</string>
 	<string name="text09">Ошибка!</string>
-	<string name="text10">На вашем устройстве не установлен Twitter</string>
 	<string name="text11">На вашем устройстве не установлен Google Play</string>
 	<string name="text16">Некорректный URL. Пожалуйста, проверьте настройки</string>
 	<string name="text18">Готово!</string>
@@ -139,8 +136,6 @@ li { margin-bottom: 5px; }
 	<string name="text60">Продолжить</string>
 	<string name="text61">Добавить</string>
 	<string name="text62">Метка на назначена</string>
-	<string name="text63.1">Меню</string>
-	<string name="text63.2">Закрыть меню</string>
 	<string name="text64">Отмена</string>
 	<string name="text65">Аутентификация доступна в пакете дополнительных возможностей Munin for Android($1.49).</string>
 	<string name="text65.1">Аутентификация доступна в пакете дополнительных возможностей Munin for Android($1.49). Хотите купить его в Google Play?</string>

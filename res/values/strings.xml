@@ -4,8 +4,6 @@
 	<string name="app_name">Munin for Android</string>
 	<string name="button_graphs">Graphs</string>
 	<string name="button_server">Servers</string>
-	<string name="button_settings">Settings</string>
-	<string name="button_about">About…</string>
 	<string name="button_premium">Go premium</string>
 	<string name="button_alerts">Alerts</string>
 	<string name="button_labels">Labels</string>
@@ -138,7 +136,6 @@
 	<string name="text01">Settings and servers configuration will be reset. Are you sure?</string>
 	<string name="text02">Reset performed.</string>
 	<string name="text09">Error!</string>
-	<string name="text10">Twitter app seems to be missing on your phone.</string>
 	<string name="text11">Google Play app seems to be missing on your phone.</string>
 	<string name="text16">The URL doesn\'t seems to be good. Please check it again.</string>
 	<string name="text18">Success!</string>
@@ -185,8 +182,6 @@
 	<string name="text60">Continue</string>
 	<string name="text61">Add</string>
 	<string name="text62">There\'s no label yet</string>
-	<string name="text63.1">Open menu</string>
-	<string name="text63.2">Close menu</string>
 	<string name="text64">Cancel</string>
 	<string name="text65">Digest auth is available with the Munin for Android Features Pack ($1.49).</string>
 	<string name="text65.1">Digest auth is available with the Munin for Android Features Pack ($1.49). Do you want to purchase it on Google Play?</string>
