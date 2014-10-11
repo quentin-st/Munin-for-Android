@@ -47,9 +47,11 @@ public class Activity_Main extends Activity {
 	
 	private Menu 			menu;
 	private String			activityName;
-	private boolean			doubleBackPressed;
+	private boolean		doubleBackPressed;
 	
 	// Preloading
+	private boolean preloading;
+	private boolean optionsMenuLoaded;
 	private Context context;
 	private ProgressDialog myProgressDialog;
 	private boolean updateOperations;
@@ -61,14 +63,18 @@ public class Activity_Main extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		preloading = true;
 		boolean loaded = MuninFoo.isLoaded();
 		muninFoo = MuninFoo.getInstance(this);
 		MuninFoo.loadLanguage(this);
+		optionsMenuLoaded = false;
+		if (loaded)
+			preloading = false;
 		
 		
 		context = this;
 		setContentView(R.layout.main_clear);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(false);
 		getActionBar().setTitle("");
 		
 		Util.UI.applySwag(this);
@@ -88,6 +94,8 @@ public class Activity_Main extends Activity {
 	 * 	- going back to Activity_Main
 	 */
 	private void onLoadFinished() {
+		preloading = false;
+		
 		dh = new DrawerHelper(this, muninFoo);
 		dh.setDrawerActivity(dh.Activity_Main);
 		
@@ -106,6 +114,12 @@ public class Activity_Main extends Activity {
 		});
 		
 		dh.getDrawer().toggle(true);
+		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		// Inflate menu if not already done
+		if (preloading && !optionsMenuLoaded)
+			createOptionsMenu();
 		
 		// Ask the user to rate the app
 		AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -174,11 +188,16 @@ public class Activity_Main extends Activity {
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
 		
-		createOptionsMenu();
+		if (!preloading && !optionsMenuLoaded)
+			createOptionsMenu();
 		
 		return true;
 	}
 	private void createOptionsMenu() {
+		if (menu == null)
+			return;
+		
+		optionsMenuLoaded = true;
 		menu.clear();
 		getMenuInflater().inflate(R.menu.main, menu);
 	}
