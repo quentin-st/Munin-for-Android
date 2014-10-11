@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Context;
@@ -42,7 +41,6 @@ public class Activity_ServersEdit extends ListActivity {
 	private Menu 			menu;
 	private String			activityName;
 	
-	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -133,7 +131,6 @@ public class Activity_ServersEdit extends ListActivity {
 		}
 	};
 	
-	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;

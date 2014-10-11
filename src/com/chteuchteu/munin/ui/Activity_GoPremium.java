@@ -32,7 +32,6 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 
-@SuppressLint("NewApi")
 public class Activity_GoPremium extends Activity {
 	private MuninFoo 		muninFoo;
 	private DrawerHelper 	dh;
@@ -87,7 +86,7 @@ public class Activity_GoPremium extends Activity {
 		benefits.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 		benefits.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
 		
-		OnClickListener buy = new OnClickListener() {
+		buyNow.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View actualView) {
 				try {
@@ -106,8 +105,7 @@ public class Activity_GoPremium extends Activity {
 					ad.show();
 				}
 			}
-		};
-		buyNow.setOnClickListener(buy);
+		});
 		
 		Util.Fonts.setFont(this, price1, CustomFont.Roboto_Thin);
 		Util.Fonts.setFont(this, price2, CustomFont.Roboto_Thin);
@@ -134,7 +132,7 @@ public class Activity_GoPremium extends Activity {
 			default:	return super.onOptionsItemSelected(item);
 		}
 	}
-	@SuppressLint("NewApi")
+	
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;

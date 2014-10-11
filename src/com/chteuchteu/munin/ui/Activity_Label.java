@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -33,7 +32,6 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 
-@SuppressLint("NewApi")
 public class Activity_Label extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
@@ -145,7 +143,7 @@ public class Activity_Label extends Activity {
 			default:	return super.onOptionsItemSelected(item);
 		}
 	}
-	@SuppressLint("NewApi")
+	
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;

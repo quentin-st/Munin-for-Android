@@ -155,7 +155,6 @@ public class Grid {
 		}
 	}
 	
-	@SuppressLint("NewApi")
 	public void cancelAlpha(Context c) {
 		for (GridItem i : items) {
 			if (i.iv != null && i.iv.getAlpha() != 1.0f)

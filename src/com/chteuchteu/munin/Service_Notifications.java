@@ -213,18 +213,8 @@ public class Service_Notifications extends Service {
 	}
 	
 	/**
-	 * This is deprecated, but you have to implement it if you're planning on
-	 * supporting devices with an API level lower than 5 (Android 2.0).
-	 */
-	@Override
-	public void onStart(Intent intent, int startId) {
-		handleIntent(intent);
-	}
-	
-	/**
-	 * This is called on 2.0+ (API level 5 or higher). Returning
-	 * START_NOT_STICKY tells the system to not restart the service if it is
-	 * killed because of poor resource (memory/cpu) conditions.
+	 * Returning START_NOT_STICKY tells the system to not restart the
+	 * service if it is killed because of poor resource (memory/cpu) conditions.
 	 */
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {

@@ -3,7 +3,6 @@ package com.chteuchteu.munin.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
@@ -32,7 +31,6 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 
-@SuppressLint("NewApi")
 public class Activity_Labels extends ListActivity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;

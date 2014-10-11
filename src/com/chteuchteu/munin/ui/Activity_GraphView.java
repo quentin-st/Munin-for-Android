@@ -102,7 +102,6 @@ public class Activity_GraphView extends Activity {
 	private static int currentlyDownloading = 0;
 	
 	
-	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
@@ -335,7 +334,6 @@ public class Activity_GraphView extends Activity {
 		savedInstanceState.putInt("position", position);
 	}
 	
-	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
@@ -489,8 +487,6 @@ public class Activity_GraphView extends Activity {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
-	@SuppressLint("NewApi")
 	private void actionServerSwitch() {
 		ListView switch_server = (ListView) findViewById(R.id.serverSwitch_listview);
 		switch_server.setVisibility(View.VISIBLE);
@@ -498,16 +494,11 @@ public class Activity_GraphView extends Activity {
 		
 		findViewById(R.id.serverSwitch_mask).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionServerSwitchQuit(); } });
 		
-		int screenH = 0;
-		if (android.os.Build.VERSION.SDK_INT >= 13) {
-			Display display = getWindowManager().getDefaultDisplay();
-			Point size = new Point();
-			display.getSize(size);
-			screenH = size.y;
-		} else {
-			Display display = getWindowManager().getDefaultDisplay();
-			screenH = display.getHeight();
-		}
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int screenH = size.y;
+		
 		// Animation translation listview
 		TranslateAnimation a1 = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0,
 				Animation.RELATIVE_TO_SELF, 0,
@@ -842,7 +833,6 @@ public class Activity_GraphView extends Activity {
 		}
 	}
 	
-	@SuppressLint("NewApi")
 	public void onResume() {
 		super.onResume();
 		

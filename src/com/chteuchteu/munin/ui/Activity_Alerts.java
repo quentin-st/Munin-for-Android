@@ -73,7 +73,6 @@ public class Activity_Alerts extends Activity {
 	private Handler			mHandler;
 	private Runnable		mHandlerTask;
 	
-	@SuppressLint("NewApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -400,7 +399,6 @@ public class Activity_Alerts extends Activity {
 		}
 	}
 	
-	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;

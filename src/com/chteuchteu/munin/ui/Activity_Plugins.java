@@ -45,7 +45,6 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 
-@SuppressLint("NewApi")
 public class Activity_Plugins extends ListActivity {
 	private MuninFoo			muninFoo;
 	private DrawerHelper		dh;

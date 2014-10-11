@@ -3,7 +3,6 @@ package com.chteuchteu.munin.obj;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -310,7 +309,6 @@ public class GridItem {
 		return false;
 	}
 	
-	@SuppressLint("NewApi")
 	private void edit(final Context c) {
 		if (container.getWidth() > ICONS_MAX_WIDTH) {
 			editing = true;
@@ -360,7 +358,6 @@ public class GridItem {
 		}
 	}
 	
-	@SuppressLint("NewApi")
 	public void cancelEdit() {
 		if (editing) {
 			if (iv != null)
@@ -369,7 +366,6 @@ public class GridItem {
 		}
 	}
 	
-	@SuppressLint("NewApi")
 	private void removeActionButtons() {
 		editing = false;
 		if (iv != null)
@@ -384,7 +380,6 @@ public class GridItem {
 			container.removeView(v);
 	}
 	
-	@SuppressLint("NewApi")
 	private void putActionButtons() {
 		for (GridItem i : grid.items) {
 			if (i.editing)

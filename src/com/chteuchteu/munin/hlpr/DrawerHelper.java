@@ -9,7 +9,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -479,7 +478,6 @@ public class DrawerHelper {
 		return 0;
 	}
 	
-	@SuppressLint("NewApi")
 	public void initPluginsList(final int scrollY) {
 		// Borders
 		a.findViewById(R.id.drawer_button_graphs_border2).setVisibility(View.VISIBLE);
@@ -501,21 +499,21 @@ public class DrawerHelper {
 				final int position = pos;
 				b.setBackgroundResource(R.drawable.drawer_selectedsubbutton);
 				b.setTextColor(c.getResources().getColor(R.color.cffffff));
+				
 				// setScrollY
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-					final ViewTreeObserver obs = b.getViewTreeObserver();
-					obs.addOnGlobalLayoutListener(new OnGlobalLayoutListener() { // Else getHeight returns 0
-						@Override
-						public void onGlobalLayout() {
-							int scroll = 0;
-							if (scrollY != -1)
-								scroll = scrollY;
-							else
-								scroll = (b.getHeight() + 1) * position;
-							((ScrollView)a.findViewById(R.id.drawer_scrollview)).setScrollY(scroll);
-						}
-					});
-				}
+				final ViewTreeObserver obs = b.getViewTreeObserver();
+				obs.addOnGlobalLayoutListener(new OnGlobalLayoutListener() { // Else getHeight returns 0
+					@Override
+					public void onGlobalLayout() {
+						int scroll = 0;
+						if (scrollY != -1)
+							scroll = scrollY;
+						else
+							scroll = (b.getHeight() + 1) * position;
+						((ScrollView)a.findViewById(R.id.drawer_scrollview)).setScrollY(scroll);
+					}
+				});
+				
 			}
 			
 			b.setOnClickListener(new OnClickListener() {

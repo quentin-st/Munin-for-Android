@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -52,7 +51,6 @@ public class Activity_Settings extends Activity {
 	private Context		context;
 	
 	
-	@SuppressLint("NewApi")
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
@@ -305,7 +303,7 @@ public class Activity_Settings extends Activity {
 				spinner_defaultServer.setSelection(pos+1);
 		}
 	}
-	@SuppressLint("NewApi")
+	
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;

@@ -30,7 +30,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 
-@SuppressLint({ "NewApi", "InflateParams" })
+@SuppressLint("InflateParams")
 public class Activity_AlertsPluginSelection extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
@@ -118,7 +118,7 @@ public class Activity_AlertsPluginSelection extends Activity {
 			default:	return super.onOptionsItemSelected(item);
 		}
 	}
-	@SuppressLint("NewApi")
+	
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;

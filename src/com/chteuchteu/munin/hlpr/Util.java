@@ -150,12 +150,8 @@ public final class Util {
 		}
 	}
 	
-	@SuppressLint("NewApi")
 	public static boolean deviceHasBackKey(Context c) {
-		if (Build.VERSION.SDK_INT >= 14)
-			return ViewConfiguration.get(c).hasPermanentMenuKey();
-		else
-			return true;
+		return ViewConfiguration.get(c).hasPermanentMenuKey();
 	}
 	
 	public static int getStatusBarHeight(Context c) {

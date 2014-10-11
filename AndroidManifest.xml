@@ -6,7 +6,7 @@
 
 	<!-- SDK Version -->
 	<uses-sdk
-		android:minSdkVersion="11"
+		android:minSdkVersion="14"
 		android:targetSdkVersion="20" />
 
 	<!-- Permissions -->
@@ -48,10 +48,10 @@
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Labels" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Label" />
 		<activity
-		    android:name="com.chteuchteu.munin.ui.Activity_Main"
-		    android:icon="@drawable/launcher_icon"
+			android:name="com.chteuchteu.munin.ui.Activity_Main"
+			android:icon="@drawable/launcher_icon"
 			android:label="@string/app_name"
-			android:theme="@style/MyAppTheme">
+			android:theme="@style/MyAppTheme" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 

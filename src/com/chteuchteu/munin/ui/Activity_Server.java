@@ -105,7 +105,6 @@ public class Activity_Server extends Activity {
 	
 	
 	@SuppressWarnings("deprecation")
-	@SuppressLint("NewApi")
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
@@ -243,19 +242,11 @@ public class Activity_Server extends Activity {
 		
 		
 		// POPUP INITIALIZATION
-		int screenH = 0;
-		int screenW = 0;
-		if (android.os.Build.VERSION.SDK_INT >= 13) {
-			Display display = getWindowManager().getDefaultDisplay();
-			Point size = new Point();
-			display.getSize(size);
-			screenH = size.y;
-			screenW = size.x;
-		} else {
-			Display display = getWindowManager().getDefaultDisplay();
-			screenH = display.getHeight();
-			screenW = display.getWidth();
-		}
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int screenH = size.y;
+		int screenW = size.x;
 		
 		popup_width = screenW;
 		int popupHeight = screenH;
@@ -341,7 +332,6 @@ public class Activity_Server extends Activity {
 		}
 	}
 	
-	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;

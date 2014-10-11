@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -47,7 +46,6 @@ public class Activity_Grids extends ListActivity {
 	private SimpleAdapter	sa;
 	private ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 	
-	@SuppressLint("NewApi")
 	@Override public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
@@ -188,7 +186,6 @@ public class Activity_Grids extends ListActivity {
 		okButton.setOnClickListener(new CustomListener(input, d));
 	}
 	
-	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;

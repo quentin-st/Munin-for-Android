@@ -50,7 +50,6 @@ public class Activity_Notifications extends Activity {
 	private String			activityName;
 	public static CheckBox[]	checkboxes;
 	
-	@SuppressLint("NewApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -175,7 +174,6 @@ public class Activity_Notifications extends Activity {
 		});
 	}
 	
-	@SuppressLint("NewApi")
 	public void changeListViewVisibility(boolean toBeShown) {
 		if (toBeShown) {
 			findViewById(R.id.list_container).setVisibility(View.VISIBLE);
@@ -309,7 +307,6 @@ public class Activity_Notifications extends Activity {
 		}
 	}
 	
-	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;

@@ -33,7 +33,7 @@ public class Activity_About extends Activity {
 	private Context		c;
 	
 	@SuppressWarnings("deprecation")
-	@SuppressLint({ "NewApi", "DefaultLocale" })
+	@SuppressLint("DefaultLocale")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
@@ -111,7 +111,6 @@ public class Activity_About extends Activity {
 		menu.clear();
 	}
 	
-	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;

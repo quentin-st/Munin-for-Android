@@ -2,7 +2,6 @@ package com.chteuchteu.munin.ui;
 
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
@@ -46,7 +45,7 @@ public class Activity_Grid extends Activity {
 	private DrawerHelper	dh;
 	private String			activityName;
 	private Menu			menu;
-	private Context			context;
+	private Context		context;
 	
 	public static boolean	editing;
 	private Grid			grid;
@@ -61,10 +60,9 @@ public class Activity_Grid extends Activity {
 	private Period			currentPeriod;
 	
 	public static boolean	updating;
-	private Handler			mHandler;
+	private Handler		mHandler;
 	private Runnable		mHandlerTask;
 	
-	@SuppressLint("NewApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -205,7 +203,6 @@ public class Activity_Grid extends Activity {
 		findViewById(R.id.fullscreen).startAnimation(a);
 	}
 	
-	@SuppressLint("NewApi")
 	private void setupGrid() {
 		if (!Util.isOnline(this))
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
@@ -229,7 +226,6 @@ public class Activity_Grid extends Activity {
 		grid.updateLayoutSizes(this);
 	}
 	
-	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;

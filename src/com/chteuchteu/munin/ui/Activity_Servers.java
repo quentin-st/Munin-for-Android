@@ -56,7 +56,6 @@ public class Activity_Servers extends Activity {
 	
 	public static boolean	menu_firstLoad = true;
 	
-	@SuppressLint("NewApi")
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
@@ -320,7 +319,6 @@ public class Activity_Servers extends Activity {
 		.show();
 	}
 	
-	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
