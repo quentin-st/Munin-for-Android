@@ -240,9 +240,13 @@ public class MuninFoo {
 		if (this.currentServer.equals(s) && this.servers.size() > 0)
 			this.currentServer = this.servers.get(0);
 	}
-	public void deleteMuninMaster(MuninMaster m) {
-		if (this.masters.remove(m))
-			sqlite.dbHlpr.deleteMaster(this, m, false);
+	public void deleteMuninMaster(MuninMaster master) {
+		if (this.masters.remove(master)) {
+			for (MuninServer server : master.getChildren())
+				deleteServer(server);
+			
+			sqlite.dbHlpr.deleteMaster(this, master);
+		}
 	}
 	public boolean addLabel(Label l) {
 		boolean contains = false;

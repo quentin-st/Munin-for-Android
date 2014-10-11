@@ -17,9 +17,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,8 +81,20 @@ public class Activity_Servers extends Activity {
 		expListView = (ExpandableListView) findViewById(R.id.servers_list);
 		
 		List<String> masters = muninFoo.getMastersNames();
+		this.serversCollection = getServersCollection();
+		final Adapter_ExpandableListView expListAdapter = new Adapter_ExpandableListView(this, this, masters, serversCollection);
+		expListView.setAdapter(expListAdapter);
+		
+		if (fromServersEdit != null)
+			expListView.expandGroup(muninFoo.getMasterPosition(fromServersEdit));
+		
+		if (muninFoo.getHowManyServers() == 0)
+			((LinearLayout)findViewById(R.id.servers_noserver)).setVisibility(View.VISIBLE);
+	}
+	
+	private Map<String, List<String>> getServersCollection() {
 		// Create collection
-		serversCollection = new LinkedHashMap<String, List<String>>();
+		LinkedHashMap<String, List<String>> serversCollection = new LinkedHashMap<String, List<String>>();
 		
 		for (MuninMaster m : muninFoo.masters) {
 			List<String> childList = new ArrayList<String>();
@@ -90,47 +102,162 @@ public class Activity_Servers extends Activity {
 				childList.add(s.getName());
 			serversCollection.put(m.getName(), childList);
 		}
-		final Adapter_ExpandableListView expListAdapter = new Adapter_ExpandableListView(this, masters, serversCollection, muninFoo);
-		expListView.setAdapter(expListAdapter);
 		
-		if (fromServersEdit != null)
-			expListView.expandGroup(muninFoo.getMasterPosition(fromServersEdit));
+		return serversCollection;
+	}
+	
+	/**
+	 * Called when a click event is triggered on a child-level element of the listview
+	 * Called from @see com.chteuchteu.munin.Adapter_ExpandableListView#getChildView(int, int, boolean, View, android.view.ViewGroup)
+	 * @param groupPosition
+	 * @param childPosition
+	 */
+	public void onChildClick(int groupPosition, int childPosition) {
+		//final String selected = (String) expListAdapter.getChild(groupPosition, childPosition);
+		MuninServer s = muninFoo.masters.get(groupPosition).getServerFromFlatPosition(childPosition);
+		Intent intent = new Intent(Activity_Servers.this, Activity_Server.class);
+		intent.putExtra("contextServerUrl", s.getServerUrl());
+		intent.putExtra("action", "edit");
+		startActivity(intent);
+		Util.setTransition(context, TransitionStyle.DEEPER);
+	}
+	
+	/**
+	 * Called when a long click event is triggered on a child-level element of the listview
+	 * Called from @see com.chteuchteu.munin.Adapter_ExpandableListView#getChildView(int, int, boolean, View, android.view.ViewGroup)
+	 * @param groupPosition
+	 * @param childPosition
+	 * @return
+	 */
+	public boolean onChildLongClick(int groupPosition, int childPosition) {
+		final MuninServer server = muninFoo.masters.get(groupPosition).getServerFromFlatPosition(childPosition);
 		
-		expListView.setOnChildClickListener(new OnChildClickListener() {
-			public boolean onChildClick(ExpandableListView parent, View v, final int groupPosition,
-					final int childPosition, long id) {
-				//final String selected = (String) expListAdapter.getChild(groupPosition, childPosition);
-				MuninServer s = muninFoo.masters.get(groupPosition).getServerFromFlatPosition(childPosition);
-				Intent intent = new Intent(Activity_Servers.this, Activity_Server.class);
-				intent.putExtra("contextServerUrl", s.getServerUrl());
-				intent.putExtra("action", "edit");
-				startActivity(intent);
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
+		// Display actions list
+		AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+				context, android.R.layout.simple_list_item_1);
+		arrayAdapter.add(context.getString(R.string.menu_addserver_delete));
+		
+		builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+					case 0:
+						new AlertDialog.Builder(context)
+						.setTitle(R.string.delete)
+						.setMessage(R.string.text83)
+						.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// When going back : expand the list to the current master if possible
+								MuninMaster m = null;
+								if (server.getParent() != null && server.getParent().getChildren().size() > 1)
+									m = server.getParent();
+								
+								muninFoo.sqlite.dbHlpr.deleteServer(server);
+								muninFoo.deleteServer(server);
+								
+								if (muninFoo.currentServer.equalsApprox(server)) {
+									if (muninFoo.getHowManyServers() == 0)
+										muninFoo.currentServer = null;
+									else
+										muninFoo.currentServer = muninFoo.getServer(0);
+								}
+								
+								Intent intent = new Intent(Activity_Servers.this, Activity_Servers.class);
+								if (m != null)
+									intent.putExtra("fromMaster", m.getId());
+								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								startActivity(intent);
+							}
+						})
+						.setNegativeButton(R.string.text34, null)
+						.show();
+						break;
+				}
 			}
 		});
+		builderSingle.show();
 		
-		if (muninFoo.getHowManyServers() == 0)
-			((LinearLayout)findViewById(R.id.servers_noserver)).setVisibility(View.VISIBLE);
+		return true;
+	}
+	
+	/**
+	 * Called when a click event is triggered on the overflow icon on each
+	 * parent-level list item
+	 * Called from @see com.chteuchteu.munin.Adapter_ExpandableListView#getGroupView(int, boolean, View, android.view.ViewGroup)
+	 * @param position
+	 */
+	public void onGroupItemOptionsClick(final int position) {
+		// Display actions list
+		AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+				context, android.R.layout.simple_list_item_1);
+		arrayAdapter.add(context.getString(R.string.delete_master));
+		arrayAdapter.add(context.getString(R.string.editServersTitle));
+		arrayAdapter.add(context.getString(R.string.renameMaster));
+		
+		builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				final MuninMaster master = muninFoo.masters.get(position);
+				
+				switch (which) {
+					case 0:
+						muninFoo.deleteMuninMaster(master);
+						context.startActivity(new Intent(context, Activity_Servers.class));
+						
+						break;
+					case 1:
+						Intent i = new Intent(context, Activity_ServersEdit.class);
+						i.putExtra("masterId", master.getId());
+						context.startActivity(i);
+						Util.setTransition(context, TransitionStyle.DEEPER);
+						break;
+					case 2:
+						final EditText input = new EditText(context);
+						input.setText(master.getName());
+						
+						new AlertDialog.Builder(context)
+						.setTitle(R.string.renameMaster)
+						.setView(input)
+						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								String value = input.getText().toString();
+								if (!value.equals(master.getName())) {
+									master.setName(value);
+									MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
+									context.startActivity(new Intent(context, Activity_Servers.class));
+								}
+								dialog.dismiss();
+							}
+						}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) { }
+						}).show();
+						break;
+				}
+			}
+		});
+		builderSingle.show();
 	}
 	
 	private void displayImportDialog() {
 		final View dialogView = View.inflate(this, R.layout.dialog_import, null);
 		new AlertDialog.Builder(this)
-			.setTitle(R.string.import_title)
-			.setView(dialogView)
-			.setCancelable(true)
-			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					String code = ((EditText) dialogView.findViewById(R.id.import_code)).getText().toString();
-					code = code.toLowerCase();
-					new ImportRequestMaker(code, context).execute();
-					dialog.dismiss();
-				}
-			})
-			.setNegativeButton(R.string.text64, null)
-			.show();
+		.setTitle(R.string.import_title)
+		.setView(dialogView)
+		.setCancelable(true)
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String code = ((EditText) dialogView.findViewById(R.id.import_code)).getText().toString();
+				code = code.toLowerCase();
+				new ImportRequestMaker(code, context).execute();
+				dialog.dismiss();
+			}
+		})
+		.setNegativeButton(R.string.text64, null)
+		.show();
 	}
 	
 	public static void onExportSuccess(String pswd) {
@@ -140,11 +267,11 @@ public class Activity_Servers extends Activity {
 		code.setText(pswd);
 		
 		new AlertDialog.Builder(context)
-			.setTitle(R.string.export_success_title)
-			.setView(dialogView)
-			.setCancelable(true)
-			.setPositiveButton("OK", null)
-			.show();
+		.setTitle(R.string.export_success_title)
+		.setView(dialogView)
+		.setCancelable(true)
+		.setPositiveButton("OK", null)
+		.show();
 	}
 	
 	public static void onExportError() {
@@ -153,16 +280,16 @@ public class Activity_Servers extends Activity {
 	
 	public static void onImportSuccess() {
 		new AlertDialog.Builder(context)
-			.setTitle(R.string.import_success_title)
-			.setMessage(R.string.import_success_txt1)
-			.setCancelable(true)
-			.setPositiveButton("OK", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					context.startActivity(new Intent(context, Activity_Servers.class));
-				}
-			})
-			.show();
+		.setTitle(R.string.import_success_title)
+		.setMessage(R.string.import_success_txt1)
+		.setCancelable(true)
+		.setPositiveButton("OK", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				context.startActivity(new Intent(context, Activity_Servers.class));
+			}
+		})
+		.show();
 	}
 	
 	public static void onImportError() {
@@ -171,26 +298,26 @@ public class Activity_Servers extends Activity {
 	
 	private void displayExportDialog() {
 		new AlertDialog.Builder(context)
-			.setTitle(R.string.export_servers)
-			.setMessage(R.string.export_explanation)
-			.setCancelable(true)
-			.setPositiveButton("OK", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance().getMasters(), ImportExportHelper.ENCRYPTION_SEED);
-					if (json.equals(""))
-						Toast.makeText(context, R.string.export_failed, Toast.LENGTH_SHORT).show();
-					else
-						new ExportRequestMaker(json, context).execute();
-				}
-			})
-			.setNegativeButton(R.string.text64, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			})
-			.show();
+		.setTitle(R.string.export_servers)
+		.setMessage(R.string.export_explanation)
+		.setCancelable(true)
+		.setPositiveButton("OK", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance().getMasters(), ImportExportHelper.ENCRYPTION_SEED);
+				if (json.equals(""))
+					Toast.makeText(context, R.string.export_failed, Toast.LENGTH_SHORT).show();
+				else
+					new ExportRequestMaker(json, context).execute();
+			}
+		})
+		.setNegativeButton(R.string.text64, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		})
+		.show();
 	}
 	
 	@SuppressLint("NewApi")

@@ -60,7 +60,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_Server extends Activity {
 	private MuninFoo	muninFoo;
 	private DrawerHelper dh;
-	private Context 	c;
+	private Context 	context;
 	
 	private Menu 		menu;
 	private String		activityName;
@@ -110,7 +110,7 @@ public class Activity_Server extends Activity {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		MuninFoo.loadLanguage(this);
-		c = this;
+		context = this;
 		
 		setContentView(R.layout.addserver);
 		
@@ -261,12 +261,12 @@ public class Activity_Server extends Activity {
 		int popupHeight = screenH;
 		
 		LinearLayout viewGroup = (LinearLayout) findViewById(R.id.popup);
-		LayoutInflater layoutInflater = (LayoutInflater) c
+		LayoutInflater layoutInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		layout_popup = layoutInflater.inflate(R.layout.addserver_popup, viewGroup);
 		
 		// Create the PopupWindow
-		popup = new PopupWindow(c);
+		popup = new PopupWindow(context);
 		popup.setContentView(layout_popup);
 		popup.setWidth(popup_width);
 		popup.setHeight(popupHeight);
@@ -285,7 +285,7 @@ public class Activity_Server extends Activity {
 				intent.putExtra("fromMaster", settingsServer.getParent().getId());
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			Util.setTransition(c, TransitionStyle.SHALLOWER);
+			Util.setTransition(context, TransitionStyle.SHALLOWER);
 		} else {
 			if (popupIsShown && canCancel)
 				cancelSave();
@@ -307,27 +307,37 @@ public class Activity_Server extends Activity {
 	
 	public void actionDelete() {
 		if (!contextServerUrl.equals("")) {
-			// When going back : expand the list to the current master if possible
-			MuninMaster m = null;
-			if (muninFoo.currentServer.getParent() != null && muninFoo.currentServer.getParent().getChildren().size() > 1)
-				m = muninFoo.currentServer.getParent();
-			
-			MuninServer curServer = muninFoo.getServer(contextServerUrl);
-			muninFoo.sqlite.dbHlpr.deleteServer(curServer);
-			muninFoo.deleteServer(curServer);
-			
-			if (muninFoo.currentServer != null && muninFoo.currentServer.getServerUrl().equals(contextServerUrl)) {
-				if (muninFoo.getHowManyServers() == 0)
-					muninFoo.currentServer = null;
-				else
-					muninFoo.currentServer = muninFoo.getServer(0);
-			}
-			
-			Intent intent = new Intent(this, Activity_Servers.class);
-			if (m != null)
-				intent.putExtra("fromMaster", m.getId());
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
+			new AlertDialog.Builder(context)
+			.setTitle(R.string.delete)
+			.setMessage(R.string.text83)
+			.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// When going back : expand the list to the current master if possible
+					MuninMaster m = null;
+					if (muninFoo.currentServer.getParent() != null && muninFoo.currentServer.getParent().getChildren().size() > 1)
+						m = muninFoo.currentServer.getParent();
+					
+					MuninServer curServer = muninFoo.getServer(contextServerUrl);
+					muninFoo.sqlite.dbHlpr.deleteServer(curServer);
+					muninFoo.deleteServer(curServer);
+					
+					if (muninFoo.currentServer != null && muninFoo.currentServer.getServerUrl().equals(contextServerUrl)) {
+						if (muninFoo.getHowManyServers() == 0)
+							muninFoo.currentServer = null;
+						else
+							muninFoo.currentServer = muninFoo.getServer(0);
+					}
+					
+					Intent intent = new Intent(context, Activity_Servers.class);
+					if (m != null)
+						intent.putExtra("fromMaster", m.getId());
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intent);
+				}
+			})
+			.setNegativeButton(R.string.text34, null)
+			.show();
 		}
 	}
 	
@@ -365,7 +375,7 @@ public class Activity_Server extends Activity {
 		// Hide delete button if necessary
 		if (mode == Activity_Mode.ADD_SERVER)
 			menu.findItem(R.id.menu_delete).setVisible(false);
-		if (Util.getPref(c, "addserver_history").equals(""))
+		if (Util.getPref(context, "addserver_history").equals(""))
 			menu.findItem(R.id.menu_clear_history).setVisible(false);
 	}
 	
@@ -380,17 +390,17 @@ public class Activity_Server extends Activity {
 			case R.id.menu_save:	actionSave();		return true;
 			case R.id.menu_delete:	actionDelete(); 	return true;
 			case R.id.menu_clear_history:
-				Util.setPref(c, "addserver_history", "");
+				Util.setPref(context, "addserver_history", "");
 				createOptionsMenu();
 				Toast.makeText(getApplicationContext(), getString(R.string.text66_1), Toast.LENGTH_SHORT).show();
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Server.this, Activity_Settings.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(Activity_Server.this, Activity_About.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			default:	return super.onOptionsItemSelected(item);
 		}
@@ -405,7 +415,7 @@ public class Activity_Server extends Activity {
 		algo_state = AST_IDLE;
 		settingsServer = null;
 		popup.dismiss();
-		muninFoo.resetInstance(c);
+		muninFoo.resetInstance(context);
 	}
 	public class Activity_AddServer_Algorithm extends AsyncTask<Void, Integer, Void> {
 		private int res = 0;
@@ -448,7 +458,7 @@ public class Activity_Server extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			
-			if (Util.isOnline(c)) {
+			if (Util.isOnline(context)) {
 				if (algo_state != AST_WAITING_FOR_CREDENTIALS && algo_state != AST_WAITING_FOR_URL) {
 					runOnUiThread(new Runnable() {
 						public void run() {
@@ -460,8 +470,8 @@ public class Activity_Server extends Activity {
 					loading = (LinearLayout) popup.getContentView().findViewById(R.id.popup_loading_avancement);
 					popup_title1 = (TextView) popup.getContentView().findViewById(R.id.popup_text_a);
 					popup_title2 = (TextView) popup.getContentView().findViewById(R.id.popup_text_b);
-					Fonts.setFont(c, popup_title1, CustomFont.Roboto_Thin);
-					Fonts.setFont(c, popup_title2, CustomFont.Roboto_Thin);
+					Fonts.setFont(context, popup_title1, CustomFont.Roboto_Thin);
+					Fonts.setFont(context, popup_title2, CustomFont.Roboto_Thin);
 					popupIsShown = true;
 					popup_title1.setText(getString(R.string.text43)); // Please wait...
 				}
@@ -470,7 +480,7 @@ public class Activity_Server extends Activity {
 		}
 		
 		private int start() {
-			if (Util.isOnline(c)) {
+			if (Util.isOnline(context)) {
 				setPopupState(0);
 				setPopupText("", getString(R.string.text42));
 				
@@ -505,10 +515,10 @@ public class Activity_Server extends Activity {
 				public void run() {
 					TextView popup_url_message = (TextView)popup.getContentView().findViewById(R.id.popup_url_message);
 					TextView popup_url_message2 = (TextView)popup.getContentView().findViewById(R.id.popup_url_message2);
-					Fonts.setFont(c, popup_url_message, CustomFont.Roboto_Thin);
-					Fonts.setFont(c, popup_url_message2, CustomFont.Roboto_Thin);
-					Fonts.setFont(c, cancel, CustomFont.RobotoCondensed_Regular);
-					Fonts.setFont(c, continu, CustomFont.RobotoCondensed_Regular);
+					Fonts.setFont(context, popup_url_message, CustomFont.Roboto_Thin);
+					Fonts.setFont(context, popup_url_message2, CustomFont.Roboto_Thin);
+					Fonts.setFont(context, cancel, CustomFont.RobotoCondensed_Regular);
+					Fonts.setFont(context, continu, CustomFont.RobotoCondensed_Regular);
 					popup_title1.setVisibility(View.GONE);
 					popup_title2.setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.GONE);
@@ -550,7 +560,7 @@ public class Activity_Server extends Activity {
 					algo_state = AST_IDLE;
 					settingsServer = null;
 					popup.dismiss();
-					muninFoo.resetInstance(c);
+					muninFoo.resetInstance(context);
 				}
 			});
 			continu.setOnClickListener(new OnClickListener() {
@@ -604,7 +614,7 @@ public class Activity_Server extends Activity {
 			
 			task.cancel(true);
 			settingsServer = null;
-			muninFoo.resetInstance(c);
+			muninFoo.resetInstance(context);
 			algo_state = AST_IDLE;
 			
 			if (res == RES_NOT_PREMIUM) {
@@ -836,14 +846,14 @@ public class Activity_Server extends Activity {
 					popup_title2.setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.GONE);
 					popup.getContentView().findViewById(R.id.popup_credentials).setVisibility(View.VISIBLE);
-					Fonts.setFont(c, cancel, CustomFont.RobotoCondensed_Regular);
-					Fonts.setFont(c, continu, CustomFont.RobotoCondensed_Regular);
+					Fonts.setFont(context, cancel, CustomFont.RobotoCondensed_Regular);
+					Fonts.setFont(context, continu, CustomFont.RobotoCondensed_Regular);
 					
 					// Remplissage spinner auth type
 					List<String> list2 = new ArrayList<String>();
 					list2.add("Basic");
 					list2.add("Digest");
-					ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(c, android.R.layout.simple_spinner_item, list2);
+					ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, list2);
 					dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					pop_sp_authType.setAdapter(dataAdapter2);
 					
@@ -896,7 +906,7 @@ public class Activity_Server extends Activity {
 					algo_state = AST_IDLE;
 					settingsServer = null;
 					popup.dismiss();
-					muninFoo.resetInstance(c);
+					muninFoo.resetInstance(context);
 				}
 			});
 			continu.setOnClickListener(new OnClickListener() {
@@ -985,7 +995,7 @@ public class Activity_Server extends Activity {
 			algo_state = AST_IDLE;
 			if (res != RES_UNDEFINED) {
 				Button b = (Button) popup.getContentView().findViewById(R.id.popup_button);
-				Fonts.setFont(c, b, CustomFont.RobotoCondensed_Regular);
+				Fonts.setFont(context, b, CustomFont.RobotoCondensed_Regular);
 				LinearLayout loading_bar = (LinearLayout) popup.getContentView().findViewById(R.id.popup_container_avancement);
 				if (res == RES_SERVER_SUCCESS) {
 					// Congratulations!			X plugins found!
@@ -999,7 +1009,7 @@ public class Activity_Server extends Activity {
 							Intent intent = new Intent(Activity_Server.this, Activity_Servers.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
-							Util.setTransition(c, TransitionStyle.SHALLOWER);
+							Util.setTransition(context, TransitionStyle.SHALLOWER);
 							setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 						}
 					});
@@ -1014,7 +1024,7 @@ public class Activity_Server extends Activity {
 							Intent intent = new Intent(Activity_Server.this, Activity_Servers.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
-							Util.setTransition(c, TransitionStyle.SHALLOWER);
+							Util.setTransition(context, TransitionStyle.SHALLOWER);
 							setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 						}
 					});
@@ -1022,7 +1032,7 @@ public class Activity_Server extends Activity {
 			}
 			if (MuninFoo.DEBUG)
 				muninFoo.sqlite.logMasters();
-			if (!Util.isOnline(c))
+			if (!Util.isOnline(context))
 				Toast.makeText(Activity_Server.this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 		}
 	}
@@ -1034,14 +1044,14 @@ public class Activity_Server extends Activity {
 				contains = true;
 		}
 		if (!contains) {
-			String his = Util.getPref(c, "addserver_history");
+			String his = Util.getPref(context, "addserver_history");
 			his += url.replaceAll(";", ",") + ";";
-			Util.setPref(c, "addserver_history", his);
+			Util.setPref(context, "addserver_history", his);
 		}
 	}
 	
 	private String[] getHistory() {
-		String his = Util.getPref(c, "addserver_history");
+		String his = Util.getPref(context, "addserver_history");
 		if (his.equals(""))
 			return new String[0];
 		else

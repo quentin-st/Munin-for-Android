@@ -182,6 +182,7 @@
 	<string name="delete_plugin">Supprimer le plugin</string>
 	<string name="rename_label">Renommer ce label</string>
 	<string name="delete_label">Supprimer ce label</string>
+	<string name="delete_master">Supprimer le master et les sous-serveurs</string>
 	<string name="aboutText">
 <![CDATA[
    <head>

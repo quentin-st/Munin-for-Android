@@ -104,7 +104,7 @@ public class Activity_Labels extends ListActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							switch (which) {
-							case 0:
+							case 0: // Rename label
 								final EditText input = new EditText(context);
 								input.setText(labelName);
 								
@@ -126,7 +126,7 @@ public class Activity_Labels extends ListActivity {
 									public void onClick(DialogInterface dialog, int whichButton) { }
 								}).show();
 								break;
-							case 1:
+							case 1: // Delete label
 								new AlertDialog.Builder(context)
 								.setTitle(R.string.delete)
 								.setMessage(R.string.text82)

@@ -94,6 +94,11 @@ public class DrawerHelper {
 		initDrawer();
 	}
 	
+	public void reset() {
+		initDrawer();
+		setDrawerActivity(n);
+	}
+	
 	public void setDrawerActivity(int activity) {
 		this.n = activity;
 		switch (activity) {

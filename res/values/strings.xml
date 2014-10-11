@@ -210,6 +210,7 @@
 	<string name="text80">This grid will be deleted. Are you sure?</string>
 	<string name="text81">No data available for this plugin</string>
 	<string name="text82">This label will be deleted. Are you sure?</string>
+	<string name="text83">This server will be deleted. Are you sure?</string>
 	<string name="import_servers">Import</string>
 	<string name="export_servers">Export</string>
 	<string name="import_export">Import / Export</string>
@@ -236,6 +237,7 @@
 	<string name="delete_plugin">Delete plugin</string>
 	<string name="delete_label">Delete label</string>
 	<string name="rename_label">Rename label</string>
+	<string name="delete_master">Delete master and sub-servers</string>
 	<string name="fieldsDescriptionWrapper" tools:ignore="MissingTranslation">
 <![CDATA[
 		<head>

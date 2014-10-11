@@ -823,14 +823,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return l;
 	}
 	
-	public void deleteMaster(MuninFoo f, MuninMaster m, boolean recursive) {
+	public void deleteMaster(MuninFoo f, MuninMaster m) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_MUNINMASTERS, KEY_ID + " = ?", new String[] { String.valueOf(m.getId()) });
 		close(null, db);
-		if (recursive) {
-			for (MuninServer s : m.getServersChildren(f))
-				deleteServer(s);
-		}
+		for (MuninServer s : m.getServersChildren(f))
+			deleteServer(s);
 	}
 	
 	public void deleteServer(MuninServer s) {
