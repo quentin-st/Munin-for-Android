@@ -104,7 +104,7 @@ public class Activity_ServersEdit extends ListActivity {
 	
 	public void actionSave() {
 		for (MuninServer s: deletedServers)
-			muninFoo.deleteServer(s);
+			muninFoo.deleteServer(s, true);
 		
 		for (int i=0; i<serversList.size(); i++)
 			muninFoo.getServer(serversList.get(i).getServerUrl()).setPosition(i);

@@ -180,12 +180,12 @@ public class SQLite {
 		}
 		for (MuninMaster m : toBeDeleted3) {
 			this.muninFoo.masters.remove(m);
-			this.dbHlpr.deleteMaster(this.muninFoo, m);
+			this.dbHlpr.deleteMaster(m);
 		}
 		for (MuninMaster m : this.muninFoo.masters) {
 			if (m.getChildren().size() == 0) { // If removed and no more children in children list, remove master
 				toBeDeleted2.add(m);
-				this.dbHlpr.deleteMaster(this.muninFoo, m);
+				this.dbHlpr.deleteMaster(m);
 			}
 		}
 		for (MuninMaster m : toBeDeleted2)

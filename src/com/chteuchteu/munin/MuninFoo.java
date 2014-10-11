@@ -45,7 +45,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.chteuchteu.munin.hlpr.DigestUtils;
 import com.chteuchteu.munin.hlpr.SQLite;
@@ -192,7 +191,6 @@ public class MuninFoo {
 	public static void loadLanguage(Context context, boolean forceLoad) {
 		if (!Util.getPref(context, "lang").equals("")) {
 			if (!languageLoaded || forceLoad) {
-				Log.v("", "Loading preffered language");
 				String lang = Util.getPref(context, "lang");
 				// lang == "en" || "fr" || "de" || "ru"
 				if (!(lang.equals("en") || lang.equals("fr") || lang.equals("de") || lang.equals("ru")))
@@ -229,23 +227,31 @@ public class MuninFoo {
 				servers.set(i, newServer);
 		}
 	}
-	public void deleteServer(MuninServer s) {
-		s.getParent().rebuildChildren(this);
+	public void deleteServer(MuninServer s, boolean rebuildChildren) {
+		if (rebuildChildren)
+			s.getParent().rebuildChildren(this);
+		
+		// Delete from servers list
 		for (int i=0; i<this.servers.size(); i++) {
 			if (this.servers.get(i).equalsApprox(s)) {
 				this.servers.remove(i); break;
 			}
 		}
-		s.getParent().rebuildChildren(this);
+		
+		if (rebuildChildren)
+			s.getParent().rebuildChildren(this);
+		
+		// Update current server
 		if (this.currentServer.equals(s) && this.servers.size() > 0)
 			this.currentServer = this.servers.get(0);
 	}
 	public void deleteMuninMaster(MuninMaster master) {
 		if (this.masters.remove(master)) {
-			for (MuninServer server : master.getChildren())
-				deleteServer(server);
+			sqlite.dbHlpr.deleteMaster(master);
 			
-			sqlite.dbHlpr.deleteMaster(this, master);
+			// Delete children
+			for (MuninServer server : master.getChildren())
+				deleteServer(server, false);
 		}
 	}
 	public boolean addLabel(Label l) {

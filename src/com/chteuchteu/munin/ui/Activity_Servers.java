@@ -155,7 +155,7 @@ public class Activity_Servers extends Activity {
 									m = server.getParent();
 								
 								muninFoo.sqlite.dbHlpr.deleteServer(server);
-								muninFoo.deleteServer(server);
+								muninFoo.deleteServer(server, true);
 								
 								if (muninFoo.currentServer.equalsApprox(server)) {
 									if (muninFoo.getHowManyServers() == 0)

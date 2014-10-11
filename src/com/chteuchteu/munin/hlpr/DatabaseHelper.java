@@ -8,7 +8,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.Grid;
@@ -823,11 +822,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return l;
 	}
 	
-	public void deleteMaster(MuninFoo f, MuninMaster m) {
+	public void deleteMaster(MuninMaster m) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_MUNINMASTERS, KEY_ID + " = ?", new String[] { String.valueOf(m.getId()) });
 		close(null, db);
-		for (MuninServer s : m.getServersChildren(f))
+		
+		for (MuninServer s : m.getChildren())
 			deleteServer(s);
 	}
 	
@@ -985,7 +985,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				int val = cursor.getInt(0);
 				cursor.close();
 				return val;
-			} catch (Exception e) { Log.e("", e.toString()); }
+			} catch (Exception e) { e.printStackTrace(); }
 			return 0;
 		}
 	}

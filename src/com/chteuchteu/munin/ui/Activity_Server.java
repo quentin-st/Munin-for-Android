@@ -320,7 +320,7 @@ public class Activity_Server extends Activity {
 					
 					MuninServer curServer = muninFoo.getServer(contextServerUrl);
 					muninFoo.sqlite.dbHlpr.deleteServer(curServer);
-					muninFoo.deleteServer(curServer);
+					muninFoo.deleteServer(curServer, true);
 					
 					if (muninFoo.currentServer != null && muninFoo.currentServer.getServerUrl().equals(contextServerUrl)) {
 						if (muninFoo.getHowManyServers() == 0)

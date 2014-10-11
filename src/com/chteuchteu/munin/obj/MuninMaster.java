@@ -84,19 +84,6 @@ public class MuninMaster {
 		return false;
 	}
 	
-	public List<MuninServer> getServersChildren(MuninFoo f) {
-		if (this.getName().equals("default"))	return f.getServers();
-		
-		List<MuninServer> l = new ArrayList<MuninServer>();
-		
-		for (MuninServer s : f.getServers()) {
-			if (s.getParent() != null && s.getParent().getId() == this.id)
-				l.add(s);
-		}
-		
-		return l;
-	}
-	
 	public MuninServer getServerFromFlatPosition(int position) {
 		// si pos -> 0 1 4 8 9 11
 		// gSFFP(2) -> 4 (!= null)
