@@ -11,15 +11,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,8 +30,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout.LayoutParams;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,9 +56,9 @@ public class Activity_Server extends Activity {
 	private MuninFoo	muninFoo;
 	private DrawerHelper dh;
 	private Context 	context;
-	
 	private Menu 		menu;
 	private String		activityName;
+	
 	private EditText 	tb_auth_login;
 	private EditText 	tb_auth_password;
 	private Spinner	sp_authType;
@@ -71,13 +66,11 @@ public class Activity_Server extends Activity {
 	private Spinner  	spinner;
 	private AutoCompleteTextView 	tb_serverUrl;
 	private LinearLayout ll_auth;
-	private LinearLayout loading;
-	private int		loading_width;
+	
+	private ProgressBar progressBar;
 	private TextView 	popup_title1;
 	private TextView 	popup_title2;
-	private int 		popup_width;
-	private PopupWindow popup;
-	private View		layout_popup;
+	private AlertDialog popup;
 	private boolean 	popupIsShown;
 	
 	private boolean 	launching;
@@ -87,24 +80,22 @@ public class Activity_Server extends Activity {
 	private Activity_Mode mode;
 	private enum Activity_Mode { ADD_SERVER, EDIT_SERVER }
 	
-	// Algo
+	// AddServer stuff
 	private String 	serverUrl;
-	private boolean 	SSL;
+	private boolean 	ssl;
 	private List<String> oldServers;
 	private List<String> newServers;
 	private String 	type;
 	private String 	message_title;
 	private String 	message_text;
-	Activity_AddServer_Algorithm task;
-	private boolean	canCancel = true;
+	private AddServerThread task;
+	private boolean	canCancel;
 	private int		algo_state = 0;
 	private int		AST_IDLE = 0;
 	private int		AST_RUNNING = 1;
 	private int		AST_WAITING_FOR_URL = 2;
 	private int		AST_WAITING_FOR_CREDENTIALS = 3;
 	
-	
-	@SuppressWarnings("deprecation")
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
@@ -240,32 +231,8 @@ public class Activity_Server extends Activity {
 				ll_auth.setVisibility(View.GONE);
 		}
 		
-		
-		// POPUP INITIALIZATION
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int screenH = size.y;
-		int screenW = size.x;
-		
-		popup_width = screenW;
-		int popupHeight = screenH;
-		
-		LinearLayout viewGroup = (LinearLayout) findViewById(R.id.popup);
-		LayoutInflater layoutInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		layout_popup = layoutInflater.inflate(R.layout.addserver_popup, viewGroup);
-		
-		// Create the PopupWindow
-		popup = new PopupWindow(context);
-		popup.setContentView(layout_popup);
-		popup.setWidth(popup_width);
-		popup.setHeight(popupHeight);
-		popup.setFocusable(false);
-		popup.setOutsideTouchable(false);
-		popup.setBackgroundDrawable(new BitmapDrawable());
-		popup.setFocusable(true);
-		popupIsShown = false;
+		if (MuninFoo.DEBUG)
+			tb_serverUrl.setText("https://a.andrewandcara.com/munin");
 	}
 	
 	@Override
@@ -287,11 +254,9 @@ public class Activity_Server extends Activity {
 	public void actionSave() {
 		if (!tb_serverUrl.getText().toString().equals("") && !tb_serverUrl.getText().toString().equals("http://")) {
 			addInHistory(tb_serverUrl.getText().toString());
-			//InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			//imm.hideSoftInputFromWindow(tb_serverUrl.getWindowToken(), 0);
-			//imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);
+			Util.hideKeyboard(this, tb_serverUrl);
 			algo_state = AST_RUNNING;
-			task = new Activity_AddServer_Algorithm();
+			task = new AddServerThread();
 			task.execute();
 		}
 	}
@@ -399,7 +364,6 @@ public class Activity_Server extends Activity {
 	public void cancelSave() {
 		if (popup_title1 != null)	popup_title1.setText("");
 		if (popup_title2 != null)	popup_title2.setText("");
-		if (loading != null)		loading.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT));
 		task.cancel(true);
 		popupIsShown = false;
 		algo_state = AST_IDLE;
@@ -407,7 +371,8 @@ public class Activity_Server extends Activity {
 		popup.dismiss();
 		muninFoo.resetInstance(context);
 	}
-	public class Activity_AddServer_Algorithm extends AsyncTask<Void, Integer, Void> {
+	
+	public class AddServerThread extends AsyncTask<Void, Integer, Void> {
 		private int res = 0;
 		private int RES_UNDEFINED = 0;
 		private int RES_SERVER_SUCCESS = 1;
@@ -420,15 +385,11 @@ public class Activity_Server extends Activity {
 		private int RES_ERR_UNDEFINED = -4;
 		private int RES_MALFORMED_URL = -5;
 		
-		private void setPopupState(final int avancement) {
+		private void setPopupState(final int progress) {
 			runOnUiThread(new Runnable() {
 				public void run() {
-					if (avancement >= 0 && avancement <= 100) {
-						View l = popup.getContentView().findViewById(R.id.popup_container_avancement);
-						if (l != null && l.getVisibility() == View.GONE)	l.setVisibility(View.VISIBLE);
-						loading_width = Math.round(avancement * popup_width / 100);
-						if (loading != null)	loading.setLayoutParams(new LinearLayout.LayoutParams(loading_width, LayoutParams.MATCH_PARENT));
-					}
+					if (progress >= 0 && progress <= 100)
+						progressBar.setProgress(progress);
 				}
 			});
 		}
@@ -450,18 +411,21 @@ public class Activity_Server extends Activity {
 			
 			if (Util.isOnline(context)) {
 				if (algo_state != AST_WAITING_FOR_CREDENTIALS && algo_state != AST_WAITING_FOR_URL) {
-					runOnUiThread(new Runnable() {
-						public void run() {
-							popup.showAtLocation(layout_popup, Gravity.CENTER, 0, 0);
-							setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-						}
-					});
+					final View view = LayoutInflater.from(context).inflate(R.layout.addserver_popup, null);
 					
-					loading = (LinearLayout) popup.getContentView().findViewById(R.id.popup_loading_avancement);
-					popup_title1 = (TextView) popup.getContentView().findViewById(R.id.popup_text_a);
-					popup_title2 = (TextView) popup.getContentView().findViewById(R.id.popup_text_b);
-					Fonts.setFont(context, popup_title1, CustomFont.Roboto_Thin);
-					Fonts.setFont(context, popup_title2, CustomFont.Roboto_Thin);
+					popup = new AlertDialog.Builder(context)
+					.setView(view)
+					.setCancelable(false)
+					.show();
+					popupIsShown = true;
+					
+					progressBar = (ProgressBar) popup.findViewById(R.id.progressbar);
+					progressBar.setProgress(0);
+					progressBar.setIndeterminate(true);
+					popup_title1 = (TextView) popup.findViewById(R.id.popup_text_a);
+					popup_title2 = (TextView) popup.findViewById(R.id.popup_text_b);
+					Fonts.setFont(context, popup_title1, CustomFont.RobotoCondensed_Regular);
+					Fonts.setFont(context, popup_title2, CustomFont.RobotoCondensed_Regular);
 					popupIsShown = true;
 					popup_title1.setText(getString(R.string.text43)); // Please wait...
 				}
@@ -475,20 +439,19 @@ public class Activity_Server extends Activity {
 				setPopupText("", getString(R.string.text42));
 				
 				type = "";
-				if (serverUrl == null || serverUrl.equals(""))
-					serverUrl = tb_serverUrl.getText().toString();
+				serverUrl = tb_serverUrl.getText().toString();
 				
-				SSL = false;
+				ssl = false;
 				
 				// Modifications de l'URL
 				if (!serverUrl.contains("http://") && !serverUrl.contains("https://"))
 					serverUrl = "http://" + serverUrl;
 				if (serverUrl.contains("https://"))
-					SSL = true;
+					ssl = true;
 				if (serverUrl.length() > 10 && !serverUrl.substring(serverUrl.length()-1).equals("/") && !serverUrl.contains("/index.html"))
 					serverUrl = serverUrl + "/index.html";
 				
-				if (SSL && !muninFoo.premium)
+				if (ssl && !muninFoo.premium)
 					return RES_NOT_PREMIUM;
 				
 				return RES_OK;
@@ -497,22 +460,22 @@ public class Activity_Server extends Activity {
 		}
 		
 		private void askAgainForUrl(final String err) {
-			final EditText et_url = (EditText) popup.getContentView().findViewById(R.id.popup_url_edittext);
-			final Button cancel = (Button) popup.getContentView().findViewById(R.id.popup_url_cancel);
-			final Button continu = (Button) popup.getContentView().findViewById(R.id.popup_url_continue);
+			final EditText et_url = (EditText) popup.findViewById(R.id.popup_url_edittext);
+			final Button cancel = (Button) popup.findViewById(R.id.popup_url_cancel);
+			final Button continu = (Button) popup.findViewById(R.id.popup_url_continue);
 			
 			runOnUiThread(new Runnable() {
 				public void run() {
-					TextView popup_url_message = (TextView)popup.getContentView().findViewById(R.id.popup_url_message);
-					TextView popup_url_message2 = (TextView)popup.getContentView().findViewById(R.id.popup_url_message2);
-					Fonts.setFont(context, popup_url_message, CustomFont.Roboto_Thin);
-					Fonts.setFont(context, popup_url_message2, CustomFont.Roboto_Thin);
+					TextView popup_url_message = (TextView)popup.findViewById(R.id.popup_url_message);
+					TextView popup_url_message2 = (TextView)popup.findViewById(R.id.popup_url_message2);
+					Fonts.setFont(context, popup_url_message, CustomFont.RobotoCondensed_Regular);
+					Fonts.setFont(context, popup_url_message2, CustomFont.RobotoCondensed_Regular);
 					Fonts.setFont(context, cancel, CustomFont.RobotoCondensed_Regular);
 					Fonts.setFont(context, continu, CustomFont.RobotoCondensed_Regular);
 					popup_title1.setVisibility(View.GONE);
 					popup_title2.setVisibility(View.GONE);
-					popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.GONE);
-					popup.getContentView().findViewById(R.id.popup_url).setVisibility(View.VISIBLE);
+					progressBar.setVisibility(View.GONE);
+					popup.findViewById(R.id.popup_url).setVisibility(View.VISIBLE);
 					
 					if (err != null && err.contains("Timeout")) {
 						popup_url_message.setVisibility(View.GONE);
@@ -521,12 +484,8 @@ public class Activity_Server extends Activity {
 						popup_url_message.setText(err);
 					else
 						popup_url_message.setVisibility(View.GONE);
-					//if (settingsServer != null)
-					//et_url.setText(settingsServer.getServerUrl());
-					//else
+					
 					et_url.setText(serverUrl);
-					//InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-					//imm.showSoftInput(this, 0);
 				}
 			});
 			
@@ -537,15 +496,7 @@ public class Activity_Server extends Activity {
 				public void onClick(View v) {
 					if (popup_title1 != null)	popup_title1.setText("");
 					if (popup_title2 != null)	popup_title2.setText("");
-					if (loading != null)		loading.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT));
-					runOnUiThread(new Runnable() {
-						public void run() {
-							popup_title1.setVisibility(View.VISIBLE);
-							popup_title2.setVisibility(View.VISIBLE);
-							popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.VISIBLE);
-							popup.getContentView().findViewById(R.id.popup_url).setVisibility(View.GONE);
-						}
-					});
+					
 					popupIsShown = false;
 					algo_state = AST_IDLE;
 					settingsServer = null;
@@ -566,25 +517,25 @@ public class Activity_Server extends Activity {
 						//InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 						//imm.hideSoftInputFromWindow(tb_serverUrl.getWindowToken(), 0);
 						//imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);
-						algo_state = AST_RUNNING;
+						algo_state = AST_WAITING_FOR_URL;
 						
 						runOnUiThread(new Runnable() {
 							public void run() {
 								tb_serverUrl.setText(url);
 								popup_title1.setVisibility(View.VISIBLE);
 								popup_title2.setVisibility(View.VISIBLE);
-								popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.VISIBLE);
-								popup.getContentView().findViewById(R.id.popup_url).setVisibility(View.GONE);
+								progressBar.setVisibility(View.VISIBLE);
+								popup.findViewById(R.id.popup_url).setVisibility(View.GONE);
+								progressBar.setIndeterminate(true);
 							}
 						});
 						
-						task = new Activity_AddServer_Algorithm();
+						task = new AddServerThread();
 						task.execute();
 					}
 				}
 			});
 			this.cancel(true);
-			
 		}
 		
 		private void cancelFetch(int res) { cancelFetch(res, ""); }
@@ -592,10 +543,6 @@ public class Activity_Server extends Activity {
 			if (popupIsShown) {
 				runOnUiThread(new Runnable() {
 					public void run() {
-						if (loading != null) {
-							loading.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT));
-							loading.setVisibility(View.GONE);
-						}
 						popup.dismiss();
 						popupIsShown = false;
 					}
@@ -608,11 +555,11 @@ public class Activity_Server extends Activity {
 			algo_state = AST_IDLE;
 			
 			if (res == RES_NOT_PREMIUM) {
-				// SSL Support is available with the Munin for Android Features Pack. Do you want to purchase it on Google Play?
+				// ssl Support is available with the Munin for Android Features Pack. Do you want to purchase it on Google Play?
 				message_title = "";
 				if (s.equals("digest"))
 					message_text = getString(R.string.text65_1);
-				else // SSL
+				else // ssl
 					message_text = getString(R.string.text41);
 				
 				runOnUiThread(new Runnable() {
@@ -704,7 +651,7 @@ public class Activity_Server extends Activity {
 				else
 					settingsServer.setAuthType(AuthType.DIGEST);
 			}
-			settingsServer.setSSL(SSL);
+			settingsServer.setSSL(ssl);
 			
 			type = settingsServer.detectPageType();
 			
@@ -714,6 +661,8 @@ public class Activity_Server extends Activity {
 			// If ssl was false and is now true : display error msg.
 			if (!muninFoo.premium && settingsServer.getSSL())
 				type = "RES_NOT_PREMIUM";
+			
+			progressBar.setIndeterminate(false);
 			
 			return type;
 		}
@@ -824,18 +773,18 @@ public class Activity_Server extends Activity {
 		}
 		
 		private void askForCredentials() {
-			final EditText et_login = (EditText) popup.getContentView().findViewById(R.id.popup_credentials_login);
-			final EditText et_password = (EditText) popup.getContentView().findViewById(R.id.popup_credentials_password);
-			final Button cancel = (Button) popup.getContentView().findViewById(R.id.popup_credentials_cancel);
-			final Button continu = (Button) popup.getContentView().findViewById(R.id.popup_credentials_continue);
-			final Spinner pop_sp_authType = (Spinner) popup.getContentView().findViewById(R.id.popup_credentials_authtype);
+			final EditText et_login = (EditText) popup.findViewById(R.id.popup_credentials_login);
+			final EditText et_password = (EditText) popup.findViewById(R.id.popup_credentials_password);
+			final Button cancel = (Button) popup.findViewById(R.id.popup_credentials_cancel);
+			final Button continu = (Button) popup.findViewById(R.id.popup_credentials_continue);
+			final Spinner pop_sp_authType = (Spinner) popup.findViewById(R.id.popup_credentials_authtype);
 			
 			runOnUiThread(new Runnable() {
 				public void run() {
 					popup_title1.setVisibility(View.GONE);
 					popup_title2.setVisibility(View.GONE);
-					popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.GONE);
-					popup.getContentView().findViewById(R.id.popup_credentials).setVisibility(View.VISIBLE);
+					progressBar.setVisibility(View.GONE);
+					popup.findViewById(R.id.popup_credentials).setVisibility(View.VISIBLE);
 					Fonts.setFont(context, cancel, CustomFont.RobotoCondensed_Regular);
 					Fonts.setFont(context, continu, CustomFont.RobotoCondensed_Regular);
 					
@@ -861,9 +810,9 @@ public class Activity_Server extends Activity {
 						public void onItemSelected(AdapterView<?> arg0, View arg1, int select, long arg3) {
 							if (!muninFoo.premium) {
 								if (select == 1)
-									popup.getContentView().findViewById(R.id.popup_credentials_premium).setVisibility(View.VISIBLE);
+									popup.findViewById(R.id.popup_credentials_premium).setVisibility(View.VISIBLE);
 								else
-									popup.getContentView().findViewById(R.id.popup_credentials_premium).setVisibility(View.GONE);
+									popup.findViewById(R.id.popup_credentials_premium).setVisibility(View.GONE);
 							}
 						}
 						
@@ -880,7 +829,7 @@ public class Activity_Server extends Activity {
 				public void onClick(View v) {
 					if (popup_title1 != null)	popup_title1.setText("");
 					if (popup_title2 != null)	popup_title2.setText("");
-					if (loading != null)		loading.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT));
+					
 					runOnUiThread(new Runnable() {
 						public void run() {
 							pop_sp_authType.setSelection(0);
@@ -888,8 +837,8 @@ public class Activity_Server extends Activity {
 							et_password.setText("");
 							popup_title1.setVisibility(View.VISIBLE);
 							popup_title2.setVisibility(View.VISIBLE);
-							popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.VISIBLE);
-							popup.getContentView().findViewById(R.id.popup_credentials).setVisibility(View.GONE);
+							progressBar.setVisibility(View.VISIBLE);
+							popup.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
 						}
 					});
 					popupIsShown = false;
@@ -921,12 +870,12 @@ public class Activity_Server extends Activity {
 							public void run() {
 								popup_title1.setVisibility(View.VISIBLE);
 								popup_title2.setVisibility(View.VISIBLE);
-								popup.getContentView().findViewById(R.id.popup_container_avancement).setVisibility(View.VISIBLE);
-								popup.getContentView().findViewById(R.id.popup_credentials).setVisibility(View.GONE);
+								progressBar.setVisibility(View.VISIBLE);
+								popup.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
 							}
 						});
 						
-						task = new Activity_AddServer_Algorithm();
+						task = new AddServerThread();
 						task.execute();
 					}
 				}
@@ -936,8 +885,8 @@ public class Activity_Server extends Activity {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			popup.getContentView().findViewById(R.id.popup_credentials).setVisibility(View.GONE);
-			popup.getContentView().findViewById(R.id.popup_url).setVisibility(View.GONE);
+			popup.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
+			popup.findViewById(R.id.popup_url).setVisibility(View.GONE);
 			// Zapper les étapes déjà faites
 			boolean stop = false;
 			if (algo_state != AST_WAITING_FOR_CREDENTIALS) {
@@ -984,13 +933,13 @@ public class Activity_Server extends Activity {
 			canCancel = true;
 			algo_state = AST_IDLE;
 			if (res != RES_UNDEFINED) {
-				Button b = (Button) popup.getContentView().findViewById(R.id.popup_button);
+				Button b = (Button) popup.findViewById(R.id.popup_button);
 				Fonts.setFont(context, b, CustomFont.RobotoCondensed_Regular);
-				LinearLayout loading_bar = (LinearLayout) popup.getContentView().findViewById(R.id.popup_container_avancement);
+				
 				if (res == RES_SERVER_SUCCESS) {
 					// Congratulations!			X plugins found!
 					setPopupText(getString(R.string.text18), message_title + " " + getString(R.string.text27));
-					loading_bar.setVisibility(View.GONE);
+					progressBar.setVisibility(View.GONE);
 					b.setVisibility(View.VISIBLE);
 					b.setOnClickListener(new OnClickListener() {
 						@Override
@@ -1005,7 +954,7 @@ public class Activity_Server extends Activity {
 					});
 				} else if (res == RES_SERVERS_SUCCESS) {
 					setPopupText(message_title, message_text);
-					loading_bar.setVisibility(View.GONE);
+					progressBar.setVisibility(View.GONE);
 					b.setVisibility(View.VISIBLE);
 					b.setOnClickListener(new OnClickListener() {
 						@Override

@@ -52,8 +52,6 @@ import com.chteuchteu.munin.obj.MuninServer;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public final class Util {
-	private Util() { }
-	
 	public static final class UI {
 		/**
 		 * Applies the following UI tweaks :
@@ -90,8 +88,7 @@ public final class Util {
 		/* ENUM Custom Fonts */
 		public enum CustomFont {
 			RobotoCondensed_Regular("RobotoCondensed-Regular.ttf"),
-			RobotoCondensed_Bold("RobotoCondensed-Bold.ttf"),
-			Roboto_Thin("Roboto-Thin.ttf");
+			RobotoCondensed_Bold("RobotoCondensed-Bold.ttf");
 			
 			final String file;
 			private CustomFont(String fileName) { this.file = fileName; }
@@ -140,7 +137,6 @@ public final class Util {
 	}
 	
 	public enum TransitionStyle { DEEPER, SHALLOWER }
-	
 	public static void setTransition(Context c, TransitionStyle ts) {
 		if (getPref(c, "transitions").equals("true")) {
 			if (ts == TransitionStyle.DEEPER)
