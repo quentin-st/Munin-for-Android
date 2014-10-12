@@ -3,10 +3,10 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:background="#333333"
+	android:paddingBottom="10dp"
 	android:paddingLeft="10dp"
 	android:paddingRight="10dp"
 	android:paddingTop="10dp"
-	android:paddingBottom="10dp"
 	android:shadowColor="#111111"
 	android:shadowDx="0"
 	android:shadowDy="1"
@@ -21,16 +21,16 @@
 		android:layout_centerVertical="true"
 		android:layout_marginLeft="25dp"
 		android:layout_marginRight="8dp"
-		android:textSize="17sp"
 		android:textColor="#DDDDDD"
-		android:textAllCaps="true" />
+		android:textSize="19sp" />
 
 	<ImageView
 		android:id="@+id/edit"
-		android:layout_width="22dp"
-		android:layout_height="22dp"
+		android:layout_width="30dp"
+		android:layout_height="30dp"
 		android:layout_alignParentRight="true"
 		android:layout_centerVertical="true"
+		android:padding="4dp"
 		android:src="@drawable/ic_action_overflow" />
 
 </RelativeLayout>

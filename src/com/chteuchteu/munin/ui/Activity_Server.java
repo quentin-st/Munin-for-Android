@@ -230,9 +230,6 @@ public class Activity_Server extends Activity {
 			} else
 				ll_auth.setVisibility(View.GONE);
 		}
-		
-		if (MuninFoo.DEBUG)
-			tb_serverUrl.setText("https://a.andrewandcara.com/munin");
 	}
 	
 	@Override
@@ -411,7 +408,7 @@ public class Activity_Server extends Activity {
 			
 			if (Util.isOnline(context)) {
 				if (algo_state != AST_WAITING_FOR_CREDENTIALS && algo_state != AST_WAITING_FOR_URL) {
-					final View view = LayoutInflater.from(context).inflate(R.layout.addserver_popup, null);
+					final View view = LayoutInflater.from(context).inflate(R.layout.server_popup, null);
 					
 					popup = new AlertDialog.Builder(context)
 					.setView(view)
