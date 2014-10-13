@@ -94,7 +94,7 @@ public class DrawerHelper {
 	}
 	
 	public void reset() {
-		initDrawer();
+		initDrawer(false);
 		setDrawerActivity(n);
 	}
 	
@@ -151,8 +151,11 @@ public class DrawerHelper {
 	
 	public SlidingMenu getDrawer() { return this.sm; }
 	
-	private void initDrawer() {
-		sm = new SlidingMenu(a);
+	private void initDrawer() { initDrawer(true); }
+	private void initDrawer(boolean firstLoad) {
+		if (firstLoad)
+			sm = new SlidingMenu(a);
+		
 		sm.setMode(SlidingMenu.LEFT);
 		if (a.getClass().getSimpleName().equals("Activity_Main"))
 			sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -165,12 +168,14 @@ public class DrawerHelper {
 		//sm.setShadowDrawable(R.drawable.drawer_shadow);
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		//sm.attachToActivity(a, SlidingMenu.SLIDING_WINDOW);
-		sm.attachToActivity(a, SlidingMenu.SLIDING_CONTENT);
+		if (firstLoad)
+			sm.attachToActivity(a, SlidingMenu.SLIDING_CONTENT);
 		
 		//sm.setActionBarSlideIcon(new ActionBarSlideIcon(a, R.drawable.ic_navigation_drawer, R.string.text63_1, R.string.text63_2));
 		a.getActionBar().setDisplayHomeAsUpEnabled(false);
 		
-		sm.setMenu(R.layout.drawer);
+		if (firstLoad)
+			sm.setMenu(R.layout.drawer);
 		
 		// Graphs
 		a.findViewById(R.id.drawer_graphs_btn).setOnClickListener(new OnClickListener() {

@@ -151,62 +151,62 @@ public class Activity_Settings extends Activity {
 	public void actionSave() {
 		// Graph default scale
 		if (spinner_scale.getSelectedItemPosition() == 0)
-			setPref("defaultScale", "day");
+			Util.setPref(context, "defaultScale", "day");
 		else if (spinner_scale.getSelectedItemPosition() == 1)
-			setPref("defaultScale", "week");
+			Util.setPref(context, "defaultScale", "week");
 		else if (spinner_scale.getSelectedItemPosition() == 2)
-			setPref("defaultScale", "month");
+			Util.setPref(context, "defaultScale", "month");
 		else if (spinner_scale.getSelectedItemPosition() == 3)
-			setPref("defaultScale", "year");
+			Util.setPref(context, "defaultScale", "year");
 		
 		// App language
-		String currentLang = getPref("lang");
+		String currentLang = Util.getPref(context, "lang");
 		if (spinner_lang.getSelectedItemPosition() == 0)
-			setPref("lang", "en");
+			Util.setPref(context, "lang", "en");
 		else if (spinner_lang.getSelectedItemPosition() == 1)
-			setPref("lang", "fr");
+			Util.setPref(context, "lang", "fr");
 		else if (spinner_lang.getSelectedItemPosition() == 2)
-			setPref("lang", "de");
+			Util.setPref(context, "lang", "de");
 		else if (spinner_lang.getSelectedItemPosition() == 3)
-			setPref("lang", "ru");
+			Util.setPref(context, "lang", "ru");
 		else
-			setPref("lang", "en");
-		String newLang = getPref("lang");
+			Util.setPref(context, "lang", "en");
+		String newLang = Util.getPref(context, "lang");
 		if (!currentLang.equals(newLang))
 			MuninFoo.loadLanguage(context, true);
 		
 		// Orientation
 		if (spinner_orientation.getSelectedItemPosition() == 0)
-			setPref("graphview_orientation", "horizontal");
+			Util.setPref(context, "graphview_orientation", "horizontal");
 		else if (spinner_orientation.getSelectedItemPosition() == 1)
-			setPref("graphview_orientation", "vertical");
+			Util.setPref(context, "graphview_orientation", "vertical");
 		else
-			setPref("graphview_orientation", "auto");
+			Util.setPref(context, "graphview_orientation", "auto");
 		
 		if (getCheckableValue(checkable_transitions))
-			setPref("transitions", "true");
+			Util.setPref(context, "transitions", "true");
 		else
-			setPref("transitions", "false");
+			Util.setPref(context, "transitions", "false");
 		
 		if (getCheckableValue(checkable_alwaysOn))
-			setPref("screenAlwaysOn", "true");
+			Util.setPref(context, "screenAlwaysOn", "true");
 		else
-			setPref("screenAlwaysOn", "false");
+			Util.setPref(context, "screenAlwaysOn", "false");
 		
 		if (getCheckableValue(checkable_autoRefresh))
-			setPref("autoRefresh", "true");
+			Util.setPref(context, "autoRefresh", "true");
 		else
-			setPref("autoRefresh", "false");
+			Util.setPref(context, "autoRefresh", "false");
 		
 		if (getCheckableValue(checkable_graphsZoom))
-			setPref("graphsZoom", "true");
+			Util.setPref(context, "graphsZoom", "true");
 		else
-			setPref("graphsZoom", "false");
+			Util.setPref(context, "graphsZoom", "false");
 		
 		if (getCheckableValue(checkable_hdGraphs))
-			setPref("hdGraphs", "true");
+			Util.setPref(context, "hdGraphs", "true");
 		else
-			setPref("hdGraphs", "false");
+			Util.setPref(context, "hdGraphs", "false");
 		
 		// Default server
 		int defaultServerPosition = spinner_defaultServer.getSelectedItemPosition()-1;
@@ -230,19 +230,19 @@ public class Activity_Settings extends Activity {
 		super.onResume();
 		
 		// Graph default scale
-		if (getPref("defaultScale").equals("day"))
+		if (Util.getPref(context, "defaultScale").equals("day"))
 			spinner_scale.setSelection(0, true);
-		else if (getPref("defaultScale").equals("week"))
+		else if (Util.getPref(context, "defaultScale").equals("week"))
 			spinner_scale.setSelection(1, true);
-		else if (getPref("defaultScale").equals("month"))
+		else if (Util.getPref(context, "defaultScale").equals("month"))
 			spinner_scale.setSelection(2, true);
-		else if (getPref("defaultScale").equals("year"))
+		else if (Util.getPref(context, "defaultScale").equals("year"))
 			spinner_scale.setSelection(3, true);
 		
 		// App language
 		String lang;
-		if (!getPref("lang").equals(""))
-			lang = getPref("lang");
+		if (!Util.getPref(context, "lang").equals(""))
+			lang = Util.getPref(context, "lang");
 		else
 			lang = Locale.getDefault().getLanguage();
 		
@@ -256,33 +256,33 @@ public class Activity_Settings extends Activity {
 			spinner_lang.setSelection(3, true);
 		
 		// Graphview orientation
-		if (getPref("graphview_orientation").equals("horizontal"))
+		if (Util.getPref(context, "graphview_orientation").equals("horizontal"))
 			spinner_orientation.setSelection(0);
-		else if (getPref("graphview_orientation").equals("vertical"))
+		else if (Util.getPref(context, "graphview_orientation").equals("vertical"))
 			spinner_orientation.setSelection(1);
 		else
 			spinner_orientation.setSelection(2);
 		
 		// Transitions
-		if (getPref("transitions").equals("false"))
+		if (Util.getPref(context, "transitions").equals("false"))
 			setChecked(checkable_transitions, false);
 		else
 			setChecked(checkable_transitions, true);
 		
 		// Always on
-		if (getPref("screenAlwaysOn").equals("true"))
+		if (Util.getPref(context, "screenAlwaysOn").equals("true"))
 			setChecked(checkable_alwaysOn, true);
 		
 		// Auto refresh
-		if (getPref("autoRefresh").equals("true"))
+		if (Util.getPref(context, "autoRefresh").equals("true"))
 			setChecked(checkable_autoRefresh, true);
 		
 		// Graph zoom
-		if (getPref("graphsZoom").equals("true"))
+		if (Util.getPref(context, "graphsZoom").equals("true"))
 			setChecked(checkable_graphsZoom, true);
 		
 		// HD Graphs
-		if (getPref("hdGraphs").equals("false"))
+		if (Util.getPref(context, "hdGraphs").equals("false"))
 			setChecked(checkable_hdGraphs, false);
 		else
 			setChecked(checkable_hdGraphs, true);
@@ -367,23 +367,23 @@ public class Activity_Settings extends Activity {
 				for (int i=0; i<100; i++) {
 					if (i<10)	serverNumber = "0" + i;
 					else		serverNumber = ""  + i;
-					if (!getPref("server" + serverNumber + "Url").equals("")) {
-						removePref("server" + serverNumber + "Url");
-						removePref("server" + serverNumber + "Name");
-						removePref("server" + serverNumber + "Plugins");
-						removePref("server" + serverNumber + "AuthLogin");
-						removePref("server" + serverNumber + "AuthPassword");
-						removePref("server" + serverNumber + "GraphURL");
-						removePref("server" + serverNumber + "SSL");
-						removePref("server" + serverNumber + "Position");
+					if (!Util.getPref(context, "server" + serverNumber + "Url").equals("")) {
+						Util.removePref(context, "server" + serverNumber + "Url");
+						Util.removePref(context, "server" + serverNumber + "Name");
+						Util.removePref(context, "server" + serverNumber + "Plugins");
+						Util.removePref(context, "server" + serverNumber + "AuthLogin");
+						Util.removePref(context, "server" + serverNumber + "AuthPassword");
+						Util.removePref(context, "server" + serverNumber + "GraphURL");
+						Util.removePref(context, "server" + serverNumber + "SSL");
+						Util.removePref(context, "server" + serverNumber + "Position");
 					}
 				}
 				
-				setPref("defaultScale", "day");
-				setPref("addserver_history", "");
-				setPref("screenAlwaysOn", "");
-				setPref("graphsZoom", "false");
-				setPref("hdGraphs", "true");
+				Util.setPref(context, "defaultScale", "day");
+				Util.setPref(context, "addserver_history", "");
+				Util.setPref(context, "screenAlwaysOn", "");
+				Util.setPref(context, "graphsZoom", "false");
+				Util.setPref(context, "hdGraphs", "true");
 				
 				
 				muninFoo.sqlite.dbHlpr.deleteWidgets();
@@ -400,7 +400,8 @@ public class Activity_Settings extends Activity {
 				// Reset performed.
 				Toast.makeText(getApplicationContext(), getString(R.string.text02), Toast.LENGTH_SHORT).show();
 				
-				startActivity(new Intent(Activity_Settings.this, Activity_Settings.class));
+				dh.reset();
+				//startActivity(new Intent(Activity_Settings.this, Activity_Settings.class));
 			}
 		})
 		.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -437,19 +438,6 @@ public class Activity_Settings extends Activity {
 		startActivity(intent);
 		Util.setTransition(this, TransitionStyle.SHALLOWER);
 	}
-	
-	public String getPref(String key) {
-		return this.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public void setPref(String key, String value) {
-		Util.setPref(this, key, value);
-	}
-	
-	public void removePref(String key) {
-		Util.removePref(this, key);
-	}
-	
 	
 	@Override
 	public void onStart() {

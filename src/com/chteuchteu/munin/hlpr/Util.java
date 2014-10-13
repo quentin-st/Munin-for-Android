@@ -437,4 +437,11 @@ public final class Util {
 			sb.append(HEX.charAt((b>>4)&0x0f)).append(HEX.charAt(b&0x0f));
 		}
 	}
+	
+	public static View getActionBarView(Activity activity) {
+		Window window = activity.getWindow();
+	    View v = window.getDecorView();
+	    int resId = activity.getResources().getIdentifier("action_bar_container", "id", "android");
+	    return v.findViewById(resId);
+	}
 }
