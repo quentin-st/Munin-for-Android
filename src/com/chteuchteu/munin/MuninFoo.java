@@ -490,6 +490,8 @@ public class MuninFoo {
 					// Get the domain name
 					m.setName(domain.text());
 					m.setUrl(domain.attr("abs:href"));
+					// Generate a pretty name if needed
+					m.generateName();
 					this.masters.add(m);
 					
 					int pos = 0;
@@ -520,6 +522,8 @@ public class MuninFoo {
 					Element a = domain.child(0);
 					m.setName(a.text());
 					m.setUrl(a.attr("abs:href"));
+					// Generate a pretty name if needed
+					m.generateName();
 					this.masters.add(m);
 					
 					int pos = 0;

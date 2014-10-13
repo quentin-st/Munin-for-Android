@@ -558,15 +558,15 @@ public class MuninServer {
 		catch (SSLPeerUnverifiedException e) {
 			this.ssl = true;
 			if (this.serverUrl.equals(url))
-				this.serverUrl = Util.setHttps(url);
-			url = Util.setHttps(url);
+				this.serverUrl = Util.URLManipulation.setHttps(url);
+			url = Util.URLManipulation.setHttps(url);
 			return grabUrl(url);
 		}
 		catch (SSLException e) {
 			this.ssl = true;
 			if (this.serverUrl.equals(url))
-				this.serverUrl = Util.setHttps(url);
-			url = Util.setHttps(url);
+				this.serverUrl = Util.URLManipulation.setHttps(url);
+			url = Util.URLManipulation.setHttps(url);
 			return grabUrl(url);
 		}
 		catch (Exception e) { e.printStackTrace(); resp.html = ""; }

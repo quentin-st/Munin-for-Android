@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.text.DateFormat;
@@ -250,25 +251,39 @@ public final class Util {
 		editor.commit();
 	}
 	
-	public static String setHttps(String url) {
-		if (url.contains("http://"))
-			url = url.replaceAll("http://", "https://");
-		url = Util.setPort(url, 443);
-		return url;
-	}
-	
-	public static String setPort(String url, int port) {
-		URL _url = null;
-		try {
-			_url = new URL(url);
-		} catch (MalformedURLException e) {
+	public static class URLManipulation {
+		public static String setHttps(String url) {
+			if (url.contains("http://"))
+				url = url.replaceAll("http://", "https://");
+			url = Util.URLManipulation.setPort(url, 443);
 			return url;
 		}
-		if (url == null)
-			return url;
-		if (_url.getPort() == port)
-			return url;
-		return _url.getProtocol() + "://" + _url.getHost() + ":" + port + _url.getFile();
+		
+		public static String setPort(String url, int port) {
+			URL _url = null;
+			try {
+				_url = new URL(url);
+			} catch (MalformedURLException e) {
+				return url;
+			}
+			if (url == null)
+				return url;
+			if (_url.getPort() == port)
+				return url;
+			return _url.getProtocol() + "://" + _url.getHost() + ":" + port + _url.getFile();
+		}
+		
+		public static String getHostFromUrl(String url) { return getHostFromUrl(url, url); }
+		public static String getHostFromUrl(String url, String defaultUri) {
+			try {
+				URI uri = new URI(url);
+			    String domain = uri.getHost();
+			    return domain.startsWith("www.") ? domain.substring(4) : domain;
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				return defaultUri;
+			}
+		}
 	}
 	
 	public static final class Dates {

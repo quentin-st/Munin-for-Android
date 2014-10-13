@@ -29,6 +29,23 @@ public class MuninMaster {
 		this.children = new ArrayList<MuninServer>();
 	}
 	
+	/**
+	 * Generates a custom name, to avoid "localdomain"
+	 */
+	public void generateName() {
+		if (this.url.equals(""))
+			return;
+		
+		// Everything else than localdomain is OK
+		if (!this.name.equals("localdomain"))
+			return;
+		
+		// http(s)://myurl.com/munin/
+		//           ---------
+		
+		this.name = Util.URLManipulation.getHostFromUrl(this.url, this.name);
+	}
+	
 	public void rebuildChildren(MuninFoo f) {
 		this.children = new ArrayList<MuninServer>();
 		for (MuninServer s : f.getServers()) {
