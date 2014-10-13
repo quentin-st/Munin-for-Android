@@ -70,26 +70,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="8dp" />
-
-			<!-- Transitions -->
-
-			<TextView
-				android:id="@+id/title5"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="15dp"
-				android:text="@string/settings_transitions_label"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:textStyle="bold" />
-
-			<LinearLayout
-				android:id="@+id/checkable_transitions"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="13dp"
-				android:layout_marginTop="8dp"
-				android:gravity="right"
-				android:orientation="vertical" />
 		</LinearLayout>
 
 		<!-- GRAPHS OPTIONS -->

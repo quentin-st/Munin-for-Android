@@ -38,7 +38,6 @@ public class Activity_Settings extends Activity {
 	private Spinner	spinner_defaultServer;
 	private Spinner	spinner_lang;
 	private Spinner	spinner_orientation;
-	private View		checkable_transitions;
 	private View		checkable_alwaysOn;
 	private View		checkable_autoRefresh;
 	private View		checkable_graphsZoom;
@@ -73,7 +72,6 @@ public class Activity_Settings extends Activity {
 		spinner_lang = (Spinner)findViewById(R.id.spinner_lang);
 		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);
 		
-		checkable_transitions = inflateCheckable((ViewGroup)findViewById(R.id.checkable_transitions), getString(R.string.settings_transitions_checkbox));
 		checkable_alwaysOn = inflateCheckable((ViewGroup)findViewById(R.id.checkable_screenalwayson), getString(R.string.settings_screenalwayson_checkbox));
 		checkable_autoRefresh = inflateCheckable((ViewGroup)findViewById(R.id.checkable_autorefresh), getString(R.string.settings_autorefresh_checkbox));
 		checkable_graphsZoom = inflateCheckable((ViewGroup)findViewById(R.id.checkable_enablegraphszoom), getString(R.string.settings_enablegraphszoom));
@@ -122,7 +120,6 @@ public class Activity_Settings extends Activity {
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title1), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title2), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title3), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title5), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title7), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title8), CustomFont.RobotoCondensed_Bold);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title9), CustomFont.RobotoCondensed_Bold);
@@ -182,11 +179,6 @@ public class Activity_Settings extends Activity {
 			Util.setPref(context, "graphview_orientation", "vertical");
 		else
 			Util.setPref(context, "graphview_orientation", "auto");
-		
-		if (getCheckableValue(checkable_transitions))
-			Util.setPref(context, "transitions", "true");
-		else
-			Util.setPref(context, "transitions", "false");
 		
 		if (getCheckableValue(checkable_alwaysOn))
 			Util.setPref(context, "screenAlwaysOn", "true");
@@ -262,12 +254,6 @@ public class Activity_Settings extends Activity {
 			spinner_orientation.setSelection(1);
 		else
 			spinner_orientation.setSelection(2);
-		
-		// Transitions
-		if (Util.getPref(context, "transitions").equals("false"))
-			setChecked(checkable_transitions, false);
-		else
-			setChecked(checkable_transitions, true);
 		
 		// Always on
 		if (Util.getPref(context, "screenAlwaysOn").equals("true"))

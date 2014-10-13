@@ -137,12 +137,14 @@ public final class Util {
 	}
 	
 	public enum TransitionStyle { DEEPER, SHALLOWER }
-	public static void setTransition(Context c, TransitionStyle ts) {
-		if (getPref(c, "transitions").equals("true")) {
-			if (ts == TransitionStyle.DEEPER)
-				((Activity) c).overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-			else if (ts == TransitionStyle.SHALLOWER)
-				((Activity) c).overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
+	public static void setTransition(Context context, TransitionStyle transitionStyle) {
+		switch (transitionStyle) {
+			case DEEPER:
+				((Activity) context).overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
+				break;
+			case SHALLOWER:
+				((Activity) context).overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
+				break;
 		}
 	}
 	
