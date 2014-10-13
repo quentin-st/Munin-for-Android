@@ -176,6 +176,7 @@ public class Activity_Servers extends Activity {
 				}
 			}
 		});
+		builderSingle.setTitle(server.getName());
 		builderSingle.show();
 		
 		return true;
