@@ -56,20 +56,29 @@ public class Activity_Main extends Activity {
 		if (loaded)
 			preloading = false;
 		
-		
 		context = this;
 		setContentView(R.layout.main_clear);
 		getActionBar().setDisplayHomeAsUpEnabled(false);
 		getActionBar().setTitle("");
 		
 		Util.UI.applySwag(this);
+		
+		
+		dh = new DrawerHelper(this, muninFoo);
+		dh.setDrawerActivity(dh.Activity_Main);
+		
+		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
+			@Override
+			public void onOpen() {
+				dh.getDrawer().toggle(false);
+			}
+		});
+		
 		Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.RobotoCondensed_Regular);
 		
 		if (loaded)
 			onLoadFinished();
-		
-		// If not loaded : load :)
-		if (!loaded)
+		else
 			preload();
 	}
 	
@@ -80,25 +89,6 @@ public class Activity_Main extends Activity {
 	 */
 	private void onLoadFinished() {
 		preloading = false;
-		
-		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_Main);
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-			}
-		});
-		
-		dh.getDrawer().toggle(true);
 		
 		// Inflate menu if not already done
 		if (preloading && !optionsMenuLoaded)
@@ -121,6 +111,22 @@ public class Activity_Main extends Activity {
 		// Display the "follow on Twitter" message
 		// after X launches
 		displayTwitterAlertIfNeeded();
+		
+		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
+			@Override
+			public void onOpen() {
+				activityName = getActionBar().getTitle().toString();
+				getActionBar().setTitle(R.string.app_name);
+			}
+		});
+		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
+			@Override
+			public void onClose() {
+				getActionBar().setTitle(activityName);
+			}
+		});
+		dh.reset();
+		dh.getDrawer().toggle(true);
 	}
 	
 	@Override
@@ -237,15 +243,11 @@ public class Activity_Main extends Activity {
 	private void preload() {
 		Crashlytics.start(this);
 		
-		updateOperations = false;
-		if (!Util.getPref(context, "lastMFAVersion").equals(MuninFoo.VERSION + "")
-				|| !Util.getPref(context, "serverUrl").equals("")
-				|| !Util.getPref(context, "server00Url").equals(""))
-			updateOperations = true;
+		updateOperations = !Util.getPref(context, "lastMFAVersion").equals(MuninFoo.VERSION + "");
 		
 		
 		if (updateOperations) {
-			if (myProgressDialog == null || (myProgressDialog != null && !myProgressDialog.isShowing()))
+			if (myProgressDialog == null || !myProgressDialog.isShowing())
 				myProgressDialog = ProgressDialog.show(context, "", getString(R.string.text39), true);
 			// Please wait while the app does some update operations
 			new UpdateOperations().execute();
@@ -254,24 +256,6 @@ public class Activity_Main extends Activity {
 	}
 	
 	private void updateActions() {
-		if (Util.hasPref(context, "server01Url")) {
-			// Cleaning database
-			String serverNumber = "";
-			for (int i=0; i<100; i++) {
-				if (i<10)	serverNumber = "0" + i;
-				else		serverNumber = ""  + i;
-				if (Util.getPref(context, "server" + serverNumber + "Url").equals("")) {
-					Util.removePref(context, "server" + serverNumber + "Url");
-					Util.removePref(context, "server" + serverNumber + "Name");
-					Util.removePref(context, "server" + serverNumber + "Favs");
-					Util.removePref(context, "server" + serverNumber + "Version");
-					Util.removePref(context, "server" + serverNumber + "Plugins");
-					Util.removePref(context, "server" + serverNumber + "AuthLogin");
-					Util.removePref(context, "server" + serverNumber + "AuthPassword");
-				}
-			}
-		}
-		
 		if (Util.getPref(context, "lang").equals(""))
 			Util.setPref(context, "lang", Locale.getDefault().getLanguage());
 		
