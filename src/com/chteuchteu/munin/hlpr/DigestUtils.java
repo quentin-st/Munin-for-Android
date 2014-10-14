@@ -4,17 +4,17 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
 public class DigestUtils {
 	private static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 	
-	public static String getDigestAuthHeader(MuninServer s, String url) {
-		if (s.getAuthType() == AuthType.DIGEST) {
+	public static String getDigestAuthHeader(MuninMaster master, String url) {
+		if (master.getAuthType() == AuthType.DIGEST) {
 			// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-			String userName = s.getAuthLogin();
-			String password = s.getAuthPassword();
+			String userName = master.getAuthLogin();
+			String password = master.getAuthPassword();
 			String realmName = "";
 			String nonce = "";
 			String algorithm = "MD5";
@@ -28,10 +28,10 @@ public class DigestUtils {
 			cnonce = DigestUtils.newCnonce();
 			
 			// Parser le header
-			realmName = DigestUtils.match(s.getAuthString(), "realm");
-			nonce = DigestUtils.match(s.getAuthString(), "nonce");
-			opaque = DigestUtils.match(s.getAuthString(), "opaque");
-			qop = DigestUtils.match(s.getAuthString(), "qop");
+			realmName = DigestUtils.match(master.getAuthString(), "realm");
+			nonce = DigestUtils.match(master.getAuthString(), "nonce");
+			opaque = DigestUtils.match(master.getAuthString(), "opaque");
+			qop = DigestUtils.match(master.getAuthString(), "qop");
 			
 			String a1 = DigestUtils.md5Hex(userName + ":" + realmName + ":" + password);
 			String a2 = DigestUtils.md5Hex(methodName + ":" + uri);

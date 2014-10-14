@@ -63,10 +63,10 @@ import com.chteuchteu.munin.hlpr.MediaScannerUtil;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Label;
+import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.chteuchteu.munin.obj.MuninServer.HDGraphs;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
@@ -151,8 +151,6 @@ public class Activity_GraphView extends Activity {
 			String plugin = thisIntent.getExtras().getString("plugin");
 			// Setting currentServer
 			muninFoo.currentServer = muninFoo.getServer(server);
-			if (muninFoo.currentServer == null)
-				muninFoo.currentServer = muninFoo.getFirstServer();
 			
 			// Giving position of plugin in list to GraphView
 			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
@@ -160,9 +158,6 @@ public class Activity_GraphView extends Activity {
 					thisIntent.putExtra("position", "" + i);
 			}
 		}
-		
-		if (muninFoo.currentServer == null)
-			muninFoo.currentServer = muninFoo.getFirstServer();
 		
 		int pos = 0;
 		
@@ -181,10 +176,7 @@ public class Activity_GraphView extends Activity {
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("position")) {
 			String position = thisIntent.getExtras().getString("position");
 			pos = Integer.parseInt(position);
-		}/* else { // Vérification de l'intent ratée: redirection
-			Intent intent2 = new Intent(Activity_GraphView.this, Activity_Plugins.class);
-			startActivity(intent2);
-		}*/
+		}
 		
 		if (savedInstanceState != null)
 			pos = savedInstanceState.getInt("position");
@@ -256,7 +248,7 @@ public class Activity_GraphView extends Activity {
 			mHandlerTask.run();
 		}
 		
-		switch (muninFoo.currentServer.getHDGraphs()) {
+		switch (muninFoo.currentServer.getParent().getHDGraphs()) {
 			case AUTO_DETECT:
 				new DynaZoomDetector(muninFoo.currentServer).execute();
 				break;
@@ -311,7 +303,7 @@ public class Activity_GraphView extends Activity {
 		protected void onPostExecute(Void result) {
 			currentlyDownloading_finished();
 			
-			server.setHDGraphs(HDGraphs.get(dynazoomAvailable));
+			server.getParent().setHDGraphs(HDGraphs.get(dynazoomAvailable));
 			muninFoo.sqlite.dbHlpr.saveMuninServer(server);
 			loadGraphs = true;
 			actionRefresh();

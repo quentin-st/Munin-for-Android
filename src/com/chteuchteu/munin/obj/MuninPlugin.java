@@ -9,7 +9,6 @@ import org.jsoup.nodes.Element;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 
 public class MuninPlugin {
@@ -33,13 +32,6 @@ public class MuninPlugin {
 		this.installedOn = server;
 		this.state = AlertState.UNDEFINED;
 		this.category = "";
-		this.pluginPageUrl = "";
-	}
-	public MuninPlugin (String name, String fancyName, MuninServer installedOn, String category) {
-		this.name = name;
-		this.fancyName = fancyName;
-		this.installedOn = installedOn;
-		this.category = category;
 		this.pluginPageUrl = "";
 	}
 	
@@ -160,11 +152,11 @@ public class MuninPlugin {
 	}
 	
 	public Bitmap getGraph(Period period) {
-		return MuninFoo.grabBitmap(this.installedOn, getImgUrl(period));
+		return this.installedOn.getParent().grabBitmap(getImgUrl(period));
 	}
 	
 	public Bitmap getGraph(String url) {
-		return MuninFoo.grabBitmap(this.installedOn, url);
+		return this.installedOn.getParent().grabBitmap(url);
 	}
 	
 	
@@ -172,7 +164,7 @@ public class MuninPlugin {
 		if (this.pluginPageUrl.equals(""))
 			return null;
 		
-		String html = this.installedOn.grabUrl(this.pluginPageUrl).html;
+		String html = this.installedOn.getParent().grabUrl(this.pluginPageUrl).html;
 		if (html.equals(""))
 			return null;
 		

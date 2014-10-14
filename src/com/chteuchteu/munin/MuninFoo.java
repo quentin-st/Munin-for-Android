@@ -1,60 +1,22 @@
 package com.chteuchteu.munin;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
-import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 
-import com.chteuchteu.munin.hlpr.DigestUtils;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.obj.HTTPResponse;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
 
 public class MuninFoo {
@@ -173,7 +135,8 @@ public class MuninFoo {
 	 */
 	private void attachOrphanServers() {
 		int n = 0;
-		MuninMaster defMaster = new MuninMaster("Default");
+		MuninMaster defMaster = new MuninMaster();
+		defMaster.setName("Default");
 		defMaster.defaultMaster = true;
 		
 		for (MuninServer s : this.servers) {
@@ -232,11 +195,7 @@ public class MuninFoo {
 			s.getParent().rebuildChildren(this);
 		
 		// Delete from servers list
-		for (int i=0; i<this.servers.size(); i++) {
-			if (this.servers.get(i).equalsApprox(s)) {
-				this.servers.remove(i); break;
-			}
-		}
+		this.servers.remove(s);
 		
 		if (rebuildChildren)
 			s.getParent().rebuildChildren(this);
@@ -247,11 +206,9 @@ public class MuninFoo {
 	}
 	public void deleteMuninMaster(MuninMaster master) {
 		if (this.masters.remove(master)) {
-			sqlite.dbHlpr.deleteMaster(master);
+			sqlite.dbHlpr.deleteMaster(master, true);
 			
-			// Delete children
-			for (MuninServer server : master.getChildren())
-				deleteServer(server, false);
+			this.servers.removeAll(master.getChildren());
 		}
 	}
 	public boolean addLabel(Label l) {
@@ -297,6 +254,14 @@ public class MuninFoo {
 			currentServer = null;
 		else
 			currentServer = servers.get(0);
+	}
+	
+	/**
+	 * Sets the current server if needed
+	 */
+	public void setCurrentServer() {
+		if (this.currentServer == null && this.servers.size() > 0)
+			this.currentServer = this.servers.get(0);
 	}
 	
 	public int getHowManyServers() {
@@ -417,11 +382,7 @@ public class MuninFoo {
 	}
 	
 	public boolean containsLabel(String lname) {
-		for (Label l : labels) {
-			if (l.getName().equals(lname))
-				return true;
-		}
-		return false;
+		return getLabel(lname) != null;
 	}
 	
 	public Label getLabel(String lname) {
@@ -430,354 +391,6 @@ public class MuninFoo {
 				return l;
 		}
 		return null;
-	}
-	
-	/**
-	 * Old way to get the servers from a master one
-	 * @deprecated use {@link fetchServersListRecursive(MuninServer s)} instead.
-	 */
-	@Deprecated
-	public int fetchServersList(MuninServer server) {
-		int nbServers = 0;
-		//List<MuninServer> mp = new ArrayList<MuninServer>();
-		
-		// Graph html content
-		String html = "";
-		try {
-			html = grabUrl(server).html;
-		} catch (Exception e) { }
-		
-		if (!html.equals("") && !html.equals("error")) {
-			MuninServer currentServ;
-			Document doc = Jsoup.parse(html, server.getServerUrl());
-			
-			Elements hosts = doc.select("span.host");
-			
-			nbServers = 0;
-			
-			for (Element host : hosts) {
-				currentServ = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
-				if (server.isAuthNeeded()) {
-					currentServ.setAuthIds(server.getAuthLogin(), server.getAuthPassword(), server.getAuthType());
-					currentServ.setAuthType(server.getAuthType());
-					currentServ.setAuthString(server.getAuthString());
-				}
-				currentServ.setSSL(server.getSSL());
-				
-				//mp.add(currentServ);
-				addServer(currentServ);
-				nbServers++;
-			}
-		}
-		return nbServers;
-	}
-	
-	public int fetchServersListRecursive(MuninServer s) {
-		int nbServers = 0;
-		
-		// Grab HTML content
-		String html = grabUrl(s).html;
-		
-		if (!html.equals("") && !html.equals("error")) {
-			Document doc = Jsoup.parse(html, s.getServerUrl());
-			
-			// Check if Munin or MunStrap
-			if (html.contains("MunStrap")) { // Munstrap
-				Elements domains = doc.select("ul.groupview > li > a");
-				
-				for (Element domain : domains) {
-					MuninMaster m = new MuninMaster();
-					// Get the domain name
-					m.setName(domain.text());
-					m.setUrl(domain.attr("abs:href"));
-					// Generate a pretty name if needed
-					m.generateName();
-					this.masters.add(m);
-					
-					int pos = 0;
-					// Get every host for that domain
-					Elements hosts = domain.parent().select("ul>li");
-					for (Element host : hosts) {
-						MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
-						if (s.isAuthNeeded()) {
-							serv.setAuthIds(s.getAuthLogin(), s.getAuthPassword(), s.getAuthType());
-							serv.setAuthType(s.getAuthType());
-							serv.setAuthString(s.getAuthString());
-						}
-						serv.setSSL(s.getSSL());
-						serv.setParent(m);
-						serv.setPosition(pos);
-						pos++;
-						this.addServer(serv);
-						nbServers++;
-					}
-				}
-			} else { // Munin
-				Elements domains = doc.select("span.domain");
-				
-				// I like you, Steve Schnepp, but fuck you for that fucked up HTML.
-				for (Element domain : domains) {
-					MuninMaster m = new MuninMaster();
-					// Get the domain name
-					Element a = domain.child(0);
-					m.setName(a.text());
-					m.setUrl(a.attr("abs:href"));
-					// Generate a pretty name if needed
-					m.generateName();
-					this.masters.add(m);
-					
-					int pos = 0;
-					// Get every host for that domain
-					Elements hosts = domain.parent().select("span.host");
-					for (Element host : hosts) {
-						MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
-						if (s.isAuthNeeded()) {
-							serv.setAuthIds(s.getAuthLogin(), s.getAuthPassword(), s.getAuthType());
-							serv.setAuthType(s.getAuthType());
-							serv.setAuthString(s.getAuthString());
-						}
-						serv.setSSL(s.getSSL());
-						serv.setParent(m);
-						serv.setPosition(pos);
-						pos++;
-						this.addServer(serv);
-						nbServers++;
-					}
-				}
-			}
-		}
-		
-		return nbServers;
-	}
-	
-	public HTTPResponse grabUrl(String url) {
-		return grabUrl(new MuninServer("", url));
-	}
-	public HTTPResponse grabUrl(MuninServer s) {
-		HTTPResponse resp = new HTTPResponse("", -1);
-		try {
-			// Création du HTTP Client
-			HttpClient client = null;
-			if (s.getSSL()) {
-				try {
-					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-					trustStore.load(null, null);
-					
-					CustomSSLFactory sf = new CustomSSLFactory(trustStore);
-					sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-					
-					HttpParams params = new BasicHttpParams();
-					HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-					HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-					
-					SchemeRegistry registry = new SchemeRegistry();
-					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-					registry.register(new Scheme("https", sf, 443));
-					
-					ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-					
-					client = new DefaultHttpClient(ccm, params);
-				} catch (Exception e) {
-					client = new DefaultHttpClient();
-					s.setSSL(false);
-				}
-			} else
-				client = new DefaultHttpClient();
-			HttpGet request = new HttpGet(s.getServerUrl());
-			
-			if (s.isAuthNeeded()) {
-				if (s.getAuthType() == AuthType.BASIC)
-					request.setHeader("Authorization", "Basic " + Base64.encodeToString((s.getAuthLogin() + ":" + s.getAuthPassword()).getBytes(), Base64.NO_WRAP));
-				else if (s.getAuthType() == AuthType.DIGEST) {
-					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-					String userName = s.getAuthLogin();
-					String password = s.getAuthPassword();
-					String realmName = "";
-					String nonce = "";
-					String algorithm = "MD5";
-					String opaque = "";
-					String qop = "auth";
-					String nc = "00000001";
-					String cnonce = "";
-					String uri = s.getServerUrl();
-					String methodName = "GET";
-					
-					cnonce = DigestUtils.newCnonce();
-					
-					// Parser le header
-					realmName = DigestUtils.match(s.getAuthString(), "realm");
-					nonce = DigestUtils.match(s.getAuthString(), "nonce");
-					opaque = DigestUtils.match(s.getAuthString(), "opaque");
-					qop = DigestUtils.match(s.getAuthString(), "qop");
-					
-					String a1 = DigestUtils.md5Hex(userName + ":" + realmName + ":" + password);
-					String a2 = DigestUtils.md5Hex(methodName + ":" + uri);
-					String responseSeed = a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + a2;
-					String response = DigestUtils.md5Hex(responseSeed);
-					
-					String header = "Digest ";
-					header += DigestUtils.formatField("username", userName, false);
-					header += DigestUtils.formatField("realm", realmName, false);
-					header += DigestUtils.formatField("nonce", nonce, false);
-					if (!opaque.equals(""))
-						header += DigestUtils.formatField("opaque", opaque, false);
-					header += DigestUtils.formatField("uri", uri, false);
-					header += DigestUtils.formatField("response", response, false);
-					header += DigestUtils.formatField("cnonce", cnonce, false);
-					header += DigestUtils.formatField("nc", nc, false);
-					if (!qop.equals(""))
-						header += DigestUtils.formatField("qop", qop, false);
-					header += DigestUtils.formatField("charset", "utf-8", false);
-					header += DigestUtils.formatField("algorithm", algorithm, true);
-					
-					request.setHeader("Authorization", header);
-				}
-			}
-			
-			// Digest foo:digestedPass, realm="munin", nonce="+RdhgM7qBAA=86e58ecf5cbd672ba8246c4f9eed4a389fe87fd6", algorithm=MD5, qop="auth"
-			
-			HttpParams httpParameters = new BasicHttpParams();
-			// Set the timeout in milliseconds until a connection is established.
-			HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-			// Set the default socket timeout (SO_TIMEOUT) in milliseconds which is the timeout for waiting for data.
-			HttpConnectionParams.setSoTimeout(httpParameters, 7000);
-			((DefaultHttpClient) client).setParams(httpParameters);
-			
-			HttpResponse response = client.execute(request);
-			InputStream in = response.getEntity().getContent();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			StringBuilder str = new StringBuilder();
-			String line = null;
-			while((line = reader.readLine()) != null) {
-				str.append(line);
-			}
-			in.close();
-			
-			resp.html = str.toString();
-			resp.responseReason = response.getStatusLine().getReasonPhrase();
-			resp.responseCode = response.getStatusLine().getStatusCode();
-			if (response.getHeaders("WWW-Authenticate").length > 0) {
-				resp.header_wwwauthenticate = response.getHeaders("WWW-Authenticate")[0].getValue();
-			}
-		}
-		catch (SocketTimeoutException e) { resp.timeout = true; }
-		catch (Exception e) { resp.html = ""; }
-		return resp;
-	}
-	
-	public static Bitmap grabBitmap(MuninServer server, String url) {
-		return grabBitmap(server, url, false);
-	}
-	
-	public static Bitmap grabBitmap(MuninServer server, String url, boolean retried) {
-		Bitmap b = null;
-		
-		try {
-			HttpClient client = null;
-			if (server.getSSL()) {
-				try {
-					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-					trustStore.load(null, null);
-					
-					CustomSSLFactory sf = new CustomSSLFactory(trustStore);
-					sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-					
-					HttpParams params = new BasicHttpParams();
-					HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-					HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-					
-					SchemeRegistry registry = new SchemeRegistry();
-					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-					registry.register(new Scheme("https", sf, 443));
-					
-					ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-					
-					client = new DefaultHttpClient(ccm, params);
-				} catch (Exception e) {
-					client = new DefaultHttpClient();
-					server.setSSL(false);
-				}
-			} else
-				client = new DefaultHttpClient();
-			HttpGet request = new HttpGet(url);
-			
-			if (server.isAuthNeeded()) {
-				if (server.getAuthType() == AuthType.BASIC)
-					request.setHeader("Authorization", "Basic " + Base64.encodeToString((server.getAuthLogin() + ":" + server.getAuthPassword()).getBytes(), Base64.NO_WRAP));
-				else if (server.getAuthType() == AuthType.DIGEST) {
-					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-					String userName = server.getAuthLogin();
-					String password = server.getAuthPassword();
-					String realmName = "";
-					String nonce = "";
-					String algorithm = "MD5";
-					String opaque = "";
-					String qop = "auth";
-					String nc = "00000001";
-					String cnonce = "";
-					String uri = url;
-					String methodName = "GET";
-					
-					cnonce = DigestUtils.newCnonce();
-					// Parser le header
-					realmName = DigestUtils.match(server.getAuthString(), "realm");
-					nonce = DigestUtils.match(server.getAuthString(), "nonce");
-					opaque = DigestUtils.match(server.getAuthString(), "opaque");
-					qop = DigestUtils.match(server.getAuthString(), "qop");
-					
-					String a1 = DigestUtils.md5Hex(userName + ":" + realmName + ":" + password);
-					String a2 = DigestUtils.md5Hex(methodName + ":" + uri);
-					String responseSeed = a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + a2;
-					String response = DigestUtils.md5Hex(responseSeed);
-					
-					String header = "Digest ";
-					header += DigestUtils.formatField("username", userName, false);
-					header += DigestUtils.formatField("realm", realmName, false);
-					header += DigestUtils.formatField("nonce", nonce, false);
-					if (!opaque.equals(""))
-						header += DigestUtils.formatField("opaque", opaque, false);
-					header += DigestUtils.formatField("uri", uri, false);
-					header += DigestUtils.formatField("response", response, false);
-					header += DigestUtils.formatField("cnonce", cnonce, false);
-					header += DigestUtils.formatField("nc", nc, false);
-					if (!qop.equals(""))
-						header += DigestUtils.formatField("qop", qop, false);
-					header += DigestUtils.formatField("charset", "utf-8", false);
-					header += DigestUtils.formatField("algorithm", algorithm, true);
-					
-					request.setHeader("Authorization", header);
-				}
-			}
-			
-			HttpParams httpParameters = new BasicHttpParams();
-			// Set the timeout in milliseconds until a connection is established.
-			HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-			// Set the default socket timeout (SO_TIMEOUT) in milliseconds which is the timeout for waiting for data.
-			HttpConnectionParams.setSoTimeout(httpParameters, 7000);
-			((DefaultHttpClient) client).setParams(httpParameters);
-			
-			HttpResponse response = client.execute(request);
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == HttpURLConnection.HTTP_OK) {
-				HttpEntity entity = response.getEntity();
-				byte[] bytes = EntityUtils.toByteArray(entity);
-				b = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-			} else {
-				if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried && response.getHeaders("WWW-Authenticate").length > 0) {
-					server.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
-					return grabBitmap(server, url, true);
-				} else
-					throw new IOException("Download failed for URL " + url + " HTTP response code "
-							+ statusCode + " - " + statusLine.getReasonPhrase());
-			}
-		}
-		catch (SocketTimeoutException e) { e.printStackTrace(); return null; }
-		catch (ConnectTimeoutException e) { e.printStackTrace(); return null; }
-		catch (OutOfMemoryError e) { e.printStackTrace(); return null; }
-		catch (Exception e) { e.printStackTrace(); return null; }
-		
-		return b;
 	}
 	
 	public boolean contains (MuninServer server) {

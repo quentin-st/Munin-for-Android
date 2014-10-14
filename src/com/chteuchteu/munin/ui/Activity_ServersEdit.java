@@ -107,7 +107,7 @@ public class Activity_ServersEdit extends ListActivity {
 		for (int i=0; i<serversList.size(); i++)
 			muninFoo.getServer(serversList.get(i).getServerUrl()).setPosition(i);
 		
-		muninFoo.sqlite.saveServers();
+		// TODO muninFoo.sqlite.saveServers();
 		muninFoo.resetInstance(this);
 	}
 	

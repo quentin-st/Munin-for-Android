@@ -1,46 +1,17 @@
 package com.chteuchteu.munin.obj;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.SocketTimeoutException;
-import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLPeerUnverifiedException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.graphics.Bitmap;
-import android.util.Base64;
 import android.util.Log;
 
-import com.chteuchteu.munin.CustomSSLFactory;
 import com.chteuchteu.munin.MuninFoo;
-import com.chteuchteu.munin.hlpr.DigestUtils;
-import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 
@@ -49,60 +20,28 @@ public class MuninServer {
 	private String name;
 	private String serverUrl;
 	private List<MuninPlugin> plugins;
-	private String authLogin;
-	private String authPassword;
 	private String graphURL;
-	private Boolean ssl;
 	private int position;
-	private AuthType authType;
-	private String authString;
 	public MuninMaster master;
 	public boolean isPersistant = false;
-	private HDGraphs hdGraphs;
 	
-	private List<MuninPlugin> 	erroredPlugins;
-	private List<MuninPlugin> 	warnedPlugins;
+	private List<MuninPlugin> erroredPlugins;
+	private List<MuninPlugin> warnedPlugins;
 	
 	public MuninServer() {
 		this.name = "";
 		this.serverUrl = "";
 		this.plugins = new ArrayList<MuninPlugin>();
-		this.authLogin = "";
-		this.authPassword = "";
 		this.graphURL = "";
-		this.ssl = false;
-		this.authType = AuthType.UNKNOWN;
 		this.position = -1;
-		this.authString = "";
-		this.hdGraphs = HDGraphs.AUTO_DETECT;
 	}
 	public MuninServer (String name, String serverUrl) {
 		this.name = name;
 		this.serverUrl = serverUrl;
 		this.plugins = new ArrayList<MuninPlugin>();
-		this.authLogin = "";
-		this.authPassword = "";
 		this.graphURL = "";
-		this.ssl = false;
-		this.authType = AuthType.UNKNOWN;
 		this.position = -1;
-		this.authString = "";
-		this.hdGraphs = HDGraphs.AUTO_DETECT;
 		generatePosition();
-	}
-	public MuninServer (String name, String serverUrl, String authLogin, String authPassword, String graphUrl,
-			boolean SSL, int position, AuthType authType, String authString, HDGraphs hdGraphs) {
-		this.name = name;
-		this.serverUrl = serverUrl;
-		this.plugins = new ArrayList<MuninPlugin>();
-		this.authLogin = authLogin;
-		this.authPassword = authPassword;
-		this.graphURL = graphUrl;
-		this.ssl = SSL;
-		this.position = position;
-		this.authType = authType;
-		this.authString = authString;
-		this.hdGraphs = hdGraphs;
 	}
 	
 	public enum AuthType {
@@ -117,24 +56,6 @@ public class MuninServer {
 				if (t.val == val)
 					return t;
 			return UNKNOWN;
-		}
-	}
-	
-	public enum HDGraphs {
-		AUTO_DETECT(""), FALSE("false"), TRUE("true");
-		private String val = "";
-		HDGraphs(String val) { this.val = val; }
-		public String getVal() { return this.val; }
-		public String toString() { return this.val; }
-		public static HDGraphs get(String val) {
-			for (HDGraphs g : HDGraphs.values())
-				if (g.val.equals(val))
-					return g;
-			return AUTO_DETECT;
-		}
-		public static HDGraphs get(boolean val) {
-			if (val)	return TRUE;
-			else		return FALSE;
 		}
 	}
 	
@@ -153,35 +74,6 @@ public class MuninServer {
 	public void setPluginsList(List<MuninPlugin> pL) { this.plugins = pL; }
 	public List<MuninPlugin> getPlugins() { return this.plugins; }
 	
-	public void setAuthType(AuthType t) { this.authType = t; }
-	public AuthType getAuthType() { return this.authType; }
-	public boolean isAuthNeeded() {
-		return this.authType == AuthType.BASIC || this.authType == AuthType.DIGEST;
-	}
-	public void setAuthIds(String login, String password) {
-		this.authLogin = login;
-		this.authPassword = password;
-		
-		if (login.equals("") && password.equals(""))
-			this.authType = AuthType.NONE;
-	}
-	public void setAuthIds(String login, String password, AuthType authType) {
-		setAuthIds(login, password);
-		
-		if (login.equals("") || password.equals(""))
-			this.authType = AuthType.NONE;
-		else
-			this.authType = authType;
-	}
-	public String getAuthLogin() { return this.authLogin; }
-	public String getAuthPassword() { return this.authPassword; }
-	
-	public void setAuthString(String s) { this.authString = s; }
-	public String getAuthString() { return this.authString; }
-	
-	public void setSSL(boolean value) { this.ssl = value; }
-	public boolean getSSL() { return this.ssl; }
-	
 	public void setPosition(int position) { this.position = position; }
 	public int getPosition() { return this.position; }
 	
@@ -192,51 +84,42 @@ public class MuninServer {
 	
 	public void setParent(MuninMaster p) {
 		this.master = p;
-		if (p != null)
+		if (p != null && !p.getChildren().contains(p))
 			p.addChild(this);
 	}
 	public MuninMaster getParent() { return this.master; }
 	
-	public void setHDGraphs(HDGraphs val) { this.hdGraphs = val; }
-	public HDGraphs getHDGraphs() { return this.hdGraphs; }
 	
-	
-	public boolean fetchPluginsList() {
+	public List<MuninPlugin> getPluginsList() {
 		List<MuninPlugin> mp = new ArrayList<MuninPlugin>();
-		String html = grabUrl(this.getServerUrl()).html;
+		String html = this.master.grabUrl(this.getServerUrl()).html;
 		
-		if (html == "" || html == "error") {
-			this.plugins = new ArrayList<MuninPlugin>();
-			return false;
-		}
+		Log.v("", "Getting html " + html);
 		
-		MuninPlugin currentPl;
+		if (html.equals(""))
+			return null;
 		
 		//						   code  base_uri
 		Document doc = Jsoup.parse(html, this.getServerUrl());
 		Elements images = doc.select("img[src$=-day.png]");
 		
-		currentPl = new MuninPlugin(null, this);
-		String fancyName;
-		String nomPlugin;
-		String pluginPageUrl;
-		
-		
 		for (Element image : images) {
-			nomPlugin = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
-			// Suppression des caractères spéciaux
-			nomPlugin = nomPlugin.replace("&", "");
-			nomPlugin = nomPlugin.replace("^", "");
-			nomPlugin = nomPlugin.replace("\"", "");
-			nomPlugin = nomPlugin.replace(",", "");
-			nomPlugin = nomPlugin.replace(";", "");
-			fancyName = image.attr("alt");
+			String pluginName = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
+			// Delete special chars
+			pluginName = pluginName.replace("&", "");
+			pluginName = pluginName.replace("^", "");
+			pluginName = pluginName.replace("\"", "");
+			pluginName = pluginName.replace(",", "");
+			pluginName = pluginName.replace(";", "");
+			String fancyName = image.attr("alt");
+			// Delete quotes
+			fancyName = fancyName.replaceAll("\"", "");
 			
-			// Récupération de la page du graph
+			// Get graphUrl
 			Element link = image.parent();
-			pluginPageUrl = link.attr("abs:href");
+			String pluginPageUrl = link.attr("abs:href");
 			
-			// Récupération du nom du groupe
+			// Get groupName
 			String group = "";
 			if (html.contains("MunStrap")) {
 				Element tab = image.parent().parent().parent().parent();
@@ -261,33 +144,37 @@ public class MuninServer {
 						Element h3 = image.parent().parent().parent().parent().child(0).child(0).child(0);
 						group = h3.html();
 					}
-					catch (Exception e) { }
+					catch (Exception e) { e.printStackTrace(); }
 				}
 			}
 			
-			if (nomPlugin != null && !nomPlugin.equals("")) {
-				currentPl = new MuninPlugin(nomPlugin, this);
-				// Deleting quotes
-				fancyName = fancyName.replaceAll("\"", "");
-				currentPl.setFancyName(fancyName);
-				currentPl.setCategory(group);
-				currentPl.setPluginPageUrl(pluginPageUrl);
-				
-				mp.add(currentPl);
-				
-				if (this.graphURL == null || this.graphURL.equals(""))
-					this.graphURL = image.attr("abs:src").substring(0, image.attr("abs:src").lastIndexOf('/') + 1);
-			}
+			MuninPlugin currentPl = new MuninPlugin(pluginName, this);
+			currentPl.setFancyName(fancyName);
+			currentPl.setCategory(group);
+			currentPl.setPluginPageUrl(pluginPageUrl);
+			
+			mp.add(currentPl);
+			
+			if (this.graphURL.equals(""))
+				this.graphURL = image.attr("abs:src").substring(0, image.attr("abs:src").lastIndexOf('/') + 1);
 		}
+		return mp;
+	}
+	
+	public boolean fetchPluginsList() {
+		List<MuninPlugin> plugins = getPluginsList();
 		
-		this.plugins = mp;
-		return true;
+		if (plugins != null) {
+			this.plugins = plugins;
+			return true;
+		}
+		return false;
 	}
 	public void fetchPluginsStates() {
 		erroredPlugins = new ArrayList<MuninPlugin>();
 		warnedPlugins = new ArrayList<MuninPlugin>();
 		
-		String html = grabUrl(this.getServerUrl()).html;
+		String html = master.grabUrl(this.getServerUrl()).html;
 		
 		if (!html.equals("")) {
 			Document doc = Jsoup.parse(html, this.getServerUrl());
@@ -318,7 +205,7 @@ public class MuninServer {
 			}
 		}
 		
-		// Passage du reste à MuninPlugin.ALERTS_STATE_UNDEFINED
+		// Set others to MuninPlugin.ALERTS_STATE_UNDEFINED
 		for (int i=0; i<this.plugins.size(); i++) {
 			if (this.getPlugin(i) != null && (this.getPlugin(i).getState() == null || (this.getPlugin(i).getState() != null && this.getPlugin(i).getState().equals(""))))
 				this.getPlugin(i).setState(AlertState.UNDEFINED);
@@ -329,60 +216,11 @@ public class MuninServer {
 		this.name = source.name;
 		this.serverUrl = source.serverUrl;
 		this.plugins = source.plugins;
-		this.authLogin = source.authLogin;
-		this.authPassword = source.authPassword;
-		this.authType = source.authType;
-		this.authString = source.authString;
 		this.graphURL = source.graphURL;
-		this.ssl = source.ssl;
 		this.position = source.position;
 		this.erroredPlugins = source.erroredPlugins;
 		this.warnedPlugins = source.warnedPlugins;
 		this.master = source.master;
-		this.hdGraphs = source.hdGraphs;
-	}
-	
-	/**
-	 * Get the type of the given page:
-	 * 	- munin/		: list of servers
-	 * 	- munin/x/		: list of plugins
-	 * 	- err_code		: if error -> error code
-	 * @return
-	 */
-	public String detectPageType() {
-		HTTPResponse res = grabUrl(this.serverUrl);
-		String page = res.html;
-		if (!res.header_wwwauthenticate.equals("")) {
-			// Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-			this.authString = res.header_wwwauthenticate;
-			if (res.header_wwwauthenticate.contains("Digest"))
-				this.authType = AuthType.DIGEST;
-			else if (res.header_wwwauthenticate.contains("Basic"))
-				this.authType = AuthType.BASIC;
-		}
-		
-		if (res.timeout)
-			return "timeout";
-		else if (res.responseCode == 200) {
-			Document doc = Jsoup.parse(page, this.getServerUrl());
-			Elements images = doc.select("img[src$=-day.png]");
-			
-			if (images.size() > 0)
-				return "munin/x/";
-			else {
-				// Munin normal
-				Elements muninHosts = doc.select("span.host");
-				
-				// MunStrap
-				Elements munstrapHosts = doc.select("ul.groupview");
-				
-				if (muninHosts.size() > 0 || munstrapHosts.size() > 0)
-					return "munin/";
-				else
-					return res.responseCode + " - " + res.responseReason;
-			}
-		} else
-			return res.responseCode + " - " + res.responseReason;
 	}
 	
 	/**
@@ -396,7 +234,7 @@ public class MuninServer {
 			return false;
 		
 		String hdGraphUrl = plugin.getHDImgUrl(Period.DAY);
-		HTTPResponse res = grabUrl(hdGraphUrl);
+		HTTPResponse res = master.grabUrl(hdGraphUrl);
 		
 		boolean seemsAvailable = res.timeout == false && res.responseCode == 200;
 		
@@ -405,181 +243,23 @@ public class MuninServer {
 		
 		// At this point, the dynazoom seems available. Let's try to download a bitmap to
 		// see if we get a bitmap (instead of a custom 404 error)
-		Bitmap bitmap = MuninFoo.grabBitmap(this, hdGraphUrl);
+		Bitmap bitmap = getParent().grabBitmap(hdGraphUrl);
 		return bitmap != null;
 	}
-	
-	public void createTitle () {
-		// http://demo.munin-monitoring.org/munin-monitoring.org/demo.munin-monitoring.org
-		//														 -------------------------
-		// http://demo.munin-monitoring.org/munin-monitoring.org/demo.munin-monitoring.org/index.html
-		//														 -------------------------
-		// http://88.180.108.193/munin/localdomain/localhost.localdomain/index.html
-		//		  --------------
-		// http://88.180.108.193/munin/localdomain/localhost.localdomain/
-		//		  --------------
-		
-		String[] s = this.serverUrl.split("/");
-		
-		// Accès à des tableaux, try{} catch(){} au cas où
-		try {
-			if (s[s.length-1].contains(".htm") || s[s.length-1].equals("")) {
-				if (s.length >= 3 && s[s.length-2].equals("localhost.localdomain") && s[s.length-3].equals("localdomain")) {
-					if (s.length >= 5 && s[s.length-4].equals("munin"))
-						this.name = s[s.length-5];
-					else
-						this.name = s[s.length-4];
-				} else
-					this.name = s[s.length-2];
-			} else {
-				if (s.length >= 2 && s[s.length-1].equals("localhost.localdomain") && s[s.length-2].equals("localdomain")) {
-					if (s.length >= 4 && s[s.length-3].equals("munin"))
-						this.name = s[s.length-4];
-					else
-						this.name = s[s.length-3];
-				} else
-					this.name = s[s.length-1];
-			}
-		} catch (Exception ex) { }
-		if (this.name == null || this.name.equals(""))
-			this.name = s[s.length-2];
-	}
-	
-	public HTTPResponse grabUrl(String url) {
-		HTTPResponse resp = new HTTPResponse("", -1);
-		try {
-			HttpClient client = null;
-			if (this.ssl) {
-				try {
-					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-					trustStore.load(null, null);
-					
-					CustomSSLFactory sf = new CustomSSLFactory(trustStore);
-					sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-					
-					HttpParams params = new BasicHttpParams();
-					HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-					HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-					HttpConnectionParams.setConnectionTimeout(params, 5000);
-					HttpConnectionParams.setSoTimeout(params, 7000);
-					
-					SchemeRegistry registry = new SchemeRegistry();
-					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-					registry.register(new Scheme("https", sf, 443));
-					
-					ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-					
-					client = new DefaultHttpClient(ccm, params);
-				} catch (Exception e) {
-					client = new DefaultHttpClient();
-					this.ssl = false;
-				}
-			} else
-				client = new DefaultHttpClient();
-			HttpGet request = new HttpGet(url);
-			
-			if (this.isAuthNeeded()) {
-				if (this.getAuthType() == AuthType.BASIC)
-					request.setHeader("Authorization", "Basic " + Base64.encodeToString((authLogin + ":" + authPassword).getBytes(), Base64.NO_WRAP));
-				else if (this.getAuthType() == AuthType.DIGEST) {
-					// Digest foo:digestedPass, realm="munin", nonce="+RdhgM7qBAA=86e58ecf5cbd672ba8246c4f9eed4a389fe87fd6", algorithm=MD5, qop="auth"
-					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-					String userName = this.authLogin;
-					String password = this.authPassword;
-					String realmName = "";
-					String nonce = "";
-					String algorithm = "MD5";
-					String opaque = "";
-					String qop = "auth";
-					String nc = "00000001";
-					String cnonce = "";
-					String uri = url;
-					String methodName = "GET";
-					
-					cnonce = DigestUtils.newCnonce();
-					
-					// Parse header
-					realmName = DigestUtils.match(this.authString, "realm");
-					nonce = DigestUtils.match(this.authString, "nonce");
-					opaque = DigestUtils.match(this.authString, "opaque");
-					qop = DigestUtils.match(this.authString, "qop");
-					
-					String a1 = DigestUtils.md5Hex(userName + ":" + realmName + ":" + password);
-					String a2 = DigestUtils.md5Hex(methodName + ":" + uri);
-					String responseSeed = a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + a2;
-					String response = DigestUtils.md5Hex(responseSeed);
-					
-					String header = "Digest ";
-					header += DigestUtils.formatField("username", userName, false);
-					header += DigestUtils.formatField("realm", realmName, false);
-					header += DigestUtils.formatField("nonce", nonce, false);
-					if (!opaque.equals(""))
-						header += DigestUtils.formatField("opaque", opaque, false);
-					header += DigestUtils.formatField("uri", uri, false);
-					header += DigestUtils.formatField("response", response, false);
-					header += DigestUtils.formatField("cnonce", cnonce, false);
-					header += DigestUtils.formatField("nc", nc, false);
-					if (!qop.equals(""))
-						header += DigestUtils.formatField("qop", qop, false);
-					header += DigestUtils.formatField("charset", "utf-8", false);
-					header += DigestUtils.formatField("algorithm", algorithm, true);
-					
-					request.setHeader("Authorization", header);
-				}
-			}
-			
-			HttpParams httpParameters = new BasicHttpParams();
-			// Set the timeout in milliseconds until a connection is established.
-			HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-			// Set the default socket timeout (SO_TIMEOUT) in milliseconds which is the timeout for waiting for data.
-			HttpConnectionParams.setSoTimeout(httpParameters, 7000);
-			((DefaultHttpClient) client).setParams(httpParameters);
-			
-			HttpResponse response = client.execute(request);
-			InputStream in = response.getEntity().getContent();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			StringBuilder str = new StringBuilder();
-			String line = null;
-			while((line = reader.readLine()) != null) {
-				str.append(line);
-			}
-			in.close();
-			
-			resp.html = str.toString();
-			if (MuninFoo.DEBUG)
-				Log.v("", "Downloaded content : " + resp.html);
-			resp.responseReason = response.getStatusLine().getReasonPhrase();
-			resp.responseCode = response.getStatusLine().getStatusCode();
-			if (response.getHeaders("WWW-Authenticate").length > 0)
-				resp.header_wwwauthenticate = response.getHeaders("WWW-Authenticate")[0].getValue();
-		}
-		catch (SocketTimeoutException e) { e.printStackTrace(); resp.timeout = true; }
-		catch (ConnectTimeoutException e) { e.printStackTrace(); resp.timeout = true; }
-		catch (SSLPeerUnverifiedException e) {
-			this.ssl = true;
-			if (this.serverUrl.equals(url))
-				this.serverUrl = Util.URLManipulation.setHttps(url);
-			url = Util.URLManipulation.setHttps(url);
-			return grabUrl(url);
-		}
-		catch (SSLException e) {
-			this.ssl = true;
-			if (this.serverUrl.equals(url))
-				this.serverUrl = Util.URLManipulation.setHttps(url);
-			url = Util.URLManipulation.setHttps(url);
-			return grabUrl(url);
-		}
-		catch (Exception e) { e.printStackTrace(); resp.html = ""; }
-		return resp;
-	}
-	
-	
 	
 	public MuninPlugin getPlugin(int pos) {
 		if (pos < this.plugins.size() && pos >= 0)
 			return this.plugins.get(pos);
 		else
 			return null;
+	}
+	
+	public MuninPlugin getPlugin(String pluginName) {
+		for (MuninPlugin plugin : this.plugins) {
+			if (plugin.getName().equals(pluginName))
+				return plugin;
+		}
+		return null;
 	}
 	
 	public int getPosition(MuninPlugin p) {

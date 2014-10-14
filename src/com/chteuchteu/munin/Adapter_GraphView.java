@@ -12,7 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.obj.MuninServer.HDGraphs;
+import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 
 public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
@@ -85,7 +85,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		protected Void doInBackground(Void... arg0) {
 			if (Activity_GraphView.bitmaps[position] == null) {
 				String imgUrl = "";
-				if (muninFoo.currentServer.getHDGraphs() == HDGraphs.TRUE && !Util.getPref(context, "hdGraphs").equals("false")) {
+				if (muninFoo.currentServer.getParent().getHDGraphs() == HDGraphs.TRUE && !Util.getPref(context, "hdGraphs").equals("false")) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 					imgUrl = muninFoo.currentServer.getPlugin(position).getHDImgUrl(
 							Activity_GraphView.load_period, true, graphsDimensions[0], graphsDimensions[1]);
@@ -95,8 +95,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 				
 				Activity_GraphView.bitmaps[position] = 
 					Util.dropShadow(Util.removeBitmapBorder(
-							MuninFoo.grabBitmap(muninFoo.currentServer, imgUrl))
-				);
+							muninFoo.currentServer.getParent().grabBitmap(imgUrl)));
 			}
 			
 			return null;

@@ -113,12 +113,13 @@ public class Activity_Servers extends Activity {
 	 */
 	public void onChildClick(int groupPosition, int childPosition) {
 		//final String selected = (String) expListAdapter.getChild(groupPosition, childPosition);
-		MuninServer s = muninFoo.masters.get(groupPosition).getServerFromFlatPosition(childPosition);
+		// Activity_Server isn't used to edit server anymore
+		/*MuninServer s = muninFoo.masters.get(groupPosition).getServerFromFlatPosition(childPosition);
 		Intent intent = new Intent(Activity_Servers.this, Activity_Server.class);
 		intent.putExtra("contextServerUrl", s.getServerUrl());
 		intent.putExtra("action", "edit");
 		startActivity(intent);
-		Util.setTransition(context, TransitionStyle.DEEPER);
+		Util.setTransition(context, TransitionStyle.DEEPER);*/
 	}
 	
 	/**
@@ -206,7 +207,6 @@ public class Activity_Servers extends Activity {
 					case 0:
 						muninFoo.deleteMuninMaster(master);
 						context.startActivity(new Intent(context, Activity_Servers.class));
-						
 						break;
 					case 1:
 						Intent i = new Intent(context, Activity_ServersEdit.class);

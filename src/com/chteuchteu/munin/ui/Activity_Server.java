@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,10 +27,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -42,14 +40,19 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.GridItem;
+import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
-import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
+import com.chteuchteu.munin.obj.Widget;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
+/**
+ * Only used in order to add a server
+ */
 
 @SuppressLint("CommitPrefEdits")
 public class Activity_Server extends Activity {
@@ -59,37 +62,25 @@ public class Activity_Server extends Activity {
 	private Menu 		menu;
 	private String		activityName;
 	
-	private EditText 	tb_auth_login;
-	private EditText 	tb_auth_password;
-	private Spinner	sp_authType;
-	private CheckBox 	cb_auth;
 	private Spinner  	spinner;
-	private AutoCompleteTextView 	tb_serverUrl;
-	private LinearLayout ll_auth;
+	private AutoCompleteTextView tb_serverUrl;
 	
 	private ProgressBar progressBar;
-	private TextView 	popup_title1;
-	private TextView 	popup_title2;
-	private AlertDialog popup;
-	private boolean 	popupIsShown;
+	private TextView 	alert_title1;
+	private TextView 	alert_title2;
+	private AlertDialog alert;
+	private boolean 	alertIsShown;
 	
-	private boolean 	launching;
-	private String 	contextServerUrl;	// Si modification de serveur: URL du serveur a modifier
-	private MuninServer settingsServer;
-	
-	private Activity_Mode mode;
-	private enum Activity_Mode { ADD_SERVER, EDIT_SERVER }
+	private MuninMaster master;
 	
 	// AddServer stuff
 	private String 	serverUrl;
 	private boolean 	ssl;
 	private List<String> oldServers;
-	private List<String> newServers;
 	private String 	type;
 	private String 	message_title;
 	private String 	message_text;
 	private AddServerThread task;
-	private boolean	canCancel;
 	private int		algo_state = 0;
 	private int		AST_IDLE = 0;
 	private int		AST_RUNNING = 1;
@@ -102,42 +93,20 @@ public class Activity_Server extends Activity {
 		MuninFoo.loadLanguage(this);
 		context = this;
 		
-		setContentView(R.layout.addserver);
+		setContentView(R.layout.server);
 		
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		Intent thisIntent = getIntent();
-		contextServerUrl = "";
-		if (thisIntent != null && thisIntent.getExtras().containsKey("contextServerUrl"))
-			contextServerUrl = thisIntent.getExtras().getString("contextServerUrl");
-		
 		dh = new DrawerHelper(this, muninFoo);
-		if (contextServerUrl.equals("")) {
-			mode = Activity_Mode.ADD_SERVER;
-			actionBar.setTitle(getString(R.string.addServerTitle)); // Add a server
-			dh.setDrawerActivity(dh.Activity_Server_Add);
-			findViewById(R.id.addserver_auth).setVisibility(View.GONE);
-		}
-		else {
-			mode = Activity_Mode.EDIT_SERVER;
-			actionBar.setTitle(R.string.editServerTitle); // Edit a server
-			dh.setDrawerActivity(dh.Activity_Server_Edit);
-			findViewById(R.id.ll_sampleServer).setVisibility(View.GONE);
-		}
+		actionBar.setTitle(getString(R.string.addServerTitle)); // Add a server
+		dh.setDrawerActivity(dh.Activity_Server_Add);
 		
 		Util.UI.applySwag(this);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.muninMasterUrlLabel), CustomFont.RobotoCondensed_Regular);
 		
-		tb_auth_login = 	(EditText)findViewById(R.id.auth_login);
-		tb_auth_password = 	(EditText)findViewById(R.id.auth_password);
-		cb_auth = 			(CheckBox)findViewById(R.id.checkbox_http_auth);
 		spinner = 			(Spinner)findViewById(R.id.spinner);
 		tb_serverUrl = 		(AutoCompleteTextView)findViewById(R.id.textbox_serverUrl);
-		ll_auth =			(LinearLayout)findViewById(R.id.authIds);
-		sp_authType =		(Spinner)findViewById(R.id.spinner_auth_type);
-		
-		launching = true;
 		
 		// Servers history
 		ArrayAdapter<String> addServerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, getHistory());
@@ -157,93 +126,40 @@ public class Activity_Server extends Activity {
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
 		});
 		
-		if (mode == Activity_Mode.ADD_SERVER) {
-			// Sample server
-			List<String> list = new ArrayList<String>();
-			list.add("");
-			list.add("demo.munin-monitoring.org");
-			list.add("munin.ping.uio.no");
-			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
-			dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			spinner.setAdapter(dataAdapter);
-			
-			spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-				@Override
-				public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
-					if (!launching) {
-						cb_auth.setChecked(false);
-						tb_auth_login.setText("");
-						tb_auth_password.setText("");
-					} else
-						launching = false;
-					if (view != null) {
-						String selectedItem = ((TextView)view).getText().toString();
-						if (selectedItem.equals("demo.munin-monitoring.org"))
-							tb_serverUrl.setText("http://demo.munin-monitoring.org/");
-						else if (selectedItem.equals("munin.ping.uio.no"))
-							tb_serverUrl.setText("http://munin.ping.uio.no/");
-					}
-				}
-				@Override
-				public void onNothingSelected(AdapterView<?> parentView) { }
-			});
-		}
+		// Sample server
+		List<String> list = new ArrayList<String>();
+		list.add("");
+		list.add("demo.munin-monitoring.org");
+		list.add("munin.ping.uio.no");
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(dataAdapter);
 		
-		if (mode == Activity_Mode.EDIT_SERVER) {
-			cb_auth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					if (isChecked && ll_auth.getVisibility() == View.GONE)
-						ll_auth.setVisibility(View.VISIBLE);
-					else if (!isChecked && ll_auth.getVisibility() == View.VISIBLE)
-						ll_auth.setVisibility(View.GONE);
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View view, int position, long id) {
+				if (view != null) {
+					String selectedItem = ((TextView)view).getText().toString();
+					if (selectedItem.equals("demo.munin-monitoring.org"))
+						tb_serverUrl.setText("http://demo.munin-monitoring.org/");
+					else if (selectedItem.equals("munin.ping.uio.no"))
+						tb_serverUrl.setText("http://munin.ping.uio.no/");
 				}
-			});
-			
-			// Auth type
-			List<String> list2 = new ArrayList<String>();
-			list2.add("Basic");
-			list2.add("Digest");
-			ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
-			dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			sp_authType.setAdapter(dataAdapter2);
-			
-			// Fill server URL field
-			tb_serverUrl.setText(contextServerUrl);
-			
-			// settingsServer lookup
-			for (int i=0; i<muninFoo.getHowManyServers(); i++) {
-				if (muninFoo.getServer(i) != null && muninFoo.getServer(i).equalsApprox(contextServerUrl))
-					settingsServer = muninFoo.getServer(i);
 			}
-			
-			
-			if (settingsServer.isAuthNeeded()) {
-				cb_auth.setChecked(true);
-				
-				tb_auth_login.setText(settingsServer.getAuthLogin());
-				tb_auth_password.setText(settingsServer.getAuthPassword());
-				if (settingsServer.getAuthType() == AuthType.BASIC)
-					sp_authType.setSelection(0);
-				else if (settingsServer.getAuthType() == AuthType.DIGEST)
-					sp_authType.setSelection(1);
-			} else
-				ll_auth.setVisibility(View.GONE);
-		}
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) { }
+		});
 	}
 	
 	@Override
 	public void onBackPressed() {
-		if (!popupIsShown) {
+		// Hitting "back" within the AlertDialog will call its own onBackPressed
+		// (which can't be overriden BTW).
+		if (!alertIsShown) {
 			Intent intent = new Intent(this, Activity_Servers.class);
-			if (settingsServer != null && settingsServer.getParent() != null)
-				intent.putExtra("fromMaster", settingsServer.getParent().getId());
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			Util.setTransition(context, TransitionStyle.SHALLOWER);
-		} else {
-			if (popupIsShown && canCancel)
-				cancelSave();
 		}
 	}
 	
@@ -255,42 +171,6 @@ public class Activity_Server extends Activity {
 			algo_state = AST_RUNNING;
 			task = new AddServerThread();
 			task.execute();
-		}
-	}
-	
-	public void actionDelete() {
-		if (!contextServerUrl.equals("")) {
-			new AlertDialog.Builder(context)
-			.setTitle(R.string.delete)
-			.setMessage(R.string.text83)
-			.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// When going back : expand the list to the current master if possible
-					MuninMaster m = null;
-					if (muninFoo.currentServer.getParent() != null && muninFoo.currentServer.getParent().getChildren().size() > 1)
-						m = muninFoo.currentServer.getParent();
-					
-					MuninServer curServer = muninFoo.getServer(contextServerUrl);
-					muninFoo.sqlite.dbHlpr.deleteServer(curServer);
-					muninFoo.deleteServer(curServer, true);
-					
-					if (muninFoo.currentServer != null && muninFoo.currentServer.getServerUrl().equals(contextServerUrl)) {
-						if (muninFoo.getHowManyServers() == 0)
-							muninFoo.currentServer = null;
-						else
-							muninFoo.currentServer = muninFoo.getServer(0);
-					}
-					
-					Intent intent = new Intent(context, Activity_Servers.class);
-					if (m != null)
-						intent.putExtra("fromMaster", m.getId());
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-				}
-			})
-			.setNegativeButton(R.string.text34, null)
-			.show();
 		}
 	}
 	
@@ -324,9 +204,6 @@ public class Activity_Server extends Activity {
 		menu.clear();
 		getMenuInflater().inflate(R.menu.server, menu);
 		
-		// Hide delete button if necessary
-		if (mode == Activity_Mode.ADD_SERVER)
-			menu.findItem(R.id.menu_delete).setVisible(false);
 		if (Util.getPref(context, "addserver_history").equals(""))
 			menu.findItem(R.id.menu_clear_history).setVisible(false);
 	}
@@ -340,7 +217,6 @@ public class Activity_Server extends Activity {
 				dh.getDrawer().toggle(true);
 				return true;
 			case R.id.menu_save:	actionSave();		return true;
-			case R.id.menu_delete:	actionDelete(); 	return true;
 			case R.id.menu_clear_history:
 				Util.setPref(context, "addserver_history", "");
 				createOptionsMenu();
@@ -359,16 +235,17 @@ public class Activity_Server extends Activity {
 	}
 	
 	public void cancelSave() {
-		if (popup_title1 != null)	popup_title1.setText("");
-		if (popup_title2 != null)	popup_title2.setText("");
+		if (alert_title1 != null)	alert_title1.setText("");
+		if (alert_title2 != null)	alert_title2.setText("");
 		task.cancel(true);
-		popupIsShown = false;
+		alertIsShown = false;
 		algo_state = AST_IDLE;
-		settingsServer = null;
-		popup.dismiss();
+		master = null;
+		alert.dismiss();
 		muninFoo.resetInstance(context);
 	}
 	
+	@SuppressLint("InflateParams")
 	public class AddServerThread extends AsyncTask<Void, Integer, Void> {
 		private int res = 0;
 		private int RES_UNDEFINED = 0;
@@ -394,10 +271,10 @@ public class Activity_Server extends Activity {
 		private void setPopupText(final String title1, final String title2) {
 			runOnUiThread(new Runnable() {
 				public void run() {
-					if (popup_title1.getVisibility() == View.GONE)	popup_title1.setVisibility(View.VISIBLE);
-					if (popup_title2.getVisibility() == View.GONE)	popup_title2.setVisibility(View.VISIBLE);
-					if (!title1.equals(""))	popup_title1.setText(title1);
-					if (!title2.equals(""))	popup_title2.setText(title2);
+					if (alert_title1.getVisibility() == View.GONE)	alert_title1.setVisibility(View.VISIBLE);
+					if (alert_title2.getVisibility() == View.GONE)	alert_title2.setVisibility(View.VISIBLE);
+					if (!title1.equals(""))	alert_title1.setText(title1);
+					if (!title2.equals(""))	alert_title2.setText(title2);
 				}
 			});
 		}
@@ -410,21 +287,21 @@ public class Activity_Server extends Activity {
 				if (algo_state != AST_WAITING_FOR_CREDENTIALS && algo_state != AST_WAITING_FOR_URL) {
 					final View view = LayoutInflater.from(context).inflate(R.layout.server_popup, null);
 					
-					popup = new AlertDialog.Builder(context)
+					alert = new AlertDialog.Builder(context)
 					.setView(view)
 					.setCancelable(false)
 					.show();
-					popupIsShown = true;
+					alertIsShown = true;
 					
-					progressBar = (ProgressBar) popup.findViewById(R.id.progressbar);
+					progressBar = (ProgressBar) alert.findViewById(R.id.progressbar);
 					progressBar.setProgress(0);
 					progressBar.setIndeterminate(true);
-					popup_title1 = (TextView) popup.findViewById(R.id.popup_text_a);
-					popup_title2 = (TextView) popup.findViewById(R.id.popup_text_b);
-					Fonts.setFont(context, popup_title1, CustomFont.RobotoCondensed_Regular);
-					Fonts.setFont(context, popup_title2, CustomFont.RobotoCondensed_Regular);
-					popupIsShown = true;
-					popup_title1.setText(getString(R.string.text43)); // Please wait...
+					alert_title1 = (TextView) alert.findViewById(R.id.popup_text_a);
+					alert_title2 = (TextView) alert.findViewById(R.id.popup_text_b);
+					Fonts.setFont(context, alert_title1, CustomFont.RobotoCondensed_Regular);
+					Fonts.setFont(context, alert_title2, CustomFont.RobotoCondensed_Regular);
+					alertIsShown = true;
+					alert_title1.setText(getString(R.string.text43)); // Please wait...
 				}
 				setPopupState(0);
 			}
@@ -440,7 +317,7 @@ public class Activity_Server extends Activity {
 				
 				ssl = false;
 				
-				// Modifications de l'URL
+				// URL modifications
 				if (!serverUrl.contains("http://") && !serverUrl.contains("https://"))
 					serverUrl = "http://" + serverUrl;
 				if (serverUrl.contains("https://"))
@@ -457,27 +334,30 @@ public class Activity_Server extends Activity {
 		}
 		
 		private void askAgainForUrl(final String err) {
-			final EditText et_url = (EditText) popup.findViewById(R.id.popup_url_edittext);
-			final Button cancel = (Button) popup.findViewById(R.id.popup_url_cancel);
-			final Button continu = (Button) popup.findViewById(R.id.popup_url_continue);
+			final EditText et_url = (EditText) alert.findViewById(R.id.popup_url_edittext);
+			final Button cancel = (Button) alert.findViewById(R.id.popup_url_cancel);
+			final Button continu = (Button) alert.findViewById(R.id.popup_url_continue);
 			
 			runOnUiThread(new Runnable() {
 				public void run() {
-					TextView popup_url_message = (TextView)popup.findViewById(R.id.popup_url_message);
-					TextView popup_url_message2 = (TextView)popup.findViewById(R.id.popup_url_message2);
+					TextView popup_url_message = (TextView)alert.findViewById(R.id.popup_url_message);
+					TextView popup_url_message2 = (TextView)alert.findViewById(R.id.popup_url_message2);
 					Fonts.setFont(context, popup_url_message, CustomFont.RobotoCondensed_Regular);
 					Fonts.setFont(context, popup_url_message2, CustomFont.RobotoCondensed_Regular);
 					Fonts.setFont(context, cancel, CustomFont.RobotoCondensed_Regular);
 					Fonts.setFont(context, continu, CustomFont.RobotoCondensed_Regular);
-					popup_title1.setVisibility(View.GONE);
-					popup_title2.setVisibility(View.GONE);
+					alert_title1.setVisibility(View.GONE);
+					alert_title2.setVisibility(View.GONE);
 					progressBar.setVisibility(View.GONE);
-					popup.findViewById(R.id.popup_url).setVisibility(View.VISIBLE);
+					alert.findViewById(R.id.popup_url).setVisibility(View.VISIBLE);
+					
+					if (MuninFoo.DEBUG)
+						Log.v("askAgainForUrl : err", err);
 					
 					if (err != null && err.contains("Timeout")) {
 						popup_url_message.setVisibility(View.GONE);
 						popup_url_message2.setText(err);
-					} else if (err != null && !err.substring(0, 3).equals("200"))
+					} else if (err != null && err.length() > 3 && !err.substring(0, 3).equals("200"))
 						popup_url_message.setText(err);
 					else
 						popup_url_message.setVisibility(View.GONE);
@@ -491,13 +371,13 @@ public class Activity_Server extends Activity {
 			cancel.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (popup_title1 != null)	popup_title1.setText("");
-					if (popup_title2 != null)	popup_title2.setText("");
+					if (alert_title1 != null)	alert_title1.setText("");
+					if (alert_title2 != null)	alert_title2.setText("");
 					
-					popupIsShown = false;
+					alertIsShown = false;
 					algo_state = AST_IDLE;
-					settingsServer = null;
-					popup.dismiss();
+					master = null;
+					alert.dismiss();
 					muninFoo.resetInstance(context);
 				}
 			});
@@ -510,7 +390,7 @@ public class Activity_Server extends Activity {
 					if (!muninFoo.premium && url.contains("https://")) {
 						cancelFetch(RES_NOT_PREMIUM);
 					} else {
-						settingsServer.setServerUrl(url);
+						master.setUrl(url);
 						//InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 						//imm.hideSoftInputFromWindow(tb_serverUrl.getWindowToken(), 0);
 						//imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);
@@ -519,10 +399,10 @@ public class Activity_Server extends Activity {
 						runOnUiThread(new Runnable() {
 							public void run() {
 								tb_serverUrl.setText(url);
-								popup_title1.setVisibility(View.VISIBLE);
-								popup_title2.setVisibility(View.VISIBLE);
+								alert_title1.setVisibility(View.VISIBLE);
+								alert_title2.setVisibility(View.VISIBLE);
 								progressBar.setVisibility(View.VISIBLE);
-								popup.findViewById(R.id.popup_url).setVisibility(View.GONE);
+								alert.findViewById(R.id.popup_url).setVisibility(View.GONE);
 								progressBar.setIndeterminate(true);
 							}
 						});
@@ -537,17 +417,17 @@ public class Activity_Server extends Activity {
 		
 		private void cancelFetch(int res) { cancelFetch(res, ""); }
 		private void cancelFetch(int res, final String s) {
-			if (popupIsShown) {
+			if (alertIsShown) {
 				runOnUiThread(new Runnable() {
 					public void run() {
-						popup.dismiss();
-						popupIsShown = false;
+						alert.dismiss();
+						alertIsShown = false;
 					}
 				});
 			}
 			
 			task.cancel(true);
-			settingsServer = null;
+			master = null;
 			muninFoo.resetInstance(context);
 			algo_state = AST_IDLE;
 			
@@ -610,7 +490,6 @@ public class Activity_Server extends Activity {
 				});
 			}
 			else if (res == RES_MALFORMED_URL) {
-				// Popup pas ouverte à cet endroit -> dialog
 				AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Server.this);
 				builder.setMessage(getString(R.string.text16))
 				.setCancelable(true)
@@ -633,30 +512,21 @@ public class Activity_Server extends Activity {
 			// Create current servers list (diff)
 			for (MuninServer s : muninFoo.getServers())
 				oldServers.add(s.getServerUrl());
-			newServers = new ArrayList<String>();
 			
 			setPopupText(getString(R.string.text44), "");
 			
 			/* 			DETECTION DU TYPE D'URL 		*/
-			if (settingsServer == null)
-				settingsServer = new MuninServer("", serverUrl);
-			settingsServer.createTitle();
-			if (findViewById(R.id.addserver_auth).getVisibility() == View.VISIBLE && cb_auth.isChecked() && !tb_auth_login.getText().toString().equals("")) {
-				settingsServer.setAuthIds(tb_auth_login.getText().toString(), tb_auth_password.getText().toString());
-				if (sp_authType.getSelectedItemPosition() == 0)
-					settingsServer.setAuthType(AuthType.BASIC);
-				else
-					settingsServer.setAuthType(AuthType.DIGEST);
+			if (master == null) {
+				master = new MuninMaster();
+				master.setUrl(serverUrl);
 			}
-			settingsServer.setSSL(ssl);
-			
-			type = settingsServer.detectPageType();
+			type = master.detectPageType();
 			
 			// The first connection to the server has been done : settingsServer.ssl has been set to true if necessary.
 			// If not premium :
 			// If ssl was true : we're not supposed to be there.
 			// If ssl was false and is now true : display error msg.
-			if (!muninFoo.premium && settingsServer.getSSL())
+			if (!muninFoo.premium && master.getSSL())
 				type = "RES_NOT_PREMIUM";
 			
 			progressBar.setIndeterminate(false);
@@ -666,9 +536,10 @@ public class Activity_Server extends Activity {
 		
 		private int finish() {
 			int ret = RES_UNDEFINED;
+			Log.v("", "type : " + type);
 			if (type.equals("munin/")) {
 				/*		CONTENT OF THE PAGE: SERVERS LIST	*/
-				int nbNewServers = muninFoo.fetchServersListRecursive(settingsServer);
+				int nbNewServers = master.fetchChildren();
 				
 				boolean fetchSuccess = nbNewServers > 0;
 				
@@ -677,56 +548,90 @@ public class Activity_Server extends Activity {
 					setPopupState(popupstate);
 					
 					// Plugins lookup for each server
-					int tmpNewServer = 1;
-					for (int i=0; i<muninFoo.getHowManyServers(); i++) {
-						if (muninFoo.getServer(i) != null && muninFoo.getServer(i).getPlugins().size() == 0) {
-							if (tmpNewServer <= nbNewServers)
-								setPopupText("", getString(R.string.text46) + " " + tmpNewServer + "/" + nbNewServers);
-							muninFoo.getServer(i).fetchPluginsList();
-							
-							boolean contains = false;
-							for (String s : oldServers) {
-								if (muninFoo.getServer(i).equalsApprox(s))
-									contains = true;
-							}
-							if (!contains)
-								newServers.add(muninFoo.getServer(i).getServerUrl());
-							
-							tmpNewServer++;
-							if (popupstate < 80) {
-								popupstate += Math.round(50/nbNewServers);
-								setPopupState(popupstate);
-							}
+					for (MuninServer server : master.getChildren()) {
+						setPopupText("", getString(R.string.text46) + " " + master.getChildren().indexOf(server) + "/" + nbNewServers);
+						
+						server.fetchPluginsList();
+						
+						if (popupstate < 80) {
+							popupstate += Math.round(50/nbNewServers);
+							setPopupState(popupstate);
 						}
 					}
+					
 					if (nbNewServers > 0) {	// Added 1 server or more
 						setPopupState(100);
 						setPopupText(getString(R.string.text45), " ");
 						
-						canCancel = false;
-						muninFoo.sqlite.saveServers();
-						canCancel = true;
+						//alert.setCancelable(false);
+						
+						// Check if there is already a master with this url
+						MuninMaster alreadyThereMaster = null;
+						for (MuninMaster muninFooMaster : muninFoo.getMasters()) {
+							if (muninFooMaster.equalsApprox(master)) {
+								alreadyThereMaster = muninFooMaster;
+								break;
+							}
+						}
+						
+						ArrayList<Widget> widgetsToUpdate = new ArrayList<Widget>();
+						ArrayList<Label> labelsToUpdate = new ArrayList<Label>();
+						ArrayList<GridItem> gridItemsToUpdate = new ArrayList<GridItem>();
+						if (alreadyThereMaster != null) {
+							// Replace
+							// Check if there are labels / widgets / grids in the hierarchy
+							widgetsToUpdate = master.reattachWidgets(muninFoo, alreadyThereMaster);
+							labelsToUpdate = master.reattachLabels(muninFoo, alreadyThereMaster);
+							gridItemsToUpdate = master.reattachGrids(muninFoo, context, alreadyThereMaster);
+						}
+						
+						// Delete old duplicate
+						if (alreadyThereMaster != null) {
+							muninFoo.sqlite.dbHlpr.deleteMaster(alreadyThereMaster, true);
+							muninFoo.getServers().removeAll(alreadyThereMaster.getChildren());
+							muninFoo.getMasters().remove(alreadyThereMaster);
+						}
+						
+						muninFoo.getMasters().add(master);
+						muninFoo.getServers().addAll(master.getChildren());
+						// Insert master
+						muninFoo.sqlite.insertMuninMaster(master);
+						
+						// Save reattached widgets if needed
+						for (Widget widget : widgetsToUpdate)
+							muninFoo.sqlite.dbHlpr.updateWidget(widget);
+						// Save reattached labels if needed
+						for (Label label : labelsToUpdate)
+							muninFoo.sqlite.dbHlpr.updateLabel(label);
+						// Save reattached grid items if needed
+						for (GridItem gridItem : gridItemsToUpdate)
+							muninFoo.sqlite.dbHlpr.updateGridItemRelation(gridItem);
+						
+						muninFoo.setCurrentServer();
+						//alert.setCancelable(true);
 						
 						// Success!
 						message_title = getString(R.string.text18);
-						if (newServers.size() == 0) {
+						// TODO
+						if (nbNewServers == 0) {
 							String s = "";
 							if (nbNewServers > 1)	s = "s";
 							// X sub-server(s) updated!
 							message_text = nbNewServers + " " + getString(R.string.text21_1) + s + " " + getString(R.string.text21_3);
 						} else {
 							String s = "";
-							if (newServers.size() > 1)	s = "s";
+							if (nbNewServers > 1)	s = "s";
 							// X sub-server(s) added!
-							message_text = newServers.size() + " " + getString(R.string.text21_1) + s + " " + getString(R.string.text21_2);
+							message_text = nbNewServers + " " + getString(R.string.text21_1) + s + " " + getString(R.string.text21_2);
 						}
 						return RES_SERVERS_SUCCESS;
 					}
 				}
 			}	// ending if (type.equals("munin/")) (servers)
-			else if (type.equals("munin/x/")) {
-				/*		CONTENT OF THE PAGE: PLUGINS LIST	*/
-				/*   (long code: here is a potato:	0	)	*/
+			/*else if (type.equals("munin/x/")) {
+				///*		CONTENT OF THE PAGE: PLUGINS LIST
+				///*   (long code: here is a potato:	0	)
+				// TODO get parent page...
 				
 				setPopupText(getString(R.string.text44), "");
 				
@@ -755,9 +660,9 @@ public class Activity_Server extends Activity {
 						
 						setPopupText(getString(R.string.text45), " ");
 						
-						canCancel = false;
+						//alert.setCancelable(false);
 						muninFoo.sqlite.saveServers();
-						canCancel = true;
+						//alert.setCancelable(true);
 						
 						message_title = settingsServerPlugins.size() + "";
 						// Success
@@ -765,27 +670,27 @@ public class Activity_Server extends Activity {
 						return RES_SERVER_SUCCESS;
 					}
 				}
-			} // Fin elseif (type: plugins)
+			}*/
 			return ret;
 		}
 		
 		private void askForCredentials() {
-			final EditText et_login = (EditText) popup.findViewById(R.id.popup_credentials_login);
-			final EditText et_password = (EditText) popup.findViewById(R.id.popup_credentials_password);
-			final Button cancel = (Button) popup.findViewById(R.id.popup_credentials_cancel);
-			final Button continu = (Button) popup.findViewById(R.id.popup_credentials_continue);
-			final Spinner pop_sp_authType = (Spinner) popup.findViewById(R.id.popup_credentials_authtype);
+			final EditText et_login = (EditText) alert.findViewById(R.id.popup_credentials_login);
+			final EditText et_password = (EditText) alert.findViewById(R.id.popup_credentials_password);
+			final Button cancel = (Button) alert.findViewById(R.id.popup_credentials_cancel);
+			final Button continu = (Button) alert.findViewById(R.id.popup_credentials_continue);
+			final Spinner pop_sp_authType = (Spinner) alert.findViewById(R.id.popup_credentials_authtype);
 			
 			runOnUiThread(new Runnable() {
 				public void run() {
-					popup_title1.setVisibility(View.GONE);
-					popup_title2.setVisibility(View.GONE);
+					alert_title1.setVisibility(View.GONE);
+					alert_title2.setVisibility(View.GONE);
 					progressBar.setVisibility(View.GONE);
-					popup.findViewById(R.id.popup_credentials).setVisibility(View.VISIBLE);
+					alert.findViewById(R.id.popup_credentials).setVisibility(View.VISIBLE);
 					Fonts.setFont(context, cancel, CustomFont.RobotoCondensed_Regular);
 					Fonts.setFont(context, continu, CustomFont.RobotoCondensed_Regular);
 					
-					// Remplissage spinner auth type
+					// AuthType spinner
 					List<String> list2 = new ArrayList<String>();
 					list2.add("Basic");
 					list2.add("Digest");
@@ -793,12 +698,12 @@ public class Activity_Server extends Activity {
 					dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					pop_sp_authType.setAdapter(dataAdapter2);
 					
-					if (settingsServer.isAuthNeeded() == true) {
-						et_login.setText(settingsServer.getAuthLogin());
-						et_password.setText(settingsServer.getAuthPassword());
-						if (settingsServer.getAuthType() == AuthType.BASIC)
+					if (master.isAuthNeeded()) {
+						et_login.setText(master.getAuthLogin());
+						et_password.setText(master.getAuthPassword());
+						if (master.getAuthType() == AuthType.BASIC)
 							pop_sp_authType.setSelection(0);
-						else if (settingsServer.getAuthType() == AuthType.DIGEST)
+						else if (master.getAuthType() == AuthType.DIGEST)
 							pop_sp_authType.setSelection(1);
 					}
 					
@@ -807,9 +712,9 @@ public class Activity_Server extends Activity {
 						public void onItemSelected(AdapterView<?> arg0, View arg1, int select, long arg3) {
 							if (!muninFoo.premium) {
 								if (select == 1)
-									popup.findViewById(R.id.popup_credentials_premium).setVisibility(View.VISIBLE);
+									alert.findViewById(R.id.popup_credentials_premium).setVisibility(View.VISIBLE);
 								else
-									popup.findViewById(R.id.popup_credentials_premium).setVisibility(View.GONE);
+									alert.findViewById(R.id.popup_credentials_premium).setVisibility(View.GONE);
 							}
 						}
 						
@@ -824,24 +729,24 @@ public class Activity_Server extends Activity {
 			cancel.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (popup_title1 != null)	popup_title1.setText("");
-					if (popup_title2 != null)	popup_title2.setText("");
+					if (alert_title1 != null)	alert_title1.setText("");
+					if (alert_title2 != null)	alert_title2.setText("");
 					
 					runOnUiThread(new Runnable() {
 						public void run() {
 							pop_sp_authType.setSelection(0);
 							et_login.setText("");
 							et_password.setText("");
-							popup_title1.setVisibility(View.VISIBLE);
-							popup_title2.setVisibility(View.VISIBLE);
+							alert_title1.setVisibility(View.VISIBLE);
+							alert_title2.setVisibility(View.VISIBLE);
 							progressBar.setVisibility(View.VISIBLE);
-							popup.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
+							alert.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
 						}
 					});
-					popupIsShown = false;
+					alertIsShown = false;
 					algo_state = AST_IDLE;
-					settingsServer = null;
-					popup.dismiss();
+					master = null;
+					alert.dismiss();
 					muninFoo.resetInstance(context);
 				}
 			});
@@ -853,22 +758,20 @@ public class Activity_Server extends Activity {
 					else {
 						String login = et_login.getText().toString();
 						String password = et_password.getText().toString();
-						settingsServer.setAuthIds(login, password);
+						master.setAuthIds(login, password);
 						if (pop_sp_authType.getSelectedItemPosition() == 0)
-							settingsServer.setAuthType(AuthType.BASIC);
+							master.setAuthType(AuthType.BASIC);
 						else
-							settingsServer.setAuthType(AuthType.DIGEST);
-						//InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-						//imm.hideSoftInputFromWindow(tb_serverUrl.getWindowToken(), 0);
-						//imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);
+							master.setAuthType(AuthType.DIGEST);
+						
 						algo_state = AST_RUNNING;
 						
 						runOnUiThread(new Runnable() {
 							public void run() {
-								popup_title1.setVisibility(View.VISIBLE);
-								popup_title2.setVisibility(View.VISIBLE);
+								alert_title1.setVisibility(View.VISIBLE);
+								alert_title2.setVisibility(View.VISIBLE);
 								progressBar.setVisibility(View.VISIBLE);
-								popup.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
+								alert.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
 							}
 						});
 						
@@ -882,19 +785,19 @@ public class Activity_Server extends Activity {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			popup.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
-			popup.findViewById(R.id.popup_url).setVisibility(View.GONE);
-			// Zapper les étapes déjà faites
+			alert.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
+			alert.findViewById(R.id.popup_url).setVisibility(View.GONE);
+			// Don't execute steps that have already been done
 			boolean stop = false;
 			if (algo_state != AST_WAITING_FOR_CREDENTIALS) {
 				int res1 = start();
 				if (res1 == RES_NO_CONNECTION || res1 == RES_NOT_PREMIUM || res1 == RES_MALFORMED_URL) {
 					cancelFetch(res1);
-					stop = true; // le thread n'a pas le temps de s'arrêter
+					stop = true;
 				}
 			}
 			
-			// Lancement de la popup
+			// Show alert dialog
 			if (!stop) {
 				String res2 = initialization();
 				if (!res2.equals("munin/") && !res2.equals("munin/x/")) {
@@ -927,10 +830,10 @@ public class Activity_Server extends Activity {
 			else
 				muninFoo.currentServer = muninFoo.getServer(0);
 			
-			canCancel = true;
+			//alert.setCancelable(true);
 			algo_state = AST_IDLE;
 			if (res != RES_UNDEFINED) {
-				Button b = (Button) popup.findViewById(R.id.popup_button);
+				Button b = (Button) alert.findViewById(R.id.popup_button);
 				Fonts.setFont(context, b, CustomFont.RobotoCondensed_Regular);
 				
 				if (res == RES_SERVER_SUCCESS) {
@@ -941,7 +844,7 @@ public class Activity_Server extends Activity {
 					b.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							popup.dismiss();
+							alert.dismiss();
 							Intent intent = new Intent(Activity_Server.this, Activity_Servers.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
@@ -956,7 +859,7 @@ public class Activity_Server extends Activity {
 					b.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							popup.dismiss();
+							alert.dismiss();
 							Intent intent = new Intent(Activity_Server.this, Activity_Servers.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);

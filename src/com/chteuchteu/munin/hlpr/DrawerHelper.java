@@ -66,7 +66,6 @@ public class DrawerHelper {
 	public int Activity_Notifications = 4;
 	public int Activity_Plugins = 7;
 	public int Activity_Server_Add = 1;
-	public int Activity_Server_Edit = 8;
 	public int Activity_Servers = 5;
 	public int Activity_ServersEdit = 5;
 	public int Activity_Settings = 6;
@@ -449,11 +448,6 @@ public class DrawerHelper {
 				View v = vi.inflate(R.layout.drawer_subbutton, null);
 				TextView b = (TextView)v.findViewById(R.id.button);
 				b.setText(s.getName());
-				
-				if (n == Activity_Server_Edit && s.equalsApprox(m.currentServer)) {
-					b.setBackgroundResource(R.drawable.drawer_selectedsubbutton);
-					b.setTextColor(c.getResources().getColor(R.color.cffffff));
-				}
 				
 				b.setOnClickListener(new OnClickListener() {
 					public void onClick (View v) {

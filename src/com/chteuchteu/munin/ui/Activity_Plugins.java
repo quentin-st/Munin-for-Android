@@ -128,18 +128,11 @@ public class Activity_Plugins extends ListActivity {
 		
 		mode = getListViewMode();
 		
-		if (muninFoo.currentServer == null && muninFoo.getHowManyServers() > 0)
-			muninFoo.currentServer = muninFoo.getServer(0);
-		
-		if (muninFoo.currentServer != null && muninFoo.currentServer.getPlugins() != null && muninFoo.currentServer.getPlugins().size() > 0) {
+		if (muninFoo.currentServer.getPlugins().size() > 0) {
 			if (actionBarListEnabled)
 				actionBar.setSelectedNavigationItem(muninFoo.currentServer.getFlatPosition(muninFoo));
 			
 			updateListView();
-		} else {
-			Intent intent = new Intent(this, Activity_Main.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
 		}
 	}
 	

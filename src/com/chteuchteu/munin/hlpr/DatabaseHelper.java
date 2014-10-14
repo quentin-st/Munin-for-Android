@@ -14,11 +14,11 @@ import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
-import com.chteuchteu.munin.obj.MuninServer.HDGraphs;
 import com.chteuchteu.munin.obj.Widget;
 import com.crashlytics.android.Crashlytics;
 
@@ -40,40 +40,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// Fields
 	private static final String KEY_ID = "id";
 	
+	// MuninMasters
 	private static final String KEY_MUNINMASTERS_NAME = "name";
 	private static final String KEY_MUNINMASTERS_URL = "url";
+	private static final String KEY_MUNINMASTERS_AUTHLOGIN = "authLogin";
+	private static final String KEY_MUNINMASTERS_AUTHPASSWORD = "authPassword";
+	private static final String KEY_MUNINMASTERS_SSL = "SSL";
+	private static final String KEY_MUNINMASTERS_AUTHTYPE = "authType";
+	private static final String KEY_MUNINMASTERS_AUTHSTRING = "authString";
+	private static final String KEY_MUNINMASTERS_HDGRAPHS = "hdGraphs";
 	
+	// MuninServers
 	private static final String KEY_MUNINSERVERS_SERVERURL = "serverUrl";
 	private static final String KEY_MUNINSERVERS_NAME = "name";
+	@Deprecated
 	private static final String KEY_MUNINSERVERS_AUTHLOGIN = "authLogin";
+	@Deprecated
 	private static final String KEY_MUNINSERVERS_AUTHPASSWORD = "authPassword";
 	private static final String KEY_MUNINSERVERS_GRAPHURL = "graphURL";
+	@Deprecated
 	private static final String KEY_MUNINSERVERS_SSL = "SSL";
 	private static final String KEY_MUNINSERVERS_POSITION = "position";
+	@Deprecated
 	private static final String KEY_MUNINSERVERS_AUTHTYPE = "authType";
+	@Deprecated
 	private static final String KEY_MUNINSERVERS_AUTHSTRING = "authString";
 	private static final String KEY_MUNINSERVERS_MASTER = "master";
-	private static final String KEY_MUNINSERVERS_HDGRAPHS = "hdGraphs";
 	
+	// MuninPlugins
 	private static final String KEY_MUNINPLUGINS_NAME = "name";
 	private static final String KEY_MUNINPLUGINS_FANCYNAME = "fancyName";
 	private static final String KEY_MUNINPLUGINS_SERVER = "server";
 	private static final String KEY_MUNINPLUGINS_CATEGORY = "category";
 	private static final String KEY_MUNINPLUGINS_PLUGINPAGEURL = "pluginPageUrl";
 	
+	// Labels
 	private static final String KEY_LABELS_NAME = "name";
 	
+	// LabelsRelations
 	private static final String KEY_LABELSRELATIONS_PLUGIN = "plugin";
 	private static final String KEY_LABELSRELATIONS_LABEL = "label";
 	
+	// Widgets
 	private static final String KEY_WIDGETS_PLUGIN = "plugin";
 	private static final String KEY_WIDGETS_PERIOD = "period";
 	private static final String KEY_WIDGETS_WIFIONLY = "wifiOnly";
 	private static final String KEY_WIDGETS_HIDESERVERNAME = "hideServerName";
 	private static final String KEY_WIDGETS_WIDGETID = "widgetId";
 	
+	// Grids
 	private static final String KEY_GRIDS_NAME = "name";
 	
+	// GridItemRelations
 	private static final String KEY_GRIDITEMRELATIONS_GRID = "grid";
 	private static final String KEY_GRIDITEMRELATIONS_X = "x";
 	private static final String KEY_GRIDITEMRELATIONS_Y = "y";
@@ -84,21 +102,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String CREATE_TABLE_MUNINMASTERS = "CREATE TABLE " + TABLE_MUNINMASTERS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
 			+ KEY_MUNINMASTERS_NAME + " TEXT,"
-			+ KEY_MUNINMASTERS_URL + " TEXT)";
+			+ KEY_MUNINMASTERS_URL + " TEXT,"
+			+ KEY_MUNINMASTERS_AUTHLOGIN + " TEXT,"
+			+ KEY_MUNINMASTERS_AUTHPASSWORD + " TEXT,"
+			+ KEY_MUNINMASTERS_AUTHTYPE + " INTEGER,"
+			+ KEY_MUNINMASTERS_AUTHSTRING + " TEXT,"
+			+ KEY_MUNINMASTERS_SSL + " INTEGER,"
+			+ KEY_MUNINMASTERS_HDGRAPHS + " TEXT"
+			+ ")";
 	
 	private static final String CREATE_TABLE_MUNINSERVERS = "CREATE TABLE " + TABLE_MUNINSERVERS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
 			+ KEY_MUNINSERVERS_SERVERURL + " TEXT,"
 			+ KEY_MUNINSERVERS_NAME + " TEXT,"
-			+ KEY_MUNINSERVERS_AUTHLOGIN + " TEXT,"
-			+ KEY_MUNINSERVERS_AUTHPASSWORD + " TEXT,"
 			+ KEY_MUNINSERVERS_GRAPHURL + " TEXT,"
-			+ KEY_MUNINSERVERS_SSL + " INTEGER,"
 			+ KEY_MUNINSERVERS_POSITION + " INTEGER,"
-			+ KEY_MUNINSERVERS_AUTHTYPE + " INTEGER,"
-			+ KEY_MUNINSERVERS_AUTHSTRING + " TEXT,"
-			+ KEY_MUNINSERVERS_MASTER + " INTEGER,"
-			+ KEY_MUNINSERVERS_HDGRAPHS + " TEXT)";
+			+ KEY_MUNINSERVERS_MASTER + " INTEGER"
+			+ ")";
 	
 	private static final String CREATE_TABLE_MUNINPLUGINS = "CREATE TABLE " + TABLE_MUNINPLUGINS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
@@ -168,7 +188,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_WIDGETS + " ADD COLUMN " + KEY_WIDGETS_HIDESERVERNAME + " INTEGER");
 		}
 		if (oldVersion < 5) { // From 4 to 5
-			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_HDGRAPHS + " TEXT");
+			db.execSQL("ALTER TABLE " + TABLE_MUNINMASTERS + " ADD COLUMN " + KEY_MUNINMASTERS_HDGRAPHS + " TEXT");
 		}
 	}
 	
@@ -183,6 +203,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_MUNINMASTERS_NAME, m.getName());
 		values.put(KEY_MUNINMASTERS_URL, m.getUrl());
+		values.put(KEY_MUNINMASTERS_AUTHLOGIN, m.getAuthLogin());
+		values.put(KEY_MUNINMASTERS_AUTHPASSWORD, m.getAuthPassword());
+		values.put(KEY_MUNINMASTERS_SSL, m.getSSL());
+		values.put(KEY_MUNINMASTERS_AUTHTYPE, m.getAuthType().getVal());
+		values.put(KEY_MUNINMASTERS_AUTHSTRING, m.getAuthString());
+		values.put(KEY_MUNINMASTERS_HDGRAPHS, m.getHDGraphs().getVal());
 		
 		long id = db.insert(TABLE_MUNINMASTERS, null, values);
 		m.setId(id);
@@ -200,18 +226,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_MUNINSERVERS_SERVERURL, s.getServerUrl());
 		values.put(KEY_MUNINSERVERS_NAME, s.getName());
-		values.put(KEY_MUNINSERVERS_AUTHLOGIN, s.getAuthLogin());
-		values.put(KEY_MUNINSERVERS_AUTHPASSWORD, s.getAuthPassword());
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
-		values.put(KEY_MUNINSERVERS_SSL, s.getSSL());
 		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
-		values.put(KEY_MUNINSERVERS_AUTHTYPE, s.getAuthType().getVal());
-		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
-		if (s.master != null)
-			values.put(KEY_MUNINSERVERS_MASTER, s.master.getId());
-		else
-			values.put(KEY_MUNINSERVERS_MASTER, -1);
-		values.put(KEY_MUNINSERVERS_HDGRAPHS, s.getHDGraphs().getVal());
+		values.put(KEY_MUNINSERVERS_MASTER, s.master != null ? s.master.getId() : -1);
 		
 		long id = db.insert(TABLE_MUNINSERVERS, null, values);
 		s.setId(id);
@@ -245,6 +262,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		p.isPersistant = true;
 		close(null, db);
 		return id;
+	}
+	
+	public void deleteMuninPlugins(MuninServer server) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_MUNINPLUGINS, KEY_MUNINPLUGINS_SERVER + " = ?", new String[] { String.valueOf(server.getId()) });
+		close(null, db);
 	}
 	
 	public void deleteMuninPlugin(MuninPlugin p) {
@@ -353,9 +376,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public void saveMuninMaster(MuninMaster m) {
-		boolean alreadyThere = GenericQueries.getNbLines(this, TABLE_MUNINMASTERS, KEY_ID + " = " + m.getId()) > 0;
-		if (!alreadyThere)
+		if (!m.isPersistant)
 			insertMuninMaster(m);
+		else
+			updateMuninMaster(m);
 	}
 	
 	public int updateMuninMaster(MuninMaster m) {
@@ -364,6 +388,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_MUNINMASTERS_NAME, m.getName());
 		values.put(KEY_MUNINMASTERS_URL, m.getUrl());
+		values.put(KEY_MUNINMASTERS_AUTHLOGIN, m.getAuthLogin());
+		values.put(KEY_MUNINMASTERS_AUTHPASSWORD, m.getAuthPassword());
+		values.put(KEY_MUNINMASTERS_SSL, m.getSSL());
+		values.put(KEY_MUNINMASTERS_AUTHTYPE, m.getAuthType().getVal());
+		values.put(KEY_MUNINMASTERS_AUTHSTRING, m.getAuthString());
+		values.put(KEY_MUNINMASTERS_HDGRAPHS, m.getHDGraphs().getVal());
 		
 		int nbRows = db.update(TABLE_MUNINMASTERS, values, KEY_ID + " = ?", new String[] { String.valueOf(m.getId()) });
 		close(null, db);
@@ -376,15 +406,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_MUNINSERVERS_SERVERURL, s.getServerUrl());
 		values.put(KEY_MUNINSERVERS_NAME, s.getName());
-		values.put(KEY_MUNINSERVERS_AUTHLOGIN, s.getAuthLogin());
-		values.put(KEY_MUNINSERVERS_AUTHPASSWORD, s.getAuthPassword());
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
-		values.put(KEY_MUNINSERVERS_SSL, s.getSSL());
 		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
-		values.put(KEY_MUNINSERVERS_AUTHTYPE, s.getAuthType().getVal());
-		values.put(KEY_MUNINSERVERS_AUTHSTRING, s.getAuthString());
 		values.put(KEY_MUNINSERVERS_MASTER, s.master.getId());
-		values.put(KEY_MUNINSERVERS_HDGRAPHS, s.getHDGraphs().getVal());
 		
 		int nbRows = db.update(TABLE_MUNINSERVERS, values, KEY_ID + " = ?", new String[] { String.valueOf(s.getId()) });
 		close(null, db);
@@ -432,6 +456,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return nbRows;
 	}
 	
+	public int updateWidgets(ArrayList<Widget> widgets) {
+		int updated = 0;
+		
+		for (Widget widget : widgets)
+			updated += updateWidget(widget);
+		
+		return updated;
+	}
+	
+	public int updateWidget(Widget widget) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_WIDGETS_PLUGIN, widget.getPlugin().getId());
+		values.put(KEY_WIDGETS_PERIOD, widget.getPeriod());
+		values.put(KEY_WIDGETS_WIFIONLY, widget.isWifiOnly());
+		values.put(KEY_WIDGETS_WIDGETID, widget.getWidgetId());
+		values.put(KEY_WIDGETS_HIDESERVERNAME, widget.getHideServerName());
+		
+		int nbRows = db.update(TABLE_GRIDS, values, KEY_ID + " = ?", new String[] { String.valueOf(widget.getId()) });
+		close(null, db);
+		return nbRows;
+	}
+	
 	public boolean gridExists(String gridName) {
 		return GenericQueries.getNbLines(this, TABLE_GRIDS, KEY_GRIDS_NAME + " = '" + gridName + "'") > 0;
 	}
@@ -450,6 +498,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					m.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 					m.setName(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_NAME)));
 					m.setUrl(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_URL)));
+					m.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_AUTHLOGIN)),
+							c.getString(c.getColumnIndex(KEY_MUNINMASTERS_AUTHPASSWORD)),
+							AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_AUTHTYPE))));
+					m.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_AUTHSTRING)));
+					m.setSSL(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_SSL)) == 1);
+					m.setHDGraphs(HDGraphs.get(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_HDGRAPHS))));
+					m.isPersistant = true;
 					l.add(m);
 				} while (c.moveToNext());
 			}
@@ -482,6 +537,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			m.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 			m.setName(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_NAME)));
 			m.setUrl(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_URL)));
+			m.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_AUTHLOGIN)),
+					c.getString(c.getColumnIndex(KEY_MUNINMASTERS_AUTHPASSWORD)),
+					AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_AUTHTYPE))));
+			m.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_AUTHSTRING)));
+			m.setSSL(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_SSL)) == 1);
+			m.setHDGraphs(HDGraphs.get(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_HDGRAPHS))));
+			m.isPersistant = true;
 			close(c, db);
 			return m;
 		}
@@ -503,19 +565,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					s.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 					s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
 					s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
-					s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
-							c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
-							AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE))));
-					s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
-					if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
-						s.setSSL(true);
-					else
-						s.setSSL(false);
 					s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
 					s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 					s.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_MASTER)), currentMasters));
 					s.setPluginsList(getPlugins(s));
-					s.setHDGraphs(HDGraphs.get(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHS))));
 					s.isPersistant = true;
 					l.add(s);
 				} while (c.moveToNext());
@@ -588,18 +641,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			s.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 			s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
 			s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
-			s.setAuthIds(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN)),
-					c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD)),
-					AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE))));
-			s.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING)));
-			if (c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1)
-				s.setSSL(true);
-			else
-				s.setSSL(false);
 			s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
 			s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 			s.setPluginsList(getPlugins(s));
-			s.setHDGraphs(HDGraphs.get(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHS))));
 			s.isPersistant = true;
 			close(c, db);
 			return s;
@@ -822,13 +866,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return l;
 	}
 	
-	public void deleteMaster(MuninMaster m) {
+	public void deleteMaster(MuninMaster m, boolean deleteChildren) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_MUNINMASTERS, KEY_ID + " = ?", new String[] { String.valueOf(m.getId()) });
 		close(null, db);
 		
-		for (MuninServer s : m.getChildren())
-			deleteServer(s);
+		if (deleteChildren) {
+			for (MuninServer s : m.getChildren())
+				deleteServer(s);
+		}
 	}
 	
 	public void deleteServer(MuninServer s) {

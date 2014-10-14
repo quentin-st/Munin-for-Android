@@ -7,10 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
-import com.chteuchteu.munin.obj.MuninServer.HDGraphs;
 
 public class JSONHelper {
 	/**
@@ -30,28 +30,26 @@ public class JSONHelper {
 					jsonMaster.put("id", master.getId());
 					jsonMaster.put("name", master.getName());
 					jsonMaster.put("url", master.getUrl());
-					
-					// Put auth information
-					MuninServer firstServer = master.getChildAt(0);
-					jsonMaster.put("ssl", firstServer.getSSL());
-					switch (firstServer.getAuthType()) {
+					jsonMaster.put("hdGraphs", master.getHDGraphs().getVal());
+					jsonMaster.put("ssl", master.getSSL());
+					switch (master.getAuthType()) {
 						case NONE: case UNKNOWN:
 							jsonMaster.put("authType", "none");
 							break;
 						case BASIC:
 							jsonMaster.put("authType", "basic");
-							jsonMaster.put("authLogin", firstServer.getAuthLogin());
-							String basicPassword = firstServer.getAuthPassword();
+							jsonMaster.put("authLogin", master.getAuthLogin());
+							String basicPassword = master.getAuthPassword();
 							String encryptedBasicPassword = Util.Encryption.encrypt(seed, basicPassword);
 							jsonMaster.put("authPassword", encryptedBasicPassword);
 							break;
 						case DIGEST:
 							jsonMaster.put("authType", "digest");
-							jsonMaster.put("authLogin", firstServer.getAuthLogin());
-							String digestPassword = firstServer.getAuthPassword();
+							jsonMaster.put("authLogin", master.getAuthLogin());
+							String digestPassword = master.getAuthPassword();
 							String encryptedDigestPassword = Util.Encryption.encrypt(seed, digestPassword);
 							jsonMaster.put("authPassword", encryptedDigestPassword);
-							jsonMaster.put("authString", firstServer.getAuthString());
+							jsonMaster.put("authString", master.getAuthString());
 							break;
 					}
 					
@@ -64,7 +62,6 @@ public class JSONHelper {
 						jsonServer.put("serverUrl", server.getServerUrl());
 						jsonServer.put("position", server.getPosition());
 						jsonServer.put("graphURL", server.getGraphURL());
-						jsonServer.put("hdGraphs", server.getHDGraphs().getVal());
 						
 						JSONArray jsonPlugins = new JSONArray();
 						for (MuninPlugin plugin : server.getPlugins()) {
@@ -113,6 +110,24 @@ public class JSONHelper {
 				master.setId(jsonMaster.getLong("id"));
 				master.setName(jsonMaster.getString("name"));
 				master.setUrl(jsonMaster.getString("url"));
+				master.setHDGraphs(HDGraphs.get(jsonMaster.getString("hdGraphs")));
+				String authType = jsonMaster.getString("authType");
+				if (authType.equals("none")) {
+					master.setAuthType(AuthType.NONE);
+				} else if (authType.equals("basic")) {
+					master.setAuthType(AuthType.BASIC);
+					String login = jsonMaster.getString("authLogin");
+					String encryptedBasicPassword = jsonMaster.getString("authPassword");
+					String decryptedBasicPassword = Util.Encryption.decrypt(seed, encryptedBasicPassword);
+					master.setAuthIds(login, decryptedBasicPassword);
+				} else if (authType.equals("digest")) {
+					master.setAuthType(AuthType.DIGEST);
+					String login = jsonMaster.getString("authLogin");
+					String encryptedDigestPassword = jsonMaster.getString("authPassword");
+					String decryptedDigestPassword = Util.Encryption.decrypt(seed, encryptedDigestPassword);
+					master.setAuthIds(login, decryptedDigestPassword);
+					master.setAuthString(jsonMaster.getString("authString"));
+				}
 				
 				JSONArray jsonServers = jsonMaster.getJSONArray("servers");
 				for (int y=0; y<jsonServers.length(); y++) {
@@ -124,25 +139,6 @@ public class JSONHelper {
 					server.setServerUrl(jsonServer.getString("serverUrl"));
 					server.setPosition(jsonServer.getInt("position"));
 					server.setGraphURL(jsonServer.getString("graphURL"));
-					server.setHDGraphs(HDGraphs.get(jsonServer.getString("hdGraphs")));
-					
-					String authType = jsonMaster.getString("authType");
-					if (authType.equals("none")) {
-						server.setAuthType(AuthType.NONE);
-					} else if (authType.equals("basic")) {
-						server.setAuthType(AuthType.BASIC);
-						String login = jsonMaster.getString("authLogin");
-						String encryptedBasicPassword = jsonMaster.getString("authPassword");
-						String decryptedBasicPassword = Util.Encryption.decrypt(seed, encryptedBasicPassword);
-						server.setAuthIds(login, decryptedBasicPassword);
-					} else if (authType.equals("digest")) {
-						server.setAuthType(AuthType.DIGEST);
-						String login = jsonMaster.getString("authLogin");
-						String encryptedDigestPassword = jsonMaster.getString("authPassword");
-						String decryptedDigestPassword = Util.Encryption.decrypt(seed, encryptedDigestPassword);
-						server.setAuthIds(login, decryptedDigestPassword);
-						server.setAuthString(jsonMaster.getString("authString"));
-					}
 					
 					JSONArray jsonPlugins = jsonServer.getJSONArray("plugins");
 					for (int z=0; z<jsonPlugins.length(); z++) {

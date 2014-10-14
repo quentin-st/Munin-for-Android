@@ -129,7 +129,7 @@ public class ImportExportHelper {
 				for (MuninServer server : newMaster.getChildren())
 					MuninFoo.getInstance().addServer(server);
 			}
-			MuninFoo.getInstance().sqlite.saveServers();
+			// TODO MuninFoo.getInstance().sqlite.saveServers();
 		}
 		
 		private static JSONObject sendImportRequest(String code) {

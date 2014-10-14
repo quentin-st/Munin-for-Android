@@ -7,11 +7,6 @@
 		android:showAsAction="always"
 		android:title="@string/menu_addserver_save"/>
 	<item
-		android:id="@+id/menu_delete"
-		android:icon="@drawable/content_delete_dark"
-		android:showAsAction="always"
-		android:title="@string/menu_addserver_delete"/>
-	<item
 		android:id="@+id/menu_clear_history"
 		android:showAsAction="withText"
 		android:title="@string/text66"/>

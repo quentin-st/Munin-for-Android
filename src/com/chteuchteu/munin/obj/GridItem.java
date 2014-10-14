@@ -30,8 +30,8 @@ import com.chteuchteu.munin.Adapter_IconList;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-import com.chteuchteu.munin.obj.MuninServer.HDGraphs;
 import com.chteuchteu.munin.ui.Activity_Grid;
 
 public class GridItem {
@@ -127,7 +127,7 @@ public class GridItem {
 			fullscreenImageView.setLayoutParams(lParams);*/
 			
 			// Download HD graph if possible
-			if (grid.currentlyOpenedPlugin.getInstalledOn().getHDGraphs() == HDGraphs.TRUE && !Util.getPref(c, "hdGraphs").equals("false")) {
+			if (grid.currentlyOpenedPlugin.getInstalledOn().getParent().getHDGraphs() == HDGraphs.TRUE && !Util.getPref(c, "hdGraphs").equals("false")) {
 				if (this.hdGraphDownloader != null && this.hdGraphDownloader.isDownloading())
 					this.hdGraphDownloader.killDownload();
 				
@@ -165,8 +165,7 @@ public class GridItem {
 			int[] dim = Util.HDGraphs.getBestImageDimensions(imageView, c);
 			String graphUrl = plugin.getHDImgUrl(period, true, dim[0], dim[1]);
 			bitmap = Util.dropShadow(
-					Util.removeBitmapBorder(MuninFoo.grabBitmap(plugin.getInstalledOn(), graphUrl))
-					);
+					Util.removeBitmapBorder(plugin.getInstalledOn().getParent().grabBitmap(graphUrl)) );
 			
 			return null;
 		}
