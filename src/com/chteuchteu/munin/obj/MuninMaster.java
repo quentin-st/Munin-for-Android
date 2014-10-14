@@ -153,7 +153,8 @@ public class MuninMaster {
 	public void setChildren(List<MuninServer> l) { this.children = l; }
 	public List<MuninServer> getChildren() { return this.children; }
 	public void addChild(MuninServer s) {
-		this.children.add(s);
+		if (!this.children.contains(s))
+			this.children.add(s);
 	}
 	public boolean deleteChild(MuninServer s) {
 		return this.children.remove(s);

@@ -154,7 +154,6 @@ public class JSONHelper {
 					}
 					
 					server.setParent(master);
-					master.addChild(server);
 				}
 				
 				muninMasters.add(master);

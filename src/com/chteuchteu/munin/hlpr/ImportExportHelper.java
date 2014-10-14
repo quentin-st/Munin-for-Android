@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -54,9 +55,9 @@ public class ImportExportHelper {
 				String body = builder.toString();
 				
 				JSONObject jsonResult = new JSONObject(body);
-				
+				Log.v("", "jsonString="+jsonString);
 				boolean success = jsonResult.getBoolean("success");
-				
+				Log.v("", "result = " + jsonResult.toString());
 				if (success) {
 					return jsonResult.getString("password");
 				} else {
@@ -125,11 +126,15 @@ public class ImportExportHelper {
 			
 			// Add masters
 			for (MuninMaster newMaster : newMasters) {
-				MuninFoo.getInstance().getMasters().add(newMaster);
-				for (MuninServer server : newMaster.getChildren())
-					MuninFoo.getInstance().addServer(server);
+				// Check if master already added
+				if (!MuninFoo.getInstance().contains(newMaster)) {
+					MuninFoo.getInstance().getMasters().add(newMaster);
+					for (MuninServer server : newMaster.getChildren())
+						MuninFoo.getInstance().addServer(server);
+					
+					MuninFoo.getInstance().sqlite.insertMuninMaster(newMaster);
+				}
 			}
-			// TODO MuninFoo.getInstance().sqlite.saveServers();
 		}
 		
 		private static JSONObject sendImportRequest(String code) {

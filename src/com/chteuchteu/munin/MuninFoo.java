@@ -54,7 +54,7 @@ public class MuninFoo {
 	public boolean premium;
 	
 	// Import/Export webservice
-	public static final String IMPORT_EXPORT_URI = "http://munin-for-android.com/ws/importExport.php";
+	public static final String IMPORT_EXPORT_URI = "http://www.munin-for-android.com/ws/importExport.php";
 	public static final int IMPORT_EXPORT_VERSION = 1;
 	
 	private MuninFoo() {
@@ -356,6 +356,14 @@ public class MuninFoo {
 	
 	public ArrayList<MuninMaster> getMasters() { return (ArrayList<MuninMaster>) this.masters; }
 	
+	public MuninMaster getMaster(String url) {
+		for (MuninMaster master : this.masters) {
+			if (master.getUrl().equals(url))
+				return master;
+		}
+		return null;
+	}
+	
 	public List<String> getMastersNames() {
 		List<String> l = new ArrayList<String>();
 		for (MuninMaster m : this.masters)
@@ -396,6 +404,14 @@ public class MuninFoo {
 	public boolean contains (MuninServer server) {
 		for (MuninServer s : servers) {
 			if (s.equals(server))	return true;
+		}
+		return false;
+	}
+	
+	public boolean contains(MuninMaster master) {
+		for (MuninMaster m : masters) {
+			if (m.equalsApprox(master))
+				return true;
 		}
 		return false;
 	}

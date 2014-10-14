@@ -545,7 +545,7 @@ public class Activity_Server extends Activity {
 					
 					// Plugins lookup for each server
 					for (MuninServer server : master.getChildren()) {
-						setPopupText("", getString(R.string.text46) + " " + master.getChildren().indexOf(server) + "/" + nbNewServers);
+						setPopupText("", getString(R.string.text46) + " " + (master.getChildren().indexOf(server)+1) + "/" + nbNewServers);
 						
 						server.fetchPluginsList();
 						
