@@ -101,7 +101,6 @@ public class Adapter_SeparatedList extends BaseAdapter {
 			}
 			if(position < size) {
 				View view = adapter.getView(position - 1, convertView, parent);
-				Util.Fonts.setFont(context, (ViewGroup) view, CustomFont.RobotoCondensed_Regular);
 				return view;
 			}
 			

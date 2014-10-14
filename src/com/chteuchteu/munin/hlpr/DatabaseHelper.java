@@ -53,18 +53,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// MuninServers
 	private static final String KEY_MUNINSERVERS_SERVERURL = "serverUrl";
 	private static final String KEY_MUNINSERVERS_NAME = "name";
-	@Deprecated
-	private static final String KEY_MUNINSERVERS_AUTHLOGIN = "authLogin";
-	@Deprecated
-	private static final String KEY_MUNINSERVERS_AUTHPASSWORD = "authPassword";
 	private static final String KEY_MUNINSERVERS_GRAPHURL = "graphURL";
-	@Deprecated
-	private static final String KEY_MUNINSERVERS_SSL = "SSL";
 	private static final String KEY_MUNINSERVERS_POSITION = "position";
-	@Deprecated
-	private static final String KEY_MUNINSERVERS_AUTHTYPE = "authType";
-	@Deprecated
-	private static final String KEY_MUNINSERVERS_AUTHSTRING = "authString";
 	private static final String KEY_MUNINSERVERS_MASTER = "master";
 	
 	// MuninPlugins

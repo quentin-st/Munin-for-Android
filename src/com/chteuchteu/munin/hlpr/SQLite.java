@@ -62,50 +62,36 @@ public class SQLite {
 			dbHlpr.insertGridItemRelation(i);
 	}
 	
-	
-	
-	public void logServers() {
-		Log.v("SQLite_old", "==========================================");
-		if (dbHlpr.getServers(muninFoo.masters).size() > 0) {
-			for (MuninServer s : dbHlpr.getServers(muninFoo.masters)) {
-				Log.v("SQLite_old", s.getName() + "\t  " + s.getServerUrl());
-			}
-		} else
-			Log.v("SQLite_old", "No servers in the database.");
-		Log.v("SQLite_old", "==========================================");
-	}
-	/*public void logPlugins() {
-		Log.v("SQLite_old", "==========================================");
-		if (getPlugins().size() > 0) {
-			for (MuninPlugin p : getPlugins()) {
-				Log.v("SQLite_old", p.getName() + "\t  " + p.getFancyName());
-			}
-		} else
-			Log.v("SQLite_old", "No plugins in the database.");
-		Log.v("SQLite_old", "==========================================");
-	}*/
-	private void logLine(int nb) {
-		if (nb == 0)
-			logLine(88);
-		else {
-			String s = "";
-			for (int i=0; i<nb; i++)
-				s += "=";
-			log(s);
-		}
-	}
-	private void log(String txt) {
-		Log.v("", txt);
+	public void migrateTo3() {
+		String KEY_MUNINSERVERS_AUTHLOGIN = "authLogin";
+		String KEY_MUNINSERVERS_AUTHPASSWORD = "authPassword";
+		String KEY_MUNINSERVERS_SSL = "SSL";
+		String KEY_MUNINSERVERS_AUTHTYPE = "authType";
+		String KEY_MUNINSERVERS_AUTHSTRING = "authString";
+		// TODO
 	}
 	
-	public void logMasters() {
-		log("");
-		logLine(60);
-		for (MuninMaster m : this.muninFoo.masters) {
-			log("[" + m.getName() + "]");
-			for (MuninServer s : m.getChildren())
-				log("  - " + s.getName());
-		}
-		logLine(60);
-	}
+    public void logMasters() {
+        log("");
+        logLine(60);
+        for (MuninMaster m : this.muninFoo.masters) {
+            log("[" + m.getName() + "]");
+            for (MuninServer s : m.getChildren())
+                log("  - " + s.getName());
+        }
+        logLine(60);
+    }
+    private void logLine(int nb) {
+        if (nb == 0)
+            logLine(88);
+        else {
+            String s = "";
+            for (int i=0; i<nb; i++)
+                s += "=";
+            log(s);
+        }
+    }
+    private void log(String txt) {
+        Log.v("", txt);
+    }
 }

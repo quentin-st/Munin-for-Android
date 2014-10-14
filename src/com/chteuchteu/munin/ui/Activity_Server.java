@@ -16,7 +16,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -351,9 +350,6 @@ public class Activity_Server extends Activity {
 					progressBar.setVisibility(View.GONE);
 					alert.findViewById(R.id.popup_url).setVisibility(View.VISIBLE);
 					
-					if (MuninFoo.DEBUG)
-						Log.v("askAgainForUrl : err", err);
-					
 					if (err != null && err.contains("Timeout")) {
 						popup_url_message.setVisibility(View.GONE);
 						popup_url_message2.setText(err);
@@ -536,7 +532,7 @@ public class Activity_Server extends Activity {
 		
 		private int finish() {
 			int ret = RES_UNDEFINED;
-			Log.v("", "type : " + type);
+			
 			if (type.equals("munin/")) {
 				/*		CONTENT OF THE PAGE: SERVERS LIST	*/
 				int nbNewServers = master.fetchChildren();
@@ -612,64 +608,18 @@ public class Activity_Server extends Activity {
 						
 						// Success!
 						message_title = getString(R.string.text18);
-						// TODO
-						if (nbNewServers == 0) {
-							String s = "";
-							if (nbNewServers > 1)	s = "s";
-							// X sub-server(s) updated!
-							message_text = nbNewServers + " " + getString(R.string.text21_1) + s + " " + getString(R.string.text21_3);
-						} else {
-							String s = "";
-							if (nbNewServers > 1)	s = "s";
-							// X sub-server(s) added!
-							message_text = nbNewServers + " " + getString(R.string.text21_1) + s + " " + getString(R.string.text21_2);
-						}
+						
+						String s = "";
+						if (nbNewServers > 1)	s = "s";
+						// X sub-server(s) added!
+						message_text = nbNewServers + " " + getString(R.string.text21_1) + s + " " + getString(R.string.text21_2);
+						
 						return RES_SERVERS_SUCCESS;
 					}
 				}
 			}	// ending if (type.equals("munin/")) (servers)
 			/*else if (type.equals("munin/x/")) {
-				///*		CONTENT OF THE PAGE: PLUGINS LIST
-				///*   (long code: here is a potato:	0	)
-				// TODO get parent page...
-				
-				setPopupText(getString(R.string.text44), "");
-				
-				boolean fetchSuccess = settingsServer.fetchPluginsList();
-				
-				if (fetchSuccess) {
-					setPopupState(50);
-					
-					boolean contains = false;
-					for (String s : oldServers) {
-						if (settingsServer.equalsApprox(s))
-							contains = true;
-					}
-					if (!contains)
-						newServers.add(settingsServer.getServerUrl());
-					
-					
-					List<MuninPlugin> settingsServerPlugins = settingsServer.getPlugins();
-					
-					if (settingsServerPlugins.size() > 0) {
-						settingsServer.setPluginsList(settingsServerPlugins);
-						
-						setPopupState(100);
-						
-						muninFoo.addServer(settingsServer);
-						
-						setPopupText(getString(R.string.text45), " ");
-						
-						//alert.setCancelable(false);
-						muninFoo.sqlite.saveServers();
-						//alert.setCancelable(true);
-						
-						message_title = settingsServerPlugins.size() + "";
-						// Success
-						message_text = getString(R.string.text24);
-						return RES_SERVER_SUCCESS;
-					}
-				}
+				// TODO : get parent page
 			}*/
 			return ret;
 		}

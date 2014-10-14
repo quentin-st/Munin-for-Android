@@ -3,6 +3,7 @@ package com.chteuchteu.munin;
 import org.taptwo.android.widget.TitleProvider;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		return position;
 	}
 	
+	@SuppressLint("InflateParams")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null)

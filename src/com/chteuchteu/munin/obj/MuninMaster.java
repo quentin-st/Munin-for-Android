@@ -237,7 +237,7 @@ public class MuninMaster {
 	/**
 	 * Get the type of the given page:
 	 * 	- munin/		: list of servers
-	 * 	- munin/x/		: list of plugins
+	 * 	- munin/x/		: list of plugins (not used)
 	 * 	- err_code		: if error -> error code
 	 * @return
 	 */

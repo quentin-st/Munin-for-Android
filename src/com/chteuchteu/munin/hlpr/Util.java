@@ -383,7 +383,6 @@ public final class Util {
 		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
 	
-	@SuppressLint("TrulyRandom")
 	public static final class Encryption {
 		public static String encrypt(String seed, String cleartext) throws Exception {
 			byte[] rawKey = getRawKey(seed.getBytes());
@@ -398,6 +397,7 @@ public final class Util {
 			return new String(result);
 		}
 		
+		@SuppressLint("TrulyRandom")
 		private static byte[] getRawKey(byte[] seed) throws Exception {
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");
 			SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
