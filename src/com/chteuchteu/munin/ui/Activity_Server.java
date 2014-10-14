@@ -810,7 +810,8 @@ public class Activity_Server extends Activity {
 						@Override
 						public void onClick(View v) {
 							alert.dismiss();
-							Intent intent = new Intent(Activity_Server.this, Activity_Servers.class);
+							muninFoo.currentServer = master.getChildren().get(0);
+							Intent intent = new Intent(Activity_Server.this, Activity_Plugins.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);
 							Util.setTransition(context, TransitionStyle.SHALLOWER);
