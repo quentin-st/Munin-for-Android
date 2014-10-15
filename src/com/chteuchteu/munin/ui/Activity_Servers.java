@@ -118,14 +118,7 @@ public class Activity_Servers extends Activity {
 	 * @param childPosition
 	 */
 	public void onChildClick(int groupPosition, int childPosition) {
-		//final String selected = (String) expListAdapter.getChild(groupPosition, childPosition);
-		// Activity_Server isn't used to edit server anymore
-		/*MuninServer s = muninFoo.masters.get(groupPosition).getServerFromFlatPosition(childPosition);
-		Intent intent = new Intent(Activity_Servers.this, Activity_Server.class);
-		intent.putExtra("contextServerUrl", s.getServerUrl());
-		intent.putExtra("action", "edit");
-		startActivity(intent);
-		Util.setTransition(context, TransitionStyle.DEEPER);*/
+		Toast.makeText(this, R.string.long_click, Toast.LENGTH_SHORT).show();
 	}
 	
 	/**

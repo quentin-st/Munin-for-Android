@@ -271,6 +271,9 @@ public class Activity_Main extends Activity {
 		if (Util.hasPref(context, "splash"))
 			Util.removePref(context, "splash");
 		
+		// MfA 3.0 : moved auth attributes from MuninServer to MuninMaster : migrate those
+		// if possible
+		muninFoo.sqlite.migrateTo3();
 		
 		Util.setPref(context, "lastMFAVersion", MuninFoo.VERSION + "");
 		muninFoo.resetInstance(this);

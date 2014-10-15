@@ -1,6 +1,8 @@
 package com.chteuchteu.munin.hlpr;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
@@ -10,6 +12,7 @@ import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
 public class SQLite {
 	private MuninFoo muninFoo;
@@ -62,13 +65,64 @@ public class SQLite {
 			dbHlpr.insertGridItemRelation(i);
 	}
 	
+	private void l(String str) { Log.v("migrateTo3", str); }
 	public void migrateTo3() {
+		// TODO WIP
+		l("Launching migrateTo3");
 		String KEY_MUNINSERVERS_AUTHLOGIN = "authLogin";
 		String KEY_MUNINSERVERS_AUTHPASSWORD = "authPassword";
 		String KEY_MUNINSERVERS_SSL = "SSL";
 		String KEY_MUNINSERVERS_AUTHTYPE = "authType";
 		String KEY_MUNINSERVERS_AUTHSTRING = "authString";
-		// TODO
+		
+		// Here, columns have already been created.
+		// Let's check if there are some MuninMaster (_not default_)
+		// whose attributes needs to be filled
+		
+		for (MuninMaster master : muninFoo.getMasters()) {
+			l("Loop : master " + master.getName());
+			// DefaultMaster groups several heterogeneous servers.
+			// We can't easily group credentials here
+			if (!master.defaultMaster && !master.isEmpty()) {
+				l("=> not default master :)");
+				// Get the first server
+				MuninServer model = master.getChildAt(0);
+				l("Getting auth information from model " + model.getName());
+				
+				// Get the auth information from db directly
+				String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_MUNINSERVERS
+						+ " WHERE " + DatabaseHelper.KEY_ID + " = " + model.getId();
+				
+				SQLiteDatabase db = dbHlpr.getReadableDatabase();
+				Cursor c = db.rawQuery(selectQuery, null);
+				
+				if (c != null && c.moveToFirst()) { // The server has been found (which should always be the case)
+					AuthType authType = AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE)));
+					
+					master.setAuthType(authType);
+					l("    authType : " + authType.name());
+					if (authType == AuthType.BASIC || authType == AuthType.DIGEST) {
+						String authLogin = c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN));
+						String authPassword = c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD));
+						String authString = c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING));
+						
+						master.setAuthIds(authLogin, authPassword);
+						master.setAuthString(authString);
+						
+						l("    authLogin : " + authLogin);
+						l("    authPassword : " + authPassword);
+						l("    authString : " + authString);
+					}
+					
+					boolean ssl = c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1;
+					master.setSSL(ssl);
+					
+					DatabaseHelper.close(c, db);
+					
+					dbHlpr.saveMuninMaster(master);
+				}
+			}
+		}
 	}
 	
     public void logMasters() {

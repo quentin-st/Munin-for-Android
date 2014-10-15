@@ -28,17 +28,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "muninForAndroid2.db";
 	
 	// Table names
-	private static final String TABLE_MUNINMASTERS = "muninMasters";
-	private static final String TABLE_MUNINSERVERS = "muninServers";
-	private static final String TABLE_MUNINPLUGINS = "muninPlugins";
-	private static final String TABLE_LABELS = "labels";
-	private static final String TABLE_LABELSRELATIONS = "labelsRelations";
-	private static final String TABLE_WIDGETS = "widgets";
-	private static final String TABLE_GRIDS = "grids";
-	private static final String TABLE_GRIDITEMRELATIONS = "gridItemsRelations";
+	public static final String TABLE_MUNINMASTERS = "muninMasters";
+	public static final String TABLE_MUNINSERVERS = "muninServers";
+	public static final String TABLE_MUNINPLUGINS = "muninPlugins";
+	public static final String TABLE_LABELS = "labels";
+	public static final String TABLE_LABELSRELATIONS = "labelsRelations";
+	public static final String TABLE_WIDGETS = "widgets";
+	public static final String TABLE_GRIDS = "grids";
+	public static final String TABLE_GRIDITEMRELATIONS = "gridItemsRelations";
 	
 	// Fields
-	private static final String KEY_ID = "id";
+	public static final String KEY_ID = "id";
 	
 	// MuninMasters
 	private static final String KEY_MUNINMASTERS_NAME = "name";
@@ -187,7 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 	}
 	
-	private void close(Cursor c, SQLiteDatabase db) {
+	public static void close(Cursor c, SQLiteDatabase db) {
 		if (c != null)	c.close();
 		if (db != null)	db.close();
 	}

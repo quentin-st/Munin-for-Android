@@ -161,6 +161,8 @@ public class MuninMaster {
 		return null;
 	}
 	
+	public boolean isEmpty() { return this.children.isEmpty(); }
+	
 	public boolean equalsApprox(MuninMaster p) {
 		if (p == null)
 			return false;
