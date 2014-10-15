@@ -51,7 +51,6 @@ public class Activity_Alerts extends Activity {
 	/* If the menu items are flat / expanded */
 	private boolean		listMode_flat;
 	private View		everythingsOk;
-	private boolean		everythingsOkShown;
 	
 	private List<MuninServer> servers;
 	
@@ -185,7 +184,6 @@ public class Activity_Alerts extends Activity {
 		});
 		
 		everythingsOk = findViewById(R.id.alerts_ok);
-		everythingsOkShown = false;
 		
 		// Launch periodical check
 		if (Util.getPref(this, "autoRefresh").equals("true")) {
@@ -204,7 +202,6 @@ public class Activity_Alerts extends Activity {
 	
 	public void updateView(boolean hideNormal) {
 		everythingsOk.setVisibility(View.GONE);
-		everythingsOkShown = false;
 		
 		boolean shouldDisplayEverytingsOk = true;
 		if (!hideNormal)
@@ -262,10 +259,8 @@ public class Activity_Alerts extends Activity {
 				part_part[i].setVisibility(View.VISIBLE);
 		}
 		
-		if (shouldDisplayEverytingsOk) {
+		if (shouldDisplayEverytingsOk)
 			everythingsOk.setVisibility(View.VISIBLE);
-			everythingsOkShown = true;
-		}
 	}
 	
 	/**

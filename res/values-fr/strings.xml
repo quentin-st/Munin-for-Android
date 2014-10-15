@@ -176,6 +176,7 @@
 	<string name="delete_label">Supprimer ce label</string>
 	<string name="delete_master">Supprimer le master et les sous-serveurs</string>
 	<string name="alerts_ok">Bonne nouvelle - tout va bien</string>
+	<string name="update_credentials">Mettre à jour les infos de connexion</string>
 	<string name="aboutText">
 <![CDATA[
    <head>

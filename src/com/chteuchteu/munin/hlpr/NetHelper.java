@@ -157,8 +157,6 @@ public class NetHelper {
 			in.close();
 			
 			resp.html = str.toString();
-			if (MuninFoo.DEBUG)
-				Log.v("", "Downloaded content : " + resp.html);
 			resp.responseReason = response.getStatusLine().getReasonPhrase();
 			resp.responseCode = response.getStatusLine().getStatusCode();
 			if (response.getHeaders("WWW-Authenticate").length > 0)
