@@ -60,8 +60,6 @@ public class Activity_Servers extends Activity {
 	private MenuItem		exportMenuItem;
 	private String			activityName;
 	
-	public static boolean	menu_firstLoad = true;
-	
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);

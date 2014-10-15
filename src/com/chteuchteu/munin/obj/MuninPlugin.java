@@ -65,16 +65,6 @@ public class MuninPlugin {
 		UNDEFINED, OK, WARNING, CRITICAL
 	}
 	
-	public void importData(MuninPlugin source) {
-		if (source != null) {
-			this.name = source.name;
-			this.fancyName = source.fancyName;
-			this.installedOn = source.installedOn;
-			this.state = source.state;
-			this.category = source.category;
-		}
-	}
-	
 	public void setId(long id) { this.id = id; }
 	public long getId() { return this.id; }
 	
@@ -149,10 +139,6 @@ public class MuninPlugin {
 	
 	public String getPluginUrl() {
 		return this.getInstalledOn().getServerUrl() + this.getName() + ".html";
-	}
-	
-	public Bitmap getGraph(Period period) {
-		return this.installedOn.getParent().grabBitmap(getImgUrl(period));
 	}
 	
 	public Bitmap getGraph(String url) {

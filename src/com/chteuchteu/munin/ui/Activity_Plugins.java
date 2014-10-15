@@ -151,18 +151,18 @@ public class Activity_Plugins extends ListActivity {
 		return mode;
 	}
 	
-	public void switchListViewMode(int mode) {
+	private void switchListViewMode(int mode) {
 		if (mode == MODE_FLAT)
 			Util.setPref(context, "listViewMode", "flat");
 		else
 			Util.setPref(context, "listViewMode", "grouped");
 	}
 	
-	public void updateListView() {
+	private void updateListView() {
 		updateListView(getListViewMode());
 	}
 	
-	public void updateListView(int mode) {
+	private void updateListView(int mode) {
 		if (mode == MODE_FLAT) {
 			pluginsList = new ArrayList<MuninPlugin>();
 			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {

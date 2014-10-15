@@ -268,7 +268,7 @@ public class MuninServer {
 	}
 	
 	
-	public void generatePosition() {
+	private void generatePosition() {
 		MuninFoo muninFoo = MuninFoo.getInstance();
 		// Si toutes positions == -1 -> pos = 0
 		int nbNotNull = 0;
@@ -302,7 +302,7 @@ public class MuninServer {
 	}
 	
 	
-	public List<MuninPlugin> getPluginsByCategory(String c) {
+	private List<MuninPlugin> getPluginsByCategory(String c) {
 		List<MuninPlugin> l = new ArrayList<MuninPlugin>();
 		for (MuninPlugin p : plugins) {
 			if (p.getCategory() != null && p.getCategory().equals(c))

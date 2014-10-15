@@ -268,10 +268,10 @@ public class Activity_Grids extends ListActivity {
 			EasyTracker.getInstance(this).activityStop(this);
 	}
 	
-	class CustomListener implements View.OnClickListener {
+	private class CustomListener implements View.OnClickListener {
 		private final Dialog dialog;
 		private final EditText input;
-		public CustomListener(EditText input, Dialog dialog) {
+		private CustomListener(EditText input, Dialog dialog) {
 			this.dialog = dialog;
 			this.input = input;
 		}

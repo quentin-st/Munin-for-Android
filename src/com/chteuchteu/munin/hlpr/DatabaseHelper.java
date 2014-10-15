@@ -853,7 +853,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				i.period = Period.get(c.getString(c.getColumnIndex(KEY_GRIDITEMRELATIONS_DEFAULTPERIOD)));
 				i.X = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X));
 				i.Y = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_Y));
-				i.isPersistant = true;
 				l.add(i);
 			} while (c.moveToNext());
 		}

@@ -37,7 +37,7 @@ public class Grid {
 		this.f = f;
 	}
 	
-	public void preAdd(GridItem item) {
+	private void preAdd(GridItem item) {
 		// Check if exists
 		boolean exists = false;
 		for (GridItem i : items) {
@@ -99,7 +99,7 @@ public class Grid {
 		f.sqlite.saveGridItemRelations(this);
 	}
 	
-	public GridItem get(int posX, int posY) {
+	private GridItem get(int posX, int posY) {
 		for (GridItem i : items) {
 			if (i.X == posX && i.Y == posY)
 				return i;
@@ -158,7 +158,7 @@ public class Grid {
 		}
 	}
 	
-	public void removeEmptyColumns(Context c) {
+	private void removeEmptyColumns(Context c) {
 		for (int x=nbColumns-1; x>=0; x--) {
 			if (isColumnEmpty(x))
 				removeEmptyColumn(c, x);
@@ -167,7 +167,7 @@ public class Grid {
 		}
 	}
 	
-	public void removeEmptyLines(Context c) {
+	private void removeEmptyLines(Context c) {
 		for (int y=nbLines-1; y>=0; y--) {
 			if (isLineEmpty(y))
 				removeEmptyLine(c, y);
@@ -176,12 +176,6 @@ public class Grid {
 		}
 	}
 	
-	/*public int getGridItemWidth(Context c, int nbCol) {
-		int deviceWidth = Util.getDeviceSize(c)[0];
-		int gridItemWidth = deviceWidth / nbCol;
-		Log.v("", "deviceWidth:" + deviceWidth + " , gridItemWidth:" + gridItemWidth);
-		return gridItemWidth;
-	}*/
 	public int getGridItemHeight(Context c, int nbCol) {
 		float ratio = (float) (800.0 / 600.0);
 		int deviceWidth = Util.getDeviceSize(c)[0];
@@ -237,7 +231,7 @@ public class Grid {
 		}
 	}
 	
-	public boolean removeEmptyColumn(Context c, int x) {
+	private boolean removeEmptyColumn(Context c, int x) {
 		if (x >= nbColumns)
 			return false;
 		
@@ -261,7 +255,7 @@ public class Grid {
 		return false;
 	}
 	
-	public boolean removeEmptyLine(Context c, int y) {
+	private boolean removeEmptyLine(Context c, int y) {
 		if (y >= nbLines)
 			return false;
 		
@@ -319,7 +313,7 @@ public class Grid {
 		view2.addView(content1);
 	}
 	
-	public void disablePlusButtons() {
+	private void disablePlusButtons() {
 		for (int x=0; x<nbColumns; x++) {
 			for (int y=0; y<nbLines; y++) {
 				if (getViewAt(x, y) != null && get(x, y) == null) { // Empty view
@@ -330,7 +324,7 @@ public class Grid {
 		}
 	}
 	
-	public void reEnablePlusButtons() {
+	private void reEnablePlusButtons() {
 		for (int x=0; x<nbColumns; x++) {
 			for (int y=0; y<nbLines; y++) {
 				if (getViewAt(x, y) != null && get(x, y) == null) { // Empty view
@@ -341,7 +335,7 @@ public class Grid {
 		}
 	}
 	
-	public void updateAllGridSizes(Context c) {
+	private void updateAllGridSizes(Context c) {
 		for (int y=0; y<nbLines; y++) {
 			for (int x=0; x<nbColumns; x++) {
 				if (getViewAt(x, y) != null)
@@ -350,7 +344,7 @@ public class Grid {
 		}
 	}
 	
-	public void updateGridSize(LinearLayout v, Context c) {
+	private void updateGridSize(LinearLayout v, Context c) {
 		if (v != null)
 			v.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, getGridItemHeight(c, nbColumns), 1.0f));
 	}
@@ -402,7 +396,7 @@ public class Grid {
 		return lastFullRow + 1;
 	}
 	
-	public boolean isColumnEmpty(int x) {
+	private boolean isColumnEmpty(int x) {
 		for (int y=0; y<nbLines; y++) {
 			if (get(x, y) != null)
 				return false;
@@ -410,7 +404,7 @@ public class Grid {
 		return true;
 	}
 	
-	public boolean isLineEmpty(int y) {
+	private boolean isLineEmpty(int y) {
 		for (int x=0; x<nbColumns; x++) {
 			if (get(x, y) != null)
 				return false;

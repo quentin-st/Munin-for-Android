@@ -35,9 +35,9 @@ public class Activity_ServersEdit extends ListActivity {
 	
 	private MuninMaster		m;
 	private SimpleAdapter 	sa;
-	ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
-	List<MuninServer> 		serversList;
-	List<MuninServer>		deletedServers;
+	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+	private List<MuninServer> 		serversList;
+	private List<MuninServer>		deletedServers;
 	private Menu 			menu;
 	private String			activityName;
 	
@@ -83,7 +83,7 @@ public class Activity_ServersEdit extends ListActivity {
 		super.onResume();
 	}
 	
-	public void updateList(boolean firstTime) {
+	private void updateList(boolean firstTime) {
 		list.clear();
 		HashMap<String,String> item;
 		for (MuninServer s : serversList) {
@@ -100,7 +100,7 @@ public class Activity_ServersEdit extends ListActivity {
 			((BaseAdapter) getListView().getAdapter()).notifyDataSetChanged();
 	}
 	
-	public void actionSave() {
+	private void actionSave() {
 		for (MuninServer s: deletedServers)
 			muninFoo.deleteServer(s, true);
 		

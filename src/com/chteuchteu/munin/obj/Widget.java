@@ -17,23 +17,6 @@ public class Widget {
 		this.hideServerName = false;
 	}
 	
-	public Widget (String p, boolean w, MuninPlugin pl) {
-		this.setPeriod(p);
-		this.setWifiOnly(w);
-		this.setPlugin(pl);
-		this.isPersistant = false;
-		this.hideServerName = false;
-	}
-	
-	public Widget(String period, boolean wifiOnly, boolean hideServerTitle, MuninPlugin plugin, int widgetId) {
-		this.period = period;
-		this.wifiOnly = wifiOnly;
-		this.plugin = plugin;
-		this.widgetId = widgetId;
-		this.isPersistant = false;
-		this.hideServerName = hideServerTitle;
-	}
-	
 	public long getId() { return this.id; }
 	public void setId(long id) { this.id = id; }
 	

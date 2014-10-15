@@ -537,12 +537,12 @@ public class DrawerHelper {
 		}
 	}
 	
-	public class SearchAdapter extends BaseAdapter {
+	private class SearchAdapter extends BaseAdapter {
 		private ArrayList<SearchResult> searchArrayList;
 		private Context context;
 		private LayoutInflater mInflater;
 		
-		public SearchAdapter(Context context, ArrayList<SearchResult> results) {
+		private SearchAdapter(Context context, ArrayList<SearchResult> results) {
 			this.searchArrayList = results;
 			this.mInflater = LayoutInflater.from(context);
 			this.context = context;

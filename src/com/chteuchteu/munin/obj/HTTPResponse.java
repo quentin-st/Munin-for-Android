@@ -14,11 +14,4 @@ public class HTTPResponse {
 		this.header_wwwauthenticate = "";
 		this.timeout = false;
 	}
-	public HTTPResponse(String html, int responseCode) {
-		this.responseReason = "";
-		this.header_wwwauthenticate = "";
-		this.html = html;
-		this.responseCode = responseCode;
-		this.timeout = false;
-	}
 }

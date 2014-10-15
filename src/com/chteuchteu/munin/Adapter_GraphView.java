@@ -63,12 +63,12 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		return convertView;
 	}
 	
-	public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
+	private class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 		private ImageView imageView;
 		private int position;
 		private Context context;
 		
-		public BitmapFetcher (ImageView iv, int position, Context context) {
+		private BitmapFetcher (ImageView iv, int position, Context context) {
 			super();
 			this.imageView = iv;
 			this.position = position;

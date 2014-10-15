@@ -20,7 +20,7 @@ import com.chteuchteu.munin.obj.MuninServer;
 
 
 public class MuninFoo {
-	public static MuninFoo instance;
+	private static MuninFoo instance;
 	private static boolean languageLoaded = false;
 	
 	private List<MuninServer> servers;
@@ -50,7 +50,7 @@ public class MuninFoo {
 	public static final double VERSION = 4.2;
 	// =============== //
 	public static final boolean DEBUG = true;
-	public static final boolean FORCE_NOT_PREMIUM = false;
+	private static final boolean FORCE_NOT_PREMIUM = false;
 	public boolean premium;
 	
 	// Import/Export webservice
@@ -79,7 +79,7 @@ public class MuninFoo {
 	
 	public static boolean isLoaded() { return instance != null; }
 	
-	public void loadInstance() {
+	private void loadInstance() {
 		this.masters = sqlite.dbHlpr.getMasters(this.masters);
 		this.servers = sqlite.dbHlpr.getServers(this.masters);
 		this.labels = sqlite.dbHlpr.getLabels();
@@ -94,7 +94,7 @@ public class MuninFoo {
 			sqlite.logMasters();
 	}
 	
-	public void loadInstance(Context context) {
+	private void loadInstance(Context context) {
 		loadInstance();
 		if (context != null) {
 			// Set default server
@@ -184,12 +184,6 @@ public class MuninFoo {
 		else
 			servers.add(server);
 	}
-	public void updateServer(String oldServerAddress, MuninServer newServer) {
-		for (int i=0; i<servers.size(); i++) {
-			if (servers.get(i) != null && servers.get(i).equalsApprox(oldServerAddress))
-				servers.set(i, newServer);
-		}
-	}
 	public void deleteServer(MuninServer s, boolean rebuildChildren) {
 		if (rebuildChildren)
 			s.getParent().rebuildChildren(this);
@@ -236,25 +230,6 @@ public class MuninFoo {
 			sqlite.saveLabels();
 		return somthingDeleted;
 	}
-	public void unLinkAll() {
-		// Permet d'éviter qu'une récupération de la BDD entraîne une modif locale
-		List<MuninServer> newServers = new ArrayList<MuninServer>();
-		for (MuninServer s : this.servers) {
-			MuninServer serv = new MuninServer();
-			serv.importData(s);
-			newServers.add(serv);
-		}
-		this.servers = newServers;
-	}
-	public void deleteServer(int pos) {
-		if (pos >= 0 && pos < servers.size()) {
-			servers.remove(pos);
-		}
-		if (getHowManyServers() == 0)
-			currentServer = null;
-		else
-			currentServer = servers.get(0);
-	}
 	
 	/**
 	 * Sets the current server if needed
@@ -280,14 +255,6 @@ public class MuninFoo {
 		for (MuninServer server : servers) {
 			if (server != null)
 				return server;
-		}
-		return null;
-	}
-	@Deprecated
-	public MuninServer getServerFromPosition(int position) {
-		for (MuninServer s : servers) {
-			if (s != null && s.getPosition() == position)
-				return s;
 		}
 		return null;
 	}
@@ -338,31 +305,7 @@ public class MuninFoo {
 		return null;
 	}
 	
-	public int getServerRange(MuninServer server) {
-		for (int i=0; i<getHowManyServers(); i++) {
-			if (servers.get(i).getServerUrl().equals(server.getServerUrl()))
-				return i;
-		}
-		return 0;
-	}
-	
-	public int getServerFlatRange(MuninServer s) {
-		for (int i=0; i<getHowManyServers(); i++) {
-			if (getServerFromFlatPosition(i).getServerUrl().equals(s.getServerUrl()))
-				return i;
-		}
-		return 0;
-	}
-	
 	public ArrayList<MuninMaster> getMasters() { return (ArrayList<MuninMaster>) this.masters; }
-	
-	public MuninMaster getMaster(String url) {
-		for (MuninMaster master : this.masters) {
-			if (master.getUrl().equals(url))
-				return master;
-		}
-		return null;
-	}
 	
 	public List<String> getMastersNames() {
 		List<String> l = new ArrayList<String>();
@@ -389,23 +332,12 @@ public class MuninFoo {
 		return 0;
 	}
 	
-	public boolean containsLabel(String lname) {
-		return getLabel(lname) != null;
-	}
-	
 	public Label getLabel(String lname) {
 		for (Label l : labels) {
 			if (l.getName().equals(lname))
 				return l;
 		}
 		return null;
-	}
-	
-	public boolean contains (MuninServer server) {
-		for (MuninServer s : servers) {
-			if (s.equals(server))	return true;
-		}
-		return false;
 	}
 	
 	public boolean contains(MuninMaster master) {
@@ -416,15 +348,7 @@ public class MuninFoo {
 		return false;
 	}
 	
-	public boolean containsApprox (MuninServer server) {
-		// Ne compare que les URL
-		for (MuninServer s : servers) {
-			if (s.equalsApprox(server))	return true;
-		}
-		return false;
-	}
-	
-	public static boolean isPackageInstalled (String packageName, Context c) {
+	private static boolean isPackageInstalled (String packageName, Context c) {
 		PackageManager pm = c.getPackageManager();
 		try {
 			pm.getPackageInfo(packageName, PackageManager.GET_META_DATA);

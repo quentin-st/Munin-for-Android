@@ -129,7 +129,7 @@ public class Activity_Settings extends Activity {
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title13), CustomFont.RobotoCondensed_Bold);
 	}
 	
-	public View inflateCheckable(ViewGroup container, String label) {
+	private View inflateCheckable(ViewGroup container, String label) {
 		de.ankri.views.Switch sw = new de.ankri.views.Switch(this);
 		sw.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		sw.setText(label);
@@ -137,15 +137,15 @@ public class Activity_Settings extends Activity {
 		return sw;
 	}
 	
-	public boolean getCheckableValue(View reference) {
+	private boolean getCheckableValue(View reference) {
 		return ((de.ankri.views.Switch)reference).isChecked();
 	}
 	
-	public void setChecked(View reference, boolean checked) {
+	private void setChecked(View reference, boolean checked) {
 		((de.ankri.views.Switch)reference).setChecked(checked);
 	}
 	
-	public void actionSave() {
+	private void actionSave() {
 		// Graph default scale
 		if (spinner_scale.getSelectedItemPosition() == 0)
 			Util.setPref(context, "defaultScale", "day");
@@ -342,7 +342,7 @@ public class Activity_Settings extends Activity {
 		}
 	}
 	
-	public void actionReset() {
+	private void actionReset() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Settings.this);
 		// Settings will be reset. Are you sure?
 		builder.setMessage(getString(R.string.text01))
@@ -397,7 +397,7 @@ public class Activity_Settings extends Activity {
 		alert.show();
 	}
 	
-	public void actionGPlay() {
+	private void actionGPlay() {
 		try {
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setData(Uri.parse("market://details?id=com.chteuchteu.munin"));

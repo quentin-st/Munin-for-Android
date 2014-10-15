@@ -60,9 +60,8 @@ public class DigestUtils {
 	}
 	
 	public static String match(String headerLine, String token) {
-		if (headerLine == null) {
+		if (headerLine == null)
 			return "";
-		}
 		
 		int match = headerLine.indexOf(token);
 		if (match <= 0) return "";
@@ -75,23 +74,6 @@ public class DigestUtils {
 		return value.startsWith("\"") ? value.substring(1) : value;
 	}
 	
-	public static String toBase16(byte[] bytes) {
-		int base = 16;
-		StringBuilder buf = new StringBuilder();
-		for (byte b : bytes) {
-			int bi = 0xff & b;
-			int c = '0' + (bi / base) % base;
-			if (c > '9')
-				c = 'a' + (c - '0' - 10);
-			buf.append((char) c);
-			c = '0' + bi % base;
-			if (c > '9')
-				c = 'a' + (c - '0' - 10);
-			buf.append((char) c);
-		}
-		return buf.toString();
-	}
-	
 	public static String newCnonce() {
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
@@ -102,7 +84,7 @@ public class DigestUtils {
 		}
 	}
 	
-	public static String toHexString(byte[] data) {
+	private static String toHexString(byte[] data) {
 		StringBuilder buffer = new StringBuilder();
 		for (int i = 0; i < data.length; i++) {
 			buffer.append(Integer.toHexString((data[i] & 0xf0) >>> 4));
@@ -120,7 +102,7 @@ public class DigestUtils {
 		return s;
 	}
 	
-	static MessageDigest getDigest(String algorithm) {
+	private static MessageDigest getDigest(String algorithm) {
 		try {
 			return MessageDigest.getInstance(algorithm);
 		} catch (NoSuchAlgorithmException e) {
@@ -128,7 +110,7 @@ public class DigestUtils {
 		}
 	}
 	
-	protected static String encodeHex(byte[] data) {
+	private static String encodeHex(byte[] data) {
 		int l = data.length;
 		char[] out = new char[l << 1];
 		for (int i = 0, j = 0; i < l; i++) {
@@ -138,7 +120,7 @@ public class DigestUtils {
 		return new String(out);
 	}
 	
-	public static byte[] md5(byte[] data) {
+	private static byte[] md5(byte[] data) {
 		return getDigest("MD5").digest(data);
 	}
 	

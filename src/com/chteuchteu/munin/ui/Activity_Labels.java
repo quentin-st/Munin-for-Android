@@ -60,7 +60,7 @@ public class Activity_Labels extends ListActivity {
 		updateListView();
 	}
 	
-	public void updateListView() {
+	private void updateListView() {
 		list.clear();
 		getListView().setAdapter(null);
 		

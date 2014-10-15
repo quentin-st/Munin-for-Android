@@ -81,8 +81,8 @@ public class Activity_GraphView extends Activity {
 	private static Activity activity;
 	
 	public static Period	load_period;
-	public static ViewFlow	viewFlow;
-	public static int		position;
+	private static ViewFlow	viewFlow;
+	private static int		position;
 	public static Bitmap[]	bitmaps;
 	
 	private MenuItem		item_previous;
@@ -277,11 +277,11 @@ public class Activity_GraphView extends Activity {
 		}
 	}
 	
-	public class DynaZoomDetector extends AsyncTask<Void, Integer, Void> {
+	private class DynaZoomDetector extends AsyncTask<Void, Integer, Void> {
 		private MuninServer server;
 		private boolean dynazoomAvailable;
 		
-		public DynaZoomDetector (MuninServer server) {
+		private DynaZoomDetector (MuninServer server) {
 			super();
 			this.server = server;
 			this.dynazoomAvailable = false;

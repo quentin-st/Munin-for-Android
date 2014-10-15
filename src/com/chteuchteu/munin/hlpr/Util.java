@@ -123,10 +123,6 @@ public final class Util {
 					setFont((ViewGroup) v, font);
 			}
 		}
-		
-		public static Typeface getTypeFace(Context c, CustomFont name) {
-			return Typeface.createFromAsset(c.getAssets(), name.getValue());
-		}
 	}
 	
 	public static int[] getDeviceSize(Context c) {
@@ -259,7 +255,7 @@ public final class Util {
 			return url;
 		}
 		
-		public static String setPort(String url, int port) {
+		private static String setPort(String url, int port) {
 			URL _url = null;
 			try {
 				_url = new URL(url);
@@ -303,47 +299,8 @@ public final class Util {
 		return false;
 	}
 	
-	public static void writeToFile(Context context, String str, String file) {
-		try {
-			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(file, Context.MODE_PRIVATE));
-			outputStreamWriter.write(str);
-			outputStreamWriter.close();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	public static String readFromFile(Context context, String file) {
-		String ret = "";
-		
-		try {
-			InputStream inputStream = context.openFileInput(file);
-			
-			if (inputStream != null) {
-				InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-				String receiveString = "";
-				StringBuilder stringBuilder = new StringBuilder();
-				
-				while ((receiveString = bufferedReader.readLine()) != null) {
-					stringBuilder.append(receiveString);
-				}
-				
-				inputStream.close();
-				ret = stringBuilder.toString();
-			}
-		}
-		catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		
-		return ret;
-	}
-	
 	public static final class HDGraphs {
-		public static float getScreenDensity(Context context) {
+		private static float getScreenDensity(Context context) {
 			return context.getResources().getDisplayMetrics().density;
 		}
 		
@@ -425,14 +382,7 @@ public final class Util {
 			return decrypted;
 		}
 		
-		public static String toHex(String txt) {
-			return toHex(txt.getBytes());
-		}
-		public static String fromHex(String hex) {
-			return new String(toByte(hex));
-		}
-		
-		public static byte[] toByte(String hexString) {
+		private static byte[] toByte(String hexString) {
 			int len = hexString.length()/2;
 			byte[] result = new byte[len];
 			for (int i = 0; i < len; i++)
@@ -440,7 +390,7 @@ public final class Util {
 			return result;
 		}
 		
-		public static String toHex(byte[] buf) {
+		private static String toHex(byte[] buf) {
 			if (buf == null)
 				return "";
 			StringBuffer result = new StringBuffer(2*buf.length);

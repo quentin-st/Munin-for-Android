@@ -23,15 +23,15 @@ import com.chteuchteu.munin.ui.Activity_GoPremium;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 
 public class Widget_GraphWidget extends AppWidgetProvider {
-	public static RemoteViews 		views;
-	public static AppWidgetManager 	awm;
-	public static int				widgetId;
-	public static final String ACTION_UPDATE_GRAPH = "com.chteuchteu.munin.widget.UPDATE_GRAPH";
-	public static final String ACTION_START_ACTIVITY = "com.chteuchteu.munin.widget.START_ACTIVITY";
-	public static final String ACTION_START_PREMIUM = "com.chteuchteu.munin.widget.START_PREMIUM";
+	private static RemoteViews 		views;
+	private static AppWidgetManager 	awm;
+	private static int				widgetId;
+	private static final String ACTION_UPDATE_GRAPH = "com.chteuchteu.munin.widget.UPDATE_GRAPH";
+	private static final String ACTION_START_ACTIVITY = "com.chteuchteu.munin.widget.START_ACTIVITY";
+	private static final String ACTION_START_PREMIUM = "com.chteuchteu.munin.widget.START_PREMIUM";
 	
-	public static SQLite sqlite;
-	public static Widget widget;
+	private static SQLite sqlite;
+	private static Widget widget;
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {

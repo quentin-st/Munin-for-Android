@@ -23,14 +23,6 @@ public class SQLite {
 		this.dbHlpr = new DatabaseHelper(c);
 	}
 	
-	public MuninServer getBDDInstance(MuninServer s) {
-		for (MuninServer serv : dbHlpr.getServers(muninFoo.masters)) {
-			if (s.equalsApprox(serv))
-				return serv;
-		}
-		return s;
-	}
-	
 	public void insertMuninMaster(MuninMaster master) {
 		// Update servers positions
 		for (MuninServer server : master.getChildren())

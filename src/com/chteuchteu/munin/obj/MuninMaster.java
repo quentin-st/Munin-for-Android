@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.obj;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +99,7 @@ public class MuninMaster {
 	/**
 	 * Generates a custom name, to avoid "localdomain"
 	 */
-	public void generateName() {
+	private void generateName() {
 		if (this.url.equals(""))
 			return;
 		
@@ -124,16 +123,7 @@ public class MuninMaster {
 			deleteSelf(f);
 	}
 	
-	public boolean manualRebuildChildren(MuninFoo f) {
-		this.children = new ArrayList<MuninServer>();
-		for (MuninServer s : f.getServers()) {
-			if (s.getParent().getId() == this.id)
-				this.children.add(s);
-		}
-		return this.children.size() == 0; // true = to be deleted
-	}
-	
-	public void deleteSelf(MuninFoo f) {
+	private void deleteSelf(MuninFoo f) {
 		// If there's no more server under this, delete self.
 		f.deleteMuninMaster(this);
 	}
@@ -155,9 +145,6 @@ public class MuninMaster {
 	public void addChild(MuninServer s) {
 		if (!this.children.contains(s))
 			this.children.add(s);
-	}
-	public boolean deleteChild(MuninServer s) {
-		return this.children.remove(s);
 	}
 	public MuninServer getChildAt(int i) {
 		if (i >= 0 && i < this.children.size())
@@ -182,15 +169,7 @@ public class MuninMaster {
 		return null;
 	}
 	
-	public MuninServer getServerFromPosition(int position) {
-		for (MuninServer s : this.children) {
-			if (s != null && s.getPosition() == position)
-				return s;
-		}
-		return null;
-	}
-	
-	public MuninServer getServer(String serverUrl) {
+	private MuninServer getServer(String serverUrl) {
 		for (MuninServer server : this.children) {
 			if (server.getServerUrl().equals(serverUrl))
 				return server;
@@ -486,12 +465,12 @@ public class MuninMaster {
 		new MasterScanner(this, context).execute();
 	}
 	
-	public class MasterScanner extends AsyncTask<Void, Integer, Void> {
+	private class MasterScanner extends AsyncTask<Void, Integer, Void> {
 		private AlertDialog dialog;
 		private Context context;
 		private MuninMaster original;
 		
-		public MasterScanner(MuninMaster master, Context context) {
+		private MasterScanner(MuninMaster master, Context context) {
 			this.original = master;
 			this.context = context;
 		}

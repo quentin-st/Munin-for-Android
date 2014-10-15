@@ -163,7 +163,7 @@ public class Activity_Server extends Activity {
 	}
 	
 	// Actions
-	public void actionSave() {
+	private void actionSave() {
 		if (!tb_serverUrl.getText().toString().equals("") && !tb_serverUrl.getText().toString().equals("http://")) {
 			addInHistory(tb_serverUrl.getText().toString());
 			Util.hideKeyboard(this, tb_serverUrl);
@@ -233,7 +233,7 @@ public class Activity_Server extends Activity {
 		}
 	}
 	
-	public void cancelSave() {
+	private void cancelSave() {
 		if (alert_title1 != null)	alert_title1.setText("");
 		if (alert_title2 != null)	alert_title2.setText("");
 		task.cancel(true);
@@ -245,7 +245,7 @@ public class Activity_Server extends Activity {
 	}
 	
 	@SuppressLint("InflateParams")
-	public class AddServerThread extends AsyncTask<Void, Integer, Void> {
+	private class AddServerThread extends AsyncTask<Void, Integer, Void> {
 		private int res = 0;
 		private int RES_UNDEFINED = 0;
 		private int RES_SERVER_SUCCESS = 1;

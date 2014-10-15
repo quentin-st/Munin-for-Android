@@ -200,7 +200,7 @@ public class Activity_Alerts extends Activity {
 		}
 	}
 	
-	public void updateView(boolean hideNormal) {
+	private void updateView(boolean hideNormal) {
 		everythingsOk.setVisibility(View.GONE);
 		
 		boolean shouldDisplayEverytingsOk = true;
@@ -267,7 +267,7 @@ public class Activity_Alerts extends Activity {
 	 * Update UI
 	 * @param fetch Use cached data or not
 	 */
-	public void updateStates(boolean fetch) {
+	private void updateStates(boolean fetch) {
 		if (fetch && !Util.isOnline(this)) {
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 			return;
@@ -478,7 +478,7 @@ public class Activity_Alerts extends Activity {
 		Util.setTransition(c, TransitionStyle.SHALLOWER);
 	}
 	
-	public void enableArrow(boolean b, int p) {
+	private void enableArrow(boolean b, int p) {
 		if (p >= 0 && p < part_serverName.length) {
 			if (b)
 				part_serverName[p].setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow, 0);

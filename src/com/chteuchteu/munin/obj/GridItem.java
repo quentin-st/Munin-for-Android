@@ -44,15 +44,14 @@ public class GridItem {
 	public Grid 		grid;
 	private Context 	c;
 	public boolean 		editing = false;
-	public LinearLayout outerContainer;
-	public RelativeLayout container;
+	private LinearLayout outerContainer;
+	private RelativeLayout container;
 	public Bitmap 		graph;
 	public ProgressBar 	pb;
-	public boolean		isPersistant;
 	private HDGraphDownloader hdGraphDownloader;
 	
-	public static int 		ICONS_MAX_WIDTH = 220;
-	public static float	ALPHA_EDITING = 0.2f;
+	private static int 	ICONS_MAX_WIDTH = 220;
+	private static float	ALPHA_EDITING = 0.2f;
 	
 	public GridItem(Grid g, MuninPlugin p, Context c) {
 		this.X = 0;
@@ -61,7 +60,6 @@ public class GridItem {
 		this.period = Period.DAY;
 		this.grid = g;
 		this.c = c;
-		this.isPersistant = false;
 		this.hdGraphDownloader = null;
 	}
 	
@@ -98,7 +96,7 @@ public class GridItem {
 		return outerContainer;
 	}
 	
-	public void preview(final Context c) {
+	private void preview(final Context c) {
 		if (graph != null) {
 			Activity_Grid.menu_open.setVisible(true);
 			Activity_Grid.menu_period.setVisible(false);
@@ -137,14 +135,14 @@ public class GridItem {
 		}
 	}
 	
-	public class HDGraphDownloader extends AsyncTask<Void, Integer, Void> {
+	private class HDGraphDownloader extends AsyncTask<Void, Integer, Void> {
 		private MuninPlugin plugin;
 		private ImageView imageView;
 		private Bitmap bitmap;
 		private boolean downloadKilled;
 		private boolean isDownloading;
 		
-		public HDGraphDownloader (MuninPlugin plugin, ImageView imageView) {
+		private HDGraphDownloader (MuninPlugin plugin, ImageView imageView) {
 			super();
 			this.plugin = plugin;
 			this.imageView = imageView;
@@ -179,7 +177,7 @@ public class GridItem {
 				imageView.setImageBitmap(bitmap);
 		}
 		
-		public void killDownload() {
+		private void killDownload() {
 			Util.UI.setLoading(false, (Activity) c);
 			downloadKilled = true;
 			isDownloading = false;

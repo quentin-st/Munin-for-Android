@@ -206,7 +206,7 @@ public class NetHelper {
 		return grabBitmap(master, url, false);
 	}
 	
-	public static Bitmap grabBitmap(MuninMaster master, String url, boolean retried) {
+	private static Bitmap grabBitmap(MuninMaster master, String url, boolean retried) {
 		Bitmap b = null;
 		
 		try {

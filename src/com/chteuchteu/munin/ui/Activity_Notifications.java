@@ -48,7 +48,7 @@ public class Activity_Notifications extends Activity {
 	
 	private Menu 			menu;
 	private String			activityName;
-	public static CheckBox[]	checkboxes;
+	private static CheckBox[]	checkboxes;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -174,7 +174,7 @@ public class Activity_Notifications extends Activity {
 		});
 	}
 	
-	public void changeListViewVisibility(boolean toBeShown) {
+	private void changeListViewVisibility(boolean toBeShown) {
 		if (toBeShown) {
 			findViewById(R.id.list_container).setVisibility(View.VISIBLE);
 			findViewById(R.id.list_scrollview).setVisibility(View.VISIBLE);
@@ -189,7 +189,7 @@ public class Activity_Notifications extends Activity {
 		}
 	}
 
-	public void enableNotifications() {
+	private void enableNotifications() {
 		if (muninFoo.premium) {
 			Util.setPref(c, "lastNotificationText", "");
 			int min = 0;
@@ -208,7 +208,7 @@ public class Activity_Notifications extends Activity {
 		}
 	}
 	
-	public void disableNotifications() {
+	private void disableNotifications() {
 		Util.setPref(c, "lastNotificationText", "");
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		Intent i = new Intent(this, Service_Notifications.class);
@@ -216,7 +216,7 @@ public class Activity_Notifications extends Activity {
 		am.cancel(pi);
 	}
 	
-	public void saveServersListSettings() {
+	private void saveServersListSettings() {
 		String servers = "";
 		int i=0;
 		for (CheckBox c: checkboxes) {
@@ -253,7 +253,7 @@ public class Activity_Notifications extends Activity {
 		computeEstimatedConsumption();
 	}
 	
-	public void computeEstimatedConsumption() {
+	private void computeEstimatedConsumption() {
 		//double pageWeight = 29.5;
 		double pageWeight = 12.25;
 		int refreshRate;

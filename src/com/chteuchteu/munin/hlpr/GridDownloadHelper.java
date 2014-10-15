@@ -49,12 +49,12 @@ public class GridDownloadHelper {
 		Activity_Grid.updating = false;
 	}
 	
-	public class DownloadBitmaps extends AsyncTask<Void, Integer, Void> {
+	private class DownloadBitmaps extends AsyncTask<Void, Integer, Void> {
 		private int i;
 		private boolean forceUpdate;
 		private Bitmap b;
 		
-		public DownloadBitmaps(int i, boolean forceUpdate) {
+		private DownloadBitmaps(int i, boolean forceUpdate) {
 			this.i = i;
 			this.forceUpdate = forceUpdate;
 		}
