@@ -52,7 +52,7 @@ public class NetHelper {
 	 * @return
 	 */
 	public static HTTPResponse grabUrl(MuninMaster master, String url) {
-		HTTPResponse resp = new HTTPResponse("", -1);
+		HTTPResponse resp = new HTTPResponse();
 		
 		if (MuninFoo.DEBUG)
 			Log.v("grabUrl:url", url);

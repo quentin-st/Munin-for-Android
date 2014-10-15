@@ -8,19 +8,17 @@ public class HTTPResponse {
 	public boolean timeout;
 	
 	public HTTPResponse() {
-		html = "";
-		responseCode = -1;
-		responseReason = "";
-		header_wwwauthenticate = "";
-		timeout = false;
+		this.html = "";
+		this.responseCode = -1;
+		this.responseReason = "";
+		this.header_wwwauthenticate = "";
+		this.timeout = false;
 	}
 	public HTTPResponse(String html, int responseCode) {
-		html = "";
-		responseCode = -1;
-		responseReason = "";
-		header_wwwauthenticate = "";
+		this.responseReason = "";
+		this.header_wwwauthenticate = "";
 		this.html = html;
 		this.responseCode = responseCode;
-		timeout = false;
+		this.timeout = false;
 	}
 }

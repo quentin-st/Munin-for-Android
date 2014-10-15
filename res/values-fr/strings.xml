@@ -178,6 +178,7 @@
 	<string name="alerts_ok">Bonne nouvelle - tout va bien</string>
 	<string name="update_credentials">Mettre à jour les infos de connexion</string>
 	<string name="long_click">Appui long pour éditer</string>
+	<string name="rescan">Rescan</string>
 	<string name="aboutText">
 <![CDATA[
    <head>

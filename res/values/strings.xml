@@ -248,5 +248,6 @@
 	<string name="alerts_ok">Good news - everything\'s OK</string>
 	<string name="update_credentials">Edit connection credentials</string>
 	<string name="long_click">Long click to edit</string>
+	<string name="rescan">Rescan</string>
 
 </resources>

@@ -9,7 +9,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
@@ -93,8 +92,6 @@ public class MuninServer {
 	public List<MuninPlugin> getPluginsList() {
 		List<MuninPlugin> mp = new ArrayList<MuninPlugin>();
 		String html = this.master.grabUrl(this.getServerUrl()).html;
-		
-		Log.v("", "Getting html " + html);
 		
 		if (html.equals(""))
 			return null;
@@ -351,40 +348,40 @@ public class MuninServer {
 	public boolean equalsApprox (MuninServer server2) {
 		String address1 = this.getServerUrl();
 		String address2 = server2.getServerUrl();
+		
 		// transformations
 		if (address1.length() > 11) {
-			if (address1.contains("index.html"))
+			if (address1.endsWith("index.html"))
 				address1 = address1.substring(0, address1.length()-11);
 			if (address1.substring(address1.length()-1).equals("/"))
 				address1 = address1.substring(0, address1.length()-1);
 		}
 		if (address2.length() > 11) {
-			if (address2.contains("index.html"))
+			if (address2.endsWith("index.html"))
 				address2 = address2.substring(0, address2.length()-11);
 			if (address2.substring(address2.length()-1).equals("/"))
 				address2 = address2.substring(0, address2.length()-1);
 		}
-		if (!address1.equals(address2))	return false;
-		return true;
+		return address1.equals(address2);
 	}
 	
 	public boolean equalsApprox (String server2) {
 		String address1 = this.getServerUrl();
 		String address2 = server2;
+		
 		// transformations
 		if (address1.length() > 11) {
-			if (address1.contains("index.html"))
+			if (address1.endsWith("index.html"))
 				address1 = address1.substring(0, address1.length()-11);
 			if (address1.substring(address1.length()-1).equals("/"))
 				address1 = address1.substring(0, address1.length()-1);
 		}
 		if (address2.length() > 11) {
-			if (address2.contains("index.html"))
+			if (address2.endsWith("index.html"))
 				address2 = address2.substring(0, address2.length()-11);
 			if (address2.substring(address2.length()-1).equals("/"))
 				address2 = address2.substring(0, address2.length()-1);
 		}
-		if (!address1.equals(address2))	return false;
-		return true;
+		return address1.equals(address2);
 	}
 }

@@ -129,9 +129,9 @@ public class SQLite {
         log("");
         logLine(60);
         for (MuninMaster m : this.muninFoo.masters) {
-            log("[" + m.getName() + "]");
+            log("[" + m.getName() + "] - " + m.getUrl());
             for (MuninServer s : m.getChildren())
-                log("  - " + s.getName());
+                log("  - " + s.getName() + " - " + s.getServerUrl());
         }
         logLine(60);
     }

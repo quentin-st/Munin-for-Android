@@ -1,5 +1,6 @@
 package com.chteuchteu.munin.obj;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +9,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.hlpr.NetHelper;
@@ -288,6 +292,33 @@ public class MuninMaster {
 		
 		if (!html.equals("")) {
 			Document doc = Jsoup.parse(html, this.url);
+			/*
+			 * Between MfA 2.8 and 3.0, we saved Master url as http://demo.munin-monitoring.org/munin-monitoring.org/
+			 * So let's update it if needed.													~~~~~~~~~~~~~~~~~~~~~
+			 * So let's just check if we are on the right page, if not : update the master url.
+			 */
+			if (!doc.select("span.comparison").isEmpty()) {
+				// Replace the current master URL
+				String parentUrl = "test";
+				Elements parentLinks = doc.select("a[href=..]");
+				if (parentLinks.size() == 1)
+					parentUrl = parentLinks.get(0).absUrl("href");
+				else {
+					Elements parentLinks2 = doc.select("a[href=../index.html]");
+					if (parentLinks2.size() == 1)
+						parentUrl = parentLinks.get(0).absUrl("href");
+				}
+				
+				if (!parentUrl.equals(this.url)) {
+					this.url = parentUrl;
+					String htmlBis = grabUrl(parentUrl).html;
+					if (!html.equals("")) {
+						html = htmlBis;
+						doc = Jsoup.parse(html, this.url);
+					}
+				}
+			}
+			// URL catchup ends here
 			
 			// Check if Munin or MunStrap
 			if (html.contains("MunStrap")) { // Munstrap
@@ -299,7 +330,7 @@ public class MuninMaster {
 					
 					// Get the domain name
 					this.name = domain.text();
-					this.url = domain.attr("abs:href");
+					//this.url = domain.attr("abs:href");
 					// Generate a pretty name if needed
 					generateName();
 					
@@ -324,7 +355,7 @@ public class MuninMaster {
 					// Get the domain name
 					Element a = domain.child(0);
 					this.name = a.text();
-					this.url = a.attr("abs:href");
+					//this.url = a.attr("abs:href");
 					// Generate a pretty name if needed
 					generateName();
 					
@@ -332,6 +363,7 @@ public class MuninMaster {
 					// Get every host for that domain
 					Elements hosts = domain.parent().select("span.host");
 					for (Element host : hosts) {
+						Log.v("", "Found server with URL " + host.child(0).attr("abs:href"));
 						MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
 						serv.setParent(this);
 						serv.setPosition(pos);
@@ -448,103 +480,133 @@ public class MuninMaster {
 	
 	/**
 	 * Contacts the URL to check if there are some other servers / plugins for each server
+	 * If defaultMaster => try to divide into several masters
 	 */
-	/*public void rescan() {
-		if (this.defaultMaster)
-			return;
-		
-		new MasterScanner(this).execute();
+	public void rescan(Context context) {
+		new MasterScanner(this, context).execute();
 	}
 	
 	public class MasterScanner extends AsyncTask<Void, Integer, Void> {
-		// TODO
 		private AlertDialog dialog;
+		private Context context;
 		private MuninMaster original;
 		
-		public MasterScanner(MuninMaster master) {
+		public MasterScanner(MuninMaster master, Context context) {
 			this.original = master;
+			this.context = context;
 		}
 		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			
-			
+			//dialog = ProgressDialog.show(context, "", context.getString(R.string.text42), true);
 		}
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// Take first server since it contains connection information
-			if (original.getChildren().size() == 0)
+			if (original.isEmpty())
 				return null;
 			
-			MuninServer firstServer = original.getChildren().get(0);
-			MuninMaster onlineMaster = MuninFoo.getMasterFromServersList(firstServer);
+			// Check online
+			MuninMaster onlineMaster = new MuninMaster();
+			onlineMaster.setUrl(original.getUrl());
+			onlineMaster.setSSL(original.getSSL());
+			onlineMaster.setAuthIds(original.getAuthLogin(), original.getAuthPassword(),
+					original.getAuthType());
 			
-			if (onlineMaster != null && onlineMaster.getChildren().size() > 0) {
+			onlineMaster.fetchChildren();
+			
+			if (onlineMaster != null && !onlineMaster.isEmpty()) {
+				Log.v("", "Launching diff");
 				// SERVERS DIFF
 				// Add new servers if needed
+				ArrayList<MuninServer> toBeAdded = new ArrayList<MuninServer>();
 				for (MuninServer onlineServer : onlineMaster.getChildren()) {
+					Log.v("", "test " + onlineServer.getName() + " - " + onlineServer.getServerUrl());
 					// Check if it is in original
 					boolean alreadyThere = false;
 					for (MuninServer server : original.getChildren()) {
-						if (server.equalsApprox(onlineServer))
+						if (server.equalsApprox(onlineServer)) {
 							alreadyThere = true;
+							break;
+						}
 					}
 					
 					// There server isn't already there
-					if (!alreadyThere)
-						original.addChild(onlineServer);
+					if (!alreadyThere) {
+						Log.v("", "Adding server " + onlineServer.getName());
+						toBeAdded.add(onlineServer);
+					}
 				}
+				original.getChildren().addAll(toBeAdded);
 				
 				// Remove offline servers if needed
+				ArrayList<MuninServer> toBeRemoved = new ArrayList<MuninServer>();
 				for (MuninServer oldServer : original.getChildren()) {
 					// Check if it is still there
 					boolean stillThere = false;
 					for (MuninServer server : onlineMaster.getChildren()) {
-						if (server.equalsApprox(oldServer))
+						if (server.equalsApprox(oldServer)) {
 							stillThere = true;
+							break;
+						}
 					}
 					
 					// The server has been deleted in meantime
-					if (!stillThere)
-						original.deleteChild(oldServer);
+					if (!stillThere) {
+						Log.v("", "Deleting server " + oldServer.getName());
+						toBeRemoved.add(oldServer);
+					}
 				}
+				
+				original.getChildren().removeAll(toBeRemoved);
 				
 				// The servers are now synced.
 				// PLUGINS DIFF
 				for (MuninServer server : original.getChildren()) {
+					Log.v("", "Looping on plugins of server " + server.getName());
 					List<MuninPlugin> onlinePlugins = server.getPluginsList();
 					
 					// If the download hasn't failed
 					if (onlinePlugins != null && onlinePlugins.size() > 0) {
 						// Add new plugins
+						ArrayList<MuninPlugin> pluginsToBeAdded = new ArrayList<MuninPlugin>();
 						for (MuninPlugin onlinePlugin : onlinePlugins) {
 							boolean alreadyThere = false;
 							for (MuninPlugin oldPlugin : server.getPlugins()) {
-								if (oldPlugin.equalsApprox(onlinePlugin))
+								if (oldPlugin.equalsApprox(onlinePlugin)) {
 									alreadyThere = true;
+									break;
+								}
 							}
 							
 							if (!alreadyThere) {
 								Log.v("", "Adding plugin " + onlinePlugin.getName());
-								server.getPlugins().add(onlinePlugin);
+								pluginsToBeAdded.add(onlinePlugin);
 							}
 						}
+						server.getPlugins().addAll(pluginsToBeAdded);
+						
 						
 						// Remove deleted plugins
+						ArrayList<MuninPlugin> pluginsToBeRemoved = new ArrayList<MuninPlugin>();
 						for (MuninPlugin oldPlugin : server.getPlugins()) {
 							boolean stillThere = false;
 							for (MuninPlugin onlinePlugin : onlinePlugins) {
-								if (oldPlugin.equalsApprox(onlinePlugin))
+								if (oldPlugin.equalsApprox(onlinePlugin)) {
 									stillThere = true;
+									break;
+								}
 							}
 							
 							if (!stillThere) {
 								Log.v("", "Removing plugin " + oldPlugin);
-								server.getPlugins().remove(oldPlugin);
+								pluginsToBeRemoved.add(oldPlugin);
 							}
 						}
+						server.getPlugins().removeAll(pluginsToBeRemoved);
 					}
 				}
 			}
@@ -557,7 +619,7 @@ public class MuninMaster {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			
+			//dialog.dismiss();
 		}
-	}*/
+	}
 }

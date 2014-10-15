@@ -193,6 +193,7 @@ public class Activity_Servers extends Activity {
 		AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
 		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
 				context, android.R.layout.simple_list_item_1);
+		arrayAdapter.add(context.getString(R.string.rescan));
 		arrayAdapter.add(context.getString(R.string.editServersTitle));
 		arrayAdapter.add(context.getString(R.string.renameMaster));
 		arrayAdapter.add(context.getString(R.string.update_credentials));
@@ -206,6 +207,9 @@ public class Activity_Servers extends Activity {
 				
 				switch (which) {
 					case 0:
+						master.rescan(context);
+						break;
+					case 1:
 						final EditText input = new EditText(context);
 						input.setText(master.getName());
 						
@@ -226,13 +230,13 @@ public class Activity_Servers extends Activity {
 							public void onClick(DialogInterface dialog, int whichButton) { }
 						}).show();
 						break;
-					case 1:
+					case 2:
 						Intent i = new Intent(context, Activity_ServersEdit.class);
 						i.putExtra("masterId", master.getId());
 						context.startActivity(i);
 						Util.setTransition(context, TransitionStyle.DEEPER);
 						break;
-					case 2:
+					case 3:
 						LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 						final View dialog_updatecredentials = vi.inflate(R.layout.dialog_updatecredentials, null);
 						
@@ -296,7 +300,7 @@ public class Activity_Servers extends Activity {
 							public void onClick(DialogInterface dialog, int whichButton) { }
 						}).show();
 						break;
-					case 3:
+					case 4:
 						muninFoo.deleteMuninMaster(master);
 						context.startActivity(new Intent(context, Activity_Servers.class));
 						break;
