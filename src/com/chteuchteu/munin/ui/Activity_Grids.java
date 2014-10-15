@@ -52,7 +52,7 @@ public class Activity_Grids extends ListActivity {
 		MuninFoo.loadLanguage(this);
 		context = this;
 		
-		setContentView(R.layout.gridselection);
+		setContentView(R.layout.grids);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setTitle(getString(R.string.button_grid));
 		

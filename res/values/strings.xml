@@ -245,5 +245,6 @@
 	<string name="delete_label">Delete label</string>
 	<string name="rename_label">Rename label</string>
 	<string name="delete_master">Delete master and sub-servers</string>
+	<string name="alerts_ok">Good news - everything\'s OK</string>
 
 </resources>

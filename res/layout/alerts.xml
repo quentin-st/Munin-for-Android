@@ -17,12 +17,33 @@
 		android:text="@string/text49.2"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:textColor="#ffffff" />
+	
+	<LinearLayout
+		android:id="@+id/alerts_ok"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center_vertical"
+		android:orientation="vertical"
+		android:visibility="gone" >
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:shadowColor="#ffffff"
+			android:shadowDx="0"
+			android:shadowDy="2"
+			android:shadowRadius="1"
+			android:text="@string/alerts_ok"
+			android:textColor="#4E5258"
+			android:textSize="40sp" />
+	</LinearLayout>
 
 	<ScrollView
 		android:id="@+id/alerts_scrollview"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="#f2f2f2"
 		android:orientation="vertical" >
 
 		<LinearLayout

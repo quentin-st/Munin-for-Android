@@ -50,6 +50,8 @@ public class Activity_Alerts extends Activity {
 	private String			activityName;
 	/* If the menu items are flat / expanded */
 	private boolean		listMode_flat;
+	private View		everythingsOk;
+	private boolean		everythingsOkShown;
 	
 	private List<MuninServer> servers;
 	
@@ -182,6 +184,9 @@ public class Activity_Alerts extends Activity {
 			}
 		});
 		
+		everythingsOk = findViewById(R.id.alerts_ok);
+		everythingsOkShown = false;
+		
 		// Launch periodical check
 		if (Util.getPref(this, "autoRefresh").equals("true")) {
 			mHandler = new Handler();
@@ -198,6 +203,13 @@ public class Activity_Alerts extends Activity {
 	}
 	
 	public void updateView(boolean hideNormal) {
+		everythingsOk.setVisibility(View.GONE);
+		everythingsOkShown = false;
+		
+		boolean shouldDisplayEverytingsOk = true;
+		if (!hideNormal)
+			shouldDisplayEverytingsOk = false;
+		
 		for (int i=0; i<part_part.length; i++) {
 			boolean hide = false;
 			if (hideNormal) {
@@ -220,6 +232,7 @@ public class Activity_Alerts extends Activity {
 						hide = false;
 						part_serverName[i].setClickable(true);
 						enableArrow(true, i);
+						shouldDisplayEverytingsOk = false;
 					}
 				}
 			} else {
@@ -247,6 +260,11 @@ public class Activity_Alerts extends Activity {
 				part_part[i].setVisibility(View.GONE);
 			else
 				part_part[i].setVisibility(View.VISIBLE);
+		}
+		
+		if (shouldDisplayEverytingsOk) {
+			everythingsOk.setVisibility(View.VISIBLE);
+			everythingsOkShown = true;
 		}
 	}
 	

@@ -175,6 +175,7 @@
 	<string name="rename_label">Renommer ce label</string>
 	<string name="delete_label">Supprimer ce label</string>
 	<string name="delete_master">Supprimer le master et les sous-serveurs</string>
+	<string name="alerts_ok">Bonne nouvelle - tout va bien</string>
 	<string name="aboutText">
 <![CDATA[
    <head>
