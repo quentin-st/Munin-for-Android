@@ -188,7 +188,7 @@ public class Activity_Notifications extends Activity {
 			computeEstimatedConsumption();
 		}
 	}
-
+	
 	private void enableNotifications() {
 		if (muninFoo.premium) {
 			Util.setPref(c, "lastNotificationText", "");

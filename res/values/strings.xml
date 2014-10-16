@@ -253,7 +253,7 @@
 	<string name="choose_email_client">Please choose your email app</string>
 	<string name="donate">Donate</string>
 	<string name="donate_text">Developing such a big application requires a huge amount of time and involvement. If the app is useful
-	    in your everyday life, could you condider donating? Thank you! If you did, please send me an email so I can thank you in person!</string>
+	    in your everyday life, could you condider donating? Thank you! If you do, please send me an email so I can thank you in person!</string>
 	<string name="donate_amount">Please select the amount of the donation (33% of this amount will be taken by Google)</string>
 
 </resources>

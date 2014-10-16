@@ -110,47 +110,47 @@ public class Activity_Grids extends ListActivity {
 							final String gridName = gridNameTextView.getText().toString();
 							
 							switch (which) {
-							case 0: // Rename grid
-								final EditText input = new EditText(context);
-								input.setText(gridName);
-								
-								new AlertDialog.Builder(context)
-								.setTitle(R.string.rename_grid)
-								.setView(input)
-								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int whichButton) {
-										String value = input.getText().toString();
-										if (!value.equals(gridName)) {
-											// Check if there's a grid with this name
-											boolean alreadyExists = muninFoo.sqlite.dbHlpr.gridExists(value);
-											if (!alreadyExists) {
-												MuninFoo.getInstance(context).sqlite.dbHlpr.updateGridName(gridName, value);
-												gridNameTextView.setText(value);
-											} else
-												Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
+								case 0: // Rename grid
+									final EditText input = new EditText(context);
+									input.setText(gridName);
+									
+									new AlertDialog.Builder(context)
+									.setTitle(R.string.rename_grid)
+									.setView(input)
+									.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int whichButton) {
+											String value = input.getText().toString();
+											if (!value.equals(gridName)) {
+												// Check if there's a grid with this name
+												boolean alreadyExists = muninFoo.sqlite.dbHlpr.gridExists(value);
+												if (!alreadyExists) {
+													MuninFoo.getInstance(context).sqlite.dbHlpr.updateGridName(gridName, value);
+													gridNameTextView.setText(value);
+												} else
+													Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
+											}
+											dialog.dismiss();
 										}
-										dialog.dismiss();
-									}
-								}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int whichButton) { }
-								}).show();
-								break;
-							case 1: // Delete grid
-								new AlertDialog.Builder(context)
-								.setTitle(R.string.delete)
-								.setMessage(R.string.text80)
-								.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										Grid grid = muninFoo.sqlite.dbHlpr.getGrid(context, muninFoo, gridName);
-										muninFoo.sqlite.dbHlpr.deleteGrid(grid);
-										updateList();
-									}
-								})
-								.setNegativeButton(R.string.text34, null)
-								.show();
-								
-								break;
+									}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int whichButton) { }
+									}).show();
+									break;
+								case 1: // Delete grid
+									new AlertDialog.Builder(context)
+									.setTitle(R.string.delete)
+									.setMessage(R.string.text80)
+									.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											Grid grid = muninFoo.sqlite.dbHlpr.getGrid(context, muninFoo, gridName);
+											muninFoo.sqlite.dbHlpr.deleteGrid(grid);
+											updateList();
+										}
+									})
+									.setNegativeButton(R.string.text34, null)
+									.show();
+									
+									break;
 							}
 						}
 					});

@@ -510,6 +510,7 @@ public class MuninMaster {
 			// Add new servers if needed
 			ArrayList<MuninServer> toBeAdded = new ArrayList<MuninServer>();
 			ArrayList<MuninServer> toBeUpdated = new ArrayList<MuninServer>();
+			// Add / update servers
 			for (MuninServer onlineServer : onlineMaster.getChildren()) {
 				// Check if it is in original
 				boolean alreadyThere = false;
@@ -558,6 +559,7 @@ public class MuninMaster {
 			for (MuninServer server : toBeRemoved) {
 				this.children.remove(server);
 				muninFoo.getServers().remove(server);
+				muninFoo.sqlite.dbHlpr.deleteServer(server);
 			}
 			
 			// The servers are now synced.
@@ -618,8 +620,5 @@ public class MuninMaster {
 				}
 			}
 		}
-		
-		
-		// TODO Get missing information !! (graph url, ...)
 	}
 }

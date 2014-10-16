@@ -141,38 +141,38 @@ public class Activity_Servers extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
-				case 0:
-					new AlertDialog.Builder(context)
-					.setTitle(R.string.delete)
-					.setMessage(R.string.text83)
-					.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// When going back : expand the list to the current master if possible
-							MuninMaster m = null;
-							if (server.getParent() != null && server.getParent().getChildren().size() > 1)
-								m = server.getParent();
-							
-							muninFoo.sqlite.dbHlpr.deleteServer(server);
-							muninFoo.deleteServer(server, true);
-							
-							if (muninFoo.currentServer.equalsApprox(server)) {
-								if (muninFoo.getHowManyServers() == 0)
-									muninFoo.currentServer = null;
-								else
-									muninFoo.currentServer = muninFoo.getServer(0);
+					case 0:
+						new AlertDialog.Builder(context)
+						.setTitle(R.string.delete)
+						.setMessage(R.string.text83)
+						.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// When going back : expand the list to the current master if possible
+								MuninMaster m = null;
+								if (server.getParent() != null && server.getParent().getChildren().size() > 1)
+									m = server.getParent();
+								
+								muninFoo.sqlite.dbHlpr.deleteServer(server);
+								muninFoo.deleteServer(server, true);
+								
+								if (muninFoo.currentServer.equalsApprox(server)) {
+									if (muninFoo.getHowManyServers() == 0)
+										muninFoo.currentServer = null;
+									else
+										muninFoo.currentServer = muninFoo.getServer(0);
+								}
+								
+								Intent intent = new Intent(Activity_Servers.this, Activity_Servers.class);
+								if (m != null)
+									intent.putExtra("fromMaster", m.getId());
+								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								startActivity(intent);
 							}
-							
-							Intent intent = new Intent(Activity_Servers.this, Activity_Servers.class);
-							if (m != null)
-								intent.putExtra("fromMaster", m.getId());
-							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-							startActivity(intent);
-						}
-					})
-					.setNegativeButton(R.string.text34, null)
-					.show();
-					break;
+						})
+						.setNegativeButton(R.string.text34, null)
+						.show();
+						break;
 				}
 			}
 		});
@@ -206,104 +206,108 @@ public class Activity_Servers extends Activity {
 				final MuninMaster master = muninFoo.masters.get(position);
 				
 				switch (which) {
-				case 0: // Rescan
-					new MasterScanner(master, context).execute();
-					break;
-				case 1: // Rename master
-					final EditText input = new EditText(context);
-					input.setText(master.getName());
-					
-					new AlertDialog.Builder(context)
-					.setTitle(R.string.renameMaster)
-					.setView(input)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							String value = input.getText().toString();
-							if (!value.equals(master.getName())) {
-								master.setName(value);
-								MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
-								context.startActivity(new Intent(context, Activity_Servers.class));
-							}
-							dialog.dismiss();
-						}
-					}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) { }
-					}).show();
-					break;
-				case 2: // Reorganize / delete servers
-					Intent i = new Intent(context, Activity_ServersEdit.class);
-					i.putExtra("masterId", master.getId());
-					context.startActivity(i);
-					Util.setTransition(context, TransitionStyle.DEEPER);
-					break;
-				case 3: // Edit connection credentials
-					LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					final View dialog_updatecredentials = vi.inflate(R.layout.dialog_updatecredentials, null);
-					
-					final Spinner sp_authType = (Spinner) dialog_updatecredentials.findViewById(R.id.spinner_auth_type);
-					final CheckBox cb_auth = (CheckBox) dialog_updatecredentials.findViewById(R.id.checkbox_http_auth);
-					final EditText tb_authLogin = (EditText) dialog_updatecredentials.findViewById(R.id.auth_login);
-					final EditText tb_authPassword = (EditText) dialog_updatecredentials.findViewById(R.id.auth_password);
-					final View ll_auth = dialog_updatecredentials.findViewById(R.id.authIds);
-					
-					List<String> list = new ArrayList<String>();
-					list.add("Basic");
-					list.add("Digest");
-					ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, list);
-					dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-					sp_authType.setAdapter(dataAdapter);
-					
-					if (master.isAuthNeeded()) {
-						cb_auth.setChecked(true);
+					case 0: // Rescan
+						new MasterScanner(master, context).execute();
+						break;
+					case 1: // Rename master
+						final EditText input = new EditText(context);
+						input.setText(master.getName());
 						
-						tb_authLogin.setText(master.getAuthLogin());
-						tb_authPassword.setText(master.getAuthPassword());
-						if (master.getAuthType() == AuthType.BASIC)
-							sp_authType.setSelection(0);
-						else if (master.getAuthType() == AuthType.DIGEST)
-							sp_authType.setSelection(1);
-					} else
-						ll_auth.setVisibility(View.GONE);
-					
-					cb_auth.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-						@Override
-						public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-							if (isChecked)
-								ll_auth.setVisibility(View.VISIBLE);
-							else
-								ll_auth.setVisibility(View.GONE);
-						}
-					});
-					
-					
-					new AlertDialog.Builder(context)
-					.setTitle(R.string.update_credentials)
-					.setView(dialog_updatecredentials)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							if (cb_auth.isChecked()) {
-								AuthType authType = AuthType.UNKNOWN;
-								int index = sp_authType.getSelectedItemPosition();
-								if (index == 0)
-									authType = AuthType.BASIC;
-								else
-									authType = AuthType.DIGEST;
-								
-								master.setAuthIds(tb_authLogin.getText().toString(),
-										tb_authPassword.getText().toString(), authType);
-							} else
-								master.setAuthIds("", "", AuthType.NONE);
+						new AlertDialog.Builder(context)
+						.setTitle(R.string.renameMaster)
+						.setView(input)
+						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								String value = input.getText().toString();
+								if (!value.equals(master.getName())) {
+									master.setName(value);
+									MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
+									context.startActivity(new Intent(context, Activity_Servers.class));
+								}
+								dialog.dismiss();
+							}
+						}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) { }
+						}).show();
+						break;
+					case 2: // Reorganize / delete servers
+						Intent i = new Intent(context, Activity_ServersEdit.class);
+						i.putExtra("masterId", master.getId());
+						context.startActivity(i);
+						Util.setTransition(context, TransitionStyle.DEEPER);
+						break;
+					case 3: // Edit connection credentials
+						LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+						final View dialog_updatecredentials = vi.inflate(R.layout.dialog_updatecredentials, null);
+						
+						final Spinner sp_authType = (Spinner) dialog_updatecredentials.findViewById(R.id.spinner_auth_type);
+						final CheckBox cb_auth = (CheckBox) dialog_updatecredentials.findViewById(R.id.checkbox_http_auth);
+						final EditText tb_authLogin = (EditText) dialog_updatecredentials.findViewById(R.id.auth_login);
+						final EditText tb_authPassword = (EditText) dialog_updatecredentials.findViewById(R.id.auth_password);
+						final View ll_auth = dialog_updatecredentials.findViewById(R.id.authIds);
+						
+						List<String> list = new ArrayList<String>();
+						list.add("Basic");
+						list.add("Digest");
+						ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, list);
+						dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+						sp_authType.setAdapter(dataAdapter);
+						
+						if (master.isAuthNeeded()) {
+							cb_auth.setChecked(true);
 							
-							MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
-						}
-					}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) { }
-					}).show();
-					break;
-				case 4: // Delete master
-					muninFoo.deleteMuninMaster(master);
-					context.startActivity(new Intent(context, Activity_Servers.class));
-					break;
+							tb_authLogin.setText(master.getAuthLogin());
+							tb_authPassword.setText(master.getAuthPassword());
+							if (master.getAuthType() == AuthType.BASIC)
+								sp_authType.setSelection(0);
+							else if (master.getAuthType() == AuthType.DIGEST)
+								sp_authType.setSelection(1);
+						} else
+							ll_auth.setVisibility(View.GONE);
+						
+						cb_auth.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+							@Override
+							public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+								if (isChecked)
+									ll_auth.setVisibility(View.VISIBLE);
+								else
+									ll_auth.setVisibility(View.GONE);
+							}
+						});
+						
+						
+						new AlertDialog.Builder(context)
+						.setTitle(R.string.update_credentials)
+						.setView(dialog_updatecredentials)
+						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								if (cb_auth.isChecked()) {
+									AuthType authType = AuthType.UNKNOWN;
+									int index = sp_authType.getSelectedItemPosition();
+									if (index == 0)
+										authType = AuthType.BASIC;
+									else
+										authType = AuthType.DIGEST;
+									
+									if (authType == AuthType.DIGEST == !muninFoo.premium) {
+										Toast.makeText(context, context.getString(R.string.text65), Toast.LENGTH_SHORT).show();
+									} else {
+										master.setAuthIds(tb_authLogin.getText().toString(),
+												tb_authPassword.getText().toString(), authType);
+									}
+								} else
+									master.setAuthIds("", "", AuthType.NONE);
+								
+								MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
+							}
+						}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) { }
+						}).show();
+						break;
+					case 4: // Delete master
+						muninFoo.deleteMuninMaster(master);
+						context.startActivity(new Intent(context, Activity_Servers.class));
+						break;
 				}
 			}
 		});
@@ -417,6 +421,7 @@ public class Activity_Servers extends Activity {
 		@Override
 		protected void onPostExecute(Void result) {
 			dialog.dismiss();
+			context.startActivity(new Intent(Activity_Servers.this, Activity_Servers.class));
 		}
 	}
 	
@@ -461,31 +466,31 @@ public class Activity_Servers extends Activity {
 			dh.closeDrawerIfOpened();
 		Intent intent;
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			dh.getDrawer().toggle(true);
-			return true;
-		case R.id.menu_add:
-			intent = new Intent(this, Activity_Server.class);
-			intent.putExtra("contextServerUrl", "");
-			startActivity(intent);
-			Util.setTransition(context, TransitionStyle.DEEPER);
-			return true;
-		case R.id.menu_import:
-			displayImportDialog();
-			return true;
-		case R.id.menu_export:
-			displayExportDialog();
-			return true;
-		case R.id.menu_settings:
-			startActivity(new Intent(Activity_Servers.this, Activity_Settings.class));
-			Util.setTransition(context, TransitionStyle.DEEPER);
-			return true;
-		case R.id.menu_about:
-			startActivity(new Intent(Activity_Servers.this, Activity_About.class));
-			Util.setTransition(context, TransitionStyle.DEEPER);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+			case android.R.id.home:
+				dh.getDrawer().toggle(true);
+				return true;
+			case R.id.menu_add:
+				intent = new Intent(this, Activity_Server.class);
+				intent.putExtra("contextServerUrl", "");
+				startActivity(intent);
+				Util.setTransition(context, TransitionStyle.DEEPER);
+				return true;
+			case R.id.menu_import:
+				displayImportDialog();
+				return true;
+			case R.id.menu_export:
+				displayExportDialog();
+				return true;
+			case R.id.menu_settings:
+				startActivity(new Intent(Activity_Servers.this, Activity_Settings.class));
+				Util.setTransition(context, TransitionStyle.DEEPER);
+				return true;
+			case R.id.menu_about:
+				startActivity(new Intent(Activity_Servers.this, Activity_About.class));
+				Util.setTransition(context, TransitionStyle.DEEPER);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 	

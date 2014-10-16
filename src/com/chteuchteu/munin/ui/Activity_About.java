@@ -134,7 +134,7 @@ public class Activity_About extends Activity {
 		
 		return true;
 	}
-
+	
 	@Override
 	public void onStart() {
 		super.onStart();

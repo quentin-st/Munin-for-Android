@@ -235,27 +235,27 @@ public class Activity_Plugins extends ListActivity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
-						case 0:
-							TextView plu = (TextView) view.findViewById(R.id.line_b);
-							for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-								MuninPlugin plugin = muninFoo.currentServer.getPlugin(i);
-								if (plugin != null && plugin.getName().equals(plu.getText().toString())) {
-									muninFoo.currentServer.getPlugins().remove(plugin);
-									muninFoo.sqlite.dbHlpr.deleteMuninPlugin(plugin, true);
-									
-									// Save scroll state
-									int index = getListView().getFirstVisiblePosition();
-									View v = getListView().getChildAt(0);
-									int top = (v == null) ? 0 : v.getTop();
-									
-									updateListView();
-									
-									getListView().setSelectionFromTop(index, top);
-									break;
+							case 0:
+								TextView plu = (TextView) view.findViewById(R.id.line_b);
+								for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
+									MuninPlugin plugin = muninFoo.currentServer.getPlugin(i);
+									if (plugin != null && plugin.getName().equals(plu.getText().toString())) {
+										muninFoo.currentServer.getPlugins().remove(plugin);
+										muninFoo.sqlite.dbHlpr.deleteMuninPlugin(plugin, true);
+										
+										// Save scroll state
+										int index = getListView().getFirstVisiblePosition();
+										View v = getListView().getChildAt(0);
+										int top = (v == null) ? 0 : v.getTop();
+										
+										updateListView();
+										
+										getListView().setSelectionFromTop(index, top);
+										break;
+									}
 								}
-							}
-							
-							break;
+								
+								break;
 						}
 					}
 				});

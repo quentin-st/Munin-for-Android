@@ -50,7 +50,7 @@ public class MuninFoo {
 	public static final double VERSION = 4.2;
 	// =============== //
 	public static final boolean DEBUG = true;
-	private static final boolean FORCE_NOT_PREMIUM = false;
+	private static final boolean FORCE_NOT_PREMIUM = true;
 	public boolean premium;
 	
 	// Import/Export webservice

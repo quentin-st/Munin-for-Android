@@ -102,45 +102,45 @@ public class Activity_Labels extends ListActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							switch (which) {
-							case 0: // Rename label
-								final EditText input = new EditText(context);
-								input.setText(labelName);
-								
-								new AlertDialog.Builder(context)
-								.setTitle(R.string.rename_label)
-								.setView(input)
-								.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int whichButton) {
-										String value = input.getText().toString();
-										if (!value.equals(labelName)) {
-											Label label = muninFoo.getLabel(labelName);
-											label.setName(value);
-											MuninFoo.getInstance(context).sqlite.dbHlpr.updateLabel(label);
-											labelNameTextView.setText(value);
+								case 0: // Rename label
+									final EditText input = new EditText(context);
+									input.setText(labelName);
+									
+									new AlertDialog.Builder(context)
+									.setTitle(R.string.rename_label)
+									.setView(input)
+									.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int whichButton) {
+											String value = input.getText().toString();
+											if (!value.equals(labelName)) {
+												Label label = muninFoo.getLabel(labelName);
+												label.setName(value);
+												MuninFoo.getInstance(context).sqlite.dbHlpr.updateLabel(label);
+												labelNameTextView.setText(value);
+											}
+											dialog.dismiss();
 										}
-										dialog.dismiss();
-									}
-								}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int whichButton) { }
-								}).show();
-								break;
-							case 1: // Delete label
-								new AlertDialog.Builder(context)
-								.setTitle(R.string.delete)
-								.setMessage(R.string.text82)
-								.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										Label label = muninFoo.getLabel(labelName);
-										
-										muninFoo.removeLabel(label);
-										updateListView();
-									}
-								})
-								.setNegativeButton(R.string.text34, null)
-								.show();
-								
-								break;
+									}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int whichButton) { }
+									}).show();
+									break;
+								case 1: // Delete label
+									new AlertDialog.Builder(context)
+									.setTitle(R.string.delete)
+									.setMessage(R.string.text82)
+									.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											Label label = muninFoo.getLabel(labelName);
+											
+											muninFoo.removeLabel(label);
+											updateListView();
+										}
+									})
+									.setNegativeButton(R.string.text34, null)
+									.show();
+									
+									break;
 							}
 						}
 					});
