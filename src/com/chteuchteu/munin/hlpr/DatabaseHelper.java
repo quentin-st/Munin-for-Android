@@ -262,10 +262,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(null, db);
 	}
 	
-	public void deleteMuninPlugin(MuninPlugin p) {
+	public void deleteMuninPlugin(MuninPlugin p, boolean onCascade) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_MUNINPLUGINS, KEY_ID + " = ?", new String[] { String.valueOf(p.getId()) });
 		close(null, db);
+		
+		if (onCascade) {
+			deleteGridItemRelations(p);
+			deleteLabelsRelations(p);
+			deleteWidgets(p);
+		}
 	}
 	
 	public long saveMuninPlugin(MuninPlugin p) {

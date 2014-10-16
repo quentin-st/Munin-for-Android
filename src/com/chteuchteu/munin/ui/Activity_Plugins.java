@@ -55,7 +55,7 @@ public class Activity_Plugins extends ListActivity {
 	private List<MuninPlugin>	pluginsList;
 	private List<List<MuninPlugin>> pluginsListCat;
 	private MuninPlugin[] 		pluginsFilter;
-	private int					actionBarSpinnerIndex;
+	private int				actionBarSpinnerIndex;
 	
 	private LinearLayout	ll_filter;
 	private EditText		filter;
@@ -241,7 +241,7 @@ public class Activity_Plugins extends ListActivity {
 								MuninPlugin plugin = muninFoo.currentServer.getPlugin(i);
 								if (plugin != null && plugin.getName().equals(plu.getText().toString())) {
 									muninFoo.currentServer.getPlugins().remove(plugin);
-									muninFoo.sqlite.dbHlpr.deleteMuninPlugin(plugin);
+									muninFoo.sqlite.dbHlpr.deleteMuninPlugin(plugin, true);
 									
 									// Save scroll state
 									int index = getListView().getFirstVisiblePosition();

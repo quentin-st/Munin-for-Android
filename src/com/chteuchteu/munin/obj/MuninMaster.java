@@ -8,15 +8,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.hlpr.NetHelper;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
 public class MuninMaster {
@@ -113,6 +112,36 @@ public class MuninMaster {
 		this.name = Util.URLManipulation.getHostFromUrl(this.url, this.name);
 	}
 	
+	/**
+	 * Checks if dynazoom is available.
+	 * Warning : this has to be done on a thread
+	 * @return
+	 */
+	public boolean isDynazoomAvailable() {
+		if (this.defaultMaster || this.isEmpty())
+			return false;
+		
+		MuninServer server = getChildAt(0);
+		if (server == null)
+			return false;
+		MuninPlugin plugin = server.getPlugin(0);
+		if (plugin == null)
+			return false;
+		
+		String hdGraphUrl = plugin.getHDImgUrl(Period.DAY);
+		HTTPResponse res = grabUrl(hdGraphUrl);
+		
+		boolean seemsAvailable = res.timeout == false && res.responseCode == 200;
+		
+		if (!seemsAvailable)
+			return false;
+		
+		// At this point, the dynazoom seems available. Let's try to download a bitmap to
+		// see if we get a bitmap (instead of a custom 404 error)
+		Bitmap bitmap = grabBitmap(hdGraphUrl);
+		return bitmap != null;
+	}
+	
 	public void rebuildChildren(MuninFoo f) {
 		this.children = new ArrayList<MuninServer>();
 		for (MuninServer s : f.getServers()) {
@@ -143,8 +172,10 @@ public class MuninMaster {
 	public void setChildren(List<MuninServer> l) { this.children = l; }
 	public List<MuninServer> getChildren() { return this.children; }
 	public void addChild(MuninServer s) {
-		if (!this.children.contains(s))
+		if (!this.children.contains(s)) {
 			this.children.add(s);
+			s.setParent(this);
+		}
 	}
 	public MuninServer getChildAt(int i) {
 		if (i >= 0 && i < this.children.size())
@@ -461,144 +492,134 @@ public class MuninMaster {
 	 * Contacts the URL to check if there are some other servers / plugins for each server
 	 * If defaultMaster => try to divide into several masters
 	 */
-	public void rescan(Context context) {
-		new MasterScanner(this, context).execute();
-	}
-	
-	private class MasterScanner extends AsyncTask<Void, Integer, Void> {
-		private AlertDialog dialog;
-		private Context context;
-		private MuninMaster original;
+	public void rescan(Context context, MuninFoo muninFoo) {
+		// Take first server since it contains connection information
+		if (isEmpty())
+			return;
 		
-		private MasterScanner(MuninMaster master, Context context) {
-			this.original = master;
-			this.context = context;
-		}
+		// Check online
+		MuninMaster onlineMaster = new MuninMaster();
+		onlineMaster.setUrl(this.url);
+		onlineMaster.setSSL(this.ssl);
+		onlineMaster.setAuthIds(this.authLogin, this.authPassword, this.authType);
 		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			
-			//dialog = ProgressDialog.show(context, "", context.getString(R.string.text42), true);
-		}
+		onlineMaster.fetchChildren();
 		
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			// Take first server since it contains connection information
-			if (original.isEmpty())
-				return null;
-			
-			// Check online
-			MuninMaster onlineMaster = new MuninMaster();
-			onlineMaster.setUrl(original.getUrl());
-			onlineMaster.setSSL(original.getSSL());
-			onlineMaster.setAuthIds(original.getAuthLogin(), original.getAuthPassword(),
-					original.getAuthType());
-			
-			onlineMaster.fetchChildren();
-			
-			if (onlineMaster != null && !onlineMaster.isEmpty()) {
-				Log.v("", "Launching diff");
-				// SERVERS DIFF
-				// Add new servers if needed
-				ArrayList<MuninServer> toBeAdded = new ArrayList<MuninServer>();
-				for (MuninServer onlineServer : onlineMaster.getChildren()) {
-					Log.v("", "test " + onlineServer.getName() + " - " + onlineServer.getServerUrl());
-					// Check if it is in original
-					boolean alreadyThere = false;
-					for (MuninServer server : original.getChildren()) {
-						if (server.equalsApprox(onlineServer)) {
-							alreadyThere = true;
-							break;
-						}
-					}
-					
-					// There server isn't already there
-					if (!alreadyThere) {
-						Log.v("", "Adding server " + onlineServer.getName());
-						toBeAdded.add(onlineServer);
-					}
-				}
-				original.getChildren().addAll(toBeAdded);
-				
-				// Remove offline servers if needed
-				ArrayList<MuninServer> toBeRemoved = new ArrayList<MuninServer>();
-				for (MuninServer oldServer : original.getChildren()) {
-					// Check if it is still there
-					boolean stillThere = false;
-					for (MuninServer server : onlineMaster.getChildren()) {
-						if (server.equalsApprox(oldServer)) {
-							stillThere = true;
-							break;
-						}
-					}
-					
-					// The server has been deleted in meantime
-					if (!stillThere) {
-						Log.v("", "Deleting server " + oldServer.getName());
-						toBeRemoved.add(oldServer);
-					}
-				}
-				
-				original.getChildren().removeAll(toBeRemoved);
-				
-				// The servers are now synced.
-				// PLUGINS DIFF
-				for (MuninServer server : original.getChildren()) {
-					Log.v("", "Looping on plugins of server " + server.getName());
-					List<MuninPlugin> onlinePlugins = server.getPluginsList();
-					
-					// If the download hasn't failed
-					if (onlinePlugins != null && onlinePlugins.size() > 0) {
-						// Add new plugins
-						ArrayList<MuninPlugin> pluginsToBeAdded = new ArrayList<MuninPlugin>();
-						for (MuninPlugin onlinePlugin : onlinePlugins) {
-							boolean alreadyThere = false;
-							for (MuninPlugin oldPlugin : server.getPlugins()) {
-								if (oldPlugin.equalsApprox(onlinePlugin)) {
-									alreadyThere = true;
-									break;
-								}
-							}
-							
-							if (!alreadyThere) {
-								Log.v("", "Adding plugin " + onlinePlugin.getName());
-								pluginsToBeAdded.add(onlinePlugin);
-							}
-						}
-						server.getPlugins().addAll(pluginsToBeAdded);
+		if (onlineMaster != null && !onlineMaster.isEmpty()) {
+			// SERVERS DIFF
+			// Add new servers if needed
+			ArrayList<MuninServer> toBeAdded = new ArrayList<MuninServer>();
+			ArrayList<MuninServer> toBeUpdated = new ArrayList<MuninServer>();
+			for (MuninServer onlineServer : onlineMaster.getChildren()) {
+				// Check if it is in original
+				boolean alreadyThere = false;
+				for (MuninServer server : this.children) {
+					if (server.equalsApprox(onlineServer)) {
+						alreadyThere = true;
 						
+						// Check if we can grab some attributes
+						if (!server.getGraphURL().equals(onlineServer.getGraphURL()))
+							toBeUpdated.add(server);
 						
-						// Remove deleted plugins
-						ArrayList<MuninPlugin> pluginsToBeRemoved = new ArrayList<MuninPlugin>();
-						for (MuninPlugin oldPlugin : server.getPlugins()) {
-							boolean stillThere = false;
-							for (MuninPlugin onlinePlugin : onlinePlugins) {
-								if (oldPlugin.equalsApprox(onlinePlugin)) {
-									stillThere = true;
-									break;
-								}
-							}
-							
-							if (!stillThere) {
-								Log.v("", "Removing plugin " + oldPlugin);
-								pluginsToBeRemoved.add(oldPlugin);
-							}
-						}
-						server.getPlugins().removeAll(pluginsToBeRemoved);
+						break;
 					}
 				}
+				
+				// There server isn't already there
+				if (!alreadyThere)
+					toBeAdded.add(onlineServer);
 			}
 			
+			for (MuninServer server : toBeAdded) {
+				addChild(server);
+				muninFoo.addServer(server);
+				muninFoo.sqlite.dbHlpr.insertMuninServer(server);
+			}
+			for (MuninServer server : toBeUpdated)
+				muninFoo.sqlite.dbHlpr.updateMuninServer(server);
 			
-			// Get missing information !! (graph url, ...)
+			// Remove offline servers if needed
+			ArrayList<MuninServer> toBeRemoved = new ArrayList<MuninServer>();
+			for (MuninServer oldServer : this.children) {
+				// Check if it is still there
+				boolean stillThere = false;
+				for (MuninServer server : onlineMaster.getChildren()) {
+					if (server.equalsApprox(oldServer)) {
+						stillThere = true;
+						break;
+					}
+				}
+				
+				// The server has been deleted in meantime
+				if (!stillThere)
+					toBeRemoved.add(oldServer);
+			}
 			
-			return null;
+			for (MuninServer server : toBeRemoved) {
+				this.children.remove(server);
+				muninFoo.getServers().remove(server);
+			}
+			
+			// The servers are now synced.
+			// PLUGINS DIFF
+			for (MuninServer server : this.children) {
+				List<MuninPlugin> onlinePlugins = server.getPluginsList();
+				
+				// If the download hasn't failed
+				if (onlinePlugins != null && onlinePlugins.size() > 0) {
+					// Add new plugins
+					ArrayList<MuninPlugin> pluginsToBeAdded = new ArrayList<MuninPlugin>();
+					ArrayList<MuninPlugin> pluginsToBeUpdated = new ArrayList<MuninPlugin>();
+					for (MuninPlugin onlinePlugin : onlinePlugins) {
+						boolean alreadyThere = false;
+						for (MuninPlugin oldPlugin : server.getPlugins()) {
+							if (oldPlugin.equalsApprox(onlinePlugin)) {
+								alreadyThere = true;
+								
+								// Get other values
+								if (!oldPlugin.getCategory().equals(onlinePlugin.getCategory())) {
+									oldPlugin.setCategory(onlinePlugin.getCategory());
+									pluginsToBeUpdated.add(oldPlugin);
+								}
+								
+								break;
+							}
+						}
+						
+						if (!alreadyThere)
+							pluginsToBeAdded.add(onlinePlugin);
+					}
+					for (MuninPlugin plugin : pluginsToBeAdded) {
+						// Update "installedOn" and insert:
+						server.addPlugin(plugin);
+						muninFoo.sqlite.dbHlpr.insertMuninPlugin(plugin);
+					}
+					for (MuninPlugin plugin : pluginsToBeUpdated)
+						muninFoo.sqlite.dbHlpr.updateMuninPlugin(plugin);
+					
+					
+					// Remove deleted plugins
+					ArrayList<MuninPlugin> pluginsToBeRemoved = new ArrayList<MuninPlugin>();
+					for (MuninPlugin oldPlugin : server.getPlugins()) {
+						boolean stillThere = false;
+						for (MuninPlugin onlinePlugin : onlinePlugins) {
+							if (oldPlugin.equalsApprox(onlinePlugin)) {
+								stillThere = true;
+								break;
+							}
+						}
+						
+						if (!stillThere) {
+							pluginsToBeRemoved.add(oldPlugin);
+							muninFoo.sqlite.dbHlpr.deleteMuninPlugin(oldPlugin, true);
+						}
+					}
+					server.getPlugins().removeAll(pluginsToBeRemoved);
+				}
+			}
 		}
 		
-		@Override
-		protected void onPostExecute(Void result) {
-			//dialog.dismiss();
-		}
+		
+		// TODO Get missing information !! (graph url, ...)
 	}
 }

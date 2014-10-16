@@ -295,7 +295,7 @@ public class Activity_GraphView extends Activity {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			dynazoomAvailable = server.isDynazoomAvailable();
+			dynazoomAvailable = server.getParent().isDynazoomAvailable();
 			return null;
 		}
 		

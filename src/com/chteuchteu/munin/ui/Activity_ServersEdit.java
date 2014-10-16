@@ -101,13 +101,16 @@ public class Activity_ServersEdit extends ListActivity {
 	}
 	
 	private void actionSave() {
-		for (MuninServer s: deletedServers)
+		for (MuninServer s: deletedServers) {
 			muninFoo.deleteServer(s, true);
+			muninFoo.sqlite.dbHlpr.deleteServer(s);
+		}
 		
-		for (int i=0; i<serversList.size(); i++)
+		for (int i=0; i<serversList.size(); i++) {
 			muninFoo.getServer(serversList.get(i).getServerUrl()).setPosition(i);
+			muninFoo.sqlite.dbHlpr.saveMuninServer(serversList.get(i));
+		}
 		
-		// TODO muninFoo.sqlite.saveServers();
 		muninFoo.resetInstance(this);
 	}
 	

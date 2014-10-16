@@ -8,11 +8,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.graphics.Bitmap;
-
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
-import com.chteuchteu.munin.obj.MuninPlugin.Period;
 
 public class MuninServer {
 	private long id;
@@ -81,9 +78,14 @@ public class MuninServer {
 	public void setWarnedPlugins(List<MuninPlugin> mp) { this.warnedPlugins = mp; }
 	public List<MuninPlugin> getWarnedPlugins() { return this.warnedPlugins; }
 	
+	public void addPlugin(MuninPlugin plugin) {
+		plugin.setInstalledOn(this);
+		this.plugins.add(plugin);
+	}
+	
 	public void setParent(MuninMaster p) {
 		this.master = p;
-		if (p != null && !p.getChildren().contains(p))
+		if (p != null && !p.getChildren().contains(this))
 			p.addChild(this);
 	}
 	public MuninMaster getParent() { return this.master; }
@@ -218,30 +220,6 @@ public class MuninServer {
 		this.erroredPlugins = source.erroredPlugins;
 		this.warnedPlugins = source.warnedPlugins;
 		this.master = source.master;
-	}
-	
-	/**
-	 * Checks if dynazoom is available.
-	 * Warning : this has to be done on a thread
-	 * @return
-	 */
-	public boolean isDynazoomAvailable() {
-		MuninPlugin plugin = this.getPlugin(0);
-		if (plugin == null)
-			return false;
-		
-		String hdGraphUrl = plugin.getHDImgUrl(Period.DAY);
-		HTTPResponse res = master.grabUrl(hdGraphUrl);
-		
-		boolean seemsAvailable = res.timeout == false && res.responseCode == 200;
-		
-		if (!seemsAvailable)
-			return false;
-		
-		// At this point, the dynazoom seems available. Let's try to download a bitmap to
-		// see if we get a bitmap (instead of a custom 404 error)
-		Bitmap bitmap = getParent().grabBitmap(hdGraphUrl);
-		return bitmap != null;
 	}
 	
 	public MuninPlugin getPlugin(int pos) {
