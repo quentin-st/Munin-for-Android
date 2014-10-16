@@ -16,7 +16,6 @@ import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.chteuchteu.munin.obj.Widget;
@@ -86,7 +85,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_GRIDITEMRELATIONS_X = "x";
 	private static final String KEY_GRIDITEMRELATIONS_Y = "y";
 	private static final String KEY_GRIDITEMRELATIONS_PLUGIN = "plugin";
-	private static final String KEY_GRIDITEMRELATIONS_DEFAULTPERIOD = "defaultPeriod";
 	
 	
 	private static final String CREATE_TABLE_MUNINMASTERS = "CREATE TABLE " + TABLE_MUNINMASTERS + " ("
@@ -143,7 +141,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
 			+ KEY_GRIDITEMRELATIONS_GRID + " INTEGER,"
 			+ KEY_GRIDITEMRELATIONS_PLUGIN + " INTEGER,"
-			+ KEY_GRIDITEMRELATIONS_DEFAULTPERIOD + " TEXT,"
 			+ KEY_GRIDITEMRELATIONS_X + " INTEGER,"
 			+ KEY_GRIDITEMRELATIONS_Y + ")";
 	
@@ -350,7 +347,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		try {
 			values.put(KEY_GRIDITEMRELATIONS_GRID, i.grid.id);
 			values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.plugin.getId());
-			values.put(KEY_GRIDITEMRELATIONS_DEFAULTPERIOD, i.period.toString());
 			values.put(KEY_GRIDITEMRELATIONS_X, i.X);
 			values.put(KEY_GRIDITEMRELATIONS_Y, i.Y);
 		} catch (NullPointerException ex) {
@@ -431,7 +427,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_GRIDITEMRELATIONS_GRID, i.grid.id);
 		values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.plugin.getId());
-		values.put(KEY_GRIDITEMRELATIONS_DEFAULTPERIOD, i.period.toString());
 		values.put(KEY_GRIDITEMRELATIONS_X, i.X);
 		values.put(KEY_GRIDITEMRELATIONS_Y, i.Y);
 		
@@ -852,7 +847,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				MuninPlugin plugin = muninFoo.getPlugin(pluginId);
 				GridItem i = new GridItem(grid, plugin, context);
 				i.id = c.getInt(c.getColumnIndex(KEY_ID));
-				i.period = Period.get(c.getString(c.getColumnIndex(KEY_GRIDITEMRELATIONS_DEFAULTPERIOD)));
 				i.X = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X));
 				i.Y = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_Y));
 				l.add(i);

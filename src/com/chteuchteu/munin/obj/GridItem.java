@@ -38,17 +38,17 @@ public class GridItem {
 	public long			id;
 	public int 			X;
 	public int 			Y;
-	public MuninPlugin 	plugin;
-	public Period 		period;
-	public ImageView 	iv;
-	public Grid 		grid;
-	private Context 	c;
+	public MuninPlugin 		plugin;
+	public ImageView 		iv;
+	public Grid 			grid;
+	private Context 		c;
 	public boolean 		editing = false;
-	private LinearLayout outerContainer;
+	private LinearLayout 	outerContainer;
 	private RelativeLayout container;
-	public Bitmap 		graph;
-	public ProgressBar 	pb;
+	public Bitmap 			graph;
+	public ProgressBar 		pb;
 	private HDGraphDownloader hdGraphDownloader;
+	private Period 			period;
 	
 	private static int 	ICONS_MAX_WIDTH = 220;
 	private static float	ALPHA_EDITING = 0.2f;
@@ -57,10 +57,10 @@ public class GridItem {
 		this.X = 0;
 		this.Y = 0;
 		this.plugin = p;
-		this.period = Period.DAY;
 		this.grid = g;
 		this.c = c;
 		this.hdGraphDownloader = null;
+		this.period = Util.getDefaultPeriod(c);
 	}
 	
 	public LinearLayout getView(final Context c) {
@@ -129,26 +129,30 @@ public class GridItem {
 				if (this.hdGraphDownloader != null && this.hdGraphDownloader.isDownloading())
 					this.hdGraphDownloader.killDownload();
 				
-				this.hdGraphDownloader = new HDGraphDownloader(grid.currentlyOpenedPlugin, fullscreenImageView);
+				this.hdGraphDownloader = new HDGraphDownloader(grid.currentlyOpenedPlugin, fullscreenImageView, period);
 				this.hdGraphDownloader.execute();
 			}
 		}
 	}
 	
+	public void setPeriod(Period period) { this.period = period; }
+	
 	private class HDGraphDownloader extends AsyncTask<Void, Integer, Void> {
 		private MuninPlugin plugin;
 		private ImageView imageView;
+		private Period period;
 		private Bitmap bitmap;
 		private boolean downloadKilled;
 		private boolean isDownloading;
 		
-		private HDGraphDownloader (MuninPlugin plugin, ImageView imageView) {
+		private HDGraphDownloader (MuninPlugin plugin, ImageView imageView, Period period) {
 			super();
 			this.plugin = plugin;
 			this.imageView = imageView;
 			this.bitmap = null;
 			this.downloadKilled = false;
 			this.isDownloading = false;
+			this.period = period;
 		}
 		
 		@Override
@@ -163,7 +167,7 @@ public class GridItem {
 			int[] dim = Util.HDGraphs.getBestImageDimensions(imageView, c);
 			String graphUrl = plugin.getHDImgUrl(period, true, dim[0], dim[1]);
 			bitmap = Util.dropShadow(
-					Util.removeBitmapBorder(plugin.getInstalledOn().getParent().grabBitmap(graphUrl)) );
+					Util.removeBitmapBorder(plugin.getInstalledOn().getParent().grabBitmap(graphUrl)));
 			
 			return null;
 		}

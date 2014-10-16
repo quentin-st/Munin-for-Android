@@ -34,6 +34,7 @@ import com.chteuchteu.munin.hlpr.Util.Fonts;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
+import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -45,7 +46,7 @@ public class Activity_Grid extends Activity {
 	private DrawerHelper	dh;
 	private String			activityName;
 	private Menu			menu;
-	private Context		context;
+	private Context			context;
 	
 	public static boolean	editing;
 	private Grid			grid;
@@ -57,12 +58,13 @@ public class Activity_Grid extends Activity {
 	public static MenuItem	menu_period;
 	public static MenuItem	menu_open;
 	
-	private Period			currentPeriod;
+	private Period currentPeriod;
 	
 	public static boolean	updating;
-	private Handler		mHandler;
+	private Handler			mHandler;
 	private Runnable		mHandlerTask;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -136,6 +138,13 @@ public class Activity_Grid extends Activity {
 				actionBar.setSelectedNavigationItem(currentSelectedIndex);
 		}
 		
+		// On rotate : onRetainNonConfigurationInstance has been called.
+		// Let's get back some values (grid period for example)
+		Activity_Grid beforeOnRotate = (Activity_Grid) getLastNonConfigurationInstance();
+		if (beforeOnRotate != null)
+			this.currentPeriod = beforeOnRotate.currentPeriod;
+		
+		
 		grid.dHelper = new GridDownloadHelper(grid);
 		grid.dHelper.init(3, currentPeriod);
 		grid.dHelper.start(false);
@@ -179,6 +188,14 @@ public class Activity_Grid extends Activity {
 			};
 			mHandlerTask.run();
 		}
+	}
+	
+	/**
+	 * Retain period on rotate
+	 * @return
+	 */
+	public Object onRetainNonConfigurationInstance() {
+		return this;
 	}
 	
 	private void hidePreview() {
@@ -281,6 +298,10 @@ public class Activity_Grid extends Activity {
 	}
 	
 	private void refresh() {
+		// Update each GridItem with the currentPeriod
+		for (GridItem item : grid.items)
+			item.setPeriod(this.currentPeriod);
+		
 		if (!Util.isOnline(this))
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 		grid.dHelper.period = this.currentPeriod;
