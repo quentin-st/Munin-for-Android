@@ -64,7 +64,8 @@ public class GridDownloadHelper {
 			if (i < g.items.size()) {
 				GridItem gridItem = items.get(i);
 				if (forceUpdate || gridItem.iv.getDrawable() == null) {
-					if (gridItem != null && gridItem.plugin != null) {
+					if (gridItem != null && gridItem.plugin != null && gridItem.plugin.getInstalledOn() != null
+							&& gridItem.plugin.getInstalledOn().getParent() != null) {
 						String graphUrl = gridItem.plugin.getImgUrl(period);
 						b = Util.dropShadow(
 								Util.removeBitmapBorder(gridItem.plugin.getInstalledOn().getParent().grabBitmap(graphUrl)));

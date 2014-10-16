@@ -779,7 +779,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), f);
 				g.id = c.getInt(c.getColumnIndex(KEY_ID));
 				// Get all GridItems
-				List<GridItem> li = getGridItems(co, g);
+				List<GridItem> li = getGridItems(f, co, g);
 				/*for (GridItem i : li)
 					g.add(i, co, editView);*/
 				g.items = li;
@@ -824,7 +824,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), muninFoo);
 			g.id = c.getInt(c.getColumnIndex(KEY_ID));
 			// Get all GridItems
-			g.items = getGridItems(context, g);
+			g.items = getGridItems(muninFoo, context, g);
 			
 			close(c, db);
 			return g;
@@ -838,7 +838,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @param grid
 	 * @return
 	 */
-	public List<GridItem> getGridItems(Context context, Grid grid) {
+	public List<GridItem> getGridItems(MuninFoo muninFoo, Context context, Grid grid) {
 		List<GridItem> l = new ArrayList<GridItem>();
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDITEMRELATIONS
 				+ " WHERE " + KEY_GRIDITEMRELATIONS_GRID + " = " + grid.id;
@@ -848,7 +848,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		if (c != null && c.moveToFirst()) {
 			do {
-				GridItem i = new GridItem(grid, getPlugin(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_PLUGIN))), context);
+				int pluginId = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_PLUGIN));
+				MuninPlugin plugin = muninFoo.getPlugin(pluginId);
+				GridItem i = new GridItem(grid, plugin, context);
 				i.id = c.getInt(c.getColumnIndex(KEY_ID));
 				i.period = Period.get(c.getString(c.getColumnIndex(KEY_GRIDITEMRELATIONS_DEFAULTPERIOD)));
 				i.X = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X));

@@ -304,6 +304,15 @@ public class MuninFoo {
 		}
 		return null;
 	}
+	public MuninPlugin getPlugin(int id) {
+		for (MuninServer server : servers) {
+			for (MuninPlugin plugin : server.getPlugins()) {
+				if (plugin.getId() == id)
+					return plugin;
+			}
+		}
+		return null;
+	}
 	
 	public ArrayList<MuninMaster> getMasters() { return (ArrayList<MuninMaster>) this.masters; }
 	
