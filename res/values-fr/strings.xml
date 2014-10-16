@@ -181,6 +181,11 @@
 	<string name="rescan">Rescan</string>
 	<string name="support">Support</string>
 	<string name="choose_email_client">Veuillez sélectionner votre application mail</string>
+	<string name="donate">Donation</string>
+	<string name="donate_text">Développer une telle application nécessite beaucoup de temps et de dévotion. Si Munin for Android vous est utile,
+	    pourriez-vous considérer une donation s\'il vous plaît ? Merci ! Si vous le faites, envoyez-moi un mail afin que je puisse
+	    vous remercier en personne !</string>
+	<string name="donate_amount">Veuillez sélectionner le montant du don. (33% de cette somme est prélevée par Google)</string>
 	<string name="aboutText">
 <![CDATA[
    <head>

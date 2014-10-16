@@ -436,60 +436,66 @@
 					android:visibility="gone" />
 			</LinearLayout>
 			
-			
 			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="1dp"
-				android:background="#474A53"
-				android:orientation="vertical"
-			    android:layout_marginTop="10dp" />
-			
-			<LinearLayout
-				android:id="@+id/drawer_button_support_ll"
+				android:id="@+id/drawer_support_btn"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="#2BA1E4"
-				android:orientation="vertical"
-				android:paddingLeft="0dp" >
+				android:background="@drawable/drawer_dark_button"
+				android:orientation="horizontal"
+				android:padding="@dimen/small_item_padding" >
 
-				<LinearLayout
-					android:id="@+id/drawer_support_btn"
-					android:layout_width="match_parent"
+				<ImageView
+					android:layout_width="20dp"
+					android:layout_height="20dp"
+					android:layout_marginRight="15dp"
+					android:layout_marginLeft="15dp"
+					android:layout_gravity="center_vertical"
+					android:contentDescription="@string/support"
+					android:src="@drawable/ic_action_help_trimmed" />
+
+				<TextView
+					android:id="@+id/drawer_support_txt"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:background="@drawable/drawer_dark_button"
-					android:orientation="horizontal"
-					android:padding="@dimen/small_item_padding" >
+					android:shadowColor="#000000"
+					android:shadowDx="0"
+					android:shadowDy="1"
+					android:shadowRadius="2"
+					android:layout_gravity="center_vertical"
+					android:text="@string/support"
+					android:textColor="#bbbbbb"
+					android:textSize="@dimen/drawer_font_size_small" />
+			</LinearLayout>
 
-					<ImageView
-						android:layout_width="20dp"
-						android:layout_height="20dp"
-						android:layout_marginRight="15dp"
-						android:layout_marginLeft="15dp"
-						android:layout_gravity="center_vertical"
-						android:contentDescription="@string/support"
-						android:src="@drawable/ic_action_help_trimmed" />
+			<LinearLayout
+				android:id="@+id/drawer_donate_btn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@drawable/drawer_dark_button"
+				android:orientation="horizontal"
+				android:padding="@dimen/small_item_padding" >
 
-					<TextView
-						android:id="@+id/drawer_support_txt"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:shadowColor="#000000"
-						android:shadowDx="0"
-						android:shadowDy="1"
-						android:shadowRadius="2"
-						android:layout_gravity="center_vertical"
-						android:text="@string/support"
-						android:textColor="#bbbbbb"
-						android:textSize="@dimen/drawer_font_size_small" />
-				</LinearLayout>
+				<ImageView
+					android:layout_width="20dp"
+					android:layout_height="20dp"
+					android:layout_marginRight="15dp"
+					android:layout_marginLeft="15dp"
+					android:layout_gravity="center_vertical"
+					android:contentDescription="@string/donate"
+					android:src="@drawable/ic_action_favorite" />
 
-				<LinearLayout
-					android:id="@+id/drawer_button_support_border2"
-					android:layout_width="match_parent"
-					android:layout_height="1dp"
-					android:background="#474A53"
-					android:orientation="vertical"
-					android:visibility="gone" />
+				<TextView
+					android:id="@+id/drawer_donate_txt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:shadowColor="#000000"
+					android:shadowDx="0"
+					android:shadowDy="1"
+					android:shadowRadius="2"
+					android:layout_gravity="center_vertical"
+					android:text="@string/donate"
+					android:textColor="#bbbbbb"
+					android:textSize="@dimen/drawer_font_size_small" />
 			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>

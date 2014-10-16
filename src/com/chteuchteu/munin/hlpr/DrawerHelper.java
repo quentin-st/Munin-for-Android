@@ -7,9 +7,13 @@ import org.taptwo.android.widget.ViewFlow;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -24,11 +28,13 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
@@ -257,6 +263,55 @@ public class DrawerHelper {
 				
 				send.setData(uri);
 				a.startActivity(Intent.createChooser(send, c.getString(R.string.choose_email_client)));
+			}
+		});
+		// Donate
+		a.findViewById(R.id.drawer_donate_btn).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				new AlertDialog.Builder(a)
+				.setTitle(R.string.donate)
+				.setMessage(R.string.donate_text)
+				.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						LayoutInflater inflater = (LayoutInflater) ((Context) a).getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+						View view = inflater.inflate(R.layout.dialog_donate, null);
+						
+						final Spinner spinnerAmount = (Spinner) view.findViewById(R.id.donate_amountSpinner);
+						List<String> list = new ArrayList<String>();
+						String euroSlashDollar = "\u20Ac/\u0024";
+						list.add("1 " + euroSlashDollar);
+						list.add("2 " + euroSlashDollar);
+						list.add("5 " + euroSlashDollar);
+						list.add("20 " + euroSlashDollar);
+						ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(((Context) a), android.R.layout.simple_spinner_item, list);
+						dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+						spinnerAmount.setAdapter(dataAdapter);
+						
+						new AlertDialog.Builder(a)
+						.setTitle(R.string.donate)
+						.setView(view)
+						.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// Launch BillingService, and then purchase the thing
+								String product = "";
+								switch (spinnerAmount.getSelectedItemPosition()) {
+									case 0: product = BillingService.DONATE_1; break;
+									case 1: product = BillingService.DONATE_2; break;
+									case 2: product = BillingService.DONATE_5; break;
+									case 3: product = BillingService.DONATE_20; break;
+								}
+								new DonateAsync((Context) a, product).execute();
+							}
+						})
+						.setNegativeButton(R.string.text64, null)
+						.show();
+					}
+				})
+				.setNegativeButton(R.string.text64, null)
+				.show();
 			}
 		});
 		
@@ -547,6 +602,33 @@ public class DrawerHelper {
 			Util.Fonts.setFont(context, ed_line_b, CustomFont.RobotoCondensed_Regular);
 			
 			return convertView;
+		}
+	}
+	
+	private class DonateAsync extends AsyncTask<Void, Integer, Void> {
+		private ProgressDialog dialog;
+		private Context context;
+		private String product;
+		
+		private DonateAsync(Context context, String product) {
+			this.product = product;
+			this.context = context;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			
+			dialog = ProgressDialog.show(context, "", context.getString(R.string.loading), true);
+			dialog.setCancelable(true);
+		}
+		
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			BillingService.getInstanceAndPurchase(context, product, dialog);
+			// Dialog will be dismissed in the BillingService.
+			
+			return null;
 		}
 	}
 }
