@@ -99,7 +99,7 @@ public class Activity_Server extends Activity {
 		
 		dh = new DrawerHelper(this, muninFoo);
 		actionBar.setTitle(getString(R.string.addServerTitle)); // Add a server
-		dh.setDrawerActivity(dh.Activity_Server_Add);
+		dh.setDrawerActivity(DrawerHelper.Activity_Server_Add);
 		
 		Util.UI.applySwag(this);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.muninMasterUrlLabel), CustomFont.RobotoCondensed_Regular);

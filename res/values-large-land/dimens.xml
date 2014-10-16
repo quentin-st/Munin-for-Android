@@ -3,5 +3,6 @@
 	<dimen name="listview_horizontal_margin">60dp</dimen>
 	<dimen name="slidingmenu_offset">550dp</dimen>
 	<dimen name="item_padding">13dp</dimen>
+	<dimen name="small_item_padding">9dp</dimen>
 
 </resources>

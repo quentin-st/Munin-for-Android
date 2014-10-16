@@ -51,7 +51,7 @@ public class Activity_GoPremium extends Activity {
 		actionBar.setTitle(getString(R.string.goPremiumTitle));
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_GoPremium);
+		dh.setDrawerActivity(DrawerHelper.Activity_GoPremium);
 		
 		Util.UI.applySwag(this);
 		

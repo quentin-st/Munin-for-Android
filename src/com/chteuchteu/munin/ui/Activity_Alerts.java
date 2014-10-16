@@ -90,7 +90,7 @@ public class Activity_Alerts extends Activity {
 		actionBar.setTitle(getString(R.string.alertsTitle));
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_Alerts);
+		dh.setDrawerActivity(DrawerHelper.Activity_Alerts);
 		
 		Util.UI.applySwag(this);
 		

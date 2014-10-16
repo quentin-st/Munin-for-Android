@@ -55,7 +55,7 @@ public class Activity_ServersEdit extends ListActivity {
 		actionBar.setTitle(getString(R.string.editServersTitle));
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_ServersEdit);
+		dh.setDrawerActivity(DrawerHelper.Activity_ServersEdit);
 		
 		Util.UI.applySwag(this);
 		

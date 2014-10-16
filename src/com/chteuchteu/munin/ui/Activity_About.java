@@ -47,7 +47,7 @@ public class Activity_About extends Activity {
 		actionBar.setTitle(getString(R.string.aboutTitle));
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_About);
+		dh.setDrawerActivity(DrawerHelper.Activity_About);
 		
 		Util.UI.applySwag(this);
 		

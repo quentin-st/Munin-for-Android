@@ -65,7 +65,7 @@ public class Activity_Main extends Activity {
 		
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_Main);
+		dh.setDrawerActivity(DrawerHelper.Activity_Main);
 		
 		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
 			@Override

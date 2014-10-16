@@ -6,5 +6,6 @@
 	<dimen name="addserver_popup_fontsize2">40sp</dimen>
 	<dimen name="addserver_popup_fontsize3">30sp</dimen>
 	<dimen name="drawer_font_size">23sp</dimen>
+	<dimen name="drawer_font_size_small">18sp</dimen>
 
 </resources>

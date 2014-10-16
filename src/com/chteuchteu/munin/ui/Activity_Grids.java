@@ -57,7 +57,7 @@ public class Activity_Grids extends ListActivity {
 		getActionBar().setTitle(getString(R.string.button_grid));
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_Grids);
+		dh.setDrawerActivity(DrawerHelper.Activity_Grids);
 		
 		Util.UI.applySwag(this);
 		

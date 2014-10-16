@@ -53,7 +53,7 @@ public class Activity_AlertsPluginSelection extends Activity {
 		actionBar.setTitle(muninFoo.currentServer.getName());
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_AlertsPluginSelection);
+		dh.setDrawerActivity(DrawerHelper.Activity_AlertsPluginSelection);
 		
 		Util.UI.applySwag(this);
 		

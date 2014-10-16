@@ -70,7 +70,7 @@ public class Activity_Label extends Activity {
 		actionBar.setTitle(label.getName());
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_Label);
+		dh.setDrawerActivity(DrawerHelper.Activity_Label);
 		
 		Util.UI.applySwag(this);
 		

@@ -63,7 +63,7 @@ public class Activity_Notifications extends Activity {
 		actionBar.setTitle(getString(R.string.notificationsTitle));
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_Notifications);
+		dh.setDrawerActivity(DrawerHelper.Activity_Notifications);
 		
 		Util.UI.applySwag(this);
 		

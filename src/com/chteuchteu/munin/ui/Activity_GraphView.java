@@ -135,7 +135,7 @@ public class Activity_GraphView extends Activity {
 		}
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_GraphView);
+		dh.setDrawerActivity(DrawerHelper.Activity_GraphView);
 		
 		Util.UI.applySwag(this);
 		

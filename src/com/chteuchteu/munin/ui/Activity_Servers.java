@@ -74,7 +74,7 @@ public class Activity_Servers extends Activity {
 		actionBar.setTitle(getString(R.string.serversTitle));
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_Servers);
+		dh.setDrawerActivity(DrawerHelper.Activity_Servers);
 		
 		Util.UI.applySwag(this);
 		

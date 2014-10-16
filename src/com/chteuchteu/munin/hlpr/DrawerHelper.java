@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -35,7 +36,6 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Label;
-import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.SearchResult;
@@ -46,29 +46,28 @@ import com.chteuchteu.munin.ui.Activity_Grids;
 import com.chteuchteu.munin.ui.Activity_Labels;
 import com.chteuchteu.munin.ui.Activity_Notifications;
 import com.chteuchteu.munin.ui.Activity_Plugins;
-import com.chteuchteu.munin.ui.Activity_Server;
 import com.chteuchteu.munin.ui.Activity_Servers;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 
 @SuppressLint("InflateParams")
 public class DrawerHelper {
-	public int Activity_About = -1;
-	public int Activity_Alerts = 2;
-	public int Activity_AlertsPluginSelection = 2;
-	public int Activity_Label = 9;
-	public int Activity_Labels = 9;
-	public int Activity_GoPremium = 10;
-	public int Activity_GraphView = 3;
-	public int Activity_Grid = 11;
-	public int Activity_Grids = 11;
-	public int Activity_Main = 0;
-	public int Activity_Notifications = 4;
-	public int Activity_Plugins = 7;
-	public int Activity_Server_Add = 1;
-	public int Activity_Servers = 5;
-	public int Activity_ServersEdit = 5;
-	public int Activity_Settings = 6;
+	public static final int Activity_About = -1;
+	public static final int Activity_Alerts = 2;
+	public static final int Activity_AlertsPluginSelection = 2;
+	public static final int Activity_Label = 9;
+	public static final int Activity_Labels = 9;
+	public static final int Activity_GoPremium = 10;
+	public static final int Activity_GraphView = 3;
+	public static final int Activity_Grid = 11;
+	public static final int Activity_Grids = 11;
+	public static final int Activity_Main = 0;
+	public static final int Activity_Notifications = 4;
+	public static final int Activity_Plugins = 7;
+	public static final int Activity_Server_Add = 1;
+	public static final int Activity_Servers = 5;
+	public static final int Activity_ServersEdit = 5;
+	public static final int Activity_Settings = 6;
 	
 	private Activity a;
 	private Context c;
@@ -100,49 +99,44 @@ public class DrawerHelper {
 	public void setDrawerActivity(int activity) {
 		this.n = activity;
 		switch (activity) {
-			case 0:
-				// Accueil: rien
-				setSelectedMenuItem("");
-				break;
-			case 1:
-				setSelectedMenuItem("servers");
-				initServersList();
-				break;
-			case 2:
-				setSelectedMenuItem("alerts");
-				break;
-			case 3:
-				setSelectedMenuItem("graphs");
-				//initPluginsList();
-				break;
-			case 4:
-				setSelectedMenuItem("notifications");
-				break;
-			case 5:
-				setSelectedMenuItem("servers");
-				break;
-			case 6:
-				// Rien (ActionBar)
-				setSelectedMenuItem("");
-				break;
-			case 7:
-				setSelectedMenuItem("graphs");
-				break;
-			case 8:
-				setSelectedMenuItem("servers");
-				initServersList();
-				break;
-			case 9:
-				setSelectedMenuItem("labels");
-				break;
-			case 10:
-				setSelectedMenuItem("premium");
-				break;
-			case 11:
-				setSelectedMenuItem("grid");
-			default:
-				setSelectedMenuItem("");
-				break;
+		case Activity_Main:
+			// Home : nothing
+			setSelectedMenuItem("");
+			break;
+		case Activity_Server_Add:
+			setSelectedMenuItem("servers");
+			break;
+		case Activity_Alerts:
+			setSelectedMenuItem("alerts");
+			break;
+		case Activity_GraphView:
+			setSelectedMenuItem("graphs");
+			//initPluginsList();
+			break;
+		case Activity_Notifications:
+			setSelectedMenuItem("notifications");
+			break;
+		case Activity_Servers: // Activity_ServersEdit
+			setSelectedMenuItem("servers");
+			break;
+		case Activity_Settings:
+			// Nothing selected (ActionBar)
+			setSelectedMenuItem("");
+			break;
+		case Activity_Plugins:
+			setSelectedMenuItem("graphs");
+			break;
+		case Activity_Label: // Activity_Labels
+			setSelectedMenuItem("labels");
+			break;
+		case Activity_GoPremium:
+			setSelectedMenuItem("premium");
+			break;
+		case Activity_Grid: // Activity_Grids
+			setSelectedMenuItem("grid");
+		default:
+			setSelectedMenuItem("");
+			break;
 		}
 	}
 	
@@ -252,6 +246,19 @@ public class DrawerHelper {
 				Util.setTransition(a, TransitionStyle.DEEPER);
 			}
 		});
+		// Support
+		a.findViewById(R.id.drawer_support_btn).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent send = new Intent(Intent.ACTION_SENDTO);
+				String uriText = "mailto:" + Uri.encode("support@munin-for-android.com") + 
+						"?subject=" + Uri.encode("Support request");
+				Uri uri = Uri.parse(uriText);
+				
+				send.setData(uri);
+				a.startActivity(Intent.createChooser(send, c.getString(R.string.choose_email_client)));
+			}
+		});
 		
 		if (!m.premium) {
 			a.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
@@ -275,8 +282,9 @@ public class DrawerHelper {
 		// Init search
 		search = (EditText) a.findViewById(R.id.drawer_search);
 		search_results = (ListView) a.findViewById(R.id.drawer_search_results);
+		search_results.setVisibility(View.VISIBLE);
 		
-
+		
 		// Cancel button
 		//final int DRAWABLE_LEFT = 0;
 		//final int DRAWABLE_TOP = 1;
@@ -287,9 +295,7 @@ public class DrawerHelper {
 		search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_SEARCH)
-					return true;
-				return false;
+				return actionId == EditorInfo.IME_ACTION_SEARCH;
 			}
 		});
 		
@@ -435,34 +441,6 @@ public class DrawerHelper {
 			((TextView)a.findViewById(R.id.drawer_servers_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
 			((TextView)a.findViewById(R.id.drawer_notifications_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
 			((TextView)a.findViewById(R.id.drawer_premium_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-		}
-	}
-	
-	private void initServersList() {
-		a.findViewById(R.id.drawer_scrollviewServers).setVisibility(View.VISIBLE);
-		a.findViewById(R.id.drawer_button_notifications_border1).setVisibility(View.VISIBLE);
-		LayoutInflater vi = (LayoutInflater) a.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
-		for (MuninMaster master : m.masters) {
-			for (final MuninServer s : master.getOrderedChildren()) {
-				View v = vi.inflate(R.layout.drawer_subbutton, null);
-				TextView b = (TextView)v.findViewById(R.id.button);
-				b.setText(s.getName());
-				
-				b.setOnClickListener(new OnClickListener() {
-					public void onClick (View v) {
-						m.currentServer = s;
-						Intent intent = new Intent(a, Activity_Server.class);
-						intent.putExtra("contextServerUrl", s.getServerUrl());
-						intent.putExtra("action", "edit");
-						a.startActivity(intent);
-						a.overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-					}
-				});
-				
-				View insertPoint = a.findViewById(R.id.drawer_scrollviewServers);
-				((ViewGroup) insertPoint).addView(v);
-			}
 		}
 	}
 	

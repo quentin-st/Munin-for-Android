@@ -63,7 +63,7 @@ public class Activity_Settings extends Activity {
 		actionBar.setTitle(getString(R.string.settingsTitle));
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_Settings);
+		dh.setDrawerActivity(DrawerHelper.Activity_Settings);
 		
 		Util.UI.applySwag(this);
 		

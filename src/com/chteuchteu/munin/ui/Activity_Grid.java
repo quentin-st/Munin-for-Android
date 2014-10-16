@@ -82,7 +82,7 @@ public class Activity_Grid extends Activity {
 		Util.UI.applySwag(this);
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_Grid);
+		dh.setDrawerActivity(DrawerHelper.Activity_Grid);
 		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

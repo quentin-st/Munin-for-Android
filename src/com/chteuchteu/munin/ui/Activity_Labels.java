@@ -53,7 +53,7 @@ public class Activity_Labels extends ListActivity {
 		getActionBar().setTitle(getString(R.string.button_labels));
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_Labels);
+		dh.setDrawerActivity(DrawerHelper.Activity_Labels);
 		
 		Util.UI.applySwag(this);
 		

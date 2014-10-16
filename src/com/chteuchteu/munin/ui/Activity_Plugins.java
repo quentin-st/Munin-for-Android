@@ -124,7 +124,7 @@ public class Activity_Plugins extends ListActivity {
 		}
 		
 		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(dh.Activity_Plugins);
+		dh.setDrawerActivity(DrawerHelper.Activity_Plugins);
 		
 		mode = getListViewMode();
 		
