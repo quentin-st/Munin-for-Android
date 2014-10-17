@@ -165,7 +165,7 @@ public class Activity_Server extends Activity {
 	// Actions
 	private void actionSave() {
 		if (!tb_serverUrl.getText().toString().equals("") && !tb_serverUrl.getText().toString().equals("http://")) {
-			addInHistory(tb_serverUrl.getText().toString());
+			addInHistory(tb_serverUrl.getText().toString().trim());
 			Util.hideKeyboard(this, tb_serverUrl);
 			algo_state = AST_RUNNING;
 			task = new AddServerThread();
@@ -312,7 +312,7 @@ public class Activity_Server extends Activity {
 				setPopupText("", getString(R.string.text42));
 				
 				type = "";
-				serverUrl = tb_serverUrl.getText().toString();
+				serverUrl = tb_serverUrl.getText().toString().trim();
 				
 				ssl = false;
 				

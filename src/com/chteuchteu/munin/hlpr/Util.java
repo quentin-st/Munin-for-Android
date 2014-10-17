@@ -274,6 +274,34 @@ public final class Util {
 				return defaultUri;
 			}
 		}
+		/**
+		 * Get http://host.dd/ from ascendDirectory(2, http://host.dd/x/y/)
+		 * @param nbLevels
+		 * @param url
+		 * @return
+		 */
+		public static String ascendDirectory(int nbLevels, String url) {
+			// We assume the last trailing slash has been added :
+			// http://host.dd/sub/
+			
+			String newUrl = url;
+			// Remove everything after the trailing slash
+			newUrl = newUrl.substring(0, newUrl.lastIndexOf('/'));
+			
+			// Ascend
+			for (int i=0; i<nbLevels; i++)
+				newUrl = newUrl.substring(0, newUrl.lastIndexOf('/')+1);
+			
+			// Add trailing slash
+			newUrl += "/";
+			
+			// Check if we still have a consistent URL
+			String hostName = Util.URLManipulation.getHostFromUrl(url);
+			if (!newUrl.contains(hostName))
+				return url;
+			
+			return newUrl;
+		}
 	}
 	
 	public static final class Dates {
