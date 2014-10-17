@@ -255,5 +255,13 @@
 	<string name="donate_text">Developing such a big application requires a huge amount of time and involvement. If the app is useful
 	    in your everyday life, could you condider donating? Thank you! If you do, please send me an email so I can thank you in person!</string>
 	<string name="donate_amount">Please select the amount of the donation (33% of this amount will be taken by Google)</string>
+	<string name="sync_serversadded">XXX server(s) added\n</string>
+	<string name="sync_serversupdated">XXX server(s) updated\n</string>
+	<string name="sync_serversdeleted">XXX server(s) deleted\n</string>
+	<string name="sync_pluginsadded">XXX plugin(s) added\n</string>
+	<string name="sync_pluginsupdated">XXX plugin(s) updated\n</string>
+	<string name="sync_pluginsdeleted">XXX plugin(s) deleted\n</string>
+	<string name="sync_nochange">No change</string>
+	<string name="sync_reporttitle">Scan report</string>
 
 </resources>

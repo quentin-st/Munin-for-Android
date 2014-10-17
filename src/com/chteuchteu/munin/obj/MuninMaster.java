@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.NetHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
@@ -492,10 +493,18 @@ public class MuninMaster {
 	 * Contacts the URL to check if there are some other servers / plugins for each server
 	 * If defaultMaster => try to divide into several masters
 	 */
-	public void rescan(Context context, MuninFoo muninFoo) {
+	public String rescan(Context context, MuninFoo muninFoo) {
 		// Take first server since it contains connection information
 		if (isEmpty())
-			return;
+			return null;
+		
+		String report = "";
+		int nbAddedServers = 0;
+		int nbUpdatedServers = 0;
+		int nbDeletedServers = 0;
+		int nbAddedPlugins = 0;
+		int nbUpdatedPlugins = 0;
+		int nbDeletedPlugins = 0;
 		
 		// Check online
 		MuninMaster onlineMaster = new MuninMaster();
@@ -519,8 +528,10 @@ public class MuninMaster {
 						alreadyThere = true;
 						
 						// Check if we can grab some attributes
-						if (!server.getGraphURL().equals(onlineServer.getGraphURL()))
+						if (!server.getGraphURL().equals(onlineServer.getGraphURL()) && !onlineServer.getGraphURL().equals("")) {
+							server.setGraphURL(onlineServer.getGraphURL());
 							toBeUpdated.add(server);
+						}
 						
 						break;
 					}
@@ -535,9 +546,12 @@ public class MuninMaster {
 				addChild(server);
 				muninFoo.addServer(server);
 				muninFoo.sqlite.dbHlpr.insertMuninServer(server);
+				nbAddedServers++;
 			}
-			for (MuninServer server : toBeUpdated)
+			for (MuninServer server : toBeUpdated) {
 				muninFoo.sqlite.dbHlpr.updateMuninServer(server);
+				nbUpdatedServers++;
+			}
 			
 			// Remove offline servers if needed
 			ArrayList<MuninServer> toBeRemoved = new ArrayList<MuninServer>();
@@ -560,6 +574,7 @@ public class MuninMaster {
 				this.children.remove(server);
 				muninFoo.getServers().remove(server);
 				muninFoo.sqlite.dbHlpr.deleteServer(server);
+				nbDeletedServers++;
 			}
 			
 			// The servers are now synced.
@@ -579,7 +594,8 @@ public class MuninMaster {
 								alreadyThere = true;
 								
 								// Get other values
-								if (!oldPlugin.getCategory().equals(onlinePlugin.getCategory())) {
+								if (!oldPlugin.getCategory().equals(onlinePlugin.getCategory())
+										&& !onlinePlugin.getCategory().equals("")) {
 									oldPlugin.setCategory(onlinePlugin.getCategory());
 									pluginsToBeUpdated.add(oldPlugin);
 								}
@@ -595,9 +611,12 @@ public class MuninMaster {
 						// Update "installedOn" and insert:
 						server.addPlugin(plugin);
 						muninFoo.sqlite.dbHlpr.insertMuninPlugin(plugin);
+						nbAddedPlugins++;
 					}
-					for (MuninPlugin plugin : pluginsToBeUpdated)
+					for (MuninPlugin plugin : pluginsToBeUpdated) {
 						muninFoo.sqlite.dbHlpr.updateMuninPlugin(plugin);
+						nbUpdatedPlugins++;
+					}
 					
 					
 					// Remove deleted plugins
@@ -616,9 +635,37 @@ public class MuninMaster {
 							muninFoo.sqlite.dbHlpr.deleteMuninPlugin(oldPlugin, true);
 						}
 					}
-					server.getPlugins().removeAll(pluginsToBeRemoved);
+					for (MuninPlugin plugin : pluginsToBeRemoved) {
+						server.getPlugins().remove(plugin);
+						muninFoo.sqlite.dbHlpr.deletePlugin(plugin);
+						nbDeletedPlugins++;
+					}
 				}
 			}
 		}
+		
+		// Generate report
+		if (nbAddedServers + nbUpdatedServers + nbDeletedServers
+				+ nbAddedPlugins + nbUpdatedPlugins + nbDeletedPlugins == 0)
+			report = context.getString(R.string.sync_nochange);
+		else {
+			// Servers
+			if (nbAddedServers > 0)
+				report += context.getString(R.string.sync_serversadded).replace("XXX", String.valueOf(nbAddedServers));
+			if (nbUpdatedServers > 0)
+				report += context.getString(R.string.sync_serversupdated).replace("XXX", String.valueOf(nbUpdatedServers));
+			if (nbDeletedServers > 0)
+				report += context.getString(R.string.sync_serversdeleted).replace("XXX", String.valueOf(nbDeletedServers));
+			
+			// Plugins
+			if (nbAddedPlugins > 0)
+				report += context.getString(R.string.sync_pluginsadded).replace("XXX", String.valueOf(nbAddedPlugins));
+			if (nbUpdatedPlugins > 0)
+				report += context.getString(R.string.sync_pluginsupdated).replace("XXX", String.valueOf(nbUpdatedPlugins));
+			if (nbDeletedPlugins > 0)
+				report += context.getString(R.string.sync_pluginsdeleted).replace("XXX", String.valueOf(nbDeletedPlugins));
+		}
+		
+		return report;
 	}
 }

@@ -54,6 +54,7 @@ public class Activity_Servers extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
 	private static Context	context;
+	private Activity		activity;
 	
 	private Map<String, List<String>> serversCollection;
 	private ExpandableListView expListView;
@@ -67,6 +68,7 @@ public class Activity_Servers extends Activity {
 		muninFoo = MuninFoo.getInstance(this);
 		MuninFoo.loadLanguage(this);
 		context = this;
+		activity = this;
 		
 		setContentView(R.layout.servers);
 		ActionBar actionBar = getActionBar();
@@ -397,6 +399,7 @@ public class Activity_Servers extends Activity {
 		private ProgressDialog dialog;
 		private Context context;
 		private MuninMaster original;
+		private String report;
 		
 		private MasterScanner(MuninMaster master, Context context) {
 			this.original = master;
@@ -412,8 +415,7 @@ public class Activity_Servers extends Activity {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			
-			original.rescan(context, muninFoo);
+			report = original.rescan(context, muninFoo);
 			
 			return null;
 		}
@@ -421,7 +423,17 @@ public class Activity_Servers extends Activity {
 		@Override
 		protected void onPostExecute(Void result) {
 			dialog.dismiss();
-			context.startActivity(new Intent(Activity_Servers.this, Activity_Servers.class));
+			
+			new AlertDialog.Builder(activity)
+			.setTitle(R.string.sync_reporttitle)
+			.setMessage(report)
+			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					context.startActivity(new Intent(Activity_Servers.this, Activity_Servers.class));
+				}
+			})
+			.show();
 		}
 	}
 	

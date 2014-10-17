@@ -186,6 +186,14 @@
 	    pourriez-vous considérer une donation s\'il vous plaît ? Merci ! Si vous le faites, envoyez-moi un mail afin que je puisse
 	    vous remercier en personne !</string>
 	<string name="donate_amount">Veuillez sélectionner le montant du don. (33% de cette somme est prélevée par Google)</string>
+	<string name="sync_serversadded">XXX serveur(s) ajouté(s)\n</string>
+	<string name="sync_serversupdated">XXX serveur(s) mis à jour\n</string>
+	<string name="sync_serversdeleted">XXX serveur(s) supprimé(s)\n</string>
+	<string name="sync_pluginsadded">XXX plugin(s) ajouté(s)\n</string>
+	<string name="sync_pluginsupdated">XXX plugin(s) mis à jour\n</string>
+	<string name="sync_pluginsdeleted">XXX plugin(s) supprimé(s)\n</string>
+	<string name="sync_nochange">No change</string>
+	<string name="sync_reporttitle">Scan report</string>
 	<string name="aboutText">
 <![CDATA[
    <head>
