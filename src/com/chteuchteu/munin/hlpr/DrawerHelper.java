@@ -160,13 +160,9 @@ public class DrawerHelper {
 			sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		else
 			sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		sm.setShadowWidthRes(R.dimen.shadow_width);
 		sm.setFadeEnabled(true);
-		sm.setSelectorEnabled(true);
 		sm.setBehindScrollScale(0.25f);
-		//sm.setShadowDrawable(R.drawable.drawer_shadow);
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		//sm.attachToActivity(a, SlidingMenu.SLIDING_WINDOW);
 		if (firstLoad)
 			sm.attachToActivity(a, SlidingMenu.SLIDING_CONTENT);
 		
