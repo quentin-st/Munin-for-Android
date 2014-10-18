@@ -83,7 +83,8 @@ public final class Util {
 		/* ENUM Custom Fonts */
 		public enum CustomFont {
 			RobotoCondensed_Regular("RobotoCondensed-Regular.ttf"),
-			RobotoCondensed_Bold("RobotoCondensed-Bold.ttf");
+			RobotoCondensed_Bold("RobotoCondensed-Bold.ttf"),
+			Roboto_Medium("Roboto-Medium.ttf");
 			
 			final String file;
 			private CustomFont(String fileName) { this.file = fileName; }

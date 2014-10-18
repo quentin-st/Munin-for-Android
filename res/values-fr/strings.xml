@@ -28,8 +28,8 @@
 	<string name="settings_autorefresh_label">Actualisation automatique</string>
 	<string name="settings_autorefresh_checkbox">Actualiser automatiquement les graphs / alertes toutes les 5 minutes lorsqu\'ils sont affichés</string>
 	<string name="settings_enablegraphszoom">Activer le zoom sur les graphs</string>
-	<string name="settings_titlelabel_app">APP</string>
-	<string name="settings_titlelabel_graphs">GRAPHS</string>
+	<string name="settings_titlelabel_app">Paramètres de l\'application</string>
+	<string name="settings_titlelabel_graphs">Paramètres des graphiques</string>
 	<string name="servers_btn_add_server">Ajouter un serveur</string>
 	<string name="save_button">Sauvegarder</string>
 	<string name="settings_clear_button">Vider</string>

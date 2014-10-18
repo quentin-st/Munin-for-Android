@@ -82,8 +82,8 @@
 	<string name="settings_auth_type">Authentifizierungsart</string>
 	<string name="settings_transitions_label">Übergänge</string>
 	<string name="settings_transitions_checkbox">Animationen bei Seitenübergängen aktivieren</string>
-	<string name="settings_titlelabel_app">APP</string>
-	<string name="settings_titlelabel_graphs">GRAPHEN</string>
+	<string name="settings_titlelabel_app">App</string>
+	<string name="settings_titlelabel_graphs">Graphen</string>
 	<string name="menu_graph_switch">Server wechseln</string>
 	<string name="menu_serversedit_revert">Server zurücksetzen</string>
 	<string name="servers_noservers_1">Noch keine Server</string>

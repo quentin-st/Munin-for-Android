@@ -14,10 +14,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,10 +36,10 @@ public class Activity_Settings extends Activity {
 	private Spinner	spinner_defaultServer;
 	private Spinner	spinner_lang;
 	private Spinner	spinner_orientation;
-	private View		checkable_alwaysOn;
-	private View		checkable_autoRefresh;
-	private View		checkable_graphsZoom;
-	private View		checkable_hdGraphs;
+	private CheckBox checkbox_alwaysOn;
+	private CheckBox checkbox_autoRefresh;
+	private CheckBox checkbox_graphsZoom;
+	private CheckBox checkbox_hdGraphs;
 	
 	private MuninFoo 		muninFoo;
 	private DrawerHelper	dh;
@@ -72,10 +70,10 @@ public class Activity_Settings extends Activity {
 		spinner_lang = (Spinner)findViewById(R.id.spinner_lang);
 		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);
 		
-		checkable_alwaysOn = inflateCheckable((ViewGroup)findViewById(R.id.checkable_screenalwayson), getString(R.string.settings_screenalwayson_checkbox));
-		checkable_autoRefresh = inflateCheckable((ViewGroup)findViewById(R.id.checkable_autorefresh), getString(R.string.settings_autorefresh_checkbox));
-		checkable_graphsZoom = inflateCheckable((ViewGroup)findViewById(R.id.checkable_enablegraphszoom), getString(R.string.settings_enablegraphszoom));
-		checkable_hdGraphs = inflateCheckable((ViewGroup)findViewById(R.id.checkable_hdgraphs), getString(R.string.settings_hdgraphs_text));
+		checkbox_alwaysOn = (CheckBox)findViewById(R.id.checkbox_screenalwayson);
+		checkbox_autoRefresh = (CheckBox)findViewById(R.id.checkbox_autorefresh);
+		checkbox_graphsZoom = (CheckBox)findViewById(R.id.checkbox_enablegraphszoom);
+		checkbox_hdGraphs = (CheckBox)findViewById(R.id.checkbox_hdgraphs);
 		
 		
 		// Spinner default period
@@ -117,32 +115,86 @@ public class Activity_Settings extends Activity {
 		spinner_orientation.setAdapter(dataAdapter3);
 		
 		// Set fonts
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title1), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title2), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title3), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title7), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title8), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title9), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title10), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title11), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title12), CustomFont.RobotoCondensed_Bold);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title13), CustomFont.RobotoCondensed_Bold);
-	}
-	
-	private View inflateCheckable(ViewGroup container, String label) {
-		de.ankri.views.Switch sw = new de.ankri.views.Switch(this);
-		sw.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-		sw.setText(label);
-		container.addView(sw);
-		return sw;
-	}
-	
-	private boolean getCheckableValue(View reference) {
-		return ((de.ankri.views.Switch)reference).isChecked();
-	}
-	
-	private void setChecked(View reference, boolean checked) {
-		((de.ankri.views.Switch)reference).setChecked(checked);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title1), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title2), CustomFont.Roboto_Medium);
+		
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title3), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title7), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title8), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title9), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title10), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title11), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title12), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title13), CustomFont.Roboto_Medium);
+		
+		// Apply current settings
+		// Graph default scale
+		if (Util.getPref(context, "defaultScale").equals("day"))
+			spinner_scale.setSelection(0, true);
+		else if (Util.getPref(context, "defaultScale").equals("week"))
+			spinner_scale.setSelection(1, true);
+		else if (Util.getPref(context, "defaultScale").equals("month"))
+			spinner_scale.setSelection(2, true);
+		else if (Util.getPref(context, "defaultScale").equals("year"))
+			spinner_scale.setSelection(3, true);
+		
+		// App language
+		String lang;
+		if (!Util.getPref(context, "lang").equals(""))
+			lang = Util.getPref(context, "lang");
+		else
+			lang = Locale.getDefault().getLanguage();
+		
+		if (lang.equals("en"))
+			spinner_lang.setSelection(0, true);
+		else if (lang.equals("fr"))
+			spinner_lang.setSelection(1, true);
+		else if (lang.equals("de"))
+			spinner_lang.setSelection(2, true);
+		else if (lang.equals("ru"))
+			spinner_lang.setSelection(3, true);
+		
+		// Graphview orientation
+		if (Util.getPref(context, "graphview_orientation").equals("horizontal"))
+			spinner_orientation.setSelection(0);
+		else if (Util.getPref(context, "graphview_orientation").equals("vertical"))
+			spinner_orientation.setSelection(1);
+		else
+			spinner_orientation.setSelection(2);
+		
+		// Always on
+		if (Util.getPref(context, "screenAlwaysOn").equals("true"))
+			checkbox_alwaysOn.setChecked(true);
+		
+		// Auto refresh
+		if (Util.getPref(context, "autoRefresh").equals("true"))
+			checkbox_autoRefresh.setChecked(true);
+		
+		// Graph zoom
+		if (Util.getPref(context, "graphsZoom").equals("true"))
+			checkbox_graphsZoom.setChecked(true);
+		
+		// HD Graphs
+		if (Util.getPref(context, "hdGraphs").equals("false"))
+			checkbox_hdGraphs.setChecked(false);
+		else
+			checkbox_hdGraphs.setChecked(true);
+		
+		// Default server
+		String defaultServerUrl = Util.getPref(this, "defaultServer");
+		if (!defaultServerUrl.equals("")) {
+			int pos = -1;
+			int i = 0;
+			for (MuninServer server : muninFoo.getOrderedServers()) {
+				if (server.getServerUrl().equals(defaultServerUrl)) {
+					pos = i;
+					break;
+				}
+				i++;
+			}
+			if (pos != -1)
+				spinner_defaultServer.setSelection(pos+1);
+		}
 	}
 	
 	private void actionSave() {
@@ -180,22 +232,22 @@ public class Activity_Settings extends Activity {
 		else
 			Util.setPref(context, "graphview_orientation", "auto");
 		
-		if (getCheckableValue(checkable_alwaysOn))
+		if (checkbox_alwaysOn.isChecked())
 			Util.setPref(context, "screenAlwaysOn", "true");
 		else
 			Util.setPref(context, "screenAlwaysOn", "false");
 		
-		if (getCheckableValue(checkable_autoRefresh))
+		if (checkbox_autoRefresh.isChecked())
 			Util.setPref(context, "autoRefresh", "true");
 		else
 			Util.setPref(context, "autoRefresh", "false");
 		
-		if (getCheckableValue(checkable_graphsZoom))
+		if (checkbox_graphsZoom.isChecked())
 			Util.setPref(context, "graphsZoom", "true");
 		else
 			Util.setPref(context, "graphsZoom", "false");
 		
-		if (getCheckableValue(checkable_hdGraphs))
+		if (checkbox_hdGraphs.isChecked())
 			Util.setPref(context, "hdGraphs", "true");
 		else
 			Util.setPref(context, "hdGraphs", "false");
@@ -215,79 +267,6 @@ public class Activity_Settings extends Activity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		Util.setTransition(this, TransitionStyle.SHALLOWER);
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		
-		// Graph default scale
-		if (Util.getPref(context, "defaultScale").equals("day"))
-			spinner_scale.setSelection(0, true);
-		else if (Util.getPref(context, "defaultScale").equals("week"))
-			spinner_scale.setSelection(1, true);
-		else if (Util.getPref(context, "defaultScale").equals("month"))
-			spinner_scale.setSelection(2, true);
-		else if (Util.getPref(context, "defaultScale").equals("year"))
-			spinner_scale.setSelection(3, true);
-		
-		// App language
-		String lang;
-		if (!Util.getPref(context, "lang").equals(""))
-			lang = Util.getPref(context, "lang");
-		else
-			lang = Locale.getDefault().getLanguage();
-		
-		if (lang.equals("en"))
-			spinner_lang.setSelection(0, true);
-		else if (lang.equals("fr"))
-			spinner_lang.setSelection(1, true);
-		else if (lang.equals("de"))
-			spinner_lang.setSelection(2, true);
-		else if (lang.equals("ru"))
-			spinner_lang.setSelection(3, true);
-		
-		// Graphview orientation
-		if (Util.getPref(context, "graphview_orientation").equals("horizontal"))
-			spinner_orientation.setSelection(0);
-		else if (Util.getPref(context, "graphview_orientation").equals("vertical"))
-			spinner_orientation.setSelection(1);
-		else
-			spinner_orientation.setSelection(2);
-		
-		// Always on
-		if (Util.getPref(context, "screenAlwaysOn").equals("true"))
-			setChecked(checkable_alwaysOn, true);
-		
-		// Auto refresh
-		if (Util.getPref(context, "autoRefresh").equals("true"))
-			setChecked(checkable_autoRefresh, true);
-		
-		// Graph zoom
-		if (Util.getPref(context, "graphsZoom").equals("true"))
-			setChecked(checkable_graphsZoom, true);
-		
-		// HD Graphs
-		if (Util.getPref(context, "hdGraphs").equals("false"))
-			setChecked(checkable_hdGraphs, false);
-		else
-			setChecked(checkable_hdGraphs, true);
-		
-		// Defaut server
-		String defaultServerUrl = Util.getPref(this, "defaultServer");
-		if (!defaultServerUrl.equals("")) {
-			int pos = -1;
-			int i = 0;
-			for (MuninServer server : muninFoo.getOrderedServers()) {
-				if (server.getServerUrl().equals(defaultServerUrl)) {
-					pos = i;
-					break;
-				}
-				i++;
-			}
-			if (pos != -1)
-				spinner_defaultServer.setSelection(pos+1);
-		}
 	}
 	
 	@Override

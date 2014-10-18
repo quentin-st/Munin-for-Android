@@ -2,7 +2,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<style name="MyAppTheme" parent="android:style/Theme.Holo.Light.DarkActionBar">
-		<item name="switchStyle">@style/switch_light</item>
 		<item name="textAppearance">@style/TextAppearance</item>
 		<item name="android:actionBarStyle">@style/ActionBar</item>
 	</style>
