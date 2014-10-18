@@ -114,4 +114,37 @@
 		<item name="android:textColor">@color/statusBarColor</item>
 	</style>
 
+	<style name="Drawer_Item_Icon">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_gravity">center_vertical</item>
+		<item name="android:paddingLeft">7dp</item>
+		<item name="android:paddingRight">15dp</item>
+		<item name="android:paddingTop">-5dp</item>
+	</style>
+
+	<style name="Drawer_Item_Text">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginTop">3dp</item>
+		<item name="android:shadowColor">#000000</item>
+		<item name="android:shadowDx">1</item>
+		<item name="android:shadowDy">1</item>
+		<item name="android:shadowRadius">2</item>
+		<item name="android:textColor">#bbbbbb</item>
+		<item name="android:textSize">@dimen/drawer_font_size</item>
+	</style>
+
+	<style name="Drawer_SmallItem_Text">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginTop">3dp</item>
+		<item name="android:shadowColor">#000000</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">1</item>
+		<item name="android:shadowRadius">2</item>
+		<item name="android:textColor">#bbbbbb</item>
+		<item name="android:textSize">@dimen/drawer_font_size_small</item>
+	</style>
+
 </resources>

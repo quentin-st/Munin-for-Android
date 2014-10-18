@@ -2,15 +2,13 @@
 <resources>
 
 	<color name="c34353C">#34353C</color>
-	<color name="c26262A">#26262A</color>
-	<color name="c212125">#212125</color>
-	<color name="c2A2A30">#2A2A30</color>
 	<color name="cbbbbbb">#bbbbbb</color>
 	<color name="cdddddd">#dddddd</color>
-	<color name="cffffff">#ffffff</color>
-
-	<!-- PrimaryColorDark -->
+	<color name="c212125">#212125</color>
+	<color name="c2A2A30">#2A2A30</color>
+	<color name="c26262A">#26262A</color>
 	<color name="statusBarColor">#1184C3</color>
 	<color name="actionBarColor">#12A1E3</color>
+	<color name="selectedDrawerItem">#00A8F5</color>
 
 </resources>

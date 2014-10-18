@@ -12,6 +12,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff.Mode;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.Editable;
@@ -31,6 +32,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -314,11 +316,11 @@ public class DrawerHelper {
 		if (!m.premium) {
 			a.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_grid_btn).setEnabled(false);
-			a.findViewById(R.id.drawer_notifications_img).setAlpha(0.5f);
+			a.findViewById(R.id.drawer_notifications_icon).setAlpha(0.5f);
 			a.findViewById(R.id.drawer_notifications_txt).setAlpha(0.5f);
-			a.findViewById(R.id.drawer_grid_img).setAlpha(0.5f);
+			a.findViewById(R.id.drawer_grid_icon).setAlpha(0.5f);
 			a.findViewById(R.id.drawer_grid_txt).setAlpha(0.5f);
-			a.findViewById(R.id.drawer_button_premium_ll).setVisibility(View.VISIBLE);
+			a.findViewById(R.id.drawer_premium_btn).setVisibility(View.VISIBLE);
 		}
 		if (m.getHowManyServers() == 0) {
 			a.findViewById(R.id.drawer_graphs_btn).setEnabled(false);
@@ -328,7 +330,7 @@ public class DrawerHelper {
 			a.findViewById(R.id.drawer_labels_btn).setEnabled(false);
 		}
 		
-		Util.Fonts.setFont(c, (ViewGroup) a.findViewById(R.id.drawer_scrollview), CustomFont.RobotoCondensed_Regular);
+		Util.Fonts.setFont(c, (ViewGroup) a.findViewById(R.id.drawer_scrollview), CustomFont.RobotoCondensed_Light);
 		
 		// Init search
 		search = (EditText) a.findViewById(R.id.drawer_search);
@@ -446,52 +448,48 @@ public class DrawerHelper {
 	
 	private void setSelectedMenuItem(String menuItemName) {
 		if (menuItemName.equals("graphs")) {
-			a.findViewById(R.id.drawer_button_graphs_ll).setPadding(7, 0, 0, 0);
-			((TextView)a.findViewById(R.id.drawer_graphs_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			a.findViewById(R.id.drawer_button_graphs_border2).setVisibility(View.VISIBLE);
+			TextView tv = (TextView)a.findViewById(R.id.drawer_graphs_txt);
+			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+			Util.Fonts.setFont(c, tv, CustomFont.RobotoCondensed_Regular);
+			((ImageView)a.findViewById(R.id.drawer_graphs_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 		} else if (menuItemName.equals("grid")) {
-			a.findViewById(R.id.drawer_button_grid_ll).setPadding(7, 0, 0, 0);
-			((TextView)a.findViewById(R.id.drawer_grid_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			a.findViewById(R.id.drawer_button_graphs_border2).setVisibility(View.VISIBLE);
-			a.findViewById(R.id.drawer_button_grid_border2).setVisibility(View.VISIBLE);
+			TextView tv = (TextView)a.findViewById(R.id.drawer_grid_txt);
+			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+			Util.Fonts.setFont(c, tv, CustomFont.RobotoCondensed_Regular);
+			((ImageView)a.findViewById(R.id.drawer_grid_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 		} else if (menuItemName.equals("alerts")) {
-			a.findViewById(R.id.drawer_button_alerts_ll).setPadding(7, 0, 0, 0);
-			((TextView)a.findViewById(R.id.drawer_alerts_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			a.findViewById(R.id.drawer_button_grid_border2).setVisibility(View.VISIBLE);
-			a.findViewById(R.id.drawer_button_alerts_border2).setVisibility(View.VISIBLE);
+			TextView tv = (TextView)a.findViewById(R.id.drawer_alerts_txt);
+			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+			Util.Fonts.setFont(c, tv, CustomFont.RobotoCondensed_Regular);
+			((ImageView)a.findViewById(R.id.drawer_alerts_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 		} else if (menuItemName.equals("labels")) {
-			a.findViewById(R.id.drawer_button_labels_ll).setPadding(7, 0, 0, 0);
-			((TextView)a.findViewById(R.id.drawer_labels_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			a.findViewById(R.id.drawer_button_alerts_border2).setVisibility(View.VISIBLE);
-			a.findViewById(R.id.drawer_button_labels_border2).setVisibility(View.VISIBLE);
+			TextView tv = (TextView)a.findViewById(R.id.drawer_labels_txt);
+			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+			Util.Fonts.setFont(c, tv, CustomFont.RobotoCondensed_Regular);
+			((ImageView)a.findViewById(R.id.drawer_labels_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 		} else if (menuItemName.equals("servers")) {
-			a.findViewById(R.id.drawer_button_servers_ll).setPadding(7, 0, 0, 0);
-			((TextView)a.findViewById(R.id.drawer_servers_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			a.findViewById(R.id.drawer_button_labels_border2).setVisibility(View.VISIBLE);
-			a.findViewById(R.id.drawer_button_servers_border2).setVisibility(View.VISIBLE);
+			TextView tv = (TextView)a.findViewById(R.id.drawer_servers_txt);
+			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+			Util.Fonts.setFont(c, tv, CustomFont.RobotoCondensed_Regular);
+			((ImageView)a.findViewById(R.id.drawer_servers_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 		} else if (menuItemName.equals("notifications")) {
-			a.findViewById(R.id.drawer_button_notifications_ll).setPadding(7, 0, 0, 0);
-			((TextView)a.findViewById(R.id.drawer_notifications_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			a.findViewById(R.id.drawer_button_servers_border2).setVisibility(View.VISIBLE);
-			a.findViewById(R.id.drawer_button_notifications_border2).setVisibility(View.VISIBLE);
-		} else if (menuItemName.equals("labels")) {
-			a.findViewById(R.id.drawer_button_labels_ll).setPadding(7, 0, 0, 0);
-			((TextView)a.findViewById(R.id.drawer_labels_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			a.findViewById(R.id.drawer_button_alerts_border2).setVisibility(View.VISIBLE);
-			a.findViewById(R.id.drawer_button_labels_border2).setVisibility(View.VISIBLE);
+			TextView tv = (TextView)a.findViewById(R.id.drawer_notifications_txt);
+			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+			Util.Fonts.setFont(c, tv, CustomFont.RobotoCondensed_Regular);
+			((ImageView)a.findViewById(R.id.drawer_notifications_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 		} else if (menuItemName.equals("premium")) {
-			a.findViewById(R.id.drawer_button_premium_ll).setPadding(7, 0, 0, 0);
-			((TextView)a.findViewById(R.id.drawer_premium_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			a.findViewById(R.id.drawer_button_notifications_border2).setVisibility(View.VISIBLE);
-			a.findViewById(R.id.drawer_button_premium_border2).setVisibility(View.VISIBLE);
+			TextView tv = (TextView)a.findViewById(R.id.drawer_premium_txt);
+			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+			Util.Fonts.setFont(c, tv, CustomFont.RobotoCondensed_Regular);
+			((ImageView)a.findViewById(R.id.drawer_premium_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 		} else if (menuItemName.equals("")) {
-			((TextView)a.findViewById(R.id.drawer_graphs_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			((TextView)a.findViewById(R.id.drawer_grid_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			((TextView)a.findViewById(R.id.drawer_alerts_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			((TextView)a.findViewById(R.id.drawer_labels_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			((TextView)a.findViewById(R.id.drawer_servers_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			((TextView)a.findViewById(R.id.drawer_notifications_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
-			((TextView)a.findViewById(R.id.drawer_premium_txt)).setTextColor(c.getResources().getColor(R.color.cffffff));
+			((TextView)a.findViewById(R.id.drawer_graphs_txt)).setTextColor(0xffffffff);
+			((TextView)a.findViewById(R.id.drawer_grid_txt)).setTextColor(0xffffffff);
+			((TextView)a.findViewById(R.id.drawer_alerts_txt)).setTextColor(0xffffffff);
+			((TextView)a.findViewById(R.id.drawer_labels_txt)).setTextColor(0xffffffff);
+			((TextView)a.findViewById(R.id.drawer_servers_txt)).setTextColor(0xffffffff);
+			((TextView)a.findViewById(R.id.drawer_notifications_txt)).setTextColor(0xffffffff);
+			((TextView)a.findViewById(R.id.drawer_premium_txt)).setTextColor(0xffffffff);
 		}
 	}
 	
@@ -507,10 +505,6 @@ public class DrawerHelper {
 	}
 	
 	public void initPluginsList(final int scrollY) {
-		// Borders
-		a.findViewById(R.id.drawer_button_graphs_border2).setVisibility(View.VISIBLE);
-		a.findViewById(R.id.drawer_button_grid_border1).setVisibility(View.VISIBLE);
-		
 		((LinearLayout)a.findViewById(R.id.drawer_containerPlugins)).removeAllViews();
 		
 		a.findViewById(R.id.drawer_containerPlugins).setVisibility(View.VISIBLE);
@@ -526,7 +520,7 @@ public class DrawerHelper {
 			if (vfpos == pos) {
 				final int position = pos;
 				b.setBackgroundResource(R.drawable.drawer_selectedsubbutton);
-				b.setTextColor(c.getResources().getColor(R.color.cffffff));
+				b.setTextColor(0xffffffff);
 				
 				// setScrollY
 				final ViewTreeObserver obs = b.getViewTreeObserver();
