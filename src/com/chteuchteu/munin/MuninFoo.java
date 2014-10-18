@@ -212,8 +212,10 @@ public class MuninFoo {
 				contains = true; break;
 			}
 		}
-		if (!contains)
+		if (!contains) {
 			labels.add(l);
+			sqlite.saveLabels();
+		}
 		return !contains;
 	}
 	public boolean removeLabel(Label label) {

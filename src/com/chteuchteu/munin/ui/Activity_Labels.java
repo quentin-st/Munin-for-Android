@@ -3,6 +3,7 @@ package com.chteuchteu.munin.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -35,6 +37,7 @@ public class Activity_Labels extends ListActivity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
 	private Context			context;
+	private Activity		activity;
 	
 	private SimpleAdapter 	sa;
 	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
@@ -47,6 +50,7 @@ public class Activity_Labels extends ListActivity {
 		muninFoo = MuninFoo.getInstance(this);
 		MuninFoo.loadLanguage(this);
 		context = this;
+		activity = this;
 		
 		setContentView(R.layout.labelselection);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -63,6 +67,7 @@ public class Activity_Labels extends ListActivity {
 	private void updateListView() {
 		list.clear();
 		getListView().setAdapter(null);
+		findViewById(R.id.no_label).setVisibility(View.GONE);
 		
 		if (muninFoo.labels.size() > 0) {
 			HashMap<String,String> item;
@@ -180,6 +185,7 @@ public class Activity_Labels extends ListActivity {
 	}
 	private void createOptionsMenu() {
 		menu.clear();
+		getMenuInflater().inflate(R.menu.labels, menu);
 	}
 	
 	@Override
@@ -189,6 +195,29 @@ public class Activity_Labels extends ListActivity {
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				dh.getDrawer().toggle(true);
+				return true;
+			case R.id.menu_add:
+				final LinearLayout ll = new LinearLayout(this);
+				ll.setOrientation(LinearLayout.VERTICAL);
+				ll.setPadding(10, 30, 10, 10);
+				final EditText input = new EditText(this);
+				ll.addView(input);
+				
+				new AlertDialog.Builder(activity)
+				.setTitle(getText(R.string.text70_2))
+				.setView(ll)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						String value = input.getText().toString();
+						if (!value.trim().equals(""))
+							muninFoo.addLabel(new Label(value));
+						dialog.dismiss();
+						updateListView();
+					}
+				}).setNegativeButton(getText(R.string.text64), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) { }
+				}).show();
+					
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Labels.this, Activity_Settings.class));

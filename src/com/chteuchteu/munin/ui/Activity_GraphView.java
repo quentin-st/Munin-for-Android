@@ -658,7 +658,7 @@ public class Activity_GraphView extends Activity {
 		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String value = input.getText().toString();
-				if (!value.equals(""))
+				if (!value.trim().equals(""))
 					muninFoo.addLabel(new Label(value));
 				dialog.dismiss();
 				actionLabels();
