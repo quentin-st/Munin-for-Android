@@ -89,17 +89,18 @@ public class Adapter_SeparatedList extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		int sectionnum = 0;
-		for(Object section : this.sections.keySet()) {
+		for (Object section : this.sections.keySet()) {
 			Adapter adapter = sections.get(section);
 			int size = adapter.getCount() + 1;
 			
 			// check if position inside this section 
-			if(position == 0) {
+			if (position == 0) {
 				View view = headers.getView(sectionnum, convertView, parent);
-				Util.Fonts.setFont(context, (TextView) view, CustomFont.RobotoCondensed_Regular);
+				TextView textView = (TextView) view.findViewById(R.id.list_header_title);
+				Util.Fonts.setFont(context, textView, CustomFont.Roboto_Medium);
 				return view;
 			}
-			if(position < size) {
+			if (position < size) {
 				View view = adapter.getView(position - 1, convertView, parent);
 				return view;
 			}

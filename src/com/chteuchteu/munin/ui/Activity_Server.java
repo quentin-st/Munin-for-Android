@@ -102,7 +102,7 @@ public class Activity_Server extends Activity {
 		dh.setDrawerActivity(DrawerHelper.Activity_Server_Add);
 		
 		Util.UI.applySwag(this);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.muninMasterUrlLabel), CustomFont.RobotoCondensed_Regular);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.muninMasterUrlLabel), CustomFont.Roboto_Medium);
 		
 		spinner = 			(Spinner)findViewById(R.id.spinner);
 		tb_serverUrl = 		(AutoCompleteTextView)findViewById(R.id.textbox_serverUrl);

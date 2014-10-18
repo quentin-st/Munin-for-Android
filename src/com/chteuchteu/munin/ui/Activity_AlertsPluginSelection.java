@@ -65,7 +65,7 @@ public class Activity_AlertsPluginSelection extends Activity {
 					plugins.add(muninFoo.currentServer.getPlugin(i));
 					
 					LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					View v = vi.inflate(R.layout.pluginselection_list_dark, null);
+					View v = vi.inflate(R.layout.plugins_list_dark, null);
 					
 					((TextView)v.findViewById(R.id.line_a)).setText(muninFoo.currentServer.getPlugin(i).getFancyName());
 					((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.currentServer.getPlugin(i).getName());

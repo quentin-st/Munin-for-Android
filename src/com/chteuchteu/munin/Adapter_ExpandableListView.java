@@ -16,16 +16,17 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.ui.Activity_Servers;
 
 public class Adapter_ExpandableListView extends BaseExpandableListAdapter {
 	private Activity_Servers activity;
 	private Context context;
-	private Map<String, List<String>> serversCollection;
-	private List<String> servers;
+	private Map<MuninMaster, List<String>> serversCollection;
+	private List<MuninMaster> servers;
 	
-	public Adapter_ExpandableListView(Activity_Servers activity, Context context, List<String> servers,
-			Map<String, List<String>> serversCollection) {
+	public Adapter_ExpandableListView(Activity_Servers activity, Context context, List<MuninMaster> servers,
+			Map<MuninMaster, List<String>> serversCollection) {
 		this.activity = activity;
 		this.context = context;
 		this.serversCollection = serversCollection;
@@ -71,6 +72,29 @@ public class Adapter_ExpandableListView extends BaseExpandableListAdapter {
 		return convertView;
 	}
 	
+	@SuppressLint("InflateParams")
+	public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+		MuninMaster master = (MuninMaster) getGroup(groupPosition);
+		if (convertView == null) {
+			LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = infalInflater.inflate(R.layout.expandable_master, null);
+		}
+		TextView item = (TextView) convertView.findViewById(R.id.master);
+		Util.Fonts.setFont((Context) context, item, CustomFont.Roboto_Medium);
+		item.setText(master.getName());
+		
+		if (master.isAuthNeeded())
+			convertView.findViewById(R.id.credentials).setVisibility(View.VISIBLE);
+		
+		ImageView edit = (ImageView) convertView.findViewById(R.id.edit);
+		edit.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				activity.onGroupItemOptionsClick(groupPosition);
+			}
+		});
+		return convertView;
+	}
+	
 	public int getChildrenCount(int groupPosition) {
 		return serversCollection.get(servers.get(groupPosition)).size();
 	}
@@ -85,26 +109,6 @@ public class Adapter_ExpandableListView extends BaseExpandableListAdapter {
 	
 	public long getGroupId(int groupPosition) {
 		return groupPosition;
-	}
-	
-	@SuppressLint("InflateParams")
-	public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-		String masterName = (String) getGroup(groupPosition);
-		if (convertView == null) {
-			LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(R.layout.expandable_master, null);
-		}
-		TextView item = (TextView) convertView.findViewById(R.id.master);
-		Util.Fonts.setFont((Context) context, item, CustomFont.RobotoCondensed_Regular);
-		item.setText(masterName);
-		
-		ImageView edit = (ImageView) convertView.findViewById(R.id.edit);
-		edit.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				activity.onGroupItemOptionsClick(groupPosition);
-			}
-		});
-		return convertView;
 	}
 	
 	public boolean hasStableIds() {

@@ -103,7 +103,7 @@ public class Widget_Configure extends Activity {
 							item2.put("line2", plugins.get(i).getName());
 							list2.add(item2);
 						}
-						SimpleAdapter sa2 = new SimpleAdapter(Widget_Configure.this, list2, R.layout.pluginselection_list_dark, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+						SimpleAdapter sa2 = new SimpleAdapter(Widget_Configure.this, list2, R.layout.plugins_list_dark, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 						lv2.setAdapter(sa2);
 						
 						lv2.setOnItemClickListener(new OnItemClickListener() {

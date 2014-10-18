@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:paddingLeft="@dimen/listview_inner_horizontal_margin"
+	android:paddingRight="@dimen/listview_inner_horizontal_margin" >
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal" >
+
+		<ImageView
+			android:layout_width="26dp"
+			android:layout_height="26dp"
+			android:layout_gravity="center"
+			android:layout_marginBottom="10dp"
+			android:layout_marginLeft="16dp"
+			android:layout_marginRight="13dp"
+			android:layout_marginTop="10dp"
+			android:src="@drawable/ic_action_picture" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:orientation="vertical" >
+
+			<TextView
+				android:id="@+id/line_a"
+				style="@style/Material_ListItem_Line1" />
+
+			<TextView
+				android:id="@+id/line_b"
+				style="@style/Material_ListItem_Line2" />
+		</LinearLayout>
+	</LinearLayout>
+
+	<View style="@style/Material_Divider_ListViewItem" />
+
+</LinearLayout>

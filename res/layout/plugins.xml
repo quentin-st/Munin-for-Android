@@ -32,6 +32,7 @@
 		android:id="@+id/android:list"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:divider="@null"
 		android:paddingLeft="@dimen/listview_horizontal_margin"
 		android:paddingRight="@dimen/listview_horizontal_margin" />
 

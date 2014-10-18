@@ -56,7 +56,7 @@ public class Activity_Servers extends Activity {
 	private static Context	context;
 	private Activity		activity;
 	
-	private Map<String, List<String>> serversCollection;
+	private Map<MuninMaster, List<String>> serversCollection;
 	private ExpandableListView expListView;
 	private Menu 			menu;
 	private MenuItem		importExportMenuItem;
@@ -87,7 +87,7 @@ public class Activity_Servers extends Activity {
 		
 		expListView = (ExpandableListView) findViewById(R.id.servers_list);
 		
-		List<String> masters = muninFoo.getMastersNames();
+		List<MuninMaster> masters = muninFoo.masters;
 		this.serversCollection = getServersCollection();
 		final Adapter_ExpandableListView expListAdapter = new Adapter_ExpandableListView(this, this, masters, serversCollection);
 		expListView.setAdapter(expListAdapter);
@@ -99,15 +99,15 @@ public class Activity_Servers extends Activity {
 			((LinearLayout)findViewById(R.id.servers_noserver)).setVisibility(View.VISIBLE);
 	}
 	
-	private Map<String, List<String>> getServersCollection() {
+	private Map<MuninMaster, List<String>> getServersCollection() {
 		// Create collection
-		LinkedHashMap<String, List<String>> serversCollection = new LinkedHashMap<String, List<String>>();
+		LinkedHashMap<MuninMaster, List<String>> serversCollection = new LinkedHashMap<MuninMaster, List<String>>();
 		
 		for (MuninMaster m : muninFoo.masters) {
 			List<String> childList = new ArrayList<String>();
 			for (MuninServer s : m.getOrderedChildren())
 				childList.add(s.getName());
-			serversCollection.put(m.getName(), childList);
+			serversCollection.put(m, childList);
 		}
 		
 		return serversCollection;

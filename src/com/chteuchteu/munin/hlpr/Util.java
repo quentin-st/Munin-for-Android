@@ -434,4 +434,18 @@ public final class Util {
 	    int resId = activity.getResources().getIdentifier("action_bar_container", "id", "android");
 	    return v.findViewById(resId);
 	}
+	
+	/**
+	 * "apache" => "Apache"
+	 * "some words" => "Some words"
+	 * @param original
+	 * @return
+	 */
+	@SuppressLint("DefaultLocale")
+	public static String capitalize(String original) {
+		if (original.length() < 2)
+			return original;
+		
+		return original.substring(0, 1).toUpperCase() + original.substring(1);
+	}
 }

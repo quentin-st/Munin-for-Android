@@ -75,7 +75,7 @@ public class Activity_Plugins extends ListActivity {
 		muninFoo = MuninFoo.getInstance(this);
 		MuninFoo.loadLanguage(this);
 		context = this;
-		setContentView(R.layout.pluginselection);
+		setContentView(R.layout.plugins);
 		this.actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		Util.UI.applySwag(this);
@@ -178,7 +178,7 @@ public class Activity_Plugins extends ListActivity {
 				item.put("line2", pl.getName());
 				list.add(item);
 			}
-			sa = new SimpleAdapter(this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+			sa = new SimpleAdapter(this, list, R.layout.plugins_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 			setListAdapter(sa);
 		} else {
 			// Create plugins list
@@ -197,9 +197,10 @@ public class Activity_Plugins extends ListActivity {
 				for (MuninPlugin p : l) {
 					elements.add(createItem(p.getFancyName(), p.getName()));
 					categoryName = p.getCategory();
+					categoryName = Util.capitalize(categoryName);
 				}
 				
-				adapter.addSection(categoryName, new SimpleAdapter(this, elements, R.layout.pluginselection_list,
+				adapter.addSection(categoryName, new SimpleAdapter(this, elements, R.layout.plugins_list,
 						new String[] { "title", "caption" }, new int[] { R.id.line_a, R.id.line_b }));
 			}
 			this.getListView().setAdapter(adapter);
@@ -328,7 +329,7 @@ public class Activity_Plugins extends ListActivity {
 							list.add(item);
 						}
 					}
-					sa = new SimpleAdapter(Activity_Plugins.this, list, R.layout.pluginselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+					sa = new SimpleAdapter(Activity_Plugins.this, list, R.layout.plugins_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 					setListAdapter(sa);
 				}
 			}

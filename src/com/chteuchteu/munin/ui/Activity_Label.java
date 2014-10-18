@@ -91,7 +91,7 @@ public class Activity_Label extends Activity {
 				correspondanceServers.add(p.getInstalledOn().getServerUrl());
 			}
 			
-			adapter.addSection(serverName, new SimpleAdapter(this, elements, R.layout.pluginselection_list,
+			adapter.addSection(serverName, new SimpleAdapter(this, elements, R.layout.plugins_list,
 					new String[] { "title", "caption" }, new int[] { R.id.line_a, R.id.line_b }));
 		}
 		
