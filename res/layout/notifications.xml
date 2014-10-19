@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
@@ -6,95 +6,90 @@
 	android:paddingRight="@dimen/listview_horizontal_margin" >
 
 	<LinearLayout
-		android:id="@+id/view1"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical" >
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="15dp"
+		android:background="@drawable/card"
+		android:orientation="vertical"
+		android:paddingBottom="20dp"
+		android:paddingTop="20dp" >
+
+		<CheckBox
+			android:id="@+id/checkbox_notifications"
+			style="@style/Settings_SettingCheckbox"
+			android:layout_marginLeft="20dp"
+			android:layout_marginRight="20dp"
+			android:button="@null"
+			android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+			android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+			android:text="@string/text52" />
 
 		<LinearLayout
+			android:id="@+id/notificationsEnabled"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
-			android:layout_marginTop="15dp"
-			android:background="@drawable/card"
-			android:orientation="vertical"
-			android:padding="20dp" >
+			android:orientation="vertical" >
 
-			<CheckBox
-				android:id="@+id/checkbox_notifications"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="5dp"
-				android:text="@string/text52" />
+			<View style="@style/Material_Divider" />
 
 			<CheckBox
 				android:id="@+id/checkbox_wifiOnly"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="5dp"
+				style="@style/Settings_SettingCheckbox"
+				android:layout_marginLeft="20dp"
+				android:layout_marginRight="20dp"
+				android:button="@null"
+				android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+				android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
 				android:text="@string/text53" />
 
-			<LinearLayout
+			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="5dp"
-				android:layout_marginRight="5dp"
+				android:layout_marginLeft="20dp"
+				android:layout_marginRight="20dp"
 				android:layout_marginTop="5dp"
+				android:gravity="center_vertical"
 				android:orientation="horizontal" >
 
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="@string/text55" />
+					android:layout_alignParentLeft="true"
+					android:layout_centerInParent="true"
+					android:text="@string/text55"
+					android:textColor="#666666"
+					android:textSize="16sp" />
 
 				<Spinner
 					android:id="@+id/spinner_refresh"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="8dp" />
-			</LinearLayout>
+					android:layout_alignParentRight="true" />
+			</RelativeLayout>
 
 			<TextView
 				android:id="@+id/estimated_data_consumption"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="6dp"
-				android:layout_marginTop="3dp" />
-		</LinearLayout>
+				android:layout_marginLeft="20dp"
+				android:layout_marginRight="20dp"
+				android:layout_marginTop="20dp"
+				android:gravity="center_horizontal"
+				android:textColor="#888888" />
 
-		<TextView
-			android:id="@+id/btn_selectServersToWatch"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
-			android:layout_marginTop="25dp"
-			android:background="@drawable/card"
-			android:clickable="true"
-			android:drawableRight="@drawable/arrow"
-			android:focusable="true"
-			android:gravity="center_vertical"
-			android:padding="20dp"
-			android:paddingBottom="20dp"
-			android:paddingTop="20dp"
-			android:text="@string/text56"
-			android:textColor="#333333"
-			android:textSize="19sp" />
+			<View style="@style/Material_Divider" />
+
+			<Button
+				android:id="@+id/btn_selectServersToWatch"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="20dp"
+				android:layout_marginRight="20dp"
+				android:text="@string/text56"
+				android:textSize="19sp" />
+		</LinearLayout>
 	</LinearLayout>
 
-	<ScrollView
-		android:id="@+id/list_scrollview"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:visibility="gone" >
-
-		<LinearLayout
-			android:id="@+id/list_container"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:visibility="gone" />
-	</ScrollView>
-
-</RelativeLayout>
+</LinearLayout>

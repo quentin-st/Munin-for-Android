@@ -300,7 +300,7 @@ public class Activity_Plugins extends ListActivity {
 	}
 	private void createOptionsMenu() {
 		menu.clear();
-		getMenuInflater().inflate(R.menu.pluginselection, menu);
+		getMenuInflater().inflate(R.menu.plugins, menu);
 		
 		ll_filter = (LinearLayout) this.findViewById(R.id.ll_filter);
 		filter = (EditText) this.findViewById(R.id.filter);
