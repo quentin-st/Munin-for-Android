@@ -218,6 +218,7 @@
 	<string name="text81">No data available for this plugin</string>
 	<string name="text82">This label will be deleted. Are you sure?</string>
 	<string name="text83">This server will be deleted. Are you sure?</string>
+	<string name="text84">This master will be deleted. Are you sure?</string>
 	<string name="import_servers">Import</string>
 	<string name="export_servers">Export</string>
 	<string name="import_export">Import / Export</string>

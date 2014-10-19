@@ -516,9 +516,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		if (id == -1)	return null;
 		
 		// Check if we already got it
-		for (MuninMaster m : currentMasters) {
-			if (m.getId() == id)
-				return m;
+		if (currentMasters != null) {
+			for (MuninMaster m : currentMasters) {
+				if (m.getId() == id)
+					return m;
+			}
 		}
 		
 		// We don't already have it -> get it from BDD
@@ -684,7 +686,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			w.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 			w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGETS_PERIOD)));
 			w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIDGETID)));
-			w.setPlugin(getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN))));
+			
+			// Get plugin, and master (server is fetched with getPlugin)
+			MuninPlugin plugin = getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN)));
+			MuninMaster master = getMaster((int) plugin.getInstalledOn().getId(), null);
+			plugin.getInstalledOn().setParent(master);
+			
+			w.setPlugin(plugin);
 			w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)));
 			w.setHideServerName(c.getInt(c.getColumnIndex(KEY_WIDGETS_HIDESERVERNAME)));
 			w.isPersistant = true;

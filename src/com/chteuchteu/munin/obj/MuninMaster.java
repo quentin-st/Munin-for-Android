@@ -10,7 +10,6 @@ import org.jsoup.select.Elements;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -374,7 +373,6 @@ public class MuninMaster {
 					// Get every host for that domain
 					Elements hosts = domain.parent().select("span.host");
 					for (Element host : hosts) {
-						Log.v("", "Found server with URL " + host.child(0).attr("abs:href"));
 						MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
 						serv.setParent(this);
 						serv.setPosition(pos);

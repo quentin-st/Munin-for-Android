@@ -307,8 +307,17 @@ public class Activity_Servers extends Activity {
 						}).show();
 						break;
 					case 4: // Delete master
-						muninFoo.deleteMuninMaster(master);
-						context.startActivity(new Intent(context, Activity_Servers.class));
+						new AlertDialog.Builder(context)
+						.setTitle(R.string.delete)
+						.setMessage(R.string.text84)
+						.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								new DeleteMaster(master, context).execute();
+							}
+						})
+						.setNegativeButton(R.string.text34, null)
+						.show();
 						break;
 				}
 			}
@@ -434,6 +443,38 @@ public class Activity_Servers extends Activity {
 				}
 			})
 			.show();
+		}
+	}
+	
+	private class DeleteMaster extends AsyncTask<Void, Integer, Void> {
+		private ProgressDialog dialog;
+		private Context context;
+		private MuninMaster toBeDeleted;
+		
+		private DeleteMaster(MuninMaster master, Context context) {
+			this.toBeDeleted = master;
+			this.context = context;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			
+			dialog = ProgressDialog.show(context, "", getString(R.string.loading), true);
+		}
+		
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			muninFoo.deleteMuninMaster(toBeDeleted);
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			dialog.dismiss();
+			
+			context.startActivity(new Intent(context, Activity_Servers.class));
 		}
 	}
 	
