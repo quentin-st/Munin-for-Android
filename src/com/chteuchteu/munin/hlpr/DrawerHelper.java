@@ -142,6 +142,7 @@ public class DrawerHelper {
 			break;
 		case Activity_Grid: // Activity_Grids
 			setSelectedMenuItem("grid");
+			break;
 		default:
 			setSelectedMenuItem("");
 			break;
@@ -318,8 +319,8 @@ public class DrawerHelper {
 			a.findViewById(R.id.drawer_grid_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_notifications_icon).setAlpha(0.5f);
 			a.findViewById(R.id.drawer_notifications_txt).setAlpha(0.5f);
-			a.findViewById(R.id.drawer_grid_icon).setAlpha(0.5f);
-			a.findViewById(R.id.drawer_grid_txt).setAlpha(0.5f);
+			a.findViewById(R.id.drawer_grids_icon).setAlpha(0.5f);
+			a.findViewById(R.id.drawer_grids_txt).setAlpha(0.5f);
 			a.findViewById(R.id.drawer_premium_btn).setVisibility(View.VISIBLE);
 		}
 		if (m.getHowManyServers() == 0) {
@@ -453,10 +454,10 @@ public class DrawerHelper {
 			Util.Fonts.setFont(c, tv, CustomFont.RobotoCondensed_Regular);
 			((ImageView)a.findViewById(R.id.drawer_graphs_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 		} else if (menuItemName.equals("grid")) {
-			TextView tv = (TextView)a.findViewById(R.id.drawer_grid_txt);
+			TextView tv = (TextView)a.findViewById(R.id.drawer_grids_txt);
 			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
 			Util.Fonts.setFont(c, tv, CustomFont.RobotoCondensed_Regular);
-			((ImageView)a.findViewById(R.id.drawer_grid_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+			((ImageView)a.findViewById(R.id.drawer_grids_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 		} else if (menuItemName.equals("alerts")) {
 			TextView tv = (TextView)a.findViewById(R.id.drawer_alerts_txt);
 			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
@@ -484,7 +485,7 @@ public class DrawerHelper {
 			((ImageView)a.findViewById(R.id.drawer_premium_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 		} else if (menuItemName.equals("")) {
 			((TextView)a.findViewById(R.id.drawer_graphs_txt)).setTextColor(0xffffffff);
-			((TextView)a.findViewById(R.id.drawer_grid_txt)).setTextColor(0xffffffff);
+			((TextView)a.findViewById(R.id.drawer_grids_txt)).setTextColor(0xffffffff);
 			((TextView)a.findViewById(R.id.drawer_alerts_txt)).setTextColor(0xffffffff);
 			((TextView)a.findViewById(R.id.drawer_labels_txt)).setTextColor(0xffffffff);
 			((TextView)a.findViewById(R.id.drawer_servers_txt)).setTextColor(0xffffffff);

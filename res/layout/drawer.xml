@@ -102,13 +102,13 @@
 				android:padding="@dimen/item_padding" >
 
 				<ImageView
-					android:id="@+id/drawer_grid_icon"
+					android:id="@+id/drawer_grids_icon"
 					style="@style/Drawer_Item_Icon"
 					android:contentDescription="@string/button_grid"
 					android:src="@drawable/ic_dr_grid" />
 
 				<TextView
-					android:id="@+id/drawer_grid_txt"
+					android:id="@+id/drawer_grids_txt"
 					style="@style/Drawer_Item_Text"
 					android:text="@string/button_grid" />
 			</LinearLayout>
