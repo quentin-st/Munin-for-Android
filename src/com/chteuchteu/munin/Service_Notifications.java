@@ -120,53 +120,53 @@ public class Service_Notifications extends Service {
 			//<string name="text58"> critical / criticals /&amp;amp; / warning / warnings /on / server/ servers</string>
 			String[] strings = getString(R.string.text58).split("/");
 			
-			String titreNotif = "";
+			String notifTitle = "";
 			if (nbCriticals > 0 && nbWarnings > 0) {
-				titreNotif = nbCriticals + "";
+				notifTitle = nbCriticals + "";
 				if (nbCriticals == 1)
-					titreNotif += strings[0];
+					notifTitle += strings[0];
 				else
-					titreNotif += strings[1];
-				titreNotif += strings[2];
-				titreNotif += nbWarnings;
+					notifTitle += strings[1];
+				notifTitle += strings[2];
+				notifTitle += nbWarnings;
 				if (nbWarnings == 1)
-					titreNotif += strings[3];
+					notifTitle += strings[3];
 				else
-					titreNotif += strings[4];
-				titreNotif += strings[5];
-				titreNotif += nbServers;
+					notifTitle += strings[4];
+				notifTitle += strings[5];
+				notifTitle += nbServers;
 				if (nbServers == 1)
-					titreNotif += strings[6];
+					notifTitle += strings[6];
 				else
-					titreNotif += strings[7];
+					notifTitle += strings[7];
 				//String titreNotification = nbCriticals + " criticals & " + nbWarnings + " warnings on " + nbServers + " servers";
 			} else if (nbCriticals == 0 && nbWarnings > 0) {
-				titreNotif = nbWarnings + "";
+				notifTitle = nbWarnings + "";
 				if (nbWarnings == 1)
-					titreNotif += strings[3];
+					notifTitle += strings[3];
 				else
-					titreNotif += strings[4];
-				titreNotif += strings[5];
-				titreNotif += nbServers;
+					notifTitle += strings[4];
+				notifTitle += strings[5];
+				notifTitle += nbServers;
 				if (nbServers == 1)
-					titreNotif += strings[6];
+					notifTitle += strings[6];
 				else
-					titreNotif += strings[7];
+					notifTitle += strings[7];
 			} else if (nbCriticals > 0 && nbWarnings == 0) {
-				titreNotif = nbCriticals + "";
+				notifTitle = nbCriticals + "";
 				if (nbCriticals == 1)
-					titreNotif += strings[0];
+					notifTitle += strings[0];
 				else
-					titreNotif += strings[1];
-				titreNotif += strings[5];
-				titreNotif += nbServers;
+					notifTitle += strings[1];
+				notifTitle += strings[5];
+				notifTitle += nbServers;
 				if (nbServers == 1)
-					titreNotif += strings[6];
+					notifTitle += strings[6];
 				else
-					titreNotif += strings[7];
+					notifTitle += strings[7];
 			}
 			
-			String texteNotification = "";
+			String notifText = "";
 			
 			if (criticalPlugins.length() > 2 && criticalPlugins.substring(criticalPlugins.length()-2).equals(", "))
 				criticalPlugins = criticalPlugins.substring(0, criticalPlugins.length()-2);
@@ -174,23 +174,22 @@ public class Service_Notifications extends Service {
 				warningPlugins = warningPlugins.substring(0, warningPlugins.length()-2);
 			
 			if (nbCriticals > 0 && nbWarnings > 0)
-				texteNotification = criticalPlugins + ", " + warningPlugins;
+				notifText = criticalPlugins + ", " + warningPlugins;
 			else if (nbCriticals > 0)
-				texteNotification = criticalPlugins;
+				notifText = criticalPlugins;
 			else
-				texteNotification = warningPlugins;
+				notifText = warningPlugins;
 			
 			if (nbCriticals > 0 || nbWarnings > 0) {
-				if (!Util.getPref(Service_Notifications.this, "lastNotificationText").equals(texteNotification)) {
+				if (!Util.getPref(Service_Notifications.this, "lastNotificationText").equals(notifText)) {
 					NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 					Notification notification = new Notification(R.drawable.launcher_icon_mono, getString(R.string.app_name), System.currentTimeMillis());
 					
 					PendingIntent pendingIntent = PendingIntent.getActivity(Service_Notifications.this, 0, new Intent(Service_Notifications.this, Activity_Alerts.class), 0);
-					notification.setLatestEventInfo(Service_Notifications.this, titreNotif, texteNotification, pendingIntent);
+					notification.setLatestEventInfo(Service_Notifications.this, notifTitle, notifText, pendingIntent);
 					
-					Util.setPref(Service_Notifications.this, "lastNotificationText", texteNotification);
+					Util.setPref(Service_Notifications.this, "lastNotificationText", notifText);
 					
-					//Enfin on ajoute notre notification et son ID à notre gestionnaire de notification
 					notificationManager.notify(1234, notification);
 					stopSelf();
 				}
@@ -198,6 +197,9 @@ public class Service_Notifications extends Service {
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				mNotificationManager.cancel(1234);
 			}
+			
+			// Important : release wake lock in the end
+			mWakeLock.release();
 		}
 	}
 	
