@@ -77,7 +77,7 @@ public class Activity_Label extends Activity {
 		labelsListCat = label.getPluginsSortedByServer(muninFoo);
 		correspondance = new ArrayList<MuninPlugin>();
 		correspondanceServers = new ArrayList<String>();
-		Adapter_SeparatedList adapter = new Adapter_SeparatedList(this);
+		Adapter_SeparatedList adapter = new Adapter_SeparatedList(this, false);
 		for (List<MuninPlugin> l : labelsListCat) {
 			correspondanceServers.add("");
 			correspondance.add(new MuninPlugin());

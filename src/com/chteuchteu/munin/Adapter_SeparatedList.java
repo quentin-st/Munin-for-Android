@@ -19,10 +19,12 @@ public class Adapter_SeparatedList extends BaseAdapter {
 	private final Map<String,Adapter> sections = new LinkedHashMap<String,Adapter>();
 	private final ArrayAdapter<String> headers;
 	private final static int TYPE_SECTION_HEADER = 0;
+	private boolean removeMasterPaddingLeft;
 	
-	public Adapter_SeparatedList(Context context) {
+	public Adapter_SeparatedList(Context context, boolean removeMasterPaddingLeft) {
 		this.headers = new ArrayAdapter<String>(context, R.layout.list_header);
 		this.context = context;
+		this.removeMasterPaddingLeft = removeMasterPaddingLeft;
 	}
 	
 	public void addSection(String section, Adapter adapter) {
@@ -98,6 +100,8 @@ public class Adapter_SeparatedList extends BaseAdapter {
 				View view = headers.getView(sectionnum, convertView, parent);
 				TextView textView = (TextView) view.findViewById(R.id.list_header_title);
 				Util.Fonts.setFont(context, textView, CustomFont.Roboto_Medium);
+				if (removeMasterPaddingLeft)
+					textView.setPadding(55, textView.getPaddingTop(), textView.getPaddingRight(), textView.getPaddingBottom());
 				return view;
 			}
 			if (position < size) {

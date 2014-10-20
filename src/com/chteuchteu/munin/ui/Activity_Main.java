@@ -271,6 +271,9 @@ public class Activity_Main extends Activity {
 		if (Util.hasPref(context, "splash"))
 			Util.removePref(context, "splash");
 		
+		if (Util.hasPref(context, "listViewMode"))
+			Util.removePref(context, "listViewMode");
+		
 		// MfA 3.0 : moved auth attributes from MuninServer to MuninMaster : migrate those
 		// if possible
 		// TODO put an if on this

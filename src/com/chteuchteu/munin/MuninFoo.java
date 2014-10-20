@@ -359,6 +359,16 @@ public class MuninFoo {
 		return false;
 	}
 	
+	public List<List<MuninServer>> getGroupedServersList() {
+		List<List<MuninServer>> l = new ArrayList<List<MuninServer>>();
+		for (MuninMaster master : masters) {
+			List<MuninServer> serversList = new ArrayList<MuninServer>();
+			serversList.addAll(master.getChildren());
+			l.add(serversList);
+		}
+		return l;
+	}
+	
 	private static boolean isPackageInstalled (String packageName, Context c) {
 		PackageManager pm = c.getPackageManager();
 		try {

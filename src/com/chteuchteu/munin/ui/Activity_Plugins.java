@@ -9,7 +9,7 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
-import android.app.ActionBar.OnNavigationListener;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
@@ -18,9 +18,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -28,8 +31,8 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.Adapter_SeparatedList;
@@ -38,6 +41,7 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -48,121 +52,116 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 public class Activity_Plugins extends ListActivity {
 	private MuninFoo			muninFoo;
 	private DrawerHelper		dh;
-	private Context				context;
+	private Context			context;
+	private Activity			activity;
 	
 	private SimpleAdapter 		sa;
 	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 	private List<MuninPlugin>	pluginsList;
 	private List<List<MuninPlugin>> pluginsListCat;
 	private MuninPlugin[] 		pluginsFilter;
-	private int				actionBarSpinnerIndex;
+	private View				customActionBarView;
+	private TextView			customActionBarView_textView;
 	
 	private LinearLayout	ll_filter;
 	private EditText		filter;
-	private	ActionBar		actionBar;
-	private boolean			actionBarListEnabled;
+	private ActionBar		actionBar;
 	private Menu 			menu;
-	private String			activityName;
 	
 	private int mode;
 	private int MODE_GROUPED = 1;
 	private int MODE_FLAT = 2;
 	
-	@SuppressWarnings("deprecation")
+	@SuppressLint("InflateParams")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		muninFoo = MuninFoo.getInstance(this);
 		MuninFoo.loadLanguage(this);
 		context = this;
+		activity = this;
 		setContentView(R.layout.plugins);
 		this.actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		Util.UI.applySwag(this);
 		
-		// Create ActionBar spinner (dropdown) if needed
-		actionBarSpinnerIndex = -1;
-		actionBarListEnabled = false;
+		actionBar.setDisplayShowCustomEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(false);
 		
-		if (muninFoo.getHowManyServers() > 1) {
-			actionBar.setDisplayShowTitleEnabled(false);
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-			actionBarListEnabled = true;
-			
-			if (muninFoo.currentServer == null) // hotfix
-				muninFoo.currentServer = muninFoo.getServer(0);
-			
-			actionBarSpinnerIndex = muninFoo.currentServer.getFlatPosition(muninFoo);
-			List<String> list2 = new ArrayList<String>();
-			List<MuninServer> l1 = muninFoo.getOrderedServers();
-			for (MuninServer s : l1)
-				list2.add(s.getName());
-			
-			SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(getActionBar().getThemedContext(),
-					android.R.layout.simple_spinner_dropdown_item, list2);
-			
-			ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
-				@Override
-				public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-					if (itemPosition != actionBarSpinnerIndex) {
-						if (muninFoo.getServerFromFlatPosition(itemPosition) != null) {
-							muninFoo.currentServer = muninFoo.getServerFromFlatPosition(itemPosition);
-							
-							actionBarSpinnerIndex = itemPosition;
-							
-							updateListView();
+		final LayoutInflater inflator = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		customActionBarView = inflator.inflate(R.layout.actionbar_serverselection, null);
+		customActionBarView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				LinearLayout view = new LinearLayout(activity);
+				view.setOrientation(LinearLayout.VERTICAL);
+				
+				ListView listView = new ListView(activity);
+				// Create servers list
+				List<List<MuninServer>> list = muninFoo.getGroupedServersList();
+				
+				Adapter_SeparatedList adapter = new Adapter_SeparatedList(context, true);
+				for (List<MuninServer> l : list) {
+					List<Map<String,?>> elements = new LinkedList<Map<String,?>>();
+					String masterName = "";
+					for (MuninServer s : l) {
+						elements.add(createItem(s.getName()));
+						masterName = s.getParent().getName();
+						masterName = Util.capitalize(masterName);
+					}
+					
+					adapter.addSection(masterName, new SimpleAdapter(context, elements, R.layout.plugins_serverlist_server,
+							new String[] { "title" }, new int[] { R.id.server }));
+				}
+				listView.setAdapter(adapter);
+				
+				view.addView(listView);
+				
+				final AlertDialog dialog = new AlertDialog.Builder(context)
+				.setView(view)
+				.show();
+				dialog.getWindow().setLayout(750, LayoutParams.WRAP_CONTENT);
+				
+				listView.setOnItemClickListener(new OnItemClickListener() {
+					public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
+						// Master name lines are taken in account in the positions list.
+						// Let's find the server.
+						int i = 0;
+						for (MuninMaster master : muninFoo.masters) {
+							i++;
+							for (MuninServer server : master.getChildren()) {
+								if (i == position) {
+									dialog.dismiss();
+									muninFoo.currentServer = server;
+									customActionBarView_textView.setText(server.getName());
+									updateListView(mode);
+								}
+								i++;
+							}
 						}
 					}
-					return false;
-				}
-			};
-			actionBar.setListNavigationCallbacks(spinnerAdapter, navigationListener);
-			actionBar.setSelectedNavigationItem(actionBarSpinnerIndex);
-		} else if (muninFoo.getHowManyServers() == 1) {
-			actionBar.setTitle(getString(R.string.button_graphs));
-			actionBar.setSubtitle(muninFoo.currentServer.getName());
-		}
+				});
+			}
+		});
+		
+		TextView serverName = (TextView) customActionBarView.findViewById(R.id.text);
+		serverName.setText(muninFoo.currentServer.getName());
+		customActionBarView_textView = serverName;
+		
+		actionBar.setCustomView(customActionBarView);
 		
 		dh = new DrawerHelper(this, muninFoo);
 		dh.setDrawerActivity(DrawerHelper.Activity_Plugins);
 		
-		mode = getListViewMode();
+		mode = MODE_GROUPED;
 		
-		if (muninFoo.currentServer.getPlugins().size() > 0) {
-			if (actionBarListEnabled)
-				actionBar.setSelectedNavigationItem(muninFoo.currentServer.getFlatPosition(muninFoo));
-			
-			updateListView();
-		}
-	}
-	
-	public int getListViewMode() {
-		if (muninFoo.currentServer == null)
-			muninFoo.currentServer = muninFoo.getFirstServer();
 		
-		if (muninFoo.currentServer.getPluginsListWithCategory().size() < 2)
-			mode = MODE_FLAT;
-		else {
-			if (Util.getPref(context, "listViewMode").equals("flat"))
-				mode = MODE_FLAT;
-			else
-				mode = MODE_GROUPED;
-		}
-		return mode;
+		updateListView(mode);
 	}
 	
-	private void switchListViewMode(int mode) {
-		if (mode == MODE_FLAT)
-			Util.setPref(context, "listViewMode", "flat");
-		else
-			Util.setPref(context, "listViewMode", "grouped");
-	}
-	
-	private void updateListView() {
-		updateListView(getListViewMode());
-	}
-	
-	private void updateListView(int mode) {
+	private void updateListView(final int mode) {
+		this.mode = mode;
+		
 		if (mode == MODE_FLAT) {
 			pluginsList = new ArrayList<MuninPlugin>();
 			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
@@ -190,7 +189,7 @@ public class Activity_Plugins extends ListActivity {
 					pluginsList.add(muninFoo.currentServer.getPlugins().get(i));
 			}
 			
-			Adapter_SeparatedList adapter = new Adapter_SeparatedList(this);
+			Adapter_SeparatedList adapter = new Adapter_SeparatedList(this, false);
 			for (List<MuninPlugin> l : pluginsListCat) {
 				List<Map<String,?>> elements = new LinkedList<Map<String,?>>();
 				String categoryName = "";
@@ -249,7 +248,7 @@ public class Activity_Plugins extends ListActivity {
 										View v = getListView().getChildAt(0);
 										int top = (v == null) ? 0 : v.getTop();
 										
-										updateListView();
+										updateListView(mode);
 										
 										getListView().setSelectionFromTop(index, top);
 										break;
@@ -267,12 +266,18 @@ public class Activity_Plugins extends ListActivity {
 		});
 	}
 	
-	public Map<String,?> createItem(String title, String caption) {  
-		Map<String,String> item = new HashMap<String,String>();  
-		item.put("title", title);  
-		item.put("caption", caption);  
-		return item;  
-	} 
+	public Map<String,?> createItem(String title, String caption) {
+		Map<String,String> item = new HashMap<String,String>();
+		item.put("title", title);
+		item.put("caption", caption);
+		return item;
+	}
+	
+	public Map<String,?> createItem(String title) {
+		Map<String,String> item = new HashMap<String,String>();
+		item.put("title", title);
+		return item;
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
@@ -281,7 +286,9 @@ public class Activity_Plugins extends ListActivity {
 		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
 			@Override
 			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
+				customActionBarView.setVisibility(View.GONE);
+				actionBar.setDisplayShowCustomEnabled(false);
+				actionBar.setDisplayShowTitleEnabled(true);
 				getActionBar().setTitle(R.string.app_name);
 				menu.clear();
 				getMenuInflater().inflate(R.menu.main, menu);
@@ -290,7 +297,9 @@ public class Activity_Plugins extends ListActivity {
 		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
 			@Override
 			public void onClose() {
-				getActionBar().setTitle(activityName);
+				customActionBarView.setVisibility(View.VISIBLE);
+				actionBar.setDisplayShowCustomEnabled(true);
+				actionBar.setDisplayShowTitleEnabled(false);
 				createOptionsMenu();
 			}
 		});
@@ -363,13 +372,6 @@ public class Activity_Plugins extends ListActivity {
 					imm.hideSoftInputFromWindow(filter.getWindowToken(), 0);
 				}
 				return true;
-			case R.id.menu_modelist:
-				if (mode == MODE_FLAT)
-					switchListViewMode(MODE_GROUPED);
-				else
-					switchListViewMode(MODE_FLAT);
-				updateListView();
-				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Plugins.this, Activity_Settings.class));
 				Util.setTransition(context, TransitionStyle.DEEPER);
@@ -384,20 +386,16 @@ public class Activity_Plugins extends ListActivity {
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
-		
-	}
-	
-	@Override
 	public void onBackPressed() {
 		if (ll_filter != null && ll_filter.getVisibility() == View.VISIBLE) {
+			filter.setText("");
 			ll_filter.setVisibility(View.GONE);
 			filter.setFocusable(false);
 			filter.setFocusableInTouchMode(false);
 			filter.clearFocus();
 			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(filter.getWindowToken(), 0);
+			updateListView(MODE_GROUPED);
 		} else {
 			Intent intent = new Intent(this, Activity_Main.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

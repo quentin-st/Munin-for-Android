@@ -10,7 +10,7 @@
 		android:id="@+id/ll_filter"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="#12A1E3"
+		android:background="@color/actionBarColor"
 		android:orientation="vertical"
 		android:visibility="gone" >
 
