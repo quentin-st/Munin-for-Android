@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:padding="10dp" >
+	android:orientation="vertical" >
 
 	<TextView
 		android:id="@+id/server"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_centerVertical="true"
-		android:paddingLeft="10dp" />
+		android:paddingBottom="10dp"
+		android:paddingLeft="15dp"
+		android:paddingRight="15dp"
+		android:paddingTop="10dp"
+		android:textColor="#555555"
+		android:textSize="17sp" />
 
-</RelativeLayout>
+	<View style="@style/Material_Divider_ListViewItem" />
+
+</LinearLayout>

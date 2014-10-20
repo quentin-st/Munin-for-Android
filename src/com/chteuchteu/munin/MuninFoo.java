@@ -205,6 +205,12 @@ public class MuninFoo {
 		if (this.masters.remove(master)) {
 			sqlite.dbHlpr.deleteMaster(master, true);
 			
+			// Remove labels relations for the current session
+			for (MuninServer server : master.getChildren()) {
+				for (MuninPlugin plugin : server.getPlugins())
+					removeLabelRelation(plugin);
+			}
+			
 			this.servers.removeAll(master.getChildren());
 		}
 	}
@@ -234,6 +240,21 @@ public class MuninFoo {
 		if (somthingDeleted)
 			sqlite.saveLabels();
 		return somthingDeleted;
+	}
+	/**
+	 * When removing a plugin, delete its label relations.
+	 * Warning : this does not deletes it from the local db.
+	 * @param plugin
+	 */
+	public void removeLabelRelation(MuninPlugin plugin) {
+		for (Label label : this.labels) {
+			for (MuninPlugin labelPlugin : label.plugins) {
+				if (labelPlugin.equals(plugin)) {
+					label.plugins.remove(labelPlugin);
+					return;
+				}
+			}
+		}
 	}
 	
 	/**

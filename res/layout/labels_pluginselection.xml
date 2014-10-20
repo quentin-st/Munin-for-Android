@@ -9,6 +9,7 @@
 	<ListView
 		android:id="@+id/labels_listview"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content" />
+		android:layout_height="wrap_content"
+		android:divider="@null" />
 
 </LinearLayout>

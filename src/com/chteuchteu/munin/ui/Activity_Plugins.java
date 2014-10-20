@@ -114,6 +114,7 @@ public class Activity_Plugins extends ListActivity {
 							new String[] { "title" }, new int[] { R.id.server }));
 				}
 				listView.setAdapter(adapter);
+				listView.setDivider(null);
 				
 				view.addView(listView);
 				
@@ -242,6 +243,8 @@ public class Activity_Plugins extends ListActivity {
 									if (plugin != null && plugin.getName().equals(plu.getText().toString())) {
 										muninFoo.currentServer.getPlugins().remove(plugin);
 										muninFoo.sqlite.dbHlpr.deleteMuninPlugin(plugin, true);
+										// Remove from labels if necessary
+										muninFoo.removeLabelRelation(plugin);
 										
 										// Save scroll state
 										int index = getListView().getFirstVisiblePosition();

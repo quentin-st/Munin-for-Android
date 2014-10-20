@@ -43,6 +43,7 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -157,6 +158,10 @@ public class Activity_Servers extends Activity {
 								
 								muninFoo.sqlite.dbHlpr.deleteServer(server);
 								muninFoo.deleteServer(server, true);
+								
+								// Delete labels relations stored in MuninFoo.labels for the current session
+								for (MuninPlugin plugin : server.getPlugins())
+										muninFoo.removeLabelRelation(plugin);
 								
 								if (muninFoo.currentServer.equalsApprox(server)) {
 									if (muninFoo.getHowManyServers() == 0)
