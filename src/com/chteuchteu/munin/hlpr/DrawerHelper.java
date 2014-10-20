@@ -418,6 +418,7 @@ public class DrawerHelper {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) { }
 		});
+		
 		search_results.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
