@@ -76,6 +76,7 @@ public class SQLite {
 		}
 		
 		// Merge defaultMaster childrens by host name. If necessary get old auth information.
+		// Find default master
 		MuninMaster defaultMaster = null;
 		for (MuninMaster master : muninFoo.getMasters()) {
 			if (master.defaultMaster) {

@@ -292,10 +292,11 @@ public final class Util {
 			
 			// Ascend
 			for (int i=0; i<nbLevels; i++)
-				newUrl = newUrl.substring(0, newUrl.lastIndexOf('/')+1);
+				newUrl = newUrl.substring(0, newUrl.lastIndexOf('/'));
 			
 			// Add trailing slash
-			newUrl += "/";
+			if (!newUrl.endsWith("/"))
+				newUrl += "/";
 			
 			// Check if we still have a consistent URL
 			String hostName = Util.URLManipulation.getHostFromUrl(url);

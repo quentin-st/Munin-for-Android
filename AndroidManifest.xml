@@ -37,12 +37,7 @@
 			android:configChanges="orientation|screenSize|keyboardHidden" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_AlertsPluginSelection" />
 		<activity
-			android:name="com.chteuchteu.munin.ui.Activity_Server"
-			android:configChanges="orientation|screenSize|keyboardHidden"
-			android:windowSoftInputMode="stateHidden|adjustResize" />
-		<activity
 			android:name="com.chteuchteu.munin.ui.Activity_GraphView"
-			android:configChanges="orientation|screenSize|keyboardHidden"
 			android:theme="@style/NoActionBarShadow" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Grid" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Grids" />
@@ -60,10 +55,12 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Notifications" />
-		<activity
-			android:name="com.chteuchteu.munin.ui.Activity_Plugins"
-			android:theme="@style/NoActionBarShadow" />
+		<activity android:name="com.chteuchteu.munin.ui.Activity_Plugins" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_ServersEdit" />
+		<activity
+			android:name="com.chteuchteu.munin.ui.Activity_Server"
+			android:configChanges="orientation|screenSize|keyboardHidden"
+			android:windowSoftInputMode="stateHidden|adjustResize" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Servers" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Settings" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GoPremium" />
