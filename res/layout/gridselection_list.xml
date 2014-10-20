@@ -9,7 +9,7 @@
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="center"
+		android:layout_gravity="center_vertical"
 		android:layout_margin="13dp"
 		android:src="@drawable/ic_grid" />
 
@@ -21,25 +21,11 @@
 
 		<TextView
 			android:id="@+id/line_a"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="0dp"
-			android:layout_marginRight="8dp"
-			android:layout_marginTop="2dp"
-			android:maxLines="2"
-			android:textColor="#252525"
-			android:textSize="22sp" />
+			style="@style/Material_ListItem_Line1" />
 
 		<TextView
 			android:id="@+id/line_b"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="4dp"
-			android:layout_marginLeft="0dp"
-			android:layout_marginRight="8dp"
-			android:maxLines="2"
-			android:textColor="#7A7A7A"
-			android:textSize="14sp" />
+			style="@style/Material_ListItem_Line2" />
 	</LinearLayout>
 
 </LinearLayout>

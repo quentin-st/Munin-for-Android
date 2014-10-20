@@ -1,6 +1,7 @@
 package com.chteuchteu.munin;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,6 +57,8 @@ public class MuninFoo {
 	// Import/Export webservice
 	public static final String IMPORT_EXPORT_URI = "http://www.munin-for-android.com/ws/importExport.php";
 	public static final int IMPORT_EXPORT_VERSION = 1;
+	
+	public Calendar alerts_lastUpdated;
 	
 	private MuninFoo() {
 		premium = false;
@@ -377,6 +380,25 @@ public class MuninFoo {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Returns true if we should retrieve servers information
+	 * @return
+	 */
+	public boolean shouldUpdateAlerts() {
+		if (alerts_lastUpdated == null) {
+			alerts_lastUpdated = Calendar.getInstance();
+			return true;
+		}
+		
+		Calendar updateTreshold = Calendar.getInstance();
+		updateTreshold.add(Calendar.MINUTE, -10);
+		
+		// If the last time the information was retrieved is before
+		// now -10 minutes, we should update it again.
+		
+		return alerts_lastUpdated.before(updateTreshold);
 	}
 	
 	@SuppressWarnings("unused")

@@ -1,6 +1,7 @@
 package com.chteuchteu.munin.ui;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -164,8 +165,12 @@ public class Activity_Alerts extends Activity {
 		Intent thisIntent = getIntent();
 		if (thisIntent.hasExtra("dontCheckAgain") && thisIntent.getExtras().getBoolean("dontCheckAgain"))
 			updateStates(false);
-		else
-			updateStates(true);
+		else {
+			if (muninFoo.shouldUpdateAlerts())
+				updateStates(true);
+			else
+				updateStates(false);
+		}
 		
 		
 		findViewById(R.id.hideNoAlerts).setOnClickListener(new OnClickListener() {
@@ -361,8 +366,10 @@ public class Activity_Alerts extends Activity {
 			};
 			new Thread() {
 				@Override public void run() {
-					if (fetch)
+					if (fetch) {
+						muninFoo.alerts_lastUpdated = Calendar.getInstance();
 						muninFoo.getServer(z).fetchPluginsStates();
+					}
 					
 					uiThreadCallback.post(runInUIThread);
 				}
