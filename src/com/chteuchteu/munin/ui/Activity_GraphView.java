@@ -173,10 +173,8 @@ public class Activity_GraphView extends Activity {
 		}
 		
 		// Coming from PluginSelection or if orientation changed
-		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("position")) {
-			String position = thisIntent.getExtras().getString("position");
-			pos = Integer.parseInt(position);
-		}
+		if (thisIntent.getExtras().containsKey("position"))
+			pos = thisIntent.getExtras().getInt("position");
 		
 		if (savedInstanceState != null)
 			pos = savedInstanceState.getInt("position");

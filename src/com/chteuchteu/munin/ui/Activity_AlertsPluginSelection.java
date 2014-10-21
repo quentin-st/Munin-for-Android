@@ -1,8 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -10,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,9 +34,7 @@ public class Activity_AlertsPluginSelection extends Activity {
 	private DrawerHelper	dh;
 	private String			activityName;
 	private Menu			menu;
-	private Context			c;
-	
-	private static List<MuninPlugin> plugins;
+	private Context		c;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,46 +53,45 @@ public class Activity_AlertsPluginSelection extends Activity {
 		
 		Util.UI.applySwag(this);
 		
-		plugins = new ArrayList<MuninPlugin>();
-		if (muninFoo.currentServer != null && muninFoo.currentServer.getPlugins() != null && muninFoo.currentServer.getPlugins().size() > 0) {
-			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-				if (muninFoo.currentServer.getPlugin(i) != null && 
-						(muninFoo.currentServer.getPlugin(i).getState() == AlertState.WARNING || muninFoo.currentServer.getPlugin(i).getState() == AlertState.CRITICAL)) {
-					plugins.add(muninFoo.currentServer.getPlugin(i));
-					
-					LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					View v = vi.inflate(R.layout.plugins_list_dark, null);
-					
-					((TextView)v.findViewById(R.id.line_a)).setText(muninFoo.currentServer.getPlugin(i).getFancyName());
-					((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.currentServer.getPlugin(i).getName());
-					if (muninFoo.currentServer.getPlugin(i).getState() == AlertState.WARNING)
-						((LinearLayout)v.findViewById(R.id.pluginselection_part_ll)).setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_WARNING));
-					else if (muninFoo.currentServer.getPlugin(i).getState() == AlertState.CRITICAL)
-						((LinearLayout)v.findViewById(R.id.pluginselection_part_ll)).setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_CRITICAL));
-					
-					v.findViewById(R.id.pluginselection_part_ll).setOnClickListener(new OnClickListener() {
-						public void onClick(View v) {
-							Intent i = new Intent(Activity_AlertsPluginSelection.this, Activity_GraphView.class);
-							i.putExtra("plugin", ((TextView)v.findViewById(R.id.line_b)).getText().toString());
-							// Get plugin index in list
-							for (int y=0; y<muninFoo.currentServer.getPlugins().size(); y++) {
-								if (muninFoo.currentServer.getPlugin(y) != null && muninFoo.currentServer.getPlugin(y).getName().equals(((TextView)v.findViewById(R.id.line_b)).getText().toString())) {
-									i.putExtra("position", y + ""); break;
-								}
-							}
-							i.putExtra("server", muninFoo.currentServer.getServerUrl());
-							i.putExtra("from", "alerts");
-							startActivity(i);
-							Util.setTransition(c, TransitionStyle.DEEPER);
-						}
-					});
-					
-					View insertPoint = findViewById(R.id.alerts_pluginselection_inserthere);
-					((ViewGroup) insertPoint).addView(v);
-				}
+		for (MuninPlugin plugin : muninFoo.currentServer.getPlugins()) {
+			Log.v("", "Plugin state : " + plugin.getState().name());
+			if (plugin.getState() == AlertState.WARNING || plugin.getState() == AlertState.CRITICAL) {
+				LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View v = vi.inflate(R.layout.plugins_list_dark, null);
+				
+				LinearLayout part = (LinearLayout)v.findViewById(R.id.pluginselection_part_ll);
+				TextView line_a = (TextView)v.findViewById(R.id.line_a);
+				TextView line_b = (TextView)v.findViewById(R.id.line_b);
+				
+				line_a.setText(plugin.getFancyName());
+				line_b.setText(plugin.getName());
+				
+				if (plugin.getState() == AlertState.WARNING)
+					part.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_WARNING));
+				else if (plugin.getState() == AlertState.CRITICAL)
+					part.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_CRITICAL));
+				
+				final int indexOfPlugin = muninFoo.currentServer.getPlugins().indexOf(plugin);
+				
+				part.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						String pluginName = ((TextView)v.findViewById(R.id.line_b)).getText().toString();
+						
+						Intent i = new Intent(Activity_AlertsPluginSelection.this, Activity_GraphView.class);
+						i.putExtra("plugin", pluginName);
+						Log.v("", "Setting position " + indexOfPlugin);
+						i.putExtra("position", indexOfPlugin);
+						i.putExtra("server", muninFoo.currentServer.getServerUrl());
+						i.putExtra("from", "alerts");
+						startActivity(i);
+						Util.setTransition(c, TransitionStyle.DEEPER);
+					}
+				});
+				
+				ViewGroup insertPoint = (ViewGroup) findViewById(R.id.alerts_pluginselection_inserthere);
+				insertPoint.addView(v);
 			}
-		} else
-			startActivity(new Intent(Activity_AlertsPluginSelection.this, Activity_Alerts.class));
+		}
 	}
 	
 	@Override

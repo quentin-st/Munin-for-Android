@@ -30,6 +30,8 @@ public class MuninServer {
 		this.plugins = new ArrayList<MuninPlugin>();
 		this.graphURL = "";
 		this.position = -1;
+		this.erroredPlugins = new ArrayList<MuninPlugin>();
+		this.warnedPlugins = new ArrayList<MuninPlugin>();
 	}
 	public MuninServer (String name, String serverUrl) {
 		this.name = name;
@@ -37,6 +39,8 @@ public class MuninServer {
 		this.plugins = new ArrayList<MuninPlugin>();
 		this.graphURL = "";
 		this.position = -1;
+		this.erroredPlugins = new ArrayList<MuninPlugin>();
+		this.warnedPlugins = new ArrayList<MuninPlugin>();
 		generatePosition();
 	}
 	
@@ -170,8 +174,12 @@ public class MuninServer {
 		return false;
 	}
 	public void fetchPluginsStates() {
-		erroredPlugins = new ArrayList<MuninPlugin>();
-		warnedPlugins = new ArrayList<MuninPlugin>();
+		erroredPlugins.clear();
+		warnedPlugins.clear();
+		
+		// Set all to undefined
+		for (MuninPlugin plugin : this.plugins)
+			plugin.setState(AlertState.UNDEFINED);
 		
 		String html = master.grabUrl(this.getServerUrl()).html;
 		
@@ -179,35 +187,30 @@ public class MuninServer {
 			Document doc = Jsoup.parse(html, this.getServerUrl());
 			Elements images = doc.select("img[src$=-day.png]");
 			String nomPlugin = "";
-			MuninPlugin mp = null;
 			
 			for (Element image : images) {
 				nomPlugin = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
-				// Recherche du plugin en question
+				
+				MuninPlugin plugin = null;
+				// Plugin lookup
 				for (MuninPlugin m : this.plugins) {
-					if (m != null && m.getName().equals(nomPlugin)) {
-						mp = m; break;
+					if (m.getName().equals(nomPlugin)) {
+						plugin = m; break;
 					}
 				}
-				if (mp != null) {
+				if (plugin != null) {
 					if (image.hasClass("crit") || image.hasClass("icrit")) {
-						mp.setState(AlertState.CRITICAL);
-						erroredPlugins.add(mp);
+						plugin.setState(AlertState.CRITICAL);
+						erroredPlugins.add(plugin);
 					}
 					else if (image.hasClass("warn") || image.hasClass("iwarn")) {
-						mp.setState(AlertState.WARNING);
-						warnedPlugins.add(mp);
+						plugin.setState(AlertState.WARNING);
+						warnedPlugins.add(plugin);
 					}
 					else
-						mp.setState(AlertState.OK);
+						plugin.setState(AlertState.OK);
 				}
 			}
-		}
-		
-		// Set others to MuninPlugin.ALERTS_STATE_UNDEFINED
-		for (int i=0; i<this.plugins.size(); i++) {
-			if (this.getPlugin(i) != null && (this.getPlugin(i).getState() == null || (this.getPlugin(i).getState() != null && this.getPlugin(i).getState().equals(""))))
-				this.getPlugin(i).setState(AlertState.UNDEFINED);
 		}
 	}
 	
