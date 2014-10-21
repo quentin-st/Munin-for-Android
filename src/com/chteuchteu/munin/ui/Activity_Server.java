@@ -64,11 +64,13 @@ public class Activity_Server extends Activity {
 	private Spinner  	spinner;
 	private AutoCompleteTextView tb_serverUrl;
 	
+	// Alert dialog
 	private ProgressBar progressBar;
 	private TextView 	alert_title1;
 	private TextView 	alert_title2;
 	private AlertDialog alert;
 	private boolean 	alertIsShown;
+	private View		cancelButton;
 	
 	private MuninMaster master;
 	
@@ -301,6 +303,14 @@ public class Activity_Server extends Activity {
 					Fonts.setFont(context, alert_title2, CustomFont.RobotoCondensed_Regular);
 					alertIsShown = true;
 					alert_title1.setText(getString(R.string.text43)); // Please wait...
+					cancelButton = alert.findViewById(R.id.cancelButton);
+					
+					cancelButton.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							cancelSave();
+						}
+					});
 				}
 				setPopupState(0);
 			}
@@ -559,7 +569,11 @@ public class Activity_Server extends Activity {
 						setPopupState(100);
 						setPopupText(getString(R.string.text45), " ");
 						
-						//alert.setCancelable(false);
+						cancelButton.getHandler().post(new Runnable() {
+							public void run() {
+								cancelButton.setVisibility(View.GONE);
+							}
+						});
 						
 						// Check if there is already a master with this url
 						MuninMaster alreadyThereMaster = null;
@@ -604,7 +618,12 @@ public class Activity_Server extends Activity {
 							muninFoo.sqlite.dbHlpr.updateGridItemRelation(gridItem);
 						
 						muninFoo.setCurrentServer();
-						//alert.setCancelable(true);
+						
+						cancelButton.getHandler().post(new Runnable() {
+							public void run() {
+								cancelButton.setVisibility(View.VISIBLE);
+							}
+						});
 						
 						// Success!
 						message_title = getString(R.string.text18);
@@ -780,7 +799,7 @@ public class Activity_Server extends Activity {
 			else
 				muninFoo.currentServer = muninFoo.getServer(0);
 			
-			//alert.setCancelable(true);
+			cancelButton.setVisibility(View.GONE);
 			algo_state = AST_IDLE;
 			if (res != RES_UNDEFINED) {
 				Button b = (Button) alert.findViewById(R.id.popup_button);
