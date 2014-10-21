@@ -19,9 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,12 +76,14 @@ public class Activity_Alerts extends Activity {
 	private Handler			mHandler;
 	private Runnable		mHandlerTask;
 	
+	private ProgressBar progressBar;
+	private int currentLoadingProgress;
+	
 	private static final int SERVERS_BY_THREAD = 3;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		muninFoo = MuninFoo.getInstance(this);
 		MuninFoo.loadLanguage(this);
 		setContentView(R.layout.alerts);
@@ -97,6 +99,7 @@ public class Activity_Alerts extends Activity {
 		dh.setDrawerActivity(DrawerHelper.Activity_Alerts);
 		
 		Util.UI.applySwag(this);
+		progressBar = Util.UI.prepareGmailStyleProgressBar(this);
 		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -276,7 +279,9 @@ public class Activity_Alerts extends Activity {
 			super.onPreExecute();
 			
 			if (this.fromIndex == 0) {
-				Util.UI.setLoading(true, Activity_Alerts.this);
+				currentLoadingProgress = 0;
+				progressBar.setVisibility(View.VISIBLE);
+				progressBar.setProgress(0);
 				shouldDisplayEverythingsOk = true;
 				everythingsOk.setVisibility(View.GONE);
 			}
@@ -287,8 +292,11 @@ public class Activity_Alerts extends Activity {
 			if (fetch) {
 				muninFoo.alerts_lastUpdated = Calendar.getInstance();
 				
-				for (int i=fromIndex; i<=toIndex; i++)
+				for (int i=fromIndex; i<=toIndex; i++) {
 					muninFoo.getServer(i).fetchPluginsStates();
+					currentLoadingProgress++;
+					progressBar.setProgress(currentLoadingProgress*100/muninFoo.getHowManyServers());
+				}
 			}
 			
 			return null;
@@ -371,7 +379,7 @@ public class Activity_Alerts extends Activity {
 			}
 			
 			if (this.toIndex == muninFoo.getServers().size()-1)
-				Util.UI.setLoading(false, Activity_Alerts.this);
+				progressBar.setVisibility(View.GONE);
 		}
 	}
 	
