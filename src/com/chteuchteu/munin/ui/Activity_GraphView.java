@@ -382,6 +382,21 @@ public class Activity_GraphView extends Activity {
 		}
 		
 		item_period.setTitle(load_period.getLabel(context));
+		
+		if (Util.getPref(context, "hideGraphviewArrows").equals("true")) {
+			item_previous.setVisible(false);
+			item_next.setVisible(false);
+			
+			// Now that we have room, add the server name on actionbar
+			if (muninFoo.currentServer != null) {
+				getActionBar().setTitle(muninFoo.currentServer.getName());
+				
+				// Check if we displayed it under the actionBar
+				TextView serverName = (TextView) findViewById(R.id.serverName);
+				if (serverName != null)
+					serverName.setVisibility(View.GONE);
+			}
+		}
 	}
 	
 	private void changePeriod(Period newPeriod) {

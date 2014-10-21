@@ -274,6 +274,9 @@ public class Activity_Main extends Activity {
 		if (Util.hasPref(context, "listViewMode"))
 			Util.removePref(context, "listViewMode");
 		
+		if (!Util.hasPref(context, "hideGraphviewArrows"))
+			Util.setPref(context, "hideGraphviewArrows", "true");
+		
 		// MfA 3.0 : moved auth attributes from MuninServer to MuninMaster : migrate those
 		// if possible
 		// TODO put an if on this

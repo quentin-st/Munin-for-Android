@@ -2,13 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/scrollView1"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:layout_marginLeft="@dimen/listview_horizontal_margin"
-	android:layout_marginRight="@dimen/listview_horizontal_margin" >
+	android:layout_height="match_parent" >
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_marginLeft="@dimen/listview_horizontal_margin"
+		android:layout_marginRight="@dimen/listview_horizontal_margin"
 		android:orientation="vertical" >
 
 		<LinearLayout
@@ -157,6 +157,23 @@
 			<Spinner
 				android:id="@+id/spinner_orientation"
 				style="@style/Settings_SettingSpinner" />
+
+			<View style="@style/Material_Divider" />
+
+			<!-- Graphview arrows -->
+
+			<TextView
+				android:id="@+id/title14"
+				style="@style/Settings_SettingTitle"
+				android:text="@string/settings_graphview_hidearrows" />
+
+			<CheckBox
+				android:id="@+id/checkbox_hidearrows"
+				style="@style/Settings_SettingCheckbox"
+				android:button="@null"
+				android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+				android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+				android:text="@string/settings_graphview_hidearrows_checkbox" />
 		</LinearLayout>
 	</LinearLayout>
 

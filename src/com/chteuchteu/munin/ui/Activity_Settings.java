@@ -40,6 +40,7 @@ public class Activity_Settings extends Activity {
 	private CheckBox checkbox_autoRefresh;
 	private CheckBox checkbox_graphsZoom;
 	private CheckBox checkbox_hdGraphs;
+	private CheckBox checkbox_hideGraphviewArrows;
 	
 	private MuninFoo 		muninFoo;
 	private DrawerHelper	dh;
@@ -74,6 +75,7 @@ public class Activity_Settings extends Activity {
 		checkbox_autoRefresh = (CheckBox)findViewById(R.id.checkbox_autorefresh);
 		checkbox_graphsZoom = (CheckBox)findViewById(R.id.checkbox_enablegraphszoom);
 		checkbox_hdGraphs = (CheckBox)findViewById(R.id.checkbox_hdgraphs);
+		checkbox_hideGraphviewArrows = (CheckBox)findViewById(R.id.checkbox_hidearrows);
 		
 		
 		// Spinner default period
@@ -126,6 +128,7 @@ public class Activity_Settings extends Activity {
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title11), CustomFont.Roboto_Medium);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title12), CustomFont.Roboto_Medium);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title13), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title14), CustomFont.Roboto_Medium);
 		
 		// Apply current settings
 		// Graph default scale
@@ -163,22 +166,26 @@ public class Activity_Settings extends Activity {
 			spinner_orientation.setSelection(2);
 		
 		// Always on
-		if (Util.getPref(context, "screenAlwaysOn").equals("true"))
-			checkbox_alwaysOn.setChecked(true);
+		checkbox_alwaysOn.setChecked(
+				Util.getPref(context, "screenAlwaysOn").equals("true"));
 		
 		// Auto refresh
-		if (Util.getPref(context, "autoRefresh").equals("true"))
-			checkbox_autoRefresh.setChecked(true);
+		checkbox_autoRefresh.setChecked(
+				Util.getPref(context, "autoRefresh").equals("true"));
 		
 		// Graph zoom
-		if (Util.getPref(context, "graphsZoom").equals("true"))
-			checkbox_graphsZoom.setChecked(true);
+		checkbox_graphsZoom.setChecked(
+					Util.getPref(context, "graphsZoom").equals("true"));
 		
 		// HD Graphs
 		if (Util.getPref(context, "hdGraphs").equals("false"))
 			checkbox_hdGraphs.setChecked(false);
 		else
 			checkbox_hdGraphs.setChecked(true);
+		
+		// Hide graphview arrows
+		checkbox_hideGraphviewArrows.setChecked(
+				Util.getPref(context, "hideGraphviewArrows").equals("true"));
 		
 		// Default server
 		String defaultServerUrl = Util.getPref(this, "defaultServer");
@@ -251,6 +258,11 @@ public class Activity_Settings extends Activity {
 			Util.setPref(context, "hdGraphs", "true");
 		else
 			Util.setPref(context, "hdGraphs", "false");
+		
+		if (checkbox_hideGraphviewArrows.isChecked())
+			Util.setPref(context, "hideGraphviewArrows", "true");
+		else
+			Util.setPref(context, "hideGraphviewArrows", "false");
 		
 		// Default server
 		int defaultServerPosition = spinner_defaultServer.getSelectedItemPosition()-1;
