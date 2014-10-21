@@ -9,6 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.hlpr.Util.SpecialBool;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 
 public class MuninServer {
@@ -20,6 +21,10 @@ public class MuninServer {
 	private int position;
 	public MuninMaster master;
 	public boolean isPersistant = false;
+	/**
+	 * Used for Alerts (display if server is unreachable)
+	 */
+	public SpecialBool reachable;
 	
 	private List<MuninPlugin> erroredPlugins;
 	private List<MuninPlugin> warnedPlugins;
@@ -32,6 +37,7 @@ public class MuninServer {
 		this.position = -1;
 		this.erroredPlugins = new ArrayList<MuninPlugin>();
 		this.warnedPlugins = new ArrayList<MuninPlugin>();
+		this.reachable = SpecialBool.UNKNOWN;
 	}
 	public MuninServer (String name, String serverUrl) {
 		this.name = name;
@@ -41,6 +47,7 @@ public class MuninServer {
 		this.position = -1;
 		this.erroredPlugins = new ArrayList<MuninPlugin>();
 		this.warnedPlugins = new ArrayList<MuninPlugin>();
+		this.reachable = SpecialBool.UNKNOWN;
 		generatePosition();
 	}
 	
@@ -181,10 +188,14 @@ public class MuninServer {
 		for (MuninPlugin plugin : this.plugins)
 			plugin.setState(AlertState.UNDEFINED);
 		
-		String html = master.grabUrl(this.getServerUrl()).html;
+		HTTPResponse response = master.grabUrl(this.getServerUrl());
 		
-		if (!html.equals("")) {
-			Document doc = Jsoup.parse(html, this.getServerUrl());
+		if (response.timeout || response.responseCode != 200 || response.html.equals(""))
+			this.reachable = SpecialBool.FALSE;
+		else {
+			this.reachable = SpecialBool.TRUE;
+			
+			Document doc = Jsoup.parse(response.html, this.getServerUrl());
 			Elements images = doc.select("img[src$=-day.png]");
 			String nomPlugin = "";
 			

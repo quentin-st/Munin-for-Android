@@ -30,6 +30,7 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
+import com.chteuchteu.munin.hlpr.Util.SpecialBool;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -249,6 +250,7 @@ public class Activity_Alerts extends Activity {
 		for (int i=0; i<muninFoo.getHowManyServers(); i++) {
 			part_criticals[i].setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
 			part_warnings[i].setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
+			muninFoo.getServer(i).reachable = SpecialBool.UNKNOWN;
 		}
 		
 		int nbServers = muninFoo.getServers().size();
@@ -320,47 +322,59 @@ public class Activity_Alerts extends Activity {
 				int nbErrors = server.getErroredPlugins().size();
 				int nbWarnings = server.getWarnedPlugins().size();
 				
-				if (nbErrors > 0) {
-					part_critical.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_CRITICAL));
-					// Plugins list
-					String toBeShown1 = "";
-					List<MuninPlugin> erroredPlugins = server.getErroredPlugins();
-					for (MuninPlugin plugin : erroredPlugins) {
-						if (erroredPlugins.indexOf(plugin) != erroredPlugins.size()-1)
-							toBeShown1 = toBeShown1 + plugin.getFancyName() + ", ";
-						else
-							toBeShown1 += plugin.getFancyName();
-					}
-					part_criticalPluginsList.setText(toBeShown1);
-				} else
-					part_critical.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_OK));
-				
-				if (nbWarnings > 0) {
-					part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_WARNING));
-					// Plugins list
-					String toBeShown2 = "";
-					List<MuninPlugin> warningPlugins = server.getWarnedPlugins();
-					for (MuninPlugin plugin : warningPlugins) {
-						if (warningPlugins.indexOf(plugin) != warningPlugins.size()-1)
-							toBeShown2 = toBeShown2 + plugin.getFancyName() + ", ";
-						else
-							toBeShown2 += plugin.getFancyName();
-					}
-					part_warningPluginsList.setText(toBeShown2);
-				} else
-					part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_OK));
-				
-				part_criticalNumber.setText(nbErrors + "");
-				if (nbErrors == 1) // critical
-					part_criticalLabel.setText(getString(R.string.text50_1));
-				else // criticals
+				if (server.reachable == SpecialBool.TRUE) {
+					if (nbErrors > 0) {
+						part_critical.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_CRITICAL));
+						// Plugins list
+						String toBeShown1 = "";
+						List<MuninPlugin> erroredPlugins = server.getErroredPlugins();
+						for (MuninPlugin plugin : erroredPlugins) {
+							if (erroredPlugins.indexOf(plugin) != erroredPlugins.size()-1)
+								toBeShown1 = toBeShown1 + plugin.getFancyName() + ", ";
+							else
+								toBeShown1 += plugin.getFancyName();
+						}
+						part_criticalPluginsList.setText(toBeShown1);
+					} else
+						part_critical.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_OK));
+					
+					if (nbWarnings > 0) {
+						part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_WARNING));
+						// Plugins list
+						String toBeShown2 = "";
+						List<MuninPlugin> warningPlugins = server.getWarnedPlugins();
+						for (MuninPlugin plugin : warningPlugins) {
+							if (warningPlugins.indexOf(plugin) != warningPlugins.size()-1)
+								toBeShown2 = toBeShown2 + plugin.getFancyName() + ", ";
+							else
+								toBeShown2 += plugin.getFancyName();
+						}
+						part_warningPluginsList.setText(toBeShown2);
+					} else
+						part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_OK));
+					
+					part_criticalNumber.setText(nbErrors + "");
+					if (nbErrors == 1) // critical
+						part_criticalLabel.setText(getString(R.string.text50_1));
+					else // criticals
+						part_criticalLabel.setText(getString(R.string.text50_2));
+					
+					part_warningNumber.setText(nbWarnings + "");
+					if (nbWarnings == 1) // warning
+						part_warningLabel.setText(getString(R.string.text51_1));
+					else // warnings
+						part_warningLabel.setText(getString(R.string.text51_2));
+				}
+				else if (server.reachable == SpecialBool.FALSE) {
+					part_criticalPluginsList.setText("");
+					part_warningPluginsList.setText("");
+					part_criticalNumber.setText("?");
+					part_warningNumber.setText("?");
 					part_criticalLabel.setText(getString(R.string.text50_2));
-				
-				part_warningNumber.setText(nbWarnings + "");
-				if (nbWarnings == 1) // warning
-					part_warningLabel.setText(getString(R.string.text51_1));
-				else // warnings
 					part_warningLabel.setText(getString(R.string.text51_2));
+					part_critical.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
+					part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
+				}
 				
 				updateView(hideNormalStateServers);
 				

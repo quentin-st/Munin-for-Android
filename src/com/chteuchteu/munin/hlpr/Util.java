@@ -496,4 +496,6 @@ public final class Util {
 		
 		return original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
+	
+	public static enum SpecialBool { UNKNOWN, TRUE, FALSE }
 }
