@@ -529,7 +529,7 @@ public class Activity_Servers extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home && dh != null)
+		if (item.getItemId() != android.R.id.home)
 			dh.closeDrawerIfOpened();
 		Intent intent;
 		switch (item.getItemId()) {

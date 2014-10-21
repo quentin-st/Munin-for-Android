@@ -30,119 +30,93 @@
 			android:id="@+id/alerts_part_criticals"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="4dp"
+			android:layout_marginBottom="3dp"
 			android:background="#B2B2B2"
-			android:orientation="vertical" >
+			android:orientation="horizontal" >
 
-			<LinearLayout
+			<TextView
+				android:id="@+id/alerts_part_criticalsNumber"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_gravity="center"
+				android:layout_marginBottom="1dp"
+				android:layout_marginLeft="15dp"
+				android:layout_marginTop="1dp"
+				android:gravity="center"
+				android:textColor="#ffffff"
+				android:textSize="23sp" />
+
+			<TextView
+				android:id="@+id/alerts_part_criticalsLabel"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_gravity="center"
+				android:layout_margin="5dp"
+				android:layout_marginRight="15dp"
+				android:gravity="center"
+				android:textColor="#ffffff"
+				android:textSize="14sp" />
+
+			<HorizontalScrollView
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" >
+				android:layout_height="match_parent" >
 
 				<TextView
-					android:id="@+id/alerts_part_criticalsNumber"
+					android:id="@+id/alerts_part_criticalsPluginsList"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:layout_marginBottom="1dp"
-					android:layout_marginLeft="15dp"
-					android:layout_marginTop="1dp"
-					android:layout_weight="0"
-					android:gravity="center"
-					android:textColor="#ffffff"
-					android:textSize="23sp" />
-
-				<TextView
-					android:id="@+id/alerts_part_criticalsLabel"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:layout_margin="5dp"
-					android:layout_marginRight="15dp"
-					android:layout_weight="0"
-					android:gravity="center"
+					android:gravity="center_vertical"
+					android:paddingLeft="10dp"
+					android:scrollHorizontally="true"
 					android:textColor="#ffffff"
 					android:textSize="14sp" />
-
-				<HorizontalScrollView
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_weight="1" >
-
-					<TextView
-						android:id="@+id/alerts_part_criticalsPluginsList"
-						android:layout_width="wrap_content"
-						android:layout_height="match_parent"
-						android:gravity="center_vertical"
-						android:paddingLeft="10dp"
-						android:scrollHorizontally="true"
-						android:textColor="#ffffff"
-						android:textSize="14sp" />
-				</HorizontalScrollView>
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="2dp"
-				android:background="#30000000" />
+			</HorizontalScrollView>
 		</LinearLayout>
 
 		<LinearLayout
 			android:id="@+id/alerts_part_warnings"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="5dp"
+			android:layout_marginBottom="3dp"
 			android:background="#B2B2B2"
-			android:orientation="vertical" >
+			android:orientation="horizontal" >
 
-			<LinearLayout
+			<TextView
+				android:id="@+id/alerts_part_warningsNumber"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_gravity="center"
+				android:layout_marginBottom="1dp"
+				android:layout_marginLeft="15dp"
+				android:layout_marginTop="1dp"
+				android:gravity="center"
+				android:textColor="#ffffff"
+				android:textSize="23sp" />
+
+			<TextView
+				android:id="@+id/alerts_part_warningsLabel"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_gravity="center"
+				android:layout_margin="5dp"
+				android:gravity="center"
+				android:textColor="#ffffff"
+				android:textSize="14sp" />
+
+			<HorizontalScrollView
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" >
+				android:layout_height="match_parent" >
 
 				<TextView
-					android:id="@+id/alerts_part_warningsNumber"
+					android:id="@+id/alerts_part_warningsPluginsList"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:layout_marginBottom="1dp"
-					android:layout_marginLeft="15dp"
-					android:layout_marginTop="1dp"
-					android:layout_weight="0"
-					android:gravity="center"
-					android:textColor="#ffffff"
-					android:textSize="23sp" />
-
-				<TextView
-					android:id="@+id/alerts_part_warningsLabel"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:layout_margin="5dp"
-					android:layout_weight="0"
-					android:gravity="center"
+					android:gravity="center_vertical"
+					android:paddingLeft="10dp"
+					android:scrollHorizontally="true"
 					android:textColor="#ffffff"
 					android:textSize="14sp" />
-
-				<HorizontalScrollView
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_weight="1" >
-
-					<TextView
-						android:id="@+id/alerts_part_warningsPluginsList"
-						android:layout_width="wrap_content"
-						android:layout_height="match_parent"
-						android:gravity="center_vertical"
-						android:paddingLeft="10dp"
-						android:scrollHorizontally="true"
-						android:textColor="#ffffff"
-						android:textSize="14sp" />
-				</HorizontalScrollView>
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="2dp"
-				android:background="#30000000" />
+			</HorizontalScrollView>
 		</LinearLayout>
 	</LinearLayout>
 

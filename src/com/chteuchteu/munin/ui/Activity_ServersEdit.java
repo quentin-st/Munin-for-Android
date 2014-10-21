@@ -165,7 +165,7 @@ public class Activity_ServersEdit extends ListActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home && dh != null)
+		if (item.getItemId() != android.R.id.home)
 			dh.closeDrawerIfOpened();
 		Intent intent;
 		switch (item.getItemId()) {

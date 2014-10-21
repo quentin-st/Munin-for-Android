@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,7 +53,6 @@ public class Activity_AlertsPluginSelection extends Activity {
 		Util.UI.applySwag(this);
 		
 		for (MuninPlugin plugin : muninFoo.currentServer.getPlugins()) {
-			Log.v("", "Plugin state : " + plugin.getState().name());
 			if (plugin.getState() == AlertState.WARNING || plugin.getState() == AlertState.CRITICAL) {
 				LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				View v = vi.inflate(R.layout.plugins_list_dark, null);
@@ -79,7 +77,6 @@ public class Activity_AlertsPluginSelection extends Activity {
 						
 						Intent i = new Intent(Activity_AlertsPluginSelection.this, Activity_GraphView.class);
 						i.putExtra("plugin", pluginName);
-						Log.v("", "Setting position " + indexOfPlugin);
 						i.putExtra("position", indexOfPlugin);
 						i.putExtra("server", muninFoo.currentServer.getServerUrl());
 						i.putExtra("from", "alerts");
@@ -96,7 +93,7 @@ public class Activity_AlertsPluginSelection extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home && dh != null)
+		if (item.getItemId() != android.R.id.home)
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:

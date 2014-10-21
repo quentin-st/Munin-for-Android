@@ -218,7 +218,7 @@ public class Activity_Grids extends ListActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home && dh != null)
+		if (item.getItemId() != android.R.id.home)
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:

@@ -192,10 +192,8 @@ public class Activity_GraphView extends Activity {
 		indicator.setTitleProvider(adapter);
 		viewFlow.setFlowIndicator(indicator);
 		
-		if (dh != null) {
-			dh.setViewFlow(viewFlow);
-			dh.initPluginsList();
-		}
+		dh.setViewFlow(viewFlow);
+		dh.initPluginsList();
 		
 		viewFlow.setOnViewSwitchListener(new ViewSwitchListener() {
 			public void onSwitched(View v, int position) {
@@ -410,7 +408,7 @@ public class Activity_GraphView extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home && dh != null)
+		if (item.getItemId() != android.R.id.home)
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
