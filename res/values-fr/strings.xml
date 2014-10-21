@@ -20,8 +20,6 @@
 	<string name="settings_password">Mot de passe</string>
 	<string name="settings_default_scale">Période par défaut des graphs</string>
 	<string name="settings_graphview_orientation">Orientation de l\'écran des graphs</string>
-	<string name="settings_transitions_label">Transitions</string>
-	<string name="settings_transitions_checkbox">Activer les animations de transition entre les pages de l\'application</string>
 	<string name="settings_delete_button">Supprimer</string>
 	<string name="settings_screenalwayson_label">Garder l\'écran allumé</string>
 	<string name="settings_screenalwayson_checkbox">Empêcher l\'écran de s\'éteindre lors de l\'affichage de graphs / alertes</string>
@@ -34,7 +32,6 @@
 	<string name="settings_graphview_hidearrows_checkbox">Ne pas afficher les flèches d\'action gauche et droite sur l\'écran des graphs</string>
 	<string name="servers_btn_add_server">Ajouter un serveur</string>
 	<string name="save_button">Sauvegarder</string>
-	<string name="settings_clear_button">Vider</string>
 	<string name="menu_graph_previous">Précédent</string>
 	<string name="menu_graph_next">Suivant</string>
 	<string name="menu_graph_refresh">Actualiser</string>
@@ -42,7 +39,6 @@
 	<string name="menu_graph_switch">Changer de serveur…</string>
 	<string name="menu_addserver_save">Sauvegarder le serveur</string>
 	<string name="menu_addserver_delete">Supprimer le serveur</string>
-	<string name="menu_pluginselection">Grouper par catégorie</string>
 	<string name="loading">Chargement…</string>
 	<string name="search">Rechercher</string>
 	<string name="about_eraseData">Remise à zéro de l\'appli</string>
@@ -53,9 +49,6 @@
 	<string name="serversTitle">Serveurs</string>
 	<string name="settingsTitle">Options</string>
 	<string name="editServersTitle">Edition des serveurs</string>
-	<string name="textOn">ON</string>
-	<string name="textOff">OFF</string>
-	<string name="editServerTitle">Modifier un serveur</string>
 	<string name="aboutTitle">A propos de Munin for Android</string>
 	<string name="goPremiumTitle">Go Premium</string>
 	<string name="alertsTitle">Alertes</string>
@@ -77,7 +70,6 @@
 	<string name="text18">Félicitations !</string>
 	<string name="text21.1"> sous-serveur</string>
 	<string name="text21.2"> ajouté(s) !</string>
-	<string name="text21.3"> mis à jour !</string>
 	<string name="text24">Succès !</string>
 	<string name="text27"> plugins trouvés !</string>
 	<string name="text28">Graph sauvegardé sous /muninForAndroid/</string>

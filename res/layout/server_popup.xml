@@ -249,7 +249,7 @@
 		android:shadowRadius="2"
 		android:text="@string/text60"
 		android:textColor="#fff"
-		android:textSize="30dp"
+		android:textSize="30sp"
 		android:visibility="gone" />
 
 </LinearLayout>
