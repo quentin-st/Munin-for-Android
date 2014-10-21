@@ -81,12 +81,18 @@ public class Activity_Servers extends Activity {
 		
 		Util.UI.applySwag(this);
 		
+		expListView = (ExpandableListView) findViewById(R.id.servers_list);
+		
+		refreshList();
+	}
+	
+	private void refreshList() {
+		((LinearLayout)findViewById(R.id.servers_noserver)).setVisibility(View.GONE);
+		
 		Intent i = getIntent();
 		MuninMaster fromServersEdit = null;
 		if (i.getExtras() != null && i.getExtras().containsKey("fromMaster"))
 			fromServersEdit = muninFoo.getMasterById((int) i.getExtras().getLong("fromMaster"));
-		
-		expListView = (ExpandableListView) findViewById(R.id.servers_list);
 		
 		List<MuninMaster> masters = muninFoo.masters;
 		this.serversCollection = getServersCollection();
@@ -144,7 +150,7 @@ public class Activity_Servers extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
-					case 0:
+					case 0: // Delete server
 						new AlertDialog.Builder(context)
 						.setTitle(R.string.delete)
 						.setMessage(R.string.text83)
@@ -170,11 +176,12 @@ public class Activity_Servers extends Activity {
 										muninFoo.currentServer = muninFoo.getServer(0);
 								}
 								
-								Intent intent = new Intent(Activity_Servers.this, Activity_Servers.class);
-								if (m != null)
+								Intent intent = getIntent();
+								if (m != null && intent != null) {
 									intent.putExtra("fromMaster", m.getId());
-								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-								startActivity(intent);
+									intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								}
+								refreshList();
 							}
 						})
 						.setNegativeButton(R.string.text34, null)
@@ -229,7 +236,7 @@ public class Activity_Servers extends Activity {
 								if (!value.equals(master.getName())) {
 									master.setName(value);
 									MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
-									context.startActivity(new Intent(context, Activity_Servers.class));
+									refreshList();
 								}
 								dialog.dismiss();
 							}
@@ -444,7 +451,9 @@ public class Activity_Servers extends Activity {
 			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					context.startActivity(new Intent(Activity_Servers.this, Activity_Servers.class));
+					// if "No change" => don't reload servers list
+					if (!report.equals(context.getString(R.string.sync_nochange)))
+						refreshList();
 				}
 			})
 			.show();
@@ -479,7 +488,7 @@ public class Activity_Servers extends Activity {
 		protected void onPostExecute(Void result) {
 			dialog.dismiss();
 			
-			context.startActivity(new Intent(context, Activity_Servers.class));
+			refreshList();
 		}
 	}
 	
