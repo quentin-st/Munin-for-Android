@@ -52,8 +52,8 @@ public class Activity_Alerts extends Activity {
 	private String			activityName;
 	/* If the menu items are flat / expanded */
 	private boolean		listMode_flat;
-	private boolean	shouldDisplayEverythingsOk;
-	private View		everythingsOk;
+	private boolean		shouldDisplayEverythingsOk;
+	private View			everythingsOk;
 	
 	private List<MuninServer> servers;
 	
@@ -74,11 +74,11 @@ public class Activity_Alerts extends Activity {
 	public static final String	BG_COLOR_CRITICAL = "#FF7B68";
 	private static final String	TEXT_COLOR = "#333333";
 	
-	private Handler			mHandler;
+	private Handler		mHandler;
 	private Runnable		mHandlerTask;
 	
-	private ProgressBar progressBar;
-	private int currentLoadingProgress;
+	private ProgressBar 	progressBar;
+	private int 			currentLoadingProgress;
 	
 	private static final int SERVERS_BY_THREAD = 3;
 	
@@ -250,28 +250,31 @@ public class Activity_Alerts extends Activity {
 		for (int i=0; i<muninFoo.getHowManyServers(); i++) {
 			part_criticals[i].setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
 			part_warnings[i].setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
-			muninFoo.getServer(i).reachable = SpecialBool.UNKNOWN;
 		}
 		
 		int nbServers = muninFoo.getServers().size();
-		for (int i=0; i<nbServers; i++) {
-			if (i%SERVERS_BY_THREAD == 0) {
-				int from = i;
-				int to = i + 2;
-				if (to >= nbServers)
-					to = nbServers-1;
-				new AlertsFetcher(fetch, from, to).execute();
+		if (fetch) { // Fetch the plugins states 3 by 3 servers
+			for (int i=0; i<nbServers; i++) {
+				if (i%SERVERS_BY_THREAD == 0) {
+					int from = i;
+					int to = i + 2;
+					if (to >= nbServers)
+						to = nbServers-1;
+					
+					new AlertsFetcher(from, to).execute();
+				}
 			}
+		} else {
+			for (int i=0; i<nbServers; i++)
+				updatePart(i);
 		}
 	}
 	
 	private class AlertsFetcher extends AsyncTask<Void, Integer, Void> {
-		private boolean fetch;
 		private int fromIndex;
 		private int toIndex;
 		
-		private AlertsFetcher(boolean fetch, int fromIndex, int toIndex) {
-			this.fetch = fetch;
+		private AlertsFetcher(int fromIndex, int toIndex) {
 			this.fromIndex = fromIndex;
 			this.toIndex = toIndex;
 		}
@@ -291,14 +294,12 @@ public class Activity_Alerts extends Activity {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			if (fetch) {
-				muninFoo.alerts_lastUpdated = Calendar.getInstance();
-				
-				for (int i=fromIndex; i<=toIndex; i++) {
-					muninFoo.getServer(i).fetchPluginsStates();
-					currentLoadingProgress++;
-					progressBar.setProgress(currentLoadingProgress*100/muninFoo.getHowManyServers());
-				}
+			muninFoo.alerts_lastUpdated = Calendar.getInstance();
+			
+			for (int i=fromIndex; i<=toIndex; i++) {
+				muninFoo.getServer(i).fetchPluginsStates();
+				currentLoadingProgress++;
+				progressBar.setProgress(currentLoadingProgress*100/muninFoo.getHowManyServers());
 			}
 			
 			return null;
@@ -306,94 +307,97 @@ public class Activity_Alerts extends Activity {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			for (int i=fromIndex; i<=toIndex; i++) {
-				MuninServer server = muninFoo.getServer(i);
-				int index = muninFoo.getServers().indexOf(server);
-				
-				LinearLayout part_critical = part_criticals[index];
-				LinearLayout part_warning = part_warnings[index];
-				TextView part_criticalPluginsList = part_criticalsPluginsList[index];
-				TextView part_warningPluginsList = part_warningsPluginsList[index];
-				TextView part_criticalNumber = part_criticalsNumber[index];
-				TextView part_warningNumber = part_warningsNumber[index];
-				TextView part_criticalLabel = part_criticalsLabel[index];
-				TextView part_warningLabel = part_warningsLabel[index];
-				
-				int nbErrors = server.getErroredPlugins().size();
-				int nbWarnings = server.getWarnedPlugins().size();
-				
-				if (server.reachable == SpecialBool.TRUE) {
-					if (nbErrors > 0) {
-						part_critical.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_CRITICAL));
-						// Plugins list
-						String toBeShown1 = "";
-						List<MuninPlugin> erroredPlugins = server.getErroredPlugins();
-						for (MuninPlugin plugin : erroredPlugins) {
-							if (erroredPlugins.indexOf(plugin) != erroredPlugins.size()-1)
-								toBeShown1 = toBeShown1 + plugin.getFancyName() + ", ";
-							else
-								toBeShown1 += plugin.getFancyName();
-						}
-						part_criticalPluginsList.setText(toBeShown1);
-					} else
-						part_critical.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_OK));
-					
-					if (nbWarnings > 0) {
-						part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_WARNING));
-						// Plugins list
-						String toBeShown2 = "";
-						List<MuninPlugin> warningPlugins = server.getWarnedPlugins();
-						for (MuninPlugin plugin : warningPlugins) {
-							if (warningPlugins.indexOf(plugin) != warningPlugins.size()-1)
-								toBeShown2 = toBeShown2 + plugin.getFancyName() + ", ";
-							else
-								toBeShown2 += plugin.getFancyName();
-						}
-						part_warningPluginsList.setText(toBeShown2);
-					} else
-						part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_OK));
-					
-					part_criticalNumber.setText(nbErrors + "");
-					if (nbErrors == 1) // critical
-						part_criticalLabel.setText(getString(R.string.text50_1));
-					else // criticals
-						part_criticalLabel.setText(getString(R.string.text50_2));
-					
-					part_warningNumber.setText(nbWarnings + "");
-					if (nbWarnings == 1) // warning
-						part_warningLabel.setText(getString(R.string.text51_1));
-					else // warnings
-						part_warningLabel.setText(getString(R.string.text51_2));
-				}
-				else if (server.reachable == SpecialBool.FALSE) {
-					part_criticalPluginsList.setText("");
-					part_warningPluginsList.setText("");
-					part_criticalNumber.setText("?");
-					part_warningNumber.setText("?");
-					part_criticalLabel.setText(getString(R.string.text50_2));
-					part_warningLabel.setText(getString(R.string.text51_2));
-					part_critical.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
-					part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
-				}
-				
-				updateView(hideNormalStateServers);
-				
-				if (nbErrors > 0 || nbWarnings > 0)
-					shouldDisplayEverythingsOk = false;
-				
-				// Can't flat the list before the first loading is finished
-				if (index == muninFoo.getServers().size()) {
-					// menu_flatList can be null if onCreateMenu hasn't been called yet
-					if (menu_flatList != null)
-						menu_flatList.setVisible(true);
-					
-					if (shouldDisplayEverythingsOk)
-						everythingsOk.setVisibility(View.VISIBLE);
-				}
-			}
+			for (int i=fromIndex; i<=toIndex; i++)
+				updatePart(i);
 			
 			if (this.toIndex == muninFoo.getServers().size()-1)
 				progressBar.setVisibility(View.GONE);
+		}
+	}
+	
+	private void updatePart(int i) {
+		MuninServer server = muninFoo.getServer(i);
+		int index = muninFoo.getServers().indexOf(server);
+		
+		LinearLayout part_critical = part_criticals[index];
+		LinearLayout part_warning = part_warnings[index];
+		TextView part_criticalPluginsList = part_criticalsPluginsList[index];
+		TextView part_warningPluginsList = part_warningsPluginsList[index];
+		TextView part_criticalNumber = part_criticalsNumber[index];
+		TextView part_warningNumber = part_warningsNumber[index];
+		TextView part_criticalLabel = part_criticalsLabel[index];
+		TextView part_warningLabel = part_warningsLabel[index];
+		
+		int nbErrors = server.getErroredPlugins().size();
+		int nbWarnings = server.getWarnedPlugins().size();
+		
+		if (server.reachable == SpecialBool.TRUE) {
+			if (nbErrors > 0) {
+				part_critical.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_CRITICAL));
+				// Plugins list
+				String toBeShown1 = "";
+				List<MuninPlugin> erroredPlugins = server.getErroredPlugins();
+				for (MuninPlugin plugin : erroredPlugins) {
+					if (erroredPlugins.indexOf(plugin) != erroredPlugins.size()-1)
+						toBeShown1 = toBeShown1 + plugin.getFancyName() + ", ";
+					else
+						toBeShown1 += plugin.getFancyName();
+				}
+				part_criticalPluginsList.setText(toBeShown1);
+			} else
+				part_critical.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_OK));
+			
+			if (nbWarnings > 0) {
+				part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_WARNING));
+				// Plugins list
+				String toBeShown2 = "";
+				List<MuninPlugin> warningPlugins = server.getWarnedPlugins();
+				for (MuninPlugin plugin : warningPlugins) {
+					if (warningPlugins.indexOf(plugin) != warningPlugins.size()-1)
+						toBeShown2 = toBeShown2 + plugin.getFancyName() + ", ";
+					else
+						toBeShown2 += plugin.getFancyName();
+				}
+				part_warningPluginsList.setText(toBeShown2);
+			} else
+				part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_OK));
+			
+			part_criticalNumber.setText(nbErrors + "");
+			if (nbErrors == 1) // critical
+				part_criticalLabel.setText(getString(R.string.text50_1));
+			else // criticals
+				part_criticalLabel.setText(getString(R.string.text50_2));
+			
+			part_warningNumber.setText(nbWarnings + "");
+			if (nbWarnings == 1) // warning
+				part_warningLabel.setText(getString(R.string.text51_1));
+			else // warnings
+				part_warningLabel.setText(getString(R.string.text51_2));
+		}
+		else if (server.reachable == SpecialBool.FALSE) {
+			part_criticalPluginsList.setText("");
+			part_warningPluginsList.setText("");
+			part_criticalNumber.setText("?");
+			part_warningNumber.setText("?");
+			part_criticalLabel.setText(getString(R.string.text50_2));
+			part_warningLabel.setText(getString(R.string.text51_2));
+			part_critical.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
+			part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
+		}
+		
+		updateView(hideNormalStateServers);
+		
+		if (nbErrors > 0 || nbWarnings > 0)
+			shouldDisplayEverythingsOk = false;
+		
+		// Can't flat the list before the first loading is finished
+		if (index == muninFoo.getServers().size()-1) {
+			// menu_flatList can be null if onCreateMenu hasn't been called yet
+			if (menu_flatList != null)
+				menu_flatList.setVisible(true);
+			
+			if (shouldDisplayEverythingsOk)
+				everythingsOk.setVisibility(View.VISIBLE);
 		}
 	}
 	
