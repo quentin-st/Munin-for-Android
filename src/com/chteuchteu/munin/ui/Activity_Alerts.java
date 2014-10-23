@@ -80,7 +80,7 @@ public class Activity_Alerts extends Activity {
 	private ProgressBar 	progressBar;
 	private int 			currentLoadingProgress;
 	
-	private static final int SERVERS_BY_THREAD = 3;
+	private static final int SERVERS_BY_THREAD = 2;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
