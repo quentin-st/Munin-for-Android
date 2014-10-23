@@ -1,0 +1,30 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion '20.0.0'
+
+    defaultConfig {
+        applicationId "com.chteuchteu.munin"
+        minSdkVersion 14
+        targetSdkVersion 21
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile project(':slidingMenu')
+    compile project(':dragSortListViewLivrary')
+    compile 'com.android.support:support-v4:+'
+    compile files('libs/AppRate_1.1.jar')
+    compile files('libs/crashlytics.jar')
+    compile files('libs/jsoup-1.7.2.jar')
+    compile files('libs/libGoogleAnalyticsServices.jar')
+    compile files('libs/systembartint-1.0.4.jar')
+}
