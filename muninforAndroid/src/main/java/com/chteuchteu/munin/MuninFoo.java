@@ -277,13 +277,6 @@ public class MuninFoo {
 		else
 			return null;
 	}
-	public MuninServer getFirstServer() {
-		for (MuninServer server : servers) {
-			if (server != null)
-				return server;
-		}
-		return null;
-	}
 	@Deprecated
 	public MuninServer getServerFromFlatPosition(int position) {
 		// si pos -> 0 1 4 8 9 11
@@ -341,14 +334,7 @@ public class MuninFoo {
 	}
 	
 	public ArrayList<MuninMaster> getMasters() { return (ArrayList<MuninMaster>) this.masters; }
-	
-	public List<String> getMastersNames() {
-		List<String> l = new ArrayList<String>();
-		for (MuninMaster m : this.masters)
-			l.add(m.getName());
-		return l;
-	}
-	
+
 	public MuninMaster getMasterById(int id) {
 		for (MuninMaster m : this.masters) {
 			if (m.getId() == id)

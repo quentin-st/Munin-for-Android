@@ -151,7 +151,7 @@ public class Grid {
 		}
 	}
 	
-	public void cancelAlpha(Context c) {
+	public void cancelAlpha() {
 		for (GridItem i : items) {
 			if (i.iv != null && i.iv.getAlpha() != 1.0f)
 				i.iv.setAlpha(1f);
@@ -185,7 +185,7 @@ public class Grid {
 	}
 	
 	
-	public void setupLayout(Context c) {
+	public void setupLayout() {
 		List<GridItem> l = items;
 		items = new ArrayList<GridItem>();
 		for (GridItem i : l)
@@ -244,7 +244,7 @@ public class Grid {
 		
 		if (canRemove) {
 			for (int y=0; y<nbLines; y++) {
-				LinearLayout toRemove = (LinearLayout) getViewAt(x, y);
+				LinearLayout toRemove = getViewAt(x, y);
 				LinearLayout line = (LinearLayout) toRemove.getParent();
 				line.removeView(toRemove);
 			}
@@ -285,8 +285,8 @@ public class Grid {
 	}
 	
 	public void move(int x, int y, int newX, int newY) {
-		LinearLayout curView = (LinearLayout) getViewAt(x, y);
-		LinearLayout destView = (LinearLayout) getViewAt(newX, newY);
+		LinearLayout curView = getViewAt(x, y);
+		LinearLayout destView = getViewAt(newX, newY);
 		GridItem curItem = get(x, y);
 		if (curItem != null) {
 			GridItem destItem = get(newX, newY);
@@ -303,8 +303,8 @@ public class Grid {
 	}
 	
 	public void swapViews(LinearLayout view1, LinearLayout view2) {
-		RelativeLayout content1 = (RelativeLayout) ((LinearLayout)view1).getChildAt(0);
-		RelativeLayout content2 = (RelativeLayout) ((LinearLayout)view2).getChildAt(0);
+		RelativeLayout content1 = (RelativeLayout) view1.getChildAt(0);
+		RelativeLayout content2 = (RelativeLayout) view2.getChildAt(0);
 		
 		view1.removeView(content1);
 		view2.removeView(content2);

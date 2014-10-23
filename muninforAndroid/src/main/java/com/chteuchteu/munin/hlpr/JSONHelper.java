@@ -17,7 +17,7 @@ public class JSONHelper {
 	 * Serializes the Masters objects tree
 	 * Encrypts the password using the Util.Encryption util methods
 	 * @param masters
-	 * @param code Seed used in order to encrypt passwords
+	 * @param seed Seed used in order to encrypt passwords
 	 * @return
 	 */
 	public static String getMastersJSONString(ArrayList<MuninMaster> masters, String seed) {

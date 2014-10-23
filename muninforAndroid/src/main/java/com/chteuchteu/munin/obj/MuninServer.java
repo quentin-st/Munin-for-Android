@@ -83,10 +83,8 @@ public class MuninServer {
 	
 	public void setPosition(int position) { this.position = position; }
 	public int getPosition() { return this.position; }
-	
-	public void setErroredPlugins(List<MuninPlugin> mp) { this.erroredPlugins = mp; }
+
 	public List<MuninPlugin> getErroredPlugins() { return this.erroredPlugins; }
-	public void setWarnedPlugins(List<MuninPlugin> mp) { this.warnedPlugins = mp; }
 	public List<MuninPlugin> getWarnedPlugins() { return this.warnedPlugins; }
 	
 	public void addPlugin(MuninPlugin plugin) {
@@ -197,10 +195,9 @@ public class MuninServer {
 			
 			Document doc = Jsoup.parse(response.html, this.getServerUrl());
 			Elements images = doc.select("img[src$=-day.png]");
-			String nomPlugin = "";
 			
 			for (Element image : images) {
-				nomPlugin = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
+				String nomPlugin = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
 				
 				MuninPlugin plugin = null;
 				// Plugin lookup
@@ -223,17 +220,6 @@ public class MuninServer {
 				}
 			}
 		}
-	}
-	
-	public void importData(MuninServer source) {
-		this.name = source.name;
-		this.serverUrl = source.serverUrl;
-		this.plugins = source.plugins;
-		this.graphURL = source.graphURL;
-		this.position = source.position;
-		this.erroredPlugins = source.erroredPlugins;
-		this.warnedPlugins = source.warnedPlugins;
-		this.master = source.master;
 	}
 	
 	public MuninPlugin getPlugin(int pos) {
@@ -271,28 +257,15 @@ public class MuninServer {
 		}
 		if (nbNotNull == 0)
 			this.position = 0;
-		
-		if (muninFoo != null) {
-			// Sauvegarde la toute dernière position
-			int higherPosition = -1;
-			for (int i=0; i<muninFoo.getHowManyServers(); i++) {
-				if (muninFoo.getServer(i) != null && muninFoo.getServer(i).getPosition() > higherPosition)
-					higherPosition = muninFoo.getServer(i).getPosition();
-			}
-			this.position = higherPosition + 1;
-		}
+
+        // Sauvegarde la toute dernière position
+        int higherPosition = -1;
+        for (int i=0; i<muninFoo.getHowManyServers(); i++) {
+            if (muninFoo.getServer(i) != null && muninFoo.getServer(i).getPosition() > higherPosition)
+                higherPosition = muninFoo.getServer(i).getPosition();
+        }
+        this.position = higherPosition + 1;
 	}
-	
-	public int getFlatPosition(MuninFoo muninFooInstance) {
-		// si pos -> 0 1 4 8 9 11
-		// gFP(2) -> 4 (!= null)
-		for (int i=0; i<muninFooInstance.getOrderedServers().size(); i++) {
-			if (muninFooInstance.getOrderedServers().get(i).equalsApprox(this))
-				return i;
-		}
-		return 0;
-	}
-	
 	
 	private List<MuninPlugin> getPluginsByCategory(String c) {
 		List<MuninPlugin> l = new ArrayList<MuninPlugin>();

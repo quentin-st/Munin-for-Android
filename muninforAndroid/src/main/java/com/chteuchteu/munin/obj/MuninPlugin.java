@@ -70,12 +70,6 @@ public class MuninPlugin {
 	
 	public void setName(String name) { this.name = name; }
 	public String getName() { return this.name; }
-	public String getShortName() {
-		if (this.name.length() > 12)
-			return this.name.toString().substring(0, 11) + "...";
-		else
-			return this.name;
-	}
 	
 	public void setCategory(String category) { this.category = category; }
 	public String getCategory() { return this.category; }
@@ -139,10 +133,6 @@ public class MuninPlugin {
 			url += "?size_x=" + size_x + "&size_y=" + size_y;
 		
 		return url;
-	}
-	
-	public String getPluginUrl() {
-		return this.getInstalledOn().getServerUrl() + this.getName() + ".html";
 	}
 	
 	public Bitmap getGraph(String url) {

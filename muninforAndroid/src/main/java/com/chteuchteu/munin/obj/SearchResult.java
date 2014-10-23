@@ -52,7 +52,6 @@ public class SearchResult {
 	}
 	
 	public String getLine1() { return this.line_1; }
-	public boolean hasLine2() { return !this.line_2.equals(""); }
 	public String getLine2() { return this.line_2; }
 	
 	public void onClick(Activity activity) {
@@ -71,7 +70,7 @@ public class SearchResult {
 				Label label = (Label) object;
 				
 				intent = new Intent(activity, Activity_Label.class);
-				intent.putExtra("label", label.getName().toString());
+				intent.putExtra("label", label.getName());
 				activity.startActivity(intent);
 				Util.setTransition(activity, TransitionStyle.DEEPER);
 				
@@ -87,8 +86,7 @@ public class SearchResult {
 				
 				break;
 			case SERVER:
-				MuninServer server = (MuninServer) object;
-				MuninFoo.getInstance().currentServer = server;
+				MuninFoo.getInstance().currentServer = (MuninServer) object;
 				
 				activity.startActivity(new Intent(activity, Activity_Plugins.class));
 				Util.setTransition(activity, TransitionStyle.DEEPER);

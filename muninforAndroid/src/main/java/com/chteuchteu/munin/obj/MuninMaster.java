@@ -131,7 +131,7 @@ public class MuninMaster {
 		String hdGraphUrl = plugin.getHDImgUrl(Period.DAY);
 		HTTPResponse res = grabUrl(hdGraphUrl);
 		
-		boolean seemsAvailable = res.timeout == false && res.responseCode == 200;
+		boolean seemsAvailable = !res.timeout && res.responseCode == 200;
 		
 		if (!seemsAvailable)
 			return false;
@@ -168,8 +168,7 @@ public class MuninMaster {
 	
 	public void setHDGraphs(HDGraphs val) { this.hdGraphs = val; }
 	public HDGraphs getHDGraphs() { return this.hdGraphs; }
-	
-	public void setChildren(List<MuninServer> l) { this.children = l; }
+
 	public List<MuninServer> getChildren() { return this.children; }
 	public void addChild(MuninServer s) {
 		if (!this.children.contains(s)) {
@@ -475,8 +474,7 @@ public class MuninMaster {
 					for (GridItem item : grid.items) {
 						if (item.plugin.equals(plugin)) {
 							// Reattach
-							MuninPlugin newPlugin = this.getServer(server.getServerUrl()).getPlugin(item.plugin.getName());
-							item.plugin = newPlugin;
+							item.plugin = this.getServer(server.getServerUrl()).getPlugin(item.plugin.getName());
 							toBeUpdated_grids.add(item);
 						}
 					}
@@ -512,7 +510,7 @@ public class MuninMaster {
 			
 			onlineMaster.fetchChildren();
 			
-			if (onlineMaster != null && !onlineMaster.isEmpty()) {
+			if (!onlineMaster.isEmpty()) {
 				// SERVERS DIFF
 				// Add new servers if needed
 				ArrayList<MuninServer> toBeAdded = new ArrayList<MuninServer>();

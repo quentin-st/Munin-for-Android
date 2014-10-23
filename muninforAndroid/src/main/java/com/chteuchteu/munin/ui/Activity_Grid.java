@@ -238,7 +238,7 @@ public class Activity_Grid extends Activity {
 		
 		getActionBar().setTitle(getText(R.string.text75) + " " + grid.name);
 		
-		grid.setupLayout(this);
+		grid.setupLayout();
 		container.addView(grid.buildLayout(this));
 		grid.updateLayoutSizes(this);
 	}

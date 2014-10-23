@@ -422,7 +422,7 @@ public class DrawerHelper {
 		search_results.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
-				SearchResult searchResult = (SearchResult) search_results_array.get(position);
+				SearchResult searchResult = search_results_array.get(position);
 				searchResult.onClick(a);
 			}
 		});

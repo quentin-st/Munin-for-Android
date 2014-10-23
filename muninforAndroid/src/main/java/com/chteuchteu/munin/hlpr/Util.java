@@ -187,10 +187,6 @@ public final class Util {
 		}
 	}
 	
-	public static boolean deviceHasBackKey(Context c) {
-		return ViewConfiguration.get(c).hasPermanentMenuKey();
-	}
-	
 	public static int getStatusBarHeight(Context c) {
 		int result = 0;
 		int resourceId = c.getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -210,9 +206,7 @@ public final class Util {
 	public static boolean isOnline(Context c) {
 		ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		if (netInfo != null && netInfo.isConnectedOrConnecting())
-			return true;
-		return false;
+		return (netInfo != null && netInfo.isConnectedOrConnecting());
 	}
 	
 	public static Period getDefaultPeriod(Context c) {
@@ -350,15 +344,6 @@ public final class Util {
 				return url;
 			
 			return newUrl;
-		}
-	}
-	
-	public static final class Dates {
-		@SuppressLint("SimpleDateFormat")
-		public static String getNow() {
-			DateFormat df = new SimpleDateFormat("yyyMMdd HH:mm:ss");
-			Date today = Calendar.getInstance().getTime();        
-			return df.format(today);
 		}
 	}
 	

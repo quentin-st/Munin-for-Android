@@ -43,7 +43,6 @@ public class GridItem {
 	public Grid 			grid;
 	private Context 		c;
 	public boolean 		editing = false;
-	private LinearLayout 	outerContainer;
 	private RelativeLayout container;
 	public Bitmap 			graph;
 	public ProgressBar 		pb;
@@ -64,7 +63,7 @@ public class GridItem {
 	}
 	
 	public LinearLayout getView(final Context c) {
-		outerContainer = new LinearLayout(c);
+		LinearLayout outerContainer = new LinearLayout(c);
 		outerContainer.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, grid.getGridItemHeight(c, grid.nbColumns), 1.0f));
 		container = new RelativeLayout(c);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -85,7 +84,7 @@ public class GridItem {
 			@Override
 			public void onClick(View v) {
 				if (!editing && Activity_Grid.editing) {
-					grid.cancelAlpha(c);
+					grid.cancelAlpha();
 					edit(c);
 				}
 				else if (!editing && !Activity_Grid.editing)

@@ -73,9 +73,7 @@ public class Label {
 	}
 	
 	public boolean equals(Label l) {
-		if (this.name.equals(l.getName()))
-			return true;
-		return false;
+		return (this.name.equals(l.getName()));
 	}
 	
 	public void setPlugins(List<MuninPlugin> l) {

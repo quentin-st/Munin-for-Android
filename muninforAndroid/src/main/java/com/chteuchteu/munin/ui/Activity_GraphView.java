@@ -88,8 +88,6 @@ public class Activity_GraphView extends Activity {
 	private MenuItem		item_previous;
 	private MenuItem		item_next;
 	private MenuItem		item_period;
-	private MenuItem		item_openInBrowser;
-	private MenuItem		item_fieldsDescription;
 	private Menu 			menu;
 	private String			activityName;
 	
@@ -357,8 +355,8 @@ public class Activity_GraphView extends Activity {
 		item_previous = menu.findItem(R.id.menu_previous);
 		item_next = menu.findItem(R.id.menu_next);
 		item_period = menu.findItem(R.id.menu_period);
-		item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
-		item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
+		MenuItem item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
+        MenuItem item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
 		
 		if (muninFoo.currentServer != null
 				&& muninFoo.currentServer.getPlugins().size() > 0
@@ -680,10 +678,6 @@ public class Activity_GraphView extends Activity {
 	}
 	
 	private void actionLabels() {
-		final CharSequence[] items = new CharSequence[muninFoo.labels.size()];
-		for (int i=0; i<muninFoo.labels.size(); i++)
-			items[i] = muninFoo.labels.get(i).getName();
-		
 		LinearLayout checkboxesContainer = new LinearLayout(this);
 		checkboxesContainer.setPadding(10, 10, 10, 10);
 		checkboxesContainer.setOrientation(LinearLayout.VERTICAL);
