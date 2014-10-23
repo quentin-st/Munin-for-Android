@@ -183,14 +183,18 @@ public class Activity_Alerts extends Activity {
 		findViewById(R.id.hideNoAlerts).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				if (hideNormalStateServers) {
+				if (hideNormalStateServers) { // Show all servers
 					hideNormalStateServers = false;
 					((TextView) findViewById(R.id.hideNoAlerts)).setText(getString(R.string.text49_1));
 					updateView(false);
+					if (shouldDisplayEverythingsOk)
+						everythingsOk.setVisibility(View.GONE);
 				} else {
 					hideNormalStateServers = true;
 					((TextView) findViewById(R.id.hideNoAlerts)).setText(getString(R.string.text49_2));
 					updateView(true);
+					if (shouldDisplayEverythingsOk)
+						everythingsOk.setVisibility(View.VISIBLE);
 				}
 			}
 		});
@@ -210,31 +214,34 @@ public class Activity_Alerts extends Activity {
 		}
 	}
 	
-	private void updateView(boolean hideNormal) {
-		for (int i=0; i<part_part.length; i++) {
-			boolean hide = false;
+	private void updateView(boolean hideNormal, int i) {
+		boolean hide = false;
+		
+		int nbErrors = muninFoo.getServer(i).getErroredPlugins().size();
+		int nbWarnings = muninFoo.getServer(i).getWarnedPlugins().size();
+		
+		if (nbErrors == 0 && nbWarnings == 0) {
+			if (hideNormal)
+				hide = true;
+			part_serverName[i].setClickable(false);
+			enableArrow(false, i);
+		} else {
+			if (hideNormal)
+				hide = false;
 			
-			int nbErrors = muninFoo.getServer(i).getErroredPlugins().size();
-			int nbWarnings = muninFoo.getServer(i).getWarnedPlugins().size();
-			
-			if (nbErrors == 0 && nbWarnings == 0) {
-				if (hideNormal)
-					hide = true;
-				part_serverName[i].setClickable(false);
-				enableArrow(false, i);
-			} else {
-				if (hideNormal)
-					hide = false;
-				
-				part_serverName[i].setClickable(true);
-				enableArrow(true, i);
-			}
-			
-			if (hide)
-				part_part[i].setVisibility(View.GONE);
-			else
-				part_part[i].setVisibility(View.VISIBLE);
+			part_serverName[i].setClickable(true);
+			enableArrow(true, i);
 		}
+		
+		if (hide)
+			part_part[i].setVisibility(View.GONE);
+		else
+			part_part[i].setVisibility(View.VISIBLE);
+	}
+	
+	private void updateView(boolean hideNormal) {
+		for (int i=0; i<part_part.length; i++)
+			updateView(hideNormal, i);
 	}
 	
 	/**
@@ -385,9 +392,12 @@ public class Activity_Alerts extends Activity {
 			part_warning.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
 		}
 		
-		updateView(hideNormalStateServers);
+		updateView(hideNormalStateServers, i);
 		
 		if (nbErrors > 0 || nbWarnings > 0)
+			shouldDisplayEverythingsOk = false;
+		
+		if (!hideNormalStateServers)
 			shouldDisplayEverythingsOk = false;
 		
 		// Can't flat the list before the first loading is finished
@@ -398,6 +408,8 @@ public class Activity_Alerts extends Activity {
 			
 			if (shouldDisplayEverythingsOk)
 				everythingsOk.setVisibility(View.VISIBLE);
+			else
+				everythingsOk.setVisibility(View.GONE);
 		}
 	}
 	

@@ -86,8 +86,12 @@ public class MuninPlugin {
 	public void setInstalledOn(MuninServer s) { this.installedOn = s; }
 	public MuninServer getInstalledOn() { return this.installedOn; }
 	
-	public boolean hasPluginPageUrl() { return !this.pluginPageUrl.equals(""); }
-	public void setPluginPageUrl(String url) { this.pluginPageUrl = url; }
+	public boolean hasPluginPageUrl() {
+		return this.pluginPageUrl != null && !this.pluginPageUrl.equals("");
+	}
+	public void setPluginPageUrl(String url) {
+		this.pluginPageUrl = url!=null?url:"";
+	}
 	public String getPluginPageUrl() { return this.pluginPageUrl; }
 	
 	public void setState(AlertState s) { this.state = s; }
