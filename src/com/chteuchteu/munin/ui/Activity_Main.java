@@ -274,6 +274,9 @@ public class Activity_Main extends Activity {
 		if (Util.hasPref(context, "listViewMode"))
 			Util.removePref(context, "listViewMode");
 		
+		if (Util.hasPref(context, "transitions"))
+			Util.removePref(context, "transitions");
+		
 		if (!Util.hasPref(context, "hideGraphviewArrows"))
 			Util.setPref(context, "hideGraphviewArrows", "true");
 		
