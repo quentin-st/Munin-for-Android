@@ -12,7 +12,6 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;

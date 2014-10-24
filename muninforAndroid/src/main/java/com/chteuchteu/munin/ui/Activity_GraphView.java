@@ -43,7 +43,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.Adapter_GraphView;
-import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.MediaScannerUtil;

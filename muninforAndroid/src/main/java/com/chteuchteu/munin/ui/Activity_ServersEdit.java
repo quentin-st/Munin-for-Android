@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.widget.BaseAdapter;
 import android.widget.SimpleAdapter;
 
-import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;

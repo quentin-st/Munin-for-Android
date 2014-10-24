@@ -1,4 +1,4 @@
-package com.chteuchteu.munin;
+package com.chteuchteu.munin.ui;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -11,6 +11,8 @@ import android.view.MenuItem;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.MaterialMenuIcon;
+import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.ui.Activity_About;
@@ -20,7 +22,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class MuninActivity extends Activity {
-	protected MuninFoo      muninFoo;
+	protected MuninFoo muninFoo;
 	protected DrawerHelper  dh;
 	protected Context       context;
 	protected Activity      activity;
@@ -61,10 +63,6 @@ public class MuninActivity extends Activity {
 
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (dh.isOpened())
-					materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
-				else
-					materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 				dh.toggle(true);
 				return true;
 			case R.id.menu_settings:
@@ -89,9 +87,12 @@ public class MuninActivity extends Activity {
 			@Override
 			public void onOpen() {
 				dh.setIsOpened(true);
+				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
+
 				activityName = getActionBar().getTitle().toString();
 				getActionBar().setTitle(R.string.app_name);
 
+				// Runnable set in Activity
 				if (onDrawerOpen != null)
 					onDrawerOpen.run();
 
@@ -103,8 +104,10 @@ public class MuninActivity extends Activity {
 			@Override
 			public void onClose() {
 				dh.setIsOpened(false);
+				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
 				getActionBar().setTitle(activityName);
 
+				// Runnable set in Activity
 				if (onDrawerClose != null)
 					onDrawerClose.run();
 

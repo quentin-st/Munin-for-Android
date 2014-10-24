@@ -16,7 +16,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
