@@ -32,6 +32,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -54,13 +55,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
  */
 
 @SuppressLint("CommitPrefEdits")
-public class Activity_Server extends Activity {
-	private MuninFoo	muninFoo;
-	private DrawerHelper dh;
-	private Context 	context;
-	private Menu 		menu;
-	private String		activityName;
-	
+public class Activity_Server extends MuninActivity {
 	private Spinner  	spinner;
 	private AutoCompleteTextView tb_serverUrl;
 	
@@ -88,24 +83,17 @@ public class Activity_Server extends Activity {
 	
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
-		context = this;
 		
 		setContentView(R.layout.server);
-		
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		
-		dh = new DrawerHelper(this, muninFoo);
-		actionBar.setTitle(getString(R.string.addServerTitle)); // Add a server
+		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Server_Add);
-		
-		Util.UI.applySwag(this);
+
+		actionBar.setTitle(getString(R.string.addServerTitle)); // Add a server
+
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.muninMasterUrlLabel), CustomFont.Roboto_Medium);
 		
-		spinner = 			(Spinner)findViewById(R.id.spinner);
-		tb_serverUrl = 		(AutoCompleteTextView)findViewById(R.id.textbox_serverUrl);
+		spinner = (Spinner)findViewById(R.id.spinner);
+		tb_serverUrl = (AutoCompleteTextView)findViewById(R.id.textbox_serverUrl);
 		
 		// Servers history
 		ArrayAdapter<String> addServerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, getHistory());
@@ -172,35 +160,11 @@ public class Activity_Server extends Activity {
 			task.execute();
 		}
 	}
+
 	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		
-		createOptionsMenu();
-		
-		return true;
-	}
-	
-	private void createOptionsMenu() {
-		menu.clear();
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
+
 		getMenuInflater().inflate(R.menu.server, menu);
 		
 		if (Util.getPref(context, "addserver_history").equals(""))
@@ -209,28 +173,18 @@ public class Activity_Server extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
+		super.onOptionsItemSelected(item);
+
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
 			case R.id.menu_save:	actionSave();		return true;
 			case R.id.menu_clear_history:
 				Util.setPref(context, "addserver_history", "");
 				createOptionsMenu();
 				Toast.makeText(getApplicationContext(), getString(R.string.text66_1), Toast.LENGTH_SHORT).show();
 				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_Server.this, Activity_Settings.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_Server.this, Activity_About.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			default:	return super.onOptionsItemSelected(item);
 		}
+
+		return true;
 	}
 	
 	private void cancelSave() {
@@ -859,18 +813,5 @@ public class Activity_Server extends Activity {
 		else
 			return his.split(";");
 	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
-	}
+
 }

@@ -1,18 +1,10 @@
 package com.chteuchteu.munin.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -20,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -27,11 +20,12 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
-public class Activity_Settings extends Activity {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+public class Activity_Settings extends MuninActivity {
 	private Spinner	spinner_scale;
 	private Spinner	spinner_defaultServer;
 	private Spinner	spinner_lang;
@@ -42,29 +36,14 @@ public class Activity_Settings extends Activity {
 	private CheckBox checkbox_hdGraphs;
 	private CheckBox checkbox_hideGraphviewArrows;
 	
-	private MuninFoo 		muninFoo;
-	private DrawerHelper	dh;
-	private Menu 			menu;
-	private String			activityName;
-	private Context		context;
-	
-	
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
-		context = this;
-		
+
 		setContentView(R.layout.settings);
-		
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(getString(R.string.settingsTitle));
-		
-		dh = new DrawerHelper(this, muninFoo);
+		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Settings);
-		
-		Util.UI.applySwag(this);
+
+		actionBar.setTitle(getString(R.string.settingsTitle));
 		
 		spinner_scale = (Spinner)findViewById(R.id.spinner_scale);
 		spinner_defaultServer = (Spinner)findViewById(R.id.spinner_defaultserver);
@@ -280,57 +259,23 @@ public class Activity_Settings extends Activity {
 		startActivity(intent);
 		Util.setTransition(this, TransitionStyle.SHALLOWER);
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		
-		createOptionsMenu();
-		return true;
-	}
-	private void createOptionsMenu() {
-		menu.clear();
+
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
+
 		getMenuInflater().inflate(R.menu.settings, menu);
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
+		super.onOptionsItemSelected(item);
+
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
 			case R.id.menu_save:	actionSave();	return true;
 			case R.id.menu_reset:	actionReset();	return true;
 			case R.id.menu_gplay:	actionGPlay();	return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_Settings.this, Activity_Settings.class));
-				Util.setTransition(this, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_Settings.this, Activity_About.class));
-				Util.setTransition(this, TransitionStyle.DEEPER);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
 		}
+
+		return true;
 	}
 	
 	private void actionReset() {
@@ -382,7 +327,9 @@ public class Activity_Settings extends Activity {
 			}
 		})
 		.setNegativeButton("No", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {	dialog.cancel();	}
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
 		});
 		AlertDialog alert = builder.create();
 		alert.show();
@@ -414,19 +361,5 @@ public class Activity_Settings extends Activity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		Util.setTransition(this, TransitionStyle.SHALLOWER);
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
 	}
 }

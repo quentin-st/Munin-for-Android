@@ -1,15 +1,11 @@
 package com.chteuchteu.munin.ui;
 
-import java.util.List;
-
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +21,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.GridDownloadHelper;
@@ -36,18 +32,10 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-import com.crashlytics.android.Crashlytics;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
-public class Activity_Grid extends Activity {
-	private MuninFoo		muninFoo;
-	private DrawerHelper	dh;
-	private String			activityName;
-	private Menu			menu;
-	private Context			context;
-	
+import java.util.List;
+
+public class Activity_Grid extends MuninActivity {
 	public static boolean	editing;
 	private Grid			grid;
 	private LinearLayout	container;
@@ -61,28 +49,20 @@ public class Activity_Grid extends Activity {
 	private Period currentPeriod;
 	
 	public static boolean	updating;
-	private Handler			mHandler;
+	private Handler		mHandler;
 	private Runnable		mHandlerTask;
 	
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
 		setContentView(R.layout.grid);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		Crashlytics.start(this);
-		context = this;
-		
+		super.onContentViewSet();
+		dh.setDrawerActivity(DrawerHelper.Activity_Grid);
+
 		editing = false;
 		updating = false;
-		
-		Util.UI.applySwag(this);
-		
-		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(DrawerHelper.Activity_Grid);
 		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -98,7 +78,6 @@ public class Activity_Grid extends Activity {
 		
 		
 		// ActionBar spinner if needed
-		ActionBar actionBar = getActionBar();
 		final List<String> gridsNames = muninFoo.sqlite.dbHlpr.getGridsNames();
 		if (gridsNames.size() > 1) {
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -208,8 +187,14 @@ public class Activity_Grid extends Activity {
 		AlphaAnimation a = new AlphaAnimation(1.0f, 0.0f);
 		a.setDuration(300);
 		a.setAnimationListener(new AnimationListener() {
-			@Override public void onAnimationStart(Animation animation) { }
-			@Override public void onAnimationRepeat(Animation animation) { }
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				findViewById(R.id.fullscreen).setVisibility(View.GONE);
@@ -243,33 +228,9 @@ public class Activity_Grid extends Activity {
 		grid.updateLayoutSizes(this);
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		
-		createOptionsMenu();
-		return true;
-	}
-	
-	private void createOptionsMenu() {
-		menu.clear();
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
+
 		getMenuInflater().inflate(R.menu.grid, menu);
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		menu_edit = menu.findItem(R.id.menu_edit);
@@ -329,12 +290,9 @@ public class Activity_Grid extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
+		super.onOptionsItemSelected(item);
+
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
 			case R.id.menu_refresh:
 				refresh();
 				return true;
@@ -364,14 +322,6 @@ public class Activity_Grid extends Activity {
 			case R.id.menu_open:
 				openGraph();
 				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_Grid.this, Activity_Settings.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_Grid.this, Activity_About.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -394,17 +344,8 @@ public class Activity_Grid extends Activity {
 	}
 	
 	@Override
-	public void onStart() {
-		super.onStart();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
 	public void onStop() {
 		super.onStop();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
 		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

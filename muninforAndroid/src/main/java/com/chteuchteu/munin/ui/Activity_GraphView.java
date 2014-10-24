@@ -1,17 +1,6 @@
 package com.chteuchteu.munin.ui;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.taptwo.android.widget.TitleFlowIndicator;
-import org.taptwo.android.widget.ViewFlow;
-import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
-
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,7 +18,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,7 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.Adapter_GraphView;
-import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.MediaScannerUtil;
@@ -67,17 +55,20 @@ import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.crashlytics.android.Crashlytics;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
+
+import org.taptwo.android.widget.TitleFlowIndicator;
+import org.taptwo.android.widget.ViewFlow;
+import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @SuppressLint({ "DefaultLocale", "InflateParams" })
-public class Activity_GraphView extends Activity {
-	private MuninFoo		muninFoo;
-	private DrawerHelper	dh = null;
+public class Activity_GraphView extends MuninActivity {
 	private int			previousPos = -1;
-	private Context		context;
 	private static Activity activity;
 	
 	public static Period	load_period;
@@ -88,8 +79,6 @@ public class Activity_GraphView extends Activity {
 	private MenuItem		item_previous;
 	private MenuItem		item_next;
 	private MenuItem		item_period;
-	private Menu 			menu;
-	private String			activityName;
 	
 	private Handler		mHandler;
 	private Runnable		mHandlerTask;
@@ -97,32 +86,26 @@ public class Activity_GraphView extends Activity {
 	// If the Adapter_GraphView:getView method should
 	// load the graphs
 	public static boolean	loadGraphs = false;
-	
 	private static int currentlyDownloading = 0;
-	
-	
+
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		context = this;
-		activity = this;
-		// Entry point: widgets
-		Crashlytics.start(this);
 		
 		if (Util.getPref(this, "graphview_orientation").equals("vertical"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		else if (Util.getPref(this, "graphview_orientation").equals("horizontal"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+		setContentView(R.layout.graphview);
+		super.onContentViewSet();
+		dh.setDrawerActivity(DrawerHelper.Activity_GraphView);
+
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		
-		setContentView(R.layout.graphview);
-		
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
+
+		activity = this;
+
 		if (muninFoo.currentServer != null) {
 			TextView serverName = (TextView) findViewById(R.id.serverName);
 			if (serverName != null) {
@@ -131,11 +114,6 @@ public class Activity_GraphView extends Activity {
 			} else
 				actionBar.setTitle(muninFoo.currentServer.getName());
 		}
-		
-		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(DrawerHelper.Activity_GraphView);
-		
-		Util.UI.applySwag(this);
 		
 		load_period = Period.get(Util.getPref(this, "defaultScale"));
 		
@@ -323,33 +301,9 @@ public class Activity_GraphView extends Activity {
 		savedInstanceState.putInt("position", position);
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		
-		createOptionsMenu();
-		return true;
-	}
-	
-	private void createOptionsMenu() {
-		menu.clear();
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
+
 		getMenuInflater().inflate(R.menu.graphview, menu);
 		
 		item_previous = menu.findItem(R.id.menu_previous);
@@ -406,28 +360,17 @@ public class Activity_GraphView extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
+		super.onOptionsItemSelected(item);
+
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
 			case R.id.menu_previous:	actionPrevious();		return true;
 			case R.id.menu_next:		actionNext();			return true;
-			case R.id.menu_refresh:		actionRefresh(); 		return true;
+			case R.id.menu_refresh:	actionRefresh(); 		return true;
 			case R.id.menu_save:		actionSave();			return true;
 			case R.id.menu_switchServer:actionServerSwitch();	return true;
 			case R.id.menu_fieldsDescription: actionFieldsDescription(); return true;
 			case R.id.menu_labels:
 				actionLabels();
-				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_GraphView.this, Activity_Settings.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_GraphView.this, Activity_About.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			case R.id.period_day:
 				changePeriod(Period.DAY);
@@ -448,8 +391,8 @@ public class Activity_GraphView extends Activity {
 					startActivity(browserIntent);
 				} catch (Exception ex) { ex.printStackTrace(); }
 				return true;
-			default:	return super.onOptionsItemSelected(item);
 		}
+		return true;
 	}
 	
 	@Override
@@ -542,8 +485,7 @@ public class Activity_GraphView extends Activity {
 				if (!s.equalsApprox(muninFoo.currentServer)) {
 					MuninPlugin plugin = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
 					
-					if (s != null)
-						muninFoo.currentServer = s;
+					muninFoo.currentServer = s;
 					Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
 					intent.putExtra("contextServerUrl", url.getText().toString());
 					intent.putExtra("position", muninFoo.currentServer.getPosition(plugin) + "");
@@ -854,17 +796,8 @@ public class Activity_GraphView extends Activity {
 	}
 	
 	@Override
-	public void onStart() {
-		super.onStart();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
 	public void onStop() {
 		super.onStop();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
 		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

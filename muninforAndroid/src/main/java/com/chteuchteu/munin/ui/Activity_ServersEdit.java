@@ -1,86 +1,60 @@
 package com.chteuchteu.munin.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import android.app.ActionBar;
-import android.app.ListActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.BaseAdapter;
 import android.widget.SimpleAdapter;
 
-import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleFloatViewManager;
 
-public class Activity_ServersEdit extends ListActivity {
-	private MuninFoo		muninFoo;
-	private DrawerHelper	dh;
-	private Context			c;
-	
-	private MuninMaster		m;
-	private SimpleAdapter 	sa;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class Activity_ServersEdit extends MuninActivity {
+	private MuninMaster	master;
 	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 	private List<MuninServer> 		serversList;
 	private List<MuninServer>		deletedServers;
-	private Menu 			menu;
-	private String			activityName;
+	private DragSortListView       listview;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
-		c = this;
-		
 		
 		setContentView(R.layout.servers_edit);
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
+		super.onContentViewSet();
+		dh.setDrawerActivity(DrawerHelper.Activity_ServersEdit);
+
 		actionBar.setTitle(getString(R.string.editServersTitle));
 		
-		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(DrawerHelper.Activity_ServersEdit);
-		
-		Util.UI.applySwag(this);
-		
 		long masterId = getIntent().getExtras().getLong("masterId");
-		m = muninFoo.getMasterById((int) masterId);
+		master = muninFoo.getMasterById((int) masterId);
 		
 		deletedServers = new ArrayList<MuninServer>();
 		serversList = new ArrayList<MuninServer>();
 		
-		for (MuninServer s : m.getChildren())
+		for (MuninServer s : master.getChildren())
 			serversList.add(s);
 		
 		updateList(true);
-		
-		DragSortListView dslv = (DragSortListView) getListView();
-		dslv.setDropListener(onDrop);
-		dslv.setRemoveListener(onRemove);
-		SimpleFloatViewManager sfvm = new SimpleFloatViewManager(dslv);
+
+		listview = (DragSortListView) findViewById(R.id.listview);
+		listview.setDropListener(onDrop);
+		listview.setRemoveListener(onRemove);
+		SimpleFloatViewManager sfvm = new SimpleFloatViewManager(listview);
 		sfvm.setBackgroundColor(Color.TRANSPARENT);
-		dslv.setFloatViewManager(sfvm);
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
+		listview.setFloatViewManager(sfvm);
 	}
 	
 	private void updateList(boolean firstTime) {
@@ -92,12 +66,12 @@ public class Activity_ServersEdit extends ListActivity {
 			item.put("line2", s.getServerUrl());
 			list.add(item);
 		}
-		sa = new SimpleAdapter(this, list, R.layout.serversedit_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+		SimpleAdapter sa = new SimpleAdapter(this, list, R.layout.serversedit_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 		
 		if (firstTime)
-			getListView().setAdapter(sa);
+			listview.setAdapter(sa);
 		else
-			((BaseAdapter) getListView().getAdapter()).notifyDataSetChanged();
+			((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
 	}
 	
 	private void actionSave() {
@@ -133,93 +107,45 @@ public class Activity_ServersEdit extends ListActivity {
 			updateList(false);
 		}
 	};
-	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		
-		createOptionsMenu();
-		return true;
-	}
-	private void createOptionsMenu() {
-		menu.clear();
+
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
+
 		getMenuInflater().inflate(R.menu.serversedit, menu);
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
+		super.onOptionsItemSelected(item);
+
 		Intent intent;
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
 			case R.id.menu_revert:
 				intent = new Intent(this, Activity_Servers.class);
-				intent.putExtra("fromMaster", m.getId());
+				intent.putExtra("fromMaster", master.getId());
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				Util.setTransition(c, TransitionStyle.SHALLOWER);
+				Util.setTransition(context, TransitionStyle.SHALLOWER);
 				return true;
 			case R.id.menu_save:
 				actionSave();
 				intent = new Intent(this, Activity_Servers.class);
-				intent.putExtra("fromMaster", m.getId());
+				intent.putExtra("fromMaster", master.getId());
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				Util.setTransition(c, TransitionStyle.SHALLOWER);
+				Util.setTransition(context, TransitionStyle.SHALLOWER);
 				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_ServersEdit.this, Activity_Settings.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_ServersEdit.this, Activity_About.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
 		}
+
+		return true;
 	}
 	
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent(this, Activity_Servers.class);
-		intent.putExtra("fromMaster", m.getId());
+		intent.putExtra("fromMaster", master.getId());
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		Util.setTransition(c, TransitionStyle.SHALLOWER);
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
+		Util.setTransition(context, TransitionStyle.SHALLOWER);
 	}
 }

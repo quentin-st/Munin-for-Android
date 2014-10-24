@@ -27,4 +27,6 @@ dependencies {
     compile files('libs/jsoup-1.7.2.jar')
     compile files('libs/libGoogleAnalyticsServices.jar')
     compile files('libs/systembartint-1.0.4.jar')
+
+    compile 'com.balysv.materialmenu:material-menu:1.4.0'
 }

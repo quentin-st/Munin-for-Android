@@ -14,6 +14,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -25,33 +26,19 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 
-public class Activity_About extends Activity {
-	private MuninFoo		muninFoo;
-	private DrawerHelper 	dh;
-	private Menu 			menu;
-	private String			activityName;
-	private Context		c;
+public class Activity_About extends MuninActivity {
 	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("DefaultLocale")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
+
 		setContentView(R.layout.about);
-		c = this;
-		
-		
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(getString(R.string.aboutTitle));
-		
-		dh = new DrawerHelper(this, muninFoo);
+		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_About);
-		
-		Util.UI.applySwag(this);
-		
-		
+
+		actionBar.setTitle(getString(R.string.aboutTitle));
+
 		WebView wv = (WebView)findViewById(R.id.webView1);
 		wv.setVerticalScrollBarEnabled(true);
 		wv.getSettings().setDefaultTextEncodingName("utf-8");
@@ -80,22 +67,11 @@ public class Activity_About extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
+		super.onOptionsItemSelected(item);
+
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_About.this, Activity_Settings.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_About.this, Activity_About.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
-				return true;
 			default:
-				return super.onOptionsItemSelected(item);
+				return true;
 		}
 	}
 	
@@ -104,48 +80,16 @@ public class Activity_About extends Activity {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		Util.setTransition(c, TransitionStyle.SHALLOWER);
+		Util.setTransition(context, TransitionStyle.SHALLOWER);
 	}
 	
-	private void createOptionsMenu() {
-		menu.clear();
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
 	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		createOptionsMenu();
-		
+		super.onCreateOptionsMenu(menu);
 		return true;
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
 	}
 }

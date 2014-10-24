@@ -1,18 +1,7 @@
 package com.chteuchteu.munin.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -21,34 +10,29 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.Adapter_SeparatedList;
-import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
-public class Activity_Label extends Activity {
-	private MuninFoo		muninFoo;
-	private DrawerHelper	dh;
-	private Context			c;
+public class Activity_Label extends MuninActivity {
 	private Label			label;
-	private String			activityName;
-	private List<List<MuninPlugin>> labelsListCat;
 	private List<MuninPlugin> correspondance;
 	private List<String> 	correspondanceServers;
-	private Menu			menu;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
-		c = this;
 		
 		// Getting current label
 		Intent thisIntent = getIntent();
@@ -65,16 +49,12 @@ public class Activity_Label extends Activity {
 		
 		
 		setContentView(R.layout.labels_pluginselection);
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(label.getName());
-		
-		dh = new DrawerHelper(this, muninFoo);
+		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Label);
-		
-		Util.UI.applySwag(this);
-		
-		labelsListCat = label.getPluginsSortedByServer(muninFoo);
+
+		actionBar.setTitle(label.getName());
+
+		List<List<MuninPlugin>> labelsListCat = label.getPluginsSortedByServer(muninFoo);
 		correspondance = new ArrayList<MuninPlugin>();
 		correspondanceServers = new ArrayList<String>();
 		Adapter_SeparatedList adapter = new Adapter_SeparatedList(this, false);
@@ -112,7 +92,7 @@ public class Activity_Label extends Activity {
 				intent.putExtra("from", "labels");
 				intent.putExtra("label", label.getName());
 				startActivity(intent);
-				Util.setTransition(c, TransitionStyle.DEEPER);
+				Util.setTransition(context, TransitionStyle.DEEPER);
 			}
 		});
 	}
@@ -123,61 +103,12 @@ public class Activity_Label extends Activity {
 		item.put("caption", caption);  
 		return item;  
 	} 
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_Label.this, Activity_Settings.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_Label.this, Activity_About.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
-				return true;
-			default:	return super.onOptionsItemSelected(item);
-		}
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		
-		createOptionsMenu();
-		return true;
-	}
-	
-	private void createOptionsMenu() {
-		menu.clear();
-	}
-	
+
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent(this, Activity_Labels.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		Util.setTransition(c, TransitionStyle.SHALLOWER);
+		Util.setTransition(context, TransitionStyle.SHALLOWER);
 	}
 }

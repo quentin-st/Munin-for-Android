@@ -1,17 +1,10 @@
 package com.chteuchteu.munin.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,52 +14,46 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
-public class Activity_Grids extends ListActivity {
-	private MuninFoo		muninFoo;
-	private DrawerHelper	dh;
-	private Context			context;
-	private Menu			menu;
-	private String			activityName;
-	
-	private SimpleAdapter	sa;
+public class Activity_Grids extends MuninActivity {
 	private ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+	private ListView listview;
 	
-	@Override public void onCreate(Bundle savedInstanceState) {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
-		context = this;
-		
+
 		setContentView(R.layout.grids);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setTitle(getString(R.string.button_grid));
-		
-		dh = new DrawerHelper(this, muninFoo);
+		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Grids);
-		
-		Util.UI.applySwag(this);
-		
+
+		actionBar.setTitle(getString(R.string.button_grid));
+
+		listview = (ListView) findViewById(R.id.listview);
+
 		updateList();
 	}
 	
 	private void updateList() {
 		list.clear();
-		setListAdapter(null);
+		listview.setAdapter(null);
 		
 		List<Grid> gridsList = muninFoo.sqlite.dbHlpr.getGrids(this, muninFoo);
 		
@@ -80,10 +67,10 @@ public class Activity_Grids extends ListActivity {
 				item.put("line2", g.getFullWidth() + " x " + g.getFullHeight());
 				list.add(item);
 			}
-			sa = new SimpleAdapter(this, list, R.layout.gridselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
-			setListAdapter(sa);
+			SimpleAdapter sa = new SimpleAdapter(this, list, R.layout.gridselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+			listview.setAdapter(sa);
 			
-			getListView().setOnItemClickListener(new OnItemClickListener() {
+			listview.setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					TextView gridName = (TextView) view.findViewById(R.id.line_a);
 					Intent intent = new Intent(Activity_Grids.this, Activity_Grid.class);
@@ -93,7 +80,7 @@ public class Activity_Grids extends ListActivity {
 				}
 			});
 			
-			getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+			listview.setOnItemLongClickListener(new OnItemLongClickListener() {
 				@Override
 				public boolean onItemLongClick(AdapterView<?> adapter, final View view, int position, long arg) {
 					// Display actions list
@@ -102,60 +89,61 @@ public class Activity_Grids extends ListActivity {
 							context, android.R.layout.simple_list_item_1);
 					arrayAdapter.add(context.getString(R.string.rename_grid));
 					arrayAdapter.add(context.getString(R.string.text73)); // Delete grid
-					
+
 					builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							final TextView gridNameTextView = (TextView) view.findViewById(R.id.line_a);
 							final String gridName = gridNameTextView.getText().toString();
-							
+
 							switch (which) {
 								case 0: // Rename grid
 									final EditText input = new EditText(context);
 									input.setText(gridName);
-									
+
 									new AlertDialog.Builder(context)
-									.setTitle(R.string.rename_grid)
-									.setView(input)
-									.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+											.setTitle(R.string.rename_grid)
+											.setView(input)
+											.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+												public void onClick(DialogInterface dialog, int whichButton) {
+													String value = input.getText().toString();
+													if (!value.equals(gridName)) {
+														// Check if there's a grid with this name
+														boolean alreadyExists = muninFoo.sqlite.dbHlpr.gridExists(value);
+														if (!alreadyExists) {
+															MuninFoo.getInstance(context).sqlite.dbHlpr.updateGridName(gridName, value);
+															gridNameTextView.setText(value);
+														} else
+															Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
+													}
+													dialog.dismiss();
+												}
+											}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog, int whichButton) {
-											String value = input.getText().toString();
-											if (!value.equals(gridName)) {
-												// Check if there's a grid with this name
-												boolean alreadyExists = muninFoo.sqlite.dbHlpr.gridExists(value);
-												if (!alreadyExists) {
-													MuninFoo.getInstance(context).sqlite.dbHlpr.updateGridName(gridName, value);
-													gridNameTextView.setText(value);
-												} else
-													Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
-											}
-											dialog.dismiss();
 										}
-									}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog, int whichButton) { }
 									}).show();
 									break;
 								case 1: // Delete grid
 									new AlertDialog.Builder(context)
-									.setTitle(R.string.delete)
-									.setMessage(R.string.text80)
-									.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											Grid grid = muninFoo.sqlite.dbHlpr.getGrid(context, muninFoo, gridName);
-											muninFoo.sqlite.dbHlpr.deleteGrid(grid);
-											updateList();
-										}
-									})
-									.setNegativeButton(R.string.text34, null)
-									.show();
-									
+											.setTitle(R.string.delete)
+											.setMessage(R.string.text80)
+											.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+												@Override
+												public void onClick(DialogInterface dialog, int which) {
+													Grid grid = muninFoo.sqlite.dbHlpr.getGrid(context, muninFoo, gridName);
+													muninFoo.sqlite.dbHlpr.deleteGrid(grid);
+													updateList();
+												}
+											})
+											.setNegativeButton(R.string.text34, null)
+											.show();
+
 									break;
 							}
 						}
 					});
 					builderSingle.show();
-					
+
 					return true;
 				}
 			});
@@ -185,65 +173,24 @@ public class Activity_Grids extends ListActivity {
 		Button okButton = d.getButton(DialogInterface.BUTTON_POSITIVE);
 		okButton.setOnClickListener(new CustomListener(input, d));
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		
-		createOptionsMenu();
-		return true;
-	}
-	private void createOptionsMenu() {
-		menu.clear();
+
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
 		
 		getMenuInflater().inflate(R.menu.gridselection, menu);
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
+		super.onOptionsItemSelected(item);
+
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
 			case R.id.menu_add:
 				add();
 				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_Grids.this, Activity_Settings.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_Grids.this, Activity_About.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
 		}
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		
+
+		return true;
 	}
 	
 	@Override
@@ -252,20 +199,6 @@ public class Activity_Grids extends ListActivity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		Util.setTransition(context, TransitionStyle.SHALLOWER);
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
 	}
 	
 	private class CustomListener implements View.OnClickListener {

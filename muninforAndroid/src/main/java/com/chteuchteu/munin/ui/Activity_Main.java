@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.balysv.materialmenu.MaterialMenuDrawable;
+import com.balysv.materialmenu.MaterialMenuIcon;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -25,14 +28,21 @@ import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.tjeannin.apprate.AppRate;
 
+/**
+ * We are not extending MuninActivity from here since the activity cycle
+ * is very different from others (showing UI elements only when the app
+ * is loaded)
+ */
 public class Activity_Main extends Activity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
-	
+	private MaterialMenuIcon materialMenu;
+
 	private Menu 			menu;
 	private String			activityName;
 	private boolean		doubleBackPressed;
@@ -42,7 +52,6 @@ public class Activity_Main extends Activity {
 	private boolean optionsMenuLoaded;
 	private Context context;
 	private ProgressDialog myProgressDialog;
-	private boolean updateOperations;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,21 +67,22 @@ public class Activity_Main extends Activity {
 		
 		context = this;
 		setContentView(R.layout.main_clear);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setTitle("");
-		
+
 		Util.UI.applySwag(this);
-		
-		
+		Crashlytics.start(this);
+
 		dh = new DrawerHelper(this, muninFoo);
 		dh.setDrawerActivity(DrawerHelper.Activity_Main);
-		
 		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
 			@Override
 			public void onOpen() {
-				dh.getDrawer().toggle(false);
+				dh.toggle(false);
 			}
 		});
+
+		this.materialMenu = new MaterialMenuIcon(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN);
+		this.materialMenu.setNeverDrawTouch(true);
 		
 		Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.RobotoCondensed_Regular);
 		
@@ -88,8 +98,6 @@ public class Activity_Main extends Activity {
 	 * 	- going back to Activity_Main
 	 */
 	private void onLoadFinished() {
-		preloading = false;
-		
 		// Inflate menu if not already done
 		if (preloading && !optionsMenuLoaded)
 			createOptionsMenu();
@@ -115,6 +123,7 @@ public class Activity_Main extends Activity {
 		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
 			@Override
 			public void onOpen() {
+				dh.setIsOpened(true);
 				activityName = getActionBar().getTitle().toString();
 				getActionBar().setTitle(R.string.app_name);
 			}
@@ -122,11 +131,14 @@ public class Activity_Main extends Activity {
 		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
 			@Override
 			public void onClose() {
+				dh.setIsOpened(false);
 				getActionBar().setTitle(activityName);
 			}
 		});
+
 		dh.reset();
-		dh.getDrawer().toggle(true);
+		dh.toggle(true);
+		materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 	}
 	
 	@Override
@@ -156,7 +168,11 @@ public class Activity_Main extends Activity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				dh.getDrawer().toggle(true);
+				if (dh.isOpened())
+					materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
+				else
+					materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
+				dh.toggle(true);
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(Activity_Main.this, Activity_Settings.class));
@@ -174,7 +190,7 @@ public class Activity_Main extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		
+
 		if (!preloading && !optionsMenuLoaded)
 			createOptionsMenu();
 		
@@ -243,7 +259,7 @@ public class Activity_Main extends Activity {
 	private void preload() {
 		Crashlytics.start(this);
 		
-		updateOperations = !Util.getPref(context, "lastMFAVersion").equals(MuninFoo.VERSION + "");
+		boolean updateOperations = !Util.getPref(context, "lastMFAVersion").equals(MuninFoo.VERSION + "");
 		
 		
 		if (updateOperations) {
@@ -303,5 +319,15 @@ public class Activity_Main extends Activity {
 			
 			onLoadFinished();
 		}
+	}
+
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		materialMenu.syncState(savedInstanceState);
+	}
+
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		materialMenu.onSaveInstanceState(outState);
 	}
 }

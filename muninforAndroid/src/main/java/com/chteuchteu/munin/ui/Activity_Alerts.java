@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
@@ -35,27 +32,14 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.crashlytics.android.Crashlytics;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
-@SuppressLint("InflateParams")
-public class Activity_Alerts extends Activity {
-	private MuninFoo		muninFoo;
-	private DrawerHelper	dh;
-	private Context		c;
-	
+public class Activity_Alerts extends MuninActivity {
 	private boolean		hideNormalStateServers;
-	private Menu 			menu;
 	private MenuItem		menu_flatList;
-	private String			activityName;
 	/* If the menu items are flat / expanded */
 	private boolean		listMode_flat;
 	private boolean		shouldDisplayEverythingsOk;
 	private View			everythingsOk;
-	
-	private List<MuninServer> servers;
 	
 	private LinearLayout[]		part_part;
 	private TextView[] 		part_serverName;
@@ -81,31 +65,25 @@ public class Activity_Alerts extends Activity {
 	private int 			currentLoadingProgress;
 	
 	private static final int SERVERS_BY_THREAD = 2;
-	
+
+	@SuppressLint("InflateParams")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
+
 		setContentView(R.layout.alerts);
-		c = this;
-		Crashlytics.start(this);
-		listMode_flat = false;
-		
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(getString(R.string.alertsTitle));
-		
-		dh = new DrawerHelper(this, muninFoo);
+		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Alerts);
-		
-		Util.UI.applySwag(this);
+
+		listMode_flat = false;
+
+		actionBar.setTitle(getString(R.string.alertsTitle));
+
 		progressBar = Util.UI.prepareGmailStyleProgressBar(this);
 		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		
-		
+
 		everythingsOk = findViewById(R.id.alerts_ok);
 		
 		int nbS = muninFoo.getHowManyServers();
@@ -122,7 +100,7 @@ public class Activity_Alerts extends Activity {
 		
 		hideNormalStateServers = true;
 		
-		servers = new ArrayList<MuninServer>();
+		List<MuninServer> servers = new ArrayList<MuninServer>();
 		// Populating servers list
 		for (MuninMaster master : muninFoo.masters)
 			servers.addAll(master.getChildren());
@@ -134,6 +112,7 @@ public class Activity_Alerts extends Activity {
 		
 		for (final MuninServer server : servers) {
 			LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
 			View v = vi.inflate(R.layout.alerts_part, null);
 			
 			part_part[i] 					= (LinearLayout) v.findViewById(R.id.alerts_part);
@@ -154,7 +133,7 @@ public class Activity_Alerts extends Activity {
 				public void onClick (View v) {
 					muninFoo.currentServer = server;
 					startActivity(new Intent(Activity_Alerts.this, Activity_AlertsPluginSelection.class));
-					Util.setTransition(c, TransitionStyle.DEEPER);
+					Util.setTransition(context, TransitionStyle.DEEPER);
 				}
 			});
 			
@@ -178,8 +157,7 @@ public class Activity_Alerts extends Activity {
 			else
 				updateStates(false);
 		}
-		
-		
+
 		findViewById(R.id.hideNoAlerts).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -454,63 +432,28 @@ public class Activity_Alerts extends Activity {
 			this.listMode_flat = true;
 		}
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		
-		createOptionsMenu();
-		return true;
-	}
-	
-	private void createOptionsMenu() {
-		menu.clear();
+
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
+
 		getMenuInflater().inflate(R.menu.alerts, menu);
 		this.menu_flatList = menu.findItem(R.id.menu_flatlist);
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
+		super.onOptionsItemSelected(item);
+
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
 			case R.id.menu_flatlist:
 				switchListMode();
 				return true;
 			case R.id.menu_refresh:
 				updateStates(true);
 				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_Alerts.this, Activity_Settings.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_Alerts.this, Activity_About.class));
-				Util.setTransition(c, TransitionStyle.DEEPER);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
 		}
+
+		return true;
 	}
 	
 	@Override
@@ -518,7 +461,7 @@ public class Activity_Alerts extends Activity {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		Util.setTransition(c, TransitionStyle.SHALLOWER);
+		Util.setTransition(context, TransitionStyle.SHALLOWER);
 	}
 	
 	private void enableArrow(boolean b, int p) {
@@ -531,17 +474,8 @@ public class Activity_Alerts extends Activity {
 	}
 	
 	@Override
-	public void onStart() {
-		super.onStart();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
 	public void onStop() {
 		super.onStop();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
 		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

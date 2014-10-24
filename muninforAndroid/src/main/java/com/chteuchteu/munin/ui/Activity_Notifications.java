@@ -1,12 +1,6 @@
 package com.chteuchteu.munin.ui;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -17,7 +11,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,29 +26,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.Service_Notifications;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("InflateParams")
-public class Activity_Notifications extends Activity {
-	private MuninFoo		muninFoo;
-	private DrawerHelper	dh;
-	private Context			context;
-	private Activity		activity;
-	
+public class Activity_Notifications extends MuninActivity {
 	private CheckBox		cb_notifications;
 	private Spinner			sp_refreshRate;
 	private CheckBox		cb_wifiOnly;
-	
-	private Menu 			menu;
-	private String			activityName;
+
 	private LinearLayout	checkboxesView;
 	private static CheckBox[]	checkboxes;
 	
@@ -66,20 +53,12 @@ public class Activity_Notifications extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
-		context = this;
-		activity = this;
+
 		setContentView(R.layout.notifications);
-		
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(getString(R.string.notificationsTitle));
-		
-		dh = new DrawerHelper(this, muninFoo);
+		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Notifications);
-		
-		Util.UI.applySwag(this);
+
+		actionBar.setTitle(getString(R.string.notificationsTitle));
 		
 		sp_refreshRate = (Spinner) findViewById(R.id.spinner_refresh);
 		cb_notifications = (CheckBox) findViewById(R.id.checkbox_notifications);
@@ -272,69 +251,20 @@ public class Activity_Notifications extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
+		super.onOptionsItemSelected(item);
+
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
 			case R.id.menu_save:
 				actionSave();
 				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_Notifications.this, Activity_Settings.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_Notifications.this, Activity_About.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
 		}
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		
-		createOptionsMenu();
+
 		return true;
 	}
 	
-	private void createOptionsMenu() {
-		menu.clear();
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
+
 		getMenuInflater().inflate(R.menu.notifications, menu);
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
 	}
 }

@@ -1,13 +1,6 @@
 package com.chteuchteu.munin.ui;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,7 +10,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -26,12 +18,12 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.Adapter_ExpandableListView;
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -46,37 +38,26 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @SuppressLint("DefaultLocale")
-public class Activity_Servers extends Activity {
-	private MuninFoo		muninFoo;
-	private DrawerHelper	dh;
-	private static Context	context;
-	private Activity		activity;
-
+public class Activity_Servers extends MuninActivity {
+	private static Context context;
 	private ExpandableListView expListView;
-	private Menu 			menu;
-	private String			activityName;
 	
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
 		context = this;
-		activity = this;
-		
+
 		setContentView(R.layout.servers);
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(getString(R.string.serversTitle));
-		
-		dh = new DrawerHelper(this, muninFoo);
+		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Servers);
-		
-		Util.UI.applySwag(this);
+
+		actionBar.setTitle(getString(R.string.serversTitle));
 		
 		expListView = (ExpandableListView) findViewById(R.id.servers_list);
 		
@@ -497,33 +478,10 @@ public class Activity_Servers extends Activity {
 			refreshList();
 		}
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		
-		createOptionsMenu();
-		return true;
-	}
-	private void createOptionsMenu() {
-		menu.clear();
+
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
+
 		getMenuInflater().inflate(R.menu.servers, menu);
 		MenuItem importExportMenuItem = menu.findItem(R.id.menu_importexport);
 		MenuItem exportMenuItem = menu.findItem(R.id.menu_export);
@@ -535,13 +493,10 @@ public class Activity_Servers extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
+		super.onOptionsItemSelected(item);
+
 		Intent intent;
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
 			case R.id.menu_add:
 				intent = new Intent(this, Activity_Server.class);
 				intent.putExtra("contextServerUrl", "");
@@ -554,17 +509,9 @@ public class Activity_Servers extends Activity {
 			case R.id.menu_export:
 				displayExportDialog();
 				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_Servers.this, Activity_Settings.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_Servers.this, Activity_About.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
 		}
+
+		return true;
 	}
 	
 	@Override
@@ -573,19 +520,5 @@ public class Activity_Servers extends Activity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		Util.setTransition(context, TransitionStyle.SHALLOWER);
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
 	}
 }

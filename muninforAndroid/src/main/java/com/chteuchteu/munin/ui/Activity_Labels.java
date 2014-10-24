@@ -19,9 +19,11 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.chteuchteu.munin.MuninActivity;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -33,40 +35,29 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 
-public class Activity_Labels extends ListActivity {
-	private MuninFoo		muninFoo;
-	private DrawerHelper	dh;
-	private Context			context;
-	private Activity		activity;
-	
+public class Activity_Labels extends MuninActivity {
 	private SimpleAdapter 	sa;
 	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
-	private Menu 			menu;
-	private String			activityName;
+	private ListView listview;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
-		context = this;
-		activity = this;
 		
 		setContentView(R.layout.labelselection);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setTitle(getString(R.string.button_labels));
-		
-		dh = new DrawerHelper(this, muninFoo);
+		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Labels);
-		
-		Util.UI.applySwag(this);
+
+		listview = (ListView) findViewById(R.id.listview);
+
+		getActionBar().setTitle(getString(R.string.button_labels));
 		
 		updateListView();
 	}
 	
 	private void updateListView() {
 		list.clear();
-		getListView().setAdapter(null);
+		listview.setAdapter(null);
 		findViewById(R.id.no_label).setVisibility(View.GONE);
 		
 		if (muninFoo.labels.size() > 0) {
@@ -78,9 +69,9 @@ public class Activity_Labels extends ListActivity {
 				list.add(item);
 			}
 			sa = new SimpleAdapter(Activity_Labels.this, list, R.layout.labelselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
-			setListAdapter(sa);
-			
-			getListView().setOnItemClickListener(new OnItemClickListener() {
+			listview.setAdapter(sa);
+
+			listview.setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					TextView label = (TextView) view.findViewById(R.id.line_a);
 					Intent intent = new Intent(Activity_Labels.this, Activity_Label.class);
@@ -89,8 +80,8 @@ public class Activity_Labels extends ListActivity {
 					Util.setTransition(context, TransitionStyle.DEEPER);
 				}
 			});
-			
-			getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			listview.setOnItemLongClickListener(new OnItemLongClickListener() {
 				@Override
 				public boolean onItemLongClick(AdapterView<?> adapter, View view, int pos, long arg) {
 					final TextView labelNameTextView = (TextView) view.findViewById(R.id.line_a);
@@ -158,44 +149,18 @@ public class Activity_Labels extends ListActivity {
 		else
 			findViewById(R.id.no_label).setVisibility(View.VISIBLE);
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		this.menu = menu;
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
-			@Override
-			public void onClose() {
-				getActionBar().setTitle(activityName);
-				createOptionsMenu();
-			}
-		});
-		
-		createOptionsMenu();
-		return true;
-	}
-	private void createOptionsMenu() {
-		menu.clear();
+
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
+
 		getMenuInflater().inflate(R.menu.labels, menu);
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
+		super.onOptionsItemSelected(item);
+
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.getDrawer().toggle(true);
-				return true;
 			case R.id.menu_add:
 				final LinearLayout ll = new LinearLayout(this);
 				ll.setOrientation(LinearLayout.VERTICAL);
@@ -219,17 +184,9 @@ public class Activity_Labels extends ListActivity {
 				}).show();
 					
 				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_Labels.this, Activity_Settings.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_Labels.this, Activity_About.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
 		}
+
+		return true;
 	}
 	
 	@Override
@@ -238,19 +195,5 @@ public class Activity_Labels extends ListActivity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		Util.setTransition(context, TransitionStyle.SHALLOWER);
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (!MuninFoo.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
 	}
 }
