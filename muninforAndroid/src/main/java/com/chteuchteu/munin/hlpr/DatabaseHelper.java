@@ -256,12 +256,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return id;
 	}
 	
-	public void deleteMuninPlugins(MuninServer server) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_MUNINPLUGINS, KEY_MUNINPLUGINS_SERVER + " = ?", new String[] { String.valueOf(server.getId()) });
-		close(null, db);
-	}
-	
 	public void deleteMuninPlugin(MuninPlugin p, boolean onCascade) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_MUNINPLUGINS, KEY_ID + " = ?", new String[] { String.valueOf(p.getId()) });
@@ -272,13 +266,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			deleteLabelsRelations(p);
 			deleteWidgets(p);
 		}
-	}
-	
-	public long saveMuninPlugin(MuninPlugin p) {
-		if (p.isPersistant)
-			return updateMuninPlugin(p);
-		else
-			return insertMuninPlugin(p);
 	}
 	
 	
@@ -452,15 +439,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return nbRows;
 	}
 	
-	public int updateWidgets(ArrayList<Widget> widgets) {
-		int updated = 0;
-		
-		for (Widget widget : widgets)
-			updated += updateWidget(widget);
-		
-		return updated;
-	}
-	
 	public int updateWidget(Widget widget) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -480,7 +458,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return GenericQueries.getNbLines(this, TABLE_GRIDS, KEY_GRIDS_NAME + " = '" + gridName + "'") > 0;
 	}
 	
-	public List<MuninMaster> getMasters(List<MuninMaster> currentMasters) {
+	public List<MuninMaster> getMasters() {
 		List<MuninMaster> l = new ArrayList<MuninMaster>();
 		try {
 			String selectQuery = "SELECT * FROM " + TABLE_MUNINMASTERS;
@@ -702,15 +680,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return null;
 	}
 	
-	public List<Widget> getWidgets(MuninServer s) {
-		List<Widget> l = new ArrayList<Widget>();
-		for (Widget w : getWidgets()) {
-			if (w.getPlugin().getInstalledOn().equalsApprox(s))
-				l.add(w);
-		}
-		return l;
-	}
-	
 	public List<Label> getLabels() {
 		List<Label> list = new ArrayList<Label>();
 			try {
@@ -927,19 +896,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_LABEL + " = ?", new String[] { String.valueOf(l.getId()) });
 		close(null, db);
-	}
-	
-	public void deleteLabelsRelation(MuninPlugin p, Label l) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_LABEL + " = ? AND " + KEY_LABELSRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(l.getId()), String.valueOf(p.getId()) });
-		close(null, db);
-	}
-	
-	public void deleteLabel(Label l) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_LABELS, KEY_ID + " = ?", new String[] { String.valueOf(l.getId()) });
-		close(null, db);
-		deleteLabelsRelations(l);
 	}
 	
 	public void deleteGrid(Grid g) {

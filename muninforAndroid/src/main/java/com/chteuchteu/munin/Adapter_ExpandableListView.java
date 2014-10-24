@@ -83,8 +83,15 @@ public class Adapter_ExpandableListView extends BaseExpandableListAdapter {
 		Util.Fonts.setFont((Context) context, item, CustomFont.Roboto_Medium);
 		item.setText(master.getName());
 		
-		if (master.isAuthNeeded())
-			convertView.findViewById(R.id.credentials).setVisibility(View.VISIBLE);
+		if (master.isAuthNeeded()) {
+            convertView.findViewById(R.id.credentials).setVisibility(View.VISIBLE);
+            convertView.findViewById(R.id.credentials).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    activity.onGroupItemCredentialsClick(groupPosition);
+                }
+            });
+        }
 		
 		ImageView edit = (ImageView) convertView.findViewById(R.id.edit);
 		edit.setOnClickListener(new OnClickListener() {

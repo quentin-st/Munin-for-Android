@@ -76,8 +76,6 @@ public class Activity_Server extends Activity {
 	
 	// AddServer stuff
 	private String 	serverUrl;
-	private boolean 	ssl;
-	private List<String> oldServers;
 	private String 	type;
 	private String 	message_title;
 	private String 	message_text;
@@ -324,7 +322,7 @@ public class Activity_Server extends Activity {
 				type = "";
 				serverUrl = tb_serverUrl.getText().toString().trim();
 				
-				ssl = false;
+				boolean ssl = false;
 				
 				// URL modifications
 				if (!serverUrl.contains("http://") && !serverUrl.contains("https://"))
@@ -514,11 +512,6 @@ public class Activity_Server extends Activity {
 		}
 		
 		private String initialization() {
-			oldServers = new ArrayList<String>();
-			// Create current servers list (diff)
-			for (MuninServer s : muninFoo.getServers())
-				oldServers.add(s.getServerUrl());
-			
 			setPopupText(getString(R.string.text44), "");
 			
 			/* 			DETECTION DU TYPE D'URL 		*/

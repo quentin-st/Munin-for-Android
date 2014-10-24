@@ -83,7 +83,7 @@ public class MuninFoo {
 	public static boolean isLoaded() { return instance != null; }
 	
 	private void loadInstance() {
-		this.masters = sqlite.dbHlpr.getMasters(this.masters);
+		this.masters = sqlite.dbHlpr.getMasters();
 		this.servers = sqlite.dbHlpr.getServers(this.masters);
 		this.labels = sqlite.dbHlpr.getLabels();
 		
