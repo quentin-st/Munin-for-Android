@@ -29,6 +29,9 @@ public class MuninActivity extends Activity {
 	protected Menu menu;
 	protected String activityName;
 
+	private Runnable onDrawerOpen;
+	private Runnable onDrawerClose;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -88,6 +91,10 @@ public class MuninActivity extends Activity {
 				dh.setIsOpened(true);
 				activityName = getActionBar().getTitle().toString();
 				getActionBar().setTitle(R.string.app_name);
+
+				if (onDrawerOpen != null)
+					onDrawerOpen.run();
+
 				menu.clear();
 				getMenuInflater().inflate(R.menu.main, menu);
 			}
@@ -97,6 +104,10 @@ public class MuninActivity extends Activity {
 			public void onClose() {
 				dh.setIsOpened(false);
 				getActionBar().setTitle(activityName);
+
+				if (onDrawerClose != null)
+					onDrawerClose.run();
+
 				createOptionsMenu();
 			}
 		});
@@ -105,6 +116,9 @@ public class MuninActivity extends Activity {
 
 		return true;
 	}
+
+	protected void setOnDrawerOpen(Runnable val) { this.onDrawerOpen = val; }
+	protected void setOnDrawerClose(Runnable val) { this.onDrawerClose = val; }
 
 	@Override
 	public void onStart() {

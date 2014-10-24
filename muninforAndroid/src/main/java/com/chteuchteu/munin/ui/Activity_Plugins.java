@@ -74,7 +74,7 @@ public class Activity_Plugins extends MuninActivity {
 
 		// ActionBar custom view
 		final LayoutInflater inflator = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View customActionBarView = inflator.inflate(R.layout.actionbar_serverselection, null);
+		final View customActionBarView = inflator.inflate(R.layout.actionbar_serverselection, null);
 		customActionBarView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -134,10 +134,25 @@ public class Activity_Plugins extends MuninActivity {
 		customActionBarView_textView = serverName;
 		
 		actionBar.setCustomView(customActionBarView);
+		super.setOnDrawerOpen(new Runnable() {
+			@Override
+			public void run() {
+				customActionBarView.setVisibility(View.GONE);
+				actionBar.setDisplayShowCustomEnabled(false);
+				actionBar.setDisplayShowTitleEnabled(true);
+			}
+		});
+		super.setOnDrawerClose(new Runnable() {
+			@Override
+			public void run() {
+				customActionBarView.setVisibility(View.VISIBLE);
+				actionBar.setDisplayShowCustomEnabled(true);
+				actionBar.setDisplayShowTitleEnabled(false);
+			}
+		});
 
 		mode = MODE_GROUPED;
-		
-		
+
 		updateListView(mode);
 	}
 	
