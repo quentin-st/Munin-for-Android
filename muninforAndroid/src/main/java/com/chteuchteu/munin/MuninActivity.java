@@ -20,17 +20,17 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class MuninActivity extends Activity {
-	protected MuninFoo muninFoo;
-	protected DrawerHelper dh;
-	protected Context context;
-	protected Activity activity;
-	protected ActionBar actionBar;
+	protected MuninFoo      muninFoo;
+	protected DrawerHelper  dh;
+	protected Context       context;
+	protected Activity      activity;
+	protected ActionBar     actionBar;
 	private MaterialMenuIcon materialMenu;
-	protected Menu menu;
-	protected String activityName;
+	protected Menu          menu;
+	protected String        activityName;
 
-	private Runnable onDrawerOpen;
-	private Runnable onDrawerClose;
+	private Runnable    onDrawerOpen;
+	private Runnable    onDrawerClose;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

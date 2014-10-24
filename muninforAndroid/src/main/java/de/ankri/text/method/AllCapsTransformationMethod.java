@@ -15,12 +15,12 @@
  */
 package de.ankri.text.method;
 
-import java.util.Locale;
-
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.View;
+
+import java.util.Locale;
 
 /**
  * Transforms source text into an ALL CAPS string, locale-aware.

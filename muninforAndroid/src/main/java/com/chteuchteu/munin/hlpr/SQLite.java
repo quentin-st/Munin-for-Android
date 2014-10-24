@@ -1,7 +1,5 @@
 package com.chteuchteu.munin.hlpr;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +13,8 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
+
+import java.util.ArrayList;
 
 public class SQLite {
 	private MuninFoo muninFoo;

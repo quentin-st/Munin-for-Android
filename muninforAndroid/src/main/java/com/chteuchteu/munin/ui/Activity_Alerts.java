@@ -1,9 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +28,10 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class Activity_Alerts extends MuninActivity {
 	private boolean		hideNormalStateServers;

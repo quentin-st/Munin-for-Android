@@ -1,15 +1,15 @@
 package com.chteuchteu.munin.obj;
 
-import java.util.Calendar;
+import android.content.Context;
+import android.graphics.Bitmap;
+
+import com.chteuchteu.munin.R;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-
-import com.chteuchteu.munin.R;
+import java.util.Calendar;
 
 public class MuninPlugin {
 	private long 		id;

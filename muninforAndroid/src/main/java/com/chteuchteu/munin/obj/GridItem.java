@@ -1,8 +1,5 @@
 package com.chteuchteu.munin.obj;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -33,6 +30,9 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.ui.Activity_Grid;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GridItem {
 	public long			id;

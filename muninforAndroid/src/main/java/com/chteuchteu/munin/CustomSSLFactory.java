@@ -1,5 +1,7 @@
 package com.chteuchteu.munin;
 
+import org.apache.http.conn.ssl.SSLSocketFactory;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -14,8 +16,6 @@ import java.security.cert.X509Certificate;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
-import org.apache.http.conn.ssl.SSLSocketFactory;
 
 public class CustomSSLFactory extends SSLSocketFactory {
 	private SSLContext sslContext = SSLContext.getInstance("TLS");

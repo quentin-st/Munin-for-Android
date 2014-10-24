@@ -1,8 +1,5 @@
 package com.chteuchteu.munin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -21,6 +18,9 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_Alerts;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Service_Notifications extends Service {
 	private MuninFoo muninFoo;

@@ -1,8 +1,5 @@
 package com.chteuchteu.munin.obj;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -15,6 +12,9 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.GridDownloadHelper;
 import com.chteuchteu.munin.hlpr.Util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Grid {
 	public long 	id;

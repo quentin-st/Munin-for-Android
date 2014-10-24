@@ -15,8 +15,6 @@
  */
 package org.taptwo.android.widget;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -29,6 +27,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
+
+import java.util.ArrayList;
 
 /**
  * A TitleFlowIndicator is a FlowIndicator which displays the title of left view

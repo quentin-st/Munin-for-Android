@@ -1,8 +1,5 @@
 package com.chteuchteu.munin;
 
-import org.taptwo.android.widget.TitleProvider;
-
-import uk.co.senab.photoview.PhotoViewAttacher;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -15,6 +12,10 @@ import android.widget.ImageView;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.ui.Activity_GraphView;
+
+import org.taptwo.android.widget.TitleProvider;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	private MuninFoo		muninFoo;

@@ -1,15 +1,16 @@
 package com.chteuchteu.munin.hlpr;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
-import java.security.KeyStore;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLPeerUnverifiedException;
+import com.chteuchteu.munin.CustomSSLFactory;
+import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.obj.HTTPResponse;
+import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -32,17 +33,16 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-import android.util.Log;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.security.KeyStore;
 
-import com.chteuchteu.munin.CustomSSLFactory;
-import com.chteuchteu.munin.MuninFoo;
-import com.chteuchteu.munin.obj.HTTPResponse;
-import com.chteuchteu.munin.obj.MuninMaster;
-import com.chteuchteu.munin.obj.MuninServer;
-import com.chteuchteu.munin.obj.MuninServer.AuthType;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class NetHelper {
 	/**

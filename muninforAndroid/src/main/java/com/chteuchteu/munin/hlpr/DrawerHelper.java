@@ -1,10 +1,5 @@
 package com.chteuchteu.munin.hlpr;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.taptwo.android.widget.ViewFlow;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -56,6 +51,11 @@ import com.chteuchteu.munin.ui.Activity_Notifications;
 import com.chteuchteu.munin.ui.Activity_Plugins;
 import com.chteuchteu.munin.ui.Activity_Servers;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
+import org.taptwo.android.widget.ViewFlow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SuppressLint("InflateParams")

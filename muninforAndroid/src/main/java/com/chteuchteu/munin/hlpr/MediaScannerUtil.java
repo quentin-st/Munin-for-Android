@@ -1,11 +1,11 @@
 package com.chteuchteu.munin.hlpr;
 
-import java.io.File;
-
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.net.Uri;
+
+import java.io.File;
 
 
 public class MediaScannerUtil implements MediaScannerConnectionClient {

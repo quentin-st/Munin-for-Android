@@ -1,16 +1,16 @@
 package com.chteuchteu.munin.obj;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.hlpr.Util.SpecialBool;
+import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.chteuchteu.munin.MuninFoo;
-import com.chteuchteu.munin.hlpr.Util.SpecialBool;
-import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MuninServer {
 	private long id;

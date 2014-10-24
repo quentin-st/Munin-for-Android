@@ -1,9 +1,9 @@
 package com.chteuchteu.munin.obj;
 
+import com.chteuchteu.munin.MuninFoo;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.chteuchteu.munin.MuninFoo;
 
 public class Label {
 	private long id;

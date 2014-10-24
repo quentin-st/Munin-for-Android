@@ -1,8 +1,5 @@
 package com.chteuchteu.munin;
 
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,6 +15,9 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.ui.Activity_Servers;
+
+import java.util.List;
+import java.util.Map;
 
 public class Adapter_ExpandableListView extends BaseExpandableListAdapter {
 	private Activity_Servers activity;

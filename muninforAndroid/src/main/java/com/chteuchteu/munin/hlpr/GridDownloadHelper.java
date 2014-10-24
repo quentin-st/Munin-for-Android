@@ -1,7 +1,5 @@
 package com.chteuchteu.munin.hlpr;
 
-import java.util.List;
-
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.View;
@@ -10,6 +8,8 @@ import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.ui.Activity_Grid;
+
+import java.util.List;
 
 public class GridDownloadHelper {
 	private Grid g;

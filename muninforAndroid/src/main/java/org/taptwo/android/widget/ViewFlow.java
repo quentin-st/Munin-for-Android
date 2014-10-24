@@ -15,9 +15,6 @@
  */
 package org.taptwo.android.widget;
 
-import java.util.EnumSet;
-import java.util.LinkedList;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -37,6 +34,9 @@ import android.widget.AdapterView;
 import android.widget.Scroller;
 
 import com.chteuchteu.munin.R;
+
+import java.util.EnumSet;
+import java.util.LinkedList;
 
 /**
  * A horizontally scrollable {@link ViewGroup} with items populated from an

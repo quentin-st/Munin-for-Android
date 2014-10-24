@@ -1,9 +1,5 @@
 package com.chteuchteu.munin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -22,6 +18,10 @@ import android.widget.TextView;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.Widget;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Widget_Configure extends Activity {
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
