@@ -15,14 +15,15 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.ui.Activity_About;
-import com.chteuchteu.munin.ui.Activity_Settings;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+/**
+ * One class to rule them all
+ */
 public class MuninActivity extends Activity {
-	protected MuninFoo muninFoo;
+	protected MuninFoo      muninFoo;
 	protected DrawerHelper  dh;
 	protected Context       context;
 	protected Activity      activity;
@@ -89,8 +90,8 @@ public class MuninActivity extends Activity {
 				dh.setIsOpened(true);
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
+				activityName = actionBar.getTitle().toString();
+				actionBar.setTitle(R.string.app_name);
 
 				// Runnable set in Activity
 				if (onDrawerOpen != null)
@@ -105,7 +106,7 @@ public class MuninActivity extends Activity {
 			public void onClose() {
 				dh.setIsOpened(false);
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
-				getActionBar().setTitle(activityName);
+				actionBar.setTitle(activityName);
 
 				// Runnable set in Activity
 				if (onDrawerClose != null)

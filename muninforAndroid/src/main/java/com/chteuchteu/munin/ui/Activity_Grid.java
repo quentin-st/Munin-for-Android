@@ -320,9 +320,9 @@ public class Activity_Grid extends MuninActivity {
 			case R.id.menu_open:
 				openGraph();
 				return true;
-			default:
-				return super.onOptionsItemSelected(item);
 		}
+
+		return true;
 	}
 	
 	@Override

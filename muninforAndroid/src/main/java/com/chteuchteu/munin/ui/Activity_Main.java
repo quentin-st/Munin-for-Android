@@ -123,6 +123,7 @@ public class Activity_Main extends Activity {
 			@Override
 			public void onOpen() {
 				dh.setIsOpened(true);
+				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 				activityName = getActionBar().getTitle().toString();
 				getActionBar().setTitle(R.string.app_name);
 			}
@@ -131,6 +132,7 @@ public class Activity_Main extends Activity {
 			@Override
 			public void onClose() {
 				dh.setIsOpened(false);
+				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
 				getActionBar().setTitle(activityName);
 			}
 		});
@@ -167,10 +169,6 @@ public class Activity_Main extends Activity {
 			dh.closeDrawerIfOpened();
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (dh.isOpened())
-					materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
-				else
-					materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 				dh.toggle(true);
 				return true;
 			case R.id.menu_settings:
