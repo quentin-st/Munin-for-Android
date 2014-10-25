@@ -733,7 +733,7 @@ public class Activity_Server extends MuninActivity {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			if (muninFoo.getHowManyServers() == 0)
+			if (muninFoo.getServers().isEmpty())
 				muninFoo.currentServer = null;
 			else
 				muninFoo.currentServer = muninFoo.getServer(0);

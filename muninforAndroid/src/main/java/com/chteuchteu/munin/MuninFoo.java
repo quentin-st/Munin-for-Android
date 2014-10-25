@@ -177,7 +177,7 @@ public class MuninFoo {
 	public void addServer(MuninServer server) {
 		boolean contains = false;
 		int pos = -1;
-		for (int i=0; i<getHowManyServers(); i++) {
+		for (int i=0; i<servers.size(); i++) {
 			if (servers.get(i) != null && servers.get(i).equalsApprox(server)) {
 				contains = true; pos = i; break;
 			}
@@ -264,10 +264,7 @@ public class MuninFoo {
 		if (this.currentServer == null && this.servers.size() > 0)
 			this.currentServer = this.servers.get(0);
 	}
-	
-	public int getHowManyServers() {
-		return servers.size();
-	}
+
 	public List<MuninServer> getServers() {
 		return this.servers;
 	}

@@ -61,7 +61,7 @@ public class Widget_Configure extends Activity {
 				final ListView lv3 = (ListView) findViewById(R.id.listview3); // period
 				final TextView tv = (TextView) findViewById(R.id.widgetConfiguration_textview);
 				
-				if (muninFoo.getHowManyServers() == 0) {
+				if (muninFoo.getServers().size() == 0) {
 					tv.setText(R.string.text37);
 					tv.setVisibility(View.VISIBLE);
 				}

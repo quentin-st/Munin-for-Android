@@ -333,7 +333,7 @@ public class DrawerHelper {
 			a.findViewById(R.id.drawer_grids_txt).setAlpha(0.5f);
 			a.findViewById(R.id.drawer_premium_btn).setVisibility(View.VISIBLE);
 		}
-		if (m.getHowManyServers() == 0) {
+		if (m.getServers().size() == 0) {
 			a.findViewById(R.id.drawer_graphs_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_grid_btn).setEnabled(false);
 			a.findViewById(R.id.drawer_alerts_btn).setEnabled(false);

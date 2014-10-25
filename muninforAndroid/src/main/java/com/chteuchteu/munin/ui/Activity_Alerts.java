@@ -24,11 +24,9 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.SpecialBool;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
-import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -85,7 +83,7 @@ public class Activity_Alerts extends MuninActivity {
 
 		everythingsOk = findViewById(R.id.alerts_ok);
 		
-		int nbS = muninFoo.getHowManyServers();
+		int nbS = muninFoo.getServers().size();
 		part_part 					= new LinearLayout[nbS];
 		part_serverName 			= new TextView[nbS];
 		part_criticals 				= new LinearLayout[nbS];
@@ -98,18 +96,13 @@ public class Activity_Alerts extends MuninActivity {
 		part_warningsPluginsList 	= new TextView[nbS];
 		
 		hideNormalStateServers = true;
-		
-		List<MuninServer> servers = new ArrayList<MuninServer>();
-		// Populating servers list
-		for (MuninMaster master : muninFoo.masters)
-			servers.addAll(master.getChildren());
-		
-		
-		int i = 0;
+
 		LinearLayout wholeContainer = new LinearLayout(this);
 		wholeContainer.setOrientation(LinearLayout.VERTICAL);
 		
-		for (final MuninServer server : servers) {
+		for (int i=0; i<muninFoo.getServers().size(); i++) {
+			MuninServer server = muninFoo.getServer(i);
+
 			LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 			View v = vi.inflate(R.layout.alerts_part, null);
@@ -127,10 +120,11 @@ public class Activity_Alerts extends MuninActivity {
 			
 			part_part[i].setVisibility(View.GONE);
 			part_serverName[i].setText(server.getName());
-			
+
+			final int index = i;
 			part_serverName[i].setOnClickListener(new OnClickListener() {
 				public void onClick (View v) {
-					muninFoo.currentServer = server;
+					muninFoo.currentServer = muninFoo.getServer(index);
 					startActivity(new Intent(Activity_Alerts.this, Activity_AlertsPluginSelection.class));
 					Util.setTransition(context, TransitionStyle.DEEPER);
 				}
@@ -139,8 +133,6 @@ public class Activity_Alerts extends MuninActivity {
 			Util.Fonts.setFont(this, (ViewGroup) v, CustomFont.RobotoCondensed_Regular);
 			
 			wholeContainer.addView(v);
-			
-			i++;
 		}
 		
 		View insertPoint = findViewById(R.id.alerts_root_container);
@@ -231,13 +223,13 @@ public class Activity_Alerts extends MuninActivity {
 			return;
 		}
 		
-		for (int i=0; i<muninFoo.getHowManyServers(); i++) {
+		for (int i=0; i<muninFoo.getServers().size(); i++) {
 			part_criticals[i].setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
 			part_warnings[i].setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
 		}
 		
 		int nbServers = muninFoo.getServers().size();
-		if (fetch) { // Fetch the plugins states 3 by 3 servers
+		if (fetch) {
 			for (int i=0; i<nbServers; i++) {
 				if (i%SERVERS_BY_THREAD == 0) {
 					int from = i;
@@ -283,7 +275,7 @@ public class Activity_Alerts extends MuninActivity {
 			for (int i=fromIndex; i<=toIndex; i++) {
 				muninFoo.getServer(i).fetchPluginsStates();
 				currentLoadingProgress++;
-				progressBar.setProgress(currentLoadingProgress*100/muninFoo.getHowManyServers());
+				progressBar.setProgress(currentLoadingProgress*100/muninFoo.getServers().size());
 			}
 			
 			return null;

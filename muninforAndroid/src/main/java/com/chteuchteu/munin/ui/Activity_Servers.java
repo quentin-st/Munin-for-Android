@@ -79,7 +79,7 @@ public class Activity_Servers extends MuninActivity {
 		if (fromServersEdit != null)
 			expListView.expandGroup(muninFoo.getMasterPosition(fromServersEdit));
 		
-		if (muninFoo.getHowManyServers() == 0)
+		if (muninFoo.getServers().isEmpty())
 			findViewById(R.id.servers_noserver).setVisibility(View.VISIBLE);
 	}
 	
@@ -147,7 +147,7 @@ public class Activity_Servers extends MuninActivity {
 										muninFoo.removeLabelRelation(plugin);
 								
 								if (muninFoo.currentServer.equalsApprox(server)) {
-									if (muninFoo.getHowManyServers() == 0)
+									if (muninFoo.getServers().isEmpty())
 										muninFoo.currentServer = null;
 									else
 										muninFoo.currentServer = muninFoo.getServer(0);
@@ -486,7 +486,7 @@ public class Activity_Servers extends MuninActivity {
 		MenuItem exportMenuItem = menu.findItem(R.id.menu_export);
 		if (!MuninFoo.isPremium(context))
 			importExportMenuItem.setVisible(false);
-		if (muninFoo.getHowManyServers() == 0)
+		if (muninFoo.getServers().isEmpty())
 			exportMenuItem.setVisible(false);
 	}
 	

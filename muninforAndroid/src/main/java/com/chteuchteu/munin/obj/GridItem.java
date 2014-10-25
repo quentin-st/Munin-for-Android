@@ -224,7 +224,7 @@ public class GridItem {
 		AlertDialog.Builder builder = new AlertDialog.Builder(c);
 		builder.setTitle(c.getText(R.string.text71));
 		ListView modeList = new ListView(c);
-		String[] stringArray = new String[f.getHowManyServers()];
+		String[] stringArray = new String[f.getServers().size()];
 		for (int i=0; i<f.getServers().size(); i++)
 			stringArray[i] = f.getServerFromFlatPosition(i).getName();
 		

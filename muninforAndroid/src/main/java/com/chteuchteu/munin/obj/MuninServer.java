@@ -197,12 +197,12 @@ public class MuninServer {
 			Elements images = doc.select("img[src$=-day.png]");
 			
 			for (Element image : images) {
-				String nomPlugin = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
+				String pluginName = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
 				
 				MuninPlugin plugin = null;
 				// Plugin lookup
 				for (MuninPlugin m : this.plugins) {
-					if (m.getName().equals(nomPlugin)) {
+					if (m.getName().equals(pluginName)) {
 						plugin = m; break;
 					}
 				}
@@ -251,7 +251,7 @@ public class MuninServer {
 		// Si toutes positions == -1 -> pos = 0
 		int nbNotNull = 0;
 		
-		for (int i=0; i<muninFoo.getHowManyServers(); i++) {
+		for (int i=0; i<muninFoo.getServers().size(); i++) {
 			if (muninFoo.getServer(i) != null && muninFoo.getServer(i).getPosition() != -1)
 				nbNotNull++;
 		}
@@ -260,7 +260,7 @@ public class MuninServer {
 
         // Sauvegarde la toute dernière position
         int higherPosition = -1;
-        for (int i=0; i<muninFoo.getHowManyServers(); i++) {
+        for (int i=0; i<muninFoo.getServers().size(); i++) {
             if (muninFoo.getServer(i) != null && muninFoo.getServer(i).getPosition() > higherPosition)
                 higherPosition = muninFoo.getServer(i).getPosition();
         }
