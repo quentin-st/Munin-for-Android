@@ -212,7 +212,7 @@ public class Activity_Plugins extends MuninActivity {
 						break;
 					}
 				}
-				intent.putExtra("position", p + "");
+				intent.putExtra("position", p);
 				startActivity(intent);
 				Util.setTransition(context, TransitionStyle.DEEPER);
 			}

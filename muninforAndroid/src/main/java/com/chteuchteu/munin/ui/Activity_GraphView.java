@@ -128,8 +128,8 @@ public class Activity_GraphView extends MuninActivity {
 			
 			// Giving position of plugin in list to GraphView
 			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-				if (muninFoo.currentServer.getPlugins().get(i) != null && muninFoo.currentServer.getPlugins().get(i).getName().equals(plugin))
-					thisIntent.putExtra("position", "" + i);
+				if (muninFoo.currentServer.getPlugins().get(i).getName().equals(plugin))
+					thisIntent.putExtra("position", i);
 			}
 		}
 		
@@ -146,10 +146,11 @@ public class Activity_GraphView extends MuninActivity {
 			}
 		}
 		
-		// Coming from PluginSelection or if orientation changed
+		// Coming from PluginSelection
 		if (thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("position"))
 			pos = thisIntent.getExtras().getInt("position");
-		
+
+		// Orientation changed
 		if (savedInstanceState != null)
 			pos = savedInstanceState.getInt("position");
 		
@@ -245,16 +246,6 @@ public class Activity_GraphView extends MuninActivity {
 				}
 				break;
 		}
-
-		// Coming from widget
-		if (thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("period"))
-			load_period = Period.get(thisIntent.getExtras().getString("period"));
-
-		if (load_period == null)
-			load_period = Period.DAY;
-
-		if (item_period != null)
-			item_period.setTitle(load_period.getLabel(context));
 	}
 	
 	private class DynaZoomDetector extends AsyncTask<Void, Integer, Void> {
@@ -288,6 +279,23 @@ public class Activity_GraphView extends MuninActivity {
 			loadGraphs = true;
 			actionRefresh();
 		}
+	}
+
+	public void onResume() {
+		super.onResume();
+
+		// Coming from widget
+		// This has to be done here, if the app is already started on this activity
+		// and the user clicks on a widget.
+		Intent thisIntent = getIntent();
+		if (thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("period"))
+			load_period = Period.get(thisIntent.getExtras().getString("period"));
+
+		if (load_period == null)
+			load_period = Period.DAY;
+
+		if (item_period != null)
+			item_period.setTitle(load_period.getLabel(context));
 	}
 	
 	public static void currentlyDownloading_begin() {
@@ -485,7 +493,7 @@ public class Activity_GraphView extends MuninActivity {
 					muninFoo.currentServer = s;
 					Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
 					intent.putExtra("contextServerUrl", url.getText().toString());
-					intent.putExtra("position", muninFoo.currentServer.getPosition(plugin) + "");
+					intent.putExtra("position", muninFoo.currentServer.getPosition(plugin));
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.DEEPER);
 				} else

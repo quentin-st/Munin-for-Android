@@ -80,7 +80,7 @@ public class SearchResult {
 				MuninFoo.getInstance().currentServer = plugin.getInstalledOn();
 				
 				intent = new Intent(activity, Activity_GraphView.class);
-				intent.putExtra("position", plugin.getIndex()+"");
+				intent.putExtra("position", plugin.getIndex());
 				activity.startActivity(intent);
 				Util.setTransition(activity, TransitionStyle.DEEPER);
 				
