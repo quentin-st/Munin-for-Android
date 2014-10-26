@@ -191,6 +191,7 @@
 	<string name="sync_nochange">No change</string>
 	<string name="sync_reporttitle">Scan report</string>
 	<string name="follow">Suivre sur Twitter</string>
+	<string name="notifs_vibrate">Activer le vibreur</string>
 	<string name="aboutText">
 <![CDATA[
    <head>

@@ -51,6 +51,7 @@
 	<string name="openInBrowser">Open in browser</string>
 	<string name="fieldsDescription">Fields description</string>
 	<string name="follow">Follow on Twitter</string>
+	<string name="notifs_vibrate">Vibrate on notification</string>
 	<string name="aboutText">
 <![CDATA[
 	    <head>

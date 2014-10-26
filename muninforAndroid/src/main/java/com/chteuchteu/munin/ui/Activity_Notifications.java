@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,8 +40,9 @@ import java.util.List;
 @SuppressLint("InflateParams")
 public class Activity_Notifications extends MuninActivity {
 	private CheckBox		cb_notifications;
-	private Spinner			sp_refreshRate;
+	private Spinner		sp_refreshRate;
 	private CheckBox		cb_wifiOnly;
+	private CheckBox       cb_vibrate;
 
 	private LinearLayout	checkboxesView;
 	private static CheckBox[]	checkboxes;
@@ -62,6 +64,7 @@ public class Activity_Notifications extends MuninActivity {
 		sp_refreshRate = (Spinner) findViewById(R.id.spinner_refresh);
 		cb_notifications = (CheckBox) findViewById(R.id.checkbox_notifications);
 		cb_wifiOnly = (CheckBox) findViewById(R.id.checkbox_wifiOnly);
+		cb_vibrate = (CheckBox) findViewById(R.id.checkbox_vibrate);
 		
 		// Refresh rate spinner
 		String[] values = getString(R.string.text57).split("/");
@@ -78,6 +81,11 @@ public class Activity_Notifications extends MuninActivity {
 		if (!notificationsEnabled)
 			findViewById(R.id.notificationsEnabled).setVisibility(View.GONE);
 		cb_wifiOnly.setChecked(Util.getPref(context, "notifs_wifiOnly").equals("true"));
+
+		// Check if the device can vibrate
+		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		cb_vibrate.setEnabled(v.hasVibrator());
+		cb_vibrate.setChecked(Util.getPref(context, "notifs_vibrate").equals("true"));
 		
 		currentRefreshRate = Util.getPref(context, "notifs_refreshRate");
 		if (currentRefreshRate.equals(""))
@@ -224,9 +232,9 @@ public class Activity_Notifications extends MuninActivity {
 		}
 		DecimalFormat df;
 		if (unit.equals("ko"))
-			df = new DecimalFormat("###.#");
+			df = new DecimalFormat("###");
 		else
-			df = new DecimalFormat("###.##");
+			df = new DecimalFormat("###");
 		((TextView)findViewById(R.id.estimated_data_consumption)).setText(getString(R.string.text54).replace("??", df.format(result) + " " + unit));
 	}
 	
@@ -235,6 +243,7 @@ public class Activity_Notifications extends MuninActivity {
 			if (cb_notifications.isChecked()) {
 				Util.setPref(context, "notifications", "true");
 				Util.setPref(context, "notifs_wifiOnly", String.valueOf(cb_wifiOnly.isChecked()));
+				Util.setPref(context, "notifs_vibrate", String.valueOf(cb_vibrate.isChecked()));
 				Util.setPref(context, "notifs_refreshRate", REFRESH_RATES[sp_refreshRate.getSelectedItemPosition()]);
 				enableNotifications();
 			}
@@ -242,6 +251,7 @@ public class Activity_Notifications extends MuninActivity {
 				Util.setPref(context, "notifications", "false");
 				Util.removePref(context, "notifs_wifiOnly");
 				Util.removePref(context, "notifs_refreshRate");
+				Util.removePref(context, "notifs_vibrate");
 				disableNotifications();
 			}
 		}

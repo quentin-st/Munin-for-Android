@@ -530,7 +530,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	/**
 	 * Gets the servers list from db.
-	 * @param currentMasters Can be null (notifications)
+	 * @param currentMasters Avoid fetching a server from db if already done
 	 * @return
 	 */
 	public List<MuninServer> getServers(List<MuninMaster> currentMasters) {
@@ -549,8 +549,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 					s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
 					s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
-					if (currentMasters != null)
-						s.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_MASTER)), currentMasters));
+					s.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_MASTER)), currentMasters));
 					s.setPluginsList(getPlugins(s));
 					s.isPersistant = true;
 					l.add(s);

@@ -12,9 +12,11 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.Vibrator;
 
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 import com.chteuchteu.munin.obj.MuninServer;
@@ -50,12 +52,15 @@ public class Service_Notifications extends Service {
 		}
 		
 		NetworkInfo mWifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		boolean wifiOnly = false;
-		if (Util.getPref(Service_Notifications.this, "notifs_wifiOnly").equals("true"))
-			wifiOnly = true;
+		boolean wifiOnly = Util.getPref(Service_Notifications.this, "notifs_wifiOnly").equals("true");
 		
 		if (!wifiOnly || mWifi.isConnected())
 			new PollTask().execute();
+		else {
+			if (mWakeLock.isHeld())
+				mWakeLock.release();
+			stopSelf();
+		}
 	}
 	
 	private class PollTask extends AsyncTask<Void, Void, Void> {
@@ -72,7 +77,8 @@ public class Service_Notifications extends Service {
 			String[] serversToWatch = serversList.split(";");
 
 			DatabaseHelper dbHelper = new DatabaseHelper(Service_Notifications.this);
-			List<MuninServer> dbServers = dbHelper.getServers(null);
+			List<MuninMaster> masters = new ArrayList<MuninMaster>();
+			List<MuninServer> dbServers = dbHelper.getServers(masters);
 			
 			nbCriticals = 0;
 			nbWarnings = 0;
@@ -189,9 +195,11 @@ public class Service_Notifications extends Service {
 					notification.setLatestEventInfo(Service_Notifications.this, notifTitle, notifText, pendingIntent);
 					
 					Util.setPref(Service_Notifications.this, "lastNotificationText", notifText);
+
+					if (Util.getPref(Service_Notifications.this, "notifs_vibrate").equals("true"))
+						vibrate();
 					
 					notificationManager.notify(1234, notification);
-					stopSelf();
 				}
 			} else {
 				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -199,8 +207,16 @@ public class Service_Notifications extends Service {
 			}
 			
 			// Important : release wake lock in the end
-			mWakeLock.release();
+			stopSelf();
+			if (mWakeLock.isHeld())
+				mWakeLock.release();
 		}
+	}
+
+	private void vibrate() {
+		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		if (v.hasVibrator())
+			v.vibrate(500);
 	}
 	
 	/**
@@ -220,6 +236,7 @@ public class Service_Notifications extends Service {
 	 */
 	public void onDestroy() {
 		super.onDestroy();
-		mWakeLock.release();
+		if (mWakeLock.isHeld())
+			mWakeLock.release();
 	}
 }

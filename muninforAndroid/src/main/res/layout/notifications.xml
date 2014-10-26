@@ -44,6 +44,16 @@
 				android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
 				android:text="@string/text53" />
 
+			<CheckBox
+				android:id="@+id/checkbox_vibrate"
+				style="@style/Settings_SettingCheckbox"
+				android:layout_marginLeft="20dp"
+				android:layout_marginRight="20dp"
+				android:button="@null"
+				android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+				android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+				android:text="@string/notifs_vibrate" />
+
 			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
