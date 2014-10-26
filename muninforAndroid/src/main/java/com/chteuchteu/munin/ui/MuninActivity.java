@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -149,4 +150,6 @@ public class MuninActivity extends Activity {
 		super.onSaveInstanceState(outState);
 		materialMenu.onSaveInstanceState(outState);
 	}
+
+	protected void log(String s) { if (MuninFoo.DEBUG) Log.i("MuninActivity", s); }
 }

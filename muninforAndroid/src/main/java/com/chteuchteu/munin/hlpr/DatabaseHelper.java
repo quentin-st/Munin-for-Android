@@ -229,7 +229,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(null, db);
 		return id;
 	}
-	
+
+	@Deprecated
 	public long saveMuninServer(MuninServer s) {
 		if (s.getParent() != null)
 			saveMuninMaster(s.getParent());

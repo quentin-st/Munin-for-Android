@@ -97,8 +97,10 @@ public class Activity_Main extends Activity {
 	 * 	- going back to Activity_Main
 	 */
 	private void onLoadFinished() {
+		preloading = false;
+
 		// Inflate menu if not already done
-		if (preloading && !optionsMenuLoaded)
+		if (!optionsMenuLoaded)
 			createOptionsMenu();
 		
 		// Ask the user to rate the app
@@ -196,7 +198,7 @@ public class Activity_Main extends Activity {
 	private void createOptionsMenu() {
 		if (menu == null)
 			return;
-		
+
 		optionsMenuLoaded = true;
 		menu.clear();
 		getMenuInflater().inflate(R.menu.main, menu);

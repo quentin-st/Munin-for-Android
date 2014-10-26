@@ -87,7 +87,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			if (Activity_GraphView.bitmaps[position] == null) {
-				String imgUrl = "";
+				String imgUrl;
 				if (muninFoo.currentServer.getParent().getHDGraphs() == HDGraphs.TRUE && !Util.getPref(context, "hdGraphs").equals("false")) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 					imgUrl = muninFoo.currentServer.getPlugin(position).getHDImgUrl(

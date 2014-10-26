@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -56,32 +54,11 @@ public class Activity_About extends MuninActivity {
 		tv2.setText(getString(R.string.app_name) + " " + versionName);
 	}
 	
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
-
-		switch (item.getItemId()) {
-			default:
-				return true;
-		}
-	}
-	
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		Util.setTransition(context, TransitionStyle.SHALLOWER);
-	}
-	
-	protected void createOptionsMenu() {
-		super.createOptionsMenu();
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		return true;
 	}
 }

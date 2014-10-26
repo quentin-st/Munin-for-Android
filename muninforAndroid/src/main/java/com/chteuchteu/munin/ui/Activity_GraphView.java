@@ -136,7 +136,7 @@ public class Activity_GraphView extends MuninActivity {
 		int pos = 0;
 		
 		// Coming from Grid
-		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("plugin")) {
+		if (thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("plugin")) {
 			int i = 0;
 			for (MuninPlugin p : muninFoo.currentServer.getPlugins()) {
 				if (p.getName().equals(thisIntent.getExtras().getString("plugin"))) {
@@ -147,7 +147,7 @@ public class Activity_GraphView extends MuninActivity {
 		}
 		
 		// Coming from PluginSelection or if orientation changed
-		if (thisIntent.getExtras().containsKey("position"))
+		if (thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("position"))
 			pos = thisIntent.getExtras().getInt("position");
 		
 		if (savedInstanceState != null)
@@ -245,6 +245,16 @@ public class Activity_GraphView extends MuninActivity {
 				}
 				break;
 		}
+
+		// Coming from widget
+		if (thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("period"))
+			load_period = Period.get(thisIntent.getExtras().getString("period"));
+
+		if (load_period == null)
+			load_period = Period.DAY;
+
+		if (item_period != null)
+			item_period.setTitle(load_period.getLabel(context));
 	}
 	
 	private class DynaZoomDetector extends AsyncTask<Void, Integer, Void> {
@@ -274,7 +284,7 @@ public class Activity_GraphView extends MuninActivity {
 			currentlyDownloading_finished();
 			
 			server.getParent().setHDGraphs(HDGraphs.get(dynazoomAvailable));
-			muninFoo.sqlite.dbHlpr.saveMuninServer(server);
+			muninFoo.sqlite.dbHlpr.updateMuninMaster(server.getParent());
 			loadGraphs = true;
 			actionRefresh();
 		}
@@ -316,8 +326,7 @@ public class Activity_GraphView extends MuninActivity {
 			item_openInBrowser.setVisible(true);
 			item_fieldsDescription.setVisible(true);
 		}
-		
-		// Grisage eventuel des boutons next et previous
+
 		if (viewFlow.getSelectedItemPosition() == 0) {
 			item_previous.setIcon(R.drawable.blank);
 			item_previous.setEnabled(false);
@@ -365,23 +374,13 @@ public class Activity_GraphView extends MuninActivity {
 			case R.id.menu_next:		actionNext();			return true;
 			case R.id.menu_refresh:	actionRefresh(); 		return true;
 			case R.id.menu_save:		actionSave();			return true;
-			case R.id.menu_switchServer:actionServerSwitch();	return true;
+			case R.id.menu_switchServer:actionServerSwitch(); return true;
 			case R.id.menu_fieldsDescription: actionFieldsDescription(); return true;
-			case R.id.menu_labels:
-				actionLabels();
-				return true;
-			case R.id.period_day:
-				changePeriod(Period.DAY);
-				return true;
-			case R.id.period_week:
-				changePeriod(Period.WEEK);
-				return true;
-			case R.id.period_month:
-				changePeriod(Period.MONTH);
-				return true;
-			case R.id.period_year:
-				changePeriod(Period.YEAR);
-				return true;
+			case R.id.menu_labels:    actionLabels();         return true;
+			case R.id.period_day:     changePeriod(Period.DAY); return true;
+			case R.id.period_week:    changePeriod(Period.WEEK); return true;
+			case R.id.period_month:   changePeriod(Period.MONTH); return true;
+			case R.id.period_year:    changePeriod(Period.YEAR); return true;
 			case R.id.menu_openinbrowser:
 				try {
 					MuninPlugin plugin = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
@@ -466,10 +465,10 @@ public class Activity_GraphView extends MuninActivity {
 		servers_list.clear();
 		HashMap<String,String> item;
 		List<MuninServer> liste = muninFoo.getServersFromPlugin(currentPlugin);
-		for (int i=0; i<liste.size(); i++) {
+		for (MuninServer server : liste) {
 			item = new HashMap<String,String>();
-			item.put("line1", liste.get(i).getName());
-			item.put("line2", liste.get(i).getServerUrl());
+			item.put("line1", server.getName());
+			item.put("line2", server.getServerUrl());
 			servers_list.add(item);
 		}
 		SimpleAdapter sa = new SimpleAdapter(this, servers_list, R.layout.servers_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
@@ -561,7 +560,7 @@ public class Activity_GraphView extends MuninActivity {
 			String fileName1 = muninFoo.currentServer.getName() + " - " + pluginName + " by " + item_period.getTitle().toString();
 			String fileName2 = "01.png";
 			File file = new File(dir, fileName1 + fileName2);
-			int i = 1; 	String i_s = "";
+			int i = 1; 	String i_s;
 			while (file.exists()) {
 				if (i<99) {
 					if (i<10)	i_s = "0" + i;
@@ -777,21 +776,7 @@ public class Activity_GraphView extends MuninActivity {
 			}
 		}
 	}
-	
-	public void onResume() {
-		super.onResume();
-		
-		// Venant de widget
-		Intent thisIntent = getIntent();
-		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("period"))
-			load_period = Period.get(thisIntent.getExtras().getString("period"));
-		
-		if (load_period == null)
-			load_period = Period.DAY;
-		
-		if (item_period != null)
-			item_period.setTitle(load_period.getLabel(context));
-	}
+
 	
 	@Override
 	public void onStop() {
