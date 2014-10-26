@@ -104,14 +104,12 @@ public class Activity_GraphView extends MuninActivity {
 
 		activity = this;
 
-		if (muninFoo.currentServer != null) {
-			TextView serverName = (TextView) findViewById(R.id.serverName);
-			if (serverName != null) {
-				serverName.setText(muninFoo.currentServer.getName());
-				actionBar.setTitle("");
-			} else
-				actionBar.setTitle(muninFoo.currentServer.getName());
-		}
+		TextView serverName = (TextView) findViewById(R.id.serverName);
+		if (serverName != null) {
+			serverName.setText(muninFoo.getCurrentServer().getName());
+			actionBar.setTitle("");
+		} else
+			actionBar.setTitle(muninFoo.getCurrentServer().getName());
 		
 		load_period = Period.get(Util.getPref(this, "defaultScale"));
 		
@@ -124,11 +122,11 @@ public class Activity_GraphView extends MuninActivity {
 			String server = thisIntent.getExtras().getString("server");
 			String plugin = thisIntent.getExtras().getString("plugin");
 			// Setting currentServer
-			muninFoo.currentServer = muninFoo.getServer(server);
+			muninFoo.setCurrentServer(muninFoo.getServer(server));
 			
 			// Giving position of plugin in list to GraphView
-			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-				if (muninFoo.currentServer.getPlugins().get(i).getName().equals(plugin))
+			for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
+				if (muninFoo.getCurrentServer().getPlugins().get(i).getName().equals(plugin))
 					thisIntent.putExtra("position", i);
 			}
 		}
@@ -138,7 +136,7 @@ public class Activity_GraphView extends MuninActivity {
 		// Coming from Grid
 		if (thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("plugin")) {
 			int i = 0;
-			for (MuninPlugin p : muninFoo.currentServer.getPlugins()) {
+			for (MuninPlugin p : muninFoo.getCurrentServer().getPlugins()) {
 				if (p.getName().equals(thisIntent.getExtras().getString("plugin"))) {
 					pos = i; break;
 				}
@@ -157,7 +155,7 @@ public class Activity_GraphView extends MuninActivity {
 		
 		// Viewflow
 		position = pos;
-		int nbPlugins = muninFoo.currentServer.getPlugins().size();
+		int nbPlugins = muninFoo.getCurrentServer().getPlugins().size();
 		bitmaps = new Bitmap[nbPlugins];
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
 		Adapter_GraphView adapter = new Adapter_GraphView(this, nbPlugins);
@@ -178,7 +176,7 @@ public class Activity_GraphView extends MuninActivity {
 					if (viewFlow.getSelectedItemPosition() == 0) {
 						item_previous.setIcon(R.drawable.blank);
 						item_previous.setEnabled(false);
-					} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
+					} else if (viewFlow.getSelectedItemPosition() == muninFoo.getCurrentServer().getPlugins().size()-1) {
 						item_next.setIcon(R.drawable.blank);
 						item_next.setEnabled(false);
 					} else {
@@ -219,9 +217,9 @@ public class Activity_GraphView extends MuninActivity {
 			mHandlerTask.run();
 		}
 		
-		switch (muninFoo.currentServer.getParent().getHDGraphs()) {
+		switch (muninFoo.getCurrentServer().getParent().getHDGraphs()) {
 			case AUTO_DETECT:
-				new DynaZoomDetector(muninFoo.currentServer).execute();
+				new DynaZoomDetector(muninFoo.getCurrentServer()).execute();
 				break;
 			case FALSE:
 				// Load as before
@@ -328,9 +326,8 @@ public class Activity_GraphView extends MuninActivity {
 		MenuItem item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
         MenuItem item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
 		
-		if (muninFoo.currentServer != null
-				&& muninFoo.currentServer.getPlugins().size() > 0
-				&& muninFoo.currentServer.getPlugin(0).hasPluginPageUrl()) {
+		if (muninFoo.getCurrentServer().getPlugins().size() > 0
+				&& muninFoo.getCurrentServer().getPlugin(0).hasPluginPageUrl()) {
 			item_openInBrowser.setVisible(true);
 			item_fieldsDescription.setVisible(true);
 		}
@@ -339,7 +336,7 @@ public class Activity_GraphView extends MuninActivity {
 			item_previous.setIcon(R.drawable.blank);
 			item_previous.setEnabled(false);
 		}
-		if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
+		if (viewFlow.getSelectedItemPosition() == muninFoo.getCurrentServer().getPlugins().size()-1) {
 			item_next.setIcon(R.drawable.blank);
 			item_next.setEnabled(false);
 		}
@@ -351,19 +348,17 @@ public class Activity_GraphView extends MuninActivity {
 			item_next.setVisible(false);
 			
 			// Now that we have room, add the server name on actionbar
-			if (muninFoo.currentServer != null) {
-				getActionBar().setTitle(muninFoo.currentServer.getName());
-				
-				// Check if we displayed it under the actionBar
-				TextView serverName = (TextView) findViewById(R.id.serverName);
-				if (serverName != null)
-					serverName.setVisibility(View.GONE);
-			}
+			getActionBar().setTitle(muninFoo.getCurrentServer().getName());
+
+			// Check if we displayed it under the actionBar
+			TextView serverName = (TextView) findViewById(R.id.serverName);
+			if (serverName != null)
+				serverName.setVisibility(View.GONE);
 		}
 	}
 	
 	private void changePeriod(Period newPeriod) {
-		bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
+		bitmaps = new Bitmap[muninFoo.getCurrentServer().getPlugins().size()];
 		
 		load_period = newPeriod;
 		
@@ -391,7 +386,7 @@ public class Activity_GraphView extends MuninActivity {
 			case R.id.period_year:    changePeriod(Period.YEAR); return true;
 			case R.id.menu_openinbrowser:
 				try {
-					MuninPlugin plugin = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
+					MuninPlugin plugin = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
 					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(plugin.getPluginPageUrl()));
 					startActivity(browserIntent);
 				} catch (Exception ex) { ex.printStackTrace(); }
@@ -415,7 +410,7 @@ public class Activity_GraphView extends MuninActivity {
 			} else if (from.equals("alerts")) {
 				if (thisIntent.getExtras().containsKey("server")) {
 					if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
-						muninFoo.currentServer = muninFoo.getServer(thisIntent.getExtras().getString("server"));
+						muninFoo.setCurrentServer(muninFoo.getServer(thisIntent.getExtras().getString("server")));
 					Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.SHALLOWER);
@@ -467,7 +462,7 @@ public class Activity_GraphView extends MuninActivity {
 		switch_server.startAnimation(a1);
 		findViewById(R.id.serverSwitch_mask).startAnimation(a2);
 		
-		MuninPlugin currentPlugin = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
+		MuninPlugin currentPlugin = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
 		
 		ArrayList<HashMap<String,String>> servers_list = new ArrayList<HashMap<String,String>>();
 		servers_list.clear();
@@ -487,13 +482,13 @@ public class Activity_GraphView extends MuninActivity {
 				TextView url = (TextView) view.findViewById(R.id.line_b);
 				MuninServer s = muninFoo.getServer(url.getText().toString());
 				
-				if (!s.equalsApprox(muninFoo.currentServer)) {
-					MuninPlugin plugin = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
+				if (!s.equalsApprox(muninFoo.getCurrentServer())) {
+					MuninPlugin plugin = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
 					
-					muninFoo.currentServer = s;
+					muninFoo.setCurrentServer(s);
 					Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
 					intent.putExtra("contextServerUrl", url.getText().toString());
-					intent.putExtra("position", muninFoo.currentServer.getPosition(plugin));
+					intent.putExtra("position", muninFoo.getCurrentServer().getPosition(plugin));
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.DEEPER);
 				} else
@@ -518,7 +513,7 @@ public class Activity_GraphView extends MuninActivity {
 		if (viewFlow.getSelectedItemPosition() == 0) {
 			item_previous.setIcon(R.drawable.blank);
 			item_previous.setEnabled(false);
-		} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
+		} else if (viewFlow.getSelectedItemPosition() == muninFoo.getCurrentServer().getPlugins().size()-1) {
 			item_next.setIcon(R.drawable.blank);
 			item_next.setEnabled(false);
 		} else {
@@ -535,7 +530,7 @@ public class Activity_GraphView extends MuninActivity {
 		if (viewFlow.getSelectedItemPosition() == 0) {
 			item_previous.setIcon(R.drawable.blank);
 			item_previous.setEnabled(false);
-		} else if (viewFlow.getSelectedItemPosition() == muninFoo.currentServer.getPlugins().size()-1) {
+		} else if (viewFlow.getSelectedItemPosition() == muninFoo.getCurrentServer().getPlugins().size()-1) {
 			item_next.setIcon(R.drawable.blank);
 			item_next.setEnabled(false);
 		} else {
@@ -545,11 +540,11 @@ public class Activity_GraphView extends MuninActivity {
 			item_next.setEnabled(true);
 		}
 		
-		if (viewFlow.getSelectedItemPosition() != muninFoo.currentServer.getPlugins().size()-1)
+		if (viewFlow.getSelectedItemPosition() != muninFoo.getCurrentServer().getPlugins().size()-1)
 			viewFlow.setSelection(viewFlow.getSelectedItemPosition() + 1);
 	}
 	private void actionRefresh() {
-		bitmaps = new Bitmap[muninFoo.currentServer.getPlugins().size()];
+		bitmaps = new Bitmap[muninFoo.getCurrentServer().getPlugins().size()];
 		if (viewFlow != null)
 			viewFlow.setSelection(viewFlow.getSelectedItemPosition());
 	}
@@ -563,9 +558,9 @@ public class Activity_GraphView extends MuninActivity {
 			if(!dir.exists() || !dir.isDirectory())
 				dir.mkdir();
 			
-			String pluginName = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition()).getFancyName();
+			String pluginName = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()).getFancyName();
 			
-			String fileName1 = muninFoo.currentServer.getName() + " - " + pluginName + " by " + item_period.getTitle().toString();
+			String fileName1 = muninFoo.getCurrentServer().getName() + " - " + pluginName + " by " + item_period.getTitle().toString();
 			String fileName2 = "01.png";
 			File file = new File(dir, fileName1 + fileName2);
 			int i = 1; 	String i_s;
@@ -642,14 +637,14 @@ public class Activity_GraphView extends MuninActivity {
 				}
 			});
 			
-			if (l.contains(muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition())))	checkboxes.get(i).setChecked(true);
+			if (l.contains(muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition())))	checkboxes.get(i).setChecked(true);
 			
 			((CheckBox) v.findViewById(R.id.line_0)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					// Save
 					String labelName = ((TextView)v.findViewById(R.id.line_a)).getText().toString();
-					MuninPlugin p = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
+					MuninPlugin p = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
 					if (isChecked)
 						muninFoo.getLabel(labelName).addPlugin(p);
 					else
@@ -706,7 +701,7 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	
 	private void actionFieldsDescription() {
-		MuninPlugin plugin = muninFoo.currentServer.getPlugin(viewFlow.getSelectedItemPosition());
+		MuninPlugin plugin = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
 		new FieldsDescriptionFetcher(plugin, this).execute();
 	}
 	

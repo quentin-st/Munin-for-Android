@@ -390,7 +390,7 @@ public class DrawerHelper {
 				}
 				
 				// Search in plugins and servers
-				for (MuninServer server : MuninFoo.getInstance().getServers()) {
+				for (MuninServer server : MuninFoo.getInstance(c).getServers()) {
 					String serverName = server.getName().toLowerCase();
 					String serverUrl = server.getServerUrl().toLowerCase();
 					
@@ -407,7 +407,7 @@ public class DrawerHelper {
 				
 				// Search in grids
 				if (search_cachedGridsList == null)
-					search_cachedGridsList = MuninFoo.getInstance().sqlite.dbHlpr.getGridsNames();
+					search_cachedGridsList = MuninFoo.getInstance(c).sqlite.dbHlpr.getGridsNames();
 				
 				for (String grid : search_cachedGridsList) {
 					if (grid.toLowerCase().contains(string))
@@ -415,7 +415,7 @@ public class DrawerHelper {
 				}
 				
 				// Search in labels
-				for (Label label : MuninFoo.getInstance().labels) {
+				for (Label label : MuninFoo.getInstance(c).labels) {
 					if (label.getName().toLowerCase().contains(string))
 						search_results_array.add(new SearchResult(SearchResultType.LABEL, label, c));
 				}
@@ -524,7 +524,7 @@ public class DrawerHelper {
 		
 		int vfpos = vf.getSelectedItemPosition();
 		int pos = 0;
-		for (final MuninPlugin mp : m.currentServer.getPlugins()) {
+		for (final MuninPlugin mp : m.getCurrentServer().getPlugins()) {
 			View v = vi.inflate(R.layout.drawer_subbutton, null);
 			final TextView b = (TextView)v.findViewById(R.id.button);
 			b.setText(mp.getFancyName());
@@ -554,8 +554,8 @@ public class DrawerHelper {
 				public void onClick (View v) {
 					TextView b = (TextView) v;
 					int p = 0;
-					for (int i=0; i<m.currentServer.getPlugins().size(); i++) {
-						if (m.currentServer.getPlugin(i).getFancyName().equals(b.getText().toString())) {
+					for (int i=0; i<m.getCurrentServer().getPlugins().size(); i++) {
+						if (m.getCurrentServer().getPlugin(i).getFancyName().equals(b.getText().toString())) {
 							p = i;
 							break;
 						}

@@ -117,7 +117,7 @@ public class Activity_Plugins extends MuninActivity {
 							for (MuninServer server : master.getChildren()) {
 								if (i == position) {
 									dialog.dismiss();
-									muninFoo.currentServer = server;
+									muninFoo.setCurrentServer(server);
 									customActionBarView_textView.setText(server.getName());
 									updateListView(mode);
 								}
@@ -129,7 +129,7 @@ public class Activity_Plugins extends MuninActivity {
 			}
 		});
 		TextView serverName = (TextView) customActionBarView.findViewById(R.id.text);
-		serverName.setText(muninFoo.currentServer.getName());
+		serverName.setText(muninFoo.getCurrentServer().getName());
 		customActionBarView_textView = serverName;
 		
 		actionBar.setCustomView(customActionBarView);
@@ -160,9 +160,9 @@ public class Activity_Plugins extends MuninActivity {
 		
 		if (mode == MODE_FLAT) {
 			pluginsList = new ArrayList<MuninPlugin>();
-			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-				if (muninFoo.currentServer.getPlugins().get(i) != null)
-					pluginsList.add(muninFoo.currentServer.getPlugins().get(i));
+			for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
+				if (muninFoo.getCurrentServer().getPlugins().get(i) != null)
+					pluginsList.add(muninFoo.getCurrentServer().getPlugins().get(i));
 			}
 			
 			list.clear();
@@ -177,12 +177,12 @@ public class Activity_Plugins extends MuninActivity {
 			listview.setAdapter(sa);
 		} else {
 			// Create plugins list
-			List<List<MuninPlugin>> pluginsListCat = muninFoo.currentServer.getPluginsListWithCategory();
+			List<List<MuninPlugin>> pluginsListCat = muninFoo.getCurrentServer().getPluginsListWithCategory();
 			
 			pluginsList = new ArrayList<MuninPlugin>();
-			for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-				if (muninFoo.currentServer.getPlugins().get(i) != null)
-					pluginsList.add(muninFoo.currentServer.getPlugins().get(i));
+			for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
+				if (muninFoo.getCurrentServer().getPlugins().get(i) != null)
+					pluginsList.add(muninFoo.getCurrentServer().getPlugins().get(i));
 			}
 			
 			Adapter_SeparatedList adapter = new Adapter_SeparatedList(this, false);
@@ -206,8 +206,8 @@ public class Activity_Plugins extends MuninActivity {
 				TextView plu = (TextView) view.findViewById(R.id.line_b);
 				Intent intent = new Intent(Activity_Plugins.this, Activity_GraphView.class);
 				int p = 0;
-				for (int i = 0; i < muninFoo.currentServer.getPlugins().size(); i++) {
-					if (muninFoo.currentServer.getPlugin(i) != null && muninFoo.currentServer.getPlugin(i).getName().equals(plu.getText().toString())) {
+				for (int i = 0; i < muninFoo.getCurrentServer().getPlugins().size(); i++) {
+					if (muninFoo.getCurrentServer().getPlugin(i).getName().equals(plu.getText().toString())) {
 						p = i;
 						break;
 					}
@@ -233,10 +233,10 @@ public class Activity_Plugins extends MuninActivity {
 						switch (which) {
 							case 0:
 								TextView plu = (TextView) view.findViewById(R.id.line_b);
-								for (int i=0; i<muninFoo.currentServer.getPlugins().size(); i++) {
-									MuninPlugin plugin = muninFoo.currentServer.getPlugin(i);
+								for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
+									MuninPlugin plugin = muninFoo.getCurrentServer().getPlugin(i);
 									if (plugin != null && plugin.getName().equals(plu.getText().toString())) {
-										muninFoo.currentServer.getPlugins().remove(plugin);
+										muninFoo.getCurrentServer().getPlugins().remove(plugin);
 										muninFoo.sqlite.dbHlpr.deleteMuninPlugin(plugin, true);
 										// Remove from labels if necessary
 										muninFoo.removeLabelRelation(plugin);

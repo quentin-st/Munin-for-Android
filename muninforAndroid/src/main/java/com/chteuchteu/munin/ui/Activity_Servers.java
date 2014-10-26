@@ -146,12 +146,8 @@ public class Activity_Servers extends MuninActivity {
 								for (MuninPlugin plugin : server.getPlugins())
 										muninFoo.removeLabelRelation(plugin);
 								
-								if (muninFoo.currentServer.equalsApprox(server)) {
-									if (muninFoo.getServers().isEmpty())
-										muninFoo.currentServer = null;
-									else
-										muninFoo.currentServer = muninFoo.getServer(0);
-								}
+								if (muninFoo.getCurrentServer().equalsApprox(server))
+									muninFoo.updateCurrentServer(context);
 								
 								Intent intent = getIntent();
 								if (m != null && intent != null) {
@@ -300,7 +296,7 @@ public class Activity_Servers extends MuninActivity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (cb_auth.isChecked()) {
-                            AuthType authType = AuthType.UNKNOWN;
+                            AuthType authType;
                             int index = sp_authType.getSelectedItemPosition();
                             if (index == 0)
                                 authType = AuthType.BASIC;
@@ -386,7 +382,7 @@ public class Activity_Servers extends MuninActivity {
 		.setPositiveButton("OK", new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance().getMasters(), ImportExportHelper.ENCRYPTION_SEED);
+				String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance(context).getMasters(), ImportExportHelper.ENCRYPTION_SEED);
 				if (json.equals(""))
 					Toast.makeText(context, R.string.export_failed, Toast.LENGTH_SHORT).show();
 				else

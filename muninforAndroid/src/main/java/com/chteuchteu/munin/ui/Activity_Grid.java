@@ -185,13 +185,8 @@ public class Activity_Grid extends MuninActivity {
 		AlphaAnimation a = new AlphaAnimation(1.0f, 0.0f);
 		a.setDuration(300);
 		a.setAnimationListener(new AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
+			@Override public void onAnimationStart(Animation animation) { }
+			@Override public void onAnimationRepeat(Animation animation) { }
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
@@ -275,7 +270,7 @@ public class Activity_Grid extends MuninActivity {
 	private void openGraph() {
 		if (grid.currentlyOpenedPlugin == null)
 			return;
-		grid.f.currentServer = grid.currentlyOpenedPlugin.getInstalledOn();
+		grid.f.setCurrentServer(grid.currentlyOpenedPlugin.getInstalledOn());
 		Intent i = new Intent(context, Activity_GraphView.class);
 		i.putExtra("plugin", grid.currentlyOpenedPlugin.getName());
 		i.putExtra("from", "grid");

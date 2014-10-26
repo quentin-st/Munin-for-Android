@@ -88,17 +88,17 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		protected Void doInBackground(Void... arg0) {
 			if (Activity_GraphView.bitmaps[position] == null) {
 				String imgUrl;
-				if (muninFoo.currentServer.getParent().getHDGraphs() == HDGraphs.TRUE && !Util.getPref(context, "hdGraphs").equals("false")) {
+				if (muninFoo.getCurrentServer(context).getParent().getHDGraphs() == HDGraphs.TRUE && !Util.getPref(context, "hdGraphs").equals("false")) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
-					imgUrl = muninFoo.currentServer.getPlugin(position).getHDImgUrl(
+					imgUrl = muninFoo.getCurrentServer().getPlugin(position).getHDImgUrl(
 							Activity_GraphView.load_period, true, graphsDimensions[0], graphsDimensions[1]);
 				} else
-					imgUrl = muninFoo.currentServer.getPlugin(position).getImgUrl(Activity_GraphView.load_period);
+					imgUrl = muninFoo.getCurrentServer().getPlugin(position).getImgUrl(Activity_GraphView.load_period);
 				
 				
 				Activity_GraphView.bitmaps[position] = 
 					Util.dropShadow(Util.removeBitmapBorder(
-							muninFoo.currentServer.getParent().grabBitmap(imgUrl)));
+							muninFoo.getCurrentServer().getParent().grabBitmap(imgUrl)));
 			}
 			
 			return null;
@@ -126,8 +126,8 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	
 	@Override
 	public String getTitle(int position) {
-		if (position >= 0 && position < muninFoo.currentServer.getPlugins().size())
-			return muninFoo.currentServer.getPlugin(position).getFancyName();
+		if (position >= 0 && position < muninFoo.getCurrentServer().getPlugins().size())
+			return muninFoo.getCurrentServer().getPlugin(position).getFancyName();
 		return "";
 	}
 }

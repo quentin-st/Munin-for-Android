@@ -7,12 +7,14 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
+import com.chteuchteu.munin.exc.NullMuninFooException;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +31,7 @@ public class MuninFoo {
 	public List<MuninMaster> masters;
 	
 	public SQLite sqlite;
-	public MuninServer currentServer;
+	private MuninServer currentServer;
 	
 	// === VERSION === //
 	// HISTORY		current:	 _______________________________________________________________________________________________________________________________
@@ -60,16 +62,6 @@ public class MuninFoo {
 	
 	public Calendar alerts_lastUpdated;
 	
-	private MuninFoo() {
-		premium = false;
-		servers = new ArrayList<MuninServer>();
-		labels = new ArrayList<Label>();
-		masters = new ArrayList<MuninMaster>();
-		sqlite = new SQLite(null, this);
-		instance = null;
-		loadInstance();
-	}
-	
 	private MuninFoo(Context context) {
 		premium = false;
 		servers = new ArrayList<MuninServer>();
@@ -77,41 +69,60 @@ public class MuninFoo {
 		masters = new ArrayList<MuninMaster>();
 		sqlite = new SQLite(context, this);
 		instance = null;
+
 		loadInstance(context);
 	}
 	
 	public static boolean isLoaded() { return instance != null; }
 	
-	private void loadInstance() {
+	private void loadInstance(Context context) {
 		this.masters = sqlite.dbHlpr.getMasters();
 		this.servers = sqlite.dbHlpr.getServers(this.masters);
 		this.labels = sqlite.dbHlpr.getLabels();
-		
+
 		attachOrphanServers();
-		
-		currentServer = null;
-		if (!servers.isEmpty())
-			currentServer = servers.get(0);
-		
+
 		if (DEBUG)
-			sqlite.logMasters();
-	}
-	
-	private void loadInstance(Context context) {
-		loadInstance();
+			this.sqlite.logMasters();
+
 		if (context != null) {
 			// Set default server
-			String defaultServerUrl = Util.getPref(context, "defaultServer");
-			if (!defaultServerUrl.equals("")) {
-				for (MuninServer server : this.servers) {
-					if (server.getServerUrl().equals(defaultServerUrl))
-						currentServer = server;
-				}
-			}
+			this.currentServer = getCurrentServer(context);
 			
 			this.premium = isPremium(context);
 		}
 	}
+
+	public MuninServer getCurrentServer() { return getCurrentServer(null); }
+	public MuninServer getCurrentServer(Context context) {
+		updateCurrentServer(context);
+		return this.currentServer;
+	}
+	public void updateCurrentServer(Context context) {
+		if (this.currentServer != null)
+			return;
+
+		if (this.servers.isEmpty())
+			return;
+
+		if (context != null && !Util.getPref(context, "defaultServer").equals("")) {
+			String defaultServerUrl = Util.getPref(context, "defaultServer");
+			MuninServer defaultServer = getServer(defaultServerUrl);
+			if (defaultServer != null) {
+				this.currentServer = defaultServer;
+				return;
+			}
+		}
+
+		// Failed to find the defaultServer
+		if (this.servers.isEmpty()) {
+			this.currentServer = null;
+			return;
+		}
+
+		this.currentServer = this.servers.get(0);
+	}
+	public void setCurrentServer(MuninServer server) { this.currentServer = server; }
 	
 	public void resetInstance(Context context) {
 		servers = new ArrayList<MuninServer>();
@@ -122,7 +133,8 @@ public class MuninFoo {
 	
 	public static synchronized MuninFoo getInstance() {
 		if (instance == null)
-			instance = new MuninFoo();
+			Crashlytics.logException(
+					new NullMuninFooException("getInstante() called without Context for the first time"));
 		return instance;
 	}
 	
@@ -255,14 +267,6 @@ public class MuninFoo {
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Sets the current server if needed
-	 */
-	public void setCurrentServer() {
-		if (this.currentServer == null && this.servers.size() > 0)
-			this.currentServer = this.servers.get(0);
 	}
 
 	public List<MuninServer> getServers() {

@@ -85,8 +85,8 @@ public class Activity_Label extends MuninActivity {
 				MuninPlugin plugin = correspondance.get(position);
 				String serverUrl = correspondanceServers.get(position);
 				Intent intent = new Intent(Activity_Label.this, Activity_GraphView.class);
-				muninFoo.currentServer = muninFoo.getServer(serverUrl);
-				int pos = muninFoo.currentServer.getPluginPosition(plugin);
+				muninFoo.setCurrentServer(muninFoo.getServer(serverUrl));
+				int pos = muninFoo.getCurrentServer().getPluginPosition(plugin);
 				intent.putExtra("position", pos);
 				intent.putExtra("from", "labels");
 				intent.putExtra("label", label.getName());

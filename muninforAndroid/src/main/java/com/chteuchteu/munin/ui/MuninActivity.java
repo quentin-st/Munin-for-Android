@@ -56,6 +56,8 @@ public class MuninActivity extends Activity {
 		this.dh = new DrawerHelper(this, muninFoo);
 		this.materialMenu = new MaterialMenuIcon(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN);
 		this.materialMenu.setNeverDrawTouch(true);
+
+		// Set current server
 	}
 
 	@Override

@@ -124,7 +124,7 @@ public class Activity_Alerts extends MuninActivity {
 			final int index = i;
 			part_serverName[i].setOnClickListener(new OnClickListener() {
 				public void onClick (View v) {
-					muninFoo.currentServer = muninFoo.getServer(index);
+					muninFoo.setCurrentServer(muninFoo.getServer(index));
 					startActivity(new Intent(Activity_Alerts.this, Activity_AlertsPluginSelection.class));
 					Util.setTransition(context, TransitionStyle.DEEPER);
 				}

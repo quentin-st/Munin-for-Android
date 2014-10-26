@@ -77,7 +77,7 @@ public class SearchResult {
 				break;
 			case PLUGIN:
 				MuninPlugin plugin = (MuninPlugin) object;
-				MuninFoo.getInstance().currentServer = plugin.getInstalledOn();
+				MuninFoo.getInstance().setCurrentServer(plugin.getInstalledOn());
 				
 				intent = new Intent(activity, Activity_GraphView.class);
 				intent.putExtra("position", plugin.getIndex());
@@ -86,7 +86,7 @@ public class SearchResult {
 				
 				break;
 			case SERVER:
-				MuninFoo.getInstance().currentServer = (MuninServer) object;
+				MuninFoo.getInstance().setCurrentServer((MuninServer) object);
 				
 				activity.startActivity(new Intent(activity, Activity_Plugins.class));
 				Util.setTransition(activity, TransitionStyle.DEEPER);

@@ -120,19 +120,21 @@ public class ImportExportHelper {
 	}
 	
 	public static class Import {
-		public static void applyImportation(JSONObject jsonObject, String code) {
+		public static void applyImportation(Context context, JSONObject jsonObject, String code) {
 			ArrayList<MuninMaster> newMasters = JSONHelper.getMastersFromJSON(jsonObject, code);
 			removeIds(newMasters);
+
+			MuninFoo muninFooRef = MuninFoo.getInstance(context);
 			
 			// Add masters
 			for (MuninMaster newMaster : newMasters) {
 				// Check if master already added
-				if (!MuninFoo.getInstance().contains(newMaster)) {
-					MuninFoo.getInstance().getMasters().add(newMaster);
+				if (!muninFooRef.contains(newMaster)) {
+					muninFooRef.getMasters().add(newMaster);
 					for (MuninServer server : newMaster.getChildren())
-						MuninFoo.getInstance().addServer(server);
-					
-					MuninFoo.getInstance().sqlite.insertMuninMaster(newMaster);
+						muninFooRef.addServer(server);
+
+					muninFooRef.sqlite.insertMuninMaster(newMaster);
 				}
 			}
 		}
@@ -205,7 +207,7 @@ public class ImportExportHelper {
 				result = jsonObject != null;
 				
 				if (result)
-					applyImportation(jsonObject, ENCRYPTION_SEED);
+					applyImportation(context, jsonObject, ENCRYPTION_SEED);
 				
 				return null;
 			}

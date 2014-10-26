@@ -560,8 +560,6 @@ public class Activity_Server extends MuninActivity {
 					for (GridItem gridItem : gridItemsToUpdate)
 						muninFoo.sqlite.dbHlpr.insertGridItemRelation(gridItem);
 
-					muninFoo.setCurrentServer();
-
 					cancelButton.getHandler().post(new Runnable() {
 						public void run() {
 							cancelButton.setVisibility(View.VISIBLE);
@@ -736,11 +734,8 @@ public class Activity_Server extends MuninActivity {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			if (muninFoo.getServers().isEmpty())
-				muninFoo.currentServer = null;
-			else
-				muninFoo.currentServer = muninFoo.getServer(0);
-			
+			muninFoo.updateCurrentServer(context);
+
 			cancelButton.setVisibility(View.GONE);
 			algo_state = AST_IDLE;
 			if (res != RES_UNDEFINED) {
@@ -771,7 +766,7 @@ public class Activity_Server extends MuninActivity {
 						@Override
 						public void onClick(View v) {
 							alert.dismiss();
-							muninFoo.currentServer = master.getChildren().get(0);
+							muninFoo.setCurrentServer(master.getChildren().get(0));
 							Intent intent = new Intent(Activity_Server.this, Activity_Plugins.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(intent);

@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 
+import com.chteuchteu.munin.hlpr.DatabaseHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Service_Notifications extends Service {
-	private MuninFoo muninFoo;
 	private WakeLock mWakeLock;
 	
 	/**
@@ -54,25 +54,25 @@ public class Service_Notifications extends Service {
 		if (Util.getPref(Service_Notifications.this, "notifs_wifiOnly").equals("true"))
 			wifiOnly = true;
 		
-		if (!wifiOnly || (wifiOnly && mWifi.isConnected())) {
-			muninFoo = MuninFoo.getInstance();
-			if (muninFoo.getServers().size() > 0)
-				new PollTask().execute();
-		}
+		if (!wifiOnly || mWifi.isConnected())
+			new PollTask().execute();
 	}
 	
 	private class PollTask extends AsyncTask<Void, Void, Void> {
-		int nbCriticals;
-		int nbWarnings;
-		int nbServers;
-		String criticalPlugins;
-		String warningPlugins;
+		private int nbCriticals;
+		private int nbWarnings;
+		private int nbServers;
+		private String criticalPlugins;
+		private String warningPlugins;
 		
 		@Override
 		protected Void doInBackground(Void... params) {
 			List<MuninServer> servers = new ArrayList<MuninServer>();
 			String serversList = Util.getPref(Service_Notifications.this, "notifs_serversList");
 			String[] serversToWatch = serversList.split(";");
+
+			DatabaseHelper dbHelper = new DatabaseHelper(null);
+			List<MuninServer> dbServers = dbHelper.getServers(null);
 			
 			nbCriticals = 0;
 			nbWarnings = 0;
@@ -80,7 +80,7 @@ public class Service_Notifications extends Service {
 			criticalPlugins = "";
 			warningPlugins = "";
 			
-			for (MuninServer s: muninFoo.getOrderedServers()) {
+			for (MuninServer s: dbServers) {
 				for (String url : serversToWatch) {
 					if (s.equalsApprox(url))
 						servers.add(s);
@@ -166,7 +166,7 @@ public class Service_Notifications extends Service {
 					notifTitle += strings[7];
 			}
 			
-			String notifText = "";
+			String notifText;
 			
 			if (criticalPlugins.length() > 2 && criticalPlugins.substring(criticalPlugins.length()-2).equals(", "))
 				criticalPlugins = criticalPlugins.substring(0, criticalPlugins.length()-2);
