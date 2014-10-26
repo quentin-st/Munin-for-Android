@@ -2,6 +2,7 @@ package com.chteuchteu.munin.obj;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -416,8 +417,7 @@ public class MuninMaster {
 	}
 	
 	/**
-	 * When temporary deleting an old Master, we should
-	 * care about labels, widgets and grids.
+	 * When replacing an old Master, we should care about labels, widgets and grids.
 	 * Here, we reattach and save the labels.
 	 * @return ArrayList<Label> : labels who should be updated afterwards
 	 */
@@ -441,7 +441,8 @@ public class MuninMaster {
 							MuninPlugin newPlugin = this.getServer(server.getServerUrl()).getPlugin(labelPlugin.getName());
 							toBeRemoved.add(labelPlugin);
 							toBeAdded.add(newPlugin);
-							toBeUpdated_labels.add(label);
+							if (!toBeUpdated_labels.contains(label))
+								toBeUpdated_labels.add(label);
 						}
 					}
 					
@@ -455,15 +456,16 @@ public class MuninMaster {
 	}
 	
 	/**
-	 * When temporary deleting an old Master, we should
-	 * care about labels, widgets and grids.
+	 * When replacing an old Master, we should care about labels, widgets and grids.
 	 * Here, we reattach and save the grids.
 	 * @return ArrayList<GridItem> : grids who should be updated afterwards
 	 */
 	public ArrayList<GridItem> reattachGrids(MuninFoo muninFoo, Context context, MuninMaster oldMaster) {
 		ArrayList<GridItem> toBeUpdated_grids = new ArrayList<GridItem>();
 		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(context, muninFoo);
-		
+
+		Log.i("MuninMaster", "Found " + grids.size() + " grids");
+
 		if (grids.isEmpty())
 			return toBeUpdated_grids;
 		
@@ -473,6 +475,7 @@ public class MuninMaster {
 				for (Grid grid : grids) {
 					for (GridItem item : grid.items) {
 						if (item.plugin.equals(plugin)) {
+							Log.i("MuninMaster", "Reattaching grid item for plugin " + item.plugin.getName());
 							// Reattach
 							item.plugin = this.getServer(server.getServerUrl()).getPlugin(item.plugin.getName());
 							toBeUpdated_grids.add(item);
@@ -486,7 +489,7 @@ public class MuninMaster {
 	}
 	
 	/**
-	 * Contacts the URL to check if there are some other servers / plugins for each server=
+	 * Contacts the URL to check if there are some other servers / plugins for each server
 	 */
 	public String rescan(Context context, MuninFoo muninFoo) {
 		// Take first server since it contains connection information

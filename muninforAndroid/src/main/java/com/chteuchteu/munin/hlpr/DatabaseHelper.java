@@ -450,7 +450,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_WIDGETS_WIDGETID, widget.getWidgetId());
 		values.put(KEY_WIDGETS_HIDESERVERNAME, widget.getHideServerName());
 		
-		int nbRows = db.update(TABLE_GRIDS, values, KEY_ID + " = ?", new String[] { String.valueOf(widget.getId()) });
+		int nbRows = db.update(TABLE_WIDGETS, values, KEY_ID + " = ?", new String[] { String.valueOf(widget.getId()) });
 		close(null, db);
 		return nbRows;
 	}
@@ -705,24 +705,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return list;
 	}
 	
-	public Label getLabel(String labelName) {
-		String selectQuery = "SELECT * FROM " + TABLE_LABELS
-				+ " WHERE " + KEY_LABELS_NAME + " = '" + labelName + "'";
-		
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.rawQuery(selectQuery, null);
-		
-		if (c != null && c.moveToFirst()) {
-			Label l = new Label();
-			l.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-			l.setName(c.getString(c.getColumnIndex(KEY_LABELS_NAME)));
-			l.setPlugins(getPlugins(l));
-			close(c, db);
-			return l;
-		}
-		return null;
-	}
-	
 	/**
 	 * Get all plugins linked to a label
 	 * @param l
@@ -890,12 +872,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void deleteLabelsRelations(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });
-		close(null, db);
-	}
-	
-	public void deleteLabelsRelations(Label l) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_LABEL + " = ?", new String[] { String.valueOf(l.getId()) });
 		close(null, db);
 	}
 	

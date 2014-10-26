@@ -35,6 +35,7 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import com.chteuchteu.munin.obj.Widget;
@@ -503,77 +504,79 @@ public class Activity_Server extends MuninActivity {
 							setPopupState(popupstate);
 						}
 					}
-					
-					if (nbNewServers > 0) {	// Added 1 server or more
-						setPopupState(100);
-						setPopupText(getString(R.string.text45), " ");
-						
-						cancelButton.getHandler().post(new Runnable() {
-							public void run() {
-								cancelButton.setVisibility(View.GONE);
-							}
-						});
-						
-						// Check if there is already a master with this url
-						MuninMaster alreadyThereMaster = null;
-						for (MuninMaster muninFooMaster : muninFoo.getMasters()) {
-							if (muninFooMaster.equalsApprox(master)) {
-								alreadyThereMaster = muninFooMaster;
-								break;
-							}
+
+					setPopupState(100);
+					setPopupText(getString(R.string.text45), " ");
+
+					cancelButton.getHandler().post(new Runnable() {
+						public void run() {
+							cancelButton.setVisibility(View.GONE);
 						}
-						
-						ArrayList<Widget> widgetsToUpdate = new ArrayList<Widget>();
-						ArrayList<Label> labelsToUpdate = new ArrayList<Label>();
-						ArrayList<GridItem> gridItemsToUpdate = new ArrayList<GridItem>();
-						if (alreadyThereMaster != null) {
-							// Replace
-							// Check if there are labels / widgets / grids in the hierarchy
-							widgetsToUpdate = master.reattachWidgets(muninFoo, alreadyThereMaster);
-							labelsToUpdate = master.reattachLabels(muninFoo, alreadyThereMaster);
-							gridItemsToUpdate = master.reattachGrids(muninFoo, context, alreadyThereMaster);
+					});
+
+					// Check if there is already a master with this url
+					MuninMaster alreadyThereMaster = null;
+					for (MuninMaster muninFooMaster : muninFoo.getMasters()) {
+						if (muninFooMaster.equalsApprox(master)) {
+							alreadyThereMaster = muninFooMaster;
+							break;
 						}
-						
-						// Delete old duplicate
-						if (alreadyThereMaster != null) {
-							muninFoo.sqlite.dbHlpr.deleteMaster(alreadyThereMaster, true);
-							muninFoo.getServers().removeAll(alreadyThereMaster.getChildren());
-							muninFoo.getMasters().remove(alreadyThereMaster);
-						}
-						
-						muninFoo.getMasters().add(master);
-						muninFoo.getServers().addAll(master.getChildren());
-						// Insert master
-						muninFoo.sqlite.insertMuninMaster(master);
-						
-						// Save reattached widgets if needed
-						for (Widget widget : widgetsToUpdate)
-							muninFoo.sqlite.dbHlpr.updateWidget(widget);
-						// Save reattached labels if needed
-						for (Label label : labelsToUpdate)
-							muninFoo.sqlite.dbHlpr.updateLabel(label);
-						// Save reattached grid items if needed
-						for (GridItem gridItem : gridItemsToUpdate)
-							muninFoo.sqlite.dbHlpr.updateGridItemRelation(gridItem);
-						
-						muninFoo.setCurrentServer();
-						
-						cancelButton.getHandler().post(new Runnable() {
-							public void run() {
-								cancelButton.setVisibility(View.VISIBLE);
-							}
-						});
-						
-						// Success!
-						message_title = getString(R.string.text18);
-						
-						String s = "";
-						if (nbNewServers > 1)	s = "s";
-						// X sub-server(s) added!
-						message_text = nbNewServers + " " + getString(R.string.text21_1) + s + " " + getString(R.string.text21_2);
-						
-						return RES_SERVERS_SUCCESS;
 					}
+
+					ArrayList<Widget> widgetsToUpdate = new ArrayList<Widget>();
+					ArrayList<Label> labelsToUpdate = new ArrayList<Label>();
+					ArrayList<GridItem> gridItemsToUpdate = new ArrayList<GridItem>();
+					if (alreadyThereMaster != null) {
+						// Replace
+						// Check if there are labels / widgets / grids in the hierarchy
+						widgetsToUpdate = master.reattachWidgets(muninFoo, alreadyThereMaster);
+						labelsToUpdate = master.reattachLabels(muninFoo, alreadyThereMaster);
+						gridItemsToUpdate = master.reattachGrids(muninFoo, context, alreadyThereMaster);
+					}
+
+					// Delete old duplicate
+					if (alreadyThereMaster != null) {
+						muninFoo.sqlite.dbHlpr.deleteMaster(alreadyThereMaster, true);
+						muninFoo.getServers().removeAll(alreadyThereMaster.getChildren());
+						muninFoo.getMasters().remove(alreadyThereMaster);
+					}
+
+					muninFoo.getMasters().add(master);
+					muninFoo.getServers().addAll(master.getChildren());
+					// Insert master
+					muninFoo.sqlite.insertMuninMaster(master);
+
+					// Widgets, labels and gridItems have been deleted from DB
+					// (recursive delete). Let's add them if needed
+					// Save reattached widgets if needed
+					for (Widget widget : widgetsToUpdate)
+						muninFoo.sqlite.dbHlpr.insertWidget(widget);
+					// Save reattached labels if needed
+					for (Label label : labelsToUpdate) {
+						for (MuninPlugin plugin : label.plugins)
+							muninFoo.sqlite.dbHlpr.insertLabelRelation(plugin, label);
+					}
+					// Save reattached grid items if needed
+					for (GridItem gridItem : gridItemsToUpdate)
+						muninFoo.sqlite.dbHlpr.insertGridItemRelation(gridItem);
+
+					muninFoo.setCurrentServer();
+
+					cancelButton.getHandler().post(new Runnable() {
+						public void run() {
+							cancelButton.setVisibility(View.VISIBLE);
+						}
+					});
+
+					// Success!
+					message_title = getString(R.string.text18);
+
+					String s = "";
+					if (nbNewServers > 1)	s = "s";
+					// X sub-server(s) added!
+					message_text = nbNewServers + " " + getString(R.string.text21_1) + s + " " + getString(R.string.text21_2);
+
+					return RES_SERVERS_SUCCESS;
 				}
 			}	// ending if (type.equals("munin/")) (servers)
 			/*else if (type.equals("munin/x/")) {
