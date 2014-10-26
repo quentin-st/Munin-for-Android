@@ -272,6 +272,7 @@ public class Activity_Settings extends MuninActivity {
 			case R.id.menu_save:	actionSave();	return true;
 			case R.id.menu_reset:	actionReset();	return true;
 			case R.id.menu_gplay:	actionGPlay();	return true;
+			case R.id.menu_twitter: actionTwitter(); return true;
 		}
 
 		return true;
@@ -351,6 +352,14 @@ public class Activity_Settings extends MuninActivity {
 			});
 			ad.setIcon(R.drawable.alerts_and_states_error);
 			ad.show();
+		}
+	}
+
+	private void actionTwitter() {
+		try {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=muninforandroid")));
+		} catch (Exception e) {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/muninforandroid")));
 		}
 	}
 	

@@ -535,7 +535,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 */
 	public List<MuninServer> getServers(List<MuninMaster> currentMasters) {
 		List<MuninServer> l = new ArrayList<MuninServer>();
-			try {
+		try {
 			String selectQuery = "SELECT * FROM " + TABLE_MUNINSERVERS;
 			
 			SQLiteDatabase db = this.getReadableDatabase();

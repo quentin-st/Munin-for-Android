@@ -2,7 +2,6 @@ package com.chteuchteu.munin.obj;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -464,8 +463,6 @@ public class MuninMaster {
 		ArrayList<GridItem> toBeUpdated_grids = new ArrayList<GridItem>();
 		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(context, muninFoo);
 
-		Log.i("MuninMaster", "Found " + grids.size() + " grids");
-
 		if (grids.isEmpty())
 			return toBeUpdated_grids;
 		
@@ -475,7 +472,6 @@ public class MuninMaster {
 				for (Grid grid : grids) {
 					for (GridItem item : grid.items) {
 						if (item.plugin.equals(plugin)) {
-							Log.i("MuninMaster", "Reattaching grid item for plugin " + item.plugin.getName());
 							// Reattach
 							item.plugin = this.getServer(server.getServerUrl()).getPlugin(item.plugin.getName());
 							toBeUpdated_grids.add(item);

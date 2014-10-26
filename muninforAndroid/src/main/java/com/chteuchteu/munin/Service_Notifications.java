@@ -71,7 +71,7 @@ public class Service_Notifications extends Service {
 			String serversList = Util.getPref(Service_Notifications.this, "notifs_serversList");
 			String[] serversToWatch = serversList.split(";");
 
-			DatabaseHelper dbHelper = new DatabaseHelper(null);
+			DatabaseHelper dbHelper = new DatabaseHelper(Service_Notifications.this);
 			List<MuninServer> dbServers = dbHelper.getServers(null);
 			
 			nbCriticals = 0;

@@ -3,7 +3,6 @@ package com.chteuchteu.munin.hlpr;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -55,9 +54,9 @@ public class ImportExportHelper {
 				String body = builder.toString();
 				
 				JSONObject jsonResult = new JSONObject(body);
-				Log.v("", "jsonString="+jsonString);
+
 				boolean success = jsonResult.getBoolean("success");
-				Log.v("", "result = " + jsonResult.toString());
+
 				if (success) {
 					return jsonResult.getString("password");
 				} else {
