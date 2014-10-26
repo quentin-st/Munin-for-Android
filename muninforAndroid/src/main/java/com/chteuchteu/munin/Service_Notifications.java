@@ -193,6 +193,9 @@ public class Service_Notifications extends Service {
 					
 					PendingIntent pendingIntent = PendingIntent.getActivity(Service_Notifications.this, 0, new Intent(Service_Notifications.this, Activity_Alerts.class), 0);
 					notification.setLatestEventInfo(Service_Notifications.this, notifTitle, notifText, pendingIntent);
+
+					// Dismiss notification on click
+					notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 					
 					Util.setPref(Service_Notifications.this, "lastNotificationText", notifText);
 
