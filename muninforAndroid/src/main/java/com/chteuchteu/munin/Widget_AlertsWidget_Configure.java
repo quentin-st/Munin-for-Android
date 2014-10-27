@@ -127,6 +127,6 @@ public class Widget_AlertsWidget_Configure extends Activity {
 	 */
 	public void configureWidget(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-		Widget_AlertsWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId, true);
+		Widget_AlertsWidget_WidgetProvider.updateAppWidget(context, appWidgetManager, mAppWidgetId);
 	}
 }

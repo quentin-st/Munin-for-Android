@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.AlertsWidget;
@@ -685,7 +686,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @param masters List of masters. Can be null.
 	 * @return
 	 */
-	public AlertsWidget getAlertsWidget(int widgetId, List<MuninMaster> masters) {
+	public AlertsWidget getAlertsWidget(int widgetId, List<MuninServer> servers) {
 		String selectQuery = "SELECT * FROM " + TABLE_WIDGET_ALERTSWIDGETS
 				+ " WHERE " + KEY_WIDGET_ALERTSWIDGETS_WIDGETID + " = " + widgetId;
 
@@ -699,22 +700,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGET_ALERTSWIDGETS_WIFIONLY)));
 
 			// Get servers
-			if (masters == null)
-				masters = getMasters();
-			List<MuninServer> servers = getAlertsWidgetRelations(widgetId, masters, db);
-			w.setServers(servers);
+			if (servers == null)
+				servers = getServers(null);
+
+			w.setServers(getAlertsWidgetRelations(w.getId(), servers));
 
 			return w;
 		}
 		return null;
 	}
 
-	public List<MuninServer> getAlertsWidgetRelations(int widgetId, List<MuninMaster> masters, SQLiteDatabase db) {
-		List<MuninServer> servers = new ArrayList<MuninServer>();
+	public List<MuninServer> getAlertsWidgetRelations(long widgetId, List<MuninServer> servers) {
+		List<MuninServer> widgetServers = new ArrayList<MuninServer>();
 
 		String selectQuery = "SELECT * FROM " + TABLE_WIDGET_ALERTSWIDGETSRELATIONS
 				+ " WHERE " + KEY_WIDGET_ALERTSWIDGETSRELATIONS_WIDGET + " = " + widgetId;
 
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 
 		if (c != null && c.moveToFirst()) {
@@ -722,17 +724,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				int serverId = c.getInt(c.getColumnIndex(KEY_WIDGET_ALERTSWIDGETSRELATIONS_SERVER));
 				// Find server
 				MuninServer s = null;
-				for (MuninMaster master : masters) {
-					for (MuninServer server : master.getChildren()) {
-						if (server.getId() == serverId) {
-							s = server;
-							break;
-						}
+
+				for (MuninServer server : servers) {
+					if (server.getId() == serverId) {
+						s = server;
+						break;
 					}
 				}
 
 				if (s != null)
-					servers.add(s);
+					widgetServers.add(s);
 			} while (c.moveToNext());
 		}
 

@@ -67,7 +67,7 @@
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GoPremium" />
 
 		<!-- GraphWidget -->
-		<receiver android:name="com.chteuchteu.munin.Widget_GraphWidget" >
+		<receiver android:name=".Widget_GraphWidget_WidgetProvider" >
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 				<action android:name="android.appwidget.action.APPWIDGET_DELETED" />
@@ -81,14 +81,19 @@
 				android:resource="@xml/widget_graphwidget_meta" />
 		</receiver>
 
+		<activity
+			android:name="com.chteuchteu.munin.Widget_GraphWidget_Configure"
+			android:theme="@android:style/Theme.Dialog" >
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+			</intent-filter>
+		</activity>
+
 		<!-- AlertsWidget -->
-		<receiver android:name="com.chteuchteu.munin.Widget_AlertsWidget" >
+		<receiver android:name="com.chteuchteu.munin.Widget_AlertsWidget_WidgetProvider" >
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 				<action android:name="android.appwidget.action.APPWIDGET_DELETED" />
-				<action android:name="com.chteuchteu.munin.widget2.START_PREMIUM" />
-				<action android:name="com.chteuchteu.munin.widget2.START_ACTIVITY" />
-				<action android:name="com.chteuchteu.munin.widget2.REFRESH" />
 			</intent-filter>
 
 			<meta-data
@@ -97,12 +102,15 @@
 		</receiver>
 
 		<activity
-			android:name=".Widget_GraphWidget_Configure"
+			android:name="com.chteuchteu.munin.Widget_AlertsWidget_Configure"
 			android:theme="@android:style/Theme.Dialog" >
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 			</intent-filter>
 		</activity>
+
+		<service android:name="com.chteuchteu.munin.Widget_AlertsWidget_WidgetService"
+				 android:permission="android.permission.BIND_REMOTEVIEWS" />
 
 		<!-- Notifications -->
 		<receiver android:name=".BootReceiver" >
