@@ -19,15 +19,15 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.chteuchteu.munin.obj.Widget;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Widget_Configure extends Activity {
+public class Widget_GraphWidget_Configure extends Activity {
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private MuninFoo muninFoo;
 	private MuninServer selectedServer;
@@ -42,8 +42,7 @@ public class Widget_Configure extends Activity {
 		setResult(RESULT_CANCELED);
 		
 		// Find widget id from launching intent
-		Intent intent = getIntent();
-		Bundle extras = intent.getExtras();
+		Bundle extras = getIntent().getExtras();
 		if (extras != null)
 			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
 					AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -53,9 +52,9 @@ public class Widget_Configure extends Activity {
 			finish();
 		
 		
-		if (muninFoo.sqlite.dbHlpr.getWidget(mAppWidgetId) == null) {
-			final Widget widget = new Widget();
-			widget.setWidgetId(mAppWidgetId);
+		if (muninFoo.sqlite.dbHlpr.getGraphWidget(mAppWidgetId) == null) {
+			final GraphWidget graphWidget = new GraphWidget();
+			graphWidget.setWidgetId(mAppWidgetId);
 			
 			if (muninFoo != null) {
 				LayoutInflater mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -63,7 +62,7 @@ public class Widget_Configure extends Activity {
 
 				final Context context = new ContextThemeWrapper(this, android.R.style.Theme_Holo_Light);
 
-				new AlertDialog.Builder(context)
+				final AlertDialog dialog = new AlertDialog.Builder(context)
 					.setView(dialogView)
 					.show();
 
@@ -73,10 +72,12 @@ public class Widget_Configure extends Activity {
 				
 				if (muninFoo.getServers().size() == 0) {
 					Toast.makeText(this, R.string.text37, Toast.LENGTH_SHORT).show();
+					dialog.dismiss();
 					finish();
 				}
 				if (!muninFoo.premium) {
 					Toast.makeText(this, "Munin for Android features pack needed", Toast.LENGTH_SHORT).show();
+					dialog.dismiss();
 					finish();
 				}
 				
@@ -123,7 +124,7 @@ public class Widget_Configure extends Activity {
 
 								for (MuninPlugin p : selectedServer.getPlugins()) {
 									if (p.getName().equals(pluginName))
-										widget.setPlugin(p);
+										graphWidget.setPlugin(p);
 								}
 								
 								lv2.setVisibility(View.GONE);
@@ -143,7 +144,7 @@ public class Widget_Configure extends Activity {
 								lv3.setOnItemClickListener(new OnItemClickListener() {
 									public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 										String[] periods = {"day", "week", "month", "year" };
-										widget.setPeriod(periods[position]);
+										graphWidget.setPeriod(periods[position]);
 										
 										LinearLayout ll = (LinearLayout) dialogView.findViewById(R.id.final_instructions);
 										lv3.setVisibility(View.GONE);
@@ -156,10 +157,10 @@ public class Widget_Configure extends Activity {
 										btn.setOnClickListener(new View.OnClickListener() {
 											public void onClick(View v) {
 												// Save & close
-												widget.setWifiOnly(cb.isChecked());
-												widget.setHideServerName(cb2.isChecked());
+												graphWidget.setWifiOnly(cb.isChecked());
+												graphWidget.setHideServerName(cb2.isChecked());
 												
-												muninFoo.sqlite.dbHlpr.insertWidget(widget);
+												muninFoo.sqlite.dbHlpr.insertGraphWidget(graphWidget);
 
 												configureWidget(getApplicationContext());
 												
@@ -167,6 +168,7 @@ public class Widget_Configure extends Activity {
 												Intent resultValue = new Intent();
 												resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 												setResult(RESULT_OK, resultValue);
+												dialog.dismiss();
 												finish();
 											}
 										});

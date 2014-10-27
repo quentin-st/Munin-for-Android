@@ -32,13 +32,13 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
-import com.chteuchteu.munin.obj.Widget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -523,7 +523,7 @@ public class Activity_Server extends MuninActivity {
 						}
 					}
 
-					ArrayList<Widget> widgetsToUpdate = new ArrayList<Widget>();
+					ArrayList<GraphWidget> widgetsToUpdate = new ArrayList<GraphWidget>();
 					ArrayList<Label> labelsToUpdate = new ArrayList<Label>();
 					ArrayList<GridItem> gridItemsToUpdate = new ArrayList<GridItem>();
 					if (alreadyThereMaster != null) {
@@ -549,8 +549,8 @@ public class Activity_Server extends MuninActivity {
 					// Widgets, labels and gridItems have been deleted from DB
 					// (recursive delete). Let's add them if needed
 					// Save reattached widgets if needed
-					for (Widget widget : widgetsToUpdate)
-						muninFoo.sqlite.dbHlpr.insertWidget(widget);
+					for (GraphWidget graphWidget : widgetsToUpdate)
+						muninFoo.sqlite.dbHlpr.insertGraphWidget(graphWidget);
 					// Save reattached labels if needed
 					for (Label label : labelsToUpdate) {
 						for (MuninPlugin plugin : label.plugins)

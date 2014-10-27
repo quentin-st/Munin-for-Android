@@ -1,7 +1,7 @@
 package com.chteuchteu.munin.obj;
 
 
-public class Widget {
+public class GraphWidget {
 	private long id;
 	private String period;
 	private boolean wifiOnly;
@@ -10,7 +10,7 @@ public class Widget {
 	private int widgetId;
 	public boolean isPersistant;
 	
-	public Widget() {
+	public GraphWidget() {
 		this.period = "day";
 		this.wifiOnly = false;
 		this.isPersistant = false;

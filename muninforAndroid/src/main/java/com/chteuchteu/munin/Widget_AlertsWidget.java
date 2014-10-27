@@ -17,34 +17,34 @@ import android.widget.RemoteViews;
 
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.obj.AlertsWidget;
 import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 
-public class Widget_GraphWidget extends AppWidgetProvider {
+public class Widget_AlertsWidget extends AppWidgetProvider {
 	private static RemoteViews 		views;
 	private static AppWidgetManager 	awm;
 	private static int				widgetId;
-	private static final String ACTION_UPDATE_GRAPH = "com.chteuchteu.munin.graphWidget.UPDATE_GRAPH";
-	private static final String ACTION_START_ACTIVITY = "com.chteuchteu.munin.graphWidget.START_ACTIVITY";
-	private static final String ACTION_START_PREMIUM = "com.chteuchteu.munin.graphWidget.START_PREMIUM";
+	private static final String ACTION_UPDATE_GRAPH = "com.chteuchteu.munin.alertsWidget.UPDATE_GRAPH";
+	private static final String ACTION_START_ACTIVITY = "com.chteuchteu.munin.alertsWidget.START_ACTIVITY";
+	private static final String ACTION_START_PREMIUM = "com.chteuchteu.munin.alertsWidget.START_PREMIUM";
 	
 	private static SQLite sqlite;
-	private static GraphWidget graphWidget;
+	private static AlertsWidget alertsWidget;
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		sqlite = new SQLite(context, MuninFoo.getInstance(context));
 		
 		// Get all ids
-		ComponentName thisWidget = new ComponentName(context, Widget_GraphWidget.class);
+		ComponentName thisWidget = new ComponentName(context, Widget_AlertsWidget.class);
 		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 		
 		// Perform this loop procedure for each App GraphWidget that belongs to this provider
-		for (int i = 0; i < allWidgetIds.length; i++) {
+		for (int i = 0; i < allWidgetIds.length; i++)
 			updateAppWidget(context, appWidgetManager, allWidgetIds[i], false);
-		}
 	}
 	
 	static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, boolean forceUpdate) {
@@ -54,13 +54,13 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 		boolean premium = MuninFoo.isPremium(context);
 		
 		// Updating graphWidget
-		views = new RemoteViews(context.getPackageName(), R.layout.widget_graphwidget_layout);
+		views = new RemoteViews(context.getPackageName(), R.layout.widget_alertswidget_layout);
 		if (!premium){
 			views.setTextViewText(R.id.widget_servername, "Munin for Android Features Pack needed");
 			//views.setBitmap(R.id.widget_graph, "setImageBitmap", BitmapFactory.decodeResource(context.getResources(), R.drawable.widget_featurespack));
 			
 			// Action open Munin for Android
-			Intent intent2 = new Intent(context, Widget_GraphWidget.class);
+			Intent intent2 = new Intent(context, Widget_AlertsWidget.class);
 			intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 			intent2.setAction(ACTION_START_PREMIUM);
 			PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, appWidgetId, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -82,14 +82,14 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 				}
 				
 				// Update action
-				Intent intent = new Intent(context, Widget_GraphWidget.class);
+				Intent intent = new Intent(context, Widget_AlertsWidget.class);
 				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 				intent.setAction(ACTION_UPDATE_GRAPH);
 				PendingIntent pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 				views.setOnClickPendingIntent(R.id.widget_legend, pendingIntent);
 				
 				// Action open Munin for Android
-				Intent intent2 = new Intent(context, Widget_GraphWidget.class);
+				Intent intent2 = new Intent(context, Widget_AlertsWidget.class);
 				intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 				intent2.setAction(ACTION_START_ACTIVITY);
 				PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, appWidgetId, intent2, PendingIntent.FLAG_UPDATE_CURRENT);

@@ -131,7 +131,8 @@ public class Activity_Notifications extends MuninActivity {
 					v.findViewById(R.id.ll_container).setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							((CheckBox) v.findViewById(R.id.line_0)).setChecked(!((CheckBox) v.findViewById(R.id.line_0)).isChecked());
+							CheckBox checkbox = (CheckBox) v.findViewById(R.id.line_0);
+							checkbox.setChecked(!checkbox.isChecked());
 						}
 					});
 					

@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.obj.AlertsWidget;
+import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
@@ -15,7 +17,6 @@ import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
-import com.chteuchteu.munin.obj.Widget;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
@@ -32,7 +33,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String TABLE_MUNINPLUGINS = "muninPlugins";
 	public static final String TABLE_LABELS = "labels";
 	public static final String TABLE_LABELSRELATIONS = "labelsRelations";
-	public static final String TABLE_WIDGETS = "widgets";
+	public static final String TABLE_WIDGET_GRAPHWIDGETS = "widgets";
+	public static final String TABLE_WIDGET_ALERTSWIDGETS = "alertsWidgets";
+	public static final String TABLE_WIDGET_ALERTSWIDGETSRELATIONS = "alertsWidgetsRelations";
 	public static final String TABLE_GRIDS = "grids";
 	public static final String TABLE_GRIDITEMRELATIONS = "gridItemsRelations";
 	
@@ -70,13 +73,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_LABELSRELATIONS_PLUGIN = "plugin";
 	private static final String KEY_LABELSRELATIONS_LABEL = "label";
 	
-	// Widgets
-	private static final String KEY_WIDGETS_PLUGIN = "plugin";
-	private static final String KEY_WIDGETS_PERIOD = "period";
-	private static final String KEY_WIDGETS_WIFIONLY = "wifiOnly";
-	private static final String KEY_WIDGETS_HIDESERVERNAME = "hideServerName";
-	private static final String KEY_WIDGETS_WIDGETID = "widgetId";
-	
+	// Widget_GraphWidgets
+	private static final String KEY_WIDGET_GRAPHWIDGETS_PLUGIN = "plugin";
+	private static final String KEY_WIDGET_GRAPHWIDGETS_PERIOD = "period";
+	private static final String KEY_WIDGET_GRAPHWIDGETS_WIFIONLY = "wifiOnly";
+	private static final String KEY_WIDGET_GRAPHWIDGETS_HIDESERVERNAME = "hideServerName";
+	private static final String KEY_WIDGET_GRAPHWIDGETS_WIDGETID = "widgetId";
+
+	// Widget_AlertsWidgets
+	private static final String KEY_WIDGET_ALERTSWIDGETS_WIDGETID = "widgetId";
+	private static final String KEY_WIDGET_ALERTSWIDGETS_WIFIONLY = "wifiOnly";
+
+	// Widget_AlertsWidgetsRelations
+	private static final String KEY_WIDGET_ALERTSWIDGETSRELATIONS_WIDGET = "widget";
+	private static final String KEY_WIDGET_ALERTSWIDGETSRELATIONS_SERVER = "server";
+
 	// Grids
 	private static final String KEY_GRIDS_NAME = "name";
 	
@@ -96,8 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_MUNINMASTERS_AUTHTYPE + " INTEGER,"
 			+ KEY_MUNINMASTERS_AUTHSTRING + " TEXT,"
 			+ KEY_MUNINMASTERS_SSL + " INTEGER,"
-			+ KEY_MUNINMASTERS_HDGRAPHS + " TEXT"
-			+ ")";
+			+ KEY_MUNINMASTERS_HDGRAPHS + " TEXT)";
 	
 	private static final String CREATE_TABLE_MUNINSERVERS = "CREATE TABLE " + TABLE_MUNINSERVERS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
@@ -105,8 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_MUNINSERVERS_NAME + " TEXT,"
 			+ KEY_MUNINSERVERS_GRAPHURL + " TEXT,"
 			+ KEY_MUNINSERVERS_POSITION + " INTEGER,"
-			+ KEY_MUNINSERVERS_MASTER + " INTEGER"
-			+ ")";
+			+ KEY_MUNINSERVERS_MASTER + " INTEGER)";
 	
 	private static final String CREATE_TABLE_MUNINPLUGINS = "CREATE TABLE " + TABLE_MUNINPLUGINS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
@@ -125,13 +134,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_LABELSRELATIONS_LABEL + " INTEGER,"
 			+ KEY_LABELSRELATIONS_PLUGIN + " INTEGER)";
 	
-	private static final String CREATE_TABLE_WIDGETS = "CREATE TABLE " + TABLE_WIDGETS + " ("
+	private static final String CREATE_TABLE_GRAPHWIDGETS = "CREATE TABLE " + TABLE_WIDGET_GRAPHWIDGETS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
-			+ KEY_WIDGETS_WIDGETID + " INTEGER,"
-			+ KEY_WIDGETS_PLUGIN + " INTEGER,"
-			+ KEY_WIDGETS_PERIOD + " TEXT,"
-			+ KEY_WIDGETS_WIFIONLY + " INTEGER,"
-			+ KEY_WIDGETS_HIDESERVERNAME + " INTEGER)";
+			+ KEY_WIDGET_GRAPHWIDGETS_WIDGETID + " INTEGER,"
+			+ KEY_WIDGET_GRAPHWIDGETS_PLUGIN + " INTEGER,"
+			+ KEY_WIDGET_GRAPHWIDGETS_PERIOD + " TEXT,"
+			+ KEY_WIDGET_GRAPHWIDGETS_WIFIONLY + " INTEGER,"
+			+ KEY_WIDGET_GRAPHWIDGETS_HIDESERVERNAME + " INTEGER)";
+
+	private static final String CREATE_TABLE_ALERTSWIDGETS = "CREATE TABLE " + TABLE_WIDGET_ALERTSWIDGETS + " ("
+			+ KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_WIDGET_ALERTSWIDGETS_WIDGETID + " INTEGER,"
+			+ KEY_WIDGET_ALERTSWIDGETS_WIFIONLY + " INTEGER)";
+
+	private static final String CREATE_TABLE_ALERTSWIDGETSRELATIONS = "CREATE TABLE " + TABLE_WIDGET_ALERTSWIDGETSRELATIONS + " ("
+			+ KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_WIDGET_ALERTSWIDGETSRELATIONS_WIDGET + " INTEGER,"
+			+ KEY_WIDGET_ALERTSWIDGETSRELATIONS_SERVER + " INTEGER)";
 	
 	private static final String CREATE_TABLE_GRIDS = "CREATE TABLE " + TABLE_GRIDS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
@@ -155,7 +174,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_MUNINPLUGINS);
 		db.execSQL(CREATE_TABLE_LABELS);
 		db.execSQL(CREATE_TABLE_LABELSRELATIONS);
-		db.execSQL(CREATE_TABLE_WIDGETS);
+		db.execSQL(CREATE_TABLE_GRAPHWIDGETS);
+		db.execSQL(CREATE_TABLE_ALERTSWIDGETS);
+		db.execSQL(CREATE_TABLE_ALERTSWIDGETSRELATIONS);
 		db.execSQL(CREATE_TABLE_GRIDS);
 		db.execSQL(CREATE_TABLE_GRIDITEMRELATIONS);
 	}
@@ -172,7 +193,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_MUNINPLUGINS + " ADD COLUMN " + KEY_MUNINPLUGINS_PLUGINPAGEURL + " TEXT");
 			db.execSQL(CREATE_TABLE_MUNINMASTERS);
 			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_MASTER + " INTEGER");
-			db.execSQL("ALTER TABLE " + TABLE_WIDGETS + " ADD COLUMN " + KEY_WIDGETS_HIDESERVERNAME + " INTEGER");
+			db.execSQL("ALTER TABLE " + TABLE_WIDGET_GRAPHWIDGETS + " ADD COLUMN " + KEY_WIDGET_GRAPHWIDGETS_HIDESERVERNAME + " INTEGER");
 		}
 		if (oldVersion < 5) { // From 4 to 5
 			db.execSQL("ALTER TABLE " + TABLE_MUNINMASTERS + " ADD COLUMN " + KEY_MUNINMASTERS_HDGRAPHS + " TEXT");
@@ -181,6 +202,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_MUNINMASTERS + " ADD COLUMN " + KEY_MUNINMASTERS_AUTHSTRING + " TEXT");
 			db.execSQL("ALTER TABLE " + TABLE_MUNINMASTERS + " ADD COLUMN " + KEY_MUNINMASTERS_AUTHTYPE + " TEXT");
 			db.execSQL("ALTER TABLE " + TABLE_MUNINMASTERS + " ADD COLUMN " + KEY_MUNINMASTERS_SSL + " INTEGER");
+			db.execSQL(CREATE_TABLE_ALERTSWIDGETS);
+			db.execSQL(CREATE_TABLE_ALERTSWIDGETSRELATIONS);
 		}
 	}
 	
@@ -265,7 +288,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		if (onCascade) {
 			deleteGridItemRelations(p);
 			deleteLabelsRelations(p);
-			deleteWidgets(p);
+			deleteGraphWidgets(p);
 		}
 	}
 	
@@ -289,7 +312,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_LABELS_NAME, label.getName());
 		
-		int nbRows = db.update(TABLE_LABELS, values, KEY_ID + " = ?", new String[] { String.valueOf(label.getId()) });
+		int nbRows = db.update(TABLE_LABELS, values, KEY_ID + " = ?", new String[]{String.valueOf(label.getId())});
 		close(null, db);
 		return nbRows;
 	}
@@ -306,18 +329,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return id;
 	}
 	
-	public long insertWidget(Widget w) {
+	public long insertGraphWidget(GraphWidget w) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_WIDGETS_PLUGIN, w.getPlugin().getId());
-		values.put(KEY_WIDGETS_PERIOD, w.getPeriod());
-		values.put(KEY_WIDGETS_WIFIONLY, w.isWifiOnly());
-		values.put(KEY_WIDGETS_WIDGETID, w.getWidgetId());
-		values.put(KEY_WIDGETS_HIDESERVERNAME, w.getHideServerName());
+		values.put(KEY_WIDGET_GRAPHWIDGETS_PLUGIN, w.getPlugin().getId());
+		values.put(KEY_WIDGET_GRAPHWIDGETS_PERIOD, w.getPeriod());
+		values.put(KEY_WIDGET_GRAPHWIDGETS_WIFIONLY, w.isWifiOnly());
+		values.put(KEY_WIDGET_GRAPHWIDGETS_WIDGETID, w.getWidgetId());
+		values.put(KEY_WIDGET_GRAPHWIDGETS_HIDESERVERNAME, w.getHideServerName());
 		
-		long id = db.insert(TABLE_WIDGETS, null, values);
+		long id = db.insert(TABLE_WIDGET_GRAPHWIDGETS, null, values);
 		w.setId(id);
+		close(null, db);
+		return id;
+	}
+
+	public long insertAlertsWidget(AlertsWidget w) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_WIDGET_ALERTSWIDGETS_WIDGETID, w.getWidgetId());
+		values.put(KEY_WIDGET_ALERTSWIDGETS_WIFIONLY, w.isWifiOnly());
+
+		long id = db.insert(TABLE_WIDGET_ALERTSWIDGETS, null, values);
+		w.setId(id);
+
+		// Insert relations
+		for (MuninServer server : w.getServers()) {
+			ContentValues values2 = new ContentValues();
+			values2.put(KEY_WIDGET_ALERTSWIDGETSRELATIONS_SERVER, server.getId());
+			values2.put(KEY_WIDGET_ALERTSWIDGETSRELATIONS_WIDGET, w.getId());
+
+			db.insert(TABLE_WIDGET_ALERTSWIDGETSRELATIONS, null, values2);
+		}
+
 		close(null, db);
 		return id;
 	}
@@ -415,20 +461,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return nbRows;
 	}
 	
-	public int updateGridItemRelation(GridItem i) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		ContentValues values = new ContentValues();
-		values.put(KEY_GRIDITEMRELATIONS_GRID, i.grid.id);
-		values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.plugin.getId());
-		values.put(KEY_GRIDITEMRELATIONS_X, i.X);
-		values.put(KEY_GRIDITEMRELATIONS_Y, i.Y);
-		
-		int nbRows = db.update(TABLE_GRIDITEMRELATIONS, values, KEY_ID + " = ?", new String[] { String.valueOf(i.id) });
-		close(null, db);
-		return nbRows;
-	}
-	
 	public int updateGridName(String oldName, String newName) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -436,21 +468,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_GRIDS_NAME, newName);
 		
 		int nbRows = db.update(TABLE_GRIDS, values, KEY_GRIDS_NAME + " = ?", new String[] { oldName });
-		close(null, db);
-		return nbRows;
-	}
-	
-	public int updateWidget(Widget widget) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		ContentValues values = new ContentValues();
-		values.put(KEY_WIDGETS_PLUGIN, widget.getPlugin().getId());
-		values.put(KEY_WIDGETS_PERIOD, widget.getPeriod());
-		values.put(KEY_WIDGETS_WIFIONLY, widget.isWifiOnly());
-		values.put(KEY_WIDGETS_WIDGETID, widget.getWidgetId());
-		values.put(KEY_WIDGETS_HIDESERVERNAME, widget.getHideServerName());
-		
-		int nbRows = db.update(TABLE_WIDGETS, values, KEY_ID + " = ?", new String[] { String.valueOf(widget.getId()) });
 		close(null, db);
 		return nbRows;
 	}
@@ -633,22 +650,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return null;
 	}
 	
-	public List<Widget> getWidgets() {
-		List<Widget> l = new ArrayList<Widget>();
-		String selectQuery = "SELECT * FROM " + TABLE_WIDGETS;
+	public List<GraphWidget> getGraphWidgets() {
+		List<GraphWidget> l = new ArrayList<GraphWidget>();
+		String selectQuery = "SELECT * FROM " + TABLE_WIDGET_GRAPHWIDGETS;
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
 		if (c != null && c.moveToFirst()) {
 			do {
-				Widget w = new Widget();
+				GraphWidget w = new GraphWidget();
 				w.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-				w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGETS_PERIOD)));
-				w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIDGETID)));
-				w.setPlugin(getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN))));
-				w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)));
-				w.setHideServerName(c.getInt(c.getColumnIndex(KEY_WIDGETS_HIDESERVERNAME)));
+				w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_PERIOD)));
+				w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_WIDGETID)));
+				w.setPlugin(getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_PLUGIN))));
+				w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_WIFIONLY)));
+				w.setHideServerName(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_HIDESERVERNAME)));
 				w.isPersistant = true;
 				l.add(w);
 			} while (c.moveToNext());
@@ -657,28 +674,92 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(c, db);
 		return l;
 	}
+
+	public boolean hasAlertsWidget(int widgetId) {
+		return GenericQueries.getNbLines(this, TABLE_WIDGET_ALERTSWIDGETS, KEY_WIDGET_ALERTSWIDGETS_WIDGETID + " = " + widgetId) > 0;
+	}
+
+	/**
+	 * Get an alertWidget from its id.
+	 * @param widgetId Widget id provided by Android at its creation
+	 * @param masters List of masters. Can be null.
+	 * @return
+	 */
+	public AlertsWidget getAlertsWidget(int widgetId, List<MuninMaster> masters) {
+		String selectQuery = "SELECT * FROM " + TABLE_WIDGET_ALERTSWIDGETS
+				+ " WHERE " + KEY_WIDGET_ALERTSWIDGETS_WIDGETID + " = " + widgetId;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		if (c != null && c.moveToFirst()) {
+			AlertsWidget w = new AlertsWidget();
+			w.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+			w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGET_ALERTSWIDGETS_WIDGETID)));
+			w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGET_ALERTSWIDGETS_WIFIONLY)));
+
+			// Get servers
+			if (masters == null)
+				masters = getMasters();
+			List<MuninServer> servers = getAlertsWidgetRelations(widgetId, masters, db);
+			w.setServers(servers);
+
+			return w;
+		}
+		return null;
+	}
+
+	public List<MuninServer> getAlertsWidgetRelations(int widgetId, List<MuninMaster> masters, SQLiteDatabase db) {
+		List<MuninServer> servers = new ArrayList<MuninServer>();
+
+		String selectQuery = "SELECT * FROM " + TABLE_WIDGET_ALERTSWIDGETSRELATIONS
+				+ " WHERE " + KEY_WIDGET_ALERTSWIDGETSRELATIONS_WIDGET + " = " + widgetId;
+
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		if (c != null && c.moveToFirst()) {
+			do {
+				int serverId = c.getInt(c.getColumnIndex(KEY_WIDGET_ALERTSWIDGETSRELATIONS_SERVER));
+				// Find server
+				MuninServer s = null;
+				for (MuninMaster master : masters) {
+					for (MuninServer server : master.getChildren()) {
+						if (server.getId() == serverId) {
+							s = server;
+							break;
+						}
+					}
+				}
+
+				if (s != null)
+					servers.add(s);
+			} while (c.moveToNext());
+		}
+
+		return servers;
+	}
 	
-	public Widget getWidget(int widgetId) {
-		String selectQuery = "SELECT * FROM " + TABLE_WIDGETS
-				+ " WHERE " + KEY_WIDGETS_WIDGETID + " = " + widgetId;
+	public GraphWidget getGraphWidget(int widgetId) {
+		String selectQuery = "SELECT * FROM " + TABLE_WIDGET_GRAPHWIDGETS
+				+ " WHERE " + KEY_WIDGET_GRAPHWIDGETS_WIDGETID + " = " + widgetId;
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
 		if (c != null && c.moveToFirst()) {
-			Widget w = new Widget();
+			GraphWidget w = new GraphWidget();
 			w.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-			w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGETS_PERIOD)));
-			w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIDGETID)));
+			w.setPeriod(c.getString(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_PERIOD)));
+			w.setWidgetId(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_WIDGETID)));
 			
 			// Get plugin, and master (server is fetched with getPlugin)
-			MuninPlugin plugin = getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGETS_PLUGIN)));
+			MuninPlugin plugin = getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_PLUGIN)));
 			MuninMaster master = getMaster((int) plugin.getInstalledOn().getId(), null);
 			plugin.getInstalledOn().setParent(master);
 			
 			w.setPlugin(plugin);
-			w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGETS_WIFIONLY)));
-			w.setHideServerName(c.getInt(c.getColumnIndex(KEY_WIDGETS_HIDESERVERNAME)));
+			w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_WIFIONLY)));
+			w.setHideServerName(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_HIDESERVERNAME)));
 			w.isPersistant = true;
 			close(c, db);
 			return w;
@@ -853,7 +934,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void deletePlugins(MuninServer s) {
 		List<MuninPlugin> l = getPlugins(s);
 		for (MuninPlugin p : l) {
-			deleteWidgets(p);
+			deleteGraphWidgets(p);
 			deleteLabelsRelations(p);
 			deleteGridItemRelations(p);
 		}
@@ -862,15 +943,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(null, db);
 	}
 	
-	public void deleteWidgets(MuninPlugin p) {
+	public void deleteGraphWidgets(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_WIDGETS, KEY_WIDGETS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });
+		db.delete(TABLE_WIDGET_GRAPHWIDGETS, KEY_WIDGET_GRAPHWIDGETS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });
 		close(null, db);
 	}
 	
-	public void deleteWidget(int appWidgetId) {
+	public void deleteGraphWidget(int appWidgetId) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_WIDGETS, KEY_WIDGETS_WIDGETID + " = ?", new String[] { String.valueOf(appWidgetId) });
+		db.delete(TABLE_WIDGET_GRAPHWIDGETS, KEY_WIDGET_GRAPHWIDGETS_WIDGETID + " = ?", new String[] { String.valueOf(appWidgetId) });
 		close(null, db);
 	}
 	
@@ -918,10 +999,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_LABELS);
 		close(null, db);
 	}
-	public void deleteWidgets() {
+	public void deleteGraphWidgets() {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_WIDGETS);
-		db.execSQL(CREATE_TABLE_WIDGETS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_WIDGET_GRAPHWIDGETS);
+		db.execSQL(CREATE_TABLE_GRAPHWIDGETS);
 		close(null, db);
 	}
 	public void deleteMuninPlugins() {

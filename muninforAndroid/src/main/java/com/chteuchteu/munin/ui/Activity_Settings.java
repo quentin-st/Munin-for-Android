@@ -308,7 +308,7 @@ public class Activity_Settings extends MuninActivity {
 				Util.setPref(context, "hdGraphs", "true");
 				
 				
-				muninFoo.sqlite.dbHlpr.deleteWidgets();
+				muninFoo.sqlite.dbHlpr.deleteGraphWidgets();
 				muninFoo.sqlite.dbHlpr.deleteLabels();
 				muninFoo.sqlite.dbHlpr.deleteLabelsRelations();
 				muninFoo.sqlite.dbHlpr.deleteMuninPlugins();

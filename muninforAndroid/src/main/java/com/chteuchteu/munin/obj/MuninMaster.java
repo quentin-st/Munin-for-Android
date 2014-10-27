@@ -389,30 +389,30 @@ public class MuninMaster {
 	 * When temporary deleting an old Master, we should
 	 * care about labels, widgets and grids.
 	 * Here, we reattach and save the widgets.
-	 * @return ArrayList<Widget> : widgets who should be updated afterwards
+	 * @return ArrayList<GraphWidget> : widgets who should be updated afterwards
 	 */
-	public ArrayList<Widget> reattachWidgets(MuninFoo muninFoo, MuninMaster oldMaster) {
-		ArrayList<Widget> toBeUpdated_widgets = new ArrayList<Widget>();
-		List<Widget> widgets = muninFoo.sqlite.dbHlpr.getWidgets();
+	public ArrayList<GraphWidget> reattachWidgets(MuninFoo muninFoo, MuninMaster oldMaster) {
+		ArrayList<GraphWidget> toBeUpdated_graphWidgets = new ArrayList<GraphWidget>();
+		List<GraphWidget> graphWidgets = muninFoo.sqlite.dbHlpr.getGraphWidgets();
 		
-		if (widgets.isEmpty())
-			return toBeUpdated_widgets;
+		if (graphWidgets.isEmpty())
+			return toBeUpdated_graphWidgets;
 		
 		for (MuninServer server : oldMaster.getChildren()) {
 			for (MuninPlugin plugin : server.getPlugins()) {
-				// Check widgets
-				for (Widget widget : widgets) {
-					if (widget.getPlugin().equals(plugin)) {
+				// Check graphWidgets
+				for (GraphWidget graphWidget : graphWidgets) {
+					if (graphWidget.getPlugin().equals(plugin)) {
 						// Reattach
-						MuninPlugin newPlugin = this.getServer(server.getServerUrl()).getPlugin(widget.getPlugin().getName());
-						widget.setPlugin(newPlugin);
-						toBeUpdated_widgets.add(widget);
+						MuninPlugin newPlugin = this.getServer(server.getServerUrl()).getPlugin(graphWidget.getPlugin().getName());
+						graphWidget.setPlugin(newPlugin);
+						toBeUpdated_graphWidgets.add(graphWidget);
 					}
 				}
 			}
 		}
 		
-		return toBeUpdated_widgets;
+		return toBeUpdated_graphWidgets;
 	}
 	
 	/**
