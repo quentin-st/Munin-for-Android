@@ -86,6 +86,9 @@
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 				<action android:name="android.appwidget.action.APPWIDGET_DELETED" />
+				<action android:name="com.chteuchteu.munin.widget2.START_PREMIUM" />
+				<action android:name="com.chteuchteu.munin.widget2.START_ACTIVITY" />
+				<action android:name="com.chteuchteu.munin.widget2.REFRESH" />
 			</intent-filter>
 
 			<meta-data

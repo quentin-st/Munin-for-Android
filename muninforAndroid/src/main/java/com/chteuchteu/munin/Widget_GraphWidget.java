@@ -26,9 +26,9 @@ public class Widget_GraphWidget extends AppWidgetProvider {
 	private static RemoteViews 		views;
 	private static AppWidgetManager 	awm;
 	private static int				widgetId;
-	private static final String ACTION_UPDATE_GRAPH = "com.chteuchteu.munin.graphWidget.UPDATE_GRAPH";
-	private static final String ACTION_START_ACTIVITY = "com.chteuchteu.munin.graphWidget.START_ACTIVITY";
-	private static final String ACTION_START_PREMIUM = "com.chteuchteu.munin.graphWidget.START_PREMIUM";
+	private static final String ACTION_UPDATE_GRAPH = "com.chteuchteu.munin.widget.UPDATE_GRAPH";
+	private static final String ACTION_START_ACTIVITY = "com.chteuchteu.munin.widget.START_ACTIVITY";
+	private static final String ACTION_START_PREMIUM = "com.chteuchteu.munin.widget.START_PREMIUM";
 	
 	private static SQLite sqlite;
 	private static GraphWidget graphWidget;

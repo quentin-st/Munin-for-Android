@@ -954,6 +954,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.delete(TABLE_WIDGET_GRAPHWIDGETS, KEY_WIDGET_GRAPHWIDGETS_WIDGETID + " = ?", new String[] { String.valueOf(appWidgetId) });
 		close(null, db);
 	}
+
+	public void deleteAlertsWidget(int appWidgetId) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_WIDGET_ALERTSWIDGETS, KEY_WIDGET_ALERTSWIDGETS_WIDGETID + " = ?", new String[] { String.valueOf(appWidgetId) });
+		close(null, db);
+	}
 	
 	public void deleteLabelsRelations(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
