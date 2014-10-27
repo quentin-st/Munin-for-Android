@@ -4,15 +4,6 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
 
-	<TextView
-		android:id="@+id/widgetConfiguration_textview"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:layout_margin="20dp"
-		android:gravity="center"
-		android:visibility="gone" />
-
 	<ListView
 		android:id="@+id/listview1"
 		android:layout_width="match_parent"
@@ -42,21 +33,24 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/widget_configuration1" />
+			android:text="@string/widget_configuration1"
+			android:textColor="#333333" />
 
 		<CheckBox
 			android:id="@+id/checkbox_wifi"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="5dp"
-			android:text="@string/widget_configuration2" />
+			android:text="@string/widget_configuration2"
+			android:textColor="#333333" />
 
 		<CheckBox
 			android:id="@+id/checkbox_hidetitle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="5dp"
-			android:text="@string/widget_configuration3" />
+			android:text="@string/widget_configuration3"
+			android:textColor="#333333" />
 
 		<Button
 			android:id="@+id/save"
