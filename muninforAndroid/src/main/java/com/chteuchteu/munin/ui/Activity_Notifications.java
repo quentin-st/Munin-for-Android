@@ -240,22 +240,32 @@ public class Activity_Notifications extends MuninActivity {
 	
 	private void actionSave() {
 		if (muninFoo.premium) {
-			if (cb_notifications.isChecked()) {
-				Util.setPref(context, "notifications", "true");
-				Util.setPref(context, "notifs_wifiOnly", String.valueOf(cb_wifiOnly.isChecked()));
-				Util.setPref(context, "notifs_vibrate", String.valueOf(cb_vibrate.isChecked()));
-				Util.setPref(context, "notifs_refreshRate", REFRESH_RATES[sp_refreshRate.getSelectedItemPosition()]);
-				enableNotifications();
+			// At least one server selected
+			boolean ok = false;
+			for (CheckBox checkBox : checkboxes) {
+				if (checkBox.isChecked()) {
+					ok = true; break;
+				}
 			}
-			else {
-				Util.setPref(context, "notifications", "false");
-				Util.removePref(context, "notifs_wifiOnly");
-				Util.removePref(context, "notifs_refreshRate");
-				Util.removePref(context, "notifs_vibrate");
-				disableNotifications();
-			}
+
+			if (ok) {
+				if (cb_notifications.isChecked()) {
+					Util.setPref(context, "notifications", "true");
+					Util.setPref(context, "notifs_wifiOnly", String.valueOf(cb_wifiOnly.isChecked()));
+					Util.setPref(context, "notifs_vibrate", String.valueOf(cb_vibrate.isChecked()));
+					Util.setPref(context, "notifs_refreshRate", REFRESH_RATES[sp_refreshRate.getSelectedItemPosition()]);
+					enableNotifications();
+				} else {
+					Util.setPref(context, "notifications", "false");
+					Util.removePref(context, "notifs_wifiOnly");
+					Util.removePref(context, "notifs_refreshRate");
+					Util.removePref(context, "notifs_vibrate");
+					disableNotifications();
+				}
+				Toast.makeText(context, R.string.text36, Toast.LENGTH_SHORT).show();
+			} else
+				Toast.makeText(context, R.string.text56, Toast.LENGTH_SHORT).show();
 		}
-		Toast.makeText(context, R.string.text36, Toast.LENGTH_SHORT).show();
 	}
 	
 	@Override
