@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
+import com.chteuchteu.munin.hlpr.DatabaseHelper;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 
 public class Widget_AlertsWidget_WidgetProvider extends AppWidgetProvider {
@@ -35,5 +36,12 @@ public class Widget_AlertsWidget_WidgetProvider extends AppWidgetProvider {
 		widget.setPendingIntentTemplate(R.id.servers, clickPI);
 
 		appWidgetManager.updateAppWidget(appWidgetId, widget);
+	}
+
+	@Override
+	public void onDeleted(Context context, int[] appWidgetIds) {
+		DatabaseHelper dHelper = new DatabaseHelper(context);
+		for (int i : appWidgetIds)
+			dHelper.deleteAlertsWidget(i);
 	}
 }

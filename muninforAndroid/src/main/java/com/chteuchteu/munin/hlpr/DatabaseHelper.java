@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.AlertsWidget;
@@ -683,7 +682,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	/**
 	 * Get an alertWidget from its id.
 	 * @param widgetId Widget id provided by Android at its creation
-	 * @param masters List of masters. Can be null.
+	 * @param servers List of servers. Can be null.
 	 * @return
 	 */
 	public AlertsWidget getAlertsWidget(int widgetId, List<MuninServer> servers) {
@@ -737,7 +736,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 
-		return servers;
+		return widgetServers;
 	}
 	
 	public GraphWidget getGraphWidget(int widgetId) {
