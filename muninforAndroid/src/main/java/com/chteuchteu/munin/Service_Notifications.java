@@ -130,7 +130,7 @@ public class Service_Notifications extends Service {
 			if (nbCriticals > 0 && nbWarnings > 0) {
 				notifTitle = nbCriticals + "";
 				if (nbCriticals == 1)
-					notifTitle += strings[0];
+					notifTitle += " " + strings[0];
 				else
 					notifTitle += strings[1];
 				notifTitle += strings[2];
@@ -161,7 +161,7 @@ public class Service_Notifications extends Service {
 			} else if (nbCriticals > 0 && nbWarnings == 0) {
 				notifTitle = nbCriticals + "";
 				if (nbCriticals == 1)
-					notifTitle += strings[0];
+					notifTitle += " " + strings[0];
 				else
 					notifTitle += strings[1];
 				notifTitle += strings[5];
