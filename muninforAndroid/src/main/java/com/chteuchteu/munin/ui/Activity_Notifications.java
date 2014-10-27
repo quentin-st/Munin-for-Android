@@ -35,6 +35,7 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressLint("InflateParams")
@@ -69,8 +70,7 @@ public class Activity_Notifications extends MuninActivity {
 		// Refresh rate spinner
 		String[] values = getString(R.string.text57).split("/");
 		List<String> list = new ArrayList<String>();
-		for (String v: values)
-			list.add(v);
+		Collections.addAll(list, values);
 		
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -101,6 +101,7 @@ public class Activity_Notifications extends MuninActivity {
 		sp_refreshRate.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int pos, long id) {
+				currentRefreshRate = REFRESH_RATES[pos];
 				computeEstimatedConsumption();
 			}
 			@Override public void onNothingSelected(AdapterView<?> arg0) { }
@@ -242,10 +243,20 @@ public class Activity_Notifications extends MuninActivity {
 		if (muninFoo.premium) {
 			// At least one server selected
 			boolean ok = false;
-			for (CheckBox checkBox : checkboxes) {
-				if (checkBox.isChecked()) {
-					ok = true; break;
+
+			if (checkboxes.length > 0 && checkboxes[0] != null) {
+				// Opened at least once servers list
+				for (CheckBox checkBox : checkboxes) {
+					if (checkBox.isChecked()) {
+						ok = true;
+						break;
+					}
 				}
+			} else {
+				// Check from pref string
+				int length = Util.getPref(context, "notifs_serversList").length();
+				if (length > 2) // != "" && != ";"
+					ok = true;
 			}
 
 			if (ok) {
