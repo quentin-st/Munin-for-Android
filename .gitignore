@@ -44,15 +44,6 @@ build/
 res/values/com_crashlytics_export_strings.xml
 assets/crashlytics-build.properties
 
-# Old project format, in case of
-/*/out
-/*/*/build
-/*/*/production
-*.iws
-*.ipr
-*~
-*.swp
-
 # Additionnal files
 gradlew
 gradlew.bat
