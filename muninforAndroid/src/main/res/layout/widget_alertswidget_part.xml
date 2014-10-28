@@ -11,30 +11,58 @@
 		android:id="@+id/textContainer"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:paddingLeft="10dp"
-		android:paddingRight="10dp"
+		android:orientation="horizontal"
+		android:paddingLeft="5dp"
+		android:paddingRight="5dp"
 		android:paddingTop="3dp"
 		android:paddingBottom="3dp">
 
-		<TextView
-			android:id="@+id/item"
+		<ImageView
+			android:id="@+id/icon_error"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:src="@drawable/ic_action_alert_error"
+			android:visibility="gone"/>
+
+		<ImageView
+			android:id="@+id/icon_warning"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:src="@drawable/ic_action_alert_warning"
+			android:visibility="gone"/>
+
+		<ImageView
+			android:id="@+id/icon_unreachable"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:src="@drawable/ic_unreachable"
+			android:visibility="gone"/>
+
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:textColor="#444444"
-			android:textSize="15sp"/>
+			android:orientation="vertical">
 
-		<TextView
-			android:id="@+id/item2"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"/>
+			<TextView
+				android:id="@+id/item"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textColor="#333333"
+				android:textSize="16sp"/>
 
-		<TextView
-			android:id="@+id/item3"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"/>
+			<TextView
+				android:id="@+id/item2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textColor="#777777"
+				android:textSize="14sp"/>
 
 		</LinearLayout>
+
+	</LinearLayout>
 
 	<LinearLayout
 		android:id="@+id/separator"
@@ -43,6 +71,5 @@
 		android:layout_gravity="bottom"
 		android:background="#DEDEDE"
 		android:layout_marginTop="8dp"
-		android:layout_marginBottom="5dp"
 		android:orientation="vertical"/>
 </LinearLayout>

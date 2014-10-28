@@ -98,30 +98,64 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 		else { // Loading finished : display data
 			MuninServer server = servers.get(position);
 			int nbWarnings = server.getWarnedPlugins().size();
-			int nbErrors = server.getErroredPlugins().size();
+			int nbCriticals = server.getErroredPlugins().size();
+
+			row.setTextViewText(R.id.item, server.getName());
+
+			String[] strings = context.getString(R.string.text58).split("/");
 
 			// Check reason
 			if (server.reachable != Util.SpecialBool.TRUE) {
-				// Set line in gray, hide both line1 and line2
-			} else if (nbErrors > 0 && nbWarnings > 0) {
-				// Set line in red ; line1 = X criticals && X warnings
-				// line2 = errors = , ... (cf Activity_Alerts)
-			} else if (nbErrors > 0 && nbWarnings == 0) {
-				// Set line in ref, line1 = X criticals
-				// line2 = errors = ...
-			} else if (nbErrors == 0 && nbWarnings > 0) {
-				// Set line in orange, line1 = X warnings
-				// line2 = warnings = ...
-			}
+				row.setViewVisibility(R.id.icon_unreachable, View.VISIBLE);
+				row.setViewVisibility(R.id.item2, View.GONE);
+			} else if (nbCriticals > 0 && nbWarnings > 0) {
+				row.setViewVisibility(R.id.icon_error, View.VISIBLE);
 
-			row.setTextViewText(R.id.item, server.getName());
-			row.setTextViewText(R.id.item2, server.getWarnedPlugins().size() + " warning(s) & " + server.getErroredPlugins().size() + " critical(s)");
+				// Construct string
+				String row2Text = nbCriticals + "";
+				if (nbCriticals == 1)
+					row2Text += " " + strings[0];
+				else
+					row2Text += strings[1];
+				row2Text += strings[2];
+				row2Text += nbWarnings;
+				if (nbWarnings == 1)
+					row2Text += strings[3];
+				else
+					row2Text += strings[4];
+
+				row.setTextViewText(R.id.item2, row2Text);
+			} else if (nbCriticals > 0 && nbWarnings == 0) {
+				row.setViewVisibility(R.id.icon_error, View.VISIBLE);
+
+				// Construct string
+				String row2Text = nbCriticals + "";
+				if (nbCriticals == 1)
+					row2Text += " " + strings[0];
+				else
+					row2Text += strings[1];
+
+				row.setTextViewText(R.id.item2, row2Text);
+			} else if (nbCriticals == 0 && nbWarnings > 0) {
+				row.setViewVisibility(R.id.icon_warning, View.VISIBLE);
+
+				// Construct string
+				String row2Text = nbWarnings + "";
+				if (nbWarnings == 1)
+					row2Text += strings[3];
+				else
+					row2Text += strings[4];
+
+				row.setTextViewText(R.id.item2, row2Text);
+			}
 		}
 
 		// Hide separator if needed
 		if (!pluginsStatesFetched && position == 0
 				|| position == servers.size()-1)
 			row.setViewVisibility(R.id.separator, View.GONE);
+		else // Recycling view...
+			row.setViewVisibility(R.id.separator, View.VISIBLE);
 
 		// Set onclick : open Activity_Alerts
 		Intent openIntent = new Intent();

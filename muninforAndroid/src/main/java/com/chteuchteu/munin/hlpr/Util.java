@@ -294,7 +294,7 @@ public final class Util {
 				return url;
 			}
 			if (url == null)
-				return url;
+				return null;
 			if (_url.getPort() == port)
 				return url;
 			return _url.getProtocol() + "://" + _url.getHost() + ":" + port + _url.getFile();
