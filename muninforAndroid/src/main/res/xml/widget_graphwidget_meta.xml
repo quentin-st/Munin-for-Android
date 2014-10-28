@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="com.chteuchteu.munin.Widget_GraphWidget_Configure"
+    android:configure="com.chteuchteu.munin.wdget.Widget_GraphWidget_Configure"
     android:initialLayout="@layout/widget_graphwidget_layout"
     android:minHeight="@dimen/appwidget_min_height"
     android:minWidth="@dimen/appwidget_min_width"

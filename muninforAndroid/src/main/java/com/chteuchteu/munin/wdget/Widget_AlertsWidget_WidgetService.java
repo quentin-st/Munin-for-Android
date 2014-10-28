@@ -1,4 +1,4 @@
-package com.chteuchteu.munin;
+package com.chteuchteu.munin.wdget;
 
 
 import android.content.Intent;

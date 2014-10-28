@@ -1,4 +1,4 @@
-package com.chteuchteu.munin;
+package com.chteuchteu.munin.wdget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.GraphWidget;
@@ -23,9 +25,6 @@ import com.chteuchteu.munin.ui.Activity_GoPremium;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 
 public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
-	private static RemoteViews 		views;
-	private static AppWidgetManager 	awm;
-	private static int				widgetId;
 	private static final String ACTION_UPDATE_GRAPH = "com.chteuchteu.munin.widget.UPDATE_GRAPH";
 	private static final String ACTION_START_ACTIVITY = "com.chteuchteu.munin.widget.START_ACTIVITY";
 	private static final String ACTION_START_PREMIUM = "com.chteuchteu.munin.widget.START_PREMIUM";
@@ -42,35 +41,32 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 		
 		// Perform this loop procedure for each App GraphWidget that belongs to this provider
-		for (int i=0; i < allWidgetIds.length; i++)
-			updateAppWidget(context, appWidgetManager, allWidgetIds[i], false);
+		for (Integer i : allWidgetIds)
+			updateAppWidget(context, appWidgetManager, i, false);
 	}
 	
-	public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, boolean forceUpdate) {
-		awm = appWidgetManager;
-		widgetId = appWidgetId;
-		
+	public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int widgetId, boolean forceUpdate) {
 		boolean premium = MuninFoo.isPremium(context);
 		
 		// Updating graphWidget
-		views = new RemoteViews(context.getPackageName(), R.layout.widget_graphwidget_layout);
+		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_graphwidget_layout);
 		if (!premium){
 			views.setTextViewText(R.id.widget_servername, "Munin for Android Features Pack needed");
 			//views.setBitmap(R.id.widget_graph, "setImageBitmap", BitmapFactory.decodeResource(context.getResources(), R.drawable.widget_featurespack));
 			
 			// Action open Munin for Android
 			Intent intent2 = new Intent(context, Widget_GraphWidget_WidgetProvider.class);
-			intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+			intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 			intent2.setAction(ACTION_START_PREMIUM);
-			PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, appWidgetId, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, widgetId, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
 			views.setOnClickPendingIntent(R.id.widget_graph, pendingIntent2);
-			
-			awm.updateAppWidget(widgetId, views);
+
+			appWidgetManager.updateAppWidget(widgetId, views);
 		} else {
 			// premium
 			if (sqlite == null)
 				sqlite = new SQLite(context, MuninFoo.getInstance(context));
-			graphWidget = sqlite.dbHlpr.getGraphWidget(appWidgetId);
+			graphWidget = sqlite.dbHlpr.getGraphWidget(widgetId);
 			
 			if (graphWidget != null && graphWidget.getPlugin() != null && graphWidget.getPlugin().getInstalledOn() != null) {
 				if (!graphWidget.getHideServerName())
@@ -82,21 +78,21 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 				
 				// Update action
 				Intent intent = new Intent(context, Widget_GraphWidget_WidgetProvider.class);
-				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 				intent.setAction(ACTION_UPDATE_GRAPH);
-				PendingIntent pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 				views.setOnClickPendingIntent(R.id.widget_legend, pendingIntent);
 				
 				// Action open Munin for Android
 				Intent intent2 = new Intent(context, Widget_GraphWidget_WidgetProvider.class);
-				intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+				intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 				intent2.setAction(ACTION_START_ACTIVITY);
-				PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, appWidgetId, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, widgetId, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
 				views.setOnClickPendingIntent(R.id.widget_graph, pendingIntent2);
 				
 				if (!graphWidget.isWifiOnly() || forceUpdate) {
 					// Launching Asyntask
-					ApplyBitmap task = new ApplyBitmap(graphWidget, views, awm, appWidgetId);
+					ApplyBitmap task = new ApplyBitmap(graphWidget, views, appWidgetManager, widgetId);
 					task.execute();
 				} else {
 					// Automatic update -> let's check if on wifi or data
@@ -104,7 +100,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 					NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 					
 					if (mWifi.isConnected())
-						updateAppWidget(context, appWidgetManager, appWidgetId, true);
+						updateAppWidget(context, appWidgetManager, widgetId, true);
 				}
 			}
 		}

@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/item"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:id="@+id/line"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:textColor="#444444"
-	android:textSize="15sp"
-	android:layout_marginBottom="10dp"/>
+	android:orientation="vertical"
+	android:paddingLeft="10dp"
+	android:paddingRight="10dp">
+
+	<TextView
+		android:id="@+id/item"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textColor="#444444"
+		android:textSize="15sp"/>
+
+	<TextView
+		android:id="@+id/item2"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"/>
+
+	<LinearLayout
+		android:id="@+id/separator"
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:layout_gravity="bottom"
+		android:background="#DEDEDE"
+		android:layout_marginTop="8dp"
+		android:layout_marginBottom="5dp"/>
+</LinearLayout>

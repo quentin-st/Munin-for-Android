@@ -1,4 +1,4 @@
-package com.chteuchteu.munin;
+package com.chteuchteu.munin.wdget;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,6 +19,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
