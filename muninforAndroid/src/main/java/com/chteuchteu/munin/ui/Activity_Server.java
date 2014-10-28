@@ -69,10 +69,10 @@ public class Activity_Server extends MuninActivity {
 	private String 	message_text;
 	private AddServerThread task;
 	private int		algo_state = 0;
-	private int		AST_IDLE = 0;
-	private int		AST_RUNNING = 1;
-	private int		AST_WAITING_FOR_URL = 2;
-	private int		AST_WAITING_FOR_CREDENTIALS = 3;
+	private static final int AST_IDLE = 0;
+	private static final int AST_RUNNING = 1;
+	private static final int AST_WAITING_FOR_URL = 2;
+	private static final int AST_WAITING_FOR_CREDENTIALS = 3;
 	
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

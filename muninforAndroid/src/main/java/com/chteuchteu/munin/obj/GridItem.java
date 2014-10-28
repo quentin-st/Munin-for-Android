@@ -372,7 +372,7 @@ public class GridItem {
 			iv.setAlpha(1f);
 		List<View> toBeRemoved = new ArrayList<View>();
 		for (int i=0; i<container.getChildCount(); i++) {
-			if (container.getChildAt(i).getTag() != null && ((String) container.getChildAt(i).getTag()).equals("action"))
+			if (container.getChildAt(i).getTag() != null && container.getChildAt(i).getTag().equals("action"))
 				toBeRemoved.add(container.getChildAt(i));
 		}
 		

@@ -111,7 +111,6 @@ a { color: #1184C3; text-decoration: none; }
 	<string name="notificationsTitle">Уведомления</string>
 	<string name="widget_configuration1">Готово! Виджет добавлен на главный экран. Подсказка: для обновления графика коснитесь серой полоски на виджете</string>
 	<string name="widget_configuration2">Авто-обновление графика только по WiFi (1 раз в час)</string>
-	<string name="text21.3">обновлено</string>
 	<string name="text49.1">Скрыть серверы с норм. статусом</string>
 	<string name="text49.2">Показать серверы с норм. статусом</string>
 	<string name="text50.1">критический</string>

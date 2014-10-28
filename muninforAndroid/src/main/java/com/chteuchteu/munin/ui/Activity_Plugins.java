@@ -43,7 +43,7 @@ import java.util.Map;
 
 public class Activity_Plugins extends MuninActivity {
 	private SimpleAdapter 		sa;
-	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+	private ArrayList<HashMap<String,String>> list;
 	private List<MuninPlugin>	pluginsList;
 	private MuninPlugin[] 		pluginsFilter;
 
@@ -67,6 +67,7 @@ public class Activity_Plugins extends MuninActivity {
 		dh.setDrawerActivity(DrawerHelper.Activity_Plugins);
 
 		this.listview = (ListView) findViewById(R.id.listview);
+		list = new ArrayList<HashMap<String,String>>();
 
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(false);
@@ -264,14 +265,14 @@ public class Activity_Plugins extends MuninActivity {
 		});
 	}
 	
-	public Map<String,?> createItem(String title, String caption) {
+	private Map<String,?> createItem(String title, String caption) {
 		Map<String,String> item = new HashMap<String,String>();
 		item.put("title", title);
 		item.put("caption", caption);
 		return item;
 	}
 	
-	public Map<String,?> createItem(String title) {
+	private Map<String,?> createItem(String title) {
 		Map<String,String> item = new HashMap<String,String>();
 		item.put("title", title);
 		return item;

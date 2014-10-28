@@ -287,7 +287,7 @@ public final class Util {
 		}
 		
 		private static String setPort(String url, int port) {
-			URL _url = null;
+			URL _url;
 			try {
 				_url = new URL(url);
 			} catch (MalformedURLException e) {

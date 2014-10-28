@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -90,7 +89,6 @@ public class MuninActivity extends Activity {
 		dh.getDrawer().setOnOpenListener(new SlidingMenu.OnOpenListener() {
 			@Override
 			public void onOpen() {
-				dh.setIsOpened(true);
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 
 				activityName = actionBar.getTitle().toString();
@@ -107,7 +105,6 @@ public class MuninActivity extends Activity {
 		dh.getDrawer().setOnCloseListener(new SlidingMenu.OnCloseListener() {
 			@Override
 			public void onClose() {
-				dh.setIsOpened(false);
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
 				actionBar.setTitle(activityName);
 
@@ -153,5 +150,5 @@ public class MuninActivity extends Activity {
 		materialMenu.onSaveInstanceState(outState);
 	}
 
-	protected void log(String s) { if (MuninFoo.DEBUG) Log.i("MuninActivity", s); }
+	protected void log(String s) { MuninFoo.log(getClass().getName(), s); }
 }

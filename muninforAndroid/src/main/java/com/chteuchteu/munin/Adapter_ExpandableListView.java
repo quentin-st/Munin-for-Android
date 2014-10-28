@@ -80,7 +80,7 @@ public class Adapter_ExpandableListView extends BaseExpandableListAdapter {
 			convertView = infalInflater.inflate(R.layout.expandable_master, null);
 		}
 		TextView item = (TextView) convertView.findViewById(R.id.master);
-		Util.Fonts.setFont((Context) context, item, CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(context, item, CustomFont.Roboto_Medium);
 		item.setText(master.getName());
 		
 		if (master.isAuthNeeded()) {

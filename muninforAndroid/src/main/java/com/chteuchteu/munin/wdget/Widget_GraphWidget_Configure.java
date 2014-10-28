@@ -199,7 +199,7 @@ public class Widget_GraphWidget_Configure extends Activity {
 	 * Configures the created widget
 	 * @param context
 	 */
-	public void configureWidget(Context context) {
+	private void configureWidget(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		Widget_GraphWidget_WidgetProvider.updateAppWidget(context, appWidgetManager, mAppWidgetId, true);
 	}

@@ -170,7 +170,7 @@ public class Grid {
 	private void removeEmptyLines(Context c) {
 		for (int y=nbLines-1; y>=0; y--) {
 			if (isLineEmpty(y))
-				removeEmptyLine(c, y);
+				removeEmptyLine(y);
 			else // Stop removing lines when the target line isn't empty
 				return;
 		}
@@ -255,7 +255,7 @@ public class Grid {
 		return false;
 	}
 	
-	private boolean removeEmptyLine(Context c, int y) {
+	private boolean removeEmptyLine(int y) {
 		if (y >= nbLines)
 			return false;
 		
@@ -356,7 +356,7 @@ public class Grid {
 		return null;
 	}
 	
-	public int getGridWidth() {
+	private int getGridWidth() {
 		int curWidth = 0;
 		for (GridItem i : items) {
 			if (i.X > curWidth)
@@ -377,7 +377,7 @@ public class Grid {
 		return lastFullCol + 1;
 	}
 	
-	public int getGridHeight() {
+	private int getGridHeight() {
 		int curHeight = 0;
 		for (GridItem i : items) {
 			if (i.Y > curHeight)

@@ -275,7 +275,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		long id = db.insert(TABLE_MUNINPLUGINS, null, values);
 		p.setId(id);
-		p.isPersistant = true;
 		close(null, db);
 		return id;
 	}
@@ -357,6 +356,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		// Insert relations
 		for (MuninServer server : w.getServers()) {
+			MuninFoo.log("Inserting AlertsWidget relation between widget "
+					+ w.getWidgetId() + " and server " + server.getName());
+
 			ContentValues values2 = new ContentValues();
 			values2.put(KEY_WIDGET_ALERTSWIDGETSRELATIONS_SERVER, server.getId());
 			values2.put(KEY_WIDGET_ALERTSWIDGETSRELATIONS_WIDGET, w.getId());
@@ -597,7 +599,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_CATEGORY)));
 				p.setPluginPageUrl(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_PLUGINPAGEURL)));
 				p.setInstalledOn(s);
-				p.isPersistant = true;
 				l.add(p);
 			} while (c.moveToNext());
 		}
@@ -621,7 +622,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			p.setCategory(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_CATEGORY)));
 			p.setPluginPageUrl(c.getString(c.getColumnIndex(KEY_MUNINPLUGINS_PLUGINPAGEURL)));
 			p.setInstalledOn(getServer(c.getInt(c.getColumnIndex(KEY_MUNINPLUGINS_SERVER))));
-			p.isPersistant = true;
 			close(c, db);
 			return p;
 		}
@@ -666,7 +666,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				w.setPlugin(getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_PLUGIN))));
 				w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_WIFIONLY)));
 				w.setHideServerName(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_HIDESERVERNAME)));
-				w.isPersistant = true;
 				l.add(w);
 			} while (c.moveToNext());
 		}
@@ -760,7 +759,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			w.setPlugin(plugin);
 			w.setWifiOnly(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_WIFIONLY)));
 			w.setHideServerName(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_HIDESERVERNAME)));
-			w.isPersistant = true;
 			close(c, db);
 			return w;
 		}

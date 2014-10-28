@@ -279,7 +279,7 @@ public class MuninServer {
 		return l;
 	}
 	
-	public List<String> getDistinctCategories() {
+	private List<String> getDistinctCategories() {
 		List<String> l = new ArrayList<String>();
 		
 		for (MuninPlugin p : plugins) {

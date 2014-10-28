@@ -10,7 +10,6 @@
 		android:layout_height="wrap_content"
 		android:background="#333333"
 		android:clickable="true"
-		android:onClick="onClick"
 		android:paddingBottom="6dp"
 		android:paddingLeft="15dp"
 		android:paddingTop="6dp"

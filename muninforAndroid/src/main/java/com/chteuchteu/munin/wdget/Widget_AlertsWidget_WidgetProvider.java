@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
@@ -59,11 +60,16 @@ public class Widget_AlertsWidget_WidgetProvider extends AppWidgetProvider {
 
 		if (intent.getAction() != null) {
 			if (intent.getAction().equals(ACTION_REFRESH)) {
-				Util.setPref(context, "widget2_forceUpdate", "true");
-				AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-				int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
-						new ComponentName(context, Widget_AlertsWidget_WidgetProvider.class));
-				appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.servers);
+				// Only display "No connection" toast if manual refresh
+				if (Util.isOnline(context)) {
+					Util.setPref(context, "widget2_forceUpdate", "true");
+					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+					int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+							new ComponentName(context, Widget_AlertsWidget_WidgetProvider.class));
+					appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.servers);
+				}
+				else
+					Toast.makeText(context, R.string.text30, Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

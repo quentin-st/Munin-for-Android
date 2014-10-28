@@ -40,7 +40,7 @@ public class Activity_GoPremium extends MuninActivity {
 		Button buyNow = (Button)findViewById(R.id.buyNow);
 		WebView benefits = (WebView)findViewById(R.id.benefits);
 		
-		Currency currency = null;
+		Currency currency;
 		try {
 			currency = Currency.getInstance(Locale.getDefault());
 		} catch (IllegalArgumentException ex) {

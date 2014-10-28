@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -26,7 +25,6 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 	private int widgetId;
 
 	public Widget_AlertsWidget_ViewsFactory(Context context, Intent intent) {
-		Log.i("", "Constructor");
 		this.context = context;
 		this.widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 				AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -93,13 +91,28 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 
 	@Override
 	public RemoteViews getViewAt(int position) {
-		Log.i("", "getViewAt(" + position + ")");
 		RemoteViews row = new RemoteViews(context.getPackageName(), R.layout.widget_alertswidget_part);
 
 		if (!pluginsStatesFetched && position == 0) // Loading
 			row.setTextViewText(R.id.item, context.getString(R.string.loading));
 		else { // Loading finished : display data
 			MuninServer server = servers.get(position);
+			int nbWarnings = server.getWarnedPlugins().size();
+			int nbErrors = server.getErroredPlugins().size();
+
+			// Check reason
+			if (server.reachable != Util.SpecialBool.TRUE) {
+				// Set line in gray, hide both line1 and line2
+			} else if (nbErrors > 0 && nbWarnings > 0) {
+				// Set line in red ; line1 = X criticals && X warnings
+				// line2 = errors = , ... (cf Activity_Alerts)
+			} else if (nbErrors > 0 && nbWarnings == 0) {
+				// Set line in ref, line1 = X criticals
+				// line2 = errors = ...
+			} else if (nbErrors == 0 && nbWarnings > 0) {
+				// Set line in orange, line1 = X warnings
+				// line2 = warnings = ...
+			}
 
 			row.setTextViewText(R.id.item, server.getName());
 			row.setTextViewText(R.id.item2, server.getWarnedPlugins().size() + " warning(s) & " + server.getErroredPlugins().size() + " critical(s)");
@@ -122,7 +135,6 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 	@Override
 	public void onDataSetChanged() {
 		// Called from Widget_AlertsWidget_WidgetProvider on refresh button click
-		Log.i("", "pluginsstatesfetched is " + pluginsStatesFetched);
 		if (!pluginsStatesFetched || Util.getPref(context, "widget2_forceUpdate").equals("true"))
 			refresh();
 	}

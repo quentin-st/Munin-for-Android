@@ -88,8 +88,6 @@ public class DrawerHelper {
 	private SearchAdapter search_results_adapter;
 	private ArrayList<SearchResult> search_results_array;
 	private List<String> search_cachedGridsList;
-
-	private boolean opened;
 	
 	// GraphView
 	private ViewFlow vf;
@@ -98,7 +96,6 @@ public class DrawerHelper {
 		this.a = a;
 		this.m = m;
 		this.c = a.getApplicationContext();
-		this.opened = false;
 		initDrawer();
 	}
 	
@@ -153,11 +150,8 @@ public class DrawerHelper {
 	}
 
 	public void toggle(boolean animate) {
-		this.opened = !opened;
 		this.sm.toggle(animate);
 	}
-	public boolean isOpened() { return this.opened; }
-	public void setIsOpened(boolean val) { this.opened = val; }
 	
 	public void setViewFlow(ViewFlow v) { this.vf = v; }
 	

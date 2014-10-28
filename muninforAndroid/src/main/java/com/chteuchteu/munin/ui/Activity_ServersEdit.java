@@ -22,7 +22,7 @@ import java.util.List;
 
 public class Activity_ServersEdit extends MuninActivity {
 	private MuninMaster	master;
-	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+	private ArrayList<HashMap<String,String>> list;
 	private List<MuninServer> 		serversList;
 	private List<MuninServer>		deletedServers;
 	private DragSortListView       listview;
@@ -54,6 +54,7 @@ public class Activity_ServersEdit extends MuninActivity {
 		SimpleFloatViewManager sfvm = new SimpleFloatViewManager(listview);
 		sfvm.setBackgroundColor(Color.TRANSPARENT);
 		listview.setFloatViewManager(sfvm);
+		list = new ArrayList<HashMap<String,String>>();
 	}
 	
 	private void updateList(boolean firstTime) {

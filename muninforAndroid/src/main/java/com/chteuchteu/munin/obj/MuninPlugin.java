@@ -19,7 +19,6 @@ public class MuninPlugin {
 	private String 		category;
 	private AlertState 	state;
 	private String 		pluginPageUrl;
-	public boolean 		isPersistant = false;
 	
 	public MuninPlugin () {
 		this.name = "unknown";

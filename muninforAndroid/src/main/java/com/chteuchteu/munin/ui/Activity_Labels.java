@@ -28,8 +28,7 @@ import java.util.HashMap;
 
 
 public class Activity_Labels extends MuninActivity {
-	private SimpleAdapter 	sa;
-	private ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+	private ArrayList<HashMap<String,String>> list;
 	private ListView listview;
 	
 	@Override
@@ -41,6 +40,7 @@ public class Activity_Labels extends MuninActivity {
 		dh.setDrawerActivity(DrawerHelper.Activity_Labels);
 
 		listview = (ListView) findViewById(R.id.listview);
+		list = new ArrayList<HashMap<String,String>>();
 
 		getActionBar().setTitle(getString(R.string.button_labels));
 		
@@ -60,7 +60,8 @@ public class Activity_Labels extends MuninActivity {
 				item.put("line2", muninFoo.labels.get(i).plugins.size() + "");
 				list.add(item);
 			}
-			sa = new SimpleAdapter(Activity_Labels.this, list, R.layout.labelselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+			SimpleAdapter sa = new SimpleAdapter(Activity_Labels.this, list, R.layout.labelselection_list,
+					new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 			listview.setAdapter(sa);
 
 			listview.setOnItemClickListener(new OnItemClickListener() {

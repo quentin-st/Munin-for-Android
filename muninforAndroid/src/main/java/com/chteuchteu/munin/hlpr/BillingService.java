@@ -23,7 +23,7 @@ public class BillingService {
 	
 	private boolean isBound = false;
 	
-	public static final int REQUEST_CODE = 1664;
+	private static final int REQUEST_CODE = 1664;
 	
 	public static final String DONATE_1 = "donate_1";
 	public static final String DONATE_2 = "donate_2";
@@ -66,7 +66,7 @@ public class BillingService {
 				Context.BIND_AUTO_CREATE);
 	}
 	
-	public void launchPurchase(String product) {
+	private void launchPurchase(String product) {
 		progressDialog.dismiss();
 		
 		try {
@@ -79,12 +79,12 @@ public class BillingService {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public void displayErrorToast() {
 		Toast.makeText(activityContext, R.string.text09, Toast.LENGTH_SHORT).show();
 	}
 	
-	public void unbind() {
+	private void unbind() {
 		if (mService != null && isBound) {
 			try {
 				isBound = false;

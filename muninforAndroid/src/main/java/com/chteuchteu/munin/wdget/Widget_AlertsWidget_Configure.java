@@ -20,12 +20,10 @@ import android.widget.Toast;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.AlertsWidget;
-import com.chteuchteu.munin.obj.MuninServer;
 
 public class Widget_AlertsWidget_Configure extends Activity {
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private MuninFoo muninFoo;
-	private MuninServer selectedServer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,81 +43,82 @@ public class Widget_AlertsWidget_Configure extends Activity {
 		// If they gave us an intent without the widget id, just bail.
 		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
 			finish();
-		
+
+		if (muninFoo == null) {
+			Toast.makeText(this, getString(R.string.text09), Toast.LENGTH_SHORT).show();
+			finish();
+		}
+		if (!muninFoo.premium) {
+			Toast.makeText(this, "Munin for Android features pack needed", Toast.LENGTH_SHORT).show();
+			finish();
+		}
+		if (muninFoo.getServers().size() == 0) {
+			Toast.makeText(this, R.string.text37, Toast.LENGTH_SHORT).show();
+			finish();
+		}
 		
 		if (!muninFoo.sqlite.dbHlpr.hasAlertsWidget(mAppWidgetId)) {
 			final AlertsWidget alertsWidget = new AlertsWidget();
 			alertsWidget.setWidgetId(mAppWidgetId);
-			
-			if (muninFoo != null) {
-				if (muninFoo.getServers().size() == 0) {
-					Toast.makeText(this, R.string.text37, Toast.LENGTH_SHORT).show();
-					finish();
-				}
-				if (!muninFoo.premium) {
-					Toast.makeText(this, "Munin for Android features pack needed", Toast.LENGTH_SHORT).show();
-					finish();
-				}
 
-				final Context context = new ContextThemeWrapper(this, android.R.style.Theme_Holo_Light);
-				final ScrollView scrollView = new ScrollView(context);
+			final Context context = new ContextThemeWrapper(this, android.R.style.Theme_Holo_Light);
+			final ScrollView scrollView = new ScrollView(context);
 
-				LinearLayout checkboxesView = new LinearLayout(context);
-				checkboxesView.setOrientation(LinearLayout.VERTICAL);
+			LinearLayout checkboxesView = new LinearLayout(context);
+			checkboxesView.setOrientation(LinearLayout.VERTICAL);
 
-				final CheckBox[] checkboxes = new CheckBox[muninFoo.getServers().size()];
+			final CheckBox[] checkboxes = new CheckBox[muninFoo.getServers().size()];
 
-				for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
-					LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					View v = vi.inflate(R.layout.servers_list_checkbox, null);
+			for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
+				LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View v = vi.inflate(R.layout.servers_list_checkbox, null);
 
-					checkboxes[i] = (CheckBox) v.findViewById(R.id.line_0);
-					int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
-					checkboxes[i].setButtonDrawable(id);
+				checkboxes[i] = (CheckBox) v.findViewById(R.id.line_0);
+				int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
+				checkboxes[i].setButtonDrawable(id);
 
-					v.findViewById(R.id.ll_container).setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							CheckBox checkbox = (CheckBox) v.findViewById(R.id.line_0);
-							checkbox.setChecked(!checkbox.isChecked());
-						}
-					});
+				v.findViewById(R.id.ll_container).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						CheckBox checkbox = (CheckBox) v.findViewById(R.id.line_0);
+						checkbox.setChecked(!checkbox.isChecked());
+					}
+				});
 
-					((TextView)v.findViewById(R.id.line_a)).setText(muninFoo.getOrderedServers().get(i).getName());
-					((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.getOrderedServers().get(i).getServerUrl());
+				((TextView)v.findViewById(R.id.line_a)).setText(muninFoo.getOrderedServers().get(i).getName());
+				((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.getOrderedServers().get(i).getServerUrl());
 
-					checkboxesView.addView(v);
-				}
-				scrollView.addView(checkboxesView);
-
-
-				final AlertDialog dialog = new AlertDialog.Builder(context)
-						.setView(scrollView)
-						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialogInterface, int ii) {
-								// Save and close
-								int i = 0;
-								for (CheckBox checkbox : checkboxes) {
-									if (checkbox.isChecked())
-										alertsWidget.getServers().add(muninFoo.getOrderedServers().get(i));
-
-									i++;
-								}
-
-								muninFoo.sqlite.dbHlpr.insertAlertsWidget(alertsWidget);
-
-								configureWidget(getApplicationContext());
-
-								// Make sure we pass back the original appWidgetId before closing the activity
-								Intent resultValue = new Intent();
-								resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-								setResult(RESULT_OK, resultValue);
-								finish();
-							}
-						})
-						.show();
+				checkboxesView.addView(v);
 			}
+			scrollView.addView(checkboxesView);
+
+
+			new AlertDialog.Builder(context)
+					.setView(scrollView)
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialogInterface, int ii) {
+							// Save and close
+							int i = 0;
+							for (CheckBox checkbox : checkboxes) {
+								if (checkbox.isChecked())
+									alertsWidget.getServers().add(muninFoo.getOrderedServers().get(i));
+
+								i++;
+							}
+
+							muninFoo.sqlite.dbHlpr.insertAlertsWidget(alertsWidget);
+
+							configureWidget(getApplicationContext());
+
+							// Make sure we pass back the original appWidgetId before closing the activity
+							Intent resultValue = new Intent();
+							resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+							setResult(RESULT_OK, resultValue);
+							finish();
+						}
+					})
+					.show();
 		}
 	}
 	
@@ -127,7 +126,7 @@ public class Widget_AlertsWidget_Configure extends Activity {
 	 * Configures the created widget
 	 * @param context
 	 */
-	public void configureWidget(Context context) {
+	private void configureWidget(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		Widget_AlertsWidget_WidgetProvider.updateAppWidget(context, appWidgetManager, mAppWidgetId);
 	}

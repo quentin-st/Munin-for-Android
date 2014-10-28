@@ -6,6 +6,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.chteuchteu.munin.exc.NullMuninFooException;
 import com.chteuchteu.munin.hlpr.SQLite;
@@ -286,7 +287,7 @@ public class MuninFoo {
 			return getOrderedServers().get(position);
 		return null;
 	}
-	public MuninServer getServersInstanceFromMuninMasterInstance(MuninServer s) {
+	private MuninServer getServersInstanceFromMuninMasterInstance(MuninServer s) {
 		for (MuninServer server : this.servers) {
 			if (server.getId() == s.getId())
 				return server;
@@ -408,6 +409,9 @@ public class MuninFoo {
 		
 		return alerts_lastUpdated.before(updateTreshold);
 	}
+
+	public static void log(String msg) { log("MuninFoo", msg); }
+	public static void log(String tag, String msg) { if (MuninFoo.DEBUG) Log.i(tag, msg); }
 	
 	@SuppressWarnings("unused")
 	public static boolean isPremium(Context c) {
@@ -417,11 +421,8 @@ public class MuninFoo {
 			if (DEBUG)
 				return true;
 			PackageManager manager = c.getPackageManager();
-			if (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")
-					== PackageManager.SIGNATURE_MATCH) {
-				return true;
-			}
-			return false;
+			return (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")
+					== PackageManager.SIGNATURE_MATCH);
 		}
 		return false;
 	}

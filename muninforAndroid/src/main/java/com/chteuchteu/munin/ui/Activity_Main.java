@@ -124,7 +124,6 @@ public class Activity_Main extends Activity {
 		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
 			@Override
 			public void onOpen() {
-				dh.setIsOpened(true);
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 				activityName = getActionBar().getTitle().toString();
 				getActionBar().setTitle(R.string.app_name);
@@ -133,7 +132,6 @@ public class Activity_Main extends Activity {
 		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
 			@Override
 			public void onClose() {
-				dh.setIsOpened(false);
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
 				getActionBar().setTitle(activityName);
 			}
@@ -204,7 +202,7 @@ public class Activity_Main extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 	}
 	
-	public void displayTwitterAlertIfNeeded() {
+	private void displayTwitterAlertIfNeeded() {
 		int NB_LAUNCHES = 8;
 		String nbLaunches = Util.getPref(this, "twitter_nbLaunches");
 		if (nbLaunches.equals(""))

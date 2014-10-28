@@ -96,7 +96,7 @@ public class Activity_Label extends MuninActivity {
 		});
 	}
 	
-	public Map<String,?> createItem(String title, String caption) {  
+	private Map<String,?> createItem(String title, String caption) {
 		Map<String,String> item = new HashMap<String,String>();  
 		item.put("title", title);  
 		item.put("caption", caption);  

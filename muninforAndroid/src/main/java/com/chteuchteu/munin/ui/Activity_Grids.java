@@ -32,7 +32,7 @@ import java.util.List;
 
 
 public class Activity_Grids extends MuninActivity {
-	private ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+	private ArrayList<HashMap<String, String>> list;
 	private ListView listview;
 	
 	@Override
@@ -46,6 +46,7 @@ public class Activity_Grids extends MuninActivity {
 		actionBar.setTitle(getString(R.string.button_grid));
 
 		listview = (ListView) findViewById(R.id.listview);
+		list = new ArrayList<HashMap<String, String>>();
 
 		updateList();
 	}

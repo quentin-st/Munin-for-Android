@@ -8,12 +8,10 @@ public class GraphWidget {
 	private boolean hideServerName;
 	private MuninPlugin plugin;
 	private int widgetId;
-	public boolean isPersistant;
 	
 	public GraphWidget() {
 		this.period = "day";
 		this.wifiOnly = false;
-		this.isPersistant = false;
 		this.hideServerName = false;
 	}
 	

@@ -11,13 +11,15 @@
 		android:id="@+id/servers"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:paddingTop="40dp"
+		android:paddingTop="10dp"
 		android:paddingBottom="10dp" />
 
 	<ImageView
 		android:id="@+id/refresh"
 		android:layout_width="32dp"
 		android:layout_height="32dp"
+		android:layout_marginRight="3dp"
+		android:layout_marginTop="3dp"
 		android:src="@drawable/ic_action_refresh"
 		android:layout_gravity="right"
 		android:clickable="true"

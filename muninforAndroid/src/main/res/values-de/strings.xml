@@ -87,7 +87,6 @@
 	<string name="notificationsTitle">Benachrichtigungen</string>
 	<string name="widget_configuration1">Das Widget wurde erfolgreich zum Homescreen hinzugefügt. Tip: Der Graph kann durch Tippen auf die graue Leiste unten aktualisiert werden.</string>
 	<string name="widget_configuration2">Graphen im WLAN automatisch aktualisieren (1 Update pro Stunde)</string>
-	<string name="text21.3">aktualisiert!</string>
 	<string name="text49.1">Unauffällige Server ausblenden</string>
 	<string name="text49.2">Unauffällige Server anzeigen</string>
 	<string name="text50.1">kritisch</string>

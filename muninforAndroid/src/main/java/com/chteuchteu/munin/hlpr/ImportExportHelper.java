@@ -48,7 +48,7 @@ public class ImportExportHelper {
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 				StringBuilder builder = new StringBuilder();
-				for (String line = null; (line = reader.readLine()) != null;)
+				for (String line; (line = reader.readLine()) != null;)
 				    builder.append(line).append("\n");
 				
 				String body = builder.toString();
@@ -152,7 +152,7 @@ public class ImportExportHelper {
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 				StringBuilder builder = new StringBuilder();
-				for (String line = null; (line = reader.readLine()) != null;)
+				for (String line; (line = reader.readLine()) != null;)
 				    builder.append(line).append("\n");
 				
 				JSONObject jsonResult = new JSONObject(builder.toString());
@@ -232,10 +232,8 @@ public class ImportExportHelper {
 			for (MuninServer server : master.getChildren()) {
 				server.setId(-1);
 				server.isPersistant = false;
-				for (MuninPlugin plugin : server.getPlugins()) {
+				for (MuninPlugin plugin : server.getPlugins())
 					plugin.setId(-1);
-					plugin.isPersistant = false;
-				}
 			}
 		}
 	}
