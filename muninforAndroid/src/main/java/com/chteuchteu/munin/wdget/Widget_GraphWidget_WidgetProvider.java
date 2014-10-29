@@ -20,7 +20,6 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.GraphWidget;
-import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 
@@ -155,8 +154,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 	
 	private static class ApplyBitmap extends AsyncTask<Void, Integer, Void> {
 		private Bitmap bm;
-		
-		private MuninServer serv;
+
 		private String url;
 		private GraphWidget graphWidget;
 		
@@ -166,7 +164,6 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 		
 		public ApplyBitmap(GraphWidget graphWidget, RemoteViews v, AppWidgetManager a, int w) {
 			super();
-			this.serv = graphWidget.getPlugin().getInstalledOn();
 			this.url = graphWidget.getPlugin().getImgUrl(graphWidget.getPeriod());
 			this.graphWidget = graphWidget;
 			this.views = v;
@@ -184,7 +181,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			bm = serv.getPlugin(0).getGraph(url);
+			bm = graphWidget.getPlugin().getGraph(url);
 			bm = Util.removeBitmapBorder(bm);
 			if (graphWidget.getHideServerName())
 				bm = Util.dropShadow(bm);

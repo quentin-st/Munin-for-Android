@@ -510,7 +510,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return l;
 	}
 	
-	public MuninMaster getMaster(int id, List<MuninMaster> currentMasters) {
+	public MuninMaster getMaster(long id, List<MuninMaster> currentMasters) {
 		if (id == -1)	return null;
 		
 		// Check if we already got it
@@ -753,7 +753,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			
 			// Get plugin, and master (server is fetched with getPlugin)
 			MuninPlugin plugin = getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_PLUGIN)));
-			MuninMaster master = getMaster((int) plugin.getInstalledOn().getId(), null);
+			MuninMaster master = getMaster(plugin.getInstalledOn().getId(), null);
 			plugin.getInstalledOn().setParent(master);
 			
 			w.setPlugin(plugin);

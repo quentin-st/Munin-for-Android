@@ -158,19 +158,16 @@ public class MuninPlugin {
 	}
 	
 	public boolean equals(MuninPlugin p) {
-		if (p == null)
-			return false;
-		if (this.name.equals(p.name) && this.fancyName.equals(p.fancyName) && this.installedOn.equalsApprox(p.installedOn))
-			return true;
-		return false;
+		return p != null
+				&& this.name.equals(p.name)
+				&& this.fancyName.equals(p.fancyName)
+				&& this.installedOn.equalsApprox(p.installedOn);
 	}
 	
 	public boolean equalsApprox(MuninPlugin p) {
-		if (p == null)
-			return false;
-		if (this.name.equals(p.name) && this.fancyName.equals(p.fancyName))
-			return true;
-		return false;
+		return p != null &&
+				this.name.equals(p.name)
+				&& this.fancyName.equals(p.fancyName);
 	}
 	
 	public int getIndex() {
