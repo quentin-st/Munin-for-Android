@@ -55,12 +55,19 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 			DatabaseHelper dbHelper = new DatabaseHelper(context);
 			AlertsWidget alertsWidget = dbHelper.getAlertsWidget(appWidgetId, null);
 
-			for (MuninServer server : alertsWidget.getServers())
+			// Remove servers duplicates (duplicated in db for no reason)
+			List<MuninServer> newServersList = new ArrayList<MuninServer>();
+			for (MuninServer server : alertsWidget.getServers()) {
+				if (!newServersList.contains(server))
+					newServersList.add(server);
+			}
+
+			for (MuninServer server : newServersList)
 				server.fetchPluginsStates();
 
 			// Update servers list according to those results
 			servers.clear();
-			for (MuninServer server : alertsWidget.getServers()) {
+			for (MuninServer server : newServersList) {
 				if (server.reachable != Util.SpecialBool.TRUE || server.getErroredPlugins().size() > 0 || server.getWarnedPlugins().size() > 0)
 					servers.add(server);
 			}
@@ -71,6 +78,7 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 		@Override
 		protected void onPostExecute(Void result) {
 			pluginsStatesFetched = true;
+
 			appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.servers);
 		}
 	}
@@ -85,6 +93,8 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 	public int getCount() {
 		if (!pluginsStatesFetched)
 			return 1; // Fake view
+		else if (this.servers.isEmpty())
+			return 1; // Everything's ok
 		else
 			return servers.size();
 	}
@@ -95,6 +105,8 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 
 		if (!pluginsStatesFetched && position == 0) // Loading
 			row.setTextViewText(R.id.item, context.getString(R.string.loading));
+		else if (servers.isEmpty()) // Everything's ok
+			row.setTextViewText(R.id.item, context.getString(R.string.alerts_ok));
 		else { // Loading finished : display data
 			MuninServer server = servers.get(position);
 			int nbWarnings = server.getWarnedPlugins().size();
@@ -152,6 +164,7 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 
 		// Hide separator if needed
 		if (!pluginsStatesFetched && position == 0
+				|| servers.isEmpty()
 				|| position == servers.size()-1)
 			row.setViewVisibility(R.id.separator, View.GONE);
 		else // Recycling view...
