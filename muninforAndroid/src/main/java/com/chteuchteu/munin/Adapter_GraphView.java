@@ -105,10 +105,9 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 					imgUrl = muninFoo.getCurrentServer().getPlugin(position).getImgUrl(Activity_GraphView.load_period);
 
 
-				activity.addBitmap(
-						Util.dropShadow(Util.removeBitmapBorder(
-								muninFoo.getCurrentServer().getParent().grabBitmap(imgUrl))),
-								position);
+				activity.addBitmap(Util.removeBitmapBorder(
+								muninFoo.getCurrentServer().getParent().grabBitmap(imgUrl)),
+						position);
 			}
 			
 			return null;

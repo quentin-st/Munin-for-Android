@@ -114,6 +114,34 @@
 		<item name="android:textColor">@color/statusBarColor</item>
 	</style>
 
+	<style name="Material_Title1_Light">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginRight">10dp</item>
+		<item name="android:layout_marginTop">2dp</item>
+		<item name="android:shadowColor">#88000000</item>
+		<item name="android:shadowDx">1</item>
+		<item name="android:shadowDy">1</item>
+		<item name="android:shadowRadius">2</item>
+		<item name="android:maxLines">2</item>
+		<item name="android:textSize">25sp</item>
+		<item name="android:textColor">#ffffff</item>
+	</style>
+
+	<style name="Material_Title2_Light">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginRight">10dp</item>
+		<item name="android:layout_marginBottom">4dp</item>
+		<item name="android:shadowColor">#88000000</item>
+		<item name="android:shadowDx">1</item>
+		<item name="android:shadowDy">1</item>
+		<item name="android:shadowRadius">2</item>
+		<item name="android:maxLines">2</item>
+		<item name="android:textSize">19sp</item>
+		<item name="android:textColor">#ddffffff</item>
+	</style>
+
 	<style name="Drawer_Item_Icon">
 		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>

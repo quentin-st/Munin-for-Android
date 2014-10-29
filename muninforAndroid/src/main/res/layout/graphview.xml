@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
@@ -7,58 +7,129 @@
 
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="@color/actionBarColor"
-		android:orientation="vertical"
-		android:paddingTop="4dp" >
-
-		<include layout="@layout/graphview_servername" />
-
-		<org.taptwo.android.widget.TitleFlowIndicator
-			android:id="@+id/viewflowindic"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="6dp"
-			app:clipPadding="6dp"
-			app:customTypeface="RobotoCondensed-Regular.ttf"
-			app:footerColor="#f0f0f0"
-			app:footerLineHeight="0dp"
-			app:footerTriangleHeight="5dp"
-			app:selectedColor="#f0f0f0"
-			app:selectedSize="15dp"
-			app:textColor="#f0f0f0"
-			app:textSize="13sp"
-			app:textSize2="13sp"
-			app:titlePadding="40dp" />
-	</LinearLayout>
-
-	<RelativeLayout
-		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="vertical" >
-
-		<org.taptwo.android.widget.ViewFlow
-			android:id="@+id/viewflow"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:paddingTop="5dp"
-			app:sidebuffer="1" />
+		android:orientation="vertical">
 
 		<LinearLayout
-			android:id="@+id/serverSwitch_mask"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="#88000000"
-			android:orientation="vertical"
-			android:visibility="gone" />
-
-		<ListView
-			android:id="@+id/serverSwitch_listview"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:background="#88FFFFFF"
-			android:visibility="gone" />
-	</RelativeLayout>
+			android:background="@color/actionBarColor"
+			android:orientation="vertical"
+			android:paddingTop="4dp" >
 
-</LinearLayout>
+			<include layout="@layout/graphview_servername" />
+
+			<org.taptwo.android.widget.TitleFlowIndicator
+				android:id="@+id/viewflowindic"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="6dp"
+				app:clipPadding="6dp"
+				app:customTypeface="RobotoCondensed-Regular.ttf"
+				app:footerColor="#f0f0f0"
+				app:footerLineHeight="0dp"
+				app:footerTriangleHeight="5dp"
+				app:selectedColor="#f0f0f0"
+				app:selectedSize="15dp"
+				app:textColor="#f0f0f0"
+				app:textSize="13sp"
+				app:textSize2="13sp"
+				app:titlePadding="40dp" />
+		</LinearLayout>
+
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical" >
+
+			<org.taptwo.android.widget.ViewFlow
+				android:id="@+id/viewflow"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:paddingTop="5dp"
+				app:sidebuffer="1" />
+
+			<LinearLayout
+				android:id="@+id/serverSwitch_mask"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="#88000000"
+				android:orientation="vertical"
+				android:visibility="gone" />
+
+			<ListView
+				android:id="@+id/serverSwitch_listview"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:background="#88FFFFFF"
+				android:visibility="gone" />
+		</RelativeLayout>
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/documentation"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:visibility="gone"
+		android:orientation="vertical">
+		
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"
+			android:background="#000000">
+
+			<ImageView
+				android:id="@+id/doc_imageview"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_gravity="center"
+				android:contentDescription="@string/graphView_ImageViewDescription"
+				android:scaleType="centerCrop"
+				android:alpha="0.85"/>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@drawable/material_blackgradient"
+				android:layout_gravity="bottom"
+				android:orientation="vertical"
+				android:paddingLeft="30dp"
+				android:paddingRight="30dp"
+				android:paddingTop="20dp"
+				android:paddingBottom="5dp">
+
+				<TextView
+					android:id="@+id/doc_line1"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					style="@style/Material_Title1_Light"/>
+
+				<TextView
+					android:id="@+id/doc_line2"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					style="@style/Material_Title2_Light"/>
+
+			</LinearLayout>
+
+		</FrameLayout>
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="2"
+			android:background="#ffffff">
+
+			<TextView
+				android:id="@+id/doc"
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:layout_weight="1"
+				android:paddingLeft="30dp"
+				android:paddingRight="30dp"
+				android:paddingTop="15dp"/>
+
+		</ScrollView>
+	</LinearLayout>
+</FrameLayout>

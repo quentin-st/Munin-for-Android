@@ -35,10 +35,13 @@ import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.crypto.Cipher;
@@ -478,4 +481,26 @@ public final class Util {
 	}
 	
 	public static enum SpecialBool { UNKNOWN, TRUE, FALSE }
+
+	public static String readFromAssets(Context context, String file) {
+		try {
+			InputStream is = context.getAssets().open(file);
+			int size = is.available();
+
+			byte[] buffer = new byte[size];
+			is.read(buffer);
+			is.close();
+
+			return new String(buffer);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			return "";
+		}
+	}
+
+	public static boolean assetsFileExists(Context context, String subFolder, String fileName) {
+		try {
+			return Arrays.asList(context.getResources().getAssets().list(subFolder)).contains(fileName);
+		} catch (IOException ex) { ex.printStackTrace(); return false; }
+	}
 }

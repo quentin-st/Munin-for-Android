@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.text.Html;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -44,6 +46,7 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.Adapter_GraphView;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.DocumentationHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.MediaScannerUtil;
 import com.chteuchteu.munin.hlpr.Util;
@@ -81,6 +84,7 @@ public class Activity_GraphView extends MuninActivity {
 	private MenuItem		item_previous;
 	private MenuItem		item_next;
 	private MenuItem		item_period;
+	private MenuItem       item_documentation;
 	
 	private Handler		mHandler;
 	private Runnable		mHandlerTask;
@@ -311,6 +315,10 @@ public class Activity_GraphView extends MuninActivity {
 		item_period = menu.findItem(R.id.menu_period);
 		MenuItem item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
         MenuItem item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
+		item_documentation = menu.findItem(R.id.menu_documentation);
+
+		// TODO set item_documentation for currently selected plugin
+		item_documentation.setVisible(true);
 		
 		if (muninFoo.getCurrentServer().getPlugins().size() > 0
 				&& muninFoo.getCurrentServer().getPlugin(0).hasPluginPageUrl()) {
@@ -370,6 +378,7 @@ public class Activity_GraphView extends MuninActivity {
 			case R.id.period_week:    changePeriod(Period.WEEK); return true;
 			case R.id.period_month:   changePeriod(Period.MONTH); return true;
 			case R.id.period_year:    changePeriod(Period.YEAR); return true;
+			case R.id.menu_documentation: actionDocumentation(); return true;
 			case R.id.menu_openinbrowser:
 				try {
 					MuninPlugin plugin = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
@@ -769,7 +778,6 @@ public class Activity_GraphView extends MuninActivity {
 	public void addBitmap(Bitmap bitmap, int position) { bitmaps[position] = bitmap; }
 	public boolean isBitmapNull(int position) { return bitmaps[position] == null; }
 	public void updateAdapterPosition(int position) {
-		printBitmaps();
 		for (int i=0; i<bitmaps.length; i++) {
 			if (i >= position-BITMAPS_PADDING
 					&& i <= position+BITMAPS_PADDING)
@@ -779,20 +787,34 @@ public class Activity_GraphView extends MuninActivity {
 				bitmaps[i] = null;
 		}
 	}
-	private void printBitmaps() {
-		String str = "";
-		for (Bitmap bitmap : bitmaps) {
-			if (bitmap == null)
-				str += "-";
-			else
-				str += "X";
-		}
-		log(str);
-	}
 	public Bitmap getBitmap(int position) {
 		return (position >= 0 && position < bitmaps.length) ? bitmaps[position] : null;
 	}
 
+	private void actionDocumentation() {
+		MuninPlugin plugin = muninFoo.getCurrentServer().getPlugins().get(viewFlow.getSelectedItemPosition());
+
+		// Get file content
+		String fileContent = DocumentationHelper.getDocumentation(context, plugin);
+		if (!fileContent.equals("")) {
+			findViewById(R.id.documentation).setVisibility(View.VISIBLE);
+			ImageView imageView = (ImageView) findViewById(R.id.doc_imageview);
+			if (bitmaps[viewFlow.getSelectedItemPosition()] != null)
+				imageView.setImageBitmap(bitmaps[viewFlow.getSelectedItemPosition()]);
+
+			TextView line1 = (TextView) findViewById(R.id.doc_line1);
+			TextView line2 = (TextView) findViewById(R.id.doc_line2);
+			line1.setText(plugin.getFancyName());
+			line2.setText(plugin.getName());
+			Util.Fonts.setFont(context, line1, Util.Fonts.CustomFont.Roboto_Medium);
+			Util.Fonts.setFont(context, line2, Util.Fonts.CustomFont.Roboto_Medium);
+
+			TextView doc = (TextView) findViewById(R.id.doc);
+			doc.setText(Html.fromHtml(fileContent));
+		}
+		else
+			Toast.makeText(context, "No doc", Toast.LENGTH_SHORT).show();
+	}
 	
 	@Override
 	public void onStop() {
