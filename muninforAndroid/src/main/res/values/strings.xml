@@ -260,5 +260,7 @@
 	<string name="sync_pluginsdeleted">XXX plugin(s) deleted\n</string>
 	<string name="sync_nochange">No change</string>
 	<string name="sync_reporttitle">Scan report</string>
+	<string name="graphwidgetname">Munin for Android : Graph widget</string>
+	<string name="alertswidgetname">Munin for Android : Alerts widget</string>
 
 </resources>

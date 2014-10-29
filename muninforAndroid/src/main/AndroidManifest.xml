@@ -67,7 +67,8 @@
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GoPremium" />
 
 		<!-- GraphWidget -->
-		<receiver android:name=".wdget.Widget_GraphWidget_WidgetProvider" >
+		<receiver android:name=".wdget.Widget_GraphWidget_WidgetProvider"
+				  android:label="@string/graphwidgetname">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 				<action android:name="android.appwidget.action.APPWIDGET_DELETED" />
@@ -90,7 +91,8 @@
 		</activity>
 
 		<!-- AlertsWidget -->
-		<receiver android:name=".wdget.Widget_AlertsWidget_WidgetProvider" >
+		<receiver android:name=".wdget.Widget_AlertsWidget_WidgetProvider"
+				  android:label="@string/alertswidgetname">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 				<action android:name="android.appwidget.action.APPWIDGET_DELETED" />

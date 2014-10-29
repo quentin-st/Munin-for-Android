@@ -192,6 +192,8 @@
 	<string name="sync_reporttitle">Scan report</string>
 	<string name="follow">Suivre sur Twitter</string>
 	<string name="notifs_vibrate">Activer le vibreur</string>
+	<string name="graphwidgetname">Munin for Android : Widget graphique</string>
+	<string name="alertswidgetname">Munin for Android : Widget alertes</string>
 	<string name="aboutText">
 <![CDATA[
    <head>
