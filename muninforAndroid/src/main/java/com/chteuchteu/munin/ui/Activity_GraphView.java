@@ -67,12 +67,16 @@ import java.util.List;
 @SuppressLint({ "DefaultLocale", "InflateParams" })
 public class Activity_GraphView extends MuninActivity {
 	private int			previousPos = -1;
-	private static Activity activity;
 	
 	public static Period	load_period;
 	private static ViewFlow	viewFlow;
 	private static int		position;
-	public static Bitmap[]	bitmaps;
+	private Bitmap[]	bitmaps;
+	/**
+	 * How many bitmaps should be kept on left and right
+	 * of current list position
+	 */
+	private static final int BITMAPS_PADDING = 5;
 	
 	private MenuItem		item_previous;
 	private MenuItem		item_next;
@@ -84,7 +88,6 @@ public class Activity_GraphView extends MuninActivity {
 	// If the Adapter_GraphView:getView method should
 	// load the graphs
 	public static boolean	loadGraphs = false;
-	private static int currentlyDownloading = 0;
 
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -101,8 +104,6 @@ public class Activity_GraphView extends MuninActivity {
 
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-		activity = this;
 
 		TextView serverName = (TextView) findViewById(R.id.serverName);
 		if (serverName != null) {
@@ -158,7 +159,7 @@ public class Activity_GraphView extends MuninActivity {
 		int nbPlugins = muninFoo.getCurrentServer().getPlugins().size();
 		bitmaps = new Bitmap[nbPlugins];
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
-		Adapter_GraphView adapter = new Adapter_GraphView(this, nbPlugins);
+		Adapter_GraphView adapter = new Adapter_GraphView(this, this, nbPlugins);
 		viewFlow.setAdapter(adapter, pos);
 		viewFlow.setAnimationEnabled(Util.getPref(this, "transitions").equals("true"));
 		TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
@@ -259,7 +260,6 @@ public class Activity_GraphView extends MuninActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			currentlyDownloading_begin();
 		}
 		
 		@Override
@@ -270,8 +270,6 @@ public class Activity_GraphView extends MuninActivity {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			currentlyDownloading_finished();
-			
 			server.getParent().setHDGraphs(HDGraphs.get(dynazoomAvailable));
 			muninFoo.sqlite.dbHlpr.updateMuninMaster(server.getParent());
 			loadGraphs = true;
@@ -294,18 +292,6 @@ public class Activity_GraphView extends MuninActivity {
 
 		if (item_period != null)
 			item_period.setTitle(load_period.getLabel(context));
-	}
-	
-	public static void currentlyDownloading_begin() {
-		currentlyDownloading++;
-		if (currentlyDownloading == 1)
-			Util.UI.setLoading(true, activity);
-	}
-	
-	public static void currentlyDownloading_finished() {
-		currentlyDownloading--;
-		if (currentlyDownloading == 0)
-			Util.UI.setLoading(false, activity);
 	}
 	
 	@Override
@@ -778,6 +764,33 @@ public class Activity_GraphView extends MuninActivity {
 				Toast.makeText(context, getString(R.string.text09), Toast.LENGTH_SHORT).show();
 			}
 		}
+	}
+
+	public void addBitmap(Bitmap bitmap, int position) { bitmaps[position] = bitmap; }
+	public boolean isBitmapNull(int position) { return bitmaps[position] == null; }
+	public void updateAdapterPosition(int position) {
+		printBitmaps();
+		for (int i=0; i<bitmaps.length; i++) {
+			if (i >= position-BITMAPS_PADDING
+					&& i <= position+BITMAPS_PADDING)
+				continue;
+
+			if (bitmaps[i] != null)
+				bitmaps[i] = null;
+		}
+	}
+	private void printBitmaps() {
+		String str = "";
+		for (Bitmap bitmap : bitmaps) {
+			if (bitmap == null)
+				str += "-";
+			else
+				str += "X";
+		}
+		log(str);
+	}
+	public Bitmap getBitmap(int position) {
+		return (position >= 0 && position < bitmaps.length) ? bitmaps[position] : null;
 	}
 
 	

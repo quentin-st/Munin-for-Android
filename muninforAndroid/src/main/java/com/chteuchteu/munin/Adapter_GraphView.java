@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
@@ -19,14 +20,16 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	private MuninFoo		muninFoo;
+	private Activity_GraphView activity;
 	private Context		context;
 	
 	private LayoutInflater	mInflater;
 	private int			count;
 	
-	public Adapter_GraphView(Context context, int count) {
-		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		muninFoo = MuninFoo.getInstance(context);
+	public Adapter_GraphView(Activity_GraphView activity, Context context, int count) {
+		this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.activity = activity;
+		this.muninFoo = MuninFoo.getInstance(context);
 		this.count = count;
 		this.context = context;
 	}
@@ -49,16 +52,21 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	@SuppressLint("InflateParams")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		activity.updateAdapterPosition(position);
+
 		if (convertView == null)
 			convertView = mInflater.inflate(R.layout.fragment_graphview, null);
 		
 		if (Activity_GraphView.loadGraphs) {
 			ImageView imageView = (ImageView) convertView.findViewById(R.id.tiv);
+			ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressbar);
 			
-			if (Activity_GraphView.bitmaps[position] == null)
-				new BitmapFetcher(imageView, position, context).execute();
-			else
-				imageView.setImageBitmap(Activity_GraphView.bitmaps[position]);
+			if (activity.isBitmapNull(position))
+				new BitmapFetcher(imageView, progressBar, position, context).execute();
+			else {
+				imageView.setImageBitmap(activity.getBitmap(position));
+				progressBar.setVisibility(View.GONE);
+			}
 		}
 		
 		return convertView;
@@ -68,25 +76,26 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		private ImageView imageView;
 		private int position;
 		private Context context;
+		private ProgressBar progressBar;
 		
-		private BitmapFetcher (ImageView iv, int position, Context context) {
+		private BitmapFetcher (ImageView iv, ProgressBar progressBar, int position, Context context) {
 			super();
 			this.imageView = iv;
 			this.position = position;
 			this.context = context;
+			this.progressBar = progressBar;
 		}
 		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			imageView.setImageBitmap(null);
-			
-			Activity_GraphView.currentlyDownloading_begin();
+			progressBar.setVisibility(View.VISIBLE);
 		}
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			if (Activity_GraphView.bitmaps[position] == null) {
+			if (activity.isBitmapNull(position)) {
 				String imgUrl;
 				if (muninFoo.getCurrentServer(context).getParent().getHDGraphs() == HDGraphs.TRUE && !Util.getPref(context, "hdGraphs").equals("false")) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
@@ -94,11 +103,12 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 							Activity_GraphView.load_period, true, graphsDimensions[0], graphsDimensions[1]);
 				} else
 					imgUrl = muninFoo.getCurrentServer().getPlugin(position).getImgUrl(Activity_GraphView.load_period);
-				
-				
-				Activity_GraphView.bitmaps[position] = 
-					Util.dropShadow(Util.removeBitmapBorder(
-							muninFoo.getCurrentServer().getParent().grabBitmap(imgUrl)));
+
+
+				activity.addBitmap(
+						Util.dropShadow(Util.removeBitmapBorder(
+								muninFoo.getCurrentServer().getParent().grabBitmap(imgUrl))),
+								position);
 			}
 			
 			return null;
@@ -106,10 +116,11 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			Activity_GraphView.currentlyDownloading_finished();
+			progressBar.setVisibility(View.GONE);
 			
-			if (Activity_GraphView.bitmaps[position] != null) {
-				imageView.setImageBitmap(Activity_GraphView.bitmaps[position]);
+			if (!activity.isBitmapNull(position)) {
+				imageView.setImageBitmap(activity.getBitmap(position));
+
 				if (Util.getPref(context, "graphsZoom").equals("true")) {
 					PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
 					if (mAttacher.getMidScale() < 2f)
