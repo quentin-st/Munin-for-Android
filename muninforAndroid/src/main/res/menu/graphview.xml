@@ -59,10 +59,5 @@
 		android:showAsAction="withText"
 		android:title="@string/fieldsDescription"
 		android:visible="false"/>
-	<item
-		android:id="@+id/menu_documentation"
-		android:showAsAction="withText"
-		android:title="-Docu"
-		android:visible="false"/>
 
 </menu>

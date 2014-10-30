@@ -41,6 +41,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -89,7 +90,6 @@ public class Activity_GraphView extends MuninActivity {
 	private MenuItem		item_previous;
 	private MenuItem		item_next;
 	private MenuItem		item_period;
-	private MenuItem       item_documentation;
 	
 	private Handler		mHandler;
 	private Runnable		mHandlerTask;
@@ -209,8 +209,8 @@ public class Activity_GraphView extends MuninActivity {
 				previousPos = viewFlow.getSelectedItemPosition();
 
 				// Documentation
-				boolean hasDoc = DocumentationHelper.hasDocumentation(context, muninFoo.getCurrentServer().getPlugins().get(position));
-				// TODO
+				boolean hasDoc = DocumentationHelper.hasDocumentation(muninFoo.getCurrentServer().getPlugins().get(position));
+
 				if (!hasDoc && isFabShown) { // Hide fab
 					fab.animate().setInterpolator(new AccelerateDecelerateInterpolator())
 							.setDuration(300)
@@ -218,16 +218,19 @@ public class Activity_GraphView extends MuninActivity {
 					isFabShown = false;
 				} else if (hasDoc && !isFabShown) { // Show fab
 					isFabShown = true;
-					log(fab.getHeight() + "!!");
 					fab.animate().setInterpolator(new AccelerateDecelerateInterpolator())
 							.setDuration(300)
 							.translationY(0);
 				}
+
+				// If changed plugin from drawer and documentation is shown => hide it
+				if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE)
+					hideDocumentation();
 			}
 		});
 
 		fab = (FloatingActionButton) findViewById(R.id.fab);
-		if (!DocumentationHelper.hasDocumentation(this, muninFoo.getCurrentServer().getPlugins().get(pos))) {
+		if (!DocumentationHelper.hasDocumentation(muninFoo.getCurrentServer().getPlugins().get(pos))) {
 			fab.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 				@Override
 				public void onGlobalLayout() {
@@ -238,6 +241,12 @@ public class Activity_GraphView extends MuninActivity {
 
 			isFabShown = false;
 		}
+		fab.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				actionDocumentation();
+			}
+		});
 		
 		if (!Util.isOnline(this))
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
@@ -349,10 +358,6 @@ public class Activity_GraphView extends MuninActivity {
 		item_period = menu.findItem(R.id.menu_period);
 		MenuItem item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
         MenuItem item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
-		item_documentation = menu.findItem(R.id.menu_documentation);
-
-		// TODO set item_documentation for currently selected plugin
-		item_documentation.setVisible(true);
 		
 		if (muninFoo.getCurrentServer().getPlugins().size() > 0
 				&& muninFoo.getCurrentServer().getPlugin(0).hasPluginPageUrl()) {
@@ -412,7 +417,6 @@ public class Activity_GraphView extends MuninActivity {
 			case R.id.period_week:    changePeriod(Period.WEEK); return true;
 			case R.id.period_month:   changePeriod(Period.MONTH); return true;
 			case R.id.period_year:    changePeriod(Period.YEAR); return true;
-			case R.id.menu_documentation: actionDocumentation(); return true;
 			case R.id.menu_openinbrowser:
 				try {
 					MuninPlugin plugin = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
@@ -845,20 +849,21 @@ public class Activity_GraphView extends MuninActivity {
 				Animation.RELATIVE_TO_SELF, 0,
 				Animation.ABSOLUTE, screenH);
 		a1.setDuration(300);
-		a1.setFillAfter(true);
 		a1.setInterpolator(new AccelerateDecelerateInterpolator());
 		a1.setAnimationListener(new Animation.AnimationListener() {
 			@Override public void onAnimationStart(Animation animation) { }
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				((TextView) findViewById(R.id.doc)).setText("");
 				documentation.setVisibility(View.GONE);
 			}
 			@Override public void onAnimationRepeat(Animation animation) { }
 		});
 		documentation.startAnimation(a1);
+
+		createOptionsMenu();
 	}
 	private void actionDocumentation() {
+		menu.clear();
 		final MuninPlugin plugin = muninFoo.getCurrentServer().getPlugins().get(viewFlow.getSelectedItemPosition());
 
 		// Get file content
@@ -890,14 +895,17 @@ public class Activity_GraphView extends MuninActivity {
 			TextView line2 = (TextView) findViewById(R.id.doc_line2);
 			line1.setText(plugin.getFancyName());
 			line2.setText(plugin.getName());
-			Util.Fonts.setFont(context, line1, Util.Fonts.CustomFont.Roboto_Medium);
-			Util.Fonts.setFont(context, line2, Util.Fonts.CustomFont.Roboto_Medium);
+			Util.Fonts.setFont(context, line1, Util.Fonts.CustomFont.Roboto_Regular);
+			Util.Fonts.setFont(context, line2, Util.Fonts.CustomFont.Roboto_Regular);
 
 			final TextView doc = (TextView) findViewById(R.id.doc);
 			doc.setText(Html.fromHtml(fileContent));
+			Util.Fonts.setFont(context, doc, Util.Fonts.CustomFont.Roboto_Regular);
 
 			Spinner spinner = (Spinner) findViewById(R.id.doc_spinner);
 			final List<String> nodes = DocumentationHelper.getNodes(plugin);
+
+			((ScrollView) findViewById(R.id.doc_scrollview)).setScrollY(0);
 
 			if (nodes.size() > 1) {
 				spinner.setVisibility(View.VISIBLE);
