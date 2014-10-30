@@ -1,0 +1,57 @@
+<h1>NAME</h1> 
+<p>ip_ - Wildcard-plugin to monitor IP addresses (IPv4 or IPv6) through iptables</p> 
+<h1>CONFIGURATION</h1> 
+<p>This plugin needs to be run as root for iptables to work.</p> 
+<p>Additionally you can change the graph title from the IP address to a hostname by setting hostname in the configuration.</p> 
+<p>Example configuration follows. Only the first stanza is needed:</p> 
+<pre>  [ip_*]
+    user root
+
+  [ip_192.168.0.1]
+    env.hostname host.example.com
+
+  [ip_1080::8:800:200c:417a]
+    env.hostname host6.example.com</pre> 
+<h2>ENVIRONMENT VARIABLES</h2> 
+<p>This plugin does not use environment variables.</p> 
+<h2>WILDCARD PLUGIN</h2> 
+<p>This is a wildcard plugin. To monitor traffic to or from an IP address, link ip_&lt;ipaddress&gt; to this file.</p> 
+<p>For example,</p> 
+<pre>  ln -s /usr/share/munin/plugins/ip_ \
+        /etc/munin/plugins/ip_192.0.2.1</pre> 
+<p>will monitor the IP 192.0.2.1.</p> 
+<h2>IPTABLES</h2> 
+<p>You will need to set up iptables rules to create packet counters for incoming and outgoing traffic. The examples here cover how to create the rules. Given the multitude of methods used to configure iptables firewalls, they do not show how to make them survive a reboot.</p> 
+<p>Please also note that we do not intend to make this script compatible with anything but these rules made explicitly for the plugin. If you use a firewall tool to create iptables rules you may find that that will not work. Please add the appropriate lines by hand (or by hand-made script) if so.</p> 
+<h3>IPv4</h3> 
+<p>In the case of a multihomed host, to monitor the local IP &quot;192.0.2.1&quot;, you will need the following rules:</p> 
+<pre>  iptables -I INPUT  -d 192.0.2.1
+  iptables -I OUTPUT -s 192.0.2.1</pre> 
+<p>In the other case, for the remote IP &quot;192.0.2.2&quot;, you will need the following rules: (notice that the -s and -d are reversed)</p> 
+<pre>  iptables -I INPUT  -s 192.0.2.2
+  iptables -I OUTPUT -d 192.0.2.2</pre> 
+<p>These rules will insert, at the top of the iptables chains INPUT and OUTPUT one rule which will act as a packet counter.</p> 
+<p>Since the rule does not include a &quot;-j&quot; argument, it will not explicitly allow or block anything.</p> 
+<h3>IPv6</h3> 
+<p>If the IP address in the link contains a &quot;:&quot;, it is assumed to be a IPv6 address, and ip6tables are used instead of iptables to read the counters.</p> 
+<p>To create counters you will need to use &quot;ip6tables&quot; instead of &quot;iptables&quot;.</p> 
+<p>Same example as above, for the local IPv6 address &quot;2001:db8::1&quot; and remote &quot;2001:db8::2&quot;:</p> 
+<pre> ip6tables -I INPUT  -d 2001:db8::1
+ ip6tables -I OUTPUT -s 2001:db8::1
+
+ ip6tables -I INPUT  -s 2001:db8::2
+ ip6tables -I OUTPUT -d 2001:db8::2</pre> 
+<h1>BUGS</h1> 
+<p>None known.</p> 
+<h1>NOTES</h1> 
+<p>This plugin is based on the if_ plugin.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf suggest</pre> 
+<h1>AUTHOR</h1> 
+<p>Unknown. Suspected to be some Linpro employee.</p> 
+<h1>LICENSE</h1> 
+<p>Unknown.</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

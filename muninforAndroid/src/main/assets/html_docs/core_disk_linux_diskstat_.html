@@ -1,0 +1,50 @@
+<h1>NAME</h1> 
+<p>diskstat_ - Munin wildcard plugin to monitor various values provided via <code>/proc/diskstats</code></p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Linux 2.6 systems with extended block device statistics enabled.</p> 
+<h1>CONFIGURATION</h1> 
+<p>None needed.</p> 
+<p>This plugin displays nicer device-mapper device names if it is run as root, but it functions as needed without root privilege. To configure for running as root enter this in a plugin configuration file:</p> 
+<pre>  [diskstat_*]
+    user root</pre> 
+<h1>INTERPRETATION</h1> 
+<p>Among the more self-describing or well-known values like <code>throughput</code> (Bytes per second) there are a few which might need further introduction.</p> 
+<h2>Device Utilization</h2> 
+<p>Linux provides a counter which increments in a millisecond-interval for as long as there are outstanding I/O requests. If this counter is close to 1000msec in a given 1 second timeframe the device is nearly 100% saturated. This plugin provides values averaged over a 5 minute time frame per default, so it can't catch short-lived saturations, but it'll give a nice trend for semi-uniform load patterns as they're expected in most server or multi-user environments.</p> 
+<h2>Device IO Time</h2> 
+<p>The <code>Device IO Time</code> takes the counter described under <code>Device Utilization</code> and divides it by the number of I/Os that happened in the given time frame, resulting in an average time per I/O on the block-device level.</p> 
+<p>This value can give you a good comparison base amongst different controllers, storage subsystems and disks for similiar workloads.</p> 
+<h2>Syscall Wait Time</h2> 
+<p>These values describe the average time it takes between an application issuing a syscall resulting in a hit to a blockdevice to the syscall returning to the application.</p> 
+<p>The values are bound to be higher (at least for read requests) than the time it takes the device itself to fulfill the requests, since calling overhead, queuing times and probably a dozen other things are included in those times.</p> 
+<p>These are the values to watch out for when an user complains that <code>the disks are too slow!</code>.</p> 
+<h3>What causes a block device hit?</h3> 
+<p>A non-exhaustive list:</p> 
+<ul> 
+ <li>Reads from files when the given range is not in the page cache or the O_DIRECT flag is set.</li> 
+ <li>Writes to files if O_DIRECT or O_SYNC is set or sys.vm.dirty_(background_)ratio is exceeded.</li> 
+ <li>Filesystem metadata operations (stat(2), getdents(2), file creation, modification of any of the values returned by stat(2), etc.)</li> 
+ <li>The pdflush daemon writing out dirtied pages</li> 
+ <li>(f)sync</li> 
+ <li>Swapping</li> 
+ <li>raw device I/O (mkfs, dd, etc.)</li> 
+</ul> 
+<h1>ACKNOWLEDGEMENTS</h1> 
+<p>The core logic of this script is based on the <b>iostat</b> tool of the <b>sysstat</b> package written and maintained by Sebastien Godard.</p> 
+<h1>SEE ALSO</h1> 
+<p>See <code>Documentation/iostats.txt</code> in your Linux source tree for further information about the <code>numbers</code> involved in this module.</p> 
+<p>http://www.westnet.com/~gsmith/content/linux-pdflush.htm has a nice writeup about the pdflush daemon.</p> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=manual
+  #%# capabilities=autoconf suggest</pre> 
+<h1>BUGS</h1> 
+<p>Does not work correctly with multiple Munin masters as it calculates averages between each time it is run. In such a case it can be run twice in the same second, this causes &quot;division by zero&quot; errors. If it is run two seconds apart the average it reports is over 2 seconds, not 5 minutes.</p> 
+<h1>AUTHOR</h1> 
+<p>Michael Renner &lt;michael.renner@amd.co.at&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,22 @@
+<h1>NAME</h1> 
+<p>ntp_states - Plugin to monitor NTP states. States are the Select Field as documented at http://www.eecis.udel.edu/~mills/ntp/html/decode.html#peer</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following configuration parameters are used by this plugin:</p> 
+<pre> [ntp_states]
+  env.lowercase - Lowercase hostnames after lookup
+  env.show_syspeer_stratum - Display the stratum of the system peer, field sys_peer_stratum</pre> 
+<p>Set the variable env.lowercase to anything to lowercase hostnames.</p> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<pre> [ntp_states]
+  env.lowercase &lt;undefined&gt;
+  env.show_syspeer_stratum &lt;undefined&gt;</pre> 
+<h1>AUTHORS</h1> 
+<p>Original author unknown. Rewritten by Kenyon Ralph &lt;kenyon@kenyonralph.com&gt;.</p> 
+<h1>LICENSE</h1> 
+<p>Same as munin.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

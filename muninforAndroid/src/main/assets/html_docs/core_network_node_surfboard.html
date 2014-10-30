@@ -1,0 +1,21 @@
+<h1>NAME</h1> 
+<p>surfboard - Plugin to monitor surfboard cable modems</p> 
+<h1>CONFIGURATION</h1> 
+<p>No configuration</p> 
+<h1>NOTES</h1> 
+<p>This plugin monitors Motorola Surfboard cable modems, models 4100 and 4200. Most likely more models are compatible since Motorola uses many of the same settings/chipsets across cable modems.</p> 
+<p>I know this will not work on Toshiba ones since they use a different url and page.</p> 
+<p>This is real simple: it goes to your cable modem's IP address, generally 192.168.100.1, grabs a HTML file, and parses it.</p> 
+<p>I use this to see how good my cable connection is. Good if you have choices in your area.</p> 
+<p>Requires libwww-perl.</p> 
+<h1>AUTHOR</h1> 
+<p>Andrew Ryder &lt;atr@mrcoffee.org&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>BUGS</h1> 
+<p>Needs work, some variables used in the plugin should be made into configuration environment variables.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=contrib</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

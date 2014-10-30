@@ -1,0 +1,26 @@
+<h1>NAME</h1> 
+<p>iostat_ios - Show IO-operation latency pr. device.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Any Linux system</p> 
+<h1>CONFIGURATION</h1> 
+<p>None needed</p> 
+<h1>USAGE</h1> 
+<p>Link this into @@CONFDIR@@/plugins/ and restart the munin-node.</p> 
+<h1>INTERPRETATION</h1> 
+<p>The plugin shows the average time a IO-operation needs to complete for each disk or block device on the system.</p> 
+<p>Simple partitioned disks will only show as the whole disk. When/if you use some device layer over that, such as LVM then LV devices will show up individualy.</p> 
+<p>When the IO-operation time here increases it is to be expected that the iowait on the CPU graph increases, but please read about how iowait reporting works to fully understand that number.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=legacy
+  #%# capabilities=autoconf</pre> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>BUGS</h1> 
+<p>Should show more useful device names/labels for device-mapper devices, such as those used by LVM and so on.</p> 
+<h1>AUTHOR</h1> 
+<p>(C) 2004 Per Buer. Documentation and some modifications by Nicolai Langfeldt.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,31 @@
+<h1>NAME</h1> 
+<p>dhcpd3 - Plugin to monitor dhcpd3 leases</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Any system running dhcpd3.</p> 
+<p>This plugins requires these Perl modules to work: Net::Netmask and HTTP::Date.</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following environment settings are the default configuration. The &quot;user&quot; setting is needed and must be set explicitly.</p> 
+<pre>  [dhcpd3]
+     user root
+     env.leasefile /var/lib/dhcp3/dhcpd.leases
+     env.configfile /etc/dhcp3/dhcpd.conf
+     env.filter  ^10\.140\.
+     env.critical 0.95
+     env.warning 0.9</pre> 
+<p>The optional filter setting is used to strip parts of ranges for the network labels (example will show 10.140.80.0 as 80.0). Both critical and warning are optional settings, default for warning is 0.9 (90%) and 0.95 for critical (95%).</p> 
+<h1>INTERPRETATION</h1> 
+<p>The plugin shows the number of used leases by subnet.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=contrib
+  #%# capabilities=autoconf</pre> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>BUGS</h1> 
+<p>If a DHCP config file contains multiple subnets but none of them has a dynamic range, the dhcp3 plugin only detects this situation for the last subnet. Need to to improve the parser to properly detect the end of a subnet definition (Munin trac ticket #829)</p> 
+<h1>AUTHOR</h1> 
+<p>Rune Nordb&oslash;e Skillingstad.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

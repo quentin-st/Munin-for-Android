@@ -1,0 +1,28 @@
+<h1>NAME</h1> 
+<p>fail2ban - Plugin to monitor fail2ban blacklists</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>All systems with &quot;bash&quot; and &quot;fail2ban&quot;</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following is the default configuration</p> 
+<pre>  [fail2ban]
+  env.client /usr/bin/fail2ban-client</pre> 
+<p>The user running this plugin needs read and write access to the fail2ban communications socket. You will need to add this:</p> 
+<pre>  [fail2ban]
+  user root</pre> 
+<h1>INTERPRETATION</h1> 
+<p>This plugin shows a graph with one line per active fail2ban jail, each showing the number of blacklisted addresses for that jail.</p> 
+<p>In addition, a line with the total number of blacklisted addresses is displayed.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf</pre> 
+<h1>VERSION</h1> 
+<pre>  1.0.20090423</pre> 
+<h1>BUGS</h1> 
+<p>Needs bash. Uses bashisms ${parm/?/pat/string} and $'...' to avoid running external programs.</p> 
+<h1>AUTHOR</h1> 
+<p>Stig Sandbeck Mathisen &lt;ssm@fnord.no&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

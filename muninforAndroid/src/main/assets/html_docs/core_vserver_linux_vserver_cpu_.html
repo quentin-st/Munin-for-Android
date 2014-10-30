@@ -1,0 +1,57 @@
+<h1>NAME</h1> 
+<p>vserver_cpu_ - Wildcard plugin to graph CPU usage types per vserver</p> 
+<h1>CONFIGURATION</h1> 
+<pre> [vserver_cpu_*]
+   env.vservers - List of vservers to include in the graph, or &quot;all&quot;</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<pre> [vserver_cpu_*]
+   env.vservers all</pre> 
+<h1>USAGE</h1> 
+<p>Configuration variables vservers - specify the vservers to include in the graph (default: all)</p> 
+<p>NOTE: If no configuration variable is set, the default will be used</p> 
+<p>see vserver_resources for example uses of configuration files</p> 
+<p>or links to define what to monitor: vserver_cpu_ -&gt; monitor cpu usage of all vservers on all cpus vserver_hold_ -&gt; monitor hold on all vservers on all cpus vserver_hold_0 -&gt; monitor hold on all vservers on cpu0 vserver_hold_1 -&gt; monitor hold on all vservers on cpu1 vserver_hold_foo -&gt; monitor hold on all cpus on vserver named foo vserver_sys_foo -&gt; monitor cpu usage on all cpus on vserver named foo</p> 
+<h1>AUTHOR</h1> 
+<p>Copyright (C) 2006-2008 Holger Levsen and Micah Anderson</p> 
+<h1>LICENSE</h1> 
+<p>GNU GPLv2</p> 
+<h1>TODO</h1> 
+<dl> 
+ <dt>
+  Less shell subprocesses
+ </dt> 
+ <dd> 
+  <p>The plugin uses lots and lots of shell subprocesses. Maybe factor common vserver plugin code into Munin::Plugin::Linux::Vserver?</p> 
+ </dd>
+ <dt>
+  Comments
+ </dt> 
+ <dd> 
+  <p>Comment the code or go mad</p> 
+ </dd>
+ <dt>
+  Jiffies per second
+ </dt> 
+ <dd> 
+  <p>Add info how many jiffies per second are available on a machine</p> 
+ </dd>
+ <dt>
+  Split CPU time
+ </dt> 
+ <dd> 
+  <p>User and system cpu are always added to each other, make it optional to split them?</p> 
+ </dd>
+ <dt>
+  Less use of /proc
+ </dt> 
+ <dd> 
+  <p>use /proc less often (100 times more overhead than talking to the kernel directly) i.e. use something like pagesize=\`perl -MPOSIX -e 'print POSIX::sysconf(_SC_PAGESIZE), &quot;\n&quot;;'\`</p> 
+  <p>(Accoding to many using /proc is a feature not a bug - Nicoali Langfeldt 2009-12-23)</p> 
+ </dd> 
+</dl> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf suggest</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

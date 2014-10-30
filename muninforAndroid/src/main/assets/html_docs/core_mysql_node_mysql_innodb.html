@@ -1,0 +1,35 @@
+<h1>NAME</h1> 
+<p>mysql_innodb - Plugin to monitor free space in a pre-allocated innodb tablespace</p> 
+<h1>ABOUT</h1> 
+<p>Munin plugin to monitor free space in the InnoDB tablespace of MySQL. Mostly useful if you use InnoDB on a block device, or if you have created files for InnoDB storage, and do not want to autoextend the last file.</p> 
+<p>If you have set innodb_file_per_table, you do not need to worry about free tablespace, and you should use the &quot;df&quot; plugin instead.</p> 
+<h1>USAGE</h1> 
+<p>This plugin should be run as a user with a username and password stored in ~/.my.cnf, or with --defaults-extra-file pointing to such a file.</p> 
+<p>To increase security, the plugin can use its own schema with a simple, empty table using the InnoDB engine. To create an empty schema within the default INNODB tablespace, do the following:</p> 
+<pre>  mysql&gt; CREATE SCHEMA munin_innodb;
+  mysql&gt; USE munin_innodb
+  mysql&gt; CREATE TABLE something (anything int) ENGINE=InnoDB;
+  mysql&gt; GRANT SELECT ON munin_innodb.* TO 'munin'@'localhost' IDENTIFIED BY 'munin';</pre> 
+<h1>CONFIGURATION</h1> 
+<p>Configuration parameters for @@CONFDIR@@/mysql_innodb, if you need to override the defaults below:</p> 
+<pre> [mysql_innodb]
+  env.mysql     - Path to the mysql binary
+  env.mysqlopts - Options to pass to mysql (host, username, password)
+  env.warning   - Generate a warning if free space goes below this level
+  env.critical  - Generate a critical if free space goes below this level</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<pre> [mysql_innodb]
+  env.mysql /usr/bin/mysql
+  env.mysqlopts --user=munin --password=munin --host=localhost
+  env.warning 2147483648
+  env.critical 1073741824</pre> 
+<h1>AUTHOR</h1> 
+<p>Stig Sandbeck Mathisen &lt;ssm@fnord.no&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GNU General Public License, version 2 or any later version</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

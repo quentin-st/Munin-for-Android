@@ -1,0 +1,32 @@
+<h1>NAME</h1> 
+<p>exim_mailqueue - Plugin to monitor exim queue size</p> 
+<h1>CONFIGURATION</h1> 
+<p>This plugin needs to run as a user that has access to run exiqgrep and examine the queue directories. This is done like this for example:</p> 
+<pre>  [exim_*]
+    user exim</pre> 
+<p>Configuration parameters for a file in @@CONFDIR@@/plugin-conf.d/ if you need to override the defaults below:</p> 
+<pre>  [exim_mailqueue]
+    env.exiqgrep   - Use if exiqgrep is not in $PATH
+    env.graphtitle - Title of the graph
+    env.queuewarn  - When to warn (of undelivered mails)
+    env.queuecrit  - When to crit (of undelivered mails)
+    env.frozenwarn - When to warn (of frozen mails)
+    env.frozencrit - When to crit (of frozen mails)</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<pre>  [exim_mailqueue]
+    env.graphtitle Exim Mailqueue
+    env.exiqgrep  &lt;autodetected&gt;
+    env.queuewarn 100
+    env.queuecrit 200
+    env.frozenwarn 100
+    env.frozencrit 200</pre> 
+<h1>AUTHOR</h1> 
+<p>The original author was Audun Ytterdal, though the plugin has been heavily modified by lots of people since then.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

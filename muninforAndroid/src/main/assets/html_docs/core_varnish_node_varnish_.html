@@ -1,0 +1,32 @@
+<h1>NAME</h1> 
+<p>varnish_ - Munin plugin to monitor various aspects of varnish</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Varnish 2.0 or newer with varnishstat</p> 
+<h1>CONFIGURATION</h1> 
+<p>The plugin needs to be able to execute varnishstat.</p> 
+<p>The configuration section shows the defaults [varnish_*] env.varnishstat varnishstat env.name</p> 
+<p>env.varnishstat can be a full path to varnishstat if it's not in the path already.</p> 
+<p>env.name is blank (undefined) by default and can be used to specify a -n name argument to varnish if multiple instances are running on the same server.</p> 
+<p>A few aspects are not linked by default. They are marked as 'DEBUG' =&gt; 'yes' (or any other value). They are:</p> 
+<p>data_structures, vcl_and_bans, lru, objects_per_objhead, obj_sendfile_vs_write, losthdr, esi, hcb, shm, shm_writes, overflow, session, session_herd</p> 
+<p>You can link them yourself with something like this:</p> 
+<pre>  ln -s @@LIBDIR@@/plugins/varnish_ \
+    @@CONFDIR@@/plugins/varnish_data_structures</pre> 
+<h1>INTERPRETATION</h1> 
+<p>Each graph uses data from varnishstat.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf suggest</pre> 
+<h1>VERSION</h1> 
+<pre> $Id$</pre> 
+<h1>BUGS</h1> 
+<p>The hit_rate graph requires munin r2040 or newer to display correctly.</p> 
+<h1>PATCHES-TO</h1> 
+<p>Please send patches to Kristian Lyngstol &lt;kristian@bohemians.org&gt; and/or varnish-misc@varnish-cache.org for significant changes. Munin SVN is the authoritative repository for this plugin.</p> 
+<h1>AUTHOR</h1> 
+<p>Kristian Lyngstol &lt;kristian@bohemians.org&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

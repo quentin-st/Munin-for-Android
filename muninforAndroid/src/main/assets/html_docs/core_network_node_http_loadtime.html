@@ -1,0 +1,22 @@
+<h1>NAME</h1> 
+<p>http_loadtime - Plugin to graph the HTTP response times of specific pages</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following environment variables are used by this plugin</p> 
+<pre> target - comma separated URL(s) to fetch (default: &quot;http://localhost/&quot;)
+ example:
+   [http_loadtime]
+   env.target http://localhost.de,http://localhost.de/some-site.html
+   env.requisites true
+
+ Do not enable the download of page requisites (env.requisites) for https
+ sites since wget needs incredible long to perform this on big sites...</pre> 
+<h1>AUTHOR</h1> 
+<p>Unknown authors (2013) Axel Huebl</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,31 @@
+<h1>NAME</h1> 
+<p>snmp__netapp_diskusage_ - Munin plugin to retrieve file systems usage on NetApp storage appliances.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>File systems usage stats should be reported by any NetApp storage appliance with SNMP agent daemon activated. See na_snmp(8) for details.</p> 
+<h1>CONFIGURATION</h1> 
+<p>Unfortunately, SNMPv3 is not fully supported on all NetApp equipments. For this reason, this plugin will use SNMPv2 by default, which is insecure because it doesn't encrypt the community string.</p> 
+<p>The following parameters will help you get this plugin working :</p> 
+<pre>  [snmp_*]
+     env.community MyCommunity</pre> 
+<p>If your community name is 'public', you should really worry about security and immediately reconfigure your appliance.</p> 
+<p>Please see 'perldoc Munin::Plugin::SNMP' for further configuration.</p> 
+<h1>INTERPRETATION</h1> 
+<p>The plugin reports file systems usage. This can help you monitoring file systems usage in a given period of time.</p> 
+<h1>MIB INFORMATION</h1> 
+<p>This plugin requires support for the NETWORK-APPLIANCE-MIB issued by Network Appliance. It reports the content of the DfEntry OID.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=snmpauto
+  #%# capabilities=snmpconf</pre> 
+<h1>VERSION</h1> 
+<p>v1.0 - 06/22/2009 14:05:03 CEST Initial revision</p> 
+<pre>  $Id$</pre> 
+<h1>AUTHOR</h1> 
+<p>This plugin is copyright (c) 2009 by Guillaume Blairon.</p> 
+<p>NetApp is a registered trademark and Network Appliance is a trademark of Network Appliance, Inc. in the U.S. and other countries.</p> 
+<h1>BUGS</h1> 
+<p>This plugin hasn't be tested on many hardware. If you encounter bugs, please report any to Guillaume Blairon &lt;g@yom.be&gt;.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2 or (at your option) any later version.</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

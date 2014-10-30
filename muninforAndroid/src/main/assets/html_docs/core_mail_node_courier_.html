@@ -1,0 +1,27 @@
+<h1>NAME</h1> 
+<p>courier_ - plugin to graph courier logins and logouts</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Any system with a courier imap/pop3 server and logtail installed</p> 
+<h1>CONFIGURATION</h1> 
+<p>The configuration variables are:</p> 
+<pre> logtail - path to the logtail script
+ logfile - log file from courier
+ service - which courier service to graph</pre> 
+<p>Service names for courier are &quot;imaplogin&quot; and &quot;courierpop3login&quot;. Good symlink names for this plugin is &quot;courier_imaplogin&quot; and &quot;courier_courierpop3login&quot;, which will set the &quot;service&quot; environment variable to &quot;imaplogin&quot; and &quot;courierpop3login&quot;, respectively.</p> 
+<p>The default configuration is:</p> 
+<pre> [courier_*]
+  env.logtail /usr/sbin/logtail
+  env.logfile /var/log/mail.log
+  env.service &lt;Whatever follows &quot;courier_&quot; in the file name&gt;</pre> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=contrib
+ #%# capabilities=autoconf</pre> 
+<h1>BUGS</h1> 
+<p>None known</p> 
+<h1>AUTHOR</h1> 
+<p># Coypright Micah Anderson &lt;micah@riseup.net&gt; # Jan 22, 2005</p> 
+<h1>LICENSE</h1> 
+<p>Unknown</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

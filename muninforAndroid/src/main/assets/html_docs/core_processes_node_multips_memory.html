@@ -1,0 +1,47 @@
+<h1>NAME</h1> 
+<p>multips_memory - Munin plugin to monitor memory usage of processes. Which processes are configured in a file in plugin-conf.d.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Any system with a compatible SysV style ps command that understands</p> 
+<pre>  ps -eo rss,comm</pre> 
+<h1>CONFIGURATION</h1> 
+<p>You must specify what process names to monitor:</p> 
+<pre>  [multips_memory]
+     env.names apache2 mysqld php-cgi</pre> 
+<p>The names are are matched with awk. Any regular expression meta characters in each of the words on the names list are &quot;active&quot; in the regular expression.</p> 
+<p>The by default RSS is monitored, but other sizes provided by your ps is directly usable (the plugin assumes all sizes reported by ps is in KB). Candidates on Linux are rss, size, resident, share, vsize. See your ps man page for more information especially with regards to interpretation of the values. You can change what is monitored by</p> 
+<pre>  [multips_memory]
+      env.monitor vsize</pre> 
+<p>You cannot specify multiple sizes. The plugin handles only one.</p> 
+<p>If for some reason you want separate graphs, you can make separately named symlinks in the plugins directory on the node (most often either /etc/munin/plugins or /etc/opt/munin/plugins), eg. multips_memory_rss and multips_memory_vsize as symlinks to multips_memory and configure them thus:</p> 
+<pre>  [multips_memory*]
+      env.names apache2 mysqld php-cgi
+
+  [multips_memory_rss]
+      env.monitor rss
+
+  [multips_memory_vsize]
+      env.monitor vsize</pre> 
+<p>They can of course also have different process names as well. Eg. one list for the &quot;LAMP&quot; stack and one for the Java/Oracle stack in separate graphs.</p> 
+<h1>INTERPRETATION</h1> 
+<p>This plugin adds up the RSS (or other memory size if configured) of all processes matching the process name, as reported by ps.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=manual
+  #%# capabilities=autoconf</pre> 
+<h1>VERSION</h1> 
+<pre>  0.1 first release, based on multips as distributed in Debian.
+
+  $Id $</pre> 
+<h1>BUGS AND RESTRICTIONS</h1> 
+<p>Only the executable name is matched against (ps -eo comm)1, and it must be a full string match to the executable base name, not substring, unless you enter a name such as &quot;.*apache&quot; since RE meta characters in the names are active.</p> 
+<p>You cannot specify multiple sizes. The plugin handles only one.</p> 
+<h1>AUTHOR</h1> 
+<p>Originally: Unknown.</p> 
+<p>Made into multimemory by: github.com/dominics github.com/yhager.</p> 
+<p>Renamed to multips_memory when included in official munin trunk.</p> 
+<p>Thanks to: wix</p> 
+<p>Some further work to make more generic by Nicolai Langfeldt</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

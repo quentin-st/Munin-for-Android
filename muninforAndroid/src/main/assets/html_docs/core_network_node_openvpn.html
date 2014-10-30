@@ -1,0 +1,25 @@
+<h1>NAME</h1> 
+<p>openvpn - Plugin to monitor number of users connected to openvpn server</p> 
+<h1>USAGE</h1> 
+<p>To use this plugin, add the following text to your openvpn server configuration file:</p> 
+<pre> status /var/log/openvpn.status
+ status-version 1</pre> 
+<p>If you change the path to the status file, remember to change env.statusfile in the plugin configuration to match the new path.</p> 
+<h1>CONFIGURATION</h1> 
+<p>This script uses the following configuration variables</p> 
+<pre> [openvpn]
+  env.statusfile &lt;path to status log file&gt;</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<p>The default configuration is</p> 
+<pre> [openvpn]
+  env.statusfile /var/log/openvpn.status</pre> 
+<h1>AUTHOR</h1> 
+<p>Copyright (C) 2005 Rodolphe Quiedeville &lt;rodolphe@quiedeville.org&gt;</p> 
+<h1>LICENSE</h1> 
+<p>Gnu GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=contrib
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,20 @@
+<h1>NAME</h1> 
+<p>port_ - Munin wildcard plugin to monitor netwok port usage.</p> 
+<h1>CONFIGURATION</h1> 
+<p>To monitor a port link port_&lt;service&gt; to this file. E.g.</p> 
+<pre>  ln -s /usr/share/munin/plugins/port_ /etc/munin/plugins/port_ssh</pre> 
+<p>will monitor ssh connections. Services are those from /etc/services or a numeric port number.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=manual
+  #%# capabilities=autoconf suggest</pre> 
+<h1>BUGS</h1> 
+<p>The plugin doesnt count the tcp6 connections if tcp and tcp6 is used.</p> 
+<h1>VERSION</h1> 
+<p>$Id$</p> 
+<h1>AUTHOR</h1> 
+<p>Unknown</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

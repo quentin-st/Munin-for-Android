@@ -1,0 +1,97 @@
+<h1>NAME</h1>
+<h2>smart_</h2>
+<p> </p> 
+<p>smart_ - Munin wildcard-plugin to monitor S.M.A.R.T. attribute values through smartctl</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Node with <b>Python</b> interpreter and <b>smartmontools</b> (http://smartmontools.sourceforge.net/) installed and in function.</p> 
+<h1>CONFIGURATION</h1> 
+<h2>Create link in service directory</h2> 
+<p>To monitor a S.M.A.R.T device, create a link in the service directory of the munin-node named smart_&lt;device&gt;, which is pointing to this file.</p> 
+<p>E.g.</p> 
+<p>ln -s /usr/share/munin/plugins/smart_ /etc/munin/plugins/smart_hda</p> 
+<p>...will monitor /dev/hda.</p> 
+<h2>Grant privileges in munin-node</h2> 
+<p>The plugin must be run under high privileged user <b>root</b>, to get access to the raw device.</p> 
+<p>So following minimal configuration in plugin-conf.d/munin-node is needed.</p> 
+<blockquote> 
+ <pre>  [smart_*]
+  user root
+  group disk</pre> 
+</blockquote> 
+<h2>Set Parameter if needed</h2> 
+<pre>  smartpath     - Specify path to smartctl program (Default: /usr/sbin/smartctl)
+  smartargs     - Override '-a' argument passed to smartctl with '-A -i'+smartargs
+  ignorestandby - Ignore the standby state of the drive and perform SMART query. Default: False
+  ignoreexit    - Bits in smartctl exit code to ignore, e.g. 64. Default: 0</pre> 
+<p>Parameters can be specified on a per-drive basis, eg:</p> 
+<blockquote> 
+ <pre>  [smart_hda]
+  user root
+  env.smartargs -H -c -l error -l selftest -l selective -d ata
+  env.smartpath /usr/local/sbin/smartctl</pre> 
+</blockquote> 
+<p>In particular, for SATA drives, with older versions of smartctl:</p> 
+<blockquote> 
+ <pre>  [smart_sda]
+  user root
+  env.smartargs -d ata -a
+
+  [smart_twa0-1]
+  user root
+  env.smartargs -H -l error -d 3ware,1
+  env.ignorestandby True
+
+  [smart_twa0-2]
+  user root
+  env.smartargs -H -l error -d 3ware,2</pre> 
+</blockquote> 
+<p>The <code>ignoreexit</code> parameter can be useful to exclude some bits in smartctl exit code, which is a bit mask described in its main page, from consideration. For example, if the drive had any errors in the past, the exit code would always have its bit 6 (&quot;The device error log contains records of errors.&quot;) set, even if the errors happened a long time ago and are not relevant any more. To avoid getting munin warnings about this you can use</p> 
+<blockquote> 
+ <pre>  [smart_sda]
+  env.ignoreexit 64</pre> 
+</blockquote> 
+<h1>INTERPRETATION</h1> 
+<p>If a device supports the <b>Self-Monitoring, Analysis and Reporting Technology (S.M.A.R.T.)</b> it offers readable access to the attribute table. There you find the <b>raw value</b>, a <b>normalised value</b> and a <b>threshold</b> (set by the vendor) for each attribute, that is supported by that device.</p> 
+<p>The meaning and handling of the raw value is a secret of the vendors embedded S.M.A.R.T.-Software on the disk. The only relevant info from our external view is the <b>normalised value</b> in comparison with the <b>threshold</b>. If the attributes value is equal or below the threshold, it signals its failure and the <b>health status</b> of the device will switch from <b>passed</b> to <b>failed</b>.</p> 
+<p>This plugin fetches the <b>normalised values of all SMART-Attributes</b> and draw a curve for each of them. It takes the vendors threshold as critical limit for the munin datafield. So you will see an alarm, if the value reaches the vendors threshold.</p> 
+<p>Looking at the graph: It is a bad sign, if the curve starts to curl or to meander. The more horizontal it runs, the better. Of course it is normal, that the temperatures curve swings a bit. But the others should stay steady on their level if everything is ok.</p> 
+<p>S.M.A.R.T. distinguishes between <b>Pre-fail</b> and <b>Old-age</b> Attributes. An old disk will have more curling curves because of degradation, especially for the <b>Old-age</b> Attributes. You should then backup more often, run more selftests[1] and prepare the disks replacement.</p> 
+<p><b>Act directly</b>, if a &lt;Pre-Fail&gt; Attribute goes below threshold. Immediately back-up your data and replace your hard disk drive. A failure may be imminent..</p> 
+<p>[1] Consult the smartmontools manpages to learn about offline tests and automated selftests with smartd. Only with both activated, the values of the SMART-Attributes reflect the all over state of the device.</p> 
+<p>Tutorials and articles about S.M.A.R.T. and smartmontools: http://smartmontools.sourceforge.net/doc.html#tutorials</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf suggest</pre> 
+<h1>CALL OPTIONS</h1> 
+<p><b>none</b></p> 
+<blockquote> 
+ <p>Fetches values if called without arguments:</p> 
+ <p>E.g.: munin-run smart_hda</p> 
+</blockquote> 
+<p><b>config</b></p> 
+<blockquote> 
+ <p>Prints plugins configuration.</p> 
+ <p>E.g.: munin-run smart_hda config</p> 
+</blockquote> 
+<p><b>autoconf</b></p> 
+<blockquote> 
+ <p>Tries to find smartctl and outputs value 'yes' for success, 'no' if not.</p> 
+ <p>It's used by <b>munin-node-configure</b> to see wether autoconfiguration is possible.</p> 
+</blockquote> 
+<p><b>suggest</b></p> 
+<blockquote> 
+ <p>Outputs the list of device names, that it found plugged to the system.</p> 
+ <p><b>munin-node-configure</b> use this to build the service links for this wildcard-plugin.</p> 
+</blockquote> 
+<h1>VERSION</h1> 
+<p>Version 2.2</p> 
+<h1>BUGS</h1> 
+<p>None known</p> 
+<h1>AUTHOR</h1> 
+<p>(C) 2004-2009 Nicolas Stransky &lt;Nico@stransky.cx&gt;</p> 
+<p>(C) 2008 Gabriele Pohl &lt;contact@dipohl.de&gt; Reformated existent documentation to POD-Style, added section Interpretation to the documentation.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2 (http://www.gnu.org/licenses/gpl-2.0.txt)</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

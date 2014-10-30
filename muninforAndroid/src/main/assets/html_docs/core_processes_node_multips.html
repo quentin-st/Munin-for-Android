@@ -1,0 +1,27 @@
+<h1>NAME</h1> 
+<p>multips - Munin plugin to monitor number of processes. Which processes are configured in client-conf.d</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Any system with a pgrep, /usr/ucb/ps or other UCB compatible ps command.</p> 
+<h1>CONFIGURATION</h1> 
+<p>There is no default configuration. This is an example:</p> 
+<pre>  [multips]
+     env.names pop3d imapd sslwrap
+     env.regex_imapd ^[0-9]* imapd:
+     env.regex_pop3d ^[0-9]* pop3d:</pre> 
+<p>The regex parts are not needed if the name given in &quot;names&quot; can be used to grep with directly.</p> 
+<h1>INTERPRETATION</h1> 
+<p>This plugin simply counts the total number of processes matching the configured regular expressions. The regular expressions are interpreted by &quot;grep&quot; (and not egrep or perl).</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=manual
+  #%# capabilities=autoconf</pre> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>BUGS</h1> 
+<p>None known</p> 
+<h1>AUTHOR</h1> 
+<p>Unknown</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

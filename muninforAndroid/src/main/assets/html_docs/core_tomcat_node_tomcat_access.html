@@ -1,0 +1,26 @@
+<h1>NAME</h1> 
+<p>tomcat_access - Plugin to monitor the number of accesses to Tomcat servers.</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following environment variables are used by this plugin</p> 
+<pre> url       - Override default status-url
+ port      - HTTP port number
+ user      - Manager username
+ password  - Manager password
+ connector - Override connector to monitor</pre> 
+<h1>USAGE</h1> 
+<p>Requirements:</p> 
+<p>Needs access to http://&lt;user&gt;:&lt;password&gt;@localhost:8080/manager/status?XML=true (or modify the address for another host).</p> 
+<p>Tomcat 5.0 or higher.</p> 
+<p>A munin-user in $CATALINA_HOME/conf/tomcat-users.xml should be set up for this to work.</p> 
+<p>Tip: To see if it's already set up correctly, just run this plugin with the parameter &quot;autoconf&quot;. If you get a &quot;yes&quot;, everything should work like a charm already.</p> 
+<p>tomcat-users.xml example: &lt;user username=&quot;munin&quot; password=&quot;&lt;set this&gt;&quot; roles=&quot;standard,manager&quot;/&gt;</p> 
+<h1>AUTHOR</h1> 
+<p>Rune Nordb&Atilde;&cedil;e Skillingstad &lt;runesk@linpro.no&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

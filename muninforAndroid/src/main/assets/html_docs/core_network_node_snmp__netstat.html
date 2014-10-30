@@ -1,0 +1,30 @@
+<h1>NAME</h1> 
+<p>snmp__netstat - Munin plugin to monitor the number of TCP network connections on an SNMP device.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Any SNMP-capable device that reports the TCP-MIB::tcpConnState column of tcpConnTable.</p> 
+<h1>CONFIGURATION</h1> 
+<p>As a rule SNMP plugins need site specific configuration. The default configuration (shown here) will only work on insecure sites/devices.</p> 
+<pre>   [snmp_*]
+        env.version 2
+        env.community public</pre> 
+<p>In general SNMP is not very secure at all unless you use SNMP version 3 which supports authentication and privacy (encryption). But in any case the community string for your devices should not be &quot;public&quot;.</p> 
+<p>Please see 'perldoc Munin::Plugin::SNMP' for further configuration information.</p> 
+<h1>INTERPRETATION</h1> 
+<p>The total number of TCP connections in each state. See RFC 793 or the detailed information on the graph page for the meaning of each state.</p> 
+<h1>MIB INFORMATION</h1> 
+<p>This plugin requires support for the TCP-MIB (RFC 4022). It reports the contents of the tcpConnState column of tcpConnTable.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=snmpauto
+  #%# capabilities=snmpconf</pre> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>BUGS</h1> 
+<p>None known.</p> 
+<h1>AUTHOR</h1> 
+<p>Copyright (C) 2006 Lars Strand</p> 
+<p>Tidied and documented by Matthew Boyle in 2010.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2.</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

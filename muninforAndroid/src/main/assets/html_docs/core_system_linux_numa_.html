@@ -1,0 +1,25 @@
+<h1>NAME</h1> 
+<p>numa - Plugin to graph NUMA page hits and misses</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Linux kernels since 2.6.12</p> 
+<h1>CONFIGURATION</h1> 
+<p>This plugin does not require configuration.</p> 
+<p>The number after numa_ indicates the numa node. It is followed by either 'memory' or 'process'.</p> 
+<p>numa_0_memory numa_1_process</p> 
+<h1>INTERPRETATION</h1> 
+<p>Remote and foreign access takes more time than local access.</p> 
+<p>Hugepages have separate counters and aren't included in these graphs.</p> 
+<h1>AUTHORS</h1> 
+<p>Copyright (C) 2014 Daniel Black - Open Query</p> 
+<h1>LICENSE</h1> 
+<p>GNU GPLv2</p> 
+<h1>REFERENCE</h1> 
+<p>Reference: https://www.kernel.org/doc/Documentation/numastat.txt</p> 
+<h1>BUGS</h1> 
+<p>Possibly some.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf suggest</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,26 @@
+<h1>NAME</h1> 
+<p>exim_mailqueue_alt - Plugin to monitor the exim mail queue</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following environment variables are used by this plugin:</p> 
+<pre> exim      - exim binary location
+ queuewarn - warning limit
+ queuecrit - critical limit</pre> 
+<p>The plugin needs to be run as the same user as exim, commonly &quot;mail&quot;.</p> 
+<h2>EXAMPLE CONFIGURATION</h2> 
+<pre> [exim_mailqueue_alt]
+  user mail
+  env.queuewarn  2000
+  env.queuecrit 10000</pre> 
+<p>For a Debian based system, a minimal example configuration would be:</p> 
+<pre> [exim_mailqueue_alt]
+  user Debian-exim</pre> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=contrib
+ #%# capabilities=</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

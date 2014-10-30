@@ -1,0 +1,40 @@
+<h1>NAME</h1> 
+<p>memory - Plugin to monitor memory usage</p> 
+<h1>CONFIGURATION</h1> 
+<p>No configuration</p> 
+<h2>Warning and Critical Values</h2> 
+<p>Warning and critical values can be passed in environment variables as byte values or they can be percentages using a % sign and the value will be calculated dynamically by the plugin. Thus, to warn on swap at 50% the configuration is:</p> 
+<pre>        [memory]
+        env.swap_warning 50%</pre> 
+<p>Note that swap is calculated against the total swap amount (SwapTotal), and all other fields are calculated against the total amount of memory (MemTotal).</p> 
+<h1>AUTHORS</h1> 
+<p>Original Author: Jimmy Olsen</p> 
+<h2>CONTRIBUTORS</h2> 
+<dl> 
+ <dt>
+  Mike Fedyk
+ </dt> 
+ <dd> 
+  <p>Slab, SwapCached, PageTables, VmallocUsed, Mapped, Active, Inactive, 2.4 Rmap &amp; 2.6</p> 
+ </dd>
+ <dt>
+  Juha-Matti Tapio
+ </dt> 
+ <dd> 
+  <p>Input on swap_cache and VMalloc Used on 64 bit machines.</p> 
+ </dd>
+ <dt>
+  Nicolai Langfeldt
+ </dt> 
+ <dd> 
+  <p>Editor</p> 
+ </dd> 
+</dl> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

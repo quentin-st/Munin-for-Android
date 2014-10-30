@@ -1,0 +1,33 @@
+<h1>NAME</h1> 
+<p>nginx_status - Munin plugin to show connection status for nginx</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Any nginx host</p> 
+<h1>CONFIGURATION</h1> 
+<p>This shows the default configuration of this plugin. You can override the status URL.</p> 
+<pre>  [nginx*]
+      env.url http://localhost/nginx_status</pre> 
+<p>Nginx must also be configured. Firstly the stub-status module must be compiled, and secondly it must be configured like this:</p> 
+<pre>  server {
+        listen 127.0.0.1;
+        server_name localhost;
+        location /nginx_status {
+                stub_status on;
+                access_log   off;
+                allow 127.0.0.1;
+                deny all;
+        }
+  }</pre> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf</pre> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>BUGS</h1> 
+<p>None known</p> 
+<h1>AUTHOR</h1> 
+<p>Unknown</p> 
+<h1>LICENSE</h1> 
+<p>Unknown. Not specified by the unknown author. Nginx has a BSD license. Munin is GPLv2 licensed.</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

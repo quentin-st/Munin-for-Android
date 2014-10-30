@@ -1,0 +1,16 @@
+<h1>NAME</h1> 
+<p>swap - Plugin to monitor memory usage on AIX</p> 
+<h1>COFIGURATION</h1> 
+<p>No configuration</p> 
+<h1>NOTES</h1> 
+<p>This will measure the total amount of swap/paging space available on the server, and will also measure how much of that swap space is being used. It uses /usr/sbin/lsps to find all this out. If you have more than one paging space they will be added together, so will the total amount of space used. This is the total amount used after all.</p> 
+<h1>AUTHOR</h1> 
+<p>Developed 05/28/2003 by Mike Discenza &lt;mike.discenza@dillards.com&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=contrib
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

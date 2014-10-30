@@ -1,0 +1,33 @@
+<h1>NAME</h1> 
+<p>zimbra_ - Plugin to monitor all sorts of Zimbra statistics</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Zimbra 5+ with zmstat statistics enabled.</p> 
+<p>Text::CSV_XS (perl-Text-CSV_XS from EPEL, for example)</p> 
+<h1>CONFIGURATION</h1> 
+<p>Add this to the relevant munin-node config file:</p> 
+<pre> [zimbra*]
+ group zimbra</pre> 
+<p>The following environment variables are used by this plugin:</p> 
+<dl> 
+ <dt>
+  csvpath
+ </dt> 
+ <dd> 
+  <p>Path to zmstat csv files (default /opt/zimbra/zmstat)</p> 
+ </dd> 
+</dl> 
+<h1>BUGS/GOTCHAS</h1> 
+<p>Only reads latest value from the csv, which may be a &quot;last 30 seconds&quot; or &quot;last minute&quot; value, so not a representative &quot;last five minutes&quot; value. The original Zimbra stat charts often use a moving average of some sort.</p> 
+<h1>AUTHOR</h1> 
+<p>Erik Inge Bols&oslash; &lt;knan@redpill-linpro.com&gt;, Redpill Linpro AS</p> 
+<h1>COPYRIGHT</h1> 
+<p>Copyright (c) 2009 Erik Inge Bols&oslash;, Redpill Linpro AS</p> 
+<p>All rights reserved. This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 2 dated June, 1991.</p> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=contrib
+ #%# capabilities=autoconf suggest</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

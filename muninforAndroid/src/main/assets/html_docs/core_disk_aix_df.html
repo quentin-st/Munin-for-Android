@@ -1,0 +1,33 @@
+<h1>NAME</h1> 
+<p>df - Script to monitor disk usage</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following environment variables are used by this plugin:</p> 
+<dl> 
+ <dt>
+  warning
+ </dt> 
+ <dd> 
+  <p>Warning percentage (Default: 92)</p> 
+ </dd>
+ <dt>
+  critical
+ </dt> 
+ <dd> 
+  <p>Critical percentage (Default: 98)</p> 
+ </dd> 
+</dl> 
+<h1>NOTES</h1> 
+<h2>DESCRIPTION</h2> 
+<p>This will report back the sizes of the filesystems currently mounted. All measurements are reported in percents, not in actual 512KB pages. It uses /usr/bin/df.</p> 
+<h2>RESCTRICTIONS</h2> 
+<p>None, unless you have restricted who can use /usr/bin/df.</p> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=contrib
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

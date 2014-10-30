@@ -1,0 +1,25 @@
+<h1>NAME</h1> 
+<p>mysql_isam_space_ - Wildcard plugin to monitor the percent of table space used on isam and myisam tables on a mysql server.</p> 
+<h1>CONFIGURATION</h1> 
+<p>Configuration parameters for @@CONFDIR@@/PLUGIN, if you need to override the defaults below:</p> 
+<pre> [mysql_isam_space_*]
+  env.mysqlopts    - Options to pass to mysql
+  env.statefile    - where to put the statefile
+  env.ignore       - Tables to ignore. Regex.
+  env.absolute     - use tables sizes, not percent of maximum</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<pre> [mysql_isam_space_*]
+  env.mysqlopts
+  env.statefile $ENV{MUNIN_PLUGSTATE}/plugin-mysql_isam_space.state
+  env.ignore
+  env.absolute 0</pre> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=contrib
+ #%# capabilities=suggest autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

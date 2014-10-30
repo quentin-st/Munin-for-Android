@@ -1,0 +1,34 @@
+<h1>NAME</h1> 
+<p>ntp_ - Wildcard plugin to monitor NTP statistics for a particular remote NTP peer</p> 
+<h1>CONFIGURATION</h1> 
+<p>This is a wildcard plugin. The wildcard suffix in the symlink is the hostname, IPv4, or IPv6 address of the NTP peer that you want to monitor. The IP address must be one which appears in <code>ntpq -np</code> output. If given a hostname, it must resolve to an IP address which appears in <code>ntpq -np</code> output; this plugin will try all of the A or AAAA records returned. If you use a dynamic association method, such as &quot;pool&quot; or one of the broadcast or multicast methods, this plugin will probably not work very well for you, as your NTP peers could be changing frequently.</p> 
+<p>Examples:</p> 
+<dl> 
+ <dt>
+  ntp_time.example.com
+ </dt> 
+ <dd> 
+ </dd>
+ <dt>
+  ntp_203.0.113.1
+ </dt> 
+ <dd> 
+ </dd>
+ <dt>
+  ntp_2001:db8::1
+ </dt> 
+</dl> 
+<p>The following environment variables are used by this plugin:</p> 
+<pre> [ntp_*]
+  env.lowercase - Lowercase hostnames after lookup
+  env.nodelay 1 - Set to 1 to disable graphing of delay</pre> 
+<h1>AUTHOR</h1> 
+<p>Original author unknown. Rewritten by Kenyon Ralph &lt;kenyon@kenyonralph.com&gt;.</p> 
+<h1>LICENSE</h1> 
+<p>Same as munin.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf suggest</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,146 @@
+<h1>NAME</h1> 
+<p>vserver_resources - Plugin to graph Vserver resource usage and limits</p> 
+<h1>CONFIGURATION</h1> 
+<p>This plugin uses the following configuration variables</p> 
+<pre> [vserver_resources]
+  env.vservers - specify the vservers to include in the graph
+  env.resource - specify the resource to be monitored
+  env.limits   - if true, turn on limit graphing</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<p>This is the default configuration</p> 
+<pre> [vserver_resources]
+  env.vservers &lt;all vservers&gt;
+  env.limits false</pre> 
+<h1>EXAMPLE CONFIGURATIONS</h1> 
+<p>The following monitors the RSS value for the vservers named &quot;vserver1 vserver2 vserver3 vserver4&quot; and looks to see if the resource limit has been breached, if so it sends a message to nagios via send_nsca, and sends an email to notify that this has happened:</p> 
+<pre> [vserver_resources]
+  user root
+  env.vservers vserver1 vserver2 vserver3 vserver4
+  env.resource RSS
+  env.limits 1
+  contacts nagios email
+  contact.nagios.command /usr/bin/send_nsca -H your.nagios-host.here -c /etc/send_nsca.cfg
+  contact.email.command mail -s &quot;Munin-notification for ${var:group} :: ${var:host}&quot; your@email.address.here</pre> 
+<p>This second example monitors the VM value for all vservers on the system and has no limit notifications turned on:</p> 
+<pre> [vserver_resources]
+  user root
+  env.vservers vserver5 vserver6 vserver7
+  env.resource VM
+  env.limits 0</pre> 
+<p>This last example monitors all the resources for vserver5. Note that this will be a busy graph, and it would be really useless if you specified more than one vserver when the resource is set to ALL:</p> 
+<pre> [vserver_resources]
+  user root
+  env.vservers vserver5 
+  env.resource ALL
+  env.limits 0</pre> 
+<h1>USAGE</h1> 
+<p>Possible values for env.resource are:</p> 
+<dl> 
+ <dt>
+  ALL
+ </dt> 
+ <dd> 
+  <p>all the below resources</p> 
+ </dd>
+ <dt>
+  PROC
+ </dt> 
+ <dd> 
+  <p>number of processes</p> 
+ </dd>
+ <dt>
+  VM
+ </dt> 
+ <dd> 
+  <p>sum of all virtual pages inside the guest</p> 
+ </dd>
+ <dt>
+  VML
+ </dt> 
+ <dd> 
+  <p>sum of all virtual pages locked into memory</p> 
+ </dd>
+ <dt>
+  RSS
+ </dt> 
+ <dd> 
+  <p>number of pages currently present in RAM</p> 
+ </dd>
+ <dt>
+  ANON
+ </dt> 
+ <dd> 
+  <p>number of anonymous memory pages</p> 
+ </dd>
+ <dt>
+  FILES
+ </dt> 
+ <dd> 
+  <p>number of open files</p> 
+ </dd>
+ <dt>
+  OFD
+ </dt> 
+ <dd> 
+ </dd>
+ <dt>
+  LOCKS
+ </dt> 
+ <dd> 
+ </dd>
+ <dt>
+  SOCK
+ </dt> 
+ <dd> 
+ </dd>
+ <dt>
+  MSGQ
+ </dt> 
+ <dd> 
+ </dd>
+ <dt>
+  SHM
+ </dt> 
+ <dd> 
+  <p>number of shared memory pages</p> 
+ </dd> 
+</dl> 
+<h1>AUTHORS</h1> 
+<p>Copyright (C) 2006-2008 Holger Levsen, Micah Anderson</p> 
+<h1>LICENSE</h1> 
+<p>GNU GPLv2</p> 
+<h1>TODO</h1> 
+<dl> 
+ <dt>
+  Less shell subprocesses
+ </dt> 
+ <dd> 
+  <p>The plugin uses lots and lots of shell subprocesses. Maybe factor common vserver plugin code into Munin::Plugin::Linux::Vserver?</p> 
+ </dd>
+ <dt>
+  Multigraph
+ </dt> 
+ <dd> 
+  <p>make it so you can specify more than one resource to be graphed? Alternatively define combined ressource-display: VM+RSS+ANON+SHM and FILES+OFD+LOCK+SOCK (for one vserver only), and/or make it so you can graph all resources for one vserver</p> 
+ </dd>
+ <dt>
+  Default resource
+ </dt> 
+ <dd> 
+  <p>set a default for the resource if it is unset?</p> 
+ </dd>
+ <dt>
+  Use /proc less often
+ </dt> 
+ <dd> 
+  <p>use /proc less often (100 times more overhead than talking to the kernel directly) i.e. use something like pagesize=\`perl -MPOSIX -e 'print POSIX::sysconf(_SC_PAGESIZE), &quot;\n&quot;;'\`</p> 
+ </dd> 
+</dl> 
+<h1>BUGS</h1> 
+<p>The &quot;ALL&quot; resource is broken</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,35 @@
+<h1>NAME</h1> 
+<p>snmp__if_ - SNMP wildcard plugin to monitor network interfaces of any networked equipment.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Any SNMP capable networked computer equipment. Using a command such as &quot;munin-node-configure --snmp switch.langfeldt.net --snmpversion 2c --snmpcommunity public | sh -x&quot; should auto-detect all applicable interfaces. On a typical switch you will get one plugin pr. ethernet port. On a router you might get one plugin pr. VLAN interface.</p> 
+<h1>CONFIGURATION</h1> 
+<p>As a rule SNMP plugins need site specific configuration. The default configuration (shown here) will only work on insecure sites/devices:</p> 
+<pre>   [snmp_*]
+        env.version 2
+        env.community public</pre> 
+<p>In general SNMP is not very secure at all unless you use SNMP version 3 which supports authentication and privacy (encryption). But in any case the community string for your devices should not be &quot;public&quot;.</p> 
+<p>Please see 'perldoc Munin::Plugin::SNMP' for further configuration information.</p> 
+<h1>INTERPRETATION</h1> 
+<p>The graph shows a stright forward &quot;bits per second&quot; incomming and outgoing thruput. &quot;Incomming&quot; is towards the monitored device.</p> 
+<p>Note: The internal representation of the speeds is in bytes pr. second. The plugin multiplies everyting by 8 to get bits pr. second.</p> 
+<h1>MIB INFORMATION</h1> 
+<p>This plugin requires the IF-MIB the standard IETF MIB for network interfaces. It reports the contents of the IF-MIB::ifHCInOctets/IF-MIB::ifHCOutOctets if available, IF-MIB::ifInOctets/IF-MIB::ifOutOctets if not. The former are 64 bit counters only available with SNMP 2 and later. The later are 32 bit counters (see FEATURES below).</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=snmpauto
+  #%# capabilities=snmpconf</pre> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>BUGS</h1> 
+<p>None known.</p> 
+<h1>FEATURES</h1> 
+<p>You may get strange results if you use SNMPv1, or SNMPv2 on switches that do not support 64 bit byte counters. If the interface traffic exceeds about 50Mbps a 32 bit byte counter will wrap around in less than 5 minutes making the graph for the interface show random results.</p> 
+<p>If you have a switch/device that supports 64 bit byte counters this plugin will use them and the graph will be fine. The graph information will inform about this. You must use SNMPv2c or SNMPv3 to be able to use 64 bit counters - if the device supports them.</p> 
+<p>This problem is a feature of the device SNMP implementation or your usage of it, it is nothing the plugin can fix. In the future Munin may be able to run the plugin more often than the counter wraps around.</p> 
+<h1>AUTHOR</h1> 
+<p>Copyright (C) 2004-2009 Jimmy Olsen, Daginn Ilmari Mannsaaker. Documentation, porting to Munin::Plugin::SNMP and further grooming by Nicolai Langfeldt.</p> 
+<p>Initial SNMPv3 support by &quot;Confusedhacker&quot;.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

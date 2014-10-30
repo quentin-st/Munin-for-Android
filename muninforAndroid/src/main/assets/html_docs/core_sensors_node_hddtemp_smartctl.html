@@ -1,0 +1,44 @@
+<h1>NAME</h1> 
+<p>hddtemp_smartctl - Plugin to monitor harddrive temperatures through SMART</p> 
+<h1>CONFIGURATION</h1> 
+<p>This plugin needs to run as root or some other user that has access to the harddrive devices.</p> 
+<p>The following environment variables are used</p> 
+<pre> smartctl  - path to smartctl executable
+ drives    - List drives to monitor. E.g. &quot;env.drives hda hdc&quot;.
+ type_$dev - device type for one drive, e.g. &quot;env.type_sda 3ware,0&quot;
+             or more typically &quot;env.type_sda ata&quot; if sda is a SATA disk.
+ args_$dev - additional arguments to smartctl for one drive,
+             e.g. &quot;env.args_hda -v 194,10xCelsius&quot;.  Use this to make
+             the plugin use the --all or -a option if your disk will
+             not return its temperature when only the -A option is
+             used.
+ dev_$dev  - monitoring device for one drive, e.g. twe0</pre> 
+<p>If the &quot;smartctl&quot; enviroment variable is not set the plugin will search your $PATH, /usr/bin, /usr/sbin, /usr/local/bin and /usr/local/sbin for a file called &quot;smartctl&quot;, and use that.</p> 
+<p>If the &quot;drives&quot; environment variable is not set, the plugin will attempt to search for drives to probe.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre> 
+<h1>AUTHOR</h1> 
+<p>Copyright (c) 2005, Lutz Peter Christoph All rights reserved.</p> 
+<h1>LICENSE</h1> 
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p> 
+<pre>  * Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+  * Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+  * The name and aliases of Lutz Peter Christoph (&quot;Lupe Christoph&quot;,
+    &quot;Lutz Christoph&quot;) may not be used to endorse or promote products
+    derived from this software without specific prior written
+    permission.</pre> 
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p> 
+<h1>NOTES</h1> 
+<p>Note for users of RAID controllers (smartmontools currently only supports 3ware): you can specify the drives attached to your RAID controller(s) as raiddev_num (e.g. sda_0). Then you must specify the type like this: type_sda_0 3ware,0.</p> 
+<p>Recent versions of the kernel driver use a separate major device number for monitoring purposes, like /dev/twe&lt;n&gt; or /dev/twa&lt;n&gt;. This can be put in the e.g. dev_sda environment variable, to allow the user to keep sda as the name of the disk.</p> 
+<p>To avoid spinning up sleeping disks smartctl will use the --nocheck parameter. If this parameter isn't supported by your version of smartctl then hdparm will be used. Note that hdparm isn't available on all platforms.</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

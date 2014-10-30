@@ -1,0 +1,26 @@
+<h1>NAME</h1>
+<h2>buddyinfo</h2>
+<p>  </p> 
+<p>buddyinfo - Plugin to monitor memory fragmentation on Linux systems.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Linux 2.5.40+, 2.6.x</p> 
+<h1>CONFIGURATION</h1> 
+<p>None needed.</p> 
+<p>To optionally use a logarithmic scale on the graphs, define the environment variable logarithmic. For example:</p> 
+<pre> [buddyinfo]
+ env.logarithmic yes</pre> 
+<h1>INTERPRETATION</h1> 
+<p>Linux manages virtual memory on a page granularity. There are some operations however that require physically contiguous pages to be allocated by the kernel. Such allocations may fail if the memory gets fragmented and even though there are enough pages free, but they are not contiguous.</p> 
+<p>This plugin monitors the amount of contiguous areas, called higher order pages. The order means the exponent of two of the size of the area, so order 2 means 2^2 = 4 pages.</p> 
+<h1>SEE ALSO</h1> 
+<p>See <code>Documentation/filesystems/proc.txt</code> in the Linux source tree for the description of the buddyinfo file.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual
+ #%# capabilities=autoconf</pre> 
+<h1>AUTHOR</h1> 
+<p>G&aacute;bor Gomb&aacute;s &lt;gombasg@sztaki.hu&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2 or later</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

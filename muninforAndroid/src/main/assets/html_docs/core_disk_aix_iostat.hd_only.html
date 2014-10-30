@@ -1,0 +1,20 @@
+<h1>NAME</h1> 
+<p>iostat.hd_only - Plugin for watching io-bound traffic (in KiloBytes) on disks</p> 
+<h1>CONFIGURATION</h1> 
+<p>No configuration</p> 
+<h1>NOTES</h1> 
+<h2>DESCRIPTION</h2> 
+<p>Similar to the iostat script, but will only report usage on hdisks physically installed in the server.</p> 
+<h2>RESTRICTIONS</h2> 
+<p>Same as the iostat script, see its RESTRICTIONS.</p> 
+<p>Note: If you have virtual paths, typical when gigabit fiber cards are installed and attached to an ESS (Shark) or some sort of large disk array, this will not include any information for them. This only collects information for hdisks physically located in the machine, no virtual drives are included.</p> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,21 @@
+<h1>NAME</h1> 
+<p>memory - Plugin to monitor memory usage on AIX</p> 
+<h1>CONFIGURATION</h1> 
+<p>This script uses /usr/bin/svmon to monitor memory usage. svmon can only be executed by root, so you need the following configuration for this plugin:</p> 
+<pre> [memory]
+  user root</pre> 
+<h1>AUTHOR</h1> 
+<p>Developed 05/28/2003 by Mike Discenza &lt;mike.discenza@dillards.com&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>NOTES</h1> 
+<h2>DESCRIPTION</h2> 
+<p>This will report back the amount of memory currently in use, pages pinned in memory, the amount of free memory, and the amount of swap space being used. It uses /usr/bin/svmon, /usr/sbin/lsps, and /usr/sbin/lsattr.</p> 
+<h2>RESTRICTIONS</h2> 
+<p>/usr/bin/svmon can only be executed by root. The other commands (lsps, lsattr) should be executable by everyone be defualt.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=contrib
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

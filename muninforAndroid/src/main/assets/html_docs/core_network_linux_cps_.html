@@ -1,0 +1,32 @@
+<h1>NAME</h1> 
+<p>cps_ - Plugin to monitor connections per second, for LVS loadbalancers.</p> 
+<h1>USAGE</h1> 
+<p>Create a service link in @@CONFDIR@@/plugins/ and restart the munin-node.</p> 
+<p>As this is a wildcard plugin it expects to get parameters via name of the service link.</p> 
+<dl> 
+ <dt>
+  Wildcard names
+ </dt> 
+ <dd> 
+  <pre> cps_&lt;port&gt;
+ cps_&lt;vip&gt;_&lt;port&gt;</pre> 
+ </dd>
+ <dt>
+  Examples
+ </dt> 
+ <dd> 
+  <pre> cps_smtp
+ cps_mail.foo.boo_smtp
+ cps_pop3
+ cps_www.foo.boo_www
+ cps_vvv.foo.boo_www</pre> 
+ </dd> 
+</dl> 
+<h1>AUTHOR</h1> 
+<p>Unknown</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf suggest</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

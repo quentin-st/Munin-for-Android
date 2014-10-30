@@ -1,0 +1,26 @@
+<h1>NAME</h1> 
+<p>bind9_rndc - Plugin to monitor usage of bind 9 servers using rndc stats</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following environment variables are used by this plugin</p> 
+<pre>  [bind9_rndc]
+    env.rndc            /usr/sbin/rndc
+    env.querystats      /var/run/named.stats</pre> 
+<p>The user/group that runs the plugin must have read access to the stats file. To change user or group (usually Munin plugins are run as nobody) add this to the [bind9_rndc] stanza if the &quot;bind&quot; user runs BIND:</p> 
+<pre>    user bind</pre> 
+<p>On the BIND side put</p> 
+<pre>  statistics-file &quot;/var/run/named.stats&quot;;</pre> 
+<p>in the options part of your named.conf or set the querystats variable (see below) to where your named puts the statistics file by default.</p> 
+<p>You must also make sure the rndc.key file is readable by the user that runs the plugin.</p> 
+<p>If using AppArmor, make sure the stats file is allowed (On Ubuntu: add this line to /etc/apparmor.d/usr.sbin.named)</p> 
+<pre>  /var/run/named/named.stats rw</pre> 
+<h1>FEATURES AND BUGS</h1> 
+<p>Previous versions of this plugin allowed an empty &quot;rndc&quot; environment setting to not do a explicit dump of stats to the stats file. This version requires running rndc itself. This makes the method of finding the correct stats in the file more reliable than before.</p> 
+<h1>AUTHOR</h1> 
+<p>Contributed by Laurent Facq 15/06/2004. Based on Nicolai Langfeldt's bind9 plugin. Reworked by Dagfinn Ilmari Manns&aring;ker. BIND 9.6 patch from &quot;Vrivellino&quot;. Reworked by guillomovitch and Kenyon Ralph. Multigraphified and updated for BIND 9.8 by Erik Inge Bols&oslash;.</p> 
+<h1>LICENSE</h1> 
+<p>License not documented.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

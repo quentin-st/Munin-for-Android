@@ -1,0 +1,35 @@
+<h1>NAME</h1> 
+<p>squid - Multigraph-capable plugin to monitor Squid</p> 
+<h1>NOTES</h1> 
+<p>This plugin will produce multiple graphs showing:</p> 
+<pre> - the number of requests (replaces squid_requests);
+ - the traffic (replaces squid_traffic);
+ - the size of the cache (replaces squid_cache);
+ - the traffic to the ICP peers (replaces squid_icp);
+ - the mean size of stored objects (replaces squid_objectsize).</pre> 
+<h1>CONFIGURATION</h1> 
+<p>The following configuration parameters are used by this plugin</p> 
+<pre> [squid]
+  env.host     - hostname to connect to
+  env.port     - port number to connect to
+  env.username - username used for authentication
+  env.password - password used for authentication</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<pre> [squid]
+  env.host 127.0.0.1
+  env.port 3128</pre> 
+<h2>WILDCARD CONFIGURATION</h2> 
+<p>It's possible to use the plugin in a virtual-node capacity, in which case the host configuration will default to the hostname following the underscore:</p> 
+<pre> [squid_someserver]
+  env.host someserver
+  env.port 3128</pre> 
+<h1>AUTHORS</h1> 
+<p>Copyright (C) 2013 Diego Elio Petten&Atilde;&sup2; Copyright (C) 2004 Jimmy Olsen, Audun Ytterdal, Tore Anderson Copyright (C) 2008 Bjorn Ruberg</p> 
+<h1>LICENSE</h1> 
+<p>Gnu GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,24 @@
+<h1>NAME</h1> 
+<p>df - Script to monitor disk usage</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Cygwin 1.7.x or higher systems with coreutils installed.</p> 
+<h1>USAGE</h1> 
+<p>Link this plugin to @@CONFDIR@@/plugins/ and restart the munin-node.</p> 
+<p>The plugin excludes per default the following special, read-only or dynamically allocating file systems from graphing:</p> 
+<pre>  iso9660</pre> 
+<h1>CONFIGURATION</h1> 
+<p>The following environment variables are used by this plugin:</p> 
+<pre> warning  - Warning percentage (Default: 92)
+ critical - Critical percentage (Default: 98)</pre> 
+<h1>BUGS/TODO</h1> 
+<p>Check smb/cifs remote mounts. (Cygwin bug, 2002 vintage, still unfixed: -l switch to df is reversed.)</p> 
+<h1>AUTHOR</h1> 
+<p>Erik Inge Bols&oslash; &lt;knan-munin@anduin.net&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

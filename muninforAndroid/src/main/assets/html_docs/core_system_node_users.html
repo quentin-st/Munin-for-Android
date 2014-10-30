@@ -1,0 +1,24 @@
+<h1>NAME</h1> 
+<p>users - Munin plugin to monitor the number of users logged in to a Unix box.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Should work on any Unix that has the who(1) command.</p> 
+<h1>CONFIGURATION</h1> 
+<p>None needed</p> 
+<h1>INTERPRETATION</h1> 
+<p>The plugin simply runs the who(1) command and counts the number of users logged in by different methods (tty, pty, X, etc).</p> 
+<h1>BUGS</h1> 
+<p>Logins or sessions that are not registered in <code>/var/run/utmp</code> as part of the session setup will not be counted (this is a feature, not a bug).</p> 
+<p>Only tested extensively on Linux.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf</pre> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>AUTHOR</h1> 
+<p>Copyright (C) 2004-2008.</p> 
+<p>Original version by Michael Kaiser tools (at) micha (dot) de. Modified and made more generic by Nicolai Langfeldt, 2006</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,21 @@
+<h1>NAME</h1> 
+<p>iostat - Plugin for watching io-bound traffic (in KiloBytes) on disks</p> 
+<h1>CONFIGURATION</h1> 
+<p>No configuration</p> 
+<h1>NOTES</h1> 
+<h2>DESCRIPTION</h2> 
+<p>This version of iostat will report back the amount of I/O on a per disk basis. It includes the vpaths in it's report. The I/O for a vpath is the sum of the reads/writes of all the hdisks assosciated with it. It uses /usr/bin/iostat.</p> 
+<h2>RESTRICTIONS</h2> 
+<p>Not restricted to a particular user.</p> 
+<p>You will have to enable disk accounting for this to work correctly. You can do this through 'smitty chgsys -&gt; Continuously maintain DISK I/O history', change this to true, or you can do it at the command line with this command &quot;chdev -l sys0 -a iostat='true'&quot;.</p> 
+<p>Note: If you have virtual paths, typical when gigabit fiber cards are installed and attached to an ESS (Shark) or some sort of large disk array, this will combine the I/O for all hdisks associated with a vpath so you get global statistics for a vpath. This is to avoid having a list of hdisks that spans multiple pages.</p> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

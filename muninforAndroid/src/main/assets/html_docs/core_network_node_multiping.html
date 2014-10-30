@@ -1,0 +1,27 @@
+<h1>NAME</h1> 
+<p>multiping - Plugin to monitor ping times against several hosts</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following environment variables are used</p> 
+<pre> ping_args  - Arguments to ping (default &quot;-c 2&quot;)
+ ping_args2 - Arguments after the host name (required for Solaris)
+ ping       - Ping program to use
+ host       - Host to ping</pre> 
+<p>Configuration example</p> 
+<pre> [multiping]
+  env.host www.example.org mail.example.org</pre> 
+<p>Configuration example for Solaris</p> 
+<pre> [multiping]
+  env.host www.example.org mail.example.org
+  env.ping_args -s
+  env.ping_args2 56 2</pre> 
+<h1>AUTHOR</h1> 
+<p>Copyright (C) 2004 Jimmy Olsen</p> 
+<h1>LICENSE</h1> 
+<p>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 2 dated June, 1991.</p> 
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p> 
+<p>You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

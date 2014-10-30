@@ -1,0 +1,51 @@
+<h1>NAME</h1> 
+<p>slapd_bdb_cache_</p> 
+<h1>CONFIGURATION</h1> 
+<p>Environment variables:</p> 
+<dl> 
+ <dt>
+  dbstat
+ </dt> 
+ <dd> 
+  <p>The full path to a db_stat binary able to communicate with the LDAP backend BDB database files. RHEL and friends use slapd_db_stat, while Debian and such use e.g. db4.6_stat.</p> 
+ </dd>
+ <dt>
+  dbdir
+ </dt> 
+ <dd> 
+  <p>The full path to the directory where the LDAP backend BDB database files are.</p> 
+ </dd>
+ <dt>
+  title
+ </dt> 
+ <dd> 
+  <p>(Optional) The plugin's title. Useful if you have more than one DIT installed.</p> 
+ </dd>
+ <dt>
+  warning
+ </dt> 
+ <dd> 
+  <p>(Optional) A threshold integer value. Triggers plugin to send warnings if cache percentage drops below the given value.</p> 
+ </dd> 
+</dl> 
+<h2>LIMITATIONS</h2> 
+<p>The plugin only checks _one_ database directory. To work around that, i.e. if you have more than one DIT in your OpenLDAP, create symlinked files and corresponding entries in the Munin environment file(s). Note that this will break autoconf, i.e. autoconf will probably still suggest a default set of symlinks.</p> 
+<p>Sample config for multiple database directories:</p> 
+<pre>  [slapd_bdb_cache_*]
+  env.dbstat /usr/bin/db4.6_stat
+
+  [slapd_bdb_cache_database1_*]
+  env.dbdir /var/lib/ldap/database1
+
+  [slapd_bdb_cache_database2_*]
+  env.dbdir /var/lib/ldap/database2</pre> 
+<h1>COPYRIGHT</h1> 
+<p>Bjorn Ruberg &lt;bjorn@ruberg.no&gt; 2005-2009</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf suggest</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

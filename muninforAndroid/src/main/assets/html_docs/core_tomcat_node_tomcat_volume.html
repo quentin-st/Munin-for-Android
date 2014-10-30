@@ -1,0 +1,50 @@
+<h1>NAME</h1> 
+<p>tomcat_volume - Plugin to monitor the volume of data sent from Tomcat servers.</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following environment variables are used by this plugin</p> 
+<dl> 
+ <dt>
+  url
+ </dt> 
+ <dd> 
+  <p>Override default status-url</p> 
+ </dd>
+ <dt>
+  port
+ </dt> 
+ <dd> 
+  <p>HTTP port number</p> 
+ </dd>
+ <dt>
+  user
+ </dt> 
+ <dd> 
+  <p>Manager username</p> 
+ </dd>
+ <dt>
+  password
+ </dt> 
+ <dd> 
+  <p>Manager password</p> 
+ </dd> 
+</dl> 
+<h2>CONFIGURATION EXAMPLE</h2> 
+<pre> [tomcat_volume]
+  env.ports     8081
+  env.user      someuser
+  env.password  somepassword
+  env.connector http-8081</pre> 
+<h1>AUTHOR</h1> 
+<p>Rune Nordb&Atilde;&cedil;e Skillingstad &lt;runesk@linpro.no&gt;</p> 
+<h1>USAGE</h1> 
+<p>Needs access to http://&lt;user&gt;:&lt;password&gt;@localhost:8080/manager/status?XML=true (or modify the address for another host).</p> 
+<p>Tomcat 5.0 or higher.</p> 
+<p>A munin-user in $CATALINA_HOME/conf/tomcat-users.xml should be set up for this to work.</p> 
+<p>Tip: To see if it's already set up correctly, just run this plugin with the parameter &quot;autoconf&quot;. If you get a &quot;yes&quot;, everything should work like a charm already.</p> 
+<p>tomcat-users.xml example: &lt;user username=&quot;munin&quot; password=&quot;&lt;set this&gt;&quot; roles=&quot;standard,manager&quot;/&gt;</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

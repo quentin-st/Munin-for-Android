@@ -1,0 +1,34 @@
+<h1>NAME</h1>
+<h2>if_</h2>
+<p> </p> 
+<p>if_ - Wildcard-plugin to monitor traffic and errors on network interfaces.</p> 
+<h1>CONFIGURATION</h1> 
+<p>This plugin does not normally require configuration.</p> 
+<p>The plugin may need to run as root to determine the maximum speed of the network interface. This is configured like this:</p> 
+<pre>  [if_*]
+      user root</pre> 
+<p>If the interface speed cannot be determined automatically by this plugin, you may manually configure the speed using the &quot;speed&quot; environment variable, in megabits per second, like this:</p> 
+<pre>  [if_*]
+      env.speed 1000</pre> 
+<p>To set warning and critical levels do like this:</p> 
+<pre>  [if_*]
+      env.warning 10000000</pre> 
+<p>or</p> 
+<pre>  [if_*]
+      env.if_0_warning 10000000</pre> 
+<p>This is a wildcard plugin. To monitor an interface, link if_&lt;interface&gt; to this file. For example,</p> 
+<pre>  ln -s /usr/share/munin/plugins/if_ \
+        /etc/munin/plugins/if_eth0</pre> 
+<p>will monitor eth0.</p> 
+<p>Most devices found in /proc/net/dev can be monitored. Examples include ipsec*, eth*, irda*, and lo. Please note that aliases cannot be monitored with this plugin.</p> 
+<h1>AUTHOR</h1> 
+<p>Original author unknown</p> 
+<p>Copyright (C) 2011 Diego Elio Petten&Atilde;&sup2; &lt;flameeyes@flameeyes.eu&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf suggest</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,27 @@
+<h1>NAME</h1> 
+<p>haproxy_ - Graph stats from the haproxy daemon</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Any haproxy host</p> 
+<h1>CONFIGURATION</h1> 
+<p>This is a wildcard plugin to support fetching status from multiple instances of haproxy that each need a distinct configurations, e.g.:</p> 
+<pre>   haproxy_backend</pre> 
+<p>and</p> 
+<pre>   haproxy_frontend</pre> 
+<p>Each with a separate configuration. The following example shows the default URL used by the plugin for the imaginary backend:</p> 
+<pre>   [haproxy_backend]
+        env.url http://localhost/haproxy-status;csv;norefresh</pre> 
+<p>If you need authenticated access to the URL you can specify the username and password in the URL. For example:</p> 
+<pre>   [haproxy_backend]
+        env.url http://munin:spamalot@localhost/haproxy-status;csv;norefresh</pre> 
+<p>This will provide for HTTP basic authentication.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=contrib</pre> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>AUTHOR</h1> 
+<p>Jimmy Olsen (based on some Apache plugin). Documented by Nicolai Langfeldt.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

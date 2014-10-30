@@ -1,0 +1,31 @@
+<h1>NAME</h1> 
+<p>snmp__winmem - Munin plugin to monitor memory usage on an SNMP device.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Any SNMP-capable device that reports the HOST-RESOURCES-MIB::hrSWRunPerfMem column for the hrSWRunPerfTable.</p> 
+<p>In particular, this allows memory usage to be monitored on machines running Microsoft Windows.</p> 
+<h1>CONFIGURATION</h1> 
+<p>As a rule SNMP plugins need site specific configuration. The default configuration (shown here) will only work on insecure sites/devices.</p> 
+<pre>   [snmp_*]
+        env.version 2
+        env.community public</pre> 
+<p>In general SNMP is not very secure at all unless you use SNMP version 3 which supports authentication and privacy (encryption). But in any case the community string for your devices should not be &quot;public&quot;.</p> 
+<p>Please see 'perldoc Munin::Plugin::SNMP' for further configuration information.</p> 
+<h1>INTERPRETATION</h1> 
+<p>The amount of memory currently in use by the processes on the system.</p> 
+<h1>MIB INFORMATION</h1> 
+<p>This plugin requires support for the HOST-RESOURCES-MIB (RFC 2790). It uses the contents of the hrSWRunPerfMem column of hrSWRunPerfTable.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=snmpauto
+  #%# capabilities=snmpconf</pre> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>BUGS</h1> 
+<p>None known.</p> 
+<h1>AUTHOR</h1> 
+<p>Copyright (C) 2004-2006 Jimmy Olsen, Dagfinn Ilmari Mannsaaker</p> 
+<p>Documented and updated to use Munin::Plugin::SNMP by Matthew Boyle.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2.</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

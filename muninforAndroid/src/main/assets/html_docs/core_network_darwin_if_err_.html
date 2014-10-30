@@ -1,0 +1,20 @@
+<h1>NAME</h1> 
+<p>if_err_ - Wildcard-plugin to monitor errors on network interfaces</p> 
+<h1>CONFIGURATION</h1> 
+<h2>WILDCARD PLUGIN</h2> 
+<p>This is a wildcard plugin. To monitor an interface, link if_err_&lt;interface&gt; to this file. E.g.</p> 
+<pre>  ln -s /usr/share/node/node/plugins-auto/if_err_ \
+        /etc/munin/node.d/if_err_en0</pre> 
+<p>...will monitor en0.</p> 
+<h1>NOTES</h1> 
+<p>Any device found in netstat -ib can be monitored. Examples include en*, fw* and lo (the latter is not monitored by default). Please note that aliases cannot be monitored with this plugin.</p> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>Unknownl LICENSE</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf suggest</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

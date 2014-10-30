@@ -1,0 +1,45 @@
+<h1>NAME</h1>
+<h2>yum</h2>
+<p> </p> 
+<p>yum - Munin plugin to monitor pending update packages. It will send/show a critical warning, if security updates are pending.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Linux distributions that use yum as software package management tool.</p> 
+<h1>CONFIGURATION</h1> 
+<p>The plugin will not show up in the Munin website per default as it contains information that is useful for any attacker.</p> 
+<p>That is done by the following config directive:</p> 
+<blockquote> 
+ <p># munin-run yum config</p> 
+ <p><b>graph no</b></p> 
+</blockquote> 
+<p>If you have password protected your Munin website and trust your known visitors you can make graph and more information visible by setting the following environment variables in the plugins configuration.</p> 
+<blockquote> 
+ <p>shownames - set to value 1, if you want to see the names of the pending packages in the field 'pending.extinfo'</p> 
+ <p>showgraph - set to value 'yes', if you want the plugins graph to show up in Munin website. Remove or comment the declaration of env.showgraph in plugin-conf.d if you want to hide the plugins graph again.</p> 
+</blockquote> 
+<p><b>Example</b></p> 
+<blockquote> 
+ <pre>  [yum]
+  env.showgraph yes
+  env.shownames 0</pre> 
+</blockquote> 
+<h2>SPECIAL YUM PLUGIN NEEDED</h2> 
+<p>Package yum-plugin-security is needed as this Munin plugin investigates how many security updates are pending.</p> 
+<p>Install the package with the command:</p> 
+<p># yum install yum-plugin-security</p> 
+<h2>CRONJOB</h2> 
+<p>A cronjob has to be run outside of Munin to create and freshen up the plugins statefile with recent info from yum. Therein the plugin is called with the 'update' option.</p> 
+<p>E.g. place a file with the following line in directory /etc/crond.d/:</p> 
+<pre>  # Do not start at the same time like munin-cron,
+  # as both will access the plugins statefile
+  38 */6 * * * root /usr/sbin/munin-run yum update</pre> 
+<h1>AUTHOR</h1> 
+<p>Copyright 2006 Dagfinn Ilmari Manns&aring;ker &lt;ilmari@lonres.com&gt;</p> 
+<p>Copyright 2014 Gabriele Pohl &lt;contact@dipohl.de&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

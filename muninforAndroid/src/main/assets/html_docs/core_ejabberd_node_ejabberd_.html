@@ -1,0 +1,47 @@
+<h1>NAME</h1> 
+<p>ejabberd_ - Munin wildcard plugin to monitor ejabberd2</p> 
+<h1>CONFIGURATION</h1> 
+<p>As connected users, registered users and server-connections have somewhat different scales, this plugin uses munins suggest feature to create the following graphs:</p> 
+<p>ejabberd_connections</p> 
+<p>ejabberd_memory</p> 
+<p>ejabberd_registrations</p> 
+<p>ejabberd_statuses</p> 
+<p>ejabberd_threads</p> 
+<p>ejabberd_uptime</p> 
+<p>ejabberd_users</p> 
+<p>ejabberd_usersindays</p> 
+<p>If the autodetect-feature for vhosts breaks, you can set</p> 
+<blockquote> 
+ <pre>  [ejabberd_*]
+    env.vhosts foo.com bar.com</pre> 
+</blockquote> 
+<p>in a file in plugin-conf.d to override it. (&quot;user root&quot; may also be smart/not so smart depending on your setup).</p> 
+<p>For monitoring user statuses - define statuses environment variable: (you can monitor only some of them)</p> 
+<blockquote> 
+ <pre>  [ejabberd_*]
+    env.statuses available away chat xa</pre> 
+</blockquote> 
+<p>For usersindays statistics define days environment variable. Be careful on high loaded servers, because it will plot all days in one graph.</p> 
+<blockquote> 
+ <pre>  [ejabberd_*]
+    env.days 1 7 30</pre> 
+</blockquote> 
+<p>If your ejabberd.cfg cannot be found you can se it this way</p> 
+<blockquote> 
+ <pre>  [ejabberd_*]
+    env.configfile /etc/ejabberd/ejabberd.cfg</pre> 
+</blockquote> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=contrib
+  #%# capabilities=autoconf suggest</pre> 
+<h1>AUTHOR</h1> 
+<p>Written by Lasse Karstensen &lt;lkarsten@hyse.org&gt;. Based on ejabberd-plugin by Christian Dr&Atilde;&para;ge &lt;Christian@draugr.de&gt;</p> 
+<p>Status, memory, threads, uptime, usersindays, ejabberd2 and other code optimisation by Peter Viskup &lt;skupko.sk@gmail.com&gt;</p> 
+<h1>LICENSE</h1> 
+<p>Unknown</p> 
+<h1>BUGS</h1> 
+<p>Previously the documentation for this plugin mentioned RRDs limit on data series names. Munin works around this limit and the restriction does not apply.</p> 
+<p>There is no way to configure the path to ejabberdctl.</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

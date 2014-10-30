@@ -1,0 +1,40 @@
+<h1>NAME</h1> 
+<p>proc - Munin plugin to monitor various aspects of named processes</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Processes running under Linux for a longer timespan.</p> 
+<h1>CONFIGURATION</h1> 
+<p>The plugin needs to be able to parse the /proc-filesystem.</p> 
+<p>The plugin is configured by supplying a pipe-delimitered list of parameters through environment variables. [proc] env.procname proc1|proc2|proc3 env.procargs |--run| env.procuser joe||mary env.procaspect cpu|memory|ctxt_switches|threads|processes|io</p> 
+<p>env.procname defines the processname as seen inside the paranthesis of the second column in /proc/&lt;PID&gt;/stat. If you don't get the data you expect, you can check if the value is what you expect here. This is what's used for the first filter, and args/user-filters are then applied on top of this filter. Note that &lt;PID&gt; is the PID of the process that you are interested in. For process names including non-alphanumeric characters (like space, dash, etc.) please see Special Process Names below.</p> 
+<p>env.procargs defines a string which is matched against the command line of the process. It's a wildcard match, so you don't have to provide the entire argument list if there's only one key option you care about filtering on.</p> 
+<p>env.procuser defines the user the process has to run as. If nothing is provided, processes ran by any user are included.</p> 
+<p>env.procaspect defines which graphs to render. Per default, all graphs are included. You don't have to set this unless you want to exclude graphs.</p> 
+<h1>SPECIAL PROCESS NAMES</h1> 
+<p>If the process name (in env.procname) contains any characters other than [a-zA-Z_], they will be internally replaced by underscores ('_'). This is normally not a problem, unless you are setting warning/critical levels.</p> 
+<p>For example, let's say you have have Plex Media Server running and you want to monitor how many processes it has running. The name that shows up in /proc is 'Plex Media Serv' (truncated, without the 'er' at the end), the internal field becomes: 'Plex_Media_Serv'.</p> 
+<p>In order to let munin give a warning when the number of processes is outside the range 1:3, use the following in your munin configuration file (not the plugin configuration file):</p> 
+<pre>  [host.example.org]
+     proc_processes.Plex_Media_Serv.warning 1:3</pre> 
+<p>Please keep in mind that you still need the original name from /proc/pid/stat (including spaces or dashes) in your plugin configuration file:</p> 
+<pre>  [proc]
+     env.procname proc1|Plex Media Serv|proc2</pre> 
+<h1>INTERPRETATION</h1> 
+<p>Each graph uses data from the proc filesystem.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual
+ #%# capabilities=multigraph</pre> 
+<h1>VERSION</h1> 
+<pre> $Id$</pre> 
+<h1>BUGS</h1> 
+<p>The graphs will be misleading in an event where you have multiple processes monitored, but less then all of them is restarted (or exits). This is due to the nature of counters, and I need to track state of individual processes to do this in a reliable way. It's on my TODO, but has a low priority as I consider this plugin something for graphing daemons.</p> 
+<h1>PATCHES-TO</h1> 
+<p>The munin-project.</p> 
+<h1>AUTHOR</h1> 
+<p>Trygve Vea &lt;tv@redpill-linpro.com&gt; Kristian Lyngstol &lt;kristian@varnish-software.com&gt;</p> 
+<h1>THANKS</h1> 
+<p>Thanks to Kristian Lyngstol, I stole most of the initial code in this plugin from his varnish_-plugin, which is a really nice outline of how a wildcardplugin should look like. I've added some weird hacks to make it output multigraph. It's pretty ugly, but it works.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

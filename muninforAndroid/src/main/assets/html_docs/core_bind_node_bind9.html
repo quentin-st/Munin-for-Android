@@ -1,0 +1,31 @@
+<h1>NAME</h1> 
+<p>bind9 - Plugin to monitor usage of bind 9 servers</p> 
+<h1>CONFIGURATION</h1> 
+<p>This plugin is configurable environment variables. The following shows the default settings:</p> 
+<pre> [bind9]
+    env.logfile   /var/log/bind9/query.log</pre> 
+<p>You must also configure query logging in your named.conf. Use a stanza such as this:</p> 
+<pre> logging {
+     channel query {
+         file &quot;query.log&quot; versions 2 size 1m;
+         print-time yes;
+         severity info;
+     };
+
+     category queries { query; };
+ };</pre> 
+<p>Remark : depending on the traffic level of your bind server, you shall adjust the maximum size of the query.log file, above, to cover the five minutes delay between two munin polls.</p> 
+<h1>SEE ALSO</h1> 
+<ul> 
+ <li>http://blog.larsstrand.org/2008/02/how-to-monitor-bind-with-munin.html</li> 
+ <li>BIND Administrator Reference Manual</li> 
+</ul> 
+<h1>AUTHOR</h1> 
+<p>Nicolai Langfeldt</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=manual</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

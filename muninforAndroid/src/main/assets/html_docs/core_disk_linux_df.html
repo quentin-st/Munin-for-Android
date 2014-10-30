@@ -1,0 +1,42 @@
+<h1>NAME</h1>
+<h2>df</h2>
+<p> </p> 
+<p>df - Munin plugin to monitor disk or inode usage</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Every Linux system with df installed.</p> 
+<h1>CONFIGURATION</h1> 
+<p>The plugin excludes per default the following special, read-only or dynamically allocating file systems from graphing:</p> 
+<pre>  none unknown rootfs iso9660 squashfs udf romfs ramfs debugfs cgroup_root</pre> 
+<p>Additionally, when graphing inode usage, <code>nilfs2</code> will be ignored as well.</p> 
+<p>To change this set the environment variable &quot;exclude&quot; with a list of space separated fs types. The environment variables &quot;warning&quot; and &quot;critical&quot; sets the percentage from which Munin starts to warn about the disk usage.</p> 
+<p>This configuration snipplet is an example with the defaults:</p> 
+<pre>  [df]
+    env.exclude none unknown rootfs iso9660 squashfs udf romfs ramfs debugfs cgroup_root devtmpfs
+    env.warning 92
+    env.critical 98</pre> 
+<p>Put it in a file in @@CONFDIR@@/plugin-conf.d/ and restart the munin-node.</p> 
+<p>You may specify filesystem specific warning and critical levels:</p> 
+<pre>    env._dev_sda2_warning 98
+    env._dev_sda2_critical 99</pre> 
+<p>Devices can be explicitly included or excluded based on their mountpoint or device name using the include_re and exclude_re environment variables. These environment variables are parsed as whitespace separated regular expressions. For example, if you wish to ignore the filesystem on /dev/sda2 and all filesystems mounted under /var except /var/tmp, these rules would achieve this:</p> 
+<pre>    env.include_re ^/var/tmp$
+    env.exclude_re /dev/sda2 ^/var/</pre> 
+<p>Please note that these expressions are tried against both mountpoints and device names, therefore broad matches could potentially filter out desired devices. Anchoring is also useful for avoiding false positives (as seen in the example), but not strictly necessary. Testing with munin-run is always a good idea.</p> 
+<p>Also note that a mountpoint that is excluded by filesystem type but included by RE will not be included.</p> 
+<p>By default, only local filesystems will be included. In case you want to monitor network filesystems too, you can set the commandline options for &quot;df&quot; manually in the configuration file. The default options are &quot;-P -l&quot;. For example, if you want to monitor a mounted GlusterFS, you can omit the &quot;-l&quot; parameter in the config file:</p> 
+<pre>    env.dfopts -P</pre> 
+<p>Please note that this will also add other shares you've mounted on your computer (Samba/CIFS, etc). If you don't want them, you can exclude them, using the &quot;env.include/env.exclude&quot; settings mentioned above.</p> 
+<h1>USAGE</h1> 
+<p>Link this plugin to @@CONFDIR@@/plugins/ and restart the munin-node. If you want to monitor inode usage instead of disk usage, just link the plugin as <code>df_inode</code>.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf</pre> 
+<h1>BUGS</h1> 
+<p>Uses device names instead of mount points to identify mounted filesystems.</p> 
+<h1>AUTHOR</h1> 
+<p>Copyright (C) 2013 Diego Elio Petten&Atilde;&sup2; Based on the original plugin by Ingvar Hagelund</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,39 @@
+<h1>NAME</h1> 
+<p>procsys - Plugin to monitor kernel sysctl data</p> 
+<h1>INTERPRETATION</h1> 
+<p>The pluign will create multiple graphs for:</p> 
+<dl> 
+ <dt>
+  entropy
+ </dt> 
+ <dd> 
+  <p>Monitors the random entropy (for the kernel's PRNG) available in the system.</p> 
+ </dd>
+ <dt>
+  open_files
+ </dt> 
+ <dd> 
+  <p>Monitors the file handles open in the kernel.</p> 
+ </dd>
+ <dt>
+  open_inodes
+ </dt> 
+ <dd> 
+  <p>Monitors the inodes open in the kernel.</p> 
+ </dd> 
+</dl> 
+<h1>CONFIGURATION</h1> 
+<p>The only available configurations are the warning/critical limits for some of the fields. The following is the default configuration:</p> 
+<p>[procsys] env.entropy_warning 5% env.entropy_critical 2%</p> 
+<pre>  env.open_files_warning 92%
+  env.open_files_critical 98%</pre> 
+<h1>AUTHOR</h1> 
+<p>Copyright (C) 2013 Diego Elio Petten&Atilde;&sup2;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

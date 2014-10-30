@@ -1,0 +1,26 @@
+<h1>NAME</h1> 
+<p>bdf - Munin plugin to monitor disk inode usage on an HP-UX machine</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Any HP-UX system with commands '/usr/bin/bdf' and '/usr/sbin/fstyp'</p> 
+<h1>CONFIGURATION</h1> 
+<p>The plugin must be run as the root user to be able to determine the filesystem type (VXFS, HFS, etc.):</p> 
+<pre>  [bdf*]
+    user root</pre> 
+<h1>INTERPRETATION</h1> 
+<p>The plugin shows disk inode usage on HP-UX systems as reported by the command 'bdf'.</p> 
+<p>Only locally mounted VXFS or HFS filesystems are reported.</p> 
+<p>The plugin aims to be a functional equivalent to the Linux df_inode plugin.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf</pre> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>BUGS</h1> 
+<p>None known</p> 
+<h1>AUTHOR</h1> 
+<p>Chris Gardner</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

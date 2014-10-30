@@ -1,0 +1,18 @@
+<h1>NAME</h1> 
+<p>quota_usage_ - Plugin to monitor quota on a specified device.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Needs repquota and root privs</p> 
+<h1>USAGE</h1> 
+<p>Create Service Link @@CONFDIR@@/plugins/quota-usage_&lt;dev&gt; for example <code>quota-usage_hda3</code>. Use underscores instead of slashes, for example to monitor <code>/dev/mapper/vol-foo</code>, name this <code>quota-usage_mapper_vol-foo</code></p> 
+<p>This plugin uses the soft and hard quota data for warning and critical levels respectively.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=manual</pre> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<p>Source: https://svn.koumbit.net/koumbit/trunk/munin-plugins/quota-usage</p> 
+<p>http://munin-monitoring.org/attachment/ticket/143/quota-usage</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

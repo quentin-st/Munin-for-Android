@@ -1,0 +1,31 @@
+<h1>NAME</h1> 
+<p>exim_mailstats - Plugin to monitor the number of mails received and delivered by exim.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Exim version 3 or 4.</p> 
+<h1>CONFIGURATION</h1> 
+<p>Usually no configuration is needed for this plugin.</p> 
+<pre>  [exim*]
+     env.logdir   /path/to/exim-logs/
+     env.logname  mainlog
+     env.exim     /usr/sbin/exim</pre> 
+<p>The default value for the <code>logdir</code> variable is determined by running <code>exim -bP log_file_path</code>. <code>mainlog</code> is the default name given to exims main log, but it has been known to be called &quot;main.log&quot; in some versions of Red Hat/Fedora for example.</p> 
+<p>NOTE: If you need to set logname you must also set logdir as there is no automatic way to determine the path then.</p> 
+<p>The default value of the <code>exim</code> variable is <code>/usr/sbin/exim</code>, but if there is a executable called <code>/usr/sbin/exim4</code> this is used instead.</p> 
+<h1>INTERPRETATION</h1> 
+<p>Need some input from an exim postmaster here.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf</pre> 
+<h1>BUGS</h1> 
+<p>None known</p> 
+<h1>VERSION</h1> 
+<pre>  $Id$</pre> 
+<h1>AUTHOR</h1> 
+<p>Copyright (C) 2000-2009 Torstein Svendsen, Henrik Grindal Bakken, Jimmy Olsen, Nicolai Langfeldt and others.</p> 
+<p>Torstein Svendsen recalls originally writing this with Henrik Grindal Bakken to create MRTG graphs of exims mailqueues for Linpros client RunBox. Thus this code predates Munin itself.</p> 
+<p>The first traces of the plugin in CVS seems to be in 2002. Further messing by Jimmy Olsen the same year. Bugfixing and cleanup by Nicolai Langfeldt 2008.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,32 @@
+<h1>NAME</h1> 
+<p>named - Plugin to monitor named statistics</p> 
+<h1>ABOUT</h1> 
+<p>This is a bit experimental, we will have to see which statistics prove to have any meaning to get a feel with what happens on the nameserver.</p> 
+<h1>USAGE</h1> 
+<p>In your named.conf you must have statistics-interval set:</p> 
+<pre> options {
+    ...
+    statistics-interval 1;
+    ...
+ };</pre> 
+<p>The number is in minutes. At each interval just 3 lines is dumped. It can be desturbing if you usually read the logs yourself, but a 1 minute interval ensures very updated information to munin. 5 minutes is the maximum I'd say.</p> 
+<p>The name of the file where syslog puts daemon output - ie the named statistics output. On solaris this is /var/adm/messages, on most linuxes it is /var/log/messages. But on Debian it is /var/log/daemon.log which is read restricted so we have to run as a group or user with read rights, or remove the restrictions on the log file.</p> 
+<h1>CONFIGURATION</h1> 
+<p>Configuration parameters for @@CONFDIR@@/named, if you need to override the defaults below:</p> 
+<pre> [named]
+  env.logfile   - set which log file to use</pre> 
+<p>To ensure read access to the log files, you will need to add something like:</p> 
+<pre> [named]
+  group adm</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<pre> [named]
+  env.logfile /var/adm/messages or /var/log/daemon.log</pre> 
+<h1>AUTHOR</h1> 
+<p>Nicolai Langfeldt (janl@linpro.no) 27.8.2003</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=contrib</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

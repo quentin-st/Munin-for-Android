@@ -1,0 +1,50 @@
+<h1>NAME</h1> 
+<p>asterisk - Multigraph-capable plugin to monitor Asterisk</p> 
+<h1>NOTES</h1> 
+<p>This plugin will produce multiple graphs showing:</p> 
+<pre> - total number of active channels (replaces asterisk_channels),
+   together with breakdown of specific channel types (replaces
+   asterisk_channelstypes);
+
+ - the number of messages in all voicemail boxes (replaces
+   asterisk_voicemail);
+
+ - the number of active MeetMe conferences and users connected to them
+   (replace asterisk_meetme and asterisk_meetmeusers, respectively);
+
+ - the number of active channels for a given codec, for both SIP and
+   IAX2 channels (replaces asterisk_sipchannels and asterisk_codecs).</pre> 
+<h1>CONFIGURATION</h1> 
+<p>The following configuration parameters are used by this plugin</p> 
+<pre> [asterisk]
+  env.host     - hostname to connect to
+  env.port     - port number to connect to
+  env.username - username used for authentication
+  env.secret   - secret used for authentication
+  env.channels - The channel types to look for
+  env.codecsx  - List of codec IDs (hexadecimal values)
+  env.codecs   - List of codecs names, matching codecsx order</pre> 
+<p>The &quot;username&quot; and &quot;secret&quot; parameters are mandatory, and have no defaults.</p> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<pre> [asterisk]
+  env.host 127.0.0.1
+  env.port 5038
+  env.channels Zap IAX2 SIP
+  env.codecsx 0x2 0x4 0x8
+  env.codecs gsm ulaw alaw</pre> 
+<h2>WILDCARD CONFIGURATION</h2> 
+<p>It's possible to use the plugin in a virtual-node capacity, in which case the host configuration will default to the hostname following the underscore:</p> 
+<pre> [asterisk_someserver]
+  env.host someserver
+  env.port 5038</pre> 
+<h1>AUTHOR</h1> 
+<pre> Copyright (C) 2005-2006 Rodolphe Quiedeville &lt;rodolphe@quiedeville.org&gt;
+ Copyright (C) 2012 Diego Elio Petten&ograve; &lt;flameeyes@flameeyes.eu&gt;</pre> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

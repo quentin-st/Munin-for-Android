@@ -1,0 +1,57 @@
+<h1>NAME</h1> 
+<p>postfix_mailqueue - Plugin to monitor postfix mail spools</p> 
+<h1>ABOUT</h1> 
+<p>A guide to postfix mail queue management can be found at http://www.postfix.org/QSHAPE_README.html#queues</p> 
+<p>A summary:</p> 
+<dl> 
+ <dt>
+  maildrop
+ </dt> 
+ <dd> 
+  <p>Messages that have been submitted via the Postfix sendmail(1) command, but not yet brought into the main Postfix queue by the pickup(8) service.</p> 
+ </dd>
+ <dt>
+  hold
+ </dt> 
+ <dd> 
+  <p>Messages placed in the &quot;hold&quot; queue stay there until the administrator intervenes</p> 
+ </dd>
+ <dt>
+  incoming
+ </dt> 
+ <dd> 
+  <p>Inbound mail from the network, or mail picked up by the local pickup(8) daemon from the maildrop directory.</p> 
+ </dd>
+ <dt>
+  active
+ </dt> 
+ <dd> 
+  <p>Messages that the queue manager has opened for delivery. Only a limited number of messages is allowed to enter the active queue (leaky bucket strategy, for a fixed delivery rate).</p> 
+ </dd>
+ <dt>
+  deferred
+ </dt> 
+ <dd> 
+  <p>Mail that could not be delivered upon the first attempt. The queue manager implements exponential backoff by doubling the time between delivery attempts.</p> 
+ </dd>
+ <dt>
+  corrupt
+ </dt> 
+ <dd> 
+  <p>Unreadable or damaged queue files are moved here for inspection.</p> 
+ </dd> 
+</dl> 
+<h1>CONFIGURATION</h1> 
+<p>By default &quot;postconf -h queue_directory&quot; is used to determine the spool directory. Is postconf is not available in the $PATH then /var/spool/postfix is assumed. This can be overridden by the &quot;spooldir&quot; environment variable like so:</p> 
+<pre> [postfix_mailqueue]
+    env.spooldir /var/spool/postfix</pre> 
+<h1>AUTHOR</h1> 
+<p>Unknown.</p> 
+<h1>LICENSE</h1> 
+<p>Unknown.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

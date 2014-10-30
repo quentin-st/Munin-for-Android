@@ -1,0 +1,22 @@
+<h1>NAME</h1> 
+<p>sendmail_mailqueue - Plugin to graph the sendmail queue size</p> 
+<h1>CONFIGURATION</h1> 
+<p>This plugin uses the following configuration variables</p> 
+<pre> [sendmail_mailqueue]
+  env.mspqueue - MSQ queue directory
+  env.mtaqueue - MTA queue directory</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<p>The default configuration is</p> 
+<pre> [sendmail_mailqueue]
+  env.mspqueue /var/spool/mqueue-client
+  env.mtaqueue /var/spool/mqueue</pre> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

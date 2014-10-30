@@ -1,0 +1,41 @@
+<h1>NAME</h1> 
+<p>memory - Show memory stats based on top output</p> 
+<h1>Applicable systems</h1> 
+<p>Solaris systems with the package SUNWtop or other package containint top installed.</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following shows the default settings for this plugin:</p> 
+<pre>  [memory]
+     env.top /usr/local/bin/top</pre> 
+<p>You can also set warning and critical limits with these env settings:</p> 
+<pre>     real_warning
+     real_critical
+     used_warning
+     used_critical
+     swapt_warning
+     swapu_warning</pre> 
+<p>All sizes are calculated and warned against in MB.</p> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>BUGS</h1> 
+<dl> 
+ <dt>
+  Reporting size
+ </dt> 
+ <dd> 
+  <p>Fixme: Reporting size in MB is Wrong. Report bytes and let rrd scale units</p> 
+ </dd>
+ <dt>
+  Should use kstat
+ </dt> 
+ <dd> 
+  <p>Fixme: Using kstat would be much better</p> 
+ </dd> 
+</dl> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

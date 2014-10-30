@@ -1,0 +1,32 @@
+<h1>NAME</h1> 
+<p>load - Plugin to monitor system load</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following environment variables are used by this plugin:</p> 
+<dl> 
+ <dt>
+  load_warning &lt;float&gt;
+ </dt> 
+ <dd> 
+  <p>Threshold for when to report a warning</p> 
+ </dd>
+ <dt>
+  load_critical &lt;float&gt;
+ </dt> 
+ <dd> 
+  <p>Threshold for when to report a critical</p> 
+ </dd> 
+</dl> 
+<h2>EXAMPLE CONFIGURATION</h2> 
+<pre> [load]
+  env.load_warning 5
+  env.load_critical 10</pre> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

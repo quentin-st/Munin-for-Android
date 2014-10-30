@@ -1,0 +1,21 @@
+<h1>NAME</h1> 
+<p>if_err_ - Wildcard plugin to monitor errors on network interfaces</p> 
+<h1>CONFIGURATION</h1> 
+<h2>ENVIRONMENT VARIABLES</h2> 
+<p>This plugin does not use environment variables</p> 
+<h2>WILDCARD PLUGIN</h2> 
+<p>This is a wildcard plugin. To monitor an interface, link if_&lt;interface&gt; to this file. E.g.</p> 
+<pre>  ln -s /usr/share/munin/plugins-auto/if_err_ \
+        /etc/munin/node.d/if_err_eth0</pre> 
+<p>...will monitor eth0.</p> 
+<p>Any device found in /usr/bin/kstat can be monitored.</p> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf suggest</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

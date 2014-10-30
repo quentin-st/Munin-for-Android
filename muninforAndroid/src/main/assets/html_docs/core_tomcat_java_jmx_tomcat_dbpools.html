@@ -1,0 +1,37 @@
+<h1>NAME</h1> 
+<p>jmx_tomcat_dbpools - Plugin to monitor the database connection pools of a Tomcat application server via JMX</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Tested with Tomcat 5.5/6.0 on Sun JVM 6. Please use this plugin as a template for other application-server specific monitoring.</p> 
+<p>Any JVM that supports JMX should in theory do.</p> 
+<h1>CONFIGURATION</h1> 
+<pre>  [jmx_tomcat_dbpools*]
+    env.ip 127.0.0.1
+    env.port 5400
+    env.username monitorRole
+    env.password SomethingSecret
+    # The critical and warning levels are in % of the pool size
+    env.critical 90
+    env.warning 70
+
+    env.JRE_HOME /usr/lib/jvm/java-6-sun/jre</pre> 
+<p>Needed configuration on the Tomcat side: add</p> 
+<pre>  -Dcom.sun.management.jmxremote \
+  -Dcom.sun.management.jmxremote.port=5400 \
+  -Dcom.sun.management.jmxremote.ssl=false \
+  -Dcom.sun.management.jmxremote.authenticate=false</pre> 
+<p>to CATALINA_OPTS in your startup scripts.</p> 
+<p>Replace authenticate=false with -Dcom.sun.management.jmxremote.password.file=/etc/tomcat/jmxremote.password \ -Dcom.sun.management.jmxremote.access.file=/etc/tomcat/jmxremote.access ...if you want authentication.</p> 
+<p>jmxremote.password: monitorRole SomethingSecret</p> 
+<p>jmxremote.access: monitorRole readonly</p> 
+<h1>BUGS</h1> 
+<p>No encryption supported in the JMX connection.</p> 
+<h1>AUTHORS</h1> 
+<p>Code written by Jimmy Olsen, Redpill Linpro AS. This code also uses code written by Mo Amini, Diyar Amin and Younes Hajji, H&oslash;gskolen i Oslo/Oslo University College.</p> 
+<p>Previous work on JMX plugin by Aleksey Studnev. Support for authentication added by Ingvar Hagelund, Redpill Linpro AS.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,21 @@
+<h1>NAME</h1> 
+<p>lpar_cpu - Plugin to monitor physical cpu usage</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>IBM POWER P5 / OpenPower LPAR</p> 
+<h1>USAGE</h1> 
+<p>Link this plugin to @@CONFDIR@@/plugins/ and restart the munin-node.</p> 
+<h1>CONFIGURATION</h1> 
+<p>This should be run as root, so drop a file with something like this in @@CONFDIR@@/plugin-conf.d/lpar_cpu:</p> 
+<pre>  [lpar_cpu]
+  user root</pre> 
+<h1>AUTHOR</h1> 
+<p>Ingvar Hagelund &lt;ingvar(at)linpro.no&gt;</p> 
+<p>Great thanks to Nigel Griffith of IBM for the magic to get these values.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual
+ #%# capabilities=autoconf</pre> 
+<h1>LICENSE</h1> 
+<p>Licence: GNU General Public Licence v2.0, see http://www.gnu.org/copyleft/gpl.html</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

@@ -1,0 +1,21 @@
+<h1>NAME</h1> 
+<p>fw_forwarded_local - Plugin to monitor network connections.</p> 
+<h1>CONFIGURATION</h1> 
+<p>This plugin must run with root privileges</p> 
+<h2>CONFIGURATION EXAMPLE</h2> 
+<p>@@CONFDIR@@/plugin-conf.d/global or other file in that dir must contain:</p> 
+<pre> [fw_*]
+  user root</pre> 
+<h1>NOTES</h1> 
+<ul> 
+ <li>forward: number of connections forwarded</li> 
+ <li>local: number of connections for the host itself</li> 
+</ul> 
+<h1>AUTHORS</h1> 
+<p>2011.09.23: Perl version by Alex Tomlins</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

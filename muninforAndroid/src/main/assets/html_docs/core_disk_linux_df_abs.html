@@ -1,0 +1,29 @@
+<h1>NAME</h1>
+<h2>df_abs</h2>
+<p> </p> 
+<p>df_abs - Plugin to monitor absolute disk usage</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following configuration parameters are used by this plugin</p> 
+<pre> [df_abs]
+  env.exclude  - space separated list of file system types to exclude
+  env.warning  - Warning percentage
+  env.critical - Critical percentage
+  env.total    - Enable/Disable graph total [on|off]</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<pre> [df_abs]
+  env.exclude  iso9660
+  env.warning  92
+  env.critical 98
+  env.total    on</pre> 
+<h1>AUTHORS</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>BUGS</h1> 
+<p>Does not handle cases where the block device is the same for multiple mounts.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

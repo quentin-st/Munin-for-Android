@@ -1,0 +1,39 @@
+<h1>NAME</h1> 
+<p>gp_gbl_mem_util - Munin plugin to fetch global memory utilisation via Glance</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>On HP-UX with GlancePlus (GP) installed</p> 
+<h1>USAGE</h1> 
+<p>Run this command as root user to install the plugin</p> 
+<pre>  @@SBINDIR@@/munin-node-configure --families auto --shell|grep gp_gbl_mem_util|sh -</pre> 
+<p>and restart your munin-node.</p> 
+<h2>REQUIRES</h2> 
+<p>Separate GP adviser syntax file whose location is made known by ADVISER environment variable which defaults to @@LIBDIR@@/gp_gbl_mem_util.adv.</p> 
+<p>The contents of the syntax file should look like this:</p> 
+<pre>  if (gbl_interval &gt; 2) then 
+  {
+      print &quot;mem_util.value &quot;,gbl_mem_util|6|2
+      print &quot;mem_user.value &quot;,gbl_mem_user_util|6|2
+      print &quot;mem_sys.value &quot;,gbl_mem_sys_and_cache_util|6|2
+      print &quot;mem_free.value &quot;,gbl_mem_free_util|6|2
+  }</pre> 
+<h1>CONFIGURATION</h1> 
+<p>The example shows the defaults, so only set them to override them. All the environment settings are needed by Glance.</p> 
+<pre>  [gp_*]
+      # Munin users home dir, can also be /var/opt/munin
+      env.HOME /home/munin
+      env.ADVISER_INT 4
+      env.ADVISER_ITS 2
+      env.GLANCE /opt/perf/bin/glance
+
+  [gp_gbl_mem_util]
+      env.ADVISER           @@LIBDIR@@/gp_gbl_mem_util.adv</pre> 
+<h2>NOTE</h2> 
+<p>If you put the *.adv file in above mentioned location add &quot;ignore_file \.adv$&quot; to your @@CONFDIR@@/munin-node.conf to avoid parsing problems on start of munin-node.</p> 
+<h1>AUTHOR</h1> 
+<pre> Ralph Grothe &lt;ralph dot grothe at itdz minus berlin dot de&gt;</pre> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=auto
+  #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

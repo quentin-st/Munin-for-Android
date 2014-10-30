@@ -1,0 +1,23 @@
+<h1>NAME</h1>
+<h2>postfix_mailstats</h2>
+<p> </p> 
+<p>postfix_mailstats - Plugin to monitor the number of mails delivered and rejected by postfix</p> 
+<h1>CONFIGURATION</h1> 
+<p>Configuration parameters for @@CONFDIR@@/postfix_mailstats, if you need to override the defaults below:</p> 
+<pre> [postfix_mailstats]
+  env.logdir  - Which logfile to use
+  env.logfile - What file to read in logdir</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<pre> [postfix_mailstats]
+  env.logdir  /var/log
+  env.logfile mail.log</pre> 
+<h1>AUTHOR</h1> 
+<p>Records show that the plugin was contributed by Nicolai Langfeldt in 2003. Nicolai can't find anything in his email about this and expects the plugin is based on the corresponding exim plugin - to which it now bears no resemblence.</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

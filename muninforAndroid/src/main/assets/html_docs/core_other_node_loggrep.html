@@ -1,0 +1,27 @@
+<h1>NAME</h1> 
+<p>loggrep - Counts the number of matching log lines</p> 
+<h1>CONFIGURATION</h1> 
+<p>The following environment variables are used by this plugin:</p> 
+<pre> logfile       - Files to grep (shellglob) (required)
+ regex         - Regex to look for (required)
+ label         - Label
+ counter       - If set the value captured by the first paren
+                 in the regex is summed instead of coutning lines.
+                 The value is used for the vertical label.
+ regex_&lt;key&gt;   - Additional regexes
+ label_&lt;key&gt;   - Additional labels
+ counter_&lt;key&gt; - Additional counters (the value is ignored).
+ title         - Graph title</pre> 
+<h1>NOTES</h1> 
+<p>TODO: Handle rotated logs</p> 
+<h1>AUTHOR</h1> 
+<p>Copyright (C) 2004 Dagfinn Ilmari Mannsaaker</p> 
+<h1>LICENSE</h1> 
+<p>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 2 dated June, 1991.</p> 
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p> 
+<p>You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=manual</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

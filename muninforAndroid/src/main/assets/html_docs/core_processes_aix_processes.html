@@ -1,0 +1,20 @@
+<h1>NAME</h1> 
+<p>processes - Plugin to monitor the number of processes on the machine. Using &quot;ps | wc -l&quot;.</p> 
+<h1>CONFIGURATION</h1> 
+<p>No configuration</p> 
+<h1>NOTES</h1> 
+<h2>DESCRIPTION</h2> 
+<p>This will report back the number of processes currently running on a server. By defualt it will report back the total number of processes running (global). Optionally you can edit the script and add items to look for to the &quot;lookFor&quot; array. These should be simple things that can be grep'd for.</p> 
+<h2>RESCTRICTIONS</h2> 
+<p>None known. /usr/bin/ps should be executable by everyone by default.</p> 
+<p>Optionally you can add items to the lookFor array, and those items will be graphed as well. This can be useful for watching how many processes of a particular type are running.</p> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=contrib
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

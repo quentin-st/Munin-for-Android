@@ -1,0 +1,32 @@
+<h1>NAME</h1> 
+<p>df_inode - Plugin to monitor disk usage (measuring inode usage in percent)</p> 
+<h1>CONFIGURATION</h1> 
+<p>This shows the default configuration</p> 
+<pre>  [df*]
+    env.df /usr/sbin/df
+    env.warning 92
+    env.critical 98</pre> 
+<p>A device specific warning/critical level is also supported. Append the munin label (shown in the plugin display page) and append _warning or _critical respectively to get the (environment variable) name.</p> 
+<p>To limit the monitored filesystems, configure the &quot;only&quot; environment variable. For example, to only monitor /, one would add to plugin-conf.d:</p> 
+<pre>  [df*]
+    env.only /</pre> 
+<h1>AUTHOR</h1> 
+<p>Unknown author</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre> 
+<h1>POD ERRORS</h1> 
+<p>Hey! <b>The above document had some coding errors, which are explained below:</b></p> 
+<dl> 
+ <dt>
+  Around line 30:
+ </dt> 
+ <dd> 
+  <p>=back without =over</p> 
+ </dd> 
+</dl>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

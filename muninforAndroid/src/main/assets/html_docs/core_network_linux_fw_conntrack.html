@@ -1,0 +1,39 @@
+<h1>NAME</h1> 
+<p>fw_conntrack - Plugin to monitor the number of tracked connections through a Linux 2.4/2.6 firewall</p> 
+<h1>CONFIGURATION</h1> 
+<p>This plugin must run with root privileges</p> 
+<h2>CONFIGURATION EXAMPLE</h2> 
+<p>@@CONFDIR@@/plugin-conf.d/global or other file in that dir must contain:</p> 
+<pre> [fw_*]
+  user root</pre> 
+<h1>NOTES</h1> 
+<p>ESTABLISHED+FIN_WAIT+TIME_WAIT+SYN_SENT+UDP are the most interesting connections.</p> 
+<p>The total list also includes SYN_RECV, CLOSE, CLOSE_WAIT, LAST_ACK and LISTEN, but these were not (often) observed on my firewall.</p> 
+<p>TOTAL is the total number of tracked connections.</p> 
+<p>ASSURED and UNREPLIED connections are complimentary subsets of ESTABLISHED.</p> 
+<p>ASSURED is after ACK is seen after SYN_RECV. Therefore ASSURED is plotted but not UNREPLIED.</p> 
+<p>Note that the plugin depends on the netfilter &quot;conntrack&quot; userspace tool. It comes from http://conntrack-tools.netfilter.org/</p> 
+<h1>AUTHORS</h1> 
+<dl> 
+ <dt>
+  2004.05.05: Initial version by Nicolai Langfeldt, Linpro AS, Oslo, Norway
+ </dt> 
+ <dd> 
+ </dd>
+ <dt>
+  2004.05.06: Enhanced to count NATed connections after input from Xavier on munin-users list
+ </dt> 
+ <dd> 
+ </dd>
+ <dt>
+  2011.09.23: Perl version by Alex Tomlins
+ </dt> 
+</dl> 
+<h1>LICENSE</h1> 
+<p>GPL</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

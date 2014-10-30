@@ -1,0 +1,20 @@
+<h1>NAME</h1> 
+<p>cpu - Plugin to monitor CPU usage</p> 
+<p>HP-UX port from original cpu plugin, here using sar instead of Solaris' kstat. Also note that kstat as well as Linux /proc/stat use counters (of cpu cycles?), whereas sar merely displays percentages (hopefully this comes close enough)</p> 
+<h1>CONFIGURATION</h1> 
+<p>Your may adapt the following parameters to your needs. The values shown here are the defaults</p> 
+<pre> [sar_cpu]
+     env.SYSWPCT 30     # System percentage to warn at
+     env.SYSCPCT 50     # System percentage where we're critical
+     env.USRWPCT 80     # User percentage to warn at
+     env.scaleto100 1   # Graph in percent rather than absolute ncpu</pre> 
+<h1>AUTHOR</h1> 
+<p>Contributed by &lt;ralph dot grothe at itdz minus berlin dot de&gt;</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf</pre>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

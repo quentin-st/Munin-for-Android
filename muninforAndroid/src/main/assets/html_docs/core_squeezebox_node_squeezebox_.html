@@ -1,0 +1,27 @@
+<h1>NAME</h1> 
+<p>squeezebox_ - plugin to monitor a SqueezeCenter and associated players.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>Probably any system running SqueezeCenter. Change the host to allow for remote monitoring.</p> 
+<h1>CONFIGURATION</h1> 
+<p>No configuration should be required if run on the same server as SqueezeCenter. If the plugin is run from another unit or in a non-default configuration, please use the environment variables 'squeezebox_host' and 'squeezebox_port' to connect. Also, if your nc(1) binary is not called &quot;nc&quot;, or not the one in $PATH, please define it in the plugin's environment file (@@CONFDIR@@/squeezebox or similar).</p> 
+<p>Sample follows:</p> 
+<pre> [squeezebox_*]
+  env.squeezebox_host 192.168.100.10
+  env.squeezebox_port 9095
+  env.netcat /usr/local/bin/nc</pre> 
+<h1>INTERPRETATION</h1> 
+<p>The &quot;volume&quot; graphs only graphs the player's volume, not the amplifier or whatever the player is connected to.</p> 
+<h1>MAGIC MARKERS</h1> 
+<pre> #%# family=auto
+ #%# capabilities=autoconf suggest</pre> 
+<h1>VERSION</h1> 
+<pre> $Id$</pre> 
+<h1>BUGS</h1> 
+<p>None known</p> 
+<h1>AUTHOR</h1> 
+<p>Bj&Atilde;&cedil;rn Ruberg</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>
