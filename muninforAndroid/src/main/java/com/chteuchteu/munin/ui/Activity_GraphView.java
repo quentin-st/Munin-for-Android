@@ -212,40 +212,30 @@ public class Activity_GraphView extends MuninActivity {
 				boolean hasDoc = DocumentationHelper.hasDocumentation(context, muninFoo.getCurrentServer().getPlugins().get(position));
 				// TODO
 				if (!hasDoc && isFabShown) { // Hide fab
-					log("Hiding fab");
-					Display display = getWindowManager().getDefaultDisplay();
-					Point size = new Point();
-					display.getSize(size);
-					int screenH = size.y;
-
-					TranslateAnimation a1 = new TranslateAnimation(0, 0, 0, 300);
-					a1.setDuration(300);
-					a1.setFillAfter(true);
-					a1.setInterpolator(new AccelerateDecelerateInterpolator());
-					fab.startAnimation(a1);
+					fab.animate().setInterpolator(new AccelerateDecelerateInterpolator())
+							.setDuration(300)
+							.translationY(284);
 					isFabShown = false;
 				} else if (hasDoc && !isFabShown) { // Show fab
-					log("Showing fab");
-					Display display = getWindowManager().getDefaultDisplay();
-					Point size = new Point();
-					display.getSize(size);
-					int screenH = size.y;
-
-					TranslateAnimation a1 = new TranslateAnimation(0, 0, -300, 0);
-					a1.setDuration(300);
-					a1.setFillAfter(true);
-					a1.setInterpolator(new AccelerateDecelerateInterpolator());
-					if (fab.getVisibility() == View.GONE)
-						fab.setVisibility(View.VISIBLE);
 					isFabShown = true;
-					fab.startAnimation(a1);
+					log(fab.getHeight() + "!!");
+					fab.animate().setInterpolator(new AccelerateDecelerateInterpolator())
+							.setDuration(300)
+							.translationY(0);
 				}
 			}
 		});
 
 		fab = (FloatingActionButton) findViewById(R.id.fab);
 		if (!DocumentationHelper.hasDocumentation(this, muninFoo.getCurrentServer().getPlugins().get(pos))) {
-			fab.setVisibility(View.GONE);
+			fab.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+				@Override
+				public void onGlobalLayout() {
+					fab.setTranslationY(284);
+					fab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				}
+			});
+
 			isFabShown = false;
 		}
 		
