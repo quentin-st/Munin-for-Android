@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:fab="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
@@ -67,6 +68,18 @@
 		</RelativeLayout>
 	</LinearLayout>
 
+	<com.melnykov.fab.FloatingActionButton
+		android:id="@+id/fab"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|right"
+		android:layout_margin="16dp"
+		android:src="@drawable/ic_action_help"
+		fab:fab_type="mini"
+		fab:fab_colorNormal="@color/primary"
+		fab:fab_colorPressed="@color/primary_pressed"
+		fab:fab_colorRipple="@color/ripple" />
+
 	<LinearLayout
 		android:id="@+id/documentation"
 		android:layout_width="match_parent"
@@ -77,7 +90,7 @@
 		<FrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
-			android:layout_weight="1"
+			android:layout_weight="3"
 			android:background="#000000">
 
 			<ImageView
@@ -113,23 +126,34 @@
 					style="@style/Material_Title2_Light"/>
 
 			</LinearLayout>
-
 		</FrameLayout>
-		<ScrollView
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
-			android:layout_weight="2"
+			android:layout_weight="7"
+			android:orientation="vertical"
 			android:background="#ffffff">
 
-			<TextView
-				android:id="@+id/doc"
+			<Spinner
+				android:id="@+id/doc_spinner"
 				android:layout_width="match_parent"
-				android:layout_height="0dp"
-				android:layout_weight="1"
-				android:paddingLeft="30dp"
-				android:paddingRight="30dp"
-				android:paddingTop="15dp"/>
+				android:layout_height="wrap_content"
+				android:visibility="gone"/>
 
-		</ScrollView>
+			<ScrollView
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+
+				<TextView
+					android:id="@+id/doc"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:paddingLeft="30dp"
+					android:paddingRight="30dp"
+					android:paddingTop="15dp"
+					android:paddingBottom="10dp"/>
+
+			</ScrollView>
+		</LinearLayout>
 	</LinearLayout>
 </FrameLayout>

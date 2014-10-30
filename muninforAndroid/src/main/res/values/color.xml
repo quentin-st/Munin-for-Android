@@ -13,4 +13,8 @@
 	<color name="c00ffffff">#00ffffff</color>
 	<color name="c33ffffff">#33ffffff</color>
 
+	<color name="primary">#0091ea</color>
+	<color name="primary_pressed">#ff0087e1</color>
+	<color name="ripple">#ff00a3ff</color>
+
 </resources>

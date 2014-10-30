@@ -33,6 +33,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -41,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +58,7 @@ import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.melnykov.fab.FloatingActionButton;
 
 import org.taptwo.android.widget.TitleFlowIndicator;
 import org.taptwo.android.widget.ViewFlow;
@@ -80,6 +83,8 @@ public class Activity_GraphView extends MuninActivity {
 	 * of current list position
 	 */
 	private static final int BITMAPS_PADDING = 5;
+	private FloatingActionButton fab;
+	private boolean       isFabShown;
 	
 	private MenuItem		item_previous;
 	private MenuItem		item_next;
@@ -202,8 +207,47 @@ public class Activity_GraphView extends MuninActivity {
 				
 				dh.initPluginsList(scroll);
 				previousPos = viewFlow.getSelectedItemPosition();
+
+				// Documentation
+				boolean hasDoc = DocumentationHelper.hasDocumentation(context, muninFoo.getCurrentServer().getPlugins().get(position));
+				// TODO
+				if (!hasDoc && isFabShown) { // Hide fab
+					log("Hiding fab");
+					Display display = getWindowManager().getDefaultDisplay();
+					Point size = new Point();
+					display.getSize(size);
+					int screenH = size.y;
+
+					TranslateAnimation a1 = new TranslateAnimation(0, 0, 0, 300);
+					a1.setDuration(300);
+					a1.setFillAfter(true);
+					a1.setInterpolator(new AccelerateDecelerateInterpolator());
+					fab.startAnimation(a1);
+					isFabShown = false;
+				} else if (hasDoc && !isFabShown) { // Show fab
+					log("Showing fab");
+					Display display = getWindowManager().getDefaultDisplay();
+					Point size = new Point();
+					display.getSize(size);
+					int screenH = size.y;
+
+					TranslateAnimation a1 = new TranslateAnimation(0, 0, -300, 0);
+					a1.setDuration(300);
+					a1.setFillAfter(true);
+					a1.setInterpolator(new AccelerateDecelerateInterpolator());
+					if (fab.getVisibility() == View.GONE)
+						fab.setVisibility(View.VISIBLE);
+					isFabShown = true;
+					fab.startAnimation(a1);
+				}
 			}
 		});
+
+		fab = (FloatingActionButton) findViewById(R.id.fab);
+		if (!DocumentationHelper.hasDocumentation(this, muninFoo.getCurrentServer().getPlugins().get(pos))) {
+			fab.setVisibility(View.GONE);
+			isFabShown = false;
+		}
 		
 		if (!Util.isOnline(this))
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
@@ -392,6 +436,11 @@ public class Activity_GraphView extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
+		if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE) {
+			hideDocumentation();
+			return;
+		}
+
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")) {
 			String from = thisIntent.getExtras().getString("from");
@@ -442,7 +491,8 @@ public class Activity_GraphView extends MuninActivity {
 		int screenH = size.y;
 		
 		// Animation translation listview
-		TranslateAnimation a1 = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0,
+		TranslateAnimation a1 = new TranslateAnimation(
+				Animation.RELATIVE_TO_SELF, 0,
 				Animation.RELATIVE_TO_SELF, 0,
 				Animation.ABSOLUTE, screenH,
 				Animation.RELATIVE_TO_SELF, 0);
@@ -791,16 +841,60 @@ public class Activity_GraphView extends MuninActivity {
 		return (position >= 0 && position < bitmaps.length) ? bitmaps[position] : null;
 	}
 
+
+	private void hideDocumentation() {
+		final View documentation = findViewById(R.id.documentation);
+
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int screenH = size.y;
+		TranslateAnimation a1 = new TranslateAnimation(
+				Animation.RELATIVE_TO_SELF, 0,
+				Animation.RELATIVE_TO_SELF, 0,
+				Animation.RELATIVE_TO_SELF, 0,
+				Animation.ABSOLUTE, screenH);
+		a1.setDuration(300);
+		a1.setFillAfter(true);
+		a1.setInterpolator(new AccelerateDecelerateInterpolator());
+		a1.setAnimationListener(new Animation.AnimationListener() {
+			@Override public void onAnimationStart(Animation animation) { }
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				((TextView) findViewById(R.id.doc)).setText("");
+				documentation.setVisibility(View.GONE);
+			}
+			@Override public void onAnimationRepeat(Animation animation) { }
+		});
+		documentation.startAnimation(a1);
+	}
 	private void actionDocumentation() {
-		MuninPlugin plugin = muninFoo.getCurrentServer().getPlugins().get(viewFlow.getSelectedItemPosition());
+		final MuninPlugin plugin = muninFoo.getCurrentServer().getPlugins().get(viewFlow.getSelectedItemPosition());
 
 		// Get file content
-		String fileContent = DocumentationHelper.getDocumentation(context, plugin);
+		String fileContent = DocumentationHelper.getDocumentation(context, plugin, "");
 		if (!fileContent.equals("")) {
-			findViewById(R.id.documentation).setVisibility(View.VISIBLE);
+			// Animation
+			View documentation = findViewById(R.id.documentation);
+
+			Display display = getWindowManager().getDefaultDisplay();
+			Point size = new Point();
+			display.getSize(size);
+			int screenH = size.y;
+			TranslateAnimation a1 = new TranslateAnimation(
+					Animation.RELATIVE_TO_SELF, 0,
+					Animation.RELATIVE_TO_SELF, 0,
+					Animation.ABSOLUTE, screenH,
+					Animation.RELATIVE_TO_SELF, 0);
+			a1.setDuration(300);
+			a1.setFillAfter(true);
+			a1.setInterpolator(new AccelerateDecelerateInterpolator());
+			documentation.setVisibility(View.VISIBLE);
+			documentation.startAnimation(a1);
+
+			// Content filling
 			ImageView imageView = (ImageView) findViewById(R.id.doc_imageview);
-			if (bitmaps[viewFlow.getSelectedItemPosition()] != null)
-				imageView.setImageBitmap(bitmaps[viewFlow.getSelectedItemPosition()]);
+			imageView.setImageBitmap(bitmaps[viewFlow.getSelectedItemPosition()]);
 
 			TextView line1 = (TextView) findViewById(R.id.doc_line1);
 			TextView line2 = (TextView) findViewById(R.id.doc_line2);
@@ -809,8 +903,32 @@ public class Activity_GraphView extends MuninActivity {
 			Util.Fonts.setFont(context, line1, Util.Fonts.CustomFont.Roboto_Medium);
 			Util.Fonts.setFont(context, line2, Util.Fonts.CustomFont.Roboto_Medium);
 
-			TextView doc = (TextView) findViewById(R.id.doc);
+			final TextView doc = (TextView) findViewById(R.id.doc);
 			doc.setText(Html.fromHtml(fileContent));
+
+			Spinner spinner = (Spinner) findViewById(R.id.doc_spinner);
+			final List<String> nodes = DocumentationHelper.getNodes(plugin);
+
+			if (nodes.size() > 1) {
+				spinner.setVisibility(View.VISIBLE);
+
+				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+						android.R.layout.simple_spinner_item, nodes);
+				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				spinner.setAdapter(dataAdapter);
+
+				spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+					@Override
+					public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+						String node = nodes.get(i);
+						if (node.equals(""))
+							node = "node";
+						String fileContent = DocumentationHelper.getDocumentation(context, plugin, node);
+						doc.setText(Html.fromHtml(fileContent));
+					}
+					@Override public void onNothingSelected(AdapterView<?> adapterView) { }
+				});
+			} else spinner.setVisibility(View.GONE);
 		}
 		else
 			Toast.makeText(context, "No doc", Toast.LENGTH_SHORT).show();
