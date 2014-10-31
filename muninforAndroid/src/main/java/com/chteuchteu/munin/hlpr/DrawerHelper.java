@@ -278,7 +278,7 @@ public class DrawerHelper {
 				.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						LayoutInflater inflater = (LayoutInflater) ((Context) a).getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+						LayoutInflater inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 						View view = inflater.inflate(R.layout.dialog_donate, null);
 						
 						final Spinner spinnerAmount = (Spinner) view.findViewById(R.id.donate_amountSpinner);
@@ -288,7 +288,7 @@ public class DrawerHelper {
 						list.add("2 " + euroSlashDollar);
 						list.add("5 " + euroSlashDollar);
 						list.add("20 " + euroSlashDollar);
-						ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(((Context) a), android.R.layout.simple_spinner_item, list);
+						ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(a, android.R.layout.simple_spinner_item, list);
 						dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 						spinnerAmount.setAdapter(dataAdapter);
 						
@@ -306,7 +306,7 @@ public class DrawerHelper {
 									case 2: product = BillingService.DONATE_5; break;
 									case 3: product = BillingService.DONATE_20; break;
 								}
-								new DonateAsync((Context) a, product).execute();
+								new DonateAsync(a, product).execute();
 							}
 						})
 						.setNegativeButton(R.string.text64, null)
@@ -533,7 +533,7 @@ public class DrawerHelper {
 				obs.addOnGlobalLayoutListener(new OnGlobalLayoutListener() { // Else getHeight returns 0
 					@Override
 					public void onGlobalLayout() {
-						int scroll = 0;
+						int scroll;
 						if (scrollY != -1)
 							scroll = scrollY;
 						else

@@ -12,13 +12,17 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Serialization util class
+ * Used for import/export
+ */
 public class JSONHelper {
 	/**
 	 * Serializes the Masters objects tree
 	 * Encrypts the password using the Util.Encryption util methods
-	 * @param masters
+	 * @param masters Masters to be serialized
 	 * @param seed Seed used in order to encrypt passwords
-	 * @return
+	 * @return JSON representation of the masters parameter
 	 */
 	public static String getMastersJSONString(ArrayList<MuninMaster> masters, String seed) {
 		try {

@@ -7,7 +7,10 @@ import android.net.Uri;
 
 import java.io.File;
 
-
+/**
+ * Util class
+ *  Should be used every time a bitmap is saved into gallery
+ */
 public class MediaScannerUtil implements MediaScannerConnectionClient {
 	private MediaScannerConnection mMs;
 	private File mFile;

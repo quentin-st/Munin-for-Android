@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
@@ -37,11 +38,11 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.crypto.Cipher;
@@ -54,7 +55,7 @@ public final class Util {
 		/**
 		 * Applies the following UI tweaks :
 		 * 		- Colors the status bar background (KitKat+)
-		 * @param activity
+		 * @param activity Activity
 		 */
 		@SuppressLint("InlinedApi")
 		public static void applySwag(Activity activity) {
@@ -74,8 +75,8 @@ public final class Util {
 		/**
 		 * Show loading spinner on actionbar
 			activity.requestWindowFeature(Window.FEATURE_PROGRESS);
-		 * @param val
-		 * @param activity
+		 * @param val boolean
+		 * @param activity Activity
 		 */
 		public static void setLoading(boolean val, Activity activity) {
 			activity.setProgressBarIndeterminateVisibility(val);
@@ -84,7 +85,7 @@ public final class Util {
 		/**
 		 * Prepares a Gmail-style progressbar on the actionBar
 		 * Should be call in onCreate
-		 * @param activity
+		 * @param activity Activity
 		 */
 		public static ProgressBar prepareGmailStyleProgressBar(final Activity activity) {
 			// create new ProgressBar and style it
@@ -271,7 +272,7 @@ public final class Util {
 			SharedPreferences prefs = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putString(key, value);
-			editor.commit();
+			editor.apply();
 		}
 	}
 	
@@ -279,7 +280,7 @@ public final class Util {
 		SharedPreferences prefs = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.remove(key);
-		editor.commit();
+		editor.apply();
 	}
 	
 	public static class URLManipulation {
@@ -317,9 +318,10 @@ public final class Util {
 		}
 		/**
 		 * Get http://host.dd/ from ascendDirectory(2, http://host.dd/x/y/)
-		 * @param nbLevels
-		 * @param url
-		 * @return
+		 *  If we ascent too much times, the original URL will be returned.
+		 * @param nbLevels Ascend X times
+		 * @param url Source URL
+		 * @return Result URL
 		 */
 		public static String ascendDirectory(int nbLevels, String url) {
 			// We assume the last trailing slash has been added :
@@ -470,8 +472,8 @@ public final class Util {
 	/**
 	 * "apache" => "Apache"
 	 * "some words" => "Some words"
-	 * @param original
-	 * @return
+	 * @param original Original string
+	 * @return Capitalized string
 	 */
 	@SuppressLint("DefaultLocale")
 	public static String capitalize(String original) {
@@ -499,9 +501,39 @@ public final class Util {
 		}
 	}
 
-	public static boolean assetsFileExists(Context context, String subFolder, String fileName) {
+	public static String getAppVersion(Context context) {
+		String versionName;
 		try {
-			return Arrays.asList(context.getResources().getAssets().list(subFolder)).contains(fileName);
-		} catch (IOException ex) { ex.printStackTrace(); return false; }
+			versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+		} catch (PackageManager.NameNotFoundException e) {
+			versionName = "";
+		}
+		return versionName;
+	}
+
+	public static String getAndroidVersion() {
+		String str = "Android " + Build.VERSION.RELEASE;
+
+		// Get "KitKat"
+		Field[] fields = Build.VERSION_CODES.class.getFields();
+		for (Field field : fields) {
+			String fieldName = field.getName();
+			int fieldValue = -1;
+
+			try {
+				fieldValue = field.getInt(new Object());
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
+
+			if (fieldValue == Build.VERSION.SDK_INT)
+				str += " " + fieldName;
+		}
+
+		return str;
 	}
 }

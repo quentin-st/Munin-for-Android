@@ -115,7 +115,7 @@ public class MuninMaster {
 	/**
 	 * Checks if dynazoom is available.
 	 * Warning : this has to be done on a thread
-	 * @return
+	 * @return boolean
 	 */
 	public boolean isDynazoomAvailable() {
 		if (this.defaultMaster || this.isEmpty())
@@ -185,10 +185,7 @@ public class MuninMaster {
 	public boolean isEmpty() { return this.children.isEmpty(); }
 	
 	public boolean equalsApprox(MuninMaster p) {
-		if (p == null)
-			return false;
-		
-		return (this.url.equals(p.url));
+		return p != null && this.url.equals(p.url);
 	}
 	
 	public MuninServer getServerFromFlatPosition(int position) {
@@ -251,7 +248,7 @@ public class MuninMaster {
 	 * 	- munin/		: list of servers
 	 * 	- munin/x/		: list of plugins (not used)
 	 * 	- err_code		: if error -> error code
-	 * @return
+	 * @return String : pageType
 	 */
 	public String detectPageType() {
 		HTTPResponse res = grabUrl(this.url);

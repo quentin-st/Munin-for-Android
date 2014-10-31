@@ -139,9 +139,9 @@ public class SQLite {
 	 * Before Munin for Android 3.0, auth ids were attached to MuninServer.
 	 * Those auth information weren't deleting during update so they can
 	 * be fetched back for migration purposes.
-	 * @param muninServerId
-	 * @param attachTo
-	 * @param saveChanges
+	 * @param muninServerId Information source (MuninServer id)
+	 * @param attachTo Information destination
+	 * @param saveChanges boolean
 	 */
 	private void getOldAuthInformation(long muninServerId, MuninMaster attachTo, boolean saveChanges) {
 		String KEY_MUNINSERVERS_AUTHLOGIN = "authLogin";

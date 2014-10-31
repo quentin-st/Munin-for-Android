@@ -33,7 +33,7 @@ public class Activity_About extends MuninActivity {
 		wv.getSettings().setDefaultTextEncodingName("utf-8");
 		wv.setBackgroundColor(0x00000000);
 		String content = getString(R.string.aboutText);
-		String versionName = muninFoo.getAppVersion(this);
+		String versionName = Util.getAppVersion(this);
 		content = content.replaceAll("#version#", versionName);
 		wv.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);
 		wv.setLayerType(View.LAYER_TYPE_SOFTWARE, null);

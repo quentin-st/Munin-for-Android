@@ -157,7 +157,6 @@ public class GridItem {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			Util.UI.setLoading(true, (Activity) c);
 			this.isDownloading = true;
 		}
 		
@@ -173,7 +172,6 @@ public class GridItem {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			Util.UI.setLoading(false, (Activity) c);
 			isDownloading = false;
 			
 			if (!downloadKilled)
@@ -181,7 +179,6 @@ public class GridItem {
 		}
 		
 		private void killDownload() {
-			Util.UI.setLoading(false, (Activity) c);
 			downloadKilled = true;
 			isDownloading = false;
 		}

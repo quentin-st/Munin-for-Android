@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -18,7 +17,6 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.crashlytics.android.Crashlytics;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -172,6 +170,12 @@ public class MuninFoo {
 	}
 	
 	public static void loadLanguage(Context context) { loadLanguage(context, false); }
+	/**
+	 * Load language according to preferences, if set. If not : lang is
+	 *  already set according to device locale.
+	 * @param context Activity context
+	 * @param forceLoad Force language load (after language change)
+	 */
 	public static void loadLanguage(Context context, boolean forceLoad) {
 		if (!Util.getPref(context, "lang").equals("")) {
 			if (!languageLoaded || forceLoad) {
@@ -398,6 +402,8 @@ public class MuninFoo {
 	
 	/**
 	 * Returns true if we should retrieve servers information
+	 *  We consider alerts information as outdated after 10 minutes.
+	 *  Note : hitting refresh on alerts screen forces data refresh.
 	 * @return bool
 	 */
 	public boolean shouldUpdateAlerts() {
@@ -419,8 +425,7 @@ public class MuninFoo {
 	public static void log(String tag, String msg) { if (MuninFoo.DEBUG) Log.i(tag, msg); }
 	public static void logV(String msg) { logV("MuninFoo", msg); }
 	public static void logV(String tag, String msg) { if (MuninFoo.DEBUG) Log.v(tag, msg); }
-	
-	@SuppressWarnings("unused")
+
 	public static boolean isPremium(Context c) {
 		if (isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
 			if (DEBUG && FORCE_NOT_PREMIUM)
@@ -434,44 +439,8 @@ public class MuninFoo {
 		return false;
 	}
 
-	public static String getAppVersion(Context context) {
-		String versionName;
-		try {
-			versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-		} catch (PackageManager.NameNotFoundException e) {
-			versionName = "";
-		}
-		return versionName;
-	}
-
-	public static String getAndroidVersion() {
-		String str = "Android " + Build.VERSION.RELEASE;
-
-		// Get "KitKat"
-		Field[] fields = Build.VERSION_CODES.class.getFields();
-		for (Field field : fields) {
-			String fieldName = field.getName();
-			int fieldValue = -1;
-
-			try {
-				fieldValue = field.getInt(new Object());
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-			}
-
-			if (fieldValue == Build.VERSION.SDK_INT)
-				str += " " + fieldName;
-		}
-
-		return str;
-	}
-
 	/**
-	 * Generates MuninForAndroid/3.0 (Android 4.4.4 KITKAT) from context
+	 * Generates "MuninForAndroid/3.0 (Android 4.4.4 KITKAT)" from context
 	 * @param context Application/activity context
 	 */
 	private void generateUserAgent(Context context) {
@@ -480,18 +449,18 @@ public class MuninFoo {
 			return;
 		}
 
-		String appVersion = getAppVersion(context);
-		String androidVersion = getAndroidVersion();
+		String appVersion = Util.getAppVersion(context);
+		String androidVersion = Util.getAndroidVersion();
 		userAgent = "MuninForAndroid/" + appVersion + " (" + androidVersion + ")";
 		log("User agent : " + userAgent);
 	}
 
 	/**
 	 * Context-less version of generateUserAgent(Context context)
-	 * Generates MuninForAndroid (Android 4.4.4 KITKAT)
+	 * Generates "MuninForAndroid (Android 4.4.4 KITKAT)"
 	 */
 	private void generateUserAgent() {
-		String androidVersion = getAndroidVersion();
+		String androidVersion = Util.getAndroidVersion();
 		userAgent = "MuninForAndroid (" + androidVersion + ")";
 		log("User agent : " + userAgent);
 	}

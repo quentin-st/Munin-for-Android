@@ -550,7 +550,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	/**
 	 * Gets the servers list from db.
 	 * @param currentMasters Avoid fetching a server from db if already done
-	 * @return
+	 * @return List<MuninServer>
 	 */
 	public List<MuninServer> getServers(List<MuninMaster> currentMasters) {
 		List<MuninServer> l = new ArrayList<MuninServer>();
@@ -682,7 +682,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * Get an alertWidget from its id.
 	 * @param widgetId Widget id provided by Android at its creation
 	 * @param servers List of servers. Can be null.
-	 * @return
+	 * @return AlertsWidget
 	 */
 	public AlertsWidget getAlertsWidget(int widgetId, List<MuninServer> servers) {
 		String selectQuery = "SELECT * FROM " + TABLE_WIDGET_ALERTSWIDGETS
@@ -791,8 +791,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	/**
 	 * Get all plugins linked to a label
-	 * @param l
-	 * @return
+	 * @param l Label
+	 * @return List<MuninPlugin>
 	 */
 	public List<MuninPlugin> getPlugins(Label l) {
 		List<MuninPlugin> list = new ArrayList<MuninPlugin>();
@@ -879,9 +879,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	/**
 	 * Get all grid items from a Grid
-	 * @param context
-	 * @param grid
-	 * @return
+	 * @param context Activity context
+	 * @param grid Grid
+	 * @return List<GridItem>
 	 */
 	public List<GridItem> getGridItems(MuninFoo muninFoo, Context context, Grid grid) {
 		List<GridItem> l = new ArrayList<GridItem>();
@@ -1045,8 +1045,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		/**
 		 * Returns the number of lines returned by a SELECT COUNT(*) FROM _table WHERE _cond
 		 * Ex : where = 'ID = 5'
-		 * @param table
-		 * @param where
+		 * @param table Table name
+		 * @param where Where condition (ID = 5)
 		 * @return int nbLines
 		 */
 		public static int getNbLines(SQLiteOpenHelper sqloh, String table, String where) {
