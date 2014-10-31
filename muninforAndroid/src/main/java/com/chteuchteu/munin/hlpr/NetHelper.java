@@ -44,8 +44,11 @@ import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class NetHelper {
+	private static final int CONNECTION_TIMEOUT = 6000; // Default = 6000
+	private static final int SOCKET_TIMEOUT = 7000; // Default = 6000
+
 	/**
-	 * Downloads body response of a HTTP(s) request
+	 * Downloads body response of a HTTP(s) request using master auth information
 	 * @param master Needed for SSL/Apache basic/digest auth
 	 * @param url URL to be downloaded
 	 * @return HTTPResponse
@@ -68,8 +71,8 @@ public class NetHelper {
 					HttpParams params = new BasicHttpParams();
 					HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
 					HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-					HttpConnectionParams.setConnectionTimeout(params, 5000);
-					HttpConnectionParams.setSoTimeout(params, 7000);
+					HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
+					HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
 					
 					SchemeRegistry registry = new SchemeRegistry();
 					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
@@ -95,55 +98,16 @@ public class NetHelper {
 				else if (master.getAuthType() == AuthType.DIGEST) {
 					// Digest foo:digestedPass, realm="munin", nonce="+RdhgM7qBAA=86e58ecf5cbd672ba8246c4f9eed4a389fe87fd6", algorithm=MD5, qop="auth"
 					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-					String userName = master.getAuthLogin(),
-						password = master.getAuthPassword(),
-						realmName,
-						nonce,
-						algorithm = "MD5",
-						opaque,
-						qop = "auth",
-						nc = "00000001",
-						cnonce,
-						uri = url,
-						methodName = "GET";
-					
-					cnonce = DigestUtils.newCnonce();
-					
-					// Parse header
-					realmName = DigestUtils.match(master.getAuthString(), "realm");
-					nonce = DigestUtils.match(master.getAuthString(), "nonce");
-					opaque = DigestUtils.match(master.getAuthString(), "opaque");
-					qop = DigestUtils.match(master.getAuthString(), "qop");
-					
-					String a1 = DigestUtils.md5Hex(userName + ":" + realmName + ":" + password);
-					String a2 = DigestUtils.md5Hex(methodName + ":" + uri);
-					String responseSeed = a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + a2;
-					String response = DigestUtils.md5Hex(responseSeed);
-					
-					String header = "Digest ";
-					header += DigestUtils.formatField("username", userName, false);
-					header += DigestUtils.formatField("realm", realmName, false);
-					header += DigestUtils.formatField("nonce", nonce, false);
-					if (!opaque.equals(""))
-						header += DigestUtils.formatField("opaque", opaque, false);
-					header += DigestUtils.formatField("uri", uri, false);
-					header += DigestUtils.formatField("response", response, false);
-					header += DigestUtils.formatField("cnonce", cnonce, false);
-					header += DigestUtils.formatField("nc", nc, false);
-					if (!qop.equals(""))
-						header += DigestUtils.formatField("qop", qop, false);
-					header += DigestUtils.formatField("charset", "utf-8", false);
-					header += DigestUtils.formatField("algorithm", algorithm, true);
-					
+					String header = DigestUtils.getDigestAuthHeader(master, url);
 					request.setHeader("Authorization", header);
 				}
 			}
 			
 			HttpParams httpParameters = new BasicHttpParams();
 			// Set the timeout in milliseconds until a connection is established.
-			HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
+			HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIMEOUT);
 			// Set the default socket timeout (SO_TIMEOUT) in milliseconds which is the timeout for waiting for data.
-			HttpConnectionParams.setSoTimeout(httpParameters, 7000);
+			HttpConnectionParams.setSoTimeout(httpParameters, SOCKET_TIMEOUT);
 			((DefaultHttpClient) client).setParams(httpParameters);
 			
 			HttpResponse response = client.execute(request);
@@ -205,7 +169,16 @@ public class NetHelper {
 	public static Bitmap grabBitmap(MuninMaster master, String url) {
 		return grabBitmap(master, url, false);
 	}
-	
+
+	/**
+	 * Get a bitmap representation of the image targeted by url parameter,
+	 *  using master auth information
+	 * @param master Needed for SSL/Apache basic/digest auth
+	 * @param url URL of the image
+	 * @param retried Retry after getting digest auth information
+	 *                (recursive call)
+	 * @return Bitmap
+	 */
 	private static Bitmap grabBitmap(MuninMaster master, String url, boolean retried) {
 		Bitmap b;
 		
@@ -246,45 +219,7 @@ public class NetHelper {
 							(master.getAuthLogin() + ":" + master.getAuthPassword()).getBytes(), Base64.NO_WRAP));
 				else if (master.getAuthType() == AuthType.DIGEST) {
 					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-					String userName = master.getAuthLogin(),
-						password = master.getAuthPassword(),
-						realmName,
-						nonce,
-						algorithm = "MD5",
-						opaque,
-						qop = "auth",
-						nc = "00000001",
-						cnonce,
-						uri = url,
-						methodName = "GET";
-					
-					cnonce = DigestUtils.newCnonce();
-					// Parse header
-					realmName = DigestUtils.match(master.getAuthString(), "realm");
-					nonce = DigestUtils.match(master.getAuthString(), "nonce");
-					opaque = DigestUtils.match(master.getAuthString(), "opaque");
-					qop = DigestUtils.match(master.getAuthString(), "qop");
-					
-					String a1 = DigestUtils.md5Hex(userName + ":" + realmName + ":" + password);
-					String a2 = DigestUtils.md5Hex(methodName + ":" + uri);
-					String responseSeed = a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + a2;
-					String response = DigestUtils.md5Hex(responseSeed);
-					
-					String header = "Digest ";
-					header += DigestUtils.formatField("username", userName, false);
-					header += DigestUtils.formatField("realm", realmName, false);
-					header += DigestUtils.formatField("nonce", nonce, false);
-					if (!opaque.equals(""))
-						header += DigestUtils.formatField("opaque", opaque, false);
-					header += DigestUtils.formatField("uri", uri, false);
-					header += DigestUtils.formatField("response", response, false);
-					header += DigestUtils.formatField("cnonce", cnonce, false);
-					header += DigestUtils.formatField("nc", nc, false);
-					if (!qop.equals(""))
-						header += DigestUtils.formatField("qop", qop, false);
-					header += DigestUtils.formatField("charset", "utf-8", false);
-					header += DigestUtils.formatField("algorithm", algorithm, true);
-					
+					String header = DigestUtils.getDigestAuthHeader(master, url);
 					request.setHeader("Authorization", header);
 				}
 			}

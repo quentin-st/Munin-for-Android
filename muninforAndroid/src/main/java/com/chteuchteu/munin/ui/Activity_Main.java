@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.MaterialMenuIcon;
+import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -242,14 +243,14 @@ public class Activity_Main extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (!MuninFoo.DEBUG)
+		if (!BuildConfig.DEBUG)
 			EasyTracker.getInstance(this).activityStart(this);
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		if (!MuninFoo.DEBUG)
+		if (!BuildConfig.DEBUG)
 			EasyTracker.getInstance(this).activityStop(this);
 	}
 	

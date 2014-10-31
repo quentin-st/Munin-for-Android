@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.MaterialMenuIcon;
+import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -55,8 +56,6 @@ public class MuninActivity extends Activity {
 		this.dh = new DrawerHelper(this, muninFoo);
 		this.materialMenu = new MaterialMenuIcon(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN);
 		this.materialMenu.setNeverDrawTouch(true);
-
-		// Set current server
 	}
 
 	@Override
@@ -128,7 +127,7 @@ public class MuninActivity extends Activity {
 	public void onStart() {
 		super.onStart();
 
-		if (!MuninFoo.DEBUG)
+		if (!BuildConfig.DEBUG)
 			EasyTracker.getInstance(this).activityStart(this);
 	}
 
@@ -136,7 +135,7 @@ public class MuninActivity extends Activity {
 	public void onStop() {
 		super.onStop();
 
-		if (!MuninFoo.DEBUG)
+		if (!BuildConfig.DEBUG)
 			EasyTracker.getInstance(this).activityStop(this);
 	}
 

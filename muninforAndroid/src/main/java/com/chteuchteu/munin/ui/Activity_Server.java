@@ -25,7 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
@@ -776,7 +776,7 @@ public class Activity_Server extends MuninActivity {
 					});
 				}
 			}
-			if (MuninFoo.DEBUG)
+			if (BuildConfig.DEBUG)
 				muninFoo.sqlite.logMasters();
 			if (!Util.isOnline(context))
 				Toast.makeText(Activity_Server.this, getString(R.string.text30), Toast.LENGTH_LONG).show();

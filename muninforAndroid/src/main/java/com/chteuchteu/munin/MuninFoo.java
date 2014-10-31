@@ -55,7 +55,6 @@ public class MuninFoo {
 	
 	public static final double VERSION = 4.2;
 	// =============== //
-	public static final boolean DEBUG = true;
 	private static final boolean FORCE_NOT_PREMIUM = false;
 	public boolean premium;
 	
@@ -86,7 +85,7 @@ public class MuninFoo {
 
 		attachOrphanServers();
 
-		if (DEBUG)
+		if (BuildConfig.DEBUG)
 			this.sqlite.logMasters();
 
 		if (context != null) {
@@ -422,15 +421,15 @@ public class MuninFoo {
 	}
 
 	public static void log(String msg) { log("MuninFoo", msg); }
-	public static void log(String tag, String msg) { if (MuninFoo.DEBUG) Log.i(tag, msg); }
+	public static void log(String tag, String msg) { if (BuildConfig.DEBUG) Log.i(tag, msg); }
 	public static void logV(String msg) { logV("MuninFoo", msg); }
-	public static void logV(String tag, String msg) { if (MuninFoo.DEBUG) Log.v(tag, msg); }
+	public static void logV(String tag, String msg) { if (BuildConfig.DEBUG) Log.v(tag, msg); }
 
 	public static boolean isPremium(Context c) {
 		if (isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
-			if (DEBUG && FORCE_NOT_PREMIUM)
+			if (BuildConfig.DEBUG && FORCE_NOT_PREMIUM)
 				return false;
-			if (DEBUG)
+			if (BuildConfig.DEBUG)
 				return true;
 			PackageManager manager = c.getPackageManager();
 			return (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")

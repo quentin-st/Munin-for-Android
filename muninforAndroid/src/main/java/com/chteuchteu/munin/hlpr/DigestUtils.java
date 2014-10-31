@@ -13,21 +13,21 @@ public class DigestUtils {
 	public static String getDigestAuthHeader(MuninMaster master, String url) {
 		if (master.getAuthType() == AuthType.DIGEST) {
 			// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-			String userName = master.getAuthLogin();
-			String password = master.getAuthPassword();
-			String realmName = "";
-			String nonce = "";
-			String algorithm = "MD5";
-			String opaque = "";
-			String qop = "auth";
-			String nc = "00000001";
-			String cnonce = "";
-			String uri = url;
-			String methodName = "GET";
+			String userName = master.getAuthLogin(),
+				password = master.getAuthPassword(),
+				realmName,
+				nonce,
+				algorithm = "MD5",
+				opaque,
+				qop = "auth",
+				nc = "00000001",
+				cnonce,
+				uri = url,
+				methodName = "GET";
 			
 			cnonce = DigestUtils.newCnonce();
 			
-			// Parser le header
+			// Parse header
 			realmName = DigestUtils.match(master.getAuthString(), "realm");
 			nonce = DigestUtils.match(master.getAuthString(), "nonce");
 			opaque = DigestUtils.match(master.getAuthString(), "opaque");
