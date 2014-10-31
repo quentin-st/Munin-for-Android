@@ -320,6 +320,11 @@ public class Activity_Servers extends MuninActivity {
     }
 
 	private void displayImportDialog() {
+		if (!muninFoo.premium) {
+			Toast.makeText(context, R.string.featuresPackNeeded, Toast.LENGTH_SHORT).show();
+			return;
+		}
+
 		final View dialogView = View.inflate(this, R.layout.dialog_import, null);
 		new AlertDialog.Builder(this)
 		.setTitle(R.string.import_title)
@@ -375,6 +380,11 @@ public class Activity_Servers extends MuninActivity {
 	}
 	
 	private void displayExportDialog() {
+		if (!muninFoo.premium) {
+			Toast.makeText(context, R.string.featuresPackNeeded, Toast.LENGTH_SHORT).show();
+			return;
+		}
+
 		new AlertDialog.Builder(context)
 		.setTitle(R.string.export_servers)
 		.setMessage(R.string.export_explanation)
@@ -480,8 +490,6 @@ public class Activity_Servers extends MuninActivity {
 		getMenuInflater().inflate(R.menu.servers, menu);
 		MenuItem importExportMenuItem = menu.findItem(R.id.menu_importexport);
 		MenuItem exportMenuItem = menu.findItem(R.id.menu_export);
-		if (!MuninFoo.isPremium(context))
-			importExportMenuItem.setVisible(false);
 		if (muninFoo.getServers().isEmpty())
 			exportMenuItem.setVisible(false);
 	}

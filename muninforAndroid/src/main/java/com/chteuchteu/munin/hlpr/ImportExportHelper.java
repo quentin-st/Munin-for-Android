@@ -61,6 +61,7 @@ public class ImportExportHelper {
 					return jsonResult.getString("password");
 				} else {
 					String error = jsonResult.getString("error");
+					MuninFoo.log("ImportExportHelper", error);
 					Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
 				}
 				
@@ -141,7 +142,7 @@ public class ImportExportHelper {
 		private static JSONObject sendImportRequest(String code) {
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpPost httpPost = new HttpPost(MuninFoo.IMPORT_EXPORT_URI+"?import");
-			
+
 			try {
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 				nameValuePairs.add(new BasicNameValuePair("pswd", code));
@@ -163,6 +164,7 @@ public class ImportExportHelper {
 					return jsonResult.getJSONArray("data").getJSONObject(0);
 				} else {
 					String error = jsonResult.getString("error");
+					MuninFoo.log("ImportExportHelper", error);
 					Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
 				}
 				

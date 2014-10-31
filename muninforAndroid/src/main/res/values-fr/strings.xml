@@ -194,6 +194,7 @@
 	<string name="notifs_vibrate">Activer le vibreur</string>
 	<string name="graphwidgetname">Munin for Android : Widget graphique</string>
 	<string name="alertswidgetname">Munin for Android : Widget alertes</string>
+	<string name="featuresPackNeeded">Munin for Android Features Pack requis</string>
 	<string name="aboutText">
 <![CDATA[
    <head>
