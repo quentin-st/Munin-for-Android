@@ -147,7 +147,7 @@ public class Grid {
 		disablePlusButtons();
 		if (items.size() > 0) {
 			removeEmptyColumns(c);
-			removeEmptyLines(c);
+			removeEmptyLines();
 		}
 	}
 	
@@ -167,7 +167,7 @@ public class Grid {
 		}
 	}
 	
-	private void removeEmptyLines(Context c) {
+	private void removeEmptyLines() {
 		for (int y=nbLines-1; y>=0; y--) {
 			if (isLineEmpty(y))
 				removeEmptyLine(y);

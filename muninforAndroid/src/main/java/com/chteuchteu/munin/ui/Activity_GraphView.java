@@ -3,6 +3,7 @@ package com.chteuchteu.munin.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -748,6 +749,7 @@ public class Activity_GraphView extends MuninActivity {
 		private MuninPlugin plugin;
 		private Activity activity;
 		private String html;
+		private ProgressDialog dialog;
 		
 		public FieldsDescriptionFetcher (MuninPlugin plugin, Activity activity) {
 			super();
@@ -758,8 +760,8 @@ public class Activity_GraphView extends MuninActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			
-			Util.UI.setLoading(true, activity);
+
+			this.dialog = ProgressDialog.show(context, "", getString(R.string.loading), true);
 		}
 		
 		@Override
@@ -772,7 +774,7 @@ public class Activity_GraphView extends MuninActivity {
 		@SuppressWarnings("deprecation")
 		@Override
 		protected void onPostExecute(Void result) {
-			Util.UI.setLoading(false, activity);
+			this.dialog.dismiss();
 			
 			if (this.html != null) {
 				if (!this.html.equals("")) {
@@ -927,6 +929,13 @@ public class Activity_GraphView extends MuninActivity {
 					@Override public void onNothingSelected(AdapterView<?> adapterView) { }
 				});
 			} else spinner.setVisibility(View.GONE);
+
+			findViewById(R.id.imageAndText).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					hideDocumentation();
+				}
+			});
 		}
 		else
 			Toast.makeText(context, "No doc", Toast.LENGTH_SHORT).show();

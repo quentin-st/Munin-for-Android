@@ -88,10 +88,11 @@
 		android:orientation="vertical">
 		
 		<FrameLayout
+			android:id="@+id/imageAndText"
 			android:layout_width="match_parent"
 			android:layout_height="0dp"
 			android:layout_weight="3"
-			android:background="#000000">
+			android:background="#000000"><!-- Background is set to darken the ImageView -->
 
 			<ImageView
 				android:id="@+id/doc_imageview"
@@ -100,7 +101,7 @@
 				android:layout_gravity="center"
 				android:contentDescription="@string/graphView_ImageViewDescription"
 				android:scaleType="centerCrop"
-				android:alpha="0.85"/>
+				android:alpha="0.9"/>
 
 			<LinearLayout
 				android:layout_width="match_parent"
@@ -148,7 +149,7 @@
 				<TextView
 					android:id="@+id/doc"
 					android:layout_width="match_parent"
-					android:layout_height="match_parent"
+					android:layout_height="wrap_content"
 					android:paddingLeft="30dp"
 					android:paddingRight="30dp"
 					android:paddingTop="15dp"

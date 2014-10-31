@@ -73,7 +73,7 @@ public class DocumentationHelper {
 						list.add(nodeName);
 				}
 			}
-		} catch (JSONException ex) { ex.printStackTrace(); return null; }
+		} catch (JSONException ex) { ex.printStackTrace(); }
 
 		return list;
 	}
