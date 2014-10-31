@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+		   tools:locale="en">
 
 	<string name="app_name">Munin for Android</string>
 	<string name="button_graphs">Graphs</string>
@@ -65,7 +66,7 @@
 	    </head>
 	    <body>
 	    <p>Want to say hi? Have an innovative idea to improve the app? Discovered a critical issue? Please feel free to send an email at <b><u>support@munin-for-android.com</u></b>! Thanks!</p>
-	    <p>This app was independently developped - It is not the offical app.</p>
+	    <p>This app was independently developed - It is not the official app.</p>
 	    
 	    <p></p>
 	    <p>Please go to <a href="http://munin-for-android.com/">munin-for-android.com</a> to see complete changelog and version notes.</p>

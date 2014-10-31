@@ -100,8 +100,8 @@ public class Activity_Servers extends MuninActivity {
 	/**
 	 * Called when a click event is triggered on a child-level element of the listview
 	 * Called from @see com.chteuchteu.munin.Adapter_ExpandableListView#getChildView(int, int, boolean, View, android.view.ViewGroup)
-	 * @param groupPosition
-	 * @param childPosition
+	 * @param groupPosition int
+	 * @param childPosition int
 	 */
 	public void onChildClick(int groupPosition, int childPosition) {
 		Toast.makeText(this, R.string.long_click, Toast.LENGTH_SHORT).show();
@@ -110,9 +110,9 @@ public class Activity_Servers extends MuninActivity {
 	/**
 	 * Called when a long click event is triggered on a child-level element of the listview
 	 * Called from @see com.chteuchteu.munin.Adapter_ExpandableListView#getChildView(int, int, boolean, View, android.view.ViewGroup)
-	 * @param groupPosition
-	 * @param childPosition
-	 * @return
+	 * @param groupPosition int
+	 * @param childPosition int
+	 * @return boolean
 	 */
 	public boolean onChildLongClick(int groupPosition, int childPosition) {
 		final MuninServer server = muninFoo.masters.get(groupPosition).getServerFromFlatPosition(childPosition);
@@ -173,7 +173,7 @@ public class Activity_Servers extends MuninActivity {
 	 * Called when a click event is triggered on the overflow icon on each
 	 * parent-level list item
 	 * Called from @see com.chteuchteu.munin.Adapter_ExpandableListView#getGroupView(int, boolean, View, android.view.ViewGroup)
-	 * @param position
+	 * @param position int
 	 */
 	public void onGroupItemOptionsClick(final int position) {
 		// Display actions list
@@ -488,7 +488,6 @@ public class Activity_Servers extends MuninActivity {
 		super.createOptionsMenu();
 
 		getMenuInflater().inflate(R.menu.servers, menu);
-		MenuItem importExportMenuItem = menu.findItem(R.id.menu_importexport);
 		MenuItem exportMenuItem = menu.findItem(R.id.menu_export);
 		if (muninFoo.getServers().isEmpty())
 			exportMenuItem.setVisible(false);
