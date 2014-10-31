@@ -2,7 +2,6 @@ package com.chteuchteu.munin.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -34,12 +33,7 @@ public class Activity_About extends MuninActivity {
 		wv.getSettings().setDefaultTextEncodingName("utf-8");
 		wv.setBackgroundColor(0x00000000);
 		String content = getString(R.string.aboutText);
-		String versionName;
-		try {
-			versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-		} catch (NameNotFoundException e) {
-			versionName = "";
-		}
+		String versionName = muninFoo.getAppVersion(this);
 		content = content.replaceAll("#version#", versionName);
 		wv.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);
 		wv.setLayerType(View.LAYER_TYPE_SOFTWARE, null);

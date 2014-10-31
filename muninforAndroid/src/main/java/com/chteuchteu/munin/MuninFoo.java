@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -17,6 +18,7 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.crashlytics.android.Crashlytics;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -33,6 +35,8 @@ public class MuninFoo {
 	
 	public SQLite sqlite;
 	private MuninServer currentServer;
+
+	public static String userAgent;
 	
 	// === VERSION === //
 	// HISTORY		current:	 _______________________________________________________________________________________________________________________________
@@ -70,6 +74,7 @@ public class MuninFoo {
 		masters = new ArrayList<MuninMaster>();
 		sqlite = new SQLite(context, this);
 		instance = null;
+		generateUserAgent(context);
 
 		loadInstance(context);
 	}
@@ -257,7 +262,7 @@ public class MuninFoo {
 	/**
 	 * When removing a plugin, delete its label relations.
 	 * Warning : this does not deletes it from the local db.
-	 * @param plugin
+	 * @param plugin MuninPlugin
 	 */
 	public void removeLabelRelation(MuninPlugin plugin) {
 		for (Label label : this.labels) {
@@ -393,7 +398,7 @@ public class MuninFoo {
 	
 	/**
 	 * Returns true if we should retrieve servers information
-	 * @return
+	 * @return bool
 	 */
 	public boolean shouldUpdateAlerts() {
 		if (alerts_lastUpdated == null) {
@@ -412,6 +417,8 @@ public class MuninFoo {
 
 	public static void log(String msg) { log("MuninFoo", msg); }
 	public static void log(String tag, String msg) { if (MuninFoo.DEBUG) Log.i(tag, msg); }
+	public static void logV(String msg) { logV("MuninFoo", msg); }
+	public static void logV(String tag, String msg) { if (MuninFoo.DEBUG) Log.v(tag, msg); }
 	
 	@SuppressWarnings("unused")
 	public static boolean isPremium(Context c) {
@@ -425,5 +432,67 @@ public class MuninFoo {
 					== PackageManager.SIGNATURE_MATCH);
 		}
 		return false;
+	}
+
+	public static String getAppVersion(Context context) {
+		String versionName;
+		try {
+			versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+		} catch (PackageManager.NameNotFoundException e) {
+			versionName = "";
+		}
+		return versionName;
+	}
+
+	public static String getAndroidVersion() {
+		String str = "Android " + Build.VERSION.RELEASE;
+
+		// Get "KitKat"
+		Field[] fields = Build.VERSION_CODES.class.getFields();
+		for (Field field : fields) {
+			String fieldName = field.getName();
+			int fieldValue = -1;
+
+			try {
+				fieldValue = field.getInt(new Object());
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
+
+			if (fieldValue == Build.VERSION.SDK_INT)
+				str += " " + fieldName;
+		}
+
+		return str;
+	}
+
+	/**
+	 * Generates MuninForAndroid/3.0 (Android 4.4.4 KITKAT) from context
+	 * @param context Application/activity context
+	 */
+	private void generateUserAgent(Context context) {
+		if (context == null) {
+			generateUserAgent();
+			return;
+		}
+
+		String appVersion = getAppVersion(context);
+		String androidVersion = getAndroidVersion();
+		userAgent = "MuninForAndroid/" + appVersion + " (" + androidVersion + ")";
+		log("User agent : " + userAgent);
+	}
+
+	/**
+	 * Context-less version of generateUserAgent(Context context)
+	 * Generates MuninForAndroid (Android 4.4.4 KITKAT)
+	 */
+	private void generateUserAgent() {
+		String androidVersion = getAndroidVersion();
+		userAgent = "MuninForAndroid (" + androidVersion + ")";
+		log("User agent : " + userAgent);
 	}
 }

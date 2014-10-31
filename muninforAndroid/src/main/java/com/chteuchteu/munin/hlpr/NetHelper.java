@@ -3,7 +3,6 @@ package com.chteuchteu.munin.hlpr;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 
 import com.chteuchteu.munin.CustomSSLFactory;
 import com.chteuchteu.munin.MuninFoo;
@@ -49,16 +48,15 @@ public class NetHelper {
 	 * Downloads body response of a HTTP(s) request
 	 * @param master Needed for SSL/Apache basic/digest auth
 	 * @param url URL to be downloaded
-	 * @return
+	 * @return HTTPResponse
 	 */
 	public static HTTPResponse grabUrl(MuninMaster master, String url) {
 		HTTPResponse resp = new HTTPResponse();
 		
-		if (MuninFoo.DEBUG)
-			Log.v("grabUrl:url", url);
+		MuninFoo.logV("grabUrl:url", url);
 		
 		try {
-			HttpClient client = null;
+			HttpClient client;
 			if (master.getSSL()) {
 				try {
 					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -86,7 +84,9 @@ public class NetHelper {
 				}
 			} else
 				client = new DefaultHttpClient();
+
 			HttpGet request = new HttpGet(url);
+			request.setHeader("User-Agent", MuninFoo.userAgent);
 			
 			if (master.isAuthNeeded()) {
 				if (master.getAuthType() == AuthType.BASIC)
@@ -95,17 +95,17 @@ public class NetHelper {
 				else if (master.getAuthType() == AuthType.DIGEST) {
 					// Digest foo:digestedPass, realm="munin", nonce="+RdhgM7qBAA=86e58ecf5cbd672ba8246c4f9eed4a389fe87fd6", algorithm=MD5, qop="auth"
 					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-					String userName = master.getAuthLogin();
-					String password = master.getAuthPassword();
-					String realmName = "";
-					String nonce = "";
-					String algorithm = "MD5";
-					String opaque = "";
-					String qop = "auth";
-					String nc = "00000001";
-					String cnonce = "";
-					String uri = url;
-					String methodName = "GET";
+					String userName = master.getAuthLogin(),
+						password = master.getAuthPassword(),
+						realmName,
+						nonce,
+						algorithm = "MD5",
+						opaque,
+						qop = "auth",
+						nc = "00000001",
+						cnonce,
+						uri = url,
+						methodName = "GET";
 					
 					cnonce = DigestUtils.newCnonce();
 					
@@ -150,7 +150,7 @@ public class NetHelper {
 			InputStream in = response.getEntity().getContent();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			StringBuilder str = new StringBuilder();
-			String line = null;
+			String line;
 			while((line = reader.readLine()) != null) {
 				str.append(line);
 			}
@@ -207,10 +207,10 @@ public class NetHelper {
 	}
 	
 	private static Bitmap grabBitmap(MuninMaster master, String url, boolean retried) {
-		Bitmap b = null;
+		Bitmap b;
 		
 		try {
-			HttpClient client = null;
+			HttpClient client;
 			if (master.getSSL()) {
 				try {
 					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -236,7 +236,9 @@ public class NetHelper {
 				}
 			} else
 				client = new DefaultHttpClient();
+
 			HttpGet request = new HttpGet(url);
+			request.setHeader("User-Agent", MuninFoo.userAgent);
 			
 			if (master.isAuthNeeded()) {
 				if (master.getAuthType() == AuthType.BASIC)
@@ -244,17 +246,17 @@ public class NetHelper {
 							(master.getAuthLogin() + ":" + master.getAuthPassword()).getBytes(), Base64.NO_WRAP));
 				else if (master.getAuthType() == AuthType.DIGEST) {
 					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-					String userName = master.getAuthLogin();
-					String password = master.getAuthPassword();
-					String realmName = "";
-					String nonce = "";
-					String algorithm = "MD5";
-					String opaque = "";
-					String qop = "auth";
-					String nc = "00000001";
-					String cnonce = "";
-					String uri = url;
-					String methodName = "GET";
+					String userName = master.getAuthLogin(),
+						password = master.getAuthPassword(),
+						realmName,
+						nonce,
+						algorithm = "MD5",
+						opaque,
+						qop = "auth",
+						nc = "00000001",
+						cnonce,
+						uri = url,
+						methodName = "GET";
 					
 					cnonce = DigestUtils.newCnonce();
 					// Parse header
