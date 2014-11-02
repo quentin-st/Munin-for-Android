@@ -45,6 +45,28 @@
 		</LinearLayout>
 	</LinearLayout>
 
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_marginBottom="8dp"
+		android:layout_marginLeft="@dimen/listview_horizontal_margin"
+		android:layout_marginRight="@dimen/listview_horizontal_margin">
+
+		<TextView
+			android:id="@+id/useragent_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/user_agent"
+			android:layout_marginRight="10dp"/>
+
+		<TextView
+			android:id="@+id/useragent"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+	</LinearLayout>
+
 	<WebView
 		android:id="@+id/webView1"
 		android:layout_width="wrap_content"

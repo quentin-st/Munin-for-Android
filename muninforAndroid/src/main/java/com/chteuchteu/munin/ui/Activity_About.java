@@ -8,6 +8,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
@@ -42,10 +43,15 @@ public class Activity_About extends MuninActivity {
 		
 		TextView tv1 = (TextView) findViewById(R.id.about_txt1);
 		TextView tv2 = (TextView) findViewById(R.id.about_txt2);
-		Util.Fonts.setFont(this, tv1, CustomFont.RobotoCondensed_Regular);
-		Util.Fonts.setFont(this, tv2, CustomFont.RobotoCondensed_Regular);
+		TextView userAgent = (TextView) findViewById(R.id.useragent);
+		TextView userAgent_label = (TextView) findViewById(R.id.useragent_label);
+		Util.Fonts.setFont(this, tv1, CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(this, tv2, CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(this, userAgent, CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(this, userAgent_label, CustomFont.Roboto_Medium);
 		tv1.setText(tv1.getText().toString().toUpperCase());
 		tv2.setText(getString(R.string.app_name) + " " + versionName);
+		userAgent.setText(MuninFoo.userAgent);
 	}
 	
 	@Override
