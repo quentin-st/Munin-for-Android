@@ -79,6 +79,10 @@ public class Activity_GraphView extends MuninActivity {
 	public static Period	load_period;
 	private static ViewFlow	viewFlow;
 	private static int		position;
+	/**
+	 * Avoid attaching zoom component at each refresh
+	 */
+	public boolean[]  photoViewAttached;
 	private Bitmap[]	bitmaps;
 	/**
 	 * How many bitmaps should be kept on left and right
@@ -168,6 +172,8 @@ public class Activity_GraphView extends MuninActivity {
 		position = pos;
 		int nbPlugins = muninFoo.getCurrentServer().getPlugins().size();
 		bitmaps = new Bitmap[nbPlugins];
+		log("Initing photoviewattached");
+		photoViewAttached = new boolean[nbPlugins];
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
 		Adapter_GraphView adapter = new Adapter_GraphView(this, this, nbPlugins);
 		viewFlow.setAdapter(adapter, pos);

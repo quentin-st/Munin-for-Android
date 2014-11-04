@@ -121,9 +121,12 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 				imageView.setImageBitmap(activity.getBitmap(position));
 
 				if (Util.getPref(context, "graphsZoom").equals("true")) {
-					PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
-					if (mAttacher.getMidScale() < 2f)
-						mAttacher.setMaxScale(2f);
+					if (!activity.photoViewAttached[position]) {
+						activity.photoViewAttached[position] = true;
+						PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
+						if (mAttacher.getMidScale() < 2f)
+							mAttacher.setMaxScale(2f);
+					}
 				}
 			} else {
 				// It seems that can actually fire OutOfMemoryError (BitmapFactory.nativeDecodeAsset)
