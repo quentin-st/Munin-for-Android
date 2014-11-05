@@ -10,8 +10,8 @@
 	<dimen name="small_item_padding">8dp</dimen>
 	<dimen name="listview_horizontal_margin">0dp</dimen>
 	<dimen name="listview_inner_horizontal_margin">0dp</dimen>
-	<dimen name="drawer_font_size">23sp</dimen>
-	<dimen name="drawer_font_size_small">20sp</dimen>
+	<dimen name="drawer_font_size">20sp</dimen>
+	<dimen name="drawer_font_size_small">18sp</dimen>
 
 	<!-- AddServer popup -->
 	<dimen name="addserver_popup_margin_horiz">10dp</dimen>
@@ -23,5 +23,7 @@
 	<!-- Widget min size. size = (70 x n) - 30 -->
 	<dimen name="appwidget_min_width">110dp</dimen>
 	<dimen name="appwidget_min_height">110dp</dimen>
+
+	<dimen name="action_bar_height">52dp</dimen>
 
 </resources>

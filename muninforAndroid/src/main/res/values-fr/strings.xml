@@ -241,7 +241,7 @@
   <head>
   <style>
   	p { padding: 0px 15px; }
-  	h2 { width: 100%; color:#1184C3; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.6em; }
+  	h2 { width: 100%; color:#1184C3; margin: 10px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.6em; }
   	body { text-align: justify; color: #555; font-size:0.95em; }
   	li { margin-bottom: 5px; }
   	a { color: #1184C3; text-decoration: none; }
