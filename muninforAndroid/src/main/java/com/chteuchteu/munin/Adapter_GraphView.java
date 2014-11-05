@@ -22,14 +22,13 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	private MuninFoo		muninFoo;
 	private Activity_GraphView activity;
 	private Context		context;
-	
-	private LayoutInflater	mInflater;
+	private LayoutInflater mInflater;
+
 	private int			count;
 	
-	public Adapter_GraphView(Activity_GraphView activity, Context context, int count) {
-		this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	public Adapter_GraphView(Activity_GraphView activity, MuninFoo muninFoo, Context context, int count) {
 		this.activity = activity;
-		this.muninFoo = MuninFoo.getInstance(context);
+		this.muninFoo = muninFoo;
 		this.count = count;
 		this.context = context;
 	}
@@ -54,8 +53,11 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		activity.updateAdapterPosition(position);
 
-		if (convertView == null)
+		if (convertView == null) {
+			if (mInflater == null)
+				mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = mInflater.inflate(R.layout.fragment_graphview, null);
+		}
 		
 		if (Activity_GraphView.loadGraphs) {
 			ImageView imageView = (ImageView) convertView.findViewById(R.id.tiv);
