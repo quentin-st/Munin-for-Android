@@ -13,7 +13,6 @@
 	<string name="settings_delete_button">"Удалить"</string>
 	<string name="servers_btn_add_server">"Добавить сервер"</string>
 	<string name="save_button">"Сохранить"</string>
-	<string name="settings_clear_button">"Очистить"</string>
 	<string name="menu_graph_previous">"Предыдущий"</string>
 	<string name="menu_graph_next">"Следующий"</string>
 	<string name="menu_graph_refresh">"Обновить"</string>
@@ -29,9 +28,6 @@
 	<string name="addServerTitle">"Добавить имя сервера"</string>
 	<string name="serversTitle">"Серверы"</string>
 	<string name="settingsTitle">"Настройки"</string>
-	<string name="textOn">"Вкл"</string>
-	<string name="textOff">"Выкл"</string>
-	<string name="editServerTitle">"Изменить"</string>
 	<string name="aboutTitle">"О программе Munin for Android"</string>
 	<string name="text01">"Будет произведен сброс настроек. Вы уверены?"</string>
 	<string name="text02">"Сброс выполнен"</string>
@@ -77,8 +73,6 @@
 	<string name="button_labels">"Метки"</string>
 	<string name="button_notifications">"Уведомления"</string>
 	<string name="settings_auth_type">"Тип аутентификации"</string>
-	<string name="settings_transitions_label">"Переходы"</string>
-	<string name="settings_transitions_checkbox">"Анимация переключения страниц "</string>
 	<string name="settings_titlelabel_app">"ПРИЛОЖЕНИЕ"</string>
 	<string name="settings_titlelabel_graphs">"ГРАФИКИ"</string>
 	<string name="menu_graph_switch">"Сменить сервер"</string>
@@ -92,7 +86,6 @@
 	<!-- MAIN BUTTON -->
 	<string name="widget_configuration1">"Готово! Виджет добавлен на главный экран. Подсказка: для обновления графика коснитесь серой полоски на виджете"</string>
 	<string name="widget_configuration2">"Авто-обновление графика только по WiFi (1 раз в час)"</string>
-	<string name="text21.3">"обновлено"</string>
 	<string name="text49.1">"Скрыть серверы с норм. статусом"</string>
 	<string name="text49.2">"Показать серверы с норм. статусом"</string>
 	<string name="text50.1">"критический"</string>
@@ -117,7 +110,6 @@
 	<string name="text67">"Метка не назначена"</string>
 	<string name="text68">"Время ожидания ответа от сервера истекло"</string>
 	<string name="button_grid">"Сетка"</string>
-	<string name="menu_pluginselection">"Группировать по категории"</string>
 	<string name="edit">"Редактировать"</string>
 	<string name="text69">"Имя сетки"</string>
 	<string name="text70">"Добавить сетку"</string>
