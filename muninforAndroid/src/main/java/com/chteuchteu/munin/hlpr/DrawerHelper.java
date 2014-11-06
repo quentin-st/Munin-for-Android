@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.graphics.PorterDuff.Mode;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -50,7 +52,6 @@ import com.chteuchteu.munin.ui.Activity_Labels;
 import com.chteuchteu.munin.ui.Activity_Notifications;
 import com.chteuchteu.munin.ui.Activity_Plugins;
 import com.chteuchteu.munin.ui.Activity_Servers;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import org.taptwo.android.widget.ViewFlow;
 
@@ -81,7 +82,8 @@ public class DrawerHelper {
 	private Context c;
 	private MuninFoo m;
 	private int n;
-	private SlidingMenu sm;
+	//private SlidingMenu sm;
+	private DrawerLayout drawerLayout;
 	
 	private EditText search;
 	private ListView search_results;
@@ -100,7 +102,7 @@ public class DrawerHelper {
 	}
 	
 	public void reset() {
-		initDrawer(false);
+		initDrawer();
 		setDrawerActivity(n);
 	}
 	
@@ -149,33 +151,22 @@ public class DrawerHelper {
 		}
 	}
 
-	public void toggle(boolean animate) {
-		this.sm.toggle(animate);
+	public void toggle() {
+		if (drawerLayout.isDrawerVisible(Gravity.START))
+			drawerLayout.closeDrawer(Gravity.START);
+		else
+			drawerLayout.openDrawer(Gravity.START);
 	}
 	
 	public void setViewFlow(ViewFlow v) { this.vf = v; }
-	
-	public SlidingMenu getDrawer() { return this.sm; }
-	
-	private void initDrawer() { initDrawer(true); }
-	private void initDrawer(boolean firstLoad) {
-		if (firstLoad)
-			sm = new SlidingMenu(a);
+
+	public DrawerLayout getDrawerLayout() { return this.drawerLayout; }
+
+	private void initDrawer() {
+		drawerLayout = (DrawerLayout) a.findViewById(R.id.drawerLayout);
 		
-		sm.setMode(SlidingMenu.LEFT);
-
-		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		sm.setFadeEnabled(true);
-		sm.setBehindScrollScale(0.25f);
-		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		if (firstLoad)
-			sm.attachToActivity(a, SlidingMenu.SLIDING_CONTENT);
-
 		a.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-		if (firstLoad)
-			sm.setMenu(R.layout.drawer);
-		
 		// Graphs
 		a.findViewById(R.id.drawer_graphs_btn).setOnClickListener(new OnClickListener() {
 			@Override
@@ -445,8 +436,8 @@ public class DrawerHelper {
 	}
 	
 	public void closeDrawerIfOpened() {
-		if (sm != null && sm.isMenuShowing())
-			sm.toggle(true);
+		if (drawerLayout.isDrawerOpen(Gravity.START))
+			drawerLayout.closeDrawer(Gravity.START);
 	}
 	
 	private void setSelectedMenuItem(String menuItemName) {
@@ -553,7 +544,7 @@ public class DrawerHelper {
 					}
 					vf.setSelection(p);
 					initPluginsList(((ScrollView)a.findViewById(R.id.drawer_scrollview)).getScrollY());
-					sm.toggle(true);
+					toggle();
 				}
 			});
 			

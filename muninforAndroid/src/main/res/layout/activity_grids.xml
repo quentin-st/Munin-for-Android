@@ -2,65 +2,72 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical" >
+	android:orientation="vertical"
+	android:fitsSystemWindows="true" >
 
-	<android.support.v7.widget.Toolbar
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		android:id="@+id/toolbar"
-		android:layout_height="wrap_content"
+	<include layout="@layout/incl_actionbar" />
+
+	<android.support.v4.widget.DrawerLayout
+		android:id="@+id/drawerLayout"
 		android:layout_width="match_parent"
-		android:minHeight="?attr/actionBarSize"
-		android:background="?attr/colorPrimary"
-		app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-		app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+		android:layout_height="match_parent">
 
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content" >
-
-		<ListView
-			android:id="@+id/listview"
+		<RelativeLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
-			android:paddingLeft="@dimen/listview_horizontal_margin"
-			android:paddingRight="@dimen/listview_horizontal_margin" />
+			android:layout_height="wrap_content" >
+
+			<ListView
+				android:id="@+id/listview"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentTop="true"
+				android:paddingLeft="@dimen/listview_horizontal_margin"
+				android:paddingRight="@dimen/listview_horizontal_margin" />
+
+			<LinearLayout
+				android:id="@+id/grids_nogrid"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:gravity="center_vertical"
+				android:orientation="vertical"
+				android:visibility="gone" >
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:gravity="center"
+					android:shadowColor="#ffffff"
+					android:shadowDx="0"
+					android:shadowDy="2"
+					android:shadowRadius="1"
+					android:text="@string/text77"
+					android:textColor="#4E5258"
+					android:textSize="40sp" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_marginTop="20dp"
+					android:gravity="center"
+					android:shadowColor="#ffffff"
+					android:shadowDx="0"
+					android:shadowDy="2"
+					android:shadowRadius="1"
+					android:text="@string/text78"
+					android:textColor="#7C828C"
+					android:textSize="25sp" />
+			</LinearLayout>
+		</RelativeLayout>
 
 		<LinearLayout
-			android:id="@+id/grids_nogrid"
-			android:layout_width="match_parent"
+			android:layout_width="@dimen/drawer_width"
 			android:layout_height="match_parent"
-			android:gravity="center_vertical"
-			android:orientation="vertical"
-			android:visibility="gone" >
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:gravity="center"
-				android:shadowColor="#ffffff"
-				android:shadowDx="0"
-				android:shadowDy="2"
-				android:shadowRadius="1"
-				android:text="@string/text77"
-				android:textColor="#4E5258"
-				android:textSize="40sp" />
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:layout_marginTop="20dp"
-				android:gravity="center"
-				android:shadowColor="#ffffff"
-				android:shadowDx="0"
-				android:shadowDy="2"
-				android:shadowRadius="1"
-				android:text="@string/text78"
-				android:textColor="#7C828C"
-				android:textSize="25sp" />
+			android:layout_gravity="start">
+			<include layout="@layout/incl_drawer" />
 		</LinearLayout>
-	</RelativeLayout>
+
+	</android.support.v4.widget.DrawerLayout>
 
 </LinearLayout>

@@ -73,7 +73,7 @@ public class BillingService {
 			Bundle buyIntentBundle = mService.getBuyIntent(3, activityContext.getPackageName(), product, "inapp", "");
 			PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
 			((Activity) activityContext).startIntentSenderForResult(pendingIntent.getIntentSender(),
-					REQUEST_CODE, new Intent(), Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0));
+					REQUEST_CODE, new Intent(), 0, 0, 0);
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();

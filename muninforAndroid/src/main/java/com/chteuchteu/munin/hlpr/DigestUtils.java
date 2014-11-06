@@ -59,7 +59,7 @@ public class DigestUtils {
 		return "";
 	}
 	
-	public static String match(String headerLine, String token) {
+	private static String match(String headerLine, String token) {
 		if (headerLine == null)
 			return "";
 		
@@ -74,7 +74,7 @@ public class DigestUtils {
 		return value.startsWith("\"") ? value.substring(1) : value;
 	}
 	
-	public static String newCnonce() {
+	private static String newCnonce() {
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			byte[] b = md.digest(String.valueOf(System.currentTimeMillis()).getBytes("ISO-8859-1"));
@@ -93,7 +93,7 @@ public class DigestUtils {
 		return buffer.toString();
 	}
 	
-	public static String formatField(String f, String v, boolean last) {
+	private static String formatField(String f, String v, boolean last) {
 		// f="v",
 		String s = "";
 		s = s + f + "=\"" + v + "\"";
@@ -124,7 +124,7 @@ public class DigestUtils {
 		return getDigest("MD5").digest(data);
 	}
 	
-	public static String md5Hex(String data) {
+	private static String md5Hex(String data) {
 		return encodeHex(md5(utf8Bytes(data)));
 	}
 	

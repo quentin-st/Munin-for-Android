@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -28,8 +29,6 @@ import com.chteuchteu.munin.hlpr.Util.Fonts;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.tjeannin.apprate.AppRate;
 
 import java.util.Locale;
@@ -41,11 +40,13 @@ import java.util.Locale;
  */
 public class Activity_Main extends ActionBarActivity {
 	private MuninFoo		muninFoo;
-	private DrawerHelper	dh;
 	private MaterialMenuIconToolbar materialMenu;
 
 	private Menu 			menu;
 	private boolean		doubleBackPressed;
+
+	private DrawerHelper dh;
+	private boolean isDrawerOpened;
 	
 	// Preloading
 	private boolean preloading;
@@ -73,19 +74,21 @@ public class Activity_Main extends ActionBarActivity {
 		setSupportActionBar(toolbar);
 		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View v) {
-				dh.toggle(true);
+				dh.toggle();
 			}
 		});
+
+		dh = new DrawerHelper(this, muninFoo);
 
 		toolbar.setOnMenuItemClickListener(
 				new Toolbar.OnMenuItemClickListener() {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
-						if (item.getItemId() != android.R.id.home)
-							dh.closeDrawerIfOpened();
+						//if (item.getItemId() != android.R.id.home)
+						//	dh.closeDrawerIfOpened();
 						switch (item.getItemId()) {
 							case android.R.id.home:
-								dh.toggle(true);
+								//dh.toggle(true);
 								return true;
 							case R.id.menu_settings:
 								startActivity(new Intent(Activity_Main.this, Activity_Settings.class));
@@ -102,15 +105,6 @@ public class Activity_Main extends ActionBarActivity {
 		);
 
 		Util.UI.applySwag(this);
-
-		dh = new DrawerHelper(this, muninFoo);
-		dh.setDrawerActivity(DrawerHelper.Activity_Main);
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
-			@Override
-			public void onOpen() {
-				dh.toggle(false);
-			}
-		});
 
 		this.materialMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
 			@Override public int getToolbarViewId() {
@@ -157,23 +151,39 @@ public class Activity_Main extends ActionBarActivity {
 		// Display the "follow on Twitter" message
 		// after X launches
 		displayTwitterAlertIfNeeded();
-		
-		dh.getDrawer().setOnOpenListener(new OnOpenListener() {
+
+		dh.getDrawerLayout().setDrawerListener(new DrawerLayout.DrawerListener() {
 			@Override
-			public void onOpen() {
+			public void onDrawerSlide(View view, float slideOffset) {
+				materialMenu.setTransformationOffset(
+						MaterialMenuDrawable.AnimationState.BURGER_ARROW,
+						isDrawerOpened ? 2 - slideOffset : slideOffset
+				);
+			}
+
+			@Override
+			public void onDrawerOpened(View view) {
+				isDrawerOpened = true;
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
+
+				menu.clear();
+				getMenuInflater().inflate(R.menu.main, menu);
 			}
-		});
-		dh.getDrawer().setOnCloseListener(new SlidingMenu.OnCloseListener() {
+
 			@Override
-			public void onClose() {
+			public void onDrawerClosed(View view) {
+				isDrawerOpened = false;
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
+
+				createOptionsMenu();
 			}
+
+			@Override
+			public void onDrawerStateChanged(int i) { }
 		});
 
 		dh.reset();
-		dh.toggle(true);
-		//materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
+		dh.toggle();
 	}
 	
 	@Override

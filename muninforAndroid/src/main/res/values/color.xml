@@ -7,6 +7,8 @@
 	<color name="c212125">#212125</color>
 	<color name="c2A2A30">#2A2A30</color>
 	<color name="c26262A">#26262A</color>
+	<color name="cdedede">#dedede</color>
+	<color name="cffffff">#ffffff</color>
 	<color name="statusBarColor">#0074B9</color>
 	<color name="actionBarColor">#0091ea</color>
 	<color name="selectedDrawerItem">#00A8F5</color>

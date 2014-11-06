@@ -2,7 +2,6 @@ package com.chteuchteu.munin;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
@@ -389,16 +388,6 @@ public class MuninFoo {
 		return l;
 	}
 	
-	private static boolean isPackageInstalled (String packageName, Context c) {
-		PackageManager pm = c.getPackageManager();
-		try {
-			pm.getPackageInfo(packageName, PackageManager.GET_META_DATA);
-		} catch (NameNotFoundException e) {
-			return false;
-		}
-		return true;
-	}
-	
 	/**
 	 * Returns true if we should retrieve servers information
 	 *  We consider alerts information as outdated after 10 minutes.
@@ -428,7 +417,7 @@ public class MuninFoo {
 	public static void logE(String tag, String msg) { if (BuildConfig.DEBUG) Log.e(tag, msg); }
 
 	public static boolean isPremium(Context c) {
-		if (isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
+		if (Util.isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
 			if (BuildConfig.DEBUG && FORCE_NOT_PREMIUM)
 				return false;
 			if (BuildConfig.DEBUG)

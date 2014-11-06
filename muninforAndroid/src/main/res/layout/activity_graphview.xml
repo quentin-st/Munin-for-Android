@@ -4,174 +4,181 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
 
-	<android.support.v7.widget.Toolbar
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		android:id="@+id/toolbar"
-		android:layout_height="wrap_content"
+	<include layout="@layout/incl_actionbar" />
+
+	<android.support.v4.widget.DrawerLayout
+		android:id="@+id/drawerLayout"
 		android:layout_width="match_parent"
-		android:minHeight="?attr/actionBarSize"
-		android:background="?attr/colorPrimary"
-		app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-		app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+		android:layout_height="match_parent">
 
-	<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				 xmlns:app="http://schemas.android.com/apk/res-auto"
-				 xmlns:fab="http://schemas.android.com/apk/res-auto"
-				 android:layout_width="match_parent"
-				 android:layout_height="match_parent"
-				 android:orientation="vertical" >
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="vertical">
+		<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					 xmlns:app="http://schemas.android.com/apk/res-auto"
+					 xmlns:fab="http://schemas.android.com/apk/res-auto"
+					 android:layout_width="match_parent"
+					 android:layout_height="match_parent"
+					 android:orientation="vertical" >
 
 			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@color/actionBarColor"
-				android:orientation="vertical"
-				android:paddingTop="4dp" >
-
-				<include layout="@layout/graphview_servername" />
-
-				<org.taptwo.android.widget.TitleFlowIndicator
-					android:id="@+id/viewflowindic"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="6dp"
-					app:clipPadding="6dp"
-					app:customTypeface="RobotoCondensed-Regular.ttf"
-					app:footerColor="#f0f0f0"
-					app:footerLineHeight="0dp"
-					app:footerTriangleHeight="5dp"
-					app:selectedColor="#f0f0f0"
-					app:selectedSize="15dp"
-					app:textColor="#f0f0f0"
-					app:textSize="13sp"
-					app:textSize2="13sp"
-					app:titlePadding="40dp" />
-			</LinearLayout>
-
-			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:orientation="vertical" >
-
-				<org.taptwo.android.widget.ViewFlow
-					android:id="@+id/viewflow"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:paddingTop="5dp"
-					app:sidebuffer="1" />
-
-				<LinearLayout
-					android:id="@+id/serverSwitch_mask"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:background="#88000000"
-					android:orientation="vertical"
-					android:visibility="gone" />
-
-				<ListView
-					android:id="@+id/serverSwitch_listview"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_alignParentBottom="true"
-					android:background="#88FFFFFF"
-					android:visibility="gone" />
-			</RelativeLayout>
-		</LinearLayout>
-
-		<com.melnykov.fab.FloatingActionButton
-			android:id="@+id/fab"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="bottom|right"
-			android:layout_margin="16dp"
-			android:src="@drawable/ic_action_help"
-			fab:fab_type="mini"
-			fab:fab_colorNormal="@color/primary"
-			fab:fab_colorPressed="@color/primary_pressed"
-			fab:fab_colorRipple="@color/ripple" />
-
-		<LinearLayout
-			android:id="@+id/documentation"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:visibility="gone"
-			android:orientation="vertical">
-
-			<FrameLayout
-				android:id="@+id/imageAndText"
-				android:layout_width="match_parent"
-				android:layout_height="0dp"
-				android:layout_weight="3"
-				android:background="#000000"><!-- Background is set to darken the ImageView -->
-
-				<ImageView
-					android:id="@+id/doc_imageview"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:contentDescription="@string/graphView_ImageViewDescription"
-					android:scaleType="centerCrop"
-					android:alpha="0.9"/>
+				android:orientation="vertical">
 
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="@drawable/material_blackgradient"
-					android:layout_gravity="bottom"
+					android:background="@color/actionBarColor"
 					android:orientation="vertical"
-					android:paddingLeft="30dp"
-					android:paddingRight="30dp"
-					android:paddingTop="20dp"
-					android:paddingBottom="5dp">
+					android:paddingTop="4dp" >
 
-					<TextView
-						android:id="@+id/doc_line1"
+					<include layout="@layout/graphview_servername" />
+
+					<org.taptwo.android.widget.TitleFlowIndicator
+						android:id="@+id/viewflowindic"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						style="@style/Material_Title1_Light"/>
-
-					<TextView
-						android:id="@+id/doc_line2"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						style="@style/Material_Title2_Light"/>
-
+						android:layout_marginTop="6dp"
+						app:clipPadding="6dp"
+						app:customTypeface="RobotoCondensed-Regular.ttf"
+						app:footerColor="#f0f0f0"
+						app:footerLineHeight="0dp"
+						app:footerTriangleHeight="5dp"
+						app:selectedColor="#f0f0f0"
+						app:selectedSize="15dp"
+						app:textColor="#f0f0f0"
+						app:textSize="13sp"
+						app:textSize2="13sp"
+						app:titlePadding="40dp" />
 				</LinearLayout>
-			</FrameLayout>
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="0dp"
-				android:layout_weight="7"
-				android:orientation="vertical"
-				android:background="#ffffff">
 
-				<Spinner
-					android:id="@+id/doc_spinner"
+				<RelativeLayout
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:visibility="gone"/>
+					android:layout_height="match_parent"
+					android:orientation="vertical" >
 
-				<ScrollView
-					android:id="@+id/doc_scrollview"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent">
+					<org.taptwo.android.widget.ViewFlow
+						android:id="@+id/viewflow"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:paddingTop="5dp"
+						app:sidebuffer="1" />
 
-					<TextView
-						android:id="@+id/doc"
+					<LinearLayout
+						android:id="@+id/serverSwitch_mask"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:background="#88000000"
+						android:orientation="vertical"
+						android:visibility="gone" />
+
+					<ListView
+						android:id="@+id/serverSwitch_listview"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
+						android:layout_alignParentBottom="true"
+						android:background="#88FFFFFF"
+						android:visibility="gone" />
+				</RelativeLayout>
+			</LinearLayout>
+
+			<com.melnykov.fab.FloatingActionButton
+				android:id="@+id/fab"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom|right"
+				android:layout_margin="16dp"
+				android:src="@drawable/ic_action_help"
+				fab:fab_type="mini"
+				fab:fab_colorNormal="@color/primary"
+				fab:fab_colorPressed="@color/primary_pressed"
+				fab:fab_colorRipple="@color/ripple" />
+
+			<LinearLayout
+				android:id="@+id/documentation"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:visibility="gone"
+				android:orientation="vertical">
+
+				<FrameLayout
+					android:id="@+id/imageAndText"
+					android:layout_width="match_parent"
+					android:layout_height="0dp"
+					android:layout_weight="3"
+					android:background="#000000"><!-- Background is set to darken the ImageView -->
+
+					<ImageView
+						android:id="@+id/doc_imageview"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:layout_gravity="center"
+						android:contentDescription="@string/graphView_ImageViewDescription"
+						android:scaleType="centerCrop"
+						android:alpha="0.9"/>
+
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:background="@drawable/material_blackgradient"
+						android:layout_gravity="bottom"
+						android:orientation="vertical"
 						android:paddingLeft="30dp"
 						android:paddingRight="30dp"
-						android:paddingTop="15dp"
-						android:paddingBottom="10dp"/>
+						android:paddingTop="20dp"
+						android:paddingBottom="5dp">
 
-				</ScrollView>
+						<TextView
+							android:id="@+id/doc_line1"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							style="@style/Material_Title1_Light"/>
+
+						<TextView
+							android:id="@+id/doc_line2"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							style="@style/Material_Title2_Light"/>
+
+					</LinearLayout>
+				</FrameLayout>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="0dp"
+					android:layout_weight="7"
+					android:orientation="vertical"
+					android:background="#ffffff">
+
+					<Spinner
+						android:id="@+id/doc_spinner"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:visibility="gone"/>
+
+					<ScrollView
+						android:id="@+id/doc_scrollview"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent">
+
+						<TextView
+							android:id="@+id/doc"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:paddingLeft="30dp"
+							android:paddingRight="30dp"
+							android:paddingTop="15dp"
+							android:paddingBottom="10dp"/>
+
+					</ScrollView>
+				</LinearLayout>
 			</LinearLayout>
+		</FrameLayout>
+
+		<LinearLayout
+			android:layout_width="@dimen/drawer_width"
+			android:layout_height="match_parent"
+			android:layout_gravity="start">
+			<include layout="@layout/incl_drawer" />
 		</LinearLayout>
-	</FrameLayout>
+
+	</android.support.v4.widget.DrawerLayout>
+
 </LinearLayout>

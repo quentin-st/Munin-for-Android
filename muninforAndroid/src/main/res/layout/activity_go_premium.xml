@@ -4,85 +4,92 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<android.support.v7.widget.Toolbar
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		android:id="@+id/toolbar"
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:minHeight="?attr/actionBarSize"
-		android:background="?attr/colorPrimary"
-		app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-		app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+	<include layout="@layout/incl_actionbar" />
 
-	<LinearLayout
+	<android.support.v4.widget.DrawerLayout
+		android:id="@+id/drawerLayout"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical"
-		android:paddingLeft="@dimen/listview_horizontal_margin"
-		android:paddingRight="@dimen/listview_horizontal_margin" >
+		android:layout_height="match_parent">
 
 		<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
-			android:gravity="center_horizontal|center_vertical"
-			android:orientation="horizontal"
-			android:padding="20dp" >
-
-			<RelativeLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content" >
-
-				<TextView
-					android:id="@+id/price1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textSize="55sp" />
-
-				<TextView
-					android:id="@+id/price2"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_alignTop="@id/price1"
-					android:layout_toRightOf="@id/price1"
-					android:paddingTop="10dp"
-					android:textSize="25sp" />
-
-				<TextView
-					android:id="@+id/price3"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_toRightOf="@id/price2"
-					android:text=""
-					android:textSize="55sp" />
-			</RelativeLayout>
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			android:paddingLeft="@dimen/listview_horizontal_margin"
+			android:paddingRight="@dimen/listview_horizontal_margin" >
 
 			<LinearLayout
-				android:layout_width="1dp"
-				android:layout_height="match_parent"
-				android:layout_marginBottom="5dp"
-				android:layout_marginLeft="25dp"
-				android:layout_marginRight="25dp"
-				android:layout_marginTop="5dp"
-				android:background="#DCDCDC" />
-
-			<Button
-				android:id="@+id/buyNow"
-				style="@style/Material_ButtonText"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_gravity="center_vertical"
-				android:layout_marginTop="6dp"
-				android:text="@string/buy_now" />
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:gravity="center_horizontal|center_vertical"
+				android:orientation="horizontal"
+				android:padding="20dp" >
+
+				<RelativeLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" >
+
+					<TextView
+						android:id="@+id/price1"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textSize="55sp" />
+
+					<TextView
+						android:id="@+id/price2"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_alignTop="@id/price1"
+						android:layout_toRightOf="@id/price1"
+						android:paddingTop="10dp"
+						android:textSize="25sp" />
+
+					<TextView
+						android:id="@+id/price3"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_toRightOf="@id/price2"
+						android:text=""
+						android:textSize="55sp" />
+				</RelativeLayout>
+
+				<LinearLayout
+					android:layout_width="1dp"
+					android:layout_height="match_parent"
+					android:layout_marginBottom="5dp"
+					android:layout_marginLeft="25dp"
+					android:layout_marginRight="25dp"
+					android:layout_marginTop="5dp"
+					android:background="#DCDCDC" />
+
+				<Button
+					android:id="@+id/buyNow"
+					style="@style/Material_ButtonText"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_vertical"
+					android:layout_marginTop="6dp"
+					android:text="@string/buy_now" />
+			</LinearLayout>
+
+			<WebView
+				android:id="@+id/benefits"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="@dimen/activity_horizontal_margin"
+				android:layout_marginRight="@dimen/activity_horizontal_margin" />
+
 		</LinearLayout>
 
-		<WebView
-			android:id="@+id/benefits"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="@dimen/activity_horizontal_margin"
-			android:layout_marginRight="@dimen/activity_horizontal_margin" />
+		<LinearLayout
+			android:layout_width="@dimen/drawer_width"
+			android:layout_height="match_parent"
+			android:layout_gravity="start">
+			<include layout="@layout/incl_drawer" />
+		</LinearLayout>
 
-	</LinearLayout>
+	</android.support.v4.widget.DrawerLayout>
+
 </LinearLayout>

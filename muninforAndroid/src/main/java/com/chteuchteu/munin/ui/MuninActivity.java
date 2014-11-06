@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
@@ -19,7 +21,6 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 /**
  * One class to rule them all
@@ -32,6 +33,7 @@ public class MuninActivity extends ActionBarActivity {
 	protected android.support.v7.app.ActionBar actionBar;
 	protected Toolbar       toolbar;
 	private MaterialMenuIconToolbar materialMenu;
+	private boolean        isDrawerOpened;
 	protected Menu          menu;
 
 	private Runnable    onDrawerOpen;
@@ -73,7 +75,7 @@ public class MuninActivity extends ActionBarActivity {
 
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				dh.toggle(true);
+				dh.toggle();
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(context, Activity_Settings.class));
@@ -93,9 +95,18 @@ public class MuninActivity extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		dh.getDrawer().setOnOpenListener(new SlidingMenu.OnOpenListener() {
+		dh.getDrawerLayout().setDrawerListener(new DrawerLayout.DrawerListener() {
 			@Override
-			public void onOpen() {
+			public void onDrawerSlide(View view, float slideOffset) {
+				materialMenu.setTransformationOffset(
+						MaterialMenuDrawable.AnimationState.BURGER_ARROW,
+						isDrawerOpened ? 2 - slideOffset : slideOffset
+				);
+			}
+
+			@Override
+			public void onDrawerOpened(View view) {
+				isDrawerOpened = true;
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 
 				// Runnable set in Activity
@@ -105,10 +116,10 @@ public class MuninActivity extends ActionBarActivity {
 				menu.clear();
 				getMenuInflater().inflate(R.menu.main, menu);
 			}
-		});
-		dh.getDrawer().setOnCloseListener(new SlidingMenu.OnCloseListener() {
+
 			@Override
-			public void onClose() {
+			public void onDrawerClosed(View view) {
+				isDrawerOpened = false;
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
 
 				// Runnable set in Activity
@@ -117,6 +128,9 @@ public class MuninActivity extends ActionBarActivity {
 
 				createOptionsMenu();
 			}
+
+			@Override
+			public void onDrawerStateChanged(int i) { }
 		});
 
 		createOptionsMenu();
