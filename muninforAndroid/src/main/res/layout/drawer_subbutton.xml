@@ -10,7 +10,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="20dp"
-		android:background="@drawable/drawer_dark_subbutton"
+		android:background="@drawable/drawer_subbutton"
 		android:gravity="left"
 		android:paddingBottom="10dp"
 		android:paddingLeft="20dp"

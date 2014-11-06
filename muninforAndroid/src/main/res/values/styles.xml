@@ -70,10 +70,12 @@
 	</style>
 
 	<style name="Settings_SettingSpinner">
-		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_marginLeft">15dp</item>
 		<item name="android:layout_marginRight">15dp</item>
+		<item name="android:layout_gravity">right</item>
+		<item name="android:gravity">right</item>
 	</style>
 
 	<style name="Material_ListItem_Line1">
@@ -155,7 +157,7 @@
 		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_marginTop">5dp</item>
-		<item name="android:textColor">#333333</item>
+		<item name="android:textColor">#dddddd</item>
 		<item name="android:textSize">@dimen/drawer_font_size</item>
 	</style>
 
@@ -163,7 +165,7 @@
 		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_marginTop">3dp</item>
-		<item name="android:textColor">#333333</item>
+		<item name="android:textColor">#dddddd</item>
 		<item name="android:textSize">@dimen/drawer_font_size_small</item>
 	</style>
 

@@ -32,6 +32,7 @@ public class MuninActivity extends ActionBarActivity {
 	protected Activity      activity;
 	protected android.support.v7.app.ActionBar actionBar;
 	protected Toolbar       toolbar;
+	private String          activityName;
 	private MaterialMenuIconToolbar materialMenu;
 	private boolean        isDrawerOpened;
 	protected Menu          menu;
@@ -109,6 +110,9 @@ public class MuninActivity extends ActionBarActivity {
 				isDrawerOpened = true;
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 
+				actionBar.setSubtitle(actionBar.getTitle());
+				actionBar.setTitle(getString(R.string.app_name));
+
 				// Runnable set in Activity
 				if (onDrawerOpen != null)
 					onDrawerOpen.run();
@@ -121,6 +125,9 @@ public class MuninActivity extends ActionBarActivity {
 			public void onDrawerClosed(View view) {
 				isDrawerOpened = false;
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
+
+				actionBar.setTitle(actionBar.getSubtitle());
+				actionBar.setSubtitle(null);
 
 				// Runnable set in Activity
 				if (onDrawerClose != null)

@@ -24,8 +24,8 @@
 	<dimen name="appwidget_min_width">110dp</dimen>
 	<dimen name="appwidget_min_height">110dp</dimen>
 
-	<dimen name="drawer_width">280dp</dimen>
-	<dimen name="drawer_width_lessshadow">260dp</dimen>
-	<dimen name="drawer_shadow_width">20dp</dimen>
+	<dimen name="drawer_width">300dp</dimen>
+	<dimen name="drawer_width_minusshadow">290dp</dimen>
+	<dimen name="drawer_shadow_width">10dp</dimen>
 
 </resources>

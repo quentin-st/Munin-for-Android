@@ -19,6 +19,6 @@
 	<color name="primary_pressed">#ff0087e1</color>
 	<color name="ripple">#ff00a3ff</color>
 
-	<color name="gradient_start">#50000000</color>
+	<color name="gradient_start">#15000000</color>
 
 </resources>
