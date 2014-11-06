@@ -56,7 +56,8 @@ public class Activity_Main extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
+		Crashlytics.start(this);
 		preloading = true;
 		boolean loaded = MuninFoo.isLoaded();
 		muninFoo = MuninFoo.getInstance(this);
@@ -70,7 +71,6 @@ public class Activity_Main extends Activity {
 		getActionBar().setTitle("");
 
 		Util.UI.applySwag(this);
-		Crashlytics.start(this);
 
 		dh = new DrawerHelper(this, muninFoo);
 		dh.setDrawerActivity(DrawerHelper.Activity_Main);
@@ -255,8 +255,6 @@ public class Activity_Main extends Activity {
 	}
 	
 	private void preload() {
-		Crashlytics.start(this);
-		
 		boolean updateOperations = !Util.getPref(context, "lastMFAVersion").equals(MuninFoo.VERSION + "");
 		
 		
@@ -294,10 +292,14 @@ public class Activity_Main extends Activity {
 		if (!Util.hasPref(context, "hideGraphviewArrows"))
 			Util.setPref(context, "hideGraphviewArrows", "true");
 		
-		// MfA 3.0 : moved auth attributes from MuninServer to MuninMaster : migrate those
-		// if possible
-		// TODO put an if on this
-		muninFoo.sqlite.migrateTo3();
+		// MfA 3.0 : moved auth attributes from MuninServer to MuninMaster : migrate those if possible
+		String strFromVersion = Util.getPref(context, "lastMFAVersion");
+		double fromVersion = 0;
+		if (!strFromVersion.equals(""))
+			fromVersion = Double.parseDouble(Util.getPref(context, "lastMFAVersion"));
+
+		if (fromVersion < 3)
+			muninFoo.sqlite.migrateTo3();
 		
 		Util.setPref(context, "lastMFAVersion", MuninFoo.VERSION + "");
 		muninFoo.resetInstance(this);

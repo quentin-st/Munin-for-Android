@@ -2,7 +2,6 @@ package com.chteuchteu.munin.obj;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -56,7 +55,7 @@ public class Grid {
 		if (get(item.X, item.Y) == null)
 			this.items.add(item);
 		else
-			Log.e("", "This item cannot be placed (" + item.X + "," + item.Y + ")");
+			MuninFoo.logE("This item cannot be placed (" + item.X + "," + item.Y + ")");
 	}
 	
 	public void updateLayoutSizes(Context c) {
@@ -87,7 +86,7 @@ public class Grid {
 		if (get(item.X, item.Y) == null)
 			this.items.add(item);
 		else
-			Log.e("", "This item cannot be placed (" + item.X + "," + item.Y + ")");
+			MuninFoo.logE("", "This item cannot be placed (" + item.X + "," + item.Y + ")");
 		
 		// Update this items size on this line
 		for (int x=0; x<nbColumns; x++) {

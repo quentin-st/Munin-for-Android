@@ -2,7 +2,6 @@ package com.chteuchteu.munin.hlpr;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import com.chteuchteu.munin.obj.MuninPlugin;
 
@@ -50,8 +49,6 @@ public class DocumentationHelper {
 			return "";
 
 		fileName = HTML_DOCS_SUBDIR + fileName;
-
-		Log.i("", "Getting content from file " + fileName + " (node " + node + ")");
 
 		return Util.readFromAssets(context, fileName);
 	}

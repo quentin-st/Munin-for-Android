@@ -3,8 +3,8 @@ package com.chteuchteu.munin.hlpr;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
+import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
@@ -180,12 +180,15 @@ public class SQLite {
 	}
 	
     public void logMasters() {
-        log("");
+	    if (!BuildConfig.DEBUG)
+		    return;
+
+        MuninFoo.log("");
         logLine(60);
         for (MuninMaster m : this.muninFoo.masters) {
-            log("[" + m.getName() + "] - " + m.getUrl());
+	        MuninFoo.log("[" + m.getName() + "] - " + m.getUrl());
             for (MuninServer s : m.getChildren())
-                log("  - " + s.getName() + " - " + s.getServerUrl());
+	            MuninFoo.log("  - " + s.getName() + " - " + s.getServerUrl());
         }
         logLine(60);
     }
@@ -196,10 +199,7 @@ public class SQLite {
             String s = "";
             for (int i=0; i<nb; i++)
                 s += "=";
-            log(s);
+	        MuninFoo.log(s);
         }
-    }
-    private void log(String txt) {
-        Log.v("", txt);
     }
 }

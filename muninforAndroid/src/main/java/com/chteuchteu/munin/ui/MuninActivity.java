@@ -40,6 +40,8 @@ public class MuninActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		Crashlytics.start(this);
+
 		this.context = this;
 		this.activity = this;
 		this.muninFoo = MuninFoo.getInstance(this);
@@ -50,7 +52,6 @@ public class MuninActivity extends Activity {
 
 	public void onContentViewSet() {
 		Util.UI.applySwag(this);
-		Crashlytics.start(this);
 		this.actionBar = getActionBar();
 		this.actionBar.setDisplayShowHomeEnabled(false);
 		this.dh = new DrawerHelper(this, muninFoo);

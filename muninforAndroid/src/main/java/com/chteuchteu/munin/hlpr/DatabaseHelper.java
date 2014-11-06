@@ -183,6 +183,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		MuninFoo.log("onUpgrade from " + oldVersion + " to " + newVersion);
 		if (oldVersion < 2) // From 1 to 2
 			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_NAME + " TEXT");
 		if (oldVersion < 3) { // From 2 to 3

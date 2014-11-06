@@ -1,7 +1,5 @@
 package com.chteuchteu.munin.obj;
 
-import android.util.Log;
-
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.hlpr.Util.SpecialBool;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
@@ -181,7 +179,6 @@ public class MuninServer {
 		return false;
 	}
 	public void fetchPluginsStates() {
-		Log.i("", "Fetching plugins states for server " + name);
 		erroredPlugins.clear();
 		warnedPlugins.clear();
 		

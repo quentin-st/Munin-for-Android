@@ -79,7 +79,7 @@ public class MuninMaster {
 		this.authLogin = login;
 		this.authPassword = password;
 		
-		if (login.equals("") && password.equals(""))
+		if ((login == null || login.equals("")) && (password == null || password.equals("")))
 			this.authType = AuthType.NONE;
 	}
 	public void setAuthIds(String login, String password, AuthType authType) {

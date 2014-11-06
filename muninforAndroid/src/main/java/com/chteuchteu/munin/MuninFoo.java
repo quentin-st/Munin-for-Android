@@ -424,6 +424,8 @@ public class MuninFoo {
 	public static void log(String tag, String msg) { if (BuildConfig.DEBUG) Log.i(tag, msg); }
 	public static void logV(String msg) { logV("MuninFoo", msg); }
 	public static void logV(String tag, String msg) { if (BuildConfig.DEBUG) Log.v(tag, msg); }
+	public static void logE(String msg) { logE("MuninFoo", msg); }
+	public static void logE(String tag, String msg) { if (BuildConfig.DEBUG) Log.e(tag, msg); }
 
 	public static boolean isPremium(Context c) {
 		if (isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
