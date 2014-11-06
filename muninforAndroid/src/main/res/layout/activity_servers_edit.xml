@@ -28,7 +28,8 @@
 			dslv:max_drag_scroll_speed="0.8"
 			dslv:remove_enabled="true"
 			dslv:remove_mode="flingRemove"
-			dslv:use_default_controller="true" />
+			dslv:use_default_controller="true"
+			android:background="@drawable/bottom_shadow" />
 
 		<LinearLayout
 			android:layout_width="@dimen/drawer_width"

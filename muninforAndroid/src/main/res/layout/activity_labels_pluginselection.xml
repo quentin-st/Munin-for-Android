@@ -17,7 +17,8 @@
 			android:layout_height="match_parent"
 			android:orientation="vertical"
 			android:paddingLeft="@dimen/listview_horizontal_margin"
-			android:paddingRight="@dimen/listview_horizontal_margin" >
+			android:paddingRight="@dimen/listview_horizontal_margin"
+			android:background="@drawable/bottom_shadow" >
 
 			<ListView
 				android:id="@+id/labels_listview"
