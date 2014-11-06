@@ -62,7 +62,7 @@ public class Activity_Plugins extends MuninActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.plugins);
+		setContentView(R.layout.activity_plugins);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Plugins);
 

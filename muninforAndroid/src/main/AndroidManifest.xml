@@ -4,11 +4,6 @@
 	android:versionCode="33"
 	android:versionName="3.0" >
 
-	<!-- SDK Version -->
-	<uses-sdk
-		android:minSdkVersion="14"
-		android:targetSdkVersion="21" />
-
 	<!-- Permissions -->
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -38,8 +33,7 @@
 			android:configChanges="orientation|screenSize|keyboardHidden" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_AlertsPluginSelection" />
 		<activity
-			android:name="com.chteuchteu.munin.ui.Activity_GraphView"
-			android:theme="@style/NoActionBarShadow" />
+			android:name="com.chteuchteu.munin.ui.Activity_GraphView" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Grid" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Grids" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Labels" />

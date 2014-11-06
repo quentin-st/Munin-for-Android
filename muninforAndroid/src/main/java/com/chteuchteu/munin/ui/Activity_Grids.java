@@ -39,7 +39,7 @@ public class Activity_Grids extends MuninActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.grids);
+		setContentView(R.layout.activity_grids);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Grids);
 
@@ -177,7 +177,7 @@ public class Activity_Grids extends MuninActivity {
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();
 		
-		getMenuInflater().inflate(R.menu.gridselection, menu);
+		getMenuInflater().inflate(R.menu.grids, menu);
 	}
 	
 	@Override

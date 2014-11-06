@@ -28,7 +28,7 @@ public class Activity_GoPremium extends MuninActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.go_premium);
+		setContentView(R.layout.activity_go_premium);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_GoPremium);
 

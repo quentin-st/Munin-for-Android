@@ -38,7 +38,7 @@ public class Activity_Settings extends MuninActivity {
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.settings);
+		setContentView(R.layout.activity_settings);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Settings);
 

@@ -1,16 +1,17 @@
 package com.chteuchteu.munin.ui;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
-import com.balysv.materialmenu.MaterialMenuIcon;
+import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -23,15 +24,15 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 /**
  * One class to rule them all
  */
-public class MuninActivity extends Activity {
+public class MuninActivity extends ActionBarActivity {
 	protected MuninFoo      muninFoo;
 	protected DrawerHelper  dh;
 	protected Context       context;
 	protected Activity      activity;
-	protected ActionBar     actionBar;
-	private MaterialMenuIcon materialMenu;
+	protected android.support.v7.app.ActionBar actionBar;
+	protected Toolbar       toolbar;
+	private MaterialMenuIconToolbar materialMenu;
 	protected Menu          menu;
-	protected String        activityName;
 
 	private Runnable    onDrawerOpen;
 	private Runnable    onDrawerClose;
@@ -52,10 +53,16 @@ public class MuninActivity extends Activity {
 
 	public void onContentViewSet() {
 		Util.UI.applySwag(this);
-		this.actionBar = getActionBar();
+		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		this.actionBar = getSupportActionBar();
 		this.actionBar.setDisplayShowHomeEnabled(false);
 		this.dh = new DrawerHelper(this, muninFoo);
-		this.materialMenu = new MaterialMenuIcon(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN);
+		this.materialMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
+			@Override public int getToolbarViewId() {
+				return R.id.toolbar;
+			}
+		};
 		this.materialMenu.setNeverDrawTouch(true);
 	}
 
@@ -91,9 +98,6 @@ public class MuninActivity extends Activity {
 			public void onOpen() {
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 
-				activityName = actionBar.getTitle().toString();
-				actionBar.setTitle(R.string.app_name);
-
 				// Runnable set in Activity
 				if (onDrawerOpen != null)
 					onDrawerOpen.run();
@@ -106,7 +110,6 @@ public class MuninActivity extends Activity {
 			@Override
 			public void onClose() {
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
-				actionBar.setTitle(activityName);
 
 				// Runnable set in Activity
 				if (onDrawerClose != null)
@@ -150,5 +153,5 @@ public class MuninActivity extends Activity {
 		materialMenu.onSaveInstanceState(outState);
 	}
 
-	protected void log(String s) { MuninFoo.log(getClass().getName(), s); }
+	protected void log(String s) { MuninFoo.log(((Object) this).getClass().getName(), s); }
 }

@@ -68,7 +68,7 @@ public class Activity_Alerts extends MuninActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.alerts);
+		setContentView(R.layout.activity_alerts);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Alerts);
 

@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,12 +10,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
-import com.balysv.materialmenu.MaterialMenuIcon;
+import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -24,10 +26,9 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
-import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.tjeannin.apprate.AppRate;
 
@@ -38,13 +39,12 @@ import java.util.Locale;
  * is very different from others (showing UI elements only when the app
  * is loaded)
  */
-public class Activity_Main extends Activity {
+public class Activity_Main extends ActionBarActivity {
 	private MuninFoo		muninFoo;
 	private DrawerHelper	dh;
-	private MaterialMenuIcon materialMenu;
+	private MaterialMenuIconToolbar materialMenu;
 
 	private Menu 			menu;
-	private String			activityName;
 	private boolean		doubleBackPressed;
 	
 	// Preloading
@@ -67,8 +67,39 @@ public class Activity_Main extends Activity {
 			preloading = false;
 		
 		context = this;
-		setContentView(R.layout.main_clear);
-		getActionBar().setTitle("");
+		setContentView(R.layout.activity_main);
+
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View v) {
+				dh.toggle(true);
+			}
+		});
+
+		toolbar.setOnMenuItemClickListener(
+				new Toolbar.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						if (item.getItemId() != android.R.id.home)
+							dh.closeDrawerIfOpened();
+						switch (item.getItemId()) {
+							case android.R.id.home:
+								dh.toggle(true);
+								return true;
+							case R.id.menu_settings:
+								startActivity(new Intent(Activity_Main.this, Activity_Settings.class));
+								Util.setTransition(context, Util.TransitionStyle.DEEPER);
+								return true;
+							case R.id.menu_about:
+								startActivity(new Intent(Activity_Main.this, Activity_About.class));
+								Util.setTransition(context, Util.TransitionStyle.DEEPER);
+								return true;
+						}
+						return true;
+					}
+				}
+		);
 
 		Util.UI.applySwag(this);
 
@@ -81,7 +112,12 @@ public class Activity_Main extends Activity {
 			}
 		});
 
-		this.materialMenu = new MaterialMenuIcon(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN);
+		this.materialMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
+			@Override public int getToolbarViewId() {
+				return R.id.toolbar;
+			}
+		};
+
 		this.materialMenu.setNeverDrawTouch(true);
 		
 		Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.RobotoCondensed_Regular);
@@ -126,21 +162,18 @@ public class Activity_Main extends Activity {
 			@Override
 			public void onOpen() {
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
-				activityName = getActionBar().getTitle().toString();
-				getActionBar().setTitle(R.string.app_name);
 			}
 		});
-		dh.getDrawer().setOnCloseListener(new OnCloseListener() {
+		dh.getDrawer().setOnCloseListener(new SlidingMenu.OnCloseListener() {
 			@Override
 			public void onClose() {
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
-				getActionBar().setTitle(activityName);
 			}
 		});
 
 		dh.reset();
 		dh.toggle(true);
-		materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
+		//materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 	}
 	
 	@Override
@@ -162,27 +195,6 @@ public class Activity_Main extends Activity {
 				doubleBackPressed = false;
 			}
 		}, 2000);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.toggle(true);
-				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(Activity_Main.this, Activity_Settings.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(Activity_Main.this, Activity_About.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
 	}
 	
 	@Override
@@ -323,11 +335,11 @@ public class Activity_Main extends Activity {
 
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		materialMenu.syncState(savedInstanceState);
+		//this.materialMenu.syncState(savedInstanceState);
 	}
 
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		materialMenu.onSaveInstanceState(outState);
+		//this.materialMenu.onSaveInstanceState(outState);
 	}
 }

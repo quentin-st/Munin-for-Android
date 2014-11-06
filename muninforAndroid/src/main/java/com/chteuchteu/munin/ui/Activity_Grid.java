@@ -1,11 +1,10 @@
 package com.chteuchteu.munin.ui;
 
-import android.app.ActionBar;
-import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,7 +54,7 @@ public class Activity_Grid extends MuninActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.grid);
+		setContentView(R.layout.activity_grid);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Grid);
 
@@ -91,10 +90,10 @@ public class Activity_Grid extends MuninActivity {
 			}
 			final int currentSelectedIndex = index;
 			
-			SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(getActionBar().getThemedContext(),
+			SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(actionBar.getThemedContext(),
 					android.R.layout.simple_spinner_dropdown_item, gridsNames);
 			
-			ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+			ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
 				@Override
 				public boolean onNavigationItemSelected(int itemPosition, long itemId) {
 					if (itemPosition != currentSelectedIndex) {
@@ -167,13 +166,13 @@ public class Activity_Grid extends MuninActivity {
 		}
 	}
 	
-	/**
+	/*/**
 	 * Retain period on rotate
 	 * @return
-	 */
-	public Object onRetainNonConfigurationInstance() {
+	 *//*
+	public  Object onRetainNonConfigurationInstance() {
 		return this;
-	}
+	}*/
 	
 	private void hidePreview() {
 		grid.currentlyOpenedPlugin = null;
@@ -214,7 +213,7 @@ public class Activity_Grid extends MuninActivity {
 		if (grid == null)
 			startActivity(new Intent(this, Activity_Grids.class));
 		
-		getActionBar().setTitle(getText(R.string.text75) + " " + grid.name);
+		actionBar.setTitle(getText(R.string.text75) + " " + grid.name);
 		
 		grid.setupLayout();
 		container.addView(grid.buildLayout(this));

@@ -24,6 +24,4 @@
 	<dimen name="appwidget_min_width">110dp</dimen>
 	<dimen name="appwidget_min_height">110dp</dimen>
 
-	<dimen name="action_bar_height">52dp</dimen>
-
 </resources>

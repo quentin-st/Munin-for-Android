@@ -1,7 +1,6 @@
 package com.chteuchteu.munin.hlpr;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,6 +9,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff.Mode;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -77,7 +77,7 @@ public class DrawerHelper {
 	public static final int Activity_ServersEdit = 5;
 	public static final int Activity_Settings = 6;
 	
-	private Activity a;
+	private ActionBarActivity a;
 	private Context c;
 	private MuninFoo m;
 	private int n;
@@ -92,7 +92,7 @@ public class DrawerHelper {
 	// GraphView
 	private ViewFlow vf;
 	
-	public DrawerHelper(Activity a, MuninFoo m) {
+	public DrawerHelper(ActionBarActivity a, MuninFoo m) {
 		this.a = a;
 		this.m = m;
 		this.c = a.getApplicationContext();
@@ -163,19 +163,16 @@ public class DrawerHelper {
 			sm = new SlidingMenu(a);
 		
 		sm.setMode(SlidingMenu.LEFT);
-		if (a.getClass().getSimpleName().equals("Activity_Main"))
-			sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		else
-			sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+
+		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		sm.setFadeEnabled(true);
 		sm.setBehindScrollScale(0.25f);
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		if (firstLoad)
 			sm.attachToActivity(a, SlidingMenu.SLIDING_CONTENT);
-		
-		//sm.setActionBarSlideIcon(new ActionBarSlideIcon(a, R.drawable.ic_navigation_drawer, R.string.text63_1, R.string.text63_2));
-		a.getActionBar().setDisplayHomeAsUpEnabled(false);
-		
+
+		a.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
 		if (firstLoad)
 			sm.setMenu(R.layout.drawer);
 		

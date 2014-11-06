@@ -112,7 +112,7 @@ public class Activity_GraphView extends MuninActivity {
 		else if (Util.getPref(this, "graphview_orientation").equals("horizontal"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-		setContentView(R.layout.graphview);
+		setContentView(R.layout.activity_graphview);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_GraphView);
 
@@ -388,7 +388,7 @@ public class Activity_GraphView extends MuninActivity {
 			item_next.setVisible(false);
 			
 			// Now that we have room, add the server name on actionbar
-			getActionBar().setTitle(muninFoo.getCurrentServer().getName());
+			actionBar.setTitle(muninFoo.getCurrentServer().getName());
 
 			// Check if we displayed it under the actionBar
 			TextView serverName = (TextView) findViewById(R.id.serverName);

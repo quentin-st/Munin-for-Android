@@ -47,7 +47,7 @@ public class Activity_Label extends MuninActivity {
 			startActivity(new Intent(Activity_Label.this, Activity_Labels.class));
 		
 		
-		setContentView(R.layout.labels_pluginselection);
+		setContentView(R.layout.activity_labels_pluginselection);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Label);
 

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical" >
+
+	<android.support.v7.widget.Toolbar
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/toolbar"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:minHeight="?attr/actionBarSize"
+		android:background="?attr/colorPrimary"
+		app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+		app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+	<ScrollView
+		android:id="@+id/scrollView1"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" >
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="@dimen/listview_horizontal_margin"
+			android:layout_marginRight="@dimen/listview_horizontal_margin"
+			android:orientation="vertical" >
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="15dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginTop="15dp"
+				android:background="@drawable/card"
+				android:orientation="vertical"
+				android:paddingBottom="10dp" >
+
+				<!-- APP SETTINGS -->
+
+				<TextView
+					android:id="@+id/title1"
+					style="@style/Material_SubTitle"
+					android:layout_marginLeft="15dp"
+					android:layout_marginRight="15dp"
+					android:text="@string/settings_titlelabel_app" />
+
+				<!-- Default server -->
+
+				<TextView
+					android:id="@+id/title13"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_defaultserver" />
+
+				<Spinner
+					android:id="@+id/spinner_defaultserver"
+					style="@style/Settings_SettingSpinner" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- App language -->
+
+				<TextView
+					android:id="@+id/title3"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_lang" />
+
+				<Spinner
+					android:id="@+id/spinner_lang"
+					style="@style/Settings_SettingSpinner" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- GRAPHS SETTINGS -->
+
+				<TextView
+					android:id="@+id/title2"
+					style="@style/Material_SubTitle"
+					android:layout_marginLeft="15dp"
+					android:layout_marginRight="15dp"
+					android:text="@string/settings_titlelabel_graphs" />
+
+				<!-- Screen always on -->
+
+				<TextView
+					android:id="@+id/title7"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_screenalwayson_label" />
+
+				<CheckBox
+					android:id="@+id/checkbox_screenalwayson"
+					style="@style/Settings_SettingCheckbox"
+					android:button="@null"
+					android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+					android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+					android:text="@string/settings_screenalwayson_checkbox" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Auto refresh -->
+
+				<TextView
+					android:id="@+id/title8"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_autorefresh_label" />
+
+				<CheckBox
+					android:id="@+id/checkbox_autorefresh"
+					style="@style/Settings_SettingCheckbox"
+					android:button="@null"
+					android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+					android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+					android:text="@string/settings_autorefresh_checkbox" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Graph zoom -->
+
+				<TextView
+					android:id="@+id/title9"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_enablegraphszoom" />
+
+				<CheckBox
+					android:id="@+id/checkbox_enablegraphszoom"
+					style="@style/Settings_SettingCheckbox"
+					android:button="@null"
+					android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+					android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+					android:text="@string/settings_enablegraphszoom" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- HD Graphs -->
+
+				<TextView
+					android:id="@+id/title10"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_hdgraphs" />
+
+				<CheckBox
+					android:id="@+id/checkbox_hdgraphs"
+					style="@style/Settings_SettingCheckbox"
+					android:button="@null"
+					android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+					android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+					android:text="@string/settings_hdgraphs_text" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Graph default scale -->
+
+				<TextView
+					android:id="@+id/title11"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_default_scale" />
+
+				<Spinner
+					android:id="@+id/spinner_scale"
+					style="@style/Settings_SettingSpinner" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Graphs screen orientation -->
+
+				<TextView
+					android:id="@+id/title12"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_graphview_orientation" />
+
+				<Spinner
+					android:id="@+id/spinner_orientation"
+					style="@style/Settings_SettingSpinner" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Graphview arrows -->
+
+				<TextView
+					android:id="@+id/title14"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_graphview_hidearrows" />
+
+				<CheckBox
+					android:id="@+id/checkbox_hidearrows"
+					style="@style/Settings_SettingCheckbox"
+					android:button="@null"
+					android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+					android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+					android:text="@string/settings_graphview_hidearrows_checkbox" />
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>

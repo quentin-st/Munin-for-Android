@@ -35,14 +35,14 @@ public class Activity_Labels extends MuninActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.labelselection);
+		setContentView(R.layout.activity_labelselection);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Labels);
 
 		listview = (ListView) findViewById(R.id.listview);
 		list = new ArrayList<HashMap<String,String>>();
 
-		getActionBar().setTitle(getString(R.string.button_labels));
+		actionBar.setTitle(getString(R.string.button_labels));
 		
 		updateListView();
 	}

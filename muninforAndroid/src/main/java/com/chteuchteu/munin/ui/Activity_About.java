@@ -23,7 +23,7 @@ public class Activity_About extends MuninActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.about);
+		setContentView(R.layout.activity_about);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_About);
 

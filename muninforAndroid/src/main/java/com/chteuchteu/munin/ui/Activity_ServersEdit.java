@@ -31,7 +31,7 @@ public class Activity_ServersEdit extends MuninActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.servers_edit);
+		setContentView(R.layout.activity_servers_edit);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_ServersEdit);
 

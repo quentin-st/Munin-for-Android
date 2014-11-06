@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical" >
+
+	<android.support.v7.widget.Toolbar
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/toolbar"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:minHeight="?attr/actionBarSize"
+		android:background="?attr/colorPrimary"
+		app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+		app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" >
+
+		<LinearLayout
+			android:id="@+id/mainContainer"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical" >
+
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent" >
+
+				<ScrollView
+					android:id="@+id/grid_scroll"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" >
+
+					<LinearLayout
+						android:id="@+id/grid_root_container"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="vertical" />
+				</ScrollView>
+
+				<LinearLayout
+					android:id="@+id/add_column_right"
+					android:layout_width="30dp"
+					android:layout_height="match_parent"
+					android:layout_alignParentRight="true"
+					android:layout_marginBottom="30dp"
+					android:background="#33555555"
+					android:gravity="center_vertical"
+					android:orientation="vertical"
+					android:visibility="gone" >
+
+					<ImageView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:src="@drawable/ic_action_new" />
+				</LinearLayout>
+
+				<LinearLayout
+					android:id="@+id/add_line_bottom"
+					android:layout_width="match_parent"
+					android:layout_height="30dp"
+					android:layout_alignParentBottom="true"
+					android:background="#33555555"
+					android:gravity="center_horizontal"
+					android:orientation="horizontal"
+					android:visibility="gone" >
+
+					<ImageView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:src="@drawable/ic_action_new" />
+				</LinearLayout>
+			</RelativeLayout>
+		</LinearLayout>
+
+		<RelativeLayout
+			android:id="@+id/fullscreen"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="#77000000"
+			android:orientation="vertical"
+			android:visibility="gone" >
+
+			<ImageView
+				android:id="@+id/fullscreen_iv"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent" />
+
+			<TextView
+				android:id="@+id/fullscreen_tv"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentTop="true"
+				android:background="#DD333333"
+				android:paddingBottom="8dp"
+				android:paddingLeft="20dp"
+				android:paddingRight="20dp"
+				android:paddingTop="8dp"
+				android:shadowColor="#000000"
+				android:shadowDx="0"
+				android:shadowDy="2"
+				android:shadowRadius="2"
+				android:textColor="#f0f0f0"
+				android:textSize="18sp" />
+		</RelativeLayout>
+	</RelativeLayout>
+</LinearLayout>

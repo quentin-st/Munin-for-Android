@@ -27,7 +27,7 @@ public class Activity_AlertsPluginSelection extends MuninActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.alerts_pluginselection);
+		setContentView(R.layout.activity_alerts_pluginselection);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_AlertsPluginSelection);
 

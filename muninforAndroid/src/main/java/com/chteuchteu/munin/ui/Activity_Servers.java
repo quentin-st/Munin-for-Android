@@ -52,7 +52,7 @@ public class Activity_Servers extends MuninActivity {
 		super.onCreate(savedInstanceState);
 		context = this;
 
-		setContentView(R.layout.servers);
+		setContentView(R.layout.activity_servers);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_Servers);
 

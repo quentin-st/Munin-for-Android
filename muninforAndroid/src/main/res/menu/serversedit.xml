@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	  xmlns:app="http://schemas.android.com/apk/res-auto" >
 
 	<item
 		android:id="@+id/menu_save"
 		android:icon="@drawable/navigation_accept_dark"
-		android:showAsAction="always"
+		app:showAsAction="ifRoom"
 		android:title="@string/menu_addserver_save"/>
 
 	<item
 		android:id="@+id/menu_revert"
 		android:icon="@drawable/content_undo"
-		android:showAsAction="always"
+		app:showAsAction="ifRoom"
 		android:title="@string/menu_serversedit_revert"/>
 
 </menu>
