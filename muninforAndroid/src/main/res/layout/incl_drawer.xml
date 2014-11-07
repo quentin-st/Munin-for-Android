@@ -86,7 +86,7 @@
 						android:id="@+id/drawer_graphs_icon"
 						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_graphs"
-						android:src="@drawable/ic_dr_graphs" />
+						android:src="@drawable/dr_graphs" />
 
 					<TextView
 						android:id="@+id/drawer_graphs_txt"
@@ -116,7 +116,7 @@
 						android:id="@+id/drawer_grids_icon"
 						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_grid"
-						android:src="@drawable/ic_dr_grid" />
+						android:src="@drawable/dr_grids" />
 
 					<TextView
 						android:id="@+id/drawer_grids_txt"
@@ -136,7 +136,7 @@
 						android:id="@+id/drawer_alerts_icon"
 						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_alerts"
-						android:src="@drawable/ic_dr_warning" />
+						android:src="@drawable/dr_alerts" />
 
 					<TextView
 						android:id="@+id/drawer_alerts_txt"
@@ -156,7 +156,7 @@
 						android:id="@+id/drawer_labels_icon"
 						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_labels"
-						android:src="@drawable/ic_dr_labels" />
+						android:src="@drawable/dr_labels" />
 
 					<TextView
 						android:id="@+id/drawer_labels_txt"
@@ -176,7 +176,7 @@
 						android:id="@+id/drawer_servers_icon"
 						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_server"
-						android:src="@drawable/ic_dr_servers" />
+						android:src="@drawable/dr_servers" />
 
 					<TextView
 						android:id="@+id/drawer_servers_txt"
@@ -196,7 +196,7 @@
 						android:id="@+id/drawer_notifications_icon"
 						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_notifications"
-						android:src="@drawable/ic_dr_warning" />
+						android:src="@drawable/dr_notifications" />
 
 					<TextView
 						android:id="@+id/drawer_notifications_txt"
@@ -217,7 +217,7 @@
 						android:id="@+id/drawer_premium_icon"
 						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_premium"
-						android:src="@drawable/ic_dr_premium" />
+						android:src="@drawable/dr_premium" />
 
 					<TextView
 						android:id="@+id/drawer_premium_txt"
