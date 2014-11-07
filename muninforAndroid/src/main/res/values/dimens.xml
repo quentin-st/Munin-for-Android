@@ -5,7 +5,6 @@
 	<dimen name="activity_vertical_margin">16dp</dimen>
 
 	<!-- Left menu -->
-	<dimen name="slidingmenu_offset">30dp</dimen>
 	<dimen name="item_padding">10dp</dimen>
 	<dimen name="small_item_padding">8dp</dimen>
 	<dimen name="listview_horizontal_margin">0dp</dimen>

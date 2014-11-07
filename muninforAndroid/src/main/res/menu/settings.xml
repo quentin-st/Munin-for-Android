@@ -10,12 +10,10 @@
 
     <item
         android:id="@+id/menu_reset"
-        android:icon="@drawable/content_save_dark"
 		app:showAsAction="withText"
         android:title="@string/about_eraseData"/>
     <item
         android:id="@+id/menu_gplay"
-        android:icon="@drawable/navigation_refresh_dark"
 		app:showAsAction="withText"
         android:title="@string/about_gplay"/>
 	<item

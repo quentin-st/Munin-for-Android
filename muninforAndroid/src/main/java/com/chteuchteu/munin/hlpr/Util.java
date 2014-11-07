@@ -16,6 +16,7 @@ import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.v7.app.ActionBar;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +88,7 @@ public final class Util {
 		 * Should be call in onCreate
 		 * @param activity Activity
 		 */
-		public static ProgressBar prepareGmailStyleProgressBar(final Activity activity) {
+		public static ProgressBar prepareGmailStyleProgressBar(final Activity activity, final ActionBar actionBar) {
 			// create new ProgressBar and style it
 			final ProgressBar progressBar = new ProgressBar(activity, null, android.R.attr.progressBarStyleHorizontal);
 			progressBar.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 24));
@@ -110,7 +111,9 @@ public final class Util {
 				@Override
 				public void onGlobalLayout() {
 					View contentView = decorView.findViewById(android.R.id.content);
-					int y = Util.getStatusBarHeight(activity) + Util.getActionBarHeight(activity);
+					int actionBarHeight = actionBar != null ? actionBar.getHeight() : Util.getActionBarHeight(activity);
+					int y = Util.getStatusBarHeight(activity) + actionBarHeight;
+
 					progressBar.setY(y + contentView.getY() - 10);
 					progressBar.setProgressDrawable(activity.getResources().getDrawable(
 							R.drawable.progress_horizontal_holo_no_background_light));

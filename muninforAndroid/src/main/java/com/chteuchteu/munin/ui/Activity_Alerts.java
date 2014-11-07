@@ -76,7 +76,7 @@ public class Activity_Alerts extends MuninActivity {
 
 		actionBar.setTitle(getString(R.string.alertsTitle));
 
-		progressBar = Util.UI.prepareGmailStyleProgressBar(this);
+		progressBar = Util.UI.prepareGmailStyleProgressBar(this, actionBar);
 		
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

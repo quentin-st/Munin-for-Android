@@ -24,7 +24,7 @@
 	<item
 		android:id="@+id/menu_open"
 		android:icon="@drawable/content_graph"
-		app:showAsAction="never"
+		app:showAsAction="ifRoom"
 		android:title="@string/text79"
 		android:visible="false"/>
 	<item
@@ -34,7 +34,6 @@
 		android:title="@string/menu_graph_refresh"/>
 	<item
 		android:id="@+id/menu_edit"
-		android:icon="@drawable/content_edit_dark"
 		app:showAsAction="never"
 		android:title="@string/edit"/>
 

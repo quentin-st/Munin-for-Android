@@ -7,9 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
@@ -247,19 +245,24 @@ public class Activity_Notifications extends MuninActivity {
 			// At least one server selected
 			boolean ok = false;
 
-			if (checkboxes.length > 0 && checkboxes[0] != null) {
-				// Opened at least once servers list
-				for (CheckBox checkBox : checkboxes) {
-					if (checkBox.isChecked()) {
-						ok = true;
-						break;
+			// If notifications disabled : ok = true
+			if (!cb_notifications.isChecked())
+				ok = true;
+			else {
+				if (checkboxes.length > 0 && checkboxes[0] != null) {
+					// Opened at least once servers list
+					for (CheckBox checkBox : checkboxes) {
+						if (checkBox.isChecked()) {
+							ok = true;
+							break;
+						}
 					}
+				} else {
+					// Check from pref string
+					int length = Util.getPref(context, "notifs_serversList").length();
+					if (length > 2) // != "" && != ";"
+						ok = true;
 				}
-			} else {
-				// Check from pref string
-				int length = Util.getPref(context, "notifs_serversList").length();
-				if (length > 2) // != "" && != ";"
-					ok = true;
 			}
 
 			if (ok) {
