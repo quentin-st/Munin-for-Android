@@ -229,8 +229,8 @@ public class Activity_Grid extends MuninActivity {
 		menu_period = menu.findItem(R.id.menu_period);
 		menu_open = menu.findItem(R.id.menu_open);
 		menu_refresh.setVisible(!editing);
-		if (editing)	menu_edit.setIcon(R.drawable.navigation_accept_dark);
-		else 			menu_edit.setIcon(R.drawable.content_edit_dark);
+		if (editing)	menu_edit.setIcon(R.drawable.ic_action_navigation_check);
+		else 			menu_edit.setIcon(R.drawable.ic_action_image_edit);
 		menu_period.setTitle(currentPeriod.getLabel(this));
 	}
 	
@@ -240,11 +240,11 @@ public class Activity_Grid extends MuninActivity {
 		
 		if (editing) { // Cancel edit
 			grid.cancelEdit(this);
-			if (menu_edit != null) menu_edit.setIcon(R.drawable.content_edit_dark);
+			if (menu_edit != null) menu_edit.setIcon(R.drawable.ic_action_image_edit);
 			muninFoo.sqlite.dbHlpr.saveGridItemsRelations(grid);
 		} else { // Edit
 			grid.edit(this);
-			if (menu_edit != null) menu_edit.setIcon(R.drawable.navigation_accept_dark);
+			if (menu_edit != null) menu_edit.setIcon(R.drawable.ic_action_navigation_check);
 		}
 		
 		editing = !editing;

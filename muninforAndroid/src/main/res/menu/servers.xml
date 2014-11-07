@@ -19,7 +19,7 @@
 	
 	<item
 		android:id="@+id/menu_add"
-		android:icon="@drawable/content_new_dark"
+		android:icon="@drawable/ic_action_content_add"
 		app:showAsAction="ifRoom"
 		android:title="@string/addServerTitle"/>
 

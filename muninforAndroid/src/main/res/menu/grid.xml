@@ -23,18 +23,19 @@
 	</item>
 	<item
 		android:id="@+id/menu_open"
-		android:icon="@drawable/content_graph"
+		android:icon="@drawable/ic_action_open"
 		app:showAsAction="ifRoom"
 		android:title="@string/text79"
 		android:visible="false"/>
 	<item
 		android:id="@+id/menu_refresh"
-		android:icon="@drawable/navigation_refresh_dark"
+		android:icon="@drawable/ic_action_navigation_refresh"
 		app:showAsAction="ifRoom"
 		android:title="@string/menu_graph_refresh"/>
 	<item
 		android:id="@+id/menu_edit"
-		app:showAsAction="never"
+		app:showAsAction="ifRoom"
+		android:icon="@drawable/ic_action_image_edit"
 		android:title="@string/edit"/>
 
 </menu>

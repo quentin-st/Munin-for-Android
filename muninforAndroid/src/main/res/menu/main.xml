@@ -4,13 +4,13 @@
 	
 	<item
 		android:id="@+id/menu_settings"
-		android:icon="@drawable/action_settings"
+		android:icon="@drawable/ic_action_settings"
 		app:showAsAction="ifRoom"
 		android:title="@string/settingsTitle"/>
 	
 	<item
 		android:id="@+id/menu_about"
-		android:icon="@drawable/action_about"
+		android:icon="@drawable/ic_action_about"
 		app:showAsAction="ifRoom"
 		android:title="@string/aboutTitle"/>
 	

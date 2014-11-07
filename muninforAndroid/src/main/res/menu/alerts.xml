@@ -4,7 +4,7 @@
 	
 	<item
 		android:id="@+id/menu_refresh"
-		android:icon="@drawable/navigation_refresh_dark"
+		android:icon="@drawable/ic_action_navigation_refresh"
 		app:showAsAction="ifRoom"
 		android:title="@string/menu_graph_refresh"/>
 

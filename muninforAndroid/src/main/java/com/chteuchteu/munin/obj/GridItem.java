@@ -201,7 +201,7 @@ public class GridItem {
 			}
 		});
 		ImageView addButton = new ImageView(c);
-		addButton.setImageResource(R.drawable.content_new_dark);
+		addButton.setImageResource(R.drawable.ic_action_content_add);
 		RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		lp2.addRule(RelativeLayout.CENTER_IN_PARENT);
 		addButton.setLayoutParams(lp2);
