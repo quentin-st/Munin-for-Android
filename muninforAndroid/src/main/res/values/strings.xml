@@ -43,7 +43,7 @@
 	<string name="loading">Loading…</string>
 	<string name="search">Search</string>
 	<string name="about_eraseData">Reset app</string>
-	<string name="about_gplay">Google Play: note!</string>
+	<string name="about_gplay">Rate the app</string>
 	<string name="menu_serversedit_revert">Revert servers</string>
 	<string name="servers_noservers_1">No server yet</string>
 	<string name="servers_noservers_2">Add yours or sample ones now by tapping on +</string>

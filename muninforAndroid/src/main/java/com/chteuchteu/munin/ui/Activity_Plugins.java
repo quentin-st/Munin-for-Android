@@ -140,6 +140,7 @@ public class Activity_Plugins extends MuninActivity {
 				customActionBarView.setVisibility(View.GONE);
 				actionBar.setDisplayShowCustomEnabled(false);
 				actionBar.setDisplayShowTitleEnabled(true);
+				actionBar.setSubtitle(muninFoo.getCurrentServer().getName());
 			}
 		});
 		super.setOnDrawerClose(new Runnable() {
@@ -148,6 +149,7 @@ public class Activity_Plugins extends MuninActivity {
 				customActionBarView.setVisibility(View.VISIBLE);
 				actionBar.setDisplayShowCustomEnabled(true);
 				actionBar.setDisplayShowTitleEnabled(false);
+				actionBar.setSubtitle("");
 			}
 		});
 

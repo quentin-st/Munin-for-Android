@@ -148,13 +148,9 @@ public class Activity_Servers extends MuninActivity {
 								
 								if (muninFoo.getCurrentServer().equalsApprox(server))
 									muninFoo.updateCurrentServer(context);
-								
-								Intent intent = getIntent();
-								if (m != null && intent != null) {
-									intent.putExtra("fromMaster", m.getId());
-									intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-								}
+
 								refreshList();
+								updateDrawerIfNeeded();
 							}
 						})
 						.setNegativeButton(R.string.text34, null)
@@ -167,6 +163,15 @@ public class Activity_Servers extends MuninActivity {
 		builderSingle.show();
 		
 		return true;
+	}
+
+	/**
+	 * When deleting a server / master, we should reinit the drawer
+	 * if there's nothing to show
+	 */
+	private void updateDrawerIfNeeded() {
+		if (muninFoo.getMasters().size() == 0)
+			dh.reset();
 	}
 	
 	/**
@@ -444,8 +449,10 @@ public class Activity_Servers extends MuninActivity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// if "No change" => don't reload servers list
-					if (!report.equals(context.getString(R.string.sync_nochange)))
+					if (!report.equals(context.getString(R.string.sync_nochange))) {
 						refreshList();
+						updateDrawerIfNeeded();
+					}
 				}
 			})
 			.show();
@@ -481,6 +488,7 @@ public class Activity_Servers extends MuninActivity {
 			dialog.dismiss();
 			
 			refreshList();
+			updateDrawerIfNeeded();
 		}
 	}
 
