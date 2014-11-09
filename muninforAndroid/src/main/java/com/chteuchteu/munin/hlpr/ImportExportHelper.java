@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImportExportHelper {
-	public static final String ENCRYPTION_SEED = "$$MFA!!";
+	public static final String ENCRYPTION_SEED = "C38D739A2CD08D287AECB8822BF90BC832BF54BD4841AA576DD159B10DCFE31A";
 	
 	public static class Export {
 		private static String sendExportRequest(String jsonString) {

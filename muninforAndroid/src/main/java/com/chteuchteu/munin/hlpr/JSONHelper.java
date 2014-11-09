@@ -1,5 +1,6 @@
 package com.chteuchteu.munin.hlpr;
 
+import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -28,6 +29,8 @@ public class JSONHelper {
 		try {
 			JSONObject obj = new JSONObject();
 			JSONArray jsonMasters = new JSONArray();
+			EncryptionHelper encryptionHelper = new EncryptionHelper();
+
 			for (MuninMaster master : masters) {
 				if (master.getChildren().size() > 0) {
 					JSONObject jsonMaster = new JSONObject();
@@ -44,14 +47,15 @@ public class JSONHelper {
 							jsonMaster.put("authType", "basic");
 							jsonMaster.put("authLogin", master.getAuthLogin());
 							String basicPassword = master.getAuthPassword();
-							String encryptedBasicPassword = Util.Encryption.encrypt(seed, basicPassword);
+							String encryptedBasicPassword = encryptionHelper.encrypt(seed, basicPassword);
+							MuninFoo.log("encryptedPassword = '" + encryptedBasicPassword + "'");
 							jsonMaster.put("authPassword", encryptedBasicPassword);
 							break;
 						case DIGEST:
 							jsonMaster.put("authType", "digest");
 							jsonMaster.put("authLogin", master.getAuthLogin());
 							String digestPassword = master.getAuthPassword();
-							String encryptedDigestPassword = Util.Encryption.encrypt(seed, digestPassword);
+							String encryptedDigestPassword = encryptionHelper.encrypt(seed, digestPassword);
 							jsonMaster.put("authPassword", encryptedDigestPassword);
 							jsonMaster.put("authString", master.getAuthString());
 							break;
@@ -106,6 +110,7 @@ public class JSONHelper {
 	public static ArrayList<MuninMaster> getMastersFromJSON(JSONObject obj, String seed) {
 		try {
 			ArrayList<MuninMaster> muninMasters = new ArrayList<MuninMaster>();
+			EncryptionHelper encryptionHelper = new EncryptionHelper();
 			
 			JSONArray jsonMasters = obj.getJSONArray("masters");
 			for (int i=0; i<jsonMasters.length(); i++) {
@@ -122,13 +127,14 @@ public class JSONHelper {
 					master.setAuthType(AuthType.BASIC);
 					String login = jsonMaster.getString("authLogin");
 					String encryptedBasicPassword = jsonMaster.getString("authPassword");
-					String decryptedBasicPassword = Util.Encryption.decrypt(seed, encryptedBasicPassword);
+					MuninFoo.log("EncryptedBasicPassword = '" + encryptedBasicPassword + "'");
+					String decryptedBasicPassword = encryptionHelper.decrypt(seed, encryptedBasicPassword);
 					master.setAuthIds(login, decryptedBasicPassword);
 				} else if (authType.equals("digest")) {
 					master.setAuthType(AuthType.DIGEST);
 					String login = jsonMaster.getString("authLogin");
 					String encryptedDigestPassword = jsonMaster.getString("authPassword");
-					String decryptedDigestPassword = Util.Encryption.decrypt(seed, encryptedDigestPassword);
+					String decryptedDigestPassword = encryptionHelper.decrypt(seed, encryptedDigestPassword);
 					master.setAuthIds(login, decryptedDigestPassword);
 					master.setAuthString(jsonMaster.getString("authString"));
 				}

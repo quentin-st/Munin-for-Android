@@ -4,7 +4,7 @@
 	<string name="button_graphs">"Graphen"</string>
 	<string name="button_server">"Server"</string>
 	<string name="settings_URL_label">"URL des Masterservers"</string>
-	<string name="settings_URL_label2">"z.B.: https://88.180.108.192:80/munin/"</string>
+	<string name="settings_URL_label2">"z.B.: http(s)://88.180.108.192/munin/"</string>
 	<string name="settings_text">"oder wähle einen Beispielserver aus."</string>
 	<string name="settings_http_auth2">"HTTP Authentifizierung erforderlich"</string>
 	<string name="settings_login">"Login"</string>
@@ -13,6 +13,7 @@
 	<string name="settings_delete_button">"Löschen"</string>
 	<string name="servers_btn_add_server">"Server hinzufügen"</string>
 	<string name="save_button">"Speichern"</string>
+	<string name="settings_clear_button">"Zurücksetzen"</string>
 	<string name="menu_graph_previous">"Zurück"</string>
 	<string name="menu_graph_next">"Vorwärts"</string>
 	<string name="menu_graph_refresh">"Aktualisieren"</string>
@@ -22,12 +23,17 @@
 	<string name="loading">"Lade"</string>
 	<string name="search">"Suche"</string>
 	<string name="about_eraseData">"App zurücksetzen"</string>
+
+	<!-- I don't get it.. whats the meaning of this? -->
 	<string name="about_gplay">"Google Play: Anmerkung!"</string>
 	<string name="splashDesc">"Laden..."</string>
 	<string name="graphView_ImageViewDescription">"Graph"</string>
 	<string name="addServerTitle">"Server hinzufügen"</string>
 	<string name="serversTitle">"Server"</string>
 	<string name="settingsTitle">"Einstellungen"</string>
+	<string name="textOn">"AN"</string>
+	<string name="textOff">"AUS"</string>
+	<string name="editServerTitle">"Server bearbeiten"</string>
 	<string name="aboutTitle">"Über Munin für Android"</string>
 	<string name="text01">"Einstellungen werden zurückgesetzt. Bist du sicher?"</string>
 	<string name="text02">"Erfolgreich zurückgesetzt"</string>
@@ -53,6 +59,7 @@
 	<string name="lang_german">"Deutsch"</string>
 	<string name="lang_english">"Englisch"</string>
 	<string name="button_premium">"Nimm' Premium!"</string>
+	<string name="goPremiumBenefits"><![CDATA[ <head> <style> p { padding: 0px 15px; } h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 5px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; border: 2px solid #1578C4; border-width: 0px 0px 2px 0px; } body { text-align: justify; color: #555; font-size:1em; } li { margin-bottom: 5px; } </style> <meta http-equiv=Content-Type content=text/html; charset=UTF-8 /> </head> <body> <h2>Munin für Android Premiumfunktionen</h2> <ul> <li>SSL Support</li> <li>Graph Widgets</li> <li>Benachrichtigungen</li> <li>Bevorzugter Support</li> <li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li> <li>Aktiviere die automatischen Update in Google Play um neue Premiumfunktionen automatisch zu erhalten.</li> </ul> <br /> </body>]]></string>
 	<string name="buy_now">"JETZT KAUFEN"</string>
 	<string name="goPremiumTitle">"Nimm' Premium!"</string>
 	<string name="text41">"SSL-Support ist über das Munin für Android Feature Pack verfügbar (1,49€). Möchtest du es auf Google Play kaufen?"</string>
@@ -73,6 +80,8 @@
 	<string name="button_labels">"Labels"</string>
 	<string name="button_notifications">"Benachrichtigungen"</string>
 	<string name="settings_auth_type">"Authentifizierungsart"</string>
+	<string name="settings_transitions_label">"Übergänge"</string>
+	<string name="settings_transitions_checkbox">"Animationen bei Seitenübergängen aktivieren"</string>
 	<string name="settings_titlelabel_app">"APP"</string>
 	<string name="settings_titlelabel_graphs">"GRAPHEN"</string>
 	<string name="menu_graph_switch">"Server wechseln"</string>
@@ -86,6 +95,7 @@
 	<!-- MAIN BUTTON -->
 	<string name="widget_configuration1">"Das Widget wurde erfolgreich zum Homescreen hinzugefügt. Tipp: Der Graph kann durch Tippen auf die graue Leiste unten aktualisiert werden."</string>
 	<string name="widget_configuration2">"Graphen nur im WLAN automatisch aktualisieren (1 Update pro Stunde)"</string>
+	<string name="text21.3">"aktualisiert!"</string>
 	<string name="text49.1">"Normal operierende Server ausblenden"</string>
 	<string name="text49.2">"Normal operierende Server anzeigen"</string>
 	<string name="text50.1">"kritisch"</string>
@@ -110,7 +120,46 @@
 	<string name="text67">"Kein Label vorhanden"</string>
 	<string name="text68">"Timeout - der Server brauchte zu lange, um die Anfrage zu bearbeiten"</string>
 	<string name="button_grid">"Gitter"</string>
+	<string name="menu_pluginselection">"Gruppen bei Kategorie"</string>
 	<string name="edit">"Bearbeiten"</string>
+<string name="aboutText"><![CDATA[
+	    <head>
+	    <style>
+	    	p { padding: 0px 15px; }
+	    	h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 5px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; border: 2px solid #1578C4; border-width: 0px 0px 2px 0px; }
+	    	body { text-align: justify; color: #555; font-size:0.95em; }
+	    </style>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    </head>
+	    <body>
+	    <br />
+	    <p>Wenn du Verbesserungsvorschl&auml;ge f&uuml;r <i>Munin f&uuml;rr Android</i> oder einen Bug gefunden hast, schreibe am besten eine E-Mail an <b><u>chteuchteu@gmail.com</u></b>. Vielen Dank!</p>
+	    <p>Ich bin kein Angeh&ouml;riger der Linux-Software <i>munin</i>.</p>
+	    
+	    <h2>Du nutzt <i>Munin f&uuml;r Android #version#</i></h2>
+	    <p>Bitte gehe auf <a href="http://chteuchteu.com/munin-for-android/">chteuchteu.com/munin-for-android</a> um ein Changelog zu sehen.</p>
+	    
+	    <h2>MfA #version# Changelog</h2>
+	    <ul>
+	    <li>Absturz bei Start behoben</li>
+	    <li>Problem mit Widgets, wenn MfA beendet wurde, behoben</li>
+	    </ul>
+	    
+	    <h2>Geplante Funktionen</h2>
+	    <ul>
+	    <li><a href="mailto:chteuchteu@gmail.com">Schlage ein Feature vor!</a></li>
+	    </ul>
+	    <p>Bleibe gespannt!</p>
+	    
+	    <h2>Besonderen Dank</h2>
+	    <ul>
+	    <li>Steve Schnepp, Haupt-Entwickler von Munin</li>
+	    <li>Alessandro <i>\"override\"</i></li>
+	    <li>#munin IRC: olasd</li>
+	    <li>Christian Petri, Lucas Garte, Jan Vonde: deutsche &Uuml;bersetzung</li>
+	    </ul>
+	    <br />
+	    </body>]]></string>
 	<string name="text69">"Gittername"</string>
 	<string name="text70">"Gitter hinzufügen"</string>
 	<string name="text70.2">"Label hinzufügen"</string>
@@ -173,7 +222,7 @@
 	<string name="support">"Support"</string>
 	<string name="choose_email_client">"Bitte wähle Deine E-Mail-App"</string>
 	<string name="donate">"Spenden"</string>
-	<string name="donate_text">"Entwicklung einer App dieser Größe benötigt eine große Menge an Zeit und Einsatz. Die App erleichtert Dir dein tägliches Leben? Dann würde es mich freuen, wenn Du Dir überlegst, etwas zu spenden. Danke! Wenn Du etwas spenden möchtest, sende mir bitte ein E-Mail, damit ich Dir persönlich danken kann."</string>
+	<string name="donate_text">"Entwicklung einer App dieser Größe benötigt eine große Menge an Zeit und Einsatz. Die App erleichtert Dir Dein tägliches Leben? Dann würde es mich freuen, wenn Du Dir überlegst, etwas zu spenden. Danke! Wenn Du etwas spenden möchtest, sende mir bitte ein E-Mail, damit ich Dir persönlich danken kann."</string>
 	<string name="donate_amount">"Bitte wähle die Höhe der Spende (33% dieses Wertes gehen an Google)"</string>
 	<string name="sync_serversadded">"XXX Server hinzugefügt."</string>
 	<string name="sync_serversupdated">"XXX Server aktualisiert."</string>
@@ -181,7 +230,7 @@
 	<string name="sync_pluginsadded">"XXX Server hinzugefügt."</string>
 	<string name="sync_pluginsupdated">"XXX Plugins aktualisiert."</string>
 	<string name="sync_pluginsdeleted">"XXX Plugins gelöscht."</string>
-	<string name="sync_nochange">"Kein Änderung"</string>
+	<string name="sync_nochange">"Keine Änderung"</string>
 	<string name="sync_reporttitle">"Scan-Report"</string>
 	<string name="text84">"Der Master wird gelöscht. Sicher?"</string>
 </resources>
