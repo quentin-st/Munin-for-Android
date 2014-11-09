@@ -4,7 +4,7 @@
 	<string name="button_graphs">"Графики"</string>
 	<string name="button_server">"Серверы"</string>
 	<string name="settings_URL_label">"мастер-URL Munin"</string>
-	<string name="settings_URL_label2">"пример: 88.180.108.192:80/munin/"</string>
+	<string name="settings_URL_label2">"пример: https://88.180.108.192:80/munin/"</string>
 	<string name="settings_text">"… либо выберите сервер согласно примеру"</string>
 	<string name="settings_http_auth2">"необходима HTTP аутентификация"</string>
 	<string name="settings_login">"Логин"</string>

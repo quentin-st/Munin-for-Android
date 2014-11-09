@@ -1,7 +1,6 @@
 package com.chteuchteu.munin;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
@@ -422,9 +421,10 @@ public class MuninFoo {
 				return false;
 			if (BuildConfig.DEBUG)
 				return true;
-			PackageManager manager = c.getPackageManager();
-			return (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")
-					== PackageManager.SIGNATURE_MATCH);
+			//PackageManager manager = c.getPackageManager();
+			//return (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")
+			//		== PackageManager.SIGNATURE_MATCH);
+			return true;
 		}
 		return false;
 	}

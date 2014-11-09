@@ -36,7 +36,7 @@ public class ImportExportHelper {
 	public static class Export {
 		private static String sendExportRequest(String jsonString) {
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(MuninFoo.IMPORT_EXPORT_URI+"?export");
+			HttpPost httpPost = new HttpPost(MuninFoo.IMPORT_EXPORT_URI + "?export");
 			
 			try {
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);

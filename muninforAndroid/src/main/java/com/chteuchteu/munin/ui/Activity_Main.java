@@ -320,7 +320,7 @@ public class Activity_Main extends ActionBarActivity {
 		if (!strFromVersion.equals(""))
 			fromVersion = Double.parseDouble(Util.getPref(context, "lastMFAVersion"));
 
-		if (fromVersion < 3)
+		if (fromVersion < 4.2) // 4.2 = V3.0
 			muninFoo.sqlite.migrateTo3();
 		
 		Util.setPref(context, "lastMFAVersion", MuninFoo.VERSION + "");

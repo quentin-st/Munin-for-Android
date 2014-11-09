@@ -4,7 +4,7 @@
 	<string name="button_graphs">"Graphen"</string>
 	<string name="button_server">"Server"</string>
 	<string name="settings_URL_label">"URL des Masterservers"</string>
-	<string name="settings_URL_label2">"z.B.: 88.180.108.192/munin/localdomain/localhost.localdomain/, oder 88.180.108.192/munin/"</string>
+	<string name="settings_URL_label2">"z.B.: https://88.180.108.192:80/munin/"</string>
 	<string name="settings_text">"oder wähle einen Beispielserver aus."</string>
 	<string name="settings_http_auth2">"HTTP Authentifizierung erforderlich"</string>
 	<string name="settings_login">"Login"</string>

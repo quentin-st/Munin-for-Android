@@ -134,11 +134,6 @@ public class Activity_Servers extends MuninActivity {
 						.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								// When going back : expand the list to the current master if possible
-								MuninMaster m = null;
-								if (server.getParent() != null && server.getParent().getChildren().size() > 1)
-									m = server.getParent();
-								
 								muninFoo.sqlite.dbHlpr.deleteServer(server);
 								muninFoo.deleteServer(server, true);
 								
