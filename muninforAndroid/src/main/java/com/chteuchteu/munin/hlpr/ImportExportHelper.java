@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImportExportHelper {
-	public static final String ENCRYPTION_SEED = "C38D739A2CD08D287AECB8822BF90BC832BF54BD4841AA576DD159B10DCFE31A";
+	public static final String ENCRYPTION_SEED = "786547E9431EE";
 	
 	public static class Export {
 		private static String sendExportRequest(String jsonString) {
@@ -61,7 +61,6 @@ public class ImportExportHelper {
 					return jsonResult.getString("password");
 				} else {
 					String error = jsonResult.getString("error");
-					MuninFoo.log("ImportExportHelper", error);
 					Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
 				}
 				
@@ -164,7 +163,6 @@ public class ImportExportHelper {
 					return jsonResult.getJSONArray("data").getJSONObject(0);
 				} else {
 					String error = jsonResult.getString("error");
-					MuninFoo.log("ImportExportHelper", error);
 					Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
 				}
 				

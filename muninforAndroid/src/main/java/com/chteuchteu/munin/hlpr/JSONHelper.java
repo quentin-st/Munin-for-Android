@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.hlpr;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -29,7 +28,6 @@ public class JSONHelper {
 		try {
 			JSONObject obj = new JSONObject();
 			JSONArray jsonMasters = new JSONArray();
-			EncryptionHelper encryptionHelper = new EncryptionHelper();
 
 			for (MuninMaster master : masters) {
 				if (master.getChildren().size() > 0) {
@@ -47,15 +45,14 @@ public class JSONHelper {
 							jsonMaster.put("authType", "basic");
 							jsonMaster.put("authLogin", master.getAuthLogin());
 							String basicPassword = master.getAuthPassword();
-							String encryptedBasicPassword = encryptionHelper.encrypt(seed, basicPassword);
-							MuninFoo.log("encryptedPassword = '" + encryptedBasicPassword + "'");
+							String encryptedBasicPassword = EncryptionHelper.encrypt(seed, basicPassword);
 							jsonMaster.put("authPassword", encryptedBasicPassword);
 							break;
 						case DIGEST:
 							jsonMaster.put("authType", "digest");
 							jsonMaster.put("authLogin", master.getAuthLogin());
 							String digestPassword = master.getAuthPassword();
-							String encryptedDigestPassword = encryptionHelper.encrypt(seed, digestPassword);
+							String encryptedDigestPassword = EncryptionHelper.encrypt(seed, digestPassword);
 							jsonMaster.put("authPassword", encryptedDigestPassword);
 							jsonMaster.put("authString", master.getAuthString());
 							break;
@@ -127,14 +124,13 @@ public class JSONHelper {
 					master.setAuthType(AuthType.BASIC);
 					String login = jsonMaster.getString("authLogin");
 					String encryptedBasicPassword = jsonMaster.getString("authPassword");
-					MuninFoo.log("EncryptedBasicPassword = '" + encryptedBasicPassword + "'");
-					String decryptedBasicPassword = encryptionHelper.decrypt(seed, encryptedBasicPassword);
+					String decryptedBasicPassword = EncryptionHelper.decrypt(seed, encryptedBasicPassword);
 					master.setAuthIds(login, decryptedBasicPassword);
 				} else if (authType.equals("digest")) {
 					master.setAuthType(AuthType.DIGEST);
 					String login = jsonMaster.getString("authLogin");
 					String encryptedDigestPassword = jsonMaster.getString("authPassword");
-					String decryptedDigestPassword = encryptionHelper.decrypt(seed, encryptedDigestPassword);
+					String decryptedDigestPassword = EncryptionHelper.decrypt(seed, encryptedDigestPassword);
 					master.setAuthIds(login, decryptedDigestPassword);
 					master.setAuthString(jsonMaster.getString("authString"));
 				}

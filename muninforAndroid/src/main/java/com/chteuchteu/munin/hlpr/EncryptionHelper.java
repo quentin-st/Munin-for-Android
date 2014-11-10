@@ -1,73 +1,72 @@
 package com.chteuchteu.munin.hlpr;
 
-import android.util.Base64;
+import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 public class EncryptionHelper {
-	private String charsetName = "UTF8";
-	private String algorithm = "DES";
-	private int base64Mode = Base64.DEFAULT;
-
-	public String getCharsetName() {
-		return charsetName;
+	public static String encrypt(String seed, String cleartext) throws Exception {
+		byte[] rawKey = getRawKey(seed.getBytes());
+		byte[] result = encrypt(rawKey, cleartext.getBytes());
+		return toHex(result);
 	}
 
-	public void setCharsetName(String charsetName) {
-		this.charsetName = charsetName;
+	public static String decrypt(String seed, String encrypted) throws Exception {
+		byte[] rawKey = getRawKey(seed.getBytes());
+		byte[] enc = toByte(encrypted);
+		byte[] result = decrypt(rawKey, enc);
+		return new String(result);
 	}
 
-	public String getAlgorithm() {
-		return algorithm;
+	private static byte[] getRawKey(byte[] seed) throws Exception {
+		KeyGenerator kgen = KeyGenerator.getInstance("AES");
+		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+		sr.setSeed(seed);
+		kgen.init(128, sr); // 192 and 256 bits may not be available
+		SecretKey skey = kgen.generateKey();
+		byte[] raw = skey.getEncoded();
+		return raw;
 	}
 
-	public void setAlgorithm(String algorithm) {
-		this.algorithm = algorithm;
+
+	private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
+		SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+		Cipher cipher = Cipher.getInstance("AES");
+		cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+		byte[] encrypted = cipher.doFinal(clear);
+		return encrypted;
 	}
 
-	public int getBase64Mode() {
-		return base64Mode;
+	private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
+		SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+		Cipher cipher = Cipher.getInstance("AES");
+		cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+		byte[] decrypted = cipher.doFinal(encrypted);
+		return decrypted;
 	}
 
-	public void setBase64Mode(int base64Mode) {
-		this.base64Mode = base64Mode;
+	private static byte[] toByte(String hexString) {
+		int len = hexString.length()/2;
+		byte[] result = new byte[len];
+		for (int i = 0; i < len; i++)
+			result[i] = Integer.valueOf(hexString.substring(2*i, 2*i+2), 16).byteValue();
+		return result;
 	}
 
-	public String encrypt(String key, String data) {
-		if (key == null || data == null)
-			return null;
-		try {
-			DESKeySpec desKeySpec = new DESKeySpec(key.getBytes(charsetName));
-			SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(algorithm);
-			SecretKey secretKey = secretKeyFactory.generateSecret(desKeySpec);
-			byte[] dataBytes = data.getBytes(charsetName);
-			Cipher cipher = Cipher.getInstance(algorithm);
-			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-			return Base64.encodeToString(cipher.doFinal(dataBytes), base64Mode);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+	private static String toHex(byte[] buf) {
+		if (buf == null)
+			return "";
+		StringBuffer result = new StringBuffer(2*buf.length);
+		for (int i = 0; i < buf.length; i++) {
+			appendHex(result, buf[i]);
 		}
+		return result.toString();
 	}
-
-	public String decrypt(String key, String data) {
-		if (key == null || data == null)
-			return null;
-		try {
-			byte[] dataBytes = Base64.decode(data, base64Mode);
-			DESKeySpec desKeySpec = new DESKeySpec(key.getBytes(charsetName));
-			SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(algorithm);
-			SecretKey secretKey = secretKeyFactory.generateSecret(desKeySpec);
-			Cipher cipher = Cipher.getInstance(algorithm);
-			cipher.init(Cipher.DECRYPT_MODE, secretKey);
-			byte[] dataBytesDecrypted = (cipher.doFinal(dataBytes));
-			return new String(dataBytesDecrypted);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+	private final static String HEX = "0123456789ABCDEF";
+	private static void appendHex(StringBuffer sb, byte b) {
+		sb.append(HEX.charAt((b>>4)&0x0f)).append(HEX.charAt(b&0x0f));
 	}
 }
