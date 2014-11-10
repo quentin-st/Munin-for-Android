@@ -13,7 +13,6 @@
 	<string name="settings_delete_button">"Löschen"</string>
 	<string name="servers_btn_add_server">"Server hinzufügen"</string>
 	<string name="save_button">"Speichern"</string>
-	<string name="settings_clear_button">"Zurücksetzen"</string>
 	<string name="menu_graph_previous">"Zurück"</string>
 	<string name="menu_graph_next">"Vorwärts"</string>
 	<string name="menu_graph_refresh">"Aktualisieren"</string>
@@ -31,9 +30,6 @@
 	<string name="addServerTitle">"Server hinzufügen"</string>
 	<string name="serversTitle">"Server"</string>
 	<string name="settingsTitle">"Einstellungen"</string>
-	<string name="textOn">"AN"</string>
-	<string name="textOff">"AUS"</string>
-	<string name="editServerTitle">"Server bearbeiten"</string>
 	<string name="aboutTitle">"Über Munin für Android"</string>
 	<string name="text01">"Einstellungen werden zurückgesetzt. Bist du sicher?"</string>
 	<string name="text02">"Erfolgreich zurückgesetzt"</string>
@@ -80,8 +76,6 @@
 	<string name="button_labels">"Labels"</string>
 	<string name="button_notifications">"Benachrichtigungen"</string>
 	<string name="settings_auth_type">"Authentifizierungsart"</string>
-	<string name="settings_transitions_label">"Übergänge"</string>
-	<string name="settings_transitions_checkbox">"Animationen bei Seitenübergängen aktivieren"</string>
 	<string name="settings_titlelabel_app">"APP"</string>
 	<string name="settings_titlelabel_graphs">"GRAPHEN"</string>
 	<string name="menu_graph_switch">"Server wechseln"</string>
@@ -95,7 +89,6 @@
 	<!-- MAIN BUTTON -->
 	<string name="widget_configuration1">"Das Widget wurde erfolgreich zum Homescreen hinzugefügt. Tipp: Der Graph kann durch Tippen auf die graue Leiste unten aktualisiert werden."</string>
 	<string name="widget_configuration2">"Graphen nur im WLAN automatisch aktualisieren (1 Update pro Stunde)"</string>
-	<string name="text21.3">"aktualisiert!"</string>
 	<string name="text49.1">"Normal operierende Server ausblenden"</string>
 	<string name="text49.2">"Normal operierende Server anzeigen"</string>
 	<string name="text50.1">"kritisch"</string>
@@ -120,7 +113,6 @@
 	<string name="text67">"Kein Label vorhanden"</string>
 	<string name="text68">"Timeout - der Server brauchte zu lange, um die Anfrage zu bearbeiten"</string>
 	<string name="button_grid">"Gitter"</string>
-	<string name="menu_pluginselection">"Gruppen bei Kategorie"</string>
 	<string name="edit">"Bearbeiten"</string>
 <string name="aboutText"><![CDATA[
 	    <head>

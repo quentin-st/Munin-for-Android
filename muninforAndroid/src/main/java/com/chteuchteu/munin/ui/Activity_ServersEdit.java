@@ -45,8 +45,6 @@ public class Activity_ServersEdit extends MuninActivity {
 		
 		for (MuninServer s : master.getChildren())
 			serversList.add(s);
-		
-		updateList(true);
 
 		listview = (DragSortListView) findViewById(R.id.listview);
 		listview.setDropListener(onDrop);
@@ -55,6 +53,8 @@ public class Activity_ServersEdit extends MuninActivity {
 		sfvm.setBackgroundColor(Color.TRANSPARENT);
 		listview.setFloatViewManager(sfvm);
 		list = new ArrayList<HashMap<String,String>>();
+
+		updateList(true);
 	}
 	
 	private void updateList(boolean firstTime) {
