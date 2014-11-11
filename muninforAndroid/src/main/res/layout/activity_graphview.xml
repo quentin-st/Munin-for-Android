@@ -153,7 +153,12 @@
 						android:id="@+id/doc_spinner"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
+						android:layout_marginLeft="10dp"
+						android:layout_marginRight="10dp"
+						android:layout_marginTop="5dp"
 						android:visibility="gone"/>
+
+					<View style="@style/Material_Divider" />
 
 					<ScrollView
 						android:id="@+id/doc_scrollview"

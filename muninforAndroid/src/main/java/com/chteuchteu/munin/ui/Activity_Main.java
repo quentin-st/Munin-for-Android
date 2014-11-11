@@ -80,39 +80,39 @@ public class Activity_Main extends ActionBarActivity {
 
 		dh = new DrawerHelper(this, muninFoo);
 
-		toolbar.setOnMenuItemClickListener(
-				new Toolbar.OnMenuItemClickListener() {
-					@Override
-					public boolean onMenuItemClick(MenuItem item) {
-						//if (item.getItemId() != android.R.id.home)
-						//	dh.closeDrawerIfOpened();
-						switch (item.getItemId()) {
-							case android.R.id.home:
-								//dh.toggle(true);
-								return true;
-							case R.id.menu_settings:
-								startActivity(new Intent(Activity_Main.this, Activity_Settings.class));
-								Util.setTransition(context, Util.TransitionStyle.DEEPER);
-								return true;
-							case R.id.menu_about:
-								startActivity(new Intent(Activity_Main.this, Activity_About.class));
-								Util.setTransition(context, Util.TransitionStyle.DEEPER);
-								return true;
-						}
-						return true;
-					}
-				}
-		);
-
 		Util.UI.applySwag(this);
 
+		this.isDrawerOpened = false;
 		this.materialMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
 			@Override public int getToolbarViewId() {
 				return R.id.toolbar;
 			}
 		};
-
 		this.materialMenu.setNeverDrawTouch(true);
+		dh.getDrawerLayout().setDrawerListener(new DrawerLayout.DrawerListener() {
+			@Override
+			public void onDrawerSlide(View view, float slideOffset) {
+				materialMenu.setTransformationOffset(
+						MaterialMenuDrawable.AnimationState.BURGER_ARROW,
+						isDrawerOpened ? 2 - slideOffset : slideOffset
+				);
+			}
+
+			@Override
+			public void onDrawerOpened(View view) {
+				isDrawerOpened = true;
+				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
+			}
+
+			@Override
+			public void onDrawerClosed(View view) {
+				isDrawerOpened = false;
+				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
+			}
+
+			@Override
+			public void onDrawerStateChanged(int i) { }
+		});
 		
 		Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.RobotoCondensed_Regular);
 		
@@ -152,38 +152,10 @@ public class Activity_Main extends ActionBarActivity {
 		// after X launches
 		displayTwitterAlertIfNeeded();
 
-		dh.getDrawerLayout().setDrawerListener(new DrawerLayout.DrawerListener() {
-			@Override
-			public void onDrawerSlide(View view, float slideOffset) {
-				materialMenu.setTransformationOffset(
-						MaterialMenuDrawable.AnimationState.BURGER_ARROW,
-						isDrawerOpened ? 2 - slideOffset : slideOffset
-				);
-			}
-
-			@Override
-			public void onDrawerOpened(View view) {
-				isDrawerOpened = true;
-				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
-
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-
-			@Override
-			public void onDrawerClosed(View view) {
-				isDrawerOpened = false;
-				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
-
-				createOptionsMenu();
-			}
-
-			@Override
-			public void onDrawerStateChanged(int i) { }
-		});
-
+		// Reset drawer
 		dh.reset();
 		dh.toggle();
+		materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 	}
 	
 	@Override
@@ -205,6 +177,28 @@ public class Activity_Main extends ActionBarActivity {
 				doubleBackPressed = false;
 			}
 		}, 2000);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() != android.R.id.home)
+			dh.closeDrawerIfOpened();
+
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				dh.toggle();
+				return true;
+			case R.id.menu_settings:
+				startActivity(new Intent(context, Activity_Settings.class));
+				Util.setTransition(context, Util.TransitionStyle.DEEPER);
+				return true;
+			case R.id.menu_about:
+				startActivity(new Intent(context, Activity_About.class));
+				Util.setTransition(context, Util.TransitionStyle.DEEPER);
+				return true;
+		}
+
+		return true;
 	}
 	
 	@Override
@@ -345,11 +339,11 @@ public class Activity_Main extends ActionBarActivity {
 
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		//this.materialMenu.syncState(savedInstanceState);
+		materialMenu.syncState(savedInstanceState);
 	}
 
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		//this.materialMenu.onSaveInstanceState(outState);
+		materialMenu.onSaveInstanceState(outState);
 	}
 }
