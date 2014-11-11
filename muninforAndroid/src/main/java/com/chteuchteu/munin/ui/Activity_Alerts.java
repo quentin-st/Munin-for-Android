@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -61,7 +62,7 @@ public class Activity_Alerts extends MuninActivity {
 	private ProgressBar 	progressBar;
 	private int 			currentLoadingProgress;
 	
-	private static final int SERVERS_BY_THREAD = 2;
+	private static final int SERVERS_BY_THREAD = 3;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -230,16 +231,28 @@ public class Activity_Alerts extends MuninActivity {
 		
 		int nbServers = muninFoo.getServers().size();
 		if (fetch) {
+			if (nbServers > 0) {
+				currentLoadingProgress = 0;
+				progressBar.setVisibility(View.VISIBLE);
+				progressBar.setProgress(0);
+				shouldDisplayEverythingsOk = true;
+				everythingsOk.setVisibility(View.GONE);
+			}
 			for (int i=0; i<nbServers; i++) {
 				if (i%SERVERS_BY_THREAD == 0) {
 					int from = i;
 					int to = i + 2;
 					if (to >= nbServers)
 						to = nbServers-1;
-					
-					new AlertsFetcher(from, to).execute();
+
+					// Avoid serial execution
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+						new AlertsFetcher(from, to).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+					else
+						new AlertsFetcher(from, to).execute();
 				}
 			}
+			muninFoo.alerts_lastUpdated = Calendar.getInstance();
 		} else {
 			for (int i=0; i<nbServers; i++)
 				updatePart(i);
@@ -251,6 +264,7 @@ public class Activity_Alerts extends MuninActivity {
 		private int toIndex;
 		
 		private AlertsFetcher(int fromIndex, int toIndex) {
+			log(fromIndex + " AlertsFetcher()");
 			this.fromIndex = fromIndex;
 			this.toIndex = toIndex;
 		}
@@ -258,19 +272,12 @@ public class Activity_Alerts extends MuninActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			
-			if (this.fromIndex == 0) {
-				currentLoadingProgress = 0;
-				progressBar.setVisibility(View.VISIBLE);
-				progressBar.setProgress(0);
-				shouldDisplayEverythingsOk = true;
-				everythingsOk.setVisibility(View.GONE);
-			}
+			log(fromIndex + " onPreExecute()");
 		}
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			muninFoo.alerts_lastUpdated = Calendar.getInstance();
+			log(fromIndex + " doInBackground()");
 			
 			for (int i=fromIndex; i<=toIndex; i++) {
 				muninFoo.getServer(i).fetchPluginsStates(muninFoo.getUserAgent());
@@ -283,6 +290,7 @@ public class Activity_Alerts extends MuninActivity {
 		
 		@Override
 		protected void onPostExecute(Void result) {
+			log(fromIndex + " onPostExecute()");
 			for (int i=fromIndex; i<=toIndex; i++)
 				updatePart(i);
 			
