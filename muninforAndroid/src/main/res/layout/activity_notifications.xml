@@ -21,6 +21,7 @@
 			android:background="@drawable/bottom_shadow" >
 
 			<LinearLayout
+				android:id="@+id/container"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="10dp"
@@ -31,15 +32,21 @@
 				android:paddingBottom="20dp"
 				android:paddingTop="20dp" >
 
-				<CheckBox
-					android:id="@+id/checkbox_notifications"
-					style="@style/Settings_SettingCheckbox"
+				<RelativeLayout
+					style="@style/Settings_Checkbox_Container"
+					android:tag="checkable"
 					android:layout_marginLeft="20dp"
-					android:layout_marginRight="20dp"
-					android:button="@null"
-					android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-					android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-					android:text="@string/text52" />
+					android:layout_marginRight="20dp">
+
+					<TextView
+						android:id="@+id/test"
+						style="@style/Settings_Checkbox_Label"
+						android:text="@string/text52"/>
+					<CheckBox
+						android:id="@+id/checkbox_notifications"
+						style="@style/Settings_Checkbox"
+						android:layout_alignParentRight="true"/>
+				</RelativeLayout>
 
 				<LinearLayout
 					android:id="@+id/notificationsEnabled"
@@ -49,25 +56,33 @@
 
 					<View style="@style/Material_Divider" />
 
-					<CheckBox
-						android:id="@+id/checkbox_wifiOnly"
-						style="@style/Settings_SettingCheckbox"
+					<RelativeLayout
+						style="@style/Settings_Checkbox_Container"
+						android:tag="checkable"
 						android:layout_marginLeft="20dp"
-						android:layout_marginRight="20dp"
-						android:button="@null"
-						android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-						android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-						android:text="@string/text53" />
+						android:layout_marginRight="20dp">
 
-					<CheckBox
-						android:id="@+id/checkbox_vibrate"
-						style="@style/Settings_SettingCheckbox"
+						<TextView
+							style="@style/Settings_Checkbox_Label"
+							android:text="@string/text53"/>
+						<CheckBox
+							android:id="@+id/checkbox_wifiOnly"
+							style="@style/Settings_Checkbox"/>
+					</RelativeLayout>
+
+					<RelativeLayout
+						style="@style/Settings_Checkbox_Container"
+						android:tag="checkable"
 						android:layout_marginLeft="20dp"
-						android:layout_marginRight="20dp"
-						android:button="@null"
-						android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-						android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-						android:text="@string/notifs_vibrate" />
+						android:layout_marginRight="20dp">
+
+						<TextView
+							style="@style/Settings_Checkbox_Label"
+							android:text="@string/notifs_vibrate"/>
+						<CheckBox
+							android:id="@+id/checkbox_vibrate"
+							style="@style/Settings_Checkbox"/>
+					</RelativeLayout>
 
 					<RelativeLayout
 						android:layout_width="match_parent"

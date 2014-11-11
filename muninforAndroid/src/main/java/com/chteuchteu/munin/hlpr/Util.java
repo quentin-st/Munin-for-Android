@@ -43,6 +43,7 @@ import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Util {
@@ -477,5 +478,44 @@ public final class Util {
 			return false;
 		}
 		return true;
+	}
+
+	public static List<View> getViewsByTag(ViewGroup root, String tag) {
+		List<View> views = new ArrayList<View>();
+		final int childCount = root.getChildCount();
+		for (int i=0; i<childCount; i++) {
+			final View child = root.getChildAt(i);
+			if (child instanceof ViewGroup)
+				views.addAll(Util.getViewsByTag((ViewGroup) child, tag));
+
+			final Object tagObj = child.getTag();
+			if (tagObj != null && tagObj.equals(tag))
+				views.add(child);
+		}
+		return views;
+	}
+
+	/**
+	 * Returns the first-level child of the parent, with the type 'type'
+	 * @param parent root view
+	 * @param type view type (EditText, ImageView, ...)
+	 * @return may be null
+	 */
+	public static View getChild(ViewGroup parent, Class<?> type) {
+		View view = null;
+
+		for (int i=0; i<parent.getChildCount(); i++) {
+			View child = parent.getChildAt(i);
+
+			if (child.getClass() == type)
+				return child;
+			else if (child instanceof ViewGroup) {
+				View child2 = getChild((ViewGroup) child, type);
+				if (child2 != null)
+					return child2;
+			}
+		}
+
+		return view;
 	}
 }

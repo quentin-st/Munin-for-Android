@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -188,6 +190,22 @@ public class Activity_Settings extends MuninActivity {
 		}
 
 		editText_userAgent.setText(muninFoo.getUserAgent());
+
+
+		// Since we manually defined the checkbox and text
+		// (so the checkbox can be at the right and still have the view tinting introduced
+		// on Android 5.0), we have to manually define the onclick listener on the label
+		for (View view : Util.getViewsByTag((ViewGroup)findViewById(R.id.settingsContainer), "checkable")) {
+			view.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					ViewGroup row = (ViewGroup) view;
+					CheckBox checkBox = (CheckBox) Util.getChild(row, android.support.v7.internal.widget.TintCheckBox.class);
+					if (checkBox != null)
+						checkBox.setChecked(!checkBox.isChecked());
+				}
+			});
+		}
 
 		// Avoid keyboard showing up because of user agent edittext
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

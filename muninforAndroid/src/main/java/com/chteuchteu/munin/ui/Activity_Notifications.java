@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -168,6 +169,21 @@ public class Activity_Notifications extends MuninActivity {
 					notificationsSettings.setVisibility(View.GONE);
 			}
 		});
+
+		// Since we manually defined the checkbox and text
+		// (so the checkbox can be at the right and still have the view tinting introduced
+		// on Android 5.0), we have to manually define the onclick listener on the label
+		for (View view : Util.getViewsByTag((ViewGroup)findViewById(R.id.container), "checkable")) {
+			view.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					ViewGroup row = (ViewGroup) view;
+					CheckBox checkBox = (CheckBox) Util.getChild(row, android.support.v7.internal.widget.TintCheckBox.class);
+					if (checkBox != null)
+						checkBox.setChecked(!checkBox.isChecked());
+				}
+			});
+		}
 	}
 	
 	private void enableNotifications() {

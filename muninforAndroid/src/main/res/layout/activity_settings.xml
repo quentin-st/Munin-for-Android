@@ -26,6 +26,7 @@
 				android:orientation="vertical" >
 
 				<LinearLayout
+					android:id="@+id/settingsContainer"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="15dp"
@@ -100,13 +101,17 @@
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_screenalwayson_label" />
 
-					<CheckBox
-						android:id="@+id/checkbox_screenalwayson"
-						style="@style/Settings_SettingCheckbox"
-						android:button="@null"
-						android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-						android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-						android:text="@string/settings_screenalwayson_checkbox" />
+					<RelativeLayout
+						style="@style/Settings_Checkbox_Container"
+						android:tag="checkable">
+
+						<TextView
+							style="@style/Settings_Checkbox_Label"
+							android:text="@string/settings_screenalwayson_checkbox"/>
+						<CheckBox
+							android:id="@+id/checkbox_screenalwayson"
+							style="@style/Settings_Checkbox" />
+					</RelativeLayout>
 
 					<View style="@style/Material_Divider" />
 
@@ -117,13 +122,17 @@
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_autorefresh_label" />
 
-					<CheckBox
-						android:id="@+id/checkbox_autorefresh"
-						style="@style/Settings_SettingCheckbox"
-						android:button="@null"
-						android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-						android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-						android:text="@string/settings_autorefresh_checkbox" />
+					<RelativeLayout
+						style="@style/Settings_Checkbox_Container"
+						android:tag="checkable">
+
+						<TextView
+							style="@style/Settings_Checkbox_Label"
+							android:text="@string/settings_autorefresh_checkbox"/>
+						<CheckBox
+							android:id="@+id/checkbox_autorefresh"
+							style="@style/Settings_Checkbox" />
+					</RelativeLayout>
 
 					<View style="@style/Material_Divider" />
 
@@ -134,13 +143,17 @@
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_enablegraphszoom" />
 
-					<CheckBox
-						android:id="@+id/checkbox_enablegraphszoom"
-						style="@style/Settings_SettingCheckbox"
-						android:button="@null"
-						android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-						android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-						android:text="@string/settings_enablegraphszoom" />
+					<RelativeLayout
+						style="@style/Settings_Checkbox_Container"
+						android:tag="checkable">
+
+						<TextView
+							style="@style/Settings_Checkbox_Label"
+							android:text="@string/settings_enablegraphszoom"/>
+						<CheckBox
+							android:id="@+id/checkbox_enablegraphszoom"
+							style="@style/Settings_Checkbox" />
+					</RelativeLayout>
 
 					<View style="@style/Material_Divider" />
 
@@ -151,13 +164,17 @@
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_hdgraphs" />
 
-					<CheckBox
-						android:id="@+id/checkbox_hdgraphs"
-						style="@style/Settings_SettingCheckbox"
-						android:button="@null"
-						android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-						android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-						android:text="@string/settings_hdgraphs_text" />
+					<RelativeLayout
+						style="@style/Settings_Checkbox_Container"
+						android:tag="checkable">
+
+						<TextView
+							style="@style/Settings_Checkbox_Label"
+							android:text="@string/settings_hdgraphs_text"/>
+						<CheckBox
+							android:id="@+id/checkbox_hdgraphs"
+							style="@style/Settings_Checkbox" />
+					</RelativeLayout>
 
 					<View style="@style/Material_Divider" />
 
@@ -194,13 +211,17 @@
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_graphview_hidearrows" />
 
-					<CheckBox
-						android:id="@+id/checkbox_hidearrows"
-						style="@style/Settings_SettingCheckbox"
-						android:button="@null"
-						android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-						android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-						android:text="@string/settings_graphview_hidearrows_checkbox" />
+					<RelativeLayout
+						style="@style/Settings_Checkbox_Container"
+						android:tag="checkable">
+
+						<TextView
+							style="@style/Settings_Checkbox_Label"
+							android:text="@string/settings_graphview_hidearrows_checkbox"/>
+						<CheckBox
+							android:id="@+id/checkbox_hidearrows"
+							style="@style/Settings_Checkbox"/>
+					</RelativeLayout>
 				</LinearLayout>
 			</LinearLayout>
 		</ScrollView>
