@@ -158,7 +158,10 @@
 						android:layout_marginTop="5dp"
 						android:visibility="gone"/>
 
-					<View style="@style/Material_Divider" />
+					<View
+						android:id="@+id/doc_divider"
+						style="@style/Material_Divider"
+						android:visibility="gone"/>
 
 					<ScrollView
 						android:id="@+id/doc_scrollview"

@@ -84,6 +84,7 @@ public class Activity_GraphView extends MuninActivity {
 	 */
 	public boolean[]  photoViewAttached;
 	private Bitmap[]	bitmaps;
+	public ImageView iv_documentation;
 	/**
 	 * How many bitmaps should be kept on left and right
 	 * of current list position
@@ -846,6 +847,8 @@ public class Activity_GraphView extends MuninActivity {
 
 	private void hideDocumentation() {
 		final View documentation = findViewById(R.id.documentation);
+		iv_documentation = (ImageView) findViewById(R.id.doc_imageview);
+		iv_documentation.setTag("");
 
 		Display display = getWindowManager().getDefaultDisplay();
 		Point size = new Point();
@@ -896,8 +899,9 @@ public class Activity_GraphView extends MuninActivity {
 			documentation.startAnimation(a1);
 
 			// Content filling
-			ImageView imageView = (ImageView) findViewById(R.id.doc_imageview);
-			imageView.setImageBitmap(bitmaps[viewFlow.getSelectedItemPosition()]);
+			iv_documentation = (ImageView) findViewById(R.id.doc_imageview);
+			iv_documentation.setImageBitmap(bitmaps[viewFlow.getSelectedItemPosition()]);
+			iv_documentation.setTag(plugin.getName());
 
 			TextView line1 = (TextView) findViewById(R.id.doc_line1);
 			TextView line2 = (TextView) findViewById(R.id.doc_line2);
@@ -917,6 +921,7 @@ public class Activity_GraphView extends MuninActivity {
 
 			if (nodes.size() > 1) {
 				spinner.setVisibility(View.VISIBLE);
+				findViewById(R.id.doc_divider).setVisibility(View.VISIBLE);
 
 				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 						android.R.layout.simple_spinner_item, nodes);

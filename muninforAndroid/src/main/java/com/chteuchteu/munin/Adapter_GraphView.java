@@ -122,6 +122,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 			if (!activity.isBitmapNull(position)) {
 				imageView.setImageBitmap(activity.getBitmap(position));
 
+				// PhotoViewAttacher
 				if (Util.getPref(context, "graphsZoom").equals("true")) {
 					if (!activity.photoViewAttached[position]) {
 						activity.photoViewAttached[position] = true;
@@ -129,6 +130,13 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 						if (mAttacher.getMidScale() < 2f)
 							mAttacher.setMaxScale(2f);
 					}
+				}
+
+				// If documentation shown && image just loaded : display it
+				if (activity.iv_documentation != null) {
+					Object tag = activity.iv_documentation.getTag();
+					if (tag != null && tag.equals(muninFoo.getCurrentServer().getPlugin(position).getName()))
+						activity.iv_documentation.setImageBitmap(activity.getBitmap(position));
 				}
 			} else {
 				// It seems that can actually fire OutOfMemoryError (BitmapFactory.nativeDecodeAsset)
