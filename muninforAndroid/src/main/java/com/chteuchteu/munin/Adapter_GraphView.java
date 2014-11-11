@@ -63,8 +63,10 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 			ImageView imageView = (ImageView) convertView.findViewById(R.id.tiv);
 			ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressbar);
 			
-			if (activity.isBitmapNull(position))
-				new BitmapFetcher(imageView, progressBar, position, context).execute();
+			if (activity.isBitmapNull(position)) {
+				// Avoid serial execution
+				new BitmapFetcher(imageView, progressBar, position, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			}
 			else {
 				imageView.setImageBitmap(activity.getBitmap(position));
 				progressBar.setVisibility(View.GONE);

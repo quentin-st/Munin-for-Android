@@ -38,7 +38,7 @@ public class GridDownloadHelper {
 		
 		for (int i=0; i<this.nbSimultaneousDownloads; i++) {
 			if (items.size() > i)
-				new DownloadBitmaps(i, forceUpdate).execute();
+				new DownloadBitmaps(i, forceUpdate).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		}
 	}
 	
@@ -93,7 +93,7 @@ public class GridDownloadHelper {
 				
 				int next = i + nbSimultaneousDownloads;
 				if (next < items.size())
-					new DownloadBitmaps(next, forceUpdate).execute();
+					new DownloadBitmaps(next, forceUpdate).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			}
 		}
 	}

@@ -129,7 +129,7 @@ public class GridItem {
 					this.hdGraphDownloader.killDownload();
 				
 				this.hdGraphDownloader = new HDGraphDownloader(grid.currentlyOpenedPlugin, fullscreenImageView, period);
-				this.hdGraphDownloader.execute();
+				this.hdGraphDownloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			}
 		}
 	}

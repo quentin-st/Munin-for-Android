@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -246,10 +245,7 @@ public class Activity_Alerts extends MuninActivity {
 						to = nbServers-1;
 
 					// Avoid serial execution
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-						new AlertsFetcher(from, to).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-					else
-						new AlertsFetcher(from, to).execute();
+					new AlertsFetcher(from, to).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				}
 			}
 			muninFoo.alerts_lastUpdated = Calendar.getInstance();
