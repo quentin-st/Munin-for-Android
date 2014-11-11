@@ -134,16 +134,16 @@ public class MuninPlugin {
 		return url;
 	}
 	
-	public Bitmap getGraph(String url) {
-		return this.installedOn.getParent().grabBitmap(url);
+	public Bitmap getGraph(String url, String userAgent) {
+		return this.installedOn.getParent().grabBitmap(url, userAgent);
 	}
 	
 	
-	public String getFieldsDescriptionHtml() {
+	public String getFieldsDescriptionHtml(String userAgent) {
 		if (this.pluginPageUrl.equals(""))
 			return null;
 		
-		String html = this.installedOn.getParent().grabUrl(this.pluginPageUrl).html;
+		String html = this.installedOn.getParent().grabUrl(this.pluginPageUrl, userAgent).html;
 		if (html.equals(""))
 			return null;
 		

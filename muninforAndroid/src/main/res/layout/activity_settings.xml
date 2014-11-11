@@ -71,6 +71,19 @@
 
 					<View style="@style/Material_Divider" />
 
+					<!-- User agent -->
+
+					<TextView
+						android:id="@+id/title4"
+						style="@style/Settings_SettingTitle"
+						android:text="@string/user_agent" />
+
+					<EditText
+						android:id="@+id/edittext_useragent"
+						style="@style/Settings_SettingEditText" />
+
+					<View style="@style/Material_Divider" />
+
 					<!-- GRAPHS SETTINGS -->
 
 					<TextView

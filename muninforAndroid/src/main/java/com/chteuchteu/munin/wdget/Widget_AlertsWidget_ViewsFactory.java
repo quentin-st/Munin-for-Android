@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
 import com.chteuchteu.munin.hlpr.Util;
@@ -63,7 +64,7 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 			}
 
 			for (MuninServer server : newServersList)
-				server.fetchPluginsStates();
+				server.fetchPluginsStates(MuninFoo.getUserAgent(context));
 
 			// Update servers list according to those results
 			servers.clear();

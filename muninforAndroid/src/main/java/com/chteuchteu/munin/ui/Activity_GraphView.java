@@ -319,7 +319,7 @@ public class Activity_GraphView extends MuninActivity {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			dynazoomAvailable = server.getParent().isDynazoomAvailable();
+			dynazoomAvailable = server.getParent().isDynazoomAvailable(muninFoo.getUserAgent());
 			return null;
 		}
 		
@@ -773,7 +773,7 @@ public class Activity_GraphView extends MuninActivity {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			this.html = plugin.getFieldsDescriptionHtml();
+			this.html = plugin.getFieldsDescriptionHtml(muninFoo.getUserAgent());
 			
 			return null;
 		}

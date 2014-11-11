@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.View;
 
+import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
@@ -68,7 +69,9 @@ public class GridDownloadHelper {
 							&& gridItem.plugin.getInstalledOn().getParent() != null) {
 						String graphUrl = gridItem.plugin.getImgUrl(period);
 						b = Util.dropShadow(
-								Util.removeBitmapBorder(gridItem.plugin.getInstalledOn().getParent().grabBitmap(graphUrl)));
+								Util.removeBitmapBorder(
+										gridItem.plugin.getInstalledOn().getParent().grabBitmap(graphUrl,
+												MuninFoo.getInstance().getUserAgent())));
 					}
 				}
 			}

@@ -53,7 +53,7 @@ public class NetHelper {
 	 * @param url URL to be downloaded
 	 * @return HTTPResponse
 	 */
-	public static HTTPResponse grabUrl(MuninMaster master, String url) {
+	public static HTTPResponse grabUrl(MuninMaster master, String url, String userAgent) {
 		HTTPResponse resp = new HTTPResponse();
 		
 		MuninFoo.logV("grabUrl:url", url);
@@ -89,7 +89,7 @@ public class NetHelper {
 				client = new DefaultHttpClient();
 
 			HttpGet request = new HttpGet(url);
-			request.setHeader("User-Agent", MuninFoo.userAgent);
+			request.setHeader("User-Agent", userAgent);
 			
 			if (master.isAuthNeeded()) {
 				if (master.getAuthType() == AuthType.BASIC)
@@ -143,7 +143,7 @@ public class NetHelper {
 			}
 			
 			url = Util.URLManipulation.setHttps(url);
-			return NetHelper.grabUrl(master, url);
+			return NetHelper.grabUrl(master, url, userAgent);
 		}
 		catch (SSLException e) {
 			master.setSSL(true);
@@ -160,14 +160,14 @@ public class NetHelper {
 			}
 			
 			url = Util.URLManipulation.setHttps(url);
-			return NetHelper.grabUrl(master, url);
+			return NetHelper.grabUrl(master, url, userAgent);
 		}
 		catch (Exception e) { e.printStackTrace(); resp.html = ""; }
 		return resp;
 	}
 	
-	public static Bitmap grabBitmap(MuninMaster master, String url) {
-		return grabBitmap(master, url, false);
+	public static Bitmap grabBitmap(MuninMaster master, String url, String userAgent) {
+		return grabBitmap(master, url, userAgent, false);
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class NetHelper {
 	 *                (recursive call)
 	 * @return Bitmap
 	 */
-	private static Bitmap grabBitmap(MuninMaster master, String url, boolean retried) {
+	private static Bitmap grabBitmap(MuninMaster master, String url, String userAgent, boolean retried) {
 		Bitmap b;
 		
 		try {
@@ -211,7 +211,7 @@ public class NetHelper {
 				client = new DefaultHttpClient();
 
 			HttpGet request = new HttpGet(url);
-			request.setHeader("User-Agent", MuninFoo.userAgent);
+			request.setHeader("User-Agent", userAgent);
 			
 			if (master.isAuthNeeded()) {
 				if (master.getAuthType() == AuthType.BASIC)
@@ -241,7 +241,7 @@ public class NetHelper {
 			} else {
 				if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried && response.getHeaders("WWW-Authenticate").length > 0) {
 					master.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
-					return grabBitmap(master, url, true);
+					return grabBitmap(master, url, userAgent, true);
 				} else
 					throw new IOException("Download failed for URL " + url + " HTTP response code "
 							+ statusCode + " - " + statusLine.getReasonPhrase());

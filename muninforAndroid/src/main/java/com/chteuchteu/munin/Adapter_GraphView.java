@@ -108,7 +108,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 
 
 				activity.addBitmap(Util.removeBitmapBorder(
-								muninFoo.getCurrentServer().getParent().grabBitmap(imgUrl)),
+								muninFoo.getCurrentServer().getParent().grabBitmap(imgUrl, muninFoo.getUserAgent())),
 						position);
 			}
 			

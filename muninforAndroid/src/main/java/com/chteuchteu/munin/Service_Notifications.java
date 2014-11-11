@@ -94,7 +94,7 @@ public class Service_Notifications extends Service {
 			}
 			
 			for (MuninServer s: servers)
-				s.fetchPluginsStates();
+				s.fetchPluginsStates(MuninFoo.getUserAgent(Service_Notifications.this));
 			
 			
 			for (MuninServer s: servers) {

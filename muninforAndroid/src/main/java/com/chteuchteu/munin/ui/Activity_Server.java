@@ -466,7 +466,7 @@ public class Activity_Server extends MuninActivity {
 				master = new MuninMaster();
 				master.setUrl(serverUrl);
 			}
-			type = master.detectPageType();
+			type = master.detectPageType(muninFoo.getUserAgent());
 			
 			// The first connection to the server has been done : settingsServer.ssl has been set to true if necessary.
 			// If not premium :
@@ -485,7 +485,7 @@ public class Activity_Server extends MuninActivity {
 			
 			if (type.equals("munin/")) {
 				/*		CONTENT OF THE PAGE: SERVERS LIST	*/
-				int nbNewServers = master.fetchChildren();
+				int nbNewServers = master.fetchChildren(muninFoo.getUserAgent());
 				
 				boolean fetchSuccess = nbNewServers > 0;
 				
@@ -497,7 +497,7 @@ public class Activity_Server extends MuninActivity {
 					for (MuninServer server : master.getChildren()) {
 						setPopupText("", getString(R.string.text46) + " " + (master.getChildren().indexOf(server)+1) + "/" + nbNewServers);
 						
-						server.fetchPluginsList();
+						server.fetchPluginsList(muninFoo.getUserAgent());
 						
 						if (popupstate < 80) {
 							popupstate += Math.round(50/nbNewServers);

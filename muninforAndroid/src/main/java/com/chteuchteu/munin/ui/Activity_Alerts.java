@@ -273,7 +273,7 @@ public class Activity_Alerts extends MuninActivity {
 			muninFoo.alerts_lastUpdated = Calendar.getInstance();
 			
 			for (int i=fromIndex; i<=toIndex; i++) {
-				muninFoo.getServer(i).fetchPluginsStates();
+				muninFoo.getServer(i).fetchPluginsStates(muninFoo.getUserAgent());
 				currentLoadingProgress++;
 				progressBar.setProgress(currentLoadingProgress*100/muninFoo.getServers().size());
 			}

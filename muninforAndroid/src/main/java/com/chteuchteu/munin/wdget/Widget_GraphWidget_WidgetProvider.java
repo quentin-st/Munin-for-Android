@@ -30,9 +30,13 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 	
 	private static SQLite sqlite;
 	private static GraphWidget graphWidget;
+
+	private static Context context;
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+		this.context = context;
+
 		sqlite = new SQLite(context, MuninFoo.getInstance(context));
 		
 		// Get all ids
@@ -181,7 +185,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			bm = graphWidget.getPlugin().getGraph(url);
+			bm = graphWidget.getPlugin().getGraph(url, MuninFoo.getUserAgent(context));
 			bm = Util.removeBitmapBorder(bm);
 			if (graphWidget.getHideServerName())
 				bm = Util.dropShadow(bm);

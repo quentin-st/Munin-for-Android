@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +36,7 @@ public class Activity_Settings extends MuninActivity {
 	private CheckBox checkbox_graphsZoom;
 	private CheckBox checkbox_hdGraphs;
 	private CheckBox checkbox_hideGraphviewArrows;
+	private EditText editText_userAgent;
 	
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,6 +57,8 @@ public class Activity_Settings extends MuninActivity {
 		checkbox_graphsZoom = (CheckBox)findViewById(R.id.checkbox_enablegraphszoom);
 		checkbox_hdGraphs = (CheckBox)findViewById(R.id.checkbox_hdgraphs);
 		checkbox_hideGraphviewArrows = (CheckBox)findViewById(R.id.checkbox_hidearrows);
+
+		editText_userAgent = (EditText)findViewById(R.id.edittext_useragent);
 		
 		
 		// Spinner default period
@@ -99,6 +104,7 @@ public class Activity_Settings extends MuninActivity {
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title2), CustomFont.Roboto_Medium);
 		
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title3), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title4), CustomFont.Roboto_Medium);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title7), CustomFont.Roboto_Medium);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title8), CustomFont.Roboto_Medium);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title9), CustomFont.Roboto_Medium);
@@ -180,6 +186,11 @@ public class Activity_Settings extends MuninActivity {
 			if (pos != -1)
 				spinner_defaultServer.setSelection(pos+1);
 		}
+
+		editText_userAgent.setText(muninFoo.getUserAgent());
+
+		// Avoid keyboard showing up because of user agent edittext
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	}
 	
 	private void actionSave() {
@@ -250,6 +261,9 @@ public class Activity_Settings extends MuninActivity {
 			MuninServer defaultServer = muninFoo.getOrderedServers().get(defaultServerPosition);
 			Util.setPref(this, "defaultServer", defaultServer.getServerUrl());
 		}
+
+		Util.setPref(context, "userAgent", editText_userAgent.getText().toString());
+		muninFoo.setUserAgent(editText_userAgent.getText().toString());
 		
 		// After saving -> go back to reality
 		Toast.makeText(this, getString(R.string.text36), Toast.LENGTH_SHORT).show();

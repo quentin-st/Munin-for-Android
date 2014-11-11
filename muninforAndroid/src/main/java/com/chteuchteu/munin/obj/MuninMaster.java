@@ -117,7 +117,7 @@ public class MuninMaster {
 	 * Warning : this has to be done on a thread
 	 * @return boolean
 	 */
-	public boolean isDynazoomAvailable() {
+	public boolean isDynazoomAvailable(String userAgent) {
 		if (this.defaultMaster || this.isEmpty())
 			return false;
 		
@@ -129,7 +129,7 @@ public class MuninMaster {
 			return false;
 		
 		String hdGraphUrl = plugin.getHDImgUrl(Period.DAY);
-		HTTPResponse res = grabUrl(hdGraphUrl);
+		HTTPResponse res = grabUrl(hdGraphUrl, userAgent);
 		
 		boolean seemsAvailable = !res.timeout && res.responseCode == 200;
 		
@@ -138,7 +138,7 @@ public class MuninMaster {
 		
 		// At this point, the dynazoom seems available. Let's try to download a bitmap to
 		// see if we get a bitmap (instead of a custom 404 error)
-		Bitmap bitmap = grabBitmap(hdGraphUrl);
+		Bitmap bitmap = grabBitmap(hdGraphUrl, userAgent);
 		return bitmap != null;
 	}
 	
@@ -235,12 +235,12 @@ public class MuninMaster {
 		return newList;
 	}
 	
-	public Bitmap grabBitmap(String url) {
-		return NetHelper.grabBitmap(this, url);
+	public Bitmap grabBitmap(String url, String userAgent) {
+		return NetHelper.grabBitmap(this, url, userAgent);
 	}
 	
-	public HTTPResponse grabUrl(String url) {
-		return NetHelper.grabUrl(this, url);
+	public HTTPResponse grabUrl(String url, String userAgent) {
+		return NetHelper.grabUrl(this, url, userAgent);
 	}
 	
 	/**
@@ -250,8 +250,8 @@ public class MuninMaster {
 	 * 	- err_code		: if error -> error code
 	 * @return String : pageType
 	 */
-	public String detectPageType() {
-		HTTPResponse res = grabUrl(this.url);
+	public String detectPageType(String userAgent) {
+		HTTPResponse res = grabUrl(this.url, userAgent);
 		String page = res.html;
 		if (!res.header_wwwauthenticate.equals("")) {
 			// Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
@@ -290,11 +290,11 @@ public class MuninMaster {
 	 * Fetches the children of this MuninMaster
 	 * @return How many servers have been found
 	 */
-	public int fetchChildren() {
+	public int fetchChildren(String userAgent) {
 		int nbServers = 0;
 		
 		// Grab HTML content
-		String html = grabUrl(this.url).html;
+		String html = grabUrl(this.url, userAgent).html;
 		
 		if (!html.equals("")) {
 			Document doc = Jsoup.parse(html, this.url);
@@ -317,7 +317,7 @@ public class MuninMaster {
 				
 				if (!parentUrl.equals(this.url)) {
 					this.url = parentUrl;
-					String htmlBis = grabUrl(parentUrl).html;
+					String htmlBis = grabUrl(parentUrl, userAgent).html;
 					if (!html.equals("")) {
 						html = htmlBis;
 						doc = Jsoup.parse(html, this.url);
@@ -504,7 +504,7 @@ public class MuninMaster {
 			onlineMaster.setSSL(this.ssl);
 			onlineMaster.setAuthIds(this.authLogin, this.authPassword, this.authType);
 			
-			onlineMaster.fetchChildren();
+			onlineMaster.fetchChildren(muninFoo.getUserAgent());
 			
 			if (!onlineMaster.isEmpty()) {
 				// SERVERS DIFF
@@ -572,7 +572,7 @@ public class MuninMaster {
 				// The servers are now synced.
 				// PLUGINS DIFF
 				for (MuninServer server : this.children) {
-					List<MuninPlugin> onlinePlugins = server.getPluginsList();
+					List<MuninPlugin> onlinePlugins = server.getPluginsList(muninFoo.getUserAgent());
 					
 					// If the download hasn't failed
 					if (onlinePlugins != null && onlinePlugins.size() > 0) {

@@ -100,9 +100,9 @@ public class MuninServer {
 	public MuninMaster getParent() { return this.master; }
 	
 	
-	public List<MuninPlugin> getPluginsList() {
+	public List<MuninPlugin> getPluginsList(String userAgent) {
 		List<MuninPlugin> mp = new ArrayList<MuninPlugin>();
-		String html = this.master.grabUrl(this.getServerUrl()).html;
+		String html = this.master.grabUrl(this.getServerUrl(), userAgent).html;
 		
 		if (html.equals(""))
 			return null;
@@ -169,8 +169,8 @@ public class MuninServer {
 		return mp;
 	}
 	
-	public boolean fetchPluginsList() {
-		List<MuninPlugin> plugins = getPluginsList();
+	public boolean fetchPluginsList(String userAgent) {
+		List<MuninPlugin> plugins = getPluginsList(userAgent);
 		
 		if (plugins != null) {
 			this.plugins = plugins;
@@ -178,7 +178,7 @@ public class MuninServer {
 		}
 		return false;
 	}
-	public void fetchPluginsStates() {
+	public void fetchPluginsStates(String userAgent) {
 		erroredPlugins.clear();
 		warnedPlugins.clear();
 		
@@ -186,7 +186,7 @@ public class MuninServer {
 		for (MuninPlugin plugin : this.plugins)
 			plugin.setState(AlertState.UNDEFINED);
 		
-		HTTPResponse response = master.grabUrl(this.getServerUrl());
+		HTTPResponse response = master.grabUrl(this.getServerUrl(), userAgent);
 		
 		if (response.timeout || response.responseCode != 200 || response.html.equals(""))
 			this.reachable = SpecialBool.FALSE;

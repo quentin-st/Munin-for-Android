@@ -32,7 +32,7 @@ public class MuninFoo {
 	public SQLite sqlite;
 	private MuninServer currentServer;
 
-	public static String userAgent;
+	private String userAgent;
 	
 	// === VERSION === //
 	// HISTORY		current:	 _______________________________________________________________________________________________________________________________
@@ -69,7 +69,10 @@ public class MuninFoo {
 		masters = new ArrayList<MuninMaster>();
 		sqlite = new SQLite(context, this);
 		instance = null;
-		generateUserAgent(context);
+
+		// User agent
+		String userAgentPref = Util.getPref(context, "userAgent");
+		this.userAgent = userAgentPref.equals("") ? generateUserAgent(context) : userAgentPref;
 
 		loadInstance(context);
 	}
@@ -433,25 +436,37 @@ public class MuninFoo {
 	 * Generates "MuninForAndroid/3.0 (Android 4.4.4 KITKAT)" from context
 	 * @param context Application/activity context
 	 */
-	private void generateUserAgent(Context context) {
-		if (context == null) {
-			generateUserAgent();
-			return;
-		}
+	private static String generateUserAgent(Context context) {
+		if (context == null)
+			return generateUserAgent();
 
 		String appVersion = Util.getAppVersion(context);
 		String androidVersion = Util.getAndroidVersion();
-		userAgent = "MuninForAndroid/" + appVersion + " (" + androidVersion + ")";
+		String userAgent = "MuninForAndroid/" + appVersion + " (" + androidVersion + ")";
 		log("User agent : " + userAgent);
+		return userAgent;
 	}
 
 	/**
 	 * Context-less version of generateUserAgent(Context context)
 	 * Generates "MuninForAndroid (Android 4.4.4 KITKAT)"
 	 */
-	private void generateUserAgent() {
+	private static String generateUserAgent() {
 		String androidVersion = Util.getAndroidVersion();
-		userAgent = "MuninForAndroid (" + androidVersion + ")";
+		String userAgent = "MuninForAndroid (" + androidVersion + ")";
 		log("User agent : " + userAgent);
+		return userAgent;
 	}
+
+	public String getUserAgent() { return this.userAgent; }
+	/**
+	 * Get user agent in a context where MuninFoo isn't probably loaded
+	 * @param context
+	 * @return
+	 */
+	public static String getUserAgent(Context context) {
+		String userAgentPref = Util.getPref(context, "userAgent");
+		return userAgentPref.equals("") ? generateUserAgent(context) : userAgentPref;
+	}
+	public void setUserAgent(String val) { this.userAgent = val; }
 }

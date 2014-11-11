@@ -163,7 +163,8 @@ public class ImportExportHelper {
 					return jsonResult.getJSONArray("data").getJSONObject(0);
 				} else {
 					String error = jsonResult.getString("error");
-					Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
+					if (!error.equals("006")) // Wrong password
+						Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
 				}
 				
 				return null;
