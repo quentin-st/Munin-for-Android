@@ -408,8 +408,10 @@ public class Activity_Alerts extends MuninActivity {
 			
 			// Set the background color so we can see the server state
 			for (int i=0; i<this.part_part.length; i++) {
-				int criticalsNumber = Integer.parseInt(this.part_criticalsNumber[i].getText().toString());
-				int warningsNumber = Integer.parseInt(this.part_warningsNumber[i].getText().toString());
+				String s_CriticalsNumber = this.part_criticalsNumber[i].getText().toString();
+				int criticalsNumber = s_CriticalsNumber.equals("?") ? -1 : Integer.parseInt(s_CriticalsNumber);
+				String s_WarningsNumber = this.part_warningsNumber[i].getText().toString();
+				int warningsNumber = s_WarningsNumber.equals("?") ? -1 : Integer.parseInt(s_WarningsNumber);
 				if (criticalsNumber > 0 || warningsNumber > 0) {
 					if (criticalsNumber > 0)
 						this.part_serverName[i].setBackgroundColor(Color.parseColor(BG_COLOR_CRITICAL));
