@@ -474,8 +474,12 @@ public class Activity_Server extends MuninActivity {
 			// If ssl was false and is now true : display error msg.
 			if (!muninFoo.premium && master.getSSL())
 				type = "RES_NOT_PREMIUM";
-			
-			progressBar.setIndeterminate(false);
+
+			runOnUiThread(new Runnable() {
+				public void run() {
+					progressBar.setIndeterminate(false);
+				}
+			});
 			
 			return type;
 		}

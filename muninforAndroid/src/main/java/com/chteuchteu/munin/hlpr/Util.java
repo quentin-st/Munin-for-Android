@@ -61,9 +61,12 @@ public final class Util {
 					Window w = activity.getWindow();
 					//w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 					w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+					// On Android KitKat => statusBarColor. Above => actionBarColor
+					int statusBarColor = Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT ? R.color.statusBarColor : R.color.actionBarColor;
 					SystemBarTintManager tintManager = new SystemBarTintManager(activity);
 					tintManager.setStatusBarTintEnabled(true);
-					tintManager.setStatusBarTintResource(R.color.statusBarColor);
+					tintManager.setStatusBarTintResource(statusBarColor);
 				}
 			}
 		}
