@@ -34,9 +34,7 @@
 
 				<RelativeLayout
 					style="@style/Settings_Checkbox_Container"
-					android:tag="checkable"
-					android:layout_marginLeft="20dp"
-					android:layout_marginRight="20dp">
+					android:tag="checkable">
 
 					<TextView
 						android:id="@+id/test"
@@ -58,9 +56,7 @@
 
 					<RelativeLayout
 						style="@style/Settings_Checkbox_Container"
-						android:tag="checkable"
-						android:layout_marginLeft="20dp"
-						android:layout_marginRight="20dp">
+						android:tag="checkable">
 
 						<TextView
 							style="@style/Settings_Checkbox_Label"
@@ -72,9 +68,7 @@
 
 					<RelativeLayout
 						style="@style/Settings_Checkbox_Container"
-						android:tag="checkable"
-						android:layout_marginLeft="20dp"
-						android:layout_marginRight="20dp">
+						android:tag="checkable">
 
 						<TextView
 							style="@style/Settings_Checkbox_Label"
