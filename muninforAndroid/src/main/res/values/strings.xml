@@ -29,8 +29,6 @@
 	<string name="settings_enablegraphszoom">Enable graphs zoom</string>
 	<string name="settings_titlelabel_app">Application settings</string>
 	<string name="settings_titlelabel_graphs">Graphs settings</string>
-	<string name="settings_graphview_hidearrows">Hide left and right actions</string>
-	<string name="settings_graphview_hidearrows_checkbox">Do not display left and right arrows actions in graph screen</string>
 	<string name="servers_btn_add_server">Add a server</string>
 	<string name="save_button">Save</string>
 	<string name="menu_graph_previous">Previous</string>

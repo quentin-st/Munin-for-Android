@@ -260,7 +260,6 @@ public class Activity_Alerts extends MuninActivity {
 		private int toIndex;
 		
 		private AlertsFetcher(int fromIndex, int toIndex) {
-			log(fromIndex + " AlertsFetcher()");
 			this.fromIndex = fromIndex;
 			this.toIndex = toIndex;
 		}
@@ -268,13 +267,10 @@ public class Activity_Alerts extends MuninActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			log(fromIndex + " onPreExecute()");
 		}
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			log(fromIndex + " doInBackground()");
-			
 			for (int i=fromIndex; i<=toIndex; i++) {
 				muninFoo.getServer(i).fetchPluginsStates(muninFoo.getUserAgent());
 				currentLoadingProgress++;
@@ -286,7 +282,6 @@ public class Activity_Alerts extends MuninActivity {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			log(fromIndex + " onPostExecute()");
 			for (int i=fromIndex; i<=toIndex; i++)
 				updatePart(i);
 			

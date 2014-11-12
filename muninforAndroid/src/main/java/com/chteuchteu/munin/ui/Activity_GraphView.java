@@ -92,9 +92,7 @@ public class Activity_GraphView extends MuninActivity {
 	private static final int BITMAPS_PADDING = 5;
 	private FloatingActionButton fab;
 	private boolean       isFabShown;
-	
-	private MenuItem		item_previous;
-	private MenuItem		item_next;
+
 	private MenuItem		item_period;
 	
 	private Handler		mHandler;
@@ -120,12 +118,7 @@ public class Activity_GraphView extends MuninActivity {
 		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		TextView serverName = (TextView) findViewById(R.id.serverName);
-		if (serverName != null) {
-			serverName.setText(muninFoo.getCurrentServer().getName());
-			actionBar.setTitle("");
-		} else
-			actionBar.setTitle(muninFoo.getCurrentServer().getName());
+		actionBar.setTitle(muninFoo.getCurrentServer().getName());
 		
 		load_period = Period.get(Util.getPref(this, "defaultScale"));
 		
@@ -189,22 +182,7 @@ public class Activity_GraphView extends MuninActivity {
 		viewFlow.setOnViewSwitchListener(new ViewSwitchListener() {
 			public void onSwitched(View v, int position) {
 				Activity_GraphView.position = position;
-				
-				if (item_previous != null && item_next != null) {
-					if (viewFlow.getSelectedItemPosition() == 0) {
-						item_previous.setIcon(R.drawable.blank);
-						item_previous.setEnabled(false);
-					} else if (viewFlow.getSelectedItemPosition() == muninFoo.getCurrentServer().getPlugins().size()-1) {
-						item_next.setIcon(R.drawable.blank);
-						item_next.setEnabled(false);
-					} else {
-						item_previous.setIcon(R.drawable.navigation_previous_item_dark);
-						item_next.setIcon(R.drawable.navigation_next_item_dark);
-						item_previous.setEnabled(true);
-						item_next.setEnabled(true);
-					}
-				}
-				
+
 				int scroll = dh.getDrawerScrollY();
 				if (previousPos != -1) {
 					if (previousPos < viewFlow.getSelectedItemPosition())
@@ -361,8 +339,6 @@ public class Activity_GraphView extends MuninActivity {
 
 		getMenuInflater().inflate(R.menu.graphview, menu);
 		
-		item_previous = menu.findItem(R.id.menu_previous);
-		item_next = menu.findItem(R.id.menu_next);
 		item_period = menu.findItem(R.id.menu_period);
 		MenuItem item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
         MenuItem item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
@@ -373,29 +349,8 @@ public class Activity_GraphView extends MuninActivity {
 			item_fieldsDescription.setVisible(true);
 		}
 
-		if (viewFlow.getSelectedItemPosition() == 0) {
-			item_previous.setIcon(R.drawable.blank);
-			item_previous.setEnabled(false);
-		}
-		if (viewFlow.getSelectedItemPosition() == muninFoo.getCurrentServer().getPlugins().size()-1) {
-			item_next.setIcon(R.drawable.blank);
-			item_next.setEnabled(false);
-		}
-		
-		item_period.setTitle(load_period.getLabel(context));
-		
-		if (Util.getPref(context, "hideGraphviewArrows").equals("true")) {
-			item_previous.setVisible(false);
-			item_next.setVisible(false);
-			
-			// Now that we have room, add the server name on actionbar
-			actionBar.setTitle(muninFoo.getCurrentServer().getName());
 
-			// Check if we displayed it under the actionBar
-			TextView serverName = (TextView) findViewById(R.id.serverName);
-			if (serverName != null)
-				serverName.setVisibility(View.GONE);
-		}
+		item_period.setTitle(load_period.getLabel(context));
 	}
 	
 	private void changePeriod(Period newPeriod) {
@@ -414,8 +369,6 @@ public class Activity_GraphView extends MuninActivity {
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-			case R.id.menu_previous:	actionPrevious();		return true;
-			case R.id.menu_next:		actionNext();			return true;
 			case R.id.menu_refresh:	actionRefresh(); 		return true;
 			case R.id.menu_save:		actionSave();			return true;
 			case R.id.menu_switchServer:actionServerSwitch(); return true;
@@ -556,40 +509,6 @@ public class Activity_GraphView extends MuninActivity {
 		findViewById(R.id.serverSwitch_mask).startAnimation(a);
 	}
 	
-	private void actionPrevious() {
-		if (viewFlow.getSelectedItemPosition() == 0) {
-			item_previous.setIcon(R.drawable.blank);
-			item_previous.setEnabled(false);
-		} else if (viewFlow.getSelectedItemPosition() == muninFoo.getCurrentServer().getPlugins().size()-1) {
-			item_next.setIcon(R.drawable.blank);
-			item_next.setEnabled(false);
-		} else {
-			item_previous.setIcon(R.drawable.navigation_previous_item_dark);
-			item_next.setIcon(R.drawable.navigation_next_item_dark);
-			item_previous.setEnabled(true);
-			item_next.setEnabled(true);
-		}
-		
-		if (viewFlow.getSelectedItemPosition() != 0)
-			viewFlow.setSelection(viewFlow.getSelectedItemPosition() - 1);
-	}
-	private void actionNext() {
-		if (viewFlow.getSelectedItemPosition() == 0) {
-			item_previous.setIcon(R.drawable.blank);
-			item_previous.setEnabled(false);
-		} else if (viewFlow.getSelectedItemPosition() == muninFoo.getCurrentServer().getPlugins().size()-1) {
-			item_next.setIcon(R.drawable.blank);
-			item_next.setEnabled(false);
-		} else {
-			item_previous.setIcon(R.drawable.navigation_previous_item_dark);
-			item_next.setIcon(R.drawable.navigation_next_item_dark);
-			item_previous.setEnabled(true);
-			item_next.setEnabled(true);
-		}
-		
-		if (viewFlow.getSelectedItemPosition() != muninFoo.getCurrentServer().getPlugins().size()-1)
-			viewFlow.setSelection(viewFlow.getSelectedItemPosition() + 1);
-	}
 	private void actionRefresh() {
 		bitmaps = new Bitmap[muninFoo.getCurrentServer().getPlugins().size()];
 		if (viewFlow != null)

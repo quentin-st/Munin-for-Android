@@ -30,14 +30,6 @@
 		app:showAsAction="withText"
 		android:title="@string/menu_graph_save"/>
 	<item
-		android:id="@+id/menu_previous"
-		app:showAsAction="ifRoom"
-		android:title="@string/menu_graph_previous"/>
-	<item
-		android:id="@+id/menu_next"
-		app:showAsAction="ifRoom"
-		android:title="@string/menu_graph_next"/>
-	<item
 		android:id="@+id/menu_refresh"
 		app:showAsAction="withText"
 		android:title="@string/menu_graph_refresh"/>

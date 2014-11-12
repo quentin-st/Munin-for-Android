@@ -304,9 +304,9 @@ public class Activity_Main extends ActionBarActivity {
 		
 		if (Util.hasPref(context, "transitions"))
 			Util.removePref(context, "transitions");
-		
-		if (!Util.hasPref(context, "hideGraphviewArrows"))
-			Util.setPref(context, "hideGraphviewArrows", "true");
+
+		if (!Util.hasPref(context, "graphsZoom"))
+			Util.setPref(context, "graphsZoom", "true");
 		
 		// MfA 3.0 : moved auth attributes from MuninServer to MuninMaster : migrate those if possible
 		String strFromVersion = Util.getPref(context, "lastMFAVersion");

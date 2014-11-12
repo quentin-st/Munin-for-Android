@@ -201,27 +201,6 @@
 					<Spinner
 						android:id="@+id/spinner_orientation"
 						style="@style/Settings_SettingSpinner" />
-
-					<View style="@style/Material_Divider" />
-
-					<!-- Graphview arrows -->
-
-					<TextView
-						android:id="@+id/title14"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/settings_graphview_hidearrows" />
-
-					<RelativeLayout
-						style="@style/Settings_Checkbox_Container"
-						android:tag="checkable">
-
-						<TextView
-							style="@style/Settings_Checkbox_Label"
-							android:text="@string/settings_graphview_hidearrows_checkbox"/>
-						<CheckBox
-							android:id="@+id/checkbox_hidearrows"
-							style="@style/Settings_Checkbox"/>
-					</RelativeLayout>
 				</LinearLayout>
 			</LinearLayout>
 		</ScrollView>

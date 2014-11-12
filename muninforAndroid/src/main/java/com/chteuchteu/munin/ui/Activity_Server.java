@@ -202,7 +202,7 @@ public class Activity_Server extends MuninActivity {
 		private int RES_NOT_PREMIUM = -1;
 		private int RES_NO_CONNECTION = -2;
 		//private int RES_UNKNOWN_HTTP_ERROR = -3;
-		private int RES_ERR_UNDEFINED = -4;
+		//private int RES_ERR_UNDEFINED = -4;
 		private int RES_MALFORMED_URL = -5;
 		
 		private void setPopupState(final int progress) {
@@ -453,9 +453,9 @@ public class Activity_Server extends MuninActivity {
 				AlertDialog alert = builder.create();
 				alert.show();
 			}
-			else if (res == RES_ERR_UNDEFINED) {
+			/*else if (res == RES_ERR_UNDEFINED) {
 				
-			}
+			}*/
 		}
 		
 		private String initialization() {
