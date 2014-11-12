@@ -41,6 +41,7 @@ public class ImportExportHelper {
 			try {
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 				nameValuePairs.add(new BasicNameValuePair("dataString", jsonString));
+				nameValuePairs.add(new BasicNameValuePair("version", String.valueOf(MuninFoo.IMPORT_EXPORT_VERSION)));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				
 				// Execute HTTP Post Request
@@ -145,6 +146,7 @@ public class ImportExportHelper {
 			try {
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 				nameValuePairs.add(new BasicNameValuePair("pswd", code));
+				nameValuePairs.add(new BasicNameValuePair("version", String.valueOf(MuninFoo.IMPORT_EXPORT_VERSION)));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				
 				// Execute HTTP Post Request
