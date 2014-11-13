@@ -103,7 +103,7 @@ public class MuninMaster {
 			return;
 		
 		// Everything else than localdomain is OK
-		if (!this.name.equals("localdomain"))
+		if (!this.name.equals("localdomain") && !this.name.equals(""))
 			return;
 		
 		// http(s)://myurl.com/munin/
@@ -299,6 +299,7 @@ public class MuninMaster {
 		if (!html.equals("")) {
 			Document doc = Jsoup.parse(html, this.url);
 			/*
+			 * URL CATCHUP
 			 * Between MfA 2.8 and 3.0, we saved Master url as http://demo.munin-monitoring.org/munin-monitoring.org/
 			 * So let's update it if needed.													~~~~~~~~~~~~~~~~~~~~~
 			 * So let's just check if we are on the right page, if not : update the master url.
@@ -331,49 +332,46 @@ public class MuninMaster {
 				Elements domains = doc.select("ul.groupview > li > a");
 				
 				if (domains.size() > 0) {
-					// There's only one domain
-					Element domain = domains.get(0);
-					
-					// Get the domain name
-					this.name = domain.text();
-					//this.url = domain.attr("abs:href");
-					// Generate a pretty name if needed
-					generateName();
-					
-					int pos = 0;
-					// Get every host for that domain
-					Elements hosts = domain.parent().select("ul>li");
-					for (Element host : hosts) {
-						MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
-						serv.setParent(this);
-						serv.setPosition(pos);
-						pos++;
-						nbServers++;
+					// If there's just one domain : take the domain name as master name.
+					// Else : generate the name from host url
+					if (domains.size() == 1)
+						this.name = domains.get(0).text();
+					else
+						this.generateName();
+
+					for (Element domain : domains) {
+						// Get every host for that domain
+						Elements hosts = domain.parent().select("ul>li");
+						for (Element host : hosts) {
+							MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
+							serv.setParent(this);
+							serv.setPosition(hosts.indexOf(host));
+							nbServers++;
+						}
 					}
 				}
 			} else { // Munin
 				Elements domains = doc.select("span.domain");
 				
 				if (domains.size() > 0) {
-					// There's only one domain
-					Element domain = domains.get(0);
+					// If there's just one domain : take the domain name as master name.
+					// Else : generate the name from host url
+					if (domains.size() == 1) {
+						Element a = domains.get(0).child(0);
+						this.name = a.text();
+					}
+					else
+						this.generateName();
 					
-					// Get the domain name
-					Element a = domain.child(0);
-					this.name = a.text();
-					//this.url = a.attr("abs:href");
-					// Generate a pretty name if needed
-					generateName();
-					
-					int pos = 0;
-					// Get every host for that domain
-					Elements hosts = domain.parent().select("span.host");
-					for (Element host : hosts) {
-						MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
-						serv.setParent(this);
-						serv.setPosition(pos);
-						pos++;
-						nbServers++;
+					for (Element domain : domains) {
+						// Get every host for that domain
+						Elements hosts = domain.parent().select("span.host");
+						for (Element host : hosts) {
+							MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
+							serv.setParent(this);
+							serv.setPosition(hosts.indexOf(host));
+							nbServers++;
+						}
 					}
 				}
 			}

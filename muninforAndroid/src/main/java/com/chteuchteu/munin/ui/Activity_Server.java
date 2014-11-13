@@ -453,15 +453,12 @@ public class Activity_Server extends MuninActivity {
 				AlertDialog alert = builder.create();
 				alert.show();
 			}
-			/*else if (res == RES_ERR_UNDEFINED) {
-				
-			}*/
 		}
 		
 		private String initialization() {
 			setPopupText(getString(R.string.text44), "");
 			
-			/* 			DETECTION DU TYPE D'URL 		*/
+			/* 			DETECT URL TYPE 		*/
 			if (master == null) {
 				master = new MuninMaster();
 				master.setUrl(serverUrl);
