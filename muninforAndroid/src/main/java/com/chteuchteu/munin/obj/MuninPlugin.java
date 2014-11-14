@@ -110,11 +110,15 @@ public class MuninPlugin {
 		// To = now
 		long pinPoint2 = Util.Dynazoom.getToPinPoint();
 
+		return getHDImgUrl(pinPoint1, pinPoint2, forceSize, size_x, size_y);
+	}
+
+	public String getHDImgUrl(long pinPoint1, long pinPoint2, boolean forceSize, int size_x, int size_y) {
 		String url = this.getInstalledOn().getGraphURL() + this.getName()
 				+ "-pinpoint=" + pinPoint1 + "," + pinPoint2 + ".png";
 		if (forceSize)
 			url += "?size_x=" + size_x + "&size_y=" + size_y;
-		
+
 		return url;
 	}
 	

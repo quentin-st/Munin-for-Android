@@ -212,6 +212,14 @@
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="65px"
 					android:layout_marginRight="30px"
+					rangebar:barWeight="1dp"
+					rangebar:connectingLineWeight="1dp"
+					rangebar:connectingLineColor="#3F51B5"
+					rangebar:thumbRadius="3dp"
+					rangebar:barColor="#d3d3d3"
+					rangebar:thumbColorNormal="#3F51B5"
+					rangebar:thumbColorPressed="#4c5eff"
+					rangebar:tickHeight="4dp"
 					android:layout_gravity="bottom" />
 				<View
 					android:id="@+id/dynazoom_highlight"

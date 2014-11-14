@@ -9,11 +9,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.chteuchteu.munin.ui.Activity_GraphView;
 import com.edmodo.rangebar.RangeBar;
 
 public final class DynazoomHelper {
@@ -34,8 +32,6 @@ public final class DynazoomHelper {
 		int top = bitmapPosition[1];
 		int width = highlightedAreaX[1] - highlightedAreaX[0];
 		int height = bitmapPosition[3];
-
-		MuninFoo.log("Height = " + height + ", top = " + top);
 
 		FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) highlightArea.getLayoutParams();
 		layoutParams.width = width;
@@ -68,6 +64,8 @@ public final class DynazoomHelper {
 	public static class DynazoomFetcher extends AsyncTask<Void, Integer, Void> {
 		private MuninServer server;
 		private MuninPlugin plugin;
+		private long pinPoint1;
+		private long pinPoint2;
 
 		private ImageView imageView;
 		private ProgressBar progressBar;
@@ -77,10 +75,13 @@ public final class DynazoomHelper {
 
 		private Bitmap bitmap;
 
-		public DynazoomFetcher (MuninServer server, MuninPlugin plugin, ImageView iv, ProgressBar progressBar, Context context, String userAgent) {
+		public DynazoomFetcher (MuninServer server, MuninPlugin plugin, ImageView iv, ProgressBar progressBar, Context context, String userAgent,
+		                        long pinPoint1, long pinPoint2) {
 			super();
 			this.server = server;
 			this.plugin = plugin;
+			this.pinPoint1 = pinPoint1;
+			this.pinPoint2 = pinPoint2;
 
 			this.imageView = iv;
 			this.progressBar = progressBar;
@@ -101,7 +102,8 @@ public final class DynazoomHelper {
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
-			String imgUrl = plugin.getHDImgUrl(Activity_GraphView.load_period, true, graphsDimensions[0], graphsDimensions[1]);
+
+			String imgUrl = plugin.getHDImgUrl(pinPoint1, pinPoint2, true, graphsDimensions[0], graphsDimensions[1]);
 
 			bitmap = Util.removeBitmapBorder(server.getParent().grabBitmap(imgUrl, userAgent));
 

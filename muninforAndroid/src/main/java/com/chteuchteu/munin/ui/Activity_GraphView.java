@@ -39,7 +39,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -888,24 +887,87 @@ public class Activity_GraphView extends MuninActivity {
 
 		findViewById(R.id.dynazoom).setVisibility(View.VISIBLE);
 
-		if (dynazoomFetcher != null && !dynazoomFetcher.isCancelled())
-			dynazoomFetcher.cancel(true);
+		final View highlight = findViewById(R.id.dynazoom_highlight);
+		highlight.setVisibility(View.GONE);
 
-		dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
-				muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()),
-				(ImageView) findViewById(R.id.dynazoom_imageview), (ProgressBar) findViewById(R.id.dynazoom_progressbar),
-				context, muninFoo.getUserAgent()).execute();
-
-		RangeBar rangeBar = (RangeBar) findViewById(R.id.dynazoom_rangebar);
-		rangeBar.setTickCount(DynazoomHelper.RANGEBAR_TICKS_COUNT);
-		rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+		final ImageView imageView = (ImageView) findViewById(R.id.dynazoom_imageview);
+		imageView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@Override
-			public void onIndexChangeListener(RangeBar rangeBar, int leftThumbIndex, int rightThumbIndex) {
-				log("Index changed : from " + leftThumbIndex + " to " + rightThumbIndex);
-				DynazoomHelper.updateHighlightedArea(findViewById(R.id.dynazoom_highlight), rangeBar, (ImageView) findViewById(R.id.dynazoom_imageview));
+			public void onGlobalLayout() {
+				if (dynazoomFetcher != null && !dynazoomFetcher.isCancelled())
+					dynazoomFetcher.cancel(true);
+
+				if (dynazoom_from == 0)
+					dynazoom_from = Util.Dynazoom.getFromPinPoint(load_period);
+
+				if (dynazoom_to == 0)
+					dynazoom_to = Util.Dynazoom.getToPinPoint();
+
+				dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
+						muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()), imageView,
+						(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
+						dynazoom_from, dynazoom_to).execute();
+
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+					imageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 			}
 		});
 
+
+		final RangeBar rangeBar = (RangeBar) findViewById(R.id.dynazoom_rangebar);
+		rangeBar.setTickCount(DynazoomHelper.RANGEBAR_TICKS_COUNT);
+		rangeBar.setThumbIndices(0, DynazoomHelper.RANGEBAR_TICKS_COUNT - 1);
+		rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+			@Override
+			public void onIndexChangeListener(RangeBar rangeBar, int leftThumbIndex, int rightThumbIndex) {
+				if (imageView.getDrawable() == null)
+					return;
+
+				// If selection less than 5 : expand it
+				int thumbDiff = rightThumbIndex - leftThumbIndex;
+				if (thumbDiff < 5) {
+					if (rightThumbIndex + thumbDiff >= DynazoomHelper.RANGEBAR_TICKS_COUNT) {
+						// To the left
+						rangeBar.setThumbIndices(leftThumbIndex - (5-thumbDiff), rightThumbIndex);
+					} else {
+						// To the right
+						rangeBar.setThumbIndices(leftThumbIndex, rightThumbIndex + (5-thumbDiff));
+					}
+				} else {
+					if (leftThumbIndex == 0 && rightThumbIndex == DynazoomHelper.RANGEBAR_TICKS_COUNT - 1
+							|| leftThumbIndex == rightThumbIndex)
+						highlight.setVisibility(View.GONE);
+					else {
+						if (highlight.getVisibility() == View.GONE)
+							highlight.setVisibility(View.VISIBLE);
+
+						DynazoomHelper.updateHighlightedArea(highlight, rangeBar, (ImageView) findViewById(R.id.dynazoom_imageview));
+					}
+				}
+			}
+		});
+
+		highlight.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				int fromIndex = rangeBar.getLeftIndex();
+				int toIndex = rangeBar.getRightIndex();
+
+				dynazoom_from = dynazoom_from + (dynazoom_to-dynazoom_from) * fromIndex / DynazoomHelper.RANGEBAR_TICKS_COUNT;
+				dynazoom_to = dynazoom_from + (dynazoom_to-dynazoom_from) * toIndex / DynazoomHelper.RANGEBAR_TICKS_COUNT;
+
+				if (dynazoomFetcher != null && !dynazoomFetcher.isCancelled())
+					dynazoomFetcher.cancel(true);
+
+				highlight.setVisibility(View.GONE);
+				rangeBar.setThumbIndices(0, DynazoomHelper.RANGEBAR_TICKS_COUNT-1);
+
+				dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
+						muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()), imageView,
+						(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
+						dynazoom_from, dynazoom_to).execute();
+			}
+		});
 	}
 
 	@Override
