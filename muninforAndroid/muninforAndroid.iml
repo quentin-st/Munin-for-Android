@@ -83,6 +83,7 @@
     <orderEntry type="library" exported="" name="jsoup-1.7.2" level="project" />
     <orderEntry type="library" exported="" name="libGoogleAnalyticsServices" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.0" level="project" />
+    <orderEntry type="library" exported="" name="rangebar-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="floatingactionbutton-1.0.6" level="project" />
     <orderEntry type="library" exported="" name="material-menu-toolbar-1.4.0" level="project" />
     <orderEntry type="library" exported="" name="material-menu-1.4.0" level="project" />

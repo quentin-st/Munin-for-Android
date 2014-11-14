@@ -4,12 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.Util;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-
-import java.util.Calendar;
 
 public class MuninPlugin {
 	private long 		id;
@@ -104,28 +103,13 @@ public class MuninPlugin {
 		return getHDImgUrl(period, false, 0, 0);
 	}
 	
-	public String getHDImgUrl(Period period,
-			boolean forceSize, int size_x, int size_y) {
+	public String getHDImgUrl(Period period, boolean forceSize, int size_x, int size_y) {
 		// From
-		Calendar cal = Calendar.getInstance();
-		switch (period) {
-			case DAY:
-				cal.add(Calendar.HOUR, -24);
-				break;
-			case WEEK:
-				cal.add(Calendar.DAY_OF_MONTH, -7);
-				break;
-			case MONTH:
-				cal.add(Calendar.DAY_OF_MONTH, -30);
-				break;
-			case YEAR:
-				cal.add(Calendar.YEAR, -1);
-				break;
-		}
-		long pinPoint1 = cal.getTime().getTime() / 1000;
-		long pinPoint2 = Calendar.getInstance().getTime().getTime() / 1000;
-		
-		
+		long pinPoint1 = Util.Dynazoom.getFromPinPoint(period);
+
+		// To = now
+		long pinPoint2 = Util.Dynazoom.getToPinPoint();
+
 		String url = this.getInstalledOn().getGraphURL() + this.getName()
 				+ "-pinpoint=" + pinPoint1 + "," + pinPoint2 + ".png";
 		if (forceSize)

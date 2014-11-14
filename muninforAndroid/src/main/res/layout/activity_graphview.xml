@@ -13,11 +13,11 @@
 		android:layout_height="match_parent">
 
 		<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			 xmlns:app="http://schemas.android.com/apk/res-auto"
-			 xmlns:fab="http://schemas.android.com/apk/res-auto"
-			 android:layout_width="match_parent"
-			 android:layout_height="match_parent"
-			 android:orientation="vertical" >
+			xmlns:app="http://schemas.android.com/apk/res-auto"
+			xmlns:fab="http://schemas.android.com/apk/res-auto"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical" >
 
 			<LinearLayout
 				android:layout_width="match_parent"
@@ -91,6 +91,13 @@
 				fab:fab_colorNormal="@color/primary"
 				fab:fab_colorPressed="@color/primary_pressed"
 				fab:fab_colorRipple="@color/ripple" />
+
+			<Button
+				android:id="@+id/dynazoomTest"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="DZ"
+				android:layout_gravity="bottom|left" />
 
 			<LinearLayout
 				android:id="@+id/documentation"
@@ -178,6 +185,42 @@
 					</ScrollView>
 				</LinearLayout>
 			</LinearLayout>
+
+			<FrameLayout
+				android:id="@+id/dynazoom"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="#ffffff"
+				android:visibility="gone">
+				<ImageView
+					android:id="@+id/dynazoom_imageview"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:adjustViewBounds="true"
+					android:contentDescription="@string/graphView_ImageViewDescription"
+					android:gravity="center"
+					android:scaleType="fitCenter" />
+				<ProgressBar
+					android:id="@+id/dynazoom_progressbar"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_horizontal|center_vertical"/>
+				<com.edmodo.rangebar.RangeBar
+					xmlns:rangebar="http://schemas.android.com/apk/res-auto"
+					android:id="@+id/dynazoom_rangebar"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="65px"
+					android:layout_marginRight="30px"
+					android:layout_gravity="bottom" />
+				<View
+					android:id="@+id/dynazoom_highlight"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="#55000000"
+					android:gravity="center_vertical"
+					android:layout_gravity="top|left"/>
+			</FrameLayout>
 		</FrameLayout>
 
 		<LinearLayout

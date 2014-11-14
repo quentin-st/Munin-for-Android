@@ -1,7 +1,7 @@
 package com.chteuchteu.munin.hlpr;
 
 import com.chteuchteu.munin.obj.MuninMaster;
-import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
+import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
@@ -35,7 +35,7 @@ public class JSONHelper {
 					jsonMaster.put("id", master.getId());
 					jsonMaster.put("name", master.getName());
 					jsonMaster.put("url", master.getUrl());
-					jsonMaster.put("hdGraphs", master.getHDGraphs().getVal());
+					jsonMaster.put("hdGraphs", master.isDynazoomAvailable().getVal());
 					jsonMaster.put("ssl", master.getSSL());
 					switch (master.getAuthType()) {
 						case NONE: case UNKNOWN:
@@ -116,7 +116,7 @@ public class JSONHelper {
 				master.setId(jsonMaster.getLong("id"));
 				master.setName(jsonMaster.getString("name"));
 				master.setUrl(jsonMaster.getString("url"));
-				master.setHDGraphs(HDGraphs.get(jsonMaster.getString("hdGraphs")));
+				master.setDynazoomAvailable(DynazoomAvailability.get(jsonMaster.getString("hdGraphs")));
 				String authType = jsonMaster.getString("authType");
 				if (authType.equals("none")) {
 					master.setAuthType(AuthType.NONE);

@@ -23,7 +23,7 @@ public class MuninMaster {
 	private String name;
 	private String url;
 	private List<MuninServer> children;
-	private HDGraphs hdGraphs;
+	private DynazoomAvailability dynazoomAvailability;
 	
 	private Boolean ssl;
 	private AuthType authType;
@@ -41,7 +41,7 @@ public class MuninMaster {
 		this.url = "";
 		this.defaultMaster = false;
 		this.children = new ArrayList<MuninServer>();
-		this.hdGraphs = HDGraphs.AUTO_DETECT;
+		this.dynazoomAvailability = DynazoomAvailability.AUTO_DETECT;
 		
 		this.authType = AuthType.UNKNOWN;
 		this.authLogin = "";
@@ -52,19 +52,19 @@ public class MuninMaster {
 		this.isPersistant = false;
 	}
 	
-	public enum HDGraphs {
+	public enum DynazoomAvailability {
 		AUTO_DETECT(""), FALSE("false"), TRUE("true");
 		private String val = "";
-		HDGraphs(String val) { this.val = val; }
+		DynazoomAvailability(String val) { this.val = val; }
 		public String getVal() { return this.val; }
 		public String toString() { return this.val; }
-		public static HDGraphs get(String val) {
-			for (HDGraphs g : HDGraphs.values())
+		public static DynazoomAvailability get(String val) {
+			for (DynazoomAvailability g : DynazoomAvailability.values())
 				if (g.val.equals(val))
 					return g;
 			return AUTO_DETECT;
 		}
-		public static HDGraphs get(boolean val) {
+		public static DynazoomAvailability get(boolean val) {
 			if (val)	return TRUE;
 			else		return FALSE;
 		}
@@ -166,8 +166,8 @@ public class MuninMaster {
 	public void setUrl(String url) { this.url = url; }
 	public String getUrl() { return this.url; }
 	
-	public void setHDGraphs(HDGraphs val) { this.hdGraphs = val; }
-	public HDGraphs getHDGraphs() { return this.hdGraphs; }
+	public void setDynazoomAvailable(DynazoomAvailability val) { this.dynazoomAvailability = val; }
+	public DynazoomAvailability isDynazoomAvailable() { return this.dynazoomAvailability; }
 
 	public List<MuninServer> getChildren() { return this.children; }
 	public void addChild(MuninServer s) {

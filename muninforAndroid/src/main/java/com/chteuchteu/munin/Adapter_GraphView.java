@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
+import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 
 import org.taptwo.android.widget.TitleProvider;
@@ -101,7 +101,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		protected Void doInBackground(Void... arg0) {
 			if (activity.isBitmapNull(position)) {
 				String imgUrl;
-				if (muninFoo.getCurrentServer(context).getParent().getHDGraphs() == HDGraphs.TRUE && !Util.getPref(context, "hdGraphs").equals("false")) {
+				if (muninFoo.getCurrentServer(context).getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE && !Util.getPref(context, "hdGraphs").equals("false")) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 					imgUrl = muninFoo.getCurrentServer().getPlugin(position).getHDImgUrl(
 							Activity_GraphView.load_period, true, graphsDimensions[0], graphsDimensions[1]);

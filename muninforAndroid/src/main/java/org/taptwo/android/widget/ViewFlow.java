@@ -21,7 +21,6 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -738,11 +737,10 @@ public class ViewFlow extends AdapterView<Adapter> {
 	}
 
 	private void logBuffer() {
-
-		Log.d("viewflow", "Size of mLoadedViews: " + mLoadedViews.size() +
+		/*Log.d("viewflow", "Size of mLoadedViews: " + mLoadedViews.size() +
 				", Size of mRecycledViews: " + mRecycledViews.size() +
 				", X: " + mScroller.getCurrX() + ", Y: " + mScroller.getCurrY());
 		Log.d("viewflow", "IndexInAdapter: " + mCurrentAdapterIndex
-				+ ", IndexInBuffer: " + mCurrentBufferIndex);
+				+ ", IndexInBuffer: " + mCurrentBufferIndex);*/
 	}
 }

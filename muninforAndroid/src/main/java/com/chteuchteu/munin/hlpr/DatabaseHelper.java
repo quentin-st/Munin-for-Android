@@ -13,7 +13,7 @@ import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
-import com.chteuchteu.munin.obj.MuninMaster.HDGraphs;
+import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
@@ -224,7 +224,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINMASTERS_SSL, m.getSSL());
 		values.put(KEY_MUNINMASTERS_AUTHTYPE, m.getAuthType().getVal());
 		values.put(KEY_MUNINMASTERS_AUTHSTRING, m.getAuthString());
-		values.put(KEY_MUNINMASTERS_HDGRAPHS, m.getHDGraphs().getVal());
+		values.put(KEY_MUNINMASTERS_HDGRAPHS, m.isDynazoomAvailable().getVal());
 		
 		long id = db.insert(TABLE_MUNINMASTERS, null, values);
 		m.setId(id);
@@ -427,7 +427,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINMASTERS_SSL, m.getSSL());
 		values.put(KEY_MUNINMASTERS_AUTHTYPE, m.getAuthType().getVal());
 		values.put(KEY_MUNINMASTERS_AUTHSTRING, m.getAuthString());
-		values.put(KEY_MUNINMASTERS_HDGRAPHS, m.getHDGraphs().getVal());
+		values.put(KEY_MUNINMASTERS_HDGRAPHS, m.isDynazoomAvailable().getVal());
 		
 		int nbRows = db.update(TABLE_MUNINMASTERS, values, KEY_ID + " = ?", new String[] { String.valueOf(m.getId()) });
 		close(null, db);
@@ -498,7 +498,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 							AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_AUTHTYPE))));
 					m.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_AUTHSTRING)));
 					m.setSSL(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_SSL)) == 1);
-					m.setHDGraphs(HDGraphs.get(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_HDGRAPHS))));
+					m.setDynazoomAvailable(DynazoomAvailability.get(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_HDGRAPHS))));
 					m.isPersistant = true;
 					l.add(m);
 				} while (c.moveToNext());
@@ -539,7 +539,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_AUTHTYPE))));
 			m.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_AUTHSTRING)));
 			m.setSSL(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_SSL)) == 1);
-			m.setHDGraphs(HDGraphs.get(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_HDGRAPHS))));
+			m.setDynazoomAvailable(DynazoomAvailability.get(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_HDGRAPHS))));
 			m.isPersistant = true;
 			close(c, db);
 			return m;

@@ -10,9 +10,11 @@ import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.BlurMaskFilter.Blur;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -29,6 +31,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -44,6 +47,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public final class Util {
@@ -392,6 +396,32 @@ public final class Util {
 			return res;
 		}
 	}
+
+	public static final class Dynazoom {
+		public static long getFromPinPoint(Period period) {
+			Calendar cal = Calendar.getInstance();
+			switch (period) {
+				case DAY:
+					cal.add(Calendar.HOUR, -24);
+					break;
+				case WEEK:
+					cal.add(Calendar.DAY_OF_MONTH, -7);
+					break;
+				case MONTH:
+					cal.add(Calendar.DAY_OF_MONTH, -30);
+					break;
+				case YEAR:
+					cal.add(Calendar.YEAR, -1);
+					break;
+			}
+
+			return cal.getTime().getTime() / 1000;
+		}
+
+		public static long getToPinPoint() {
+			return Calendar.getInstance().getTime().getTime() / 1000;
+		}
+	}
 	
 	public static void hideKeyboard(Activity activity, EditText editText) {
 		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -520,5 +550,51 @@ public final class Util {
 		}
 
 		return view;
+	}
+
+	/**
+	 * Returns the bitmap position inside an imageView.
+	 * @param imageView source ImageView
+	 * @return 0: left, 1: top, 2: width, 3: height
+	 */
+	public static int[] getBitmapPositionInsideImageView(ImageView imageView) {
+		int[] ret = new int[4];
+
+		if (imageView == null || imageView.getDrawable() == null)
+			return ret;
+
+		// Get image dimensions
+		// Get image matrix values and place them in an array
+		float[] f = new float[9];
+		imageView.getImageMatrix().getValues(f);
+
+		// Extract the scale values using the constants (if aspect ratio maintained, scaleX == scaleY)
+		final float scaleX = f[Matrix.MSCALE_X];
+		final float scaleY = f[Matrix.MSCALE_Y];
+
+		// Get the drawable (could also get the bitmap behind the drawable and getWidth/getHeight)
+		final Drawable d = imageView.getDrawable();
+		final int origW = d.getIntrinsicWidth();
+		final int origH = d.getIntrinsicHeight();
+
+		// Calculate the actual dimensions
+		final int actW = Math.round(origW * scaleX);
+		final int actH = Math.round(origH * scaleY);
+
+		ret[2] = actW;
+		ret[3] = actH;
+
+		// Get image position
+		// We assume that the image is centered into ImageView
+		int imgViewW = imageView.getWidth();
+		int imgViewH = imageView.getHeight();
+
+		int top = (int) (imgViewH - actH)/2;
+		int left = (int) (imgViewW - actW)/2;
+
+		ret[0] = left;
+		ret[1] = top;
+
+		return ret;
 	}
 }
