@@ -790,6 +790,8 @@ public class Activity_GraphView extends MuninActivity {
 		});
 		documentation.startAnimation(a1);
 
+		fab.setVisibility(View.VISIBLE);
+
 		createOptionsMenu();
 	}
 	private void actionDocumentation() {
@@ -816,6 +818,8 @@ public class Activity_GraphView extends MuninActivity {
 			a1.setInterpolator(new AccelerateDecelerateInterpolator());
 			documentation.setVisibility(View.VISIBLE);
 			documentation.startAnimation(a1);
+
+			fab.setVisibility(View.GONE);
 
 			// Content filling
 			iv_documentation = (ImageView) findViewById(R.id.doc_imageview);
