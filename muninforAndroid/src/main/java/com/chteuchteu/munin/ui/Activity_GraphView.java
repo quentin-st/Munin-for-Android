@@ -171,7 +171,7 @@ public class Activity_GraphView extends MuninActivity {
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
 		Adapter_GraphView adapter = new Adapter_GraphView(this, muninFoo, this, nbPlugins);
 		viewFlow.setAdapter(adapter, pos);
-		viewFlow.setAnimationEnabled(Util.getPref(this, "transitions").equals("true"));
+		viewFlow.setAnimationEnabled(false);
 		TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
 		indicator.setTitleProvider(adapter);
 		viewFlow.setFlowIndicator(indicator);
