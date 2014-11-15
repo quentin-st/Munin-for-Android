@@ -152,7 +152,7 @@ public class Activity_GraphView extends MuninActivity {
 		int pos = 0;
 		
 		// Coming from Grid
-		if (thisIntent.getExtras() != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("plugin")) {
+		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("plugin")) {
 			int i = 0;
 			for (MuninPlugin p : muninFoo.getCurrentServer().getPlugins()) {
 				if (p.getName().equals(thisIntent.getExtras().getString("plugin"))) {
@@ -216,6 +216,9 @@ public class Activity_GraphView extends MuninActivity {
 				// If changed plugin from drawer and documentation is shown => hide it
 				if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE)
 					hideDocumentation();
+				// Same for Dynazoom
+				if (findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE)
+					hideDynazoom();
 			}
 		});
 
@@ -399,6 +402,11 @@ public class Activity_GraphView extends MuninActivity {
 	public void onBackPressed() {
 		if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE) {
 			hideDocumentation();
+			return;
+		}
+
+		if (findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE) {
+			hideDynazoom();
 			return;
 		}
 
@@ -887,6 +895,11 @@ public class Activity_GraphView extends MuninActivity {
 
 		findViewById(R.id.dynazoom).setVisibility(View.VISIBLE);
 
+		if (dynazoom_from == 0)
+			dynazoom_from = Util.Dynazoom.getFromPinPoint(load_period);
+		if (dynazoom_to == 0)
+			dynazoom_to = Util.Dynazoom.getToPinPoint();
+
 		final View highlight = findViewById(R.id.dynazoom_highlight);
 		highlight.setVisibility(View.GONE);
 
@@ -896,12 +909,6 @@ public class Activity_GraphView extends MuninActivity {
 			public void onGlobalLayout() {
 				if (dynazoomFetcher != null && !dynazoomFetcher.isCancelled())
 					dynazoomFetcher.cancel(true);
-
-				if (dynazoom_from == 0)
-					dynazoom_from = Util.Dynazoom.getFromPinPoint(load_period);
-
-				if (dynazoom_to == 0)
-					dynazoom_to = Util.Dynazoom.getToPinPoint();
 
 				dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
 						muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()), imageView,
@@ -968,6 +975,9 @@ public class Activity_GraphView extends MuninActivity {
 						dynazoom_from, dynazoom_to).execute();
 			}
 		});
+	}
+	private void hideDynazoom() {
+		findViewById(R.id.dynazoom).setVisibility(View.GONE);
 	}
 
 	@Override

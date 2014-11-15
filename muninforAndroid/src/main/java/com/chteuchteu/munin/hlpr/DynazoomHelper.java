@@ -15,8 +15,8 @@ import com.chteuchteu.munin.obj.MuninServer;
 import com.edmodo.rangebar.RangeBar;
 
 public final class DynazoomHelper {
-	public static int GRAPH_LEFT_MARGIN = 65; // px
-	public static int GRAPH_RIGHT_MARGIN = 30; // px
+	public static int GRAPH_LEFT_MARGIN = 150;
+	public static int GRAPH_RIGHT_MARGIN = 40;
 
 	public static int RANGEBAR_TICKS_COUNT = 30;
 
@@ -46,15 +46,12 @@ public final class DynazoomHelper {
 	public static int[] getHighlightedAreaFromSteps(int[] steps, int nbSteps, int imageViewWidth) {
 		int[] areaXDimens = new int[2];
 
-		int imgX1 = 140;
+		int imgX1 = DynazoomHelper.GRAPH_LEFT_MARGIN;
 		int imgX2 = imageViewWidth - DynazoomHelper.GRAPH_RIGHT_MARGIN;
 		int imgXDiff = imgX2 - imgX1;
 
-		int step1 = steps[0];
-		int step2 = steps[1];
-
-		int hlAreaX1 = step1 * imgXDiff / nbSteps + imgX1;
-		int hlAreaX2 = step2 * imgXDiff / nbSteps + imgX1;
+		int hlAreaX1 = steps[0] * imgXDiff / nbSteps + imgX1;
+		int hlAreaX2 = steps[1] * imgXDiff / nbSteps + imgX1;
 
 		areaXDimens[0] = hlAreaX1;
 		areaXDimens[1] = hlAreaX2;
