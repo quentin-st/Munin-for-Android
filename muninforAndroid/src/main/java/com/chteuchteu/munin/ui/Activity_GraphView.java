@@ -11,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -217,7 +218,7 @@ public class Activity_GraphView extends MuninActivity {
 				if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE)
 					hideDocumentation();
 				// Same for Dynazoom
-				if (findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE)
+				if (isDynazoomOpen())
 					hideDynazoom();
 			}
 		});
@@ -352,12 +353,10 @@ public class Activity_GraphView extends MuninActivity {
 		MenuItem item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
         MenuItem item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
 		
-		if (muninFoo.getCurrentServer().getPlugins().size() > 0
-				&& muninFoo.getCurrentServer().getPlugin(0).hasPluginPageUrl()) {
+		if (muninFoo.getCurrentServer().getPlugin(0).hasPluginPageUrl()) {
 			item_openInBrowser.setVisible(true);
 			item_fieldsDescription.setVisible(true);
 		}
-
 
 		item_period.setTitle(load_period.getLabel(context));
 	}
@@ -369,6 +368,17 @@ public class Activity_GraphView extends MuninActivity {
 		
 		if (viewFlow != null) // Update Viewflow
 			viewFlow.setSelection(viewFlow.getSelectedItemPosition());
+
+		if (isDynazoomOpen()) {
+			dynazoom_from = Util.Dynazoom.getFromPinPoint(load_period);
+			dynazoom_to = Util.Dynazoom.getToPinPoint();
+
+			dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
+					muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()), (ImageView) findViewById(R.id.dynazoom_imageview),
+					(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
+					dynazoom_from, dynazoom_to).execute();
+			dynazoom_updateFromTo();
+		}
 		
 		item_period.setTitle(load_period.getLabel(context).toUpperCase());
 	}
@@ -405,7 +415,7 @@ public class Activity_GraphView extends MuninActivity {
 			return;
 		}
 
-		if (findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE) {
+		if (isDynazoomOpen()) {
 			hideDynazoom();
 			return;
 		}
@@ -448,6 +458,9 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	
 	private void actionServerSwitch() {
+		if (isDynazoomOpen())
+			hideDynazoom();
+
 		ListView switch_server = (ListView) findViewById(R.id.serverSwitch_listview);
 		switch_server.setVisibility(View.VISIBLE);
 		findViewById(R.id.serverSwitch_mask).setVisibility(View.VISIBLE);
@@ -524,13 +537,22 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	
 	private void actionRefresh() {
-		bitmaps = new Bitmap[muninFoo.getCurrentServer().getPlugins().size()];
-		if (viewFlow != null)
-			viewFlow.setSelection(viewFlow.getSelectedItemPosition());
+		if (isDynazoomOpen()) {
+			dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
+					muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()), (ImageView) findViewById(R.id.dynazoom_imageview),
+					(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
+					dynazoom_from, dynazoom_to).execute();
+		} else {
+			bitmaps = new Bitmap[muninFoo.getCurrentServer().getPlugins().size()];
+			if (viewFlow != null)
+				viewFlow.setSelection(viewFlow.getSelectedItemPosition());
+		}
 	}
 	private void actionSave() {
 		Bitmap image = null;
-		if (viewFlow.getSelectedItemPosition() >= 0 && viewFlow.getSelectedItemPosition() < bitmaps.length)
+		if (isDynazoomOpen() && ((ImageView) findViewById(R.id.dynazoom_imageview)).getDrawable() != null)
+			image = ((BitmapDrawable) ((ImageView) findViewById(R.id.dynazoom_imageview)).getDrawable()).getBitmap();
+		else if (viewFlow.getSelectedItemPosition() >= 0 && viewFlow.getSelectedItemPosition() < bitmaps.length)
 			image = bitmaps[viewFlow.getSelectedItemPosition()];
 		if (image != null) {
 			String root = Environment.getExternalStorageDirectory().toString();
@@ -600,6 +622,9 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	
 	private void actionLabels() {
+		if (isDynazoomOpen())
+			hideDynazoom();
+
 		LinearLayout checkboxesContainer = new LinearLayout(this);
 		checkboxesContainer.setPadding(10, 10, 10, 10);
 		checkboxesContainer.setOrientation(LinearLayout.VERTICAL);
@@ -920,7 +945,6 @@ public class Activity_GraphView extends MuninActivity {
 			}
 		});
 
-
 		final RangeBar rangeBar = (RangeBar) findViewById(R.id.dynazoom_rangebar);
 		rangeBar.setTickCount(DynazoomHelper.RANGEBAR_TICKS_COUNT);
 		rangeBar.setThumbIndices(0, DynazoomHelper.RANGEBAR_TICKS_COUNT - 1);
@@ -973,11 +997,17 @@ public class Activity_GraphView extends MuninActivity {
 						muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()), imageView,
 						(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
 						dynazoom_from, dynazoom_to).execute();
+
+				dynazoom_updateFromTo();
 			}
 		});
 	}
 	private void hideDynazoom() {
 		findViewById(R.id.dynazoom).setVisibility(View.GONE);
+	}
+	private boolean isDynazoomOpen() { return findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE; }
+	private void dynazoom_updateFromTo() {
+		// TODO
 	}
 
 	@Override

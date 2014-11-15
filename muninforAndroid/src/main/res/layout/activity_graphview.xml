@@ -220,7 +220,7 @@
 					rangebar:barColor="#d3d3d3"
 					rangebar:thumbColorNormal="#3F51B5"
 					rangebar:thumbColorPressed="#4c5eff"
-					rangebar:tickHeight="4dp"
+					rangebar:tickHeight="3dp"
 					android:layout_gravity="bottom" />
 				<View
 					android:id="@+id/dynazoom_highlight"
