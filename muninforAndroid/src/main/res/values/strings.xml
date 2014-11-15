@@ -262,5 +262,7 @@
 	<string name="alertswidgetname">Munin for Android : Alerts widget</string>
 	<string name="featuresPackNeeded">Munin for Android Features Pack needed</string>
 	<string name="user_agent">User Agent</string>
+	<string name="from">From</string>
+	<string name="to">To</string>
 
 </resources>

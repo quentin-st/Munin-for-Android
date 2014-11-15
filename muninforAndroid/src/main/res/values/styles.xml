@@ -166,6 +166,15 @@
 		<item name="android:textColor">#ddffffff</item>
 	</style>
 
+	<style name="Material_FieldHint">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginTop">4dp</item>
+		<item name="android:layout_marginBottom">2dp</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:textColor">#66000000</item>
+	</style>
+
 	<style name="Drawer_Item_Icon">
 		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>
@@ -206,6 +215,12 @@
 		<item name="android:paddingBottom">9dp</item>
 		<item name="android:minHeight">0dp</item>
 		<item name="android:textSize">18sp</item>
+	</style>
+
+	<style name="SimpleHorizLinearLayout">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:orientation">horizontal</item>
 	</style>
 
 </resources>

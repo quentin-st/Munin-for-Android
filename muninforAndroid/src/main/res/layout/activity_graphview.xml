@@ -186,50 +186,109 @@
 				</LinearLayout>
 			</LinearLayout>
 
-			<FrameLayout
+			<LinearLayout
 				android:id="@+id/dynazoom"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:background="#ffffff"
+				android:orientation="vertical"
 				android:visibility="gone">
-				<ImageView
-					android:id="@+id/dynazoom_imageview"
+
+				<LinearLayout
+					android:id="@+id/dynazoom_params"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:paddingLeft="30dp"
+					android:paddingTop="10dp"
+					android:background="#ffffff">
+					
+					<TextView
+						android:id="@+id/dynazoom_pluginName"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginRight="10dp"
+						android:layout_marginBottom="4dp"
+						android:shadowColor="#88000000"
+						android:shadowDx="1"
+						android:shadowDy="1"
+						android:shadowRadius="2"
+						android:maxLines="2"
+						android:textSize="19sp"
+						android:textColor="#bb000000" />
+
+					<TextView
+						android:text="@string/from"
+						style="@style/Material_FieldHint" />
+					<TextView
+						android:id="@+id/dynazoom_from"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginRight="10dp"
+						android:layout_marginBottom="4dp"
+						android:maxLines="2"
+						android:textSize="16sp"
+						android:textColor="#bb000000" />
+
+					<TextView
+						android:text="@string/to"
+						style="@style/Material_FieldHint" />
+					<TextView
+						android:id="@+id/dynazoom_to"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginRight="10dp"
+						android:layout_marginBottom="4dp"
+						android:maxLines="2"
+						android:textSize="16sp"
+						android:textColor="#bb000000" />
+					
+					<com.edmodo.rangebar.RangeBar
+						xmlns:rangebar="http://schemas.android.com/apk/res-auto"
+						android:id="@+id/dynazoom_rangebar"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="110px"
+						android:layout_marginRight="30px"
+						android:layout_marginTop="10dp"
+						android:layout_marginBottom="5dp"
+						rangebar:barWeight="1dp"
+						rangebar:connectingLineWeight="1dp"
+						rangebar:connectingLineColor="#3F51B5"
+						rangebar:thumbRadius="3dp"
+						rangebar:barColor="#d3d3d3"
+						rangebar:thumbColorNormal="#3F51B5"
+						rangebar:thumbColorPressed="#4c5eff"
+						rangebar:tickHeight="3dp"
+						android:layout_gravity="bottom" />
+				</LinearLayout>
+
+				<FrameLayout
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
-					android:adjustViewBounds="true"
-					android:contentDescription="@string/graphView_ImageViewDescription"
-					android:gravity="center"
-					android:scaleType="fitCenter" />
-				<ProgressBar
-					android:id="@+id/dynazoom_progressbar"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center_horizontal|center_vertical"/>
-				<com.edmodo.rangebar.RangeBar
-					xmlns:rangebar="http://schemas.android.com/apk/res-auto"
-					android:id="@+id/dynazoom_rangebar"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="140px"
-					android:layout_marginRight="30px"
-					android:layout_marginBottom="10dp"
-					rangebar:barWeight="1dp"
-					rangebar:connectingLineWeight="1dp"
-					rangebar:connectingLineColor="#3F51B5"
-					rangebar:thumbRadius="3dp"
-					rangebar:barColor="#d3d3d3"
-					rangebar:thumbColorNormal="#3F51B5"
-					rangebar:thumbColorPressed="#4c5eff"
-					rangebar:tickHeight="3dp"
-					android:layout_gravity="bottom" />
-				<View
-					android:id="@+id/dynazoom_highlight"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:background="#55000000"
-					android:gravity="center_vertical"
-					android:layout_gravity="top|left"/>
-			</FrameLayout>
+					android:background="@drawable/gray_gradient"
+					android:padding="10dp">
+					<ImageView
+						android:id="@+id/dynazoom_imageview"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:adjustViewBounds="true"
+						android:contentDescription="@string/graphView_ImageViewDescription"
+						android:gravity="center"
+						android:scaleType="fitCenter"/>
+					<ProgressBar
+						android:id="@+id/dynazoom_progressbar"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center_horizontal|center_vertical"/>
+					<View
+						android:id="@+id/dynazoom_highlight"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:background="#55000000"
+						android:gravity="center_vertical"
+						android:layout_gravity="top|left"/>
+				</FrameLayout>
+			</LinearLayout>
 		</FrameLayout>
 
 		<LinearLayout

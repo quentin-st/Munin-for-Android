@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
@@ -374,7 +375,7 @@ public class Activity_GraphView extends MuninActivity {
 			dynazoom_to = Util.Dynazoom.getToPinPoint();
 
 			dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
-					muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()), (ImageView) findViewById(R.id.dynazoom_imageview),
+					currentPlugin(), (ImageView) findViewById(R.id.dynazoom_imageview),
 					(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
 					dynazoom_from, dynazoom_to).execute();
 			dynazoom_updateFromTo();
@@ -399,8 +400,7 @@ public class Activity_GraphView extends MuninActivity {
 			case R.id.period_year:    changePeriod(Period.YEAR); return true;
 			case R.id.menu_openinbrowser:
 				try {
-					MuninPlugin plugin = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
-					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(plugin.getPluginPageUrl()));
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentPlugin().getPluginPageUrl()));
 					startActivity(browserIntent);
 				} catch (Exception ex) { ex.printStackTrace(); }
 				return true;
@@ -489,7 +489,7 @@ public class Activity_GraphView extends MuninActivity {
 		switch_server.startAnimation(a1);
 		findViewById(R.id.serverSwitch_mask).startAnimation(a2);
 		
-		MuninPlugin currentPlugin = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
+		final MuninPlugin currentPlugin = currentPlugin();
 		
 		ArrayList<HashMap<String,String>> servers_list = new ArrayList<HashMap<String,String>>();
 		servers_list.clear();
@@ -510,12 +510,10 @@ public class Activity_GraphView extends MuninActivity {
 				MuninServer s = muninFoo.getServer(url.getText().toString());
 				
 				if (!s.equalsApprox(muninFoo.getCurrentServer())) {
-					MuninPlugin plugin = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
-					
 					muninFoo.setCurrentServer(s);
 					Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
 					intent.putExtra("contextServerUrl", url.getText().toString());
-					intent.putExtra("position", muninFoo.getCurrentServer().getPosition(plugin));
+					intent.putExtra("position", muninFoo.getCurrentServer().getPosition(currentPlugin));
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.DEEPER);
 				} else
@@ -539,7 +537,7 @@ public class Activity_GraphView extends MuninActivity {
 	private void actionRefresh() {
 		if (isDynazoomOpen()) {
 			dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
-					muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()), (ImageView) findViewById(R.id.dynazoom_imageview),
+					currentPlugin(), (ImageView) findViewById(R.id.dynazoom_imageview),
 					(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
 					dynazoom_from, dynazoom_to).execute();
 		} else {
@@ -560,7 +558,7 @@ public class Activity_GraphView extends MuninActivity {
 			if(!dir.exists() || !dir.isDirectory())
 				dir.mkdir();
 			
-			String pluginName = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()).getFancyName();
+			String pluginName = currentPlugin().getFancyName();
 			
 			String fileName1 = muninFoo.getCurrentServer().getName() + " - " + pluginName + " by " + item_period.getTitle().toString();
 			String fileName2 = "01.png";
@@ -642,14 +640,14 @@ public class Activity_GraphView extends MuninActivity {
 				}
 			});
 			
-			if (l.contains(muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition())))	checkboxes.get(i).setChecked(true);
+			if (l.contains(currentPlugin()))	checkboxes.get(i).setChecked(true);
 			
 			((CheckBox) v.findViewById(R.id.line_0)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					// Save
 					String labelName = ((TextView)v.findViewById(R.id.line_a)).getText().toString();
-					MuninPlugin p = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
+					MuninPlugin p = currentPlugin();
 					if (isChecked)
 						muninFoo.getLabel(labelName).addPlugin(p);
 					else
@@ -706,8 +704,7 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	
 	private void actionFieldsDescription() {
-		MuninPlugin plugin = muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
-		new FieldsDescriptionFetcher(plugin, this).execute();
+		new FieldsDescriptionFetcher(currentPlugin(), this).execute();
 	}
 	
 	private class FieldsDescriptionFetcher extends AsyncTask<Void, Integer, Void> {
@@ -919,11 +916,16 @@ public class Activity_GraphView extends MuninActivity {
 			return;
 
 		findViewById(R.id.dynazoom).setVisibility(View.VISIBLE);
+		Util.Fonts.setFont(this, (ViewGroup) findViewById(R.id.dynazoom_params), Util.Fonts.CustomFont.Roboto_Regular);
 
 		if (dynazoom_from == 0)
 			dynazoom_from = Util.Dynazoom.getFromPinPoint(load_period);
 		if (dynazoom_to == 0)
 			dynazoom_to = Util.Dynazoom.getToPinPoint();
+
+		((TextView) findViewById(R.id.dynazoom_pluginName)).setText(currentPlugin().getFancyName());
+		((TextView) findViewById(R.id.dynazoom_from)).setText(Util.prettyDate(dynazoom_from));
+		((TextView) findViewById(R.id.dynazoom_to)).setText(Util.prettyDate(dynazoom_to));
 
 		final View highlight = findViewById(R.id.dynazoom_highlight);
 		highlight.setVisibility(View.GONE);
@@ -935,8 +937,7 @@ public class Activity_GraphView extends MuninActivity {
 				if (dynazoomFetcher != null && !dynazoomFetcher.isCancelled())
 					dynazoomFetcher.cancel(true);
 
-				dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
-						muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()), imageView,
+				dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(), currentPlugin(), imageView,
 						(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
 						dynazoom_from, dynazoom_to).execute();
 
@@ -975,6 +976,14 @@ public class Activity_GraphView extends MuninActivity {
 						DynazoomHelper.updateHighlightedArea(highlight, rangeBar, (ImageView) findViewById(R.id.dynazoom_imageview));
 					}
 				}
+
+				int fromIndex = rangeBar.getLeftIndex();
+				int toIndex = rangeBar.getRightIndex();
+
+				long new_dynazoom_from = dynazoom_from + (dynazoom_to-dynazoom_from) * fromIndex / DynazoomHelper.RANGEBAR_TICKS_COUNT;
+				long new_dynazoom_to = dynazoom_from + (dynazoom_to-dynazoom_from) * toIndex / DynazoomHelper.RANGEBAR_TICKS_COUNT;
+
+				dynazoom_updateFromTo(new_dynazoom_from, new_dynazoom_to);
 			}
 		});
 
@@ -994,9 +1003,8 @@ public class Activity_GraphView extends MuninActivity {
 				rangeBar.setThumbIndices(0, DynazoomHelper.RANGEBAR_TICKS_COUNT-1);
 
 				dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
-						muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition()), imageView,
-						(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
-						dynazoom_from, dynazoom_to).execute();
+						currentPlugin(), imageView, (ProgressBar) findViewById(R.id.dynazoom_progressbar),
+						context, muninFoo.getUserAgent(), dynazoom_from, dynazoom_to).execute();
 
 				dynazoom_updateFromTo();
 			}
@@ -1007,7 +1015,16 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	private boolean isDynazoomOpen() { return findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE; }
 	private void dynazoom_updateFromTo() {
-		// TODO
+		((TextView) findViewById(R.id.dynazoom_from)).setText(Util.prettyDate(dynazoom_from));
+		((TextView) findViewById(R.id.dynazoom_to)).setText(Util.prettyDate(dynazoom_to));
+	}
+	private void dynazoom_updateFromTo(long from, long to) {
+		((TextView) findViewById(R.id.dynazoom_from)).setText(Util.prettyDate(from));
+		((TextView) findViewById(R.id.dynazoom_to)).setText(Util.prettyDate(to));
+	}
+
+	private MuninPlugin currentPlugin() {
+		return muninFoo.getCurrentServer().getPlugin(this.viewFlow.getSelectedItemPosition());
 	}
 
 	@Override

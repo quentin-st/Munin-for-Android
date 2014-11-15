@@ -46,8 +46,10 @@ import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public final class Util {
@@ -596,5 +598,14 @@ public final class Util {
 		ret[1] = top;
 
 		return ret;
+	}
+
+	/**
+	 * Returns a string containing the date (from timestamp) using the device locale
+	 * @param timestamp long
+	 * @return String
+	 */
+	public static String prettyDate(long timestamp) {
+		return DateFormat.getDateTimeInstance().format(new Date((long) timestamp*1000));
 	}
 }

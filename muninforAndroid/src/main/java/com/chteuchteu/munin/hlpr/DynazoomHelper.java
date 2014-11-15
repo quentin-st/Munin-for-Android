@@ -15,8 +15,11 @@ import com.chteuchteu.munin.obj.MuninServer;
 import com.edmodo.rangebar.RangeBar;
 
 public final class DynazoomHelper {
-	public static int GRAPH_LEFT_MARGIN = 150;
-	public static int GRAPH_RIGHT_MARGIN = 40;
+	public static int GRAPH_LEFT_MARGIN = 155;
+	public static int GRAPH_RIGHT_MARGIN = 50;
+	// Because of the bitmap shadow
+	public static int GRAPH_TOP_MARGIN = 8;
+	public static int GRAPH_BOTTOM_MARGIN = 8;
 
 	public static int RANGEBAR_TICKS_COUNT = 30;
 
@@ -103,6 +106,7 @@ public final class DynazoomHelper {
 			String imgUrl = plugin.getHDImgUrl(pinPoint1, pinPoint2, true, graphsDimensions[0], graphsDimensions[1]);
 
 			bitmap = Util.removeBitmapBorder(server.getParent().grabBitmap(imgUrl, userAgent));
+			bitmap = Util.dropShadow(bitmap);
 
 			return null;
 		}
