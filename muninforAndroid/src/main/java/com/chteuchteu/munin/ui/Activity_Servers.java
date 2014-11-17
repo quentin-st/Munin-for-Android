@@ -184,6 +184,7 @@ public class Activity_Servers extends MuninActivity {
 		arrayAdapter.add(context.getString(R.string.renameMaster));
 		arrayAdapter.add(context.getString(R.string.editServersTitle));
 		arrayAdapter.add(context.getString(R.string.update_credentials));
+		arrayAdapter.add(context.getString(R.string.settings_hdgraphs));
 		arrayAdapter.add(context.getString(R.string.delete_master));
 		
 		builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
@@ -225,9 +226,11 @@ public class Activity_Servers extends MuninActivity {
 						break;
 					case 3: // Edit connection credentials
 						displayCredentialsDialog(master);
-
 						break;
-					case 4: // Delete master
+					case 4: // HD Graphs
+						displayHDGraphsDialog(master);
+						break;
+					case 5: // Delete master
 						new AlertDialog.Builder(context)
 						.setTitle(R.string.delete)
 						.setMessage(R.string.text84)
@@ -318,6 +321,31 @@ public class Activity_Servers extends MuninActivity {
             public void onClick(DialogInterface dialog, int whichButton) { }
         }).show();
     }
+
+	private void displayHDGraphsDialog(final MuninMaster master) {
+		LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View dialog_checkbox = vi.inflate(R.layout.dialog_checkbox, null);
+
+		final CheckBox checkbox = (CheckBox) dialog_checkbox.findViewById(R.id.checkbox);
+		checkbox.setChecked(master.isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE);
+		checkbox.setText(R.string.settings_hdgraphs_text);
+
+		new AlertDialog.Builder(context)
+				.setTitle(R.string.settings_hdgraphs)
+				.setView(dialog_checkbox)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						if (checkbox.isChecked())
+							master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
+						else
+							master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
+
+						MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
+					}
+				}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) { }
+		}).show();
+	}
 
 	private void displayImportDialog() {
 		if (!muninFoo.premium) {
