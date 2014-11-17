@@ -27,6 +27,7 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
@@ -607,5 +609,49 @@ public final class Util {
 	 */
 	public static String prettyDate(long timestamp) {
 		return DateFormat.getDateTimeInstance().format(new Date((long) timestamp*1000));
+	}
+
+	public static final class Animations {
+		public enum CustomAnimation { FADE_IN, FADE_OUT }
+		public enum AnimationSpeed {
+			SLOW(2000), MEDIUM(500), FAST(100);
+
+			private int duration;
+			AnimationSpeed(int duration) { this.duration = duration; }
+			public int getDuration() { return this.duration; }
+		}
+
+		public static void animate(View view, CustomAnimation animation) { animate(view, animation, AnimationSpeed.MEDIUM); }
+		public static void animate(View view, CustomAnimation animation, AnimationSpeed animationSpeed) {
+			if (view != null)
+				return;
+
+			switch (animation) {
+				case FADE_IN:
+					if (view.getVisibility() == View.VISIBLE) {
+						MuninFoo.log("View is already visible. Dismissing animation.");
+						return;
+					}
+
+					AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+					fadeIn.setDuration(animationSpeed.getDuration());
+					fadeIn.setFillAfter(true);
+					view.startAnimation(fadeIn);
+
+					break;
+				case FADE_OUT:
+					if (view.getVisibility() == View.GONE) {
+						MuninFoo.log("View is already gone. Dismissing animation.");
+						return;
+					}
+
+					AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+					fadeOut.setDuration(animationSpeed.getDuration());
+					fadeOut.setFillAfter(true);
+					view.startAnimation(fadeOut);
+
+					break;
+			}
+		}
 	}
 }
