@@ -247,8 +247,8 @@
 						android:id="@+id/dynazoom_rangebar"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_marginLeft="110px"
-						android:layout_marginRight="30px"
+						android:layout_marginLeft="60px"
+						android:layout_marginRight="60px"
 						android:layout_marginTop="10dp"
 						android:layout_marginBottom="5dp"
 						rangebar:barWeight="1dp"
@@ -281,7 +281,14 @@
 						android:layout_height="wrap_content"
 						android:layout_gravity="center_horizontal|center_vertical"/>
 					<View
-						android:id="@+id/dynazoom_highlight"
+						android:id="@+id/dynazoom_highlight1"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:background="#55000000"
+						android:gravity="center_vertical"
+						android:layout_gravity="top|left"/>
+					<View
+						android:id="@+id/dynazoom_highlight2"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:background="#55000000"

@@ -91,9 +91,6 @@ public class DrawerHelper {
 	private ArrayList<SearchResult> search_results_array;
 	private List<String> search_cachedGridsList;
 	
-	// GraphView
-	private ViewFlow vf;
-	
 	public DrawerHelper(ActionBarActivity a, MuninFoo m) {
 		this.a = a;
 		this.m = m;
@@ -157,8 +154,6 @@ public class DrawerHelper {
 		else
 			drawerLayout.openDrawer(Gravity.START);
 	}
-	
-	public void setViewFlow(ViewFlow v) { this.vf = v; }
 
 	public DrawerLayout getDrawerLayout() { return this.drawerLayout; }
 
@@ -503,7 +498,11 @@ public class DrawerHelper {
 		
 		a.findViewById(R.id.drawer_containerPlugins).setVisibility(View.VISIBLE);
 		LayoutInflater vi = (LayoutInflater) a.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
+
+		final com.chteuchteu.munin.ui.Activity_GraphView activity = (com.chteuchteu.munin.ui.Activity_GraphView) a;
+		final ViewFlow vf = activity.viewFlow;
+
+
 		int vfpos = vf.getSelectedItemPosition();
 		int pos = 0;
 		for (final MuninPlugin mp : m.getCurrentServer().getPlugins()) {
@@ -544,6 +543,8 @@ public class DrawerHelper {
 					}
 					vf.setSelection(p);
 					initPluginsList(((ScrollView)a.findViewById(R.id.drawer_scrollview)).getScrollY());
+					if (activity.isDynazoomOpen())
+						activity.hideDynazoom();
 					toggle();
 				}
 			});

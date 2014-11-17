@@ -18,43 +18,63 @@ public final class DynazoomHelper {
 	public static int GRAPH_LEFT_MARGIN = 155;
 	public static int GRAPH_RIGHT_MARGIN = 50;
 	// Because of the bitmap shadow
-	public static int GRAPH_TOP_MARGIN = 8;
-	public static int GRAPH_BOTTOM_MARGIN = 8;
+	public static int GRAPH_TOP_MARGIN = 7;
+	public static int GRAPH_BOTTOM_MARGIN = 13;
 
 	public static int RANGEBAR_TICKS_COUNT = 30;
 
-	public static void updateHighlightedArea(View highlightArea, RangeBar rangeBar, ImageView imageView) {
+	public static void updateHighlightedArea(View highlightArea1, View highlightArea2, RangeBar rangeBar, ImageView imageView) {
 		int[] steps = { rangeBar.getLeftIndex(),  rangeBar.getRightIndex() };
-		int[] highlightedAreaX = getHighlightedAreaFromSteps(steps, RANGEBAR_TICKS_COUNT, imageView.getWidth());
+		int[] highlightedAreaX1 = getHighlightedAreaFromSteps(steps, RANGEBAR_TICKS_COUNT, imageView.getWidth(), 1);
+		int[] highlightedAreaX2 = getHighlightedAreaFromSteps(steps, RANGEBAR_TICKS_COUNT, imageView.getWidth(), 2);
 
 		// If we try to get the imageView position, we'll only get top=0, height=(full screen) since
 		// the imageView layout_width && layout_height == MATCH_PARENT
 		int[] bitmapPosition = Util.getBitmapPositionInsideImageView(imageView);
 
-		int left = highlightedAreaX[0];
-		int top = bitmapPosition[1];
-		int width = highlightedAreaX[1] - highlightedAreaX[0];
-		int height = bitmapPosition[3];
+		int left, top, width, height;
 
-		FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) highlightArea.getLayoutParams();
+		top = bitmapPosition[1] + GRAPH_TOP_MARGIN;
+		height = bitmapPosition[3] - (GRAPH_TOP_MARGIN + GRAPH_BOTTOM_MARGIN);
+
+		// Left mask
+		left = highlightedAreaX1[0];
+		width = highlightedAreaX1[1] - highlightedAreaX1[0];
+		setLayoutParams(highlightArea1, width, height, left, top);
+
+		// Right mask
+		left = highlightedAreaX2[0];
+		width = highlightedAreaX2[1] - highlightedAreaX2[0];
+		setLayoutParams(highlightArea2, width, height, left, top);
+	}
+
+	private static void setLayoutParams(View view, int width, int height, int left, int top) {
+		FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) view.getLayoutParams();
 		layoutParams.width = width;
 		layoutParams.height = height;
 		layoutParams.leftMargin = left;
 		layoutParams.topMargin = top;
 
-		highlightArea.setLayoutParams(layoutParams);
-		highlightArea.invalidate();
+		view.setLayoutParams(layoutParams);
+		view.invalidate();
 	}
 
-	public static int[] getHighlightedAreaFromSteps(int[] steps, int nbSteps, int imageViewWidth) {
+	public static int[] getHighlightedAreaFromSteps(int[] steps, int nbSteps, int imageViewWidth, int highlightedAreaIndex) {
 		int[] areaXDimens = new int[2];
 
 		int imgX1 = DynazoomHelper.GRAPH_LEFT_MARGIN;
 		int imgX2 = imageViewWidth - DynazoomHelper.GRAPH_RIGHT_MARGIN;
 		int imgXDiff = imgX2 - imgX1;
 
-		int hlAreaX1 = steps[0] * imgXDiff / nbSteps + imgX1;
-		int hlAreaX2 = steps[1] * imgXDiff / nbSteps + imgX1;
+		int hlAreaX1 = 0, hlAreaX2 = 0;
+
+		if (highlightedAreaIndex == 1) {
+			hlAreaX1 = 3;
+			hlAreaX2 = steps[0] * imgXDiff / nbSteps + imgX1;
+		} else if (highlightedAreaIndex == 2) {
+			hlAreaX1 = steps[1] * imgXDiff / nbSteps + imgX1;
+			hlAreaX2 = imageViewWidth - 13;
+		}
 
 		areaXDimens[0] = hlAreaX1;
 		areaXDimens[1] = hlAreaX2;

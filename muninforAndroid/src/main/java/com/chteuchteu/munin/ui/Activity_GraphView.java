@@ -82,9 +82,9 @@ import java.util.List;
 public class Activity_GraphView extends MuninActivity {
 	private int			previousPos = -1;
 	
-	public static Period	load_period;
-	private static ViewFlow	viewFlow;
-	private static int		position;
+	public Period load_period;
+	public ViewFlow viewFlow;
+	private static int position;
 	/**
 	 * Avoid attaching zoom component at each refresh
 	 */
@@ -185,8 +185,7 @@ public class Activity_GraphView extends MuninActivity {
 		TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
 		indicator.setTitleProvider(adapter);
 		viewFlow.setFlowIndicator(indicator);
-		
-		dh.setViewFlow(viewFlow);
+
 		dh.initPluginsList();
 		
 		viewFlow.setOnViewSwitchListener(new ViewSwitchListener() {
@@ -218,9 +217,6 @@ public class Activity_GraphView extends MuninActivity {
 				// If changed plugin from drawer and documentation is shown => hide it
 				if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE)
 					hideDocumentation();
-				// Same for Dynazoom
-				if (isDynazoomOpen())
-					hideDynazoom();
 			}
 		});
 
@@ -379,6 +375,7 @@ public class Activity_GraphView extends MuninActivity {
 					(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
 					dynazoom_from, dynazoom_to).execute();
 			dynazoom_updateFromTo();
+			((RangeBar) findViewById(R.id.dynazoom_rangebar)).setThumbIndices(0, DynazoomHelper.RANGEBAR_TICKS_COUNT - 1);
 		}
 		
 		item_period.setTitle(load_period.getLabel(context).toUpperCase());
@@ -918,17 +915,17 @@ public class Activity_GraphView extends MuninActivity {
 		findViewById(R.id.dynazoom).setVisibility(View.VISIBLE);
 		Util.Fonts.setFont(this, (ViewGroup) findViewById(R.id.dynazoom_params), Util.Fonts.CustomFont.Roboto_Regular);
 
-		if (dynazoom_from == 0)
-			dynazoom_from = Util.Dynazoom.getFromPinPoint(load_period);
-		if (dynazoom_to == 0)
-			dynazoom_to = Util.Dynazoom.getToPinPoint();
+		dynazoom_from = Util.Dynazoom.getFromPinPoint(load_period);
+		dynazoom_to = Util.Dynazoom.getToPinPoint();
 
 		((TextView) findViewById(R.id.dynazoom_pluginName)).setText(currentPlugin().getFancyName());
 		((TextView) findViewById(R.id.dynazoom_from)).setText(Util.prettyDate(dynazoom_from));
 		((TextView) findViewById(R.id.dynazoom_to)).setText(Util.prettyDate(dynazoom_to));
 
-		final View highlight = findViewById(R.id.dynazoom_highlight);
-		highlight.setVisibility(View.GONE);
+		final View highlight1 = findViewById(R.id.dynazoom_highlight1);
+		final View highlight2 = findViewById(R.id.dynazoom_highlight2);
+		highlight1.setVisibility(View.GONE);
+		highlight2.setVisibility(View.GONE);
 
 		final ImageView imageView = (ImageView) findViewById(R.id.dynazoom_imageview);
 		imageView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -955,26 +952,18 @@ public class Activity_GraphView extends MuninActivity {
 				if (imageView.getDrawable() == null)
 					return;
 
-				// If selection less than 5 : expand it
-				int thumbDiff = rightThumbIndex - leftThumbIndex;
-				if (thumbDiff < 5) {
-					if (rightThumbIndex + thumbDiff >= DynazoomHelper.RANGEBAR_TICKS_COUNT) {
-						// To the left
-						rangeBar.setThumbIndices(leftThumbIndex - (5-thumbDiff), rightThumbIndex);
-					} else {
-						// To the right
-						rangeBar.setThumbIndices(leftThumbIndex, rightThumbIndex + (5-thumbDiff));
-					}
+				if (leftThumbIndex == 0 && rightThumbIndex == DynazoomHelper.RANGEBAR_TICKS_COUNT - 1
+						|| leftThumbIndex == rightThumbIndex
+						|| rightThumbIndex-leftThumbIndex < 4) {
+					highlight1.setVisibility(View.GONE);
+					highlight2.setVisibility(View.GONE);
 				} else {
-					if (leftThumbIndex == 0 && rightThumbIndex == DynazoomHelper.RANGEBAR_TICKS_COUNT - 1
-							|| leftThumbIndex == rightThumbIndex)
-						highlight.setVisibility(View.GONE);
-					else {
-						if (highlight.getVisibility() == View.GONE)
-							highlight.setVisibility(View.VISIBLE);
-
-						DynazoomHelper.updateHighlightedArea(highlight, rangeBar, (ImageView) findViewById(R.id.dynazoom_imageview));
+					if (highlight1.getVisibility() == View.GONE && highlight2.getVisibility() == View.GONE) {
+						highlight1.setVisibility(View.VISIBLE);
+						highlight2.setVisibility(View.VISIBLE);
 					}
+
+					DynazoomHelper.updateHighlightedArea(highlight1, highlight2, rangeBar, (ImageView) findViewById(R.id.dynazoom_imageview));
 				}
 
 				int fromIndex = rangeBar.getLeftIndex();
@@ -987,9 +976,12 @@ public class Activity_GraphView extends MuninActivity {
 			}
 		});
 
-		highlight.setOnClickListener(new OnClickListener() {
+		imageView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				if (highlight1.getVisibility() == View.GONE || highlight2.getVisibility() == View.GONE)
+					return;
+
 				int fromIndex = rangeBar.getLeftIndex();
 				int toIndex = rangeBar.getRightIndex();
 
@@ -999,7 +991,8 @@ public class Activity_GraphView extends MuninActivity {
 				if (dynazoomFetcher != null && !dynazoomFetcher.isCancelled())
 					dynazoomFetcher.cancel(true);
 
-				highlight.setVisibility(View.GONE);
+				highlight1.setVisibility(View.GONE);
+				highlight2.setVisibility(View.GONE);
 				rangeBar.setThumbIndices(0, DynazoomHelper.RANGEBAR_TICKS_COUNT-1);
 
 				dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
@@ -1010,10 +1003,10 @@ public class Activity_GraphView extends MuninActivity {
 			}
 		});
 	}
-	private void hideDynazoom() {
+	public void hideDynazoom() {
 		findViewById(R.id.dynazoom).setVisibility(View.GONE);
 	}
-	private boolean isDynazoomOpen() { return findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE; }
+	public boolean isDynazoomOpen() { return findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE; }
 	private void dynazoom_updateFromTo() {
 		((TextView) findViewById(R.id.dynazoom_from)).setText(Util.prettyDate(dynazoom_from));
 		((TextView) findViewById(R.id.dynazoom_to)).setText(Util.prettyDate(dynazoom_to));
@@ -1024,7 +1017,7 @@ public class Activity_GraphView extends MuninActivity {
 	}
 
 	private MuninPlugin currentPlugin() {
-		return muninFoo.getCurrentServer().getPlugin(this.viewFlow.getSelectedItemPosition());
+		return muninFoo.getCurrentServer().getPlugin(viewFlow.getSelectedItemPosition());
 	}
 
 	@Override

@@ -104,9 +104,9 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 				if (muninFoo.getCurrentServer(context).getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE && !Util.getPref(context, "hdGraphs").equals("false")) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 					imgUrl = muninFoo.getCurrentServer().getPlugin(position).getHDImgUrl(
-							Activity_GraphView.load_period, true, graphsDimensions[0], graphsDimensions[1]);
+							activity.load_period, true, graphsDimensions[0], graphsDimensions[1]);
 				} else
-					imgUrl = muninFoo.getCurrentServer().getPlugin(position).getImgUrl(Activity_GraphView.load_period);
+					imgUrl = muninFoo.getCurrentServer().getPlugin(position).getImgUrl(activity.load_period);
 
 
 				activity.addBitmap(Util.removeBitmapBorder(
