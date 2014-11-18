@@ -95,7 +95,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 				
 				if (!graphWidget.isWifiOnly() || forceUpdate) {
 					// Launching Asyntask
-					ApplyBitmap task = new ApplyBitmap(graphWidget, views, appWidgetManager, widgetId);
+					ApplyBitmap task = new ApplyBitmap(graphWidget, views, appWidgetManager, widgetId, context);
 					task.execute();
 				} else {
 					// Automatic update -> let's check if on wifi or data
@@ -165,14 +165,16 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 		private RemoteViews views;
 		private AppWidgetManager awm;
 		private int widgetId;
+		private Context context;
 		
-		public ApplyBitmap(GraphWidget graphWidget, RemoteViews v, AppWidgetManager a, int w) {
+		public ApplyBitmap(GraphWidget graphWidget, RemoteViews v, AppWidgetManager a, int w, Context context) {
 			super();
 			this.url = graphWidget.getPlugin().getImgUrl(graphWidget.getPeriod());
 			this.graphWidget = graphWidget;
 			this.views = v;
 			this.awm = a;
 			this.widgetId = w;
+			this.context = context;
 		}
 		
 		@Override
