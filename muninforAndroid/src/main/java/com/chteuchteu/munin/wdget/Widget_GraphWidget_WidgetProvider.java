@@ -30,14 +30,10 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 	
 	private static SQLite sqlite;
 	private static GraphWidget graphWidget;
-
-	private static Context context;
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		this.context = context;
-
-		sqlite = new SQLite(context, MuninFoo.getInstance(context));
+		this.sqlite = new SQLite(context, MuninFoo.getInstance(context));
 		
 		// Get all ids
 		ComponentName thisWidget = new ComponentName(context, Widget_GraphWidget_WidgetProvider.class);
@@ -71,7 +67,9 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 				sqlite = new SQLite(context, MuninFoo.getInstance(context));
 			graphWidget = sqlite.dbHlpr.getGraphWidget(widgetId);
 			
-			if (graphWidget != null && graphWidget.getPlugin() != null && graphWidget.getPlugin().getInstalledOn() != null) {
+			if (graphWidget != null && graphWidget.getPlugin() != null
+					&& graphWidget.getPlugin().getInstalledOn() != null
+					&& graphWidget.getPlugin().getInstalledOn().getParent() != null) {
 				if (!graphWidget.getHideServerName())
 					views.setTextViewText(R.id.widget_servername, graphWidget.getPlugin().getInstalledOn().getName());
 				else {

@@ -210,6 +210,8 @@ public class Activity_Server extends MuninActivity {
 				public void run() {
 					if (progress >= 0 && progress <= 100)
 						progressBar.setProgress(progress);
+					else if (progress < 0)
+						progressBar.setIndeterminate(true);
 				}
 			});
 		}
@@ -508,6 +510,7 @@ public class Activity_Server extends MuninActivity {
 
 					setPopupState(100);
 					setPopupText(getString(R.string.text45), " ");
+					setPopupState(-1);
 
 					cancelButton.getHandler().post(new Runnable() {
 						public void run() {

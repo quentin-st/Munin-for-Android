@@ -551,6 +551,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return null;
 	}
 
+	public MuninMaster getMasterFromServer(long serverId) {
+		String masterIdQuery = "SELECT " + KEY_MUNINSERVERS_MASTER + " FROM " + TABLE_MUNINSERVERS
+				+ " WHERE " + KEY_ID + " = " + serverId;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(masterIdQuery, null);
+
+		if (c != null && c.moveToFirst()) {
+			long masterId = c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_MASTER));
+			return getMaster(masterId, null);
+		}
+
+		return null;
+	}
+
 	/**
 	 * Gets the servers list from db.
 	 * @param currentMasters Avoid fetching a server from db if already done
@@ -757,7 +772,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			
 			// Get plugin, and master (server is fetched with getPlugin)
 			MuninPlugin plugin = getPlugin(c.getInt(c.getColumnIndex(KEY_WIDGET_GRAPHWIDGETS_PLUGIN)));
-			MuninMaster master = getMaster(plugin.getInstalledOn().getId(), null);
+			MuninMaster master = getMasterFromServer(plugin.getInstalledOn().getId());
 			plugin.getInstalledOn().setParent(master);
 			
 			w.setPlugin(plugin);
