@@ -52,7 +52,7 @@ public class Service_Notifications extends Service {
 		}
 		
 		NetworkInfo mWifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		boolean wifiOnly = Util.getPref(Service_Notifications.this, "notifs_wifiOnly").equals("true");
+		boolean wifiOnly = Util.getPref(Service_Notifications.this, Util.PrefKeys.Notifs_WifiOnly).equals("true");
 		
 		if (!wifiOnly || mWifi.isConnected())
 			new PollTask().execute();
@@ -73,7 +73,7 @@ public class Service_Notifications extends Service {
 		@Override
 		protected Void doInBackground(Void... params) {
 			List<MuninServer> servers = new ArrayList<MuninServer>();
-			String serversList = Util.getPref(Service_Notifications.this, "notifs_serversList");
+			String serversList = Util.getPref(Service_Notifications.this, Util.PrefKeys.Notifs_ServersList);
 			String[] serversToWatch = serversList.split(";");
 
 			DatabaseHelper dbHelper = new DatabaseHelper(Service_Notifications.this);
@@ -187,19 +187,20 @@ public class Service_Notifications extends Service {
 				notifText = warningPlugins;
 			
 			if (nbCriticals > 0 || nbWarnings > 0) {
-				if (!Util.getPref(Service_Notifications.this, "lastNotificationText").equals(notifText)) {
+				if (!Util.getPref(Service_Notifications.this, Util.PrefKeys.Notifs_LastNotificationText).equals(notifText)) {
 					NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 					Notification notification = new Notification(R.drawable.launcher_icon_mono, getString(R.string.app_name), System.currentTimeMillis());
 					
-					PendingIntent pendingIntent = PendingIntent.getActivity(Service_Notifications.this, 0, new Intent(Service_Notifications.this, Activity_Alerts.class), 0);
+					PendingIntent pendingIntent = PendingIntent.getActivity(Service_Notifications.this, 0,
+							new Intent(Service_Notifications.this, Activity_Alerts.class), 0);
 					notification.setLatestEventInfo(Service_Notifications.this, notifTitle, notifText, pendingIntent);
 
 					// Dismiss notification on click
 					notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 					
-					Util.setPref(Service_Notifications.this, "lastNotificationText", notifText);
+					Util.setPref(Service_Notifications.this, Util.PrefKeys.Notifs_LastNotificationText, notifText);
 
-					if (Util.getPref(Service_Notifications.this, "notifs_vibrate").equals("true"))
+					if (Util.getPref(Service_Notifications.this, Util.PrefKeys.Notifs_Vibrate).equals("true"))
 						vibrate();
 					
 					notificationManager.notify(1234, notification);

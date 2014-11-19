@@ -77,18 +77,18 @@ public class Activity_Notifications extends MuninActivity {
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sp_refreshRate.setAdapter(dataAdapter);
 		
-		boolean notificationsEnabled = Util.getPref(context, "notifications").equals("true");
+		boolean notificationsEnabled = Util.getPref(context, Util.PrefKeys.Notifications).equals("true");
 		cb_notifications.setChecked(notificationsEnabled);
 		if (!notificationsEnabled)
 			findViewById(R.id.notificationsEnabled).setVisibility(View.GONE);
-		cb_wifiOnly.setChecked(Util.getPref(context, "notifs_wifiOnly").equals("true"));
+		cb_wifiOnly.setChecked(Util.getPref(context, Util.PrefKeys.Notifs_WifiOnly).equals("true"));
 
 		// Check if the device can vibrate
 		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		cb_vibrate.setEnabled(v.hasVibrator());
-		cb_vibrate.setChecked(Util.getPref(context, "notifs_vibrate").equals("true"));
+		cb_vibrate.setChecked(Util.getPref(context, Util.PrefKeys.Notifs_Vibrate).equals("true"));
 		
-		currentRefreshRate = Util.getPref(context, "notifs_refreshRate");
+		currentRefreshRate = Util.getPref(context, Util.PrefKeys.Notifs_RefreshRate);
 		if (currentRefreshRate.equals(""))
 			currentRefreshRate = "60";
 		if (currentRefreshRate.equals("10"))		sp_refreshRate.setSelection(0);
@@ -113,7 +113,7 @@ public class Activity_Notifications extends MuninActivity {
 		findViewById(R.id.btn_selectServersToWatch).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				String watchedServers = Util.getPref(context, "notifs_serversList");
+				String watchedServers = Util.getPref(context, Util.PrefKeys.Notifs_ServersList);
 				
 				ScrollView scrollView = new ScrollView(activity);
 				checkboxesView = new LinearLayout(activity);
@@ -188,10 +188,10 @@ public class Activity_Notifications extends MuninActivity {
 	
 	private void enableNotifications() {
 		if (muninFoo.premium) {
-			Util.removePref(context, "lastNotificationText");
+			Util.removePref(context, Util.PrefKeys.Notifs_LastNotificationText);
 			int min = 0;
-			if (!Util.getPref(context, "notifs_refreshRate").equals(""))
-				min = Integer.parseInt(Util.getPref(context, "notifs_refreshRate"));
+			if (!Util.getPref(context, Util.PrefKeys.Notifs_RefreshRate).equals(""))
+				min = Integer.parseInt(Util.getPref(context, Util.PrefKeys.Notifs_RefreshRate));
 			AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 			Intent i = new Intent(this, Service_Notifications.class);
 			PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
@@ -206,7 +206,7 @@ public class Activity_Notifications extends MuninActivity {
 	}
 	
 	private void disableNotifications() {
-		Util.removePref(context, "lastNotificationText");
+		Util.removePref(context, Util.PrefKeys.Notifs_LastNotificationText);
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		Intent i = new Intent(this, Service_Notifications.class);
 		PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
@@ -225,7 +225,7 @@ public class Activity_Notifications extends MuninActivity {
 			}
 			i++;
 		}
-		Util.setPref(context, "notifs_serversList", servers);
+		Util.setPref(context, Util.PrefKeys.Notifs_ServersList, servers);
 	}
 	
 	@Override
@@ -239,7 +239,7 @@ public class Activity_Notifications extends MuninActivity {
 	private void computeEstimatedConsumption() {
 		int refreshRate = Integer.parseInt(currentRefreshRate);
 		
-		String watchedServers = Util.getPref(context, "notifs_serversList");
+		String watchedServers = Util.getPref(context, Util.PrefKeys.Notifs_ServersList);
 		int nbServers = watchedServers.equals("") ? 0 : watchedServers.split(";").length;
 		
 		double result = (1440/refreshRate) * nbServers * PAGE_WEIGHT;
@@ -275,7 +275,7 @@ public class Activity_Notifications extends MuninActivity {
 					}
 				} else {
 					// Check from pref string
-					int length = Util.getPref(context, "notifs_serversList").length();
+					int length = Util.getPref(context, Util.PrefKeys.Notifs_ServersList).length();
 					if (length > 2) // != "" && != ";"
 						ok = true;
 				}
@@ -283,16 +283,16 @@ public class Activity_Notifications extends MuninActivity {
 
 			if (ok) {
 				if (cb_notifications.isChecked()) {
-					Util.setPref(context, "notifications", "true");
-					Util.setPref(context, "notifs_wifiOnly", String.valueOf(cb_wifiOnly.isChecked()));
-					Util.setPref(context, "notifs_vibrate", String.valueOf(cb_vibrate.isChecked()));
-					Util.setPref(context, "notifs_refreshRate", REFRESH_RATES[sp_refreshRate.getSelectedItemPosition()]);
+					Util.setPref(context, Util.PrefKeys.Notifications, "true");
+					Util.setPref(context, Util.PrefKeys.Notifs_WifiOnly, String.valueOf(cb_wifiOnly.isChecked()));
+					Util.setPref(context, Util.PrefKeys.Notifs_Vibrate, String.valueOf(cb_vibrate.isChecked()));
+					Util.setPref(context, Util.PrefKeys.Notifs_RefreshRate, REFRESH_RATES[sp_refreshRate.getSelectedItemPosition()]);
 					enableNotifications();
 				} else {
-					Util.setPref(context, "notifications", "false");
-					Util.removePref(context, "notifs_wifiOnly");
-					Util.removePref(context, "notifs_refreshRate");
-					Util.removePref(context, "notifs_vibrate");
+					Util.setPref(context, Util.PrefKeys.Notifications, "false");
+					Util.removePref(context, Util.PrefKeys.Notifs_WifiOnly);
+					Util.removePref(context, Util.PrefKeys.Notifs_RefreshRate);
+					Util.removePref(context, Util.PrefKeys.Notifs_Vibrate);
 					disableNotifications();
 				}
 				Toast.makeText(context, R.string.text36, Toast.LENGTH_SHORT).show();

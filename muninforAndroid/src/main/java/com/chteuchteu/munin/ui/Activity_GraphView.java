@@ -117,21 +117,21 @@ public class Activity_GraphView extends MuninActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (Util.getPref(this, "graphview_orientation").equals("vertical"))
+		if (Util.getPref(this, Util.PrefKeys.GraphviewOrientation).equals("vertical"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		else if (Util.getPref(this, "graphview_orientation").equals("horizontal"))
+		else if (Util.getPref(this, Util.PrefKeys.GraphviewOrientation).equals("horizontal"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 		setContentView(R.layout.activity_graphview);
 		super.onContentViewSet();
 		dh.setDrawerActivity(DrawerHelper.Activity_GraphView);
 
-		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		actionBar.setTitle(muninFoo.getCurrentServer().getName());
 		
-		load_period = Period.get(Util.getPref(this, "defaultScale"));
+		load_period = Period.get(Util.getPref(this, Util.PrefKeys.DefaultScale));
 		
 		// Coming from widget
 		Intent thisIntent = getIntent();
@@ -237,7 +237,7 @@ public class Activity_GraphView extends MuninActivity {
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 		
 		// Launch periodical check
-		if (Util.getPref(this, "autoRefresh").equals("true")) {
+		if (Util.getPref(this, Util.PrefKeys.AutoRefresh).equals("true")) {
 			mHandler = new Handler();
 			final int INTERVAL = 1000 * 60 * 5;
 			mHandlerTask = new Runnable() {
@@ -1024,7 +1024,7 @@ public class Activity_GraphView extends MuninActivity {
 	public void onStop() {
 		super.onStop();
 		
-		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 }

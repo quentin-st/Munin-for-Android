@@ -160,7 +160,7 @@ public class Activity_Server extends MuninActivity {
 
 		getMenuInflater().inflate(R.menu.server, menu);
 		
-		if (Util.getPref(context, "addserver_history").equals(""))
+		if (Util.getPref(context, Util.PrefKeys.AddServer_History).equals(""))
 			menu.findItem(R.id.menu_clear_history).setVisible(false);
 	}
 	
@@ -171,7 +171,7 @@ public class Activity_Server extends MuninActivity {
 		switch (item.getItemId()) {
 			case R.id.menu_save:	actionSave();		return true;
 			case R.id.menu_clear_history:
-				Util.setPref(context, "addserver_history", "");
+				Util.setPref(context, Util.PrefKeys.AddServer_History, "");
 				createOptionsMenu();
 				Toast.makeText(getApplicationContext(), getString(R.string.text66_1), Toast.LENGTH_SHORT).show();
 				return true;
@@ -794,14 +794,14 @@ public class Activity_Server extends MuninActivity {
 				contains = true;
 		}
 		if (!contains) {
-			String his = Util.getPref(context, "addserver_history");
+			String his = Util.getPref(context, Util.PrefKeys.AddServer_History);
 			his += url.replaceAll(";", ",") + ";";
-			Util.setPref(context, "addserver_history", his);
+			Util.setPref(context, Util.PrefKeys.AddServer_History, his);
 		}
 	}
 	
 	private String[] getHistory() {
-		String his = Util.getPref(context, "addserver_history");
+		String his = Util.getPref(context, Util.PrefKeys.AddServer_History);
 		if (his.equals(""))
 			return new String[0];
 		else

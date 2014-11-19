@@ -101,7 +101,8 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		protected Void doInBackground(Void... arg0) {
 			if (activity.isBitmapNull(position)) {
 				String imgUrl;
-				if (muninFoo.getCurrentServer(context).getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE && !Util.getPref(context, "hdGraphs").equals("false")) {
+				if (muninFoo.getCurrentServer(context).getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
+						&& !Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 					imgUrl = muninFoo.getCurrentServer().getPlugin(position).getHDImgUrl(
 							activity.load_period, true, graphsDimensions[0], graphsDimensions[1]);
@@ -125,7 +126,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 				imageView.setImageBitmap(activity.getBitmap(position));
 
 				// PhotoViewAttacher
-				if (Util.getPref(context, "graphsZoom").equals("true")) {
+				if (Util.getPref(context, Util.PrefKeys.GraphsZoom).equals("true")) {
 					if (!activity.photoViewAttached[position]) {
 						activity.photoViewAttached[position] = true;
 						PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);

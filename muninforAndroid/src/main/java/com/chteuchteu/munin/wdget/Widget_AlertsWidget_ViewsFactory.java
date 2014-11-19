@@ -38,7 +38,7 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 	private void refresh() {
 		this.servers.clear();
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-		Util.setPref(context, "widget2_forceUpdate", "false");
+		Util.setPref(context, Util.PrefKeys.Widget2_ForceUpdate, "false");
 		new PluginsStatesFetcher(appWidgetManager, widgetId).execute();
 	}
 
@@ -183,7 +183,7 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 	@Override
 	public void onDataSetChanged() {
 		// Called from Widget_AlertsWidget_WidgetProvider on refresh button click
-		if (!pluginsStatesFetched || Util.getPref(context, "widget2_forceUpdate").equals("true"))
+		if (!pluginsStatesFetched || Util.getPref(context, Util.PrefKeys.Widget2_ForceUpdate).equals("true"))
 			refresh();
 	}
 

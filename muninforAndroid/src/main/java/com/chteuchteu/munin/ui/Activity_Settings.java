@@ -115,19 +115,19 @@ public class Activity_Settings extends MuninActivity {
 		
 		// Apply current settings
 		// Graph default scale
-		if (Util.getPref(context, "defaultScale").equals("day"))
+		if (Util.getPref(context, Util.PrefKeys.DefaultScale).equals("day"))
 			spinner_scale.setSelection(0, true);
-		else if (Util.getPref(context, "defaultScale").equals("week"))
+		else if (Util.getPref(context, Util.PrefKeys.DefaultScale).equals("week"))
 			spinner_scale.setSelection(1, true);
-		else if (Util.getPref(context, "defaultScale").equals("month"))
+		else if (Util.getPref(context, Util.PrefKeys.DefaultScale).equals("month"))
 			spinner_scale.setSelection(2, true);
-		else if (Util.getPref(context, "defaultScale").equals("year"))
+		else if (Util.getPref(context, Util.PrefKeys.DefaultScale).equals("year"))
 			spinner_scale.setSelection(3, true);
 		
 		// App language
 		String lang;
-		if (!Util.getPref(context, "lang").equals(""))
-			lang = Util.getPref(context, "lang");
+		if (!Util.getPref(context, Util.PrefKeys.Lang).equals(""))
+			lang = Util.getPref(context, Util.PrefKeys.Lang);
 		else
 			lang = Locale.getDefault().getLanguage();
 		
@@ -141,33 +141,33 @@ public class Activity_Settings extends MuninActivity {
 			spinner_lang.setSelection(3, true);
 		
 		// Graphview orientation
-		if (Util.getPref(context, "graphview_orientation").equals("horizontal"))
+		if (Util.getPref(context, Util.PrefKeys.GraphviewOrientation).equals("horizontal"))
 			spinner_orientation.setSelection(0);
-		else if (Util.getPref(context, "graphview_orientation").equals("vertical"))
+		else if (Util.getPref(context, Util.PrefKeys.GraphviewOrientation).equals("vertical"))
 			spinner_orientation.setSelection(1);
 		else
 			spinner_orientation.setSelection(2);
 		
 		// Always on
 		checkbox_alwaysOn.setChecked(
-				Util.getPref(context, "screenAlwaysOn").equals("true"));
+				Util.getPref(context, Util.PrefKeys.ScreenAlwaysOn).equals("true"));
 		
 		// Auto refresh
 		checkbox_autoRefresh.setChecked(
-				Util.getPref(context, "autoRefresh").equals("true"));
+				Util.getPref(context, Util.PrefKeys.AutoRefresh).equals("true"));
 		
 		// Graph zoom
 		checkbox_graphsZoom.setChecked(
-					Util.getPref(context, "graphsZoom").equals("true"));
+					Util.getPref(context, Util.PrefKeys.GraphsZoom).equals("true"));
 		
 		// HD Graphs
-		if (Util.getPref(context, "hdGraphs").equals("false"))
+		if (Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false"))
 			checkbox_hdGraphs.setChecked(false);
 		else
 			checkbox_hdGraphs.setChecked(true);
 		
 		// Default server
-		String defaultServerUrl = Util.getPref(this, "defaultServer");
+		String defaultServerUrl = Util.getPref(this, Util.PrefKeys.DefaultServer);
 		if (!defaultServerUrl.equals("")) {
 			int pos = -1;
 			int i = 0;
@@ -207,68 +207,68 @@ public class Activity_Settings extends MuninActivity {
 	private void actionSave() {
 		// Graph default scale
 		if (spinner_scale.getSelectedItemPosition() == 0)
-			Util.setPref(context, "defaultScale", "day");
+			Util.setPref(context, Util.PrefKeys.DefaultScale, "day");
 		else if (spinner_scale.getSelectedItemPosition() == 1)
-			Util.setPref(context, "defaultScale", "week");
+			Util.setPref(context, Util.PrefKeys.DefaultScale, "week");
 		else if (spinner_scale.getSelectedItemPosition() == 2)
-			Util.setPref(context, "defaultScale", "month");
+			Util.setPref(context, Util.PrefKeys.DefaultScale, "month");
 		else if (spinner_scale.getSelectedItemPosition() == 3)
-			Util.setPref(context, "defaultScale", "year");
+			Util.setPref(context, Util.PrefKeys.DefaultScale, "year");
 		
 		// App language
-		String currentLang = Util.getPref(context, "lang");
+		String currentLang = Util.getPref(context, Util.PrefKeys.Lang);
 		if (spinner_lang.getSelectedItemPosition() == 0)
-			Util.setPref(context, "lang", "en");
+			Util.setPref(context, Util.PrefKeys.Lang, "en");
 		else if (spinner_lang.getSelectedItemPosition() == 1)
-			Util.setPref(context, "lang", "fr");
+			Util.setPref(context, Util.PrefKeys.Lang, "fr");
 		else if (spinner_lang.getSelectedItemPosition() == 2)
-			Util.setPref(context, "lang", "de");
+			Util.setPref(context, Util.PrefKeys.Lang, "de");
 		else if (spinner_lang.getSelectedItemPosition() == 3)
-			Util.setPref(context, "lang", "ru");
+			Util.setPref(context, Util.PrefKeys.Lang, "ru");
 		else
-			Util.setPref(context, "lang", "en");
-		String newLang = Util.getPref(context, "lang");
+			Util.setPref(context, Util.PrefKeys.Lang, "en");
+		String newLang = Util.getPref(context, Util.PrefKeys.Lang);
 		if (!currentLang.equals(newLang))
 			MuninFoo.loadLanguage(context, true);
 		
 		// Orientation
 		if (spinner_orientation.getSelectedItemPosition() == 0)
-			Util.setPref(context, "graphview_orientation", "horizontal");
+			Util.setPref(context, Util.PrefKeys.GraphviewOrientation, "horizontal");
 		else if (spinner_orientation.getSelectedItemPosition() == 1)
-			Util.setPref(context, "graphview_orientation", "vertical");
+			Util.setPref(context, Util.PrefKeys.GraphviewOrientation, "vertical");
 		else
-			Util.setPref(context, "graphview_orientation", "auto");
+			Util.setPref(context, Util.PrefKeys.GraphviewOrientation, "auto");
 		
 		if (checkbox_alwaysOn.isChecked())
-			Util.setPref(context, "screenAlwaysOn", "true");
+			Util.setPref(context, Util.PrefKeys.ScreenAlwaysOn, "true");
 		else
-			Util.setPref(context, "screenAlwaysOn", "false");
+			Util.setPref(context, Util.PrefKeys.ScreenAlwaysOn, "false");
 		
 		if (checkbox_autoRefresh.isChecked())
-			Util.setPref(context, "autoRefresh", "true");
+			Util.setPref(context, Util.PrefKeys.AutoRefresh, "true");
 		else
-			Util.setPref(context, "autoRefresh", "false");
+			Util.setPref(context, Util.PrefKeys.AutoRefresh, "false");
 		
 		if (checkbox_graphsZoom.isChecked())
-			Util.setPref(context, "graphsZoom", "true");
+			Util.setPref(context, Util.PrefKeys.GraphsZoom, "true");
 		else
-			Util.setPref(context, "graphsZoom", "false");
+			Util.setPref(context, Util.PrefKeys.GraphsZoom, "false");
 		
 		if (checkbox_hdGraphs.isChecked())
-			Util.setPref(context, "hdGraphs", "true");
+			Util.setPref(context, Util.PrefKeys.HDGraphs, "true");
 		else
-			Util.setPref(context, "hdGraphs", "false");
+			Util.setPref(context, Util.PrefKeys.HDGraphs, "false");
 		
 		// Default server
 		int defaultServerPosition = spinner_defaultServer.getSelectedItemPosition()-1;
 		if (defaultServerPosition == -1)
-			Util.removePref(this, "defaultServer");
+			Util.removePref(this, Util.PrefKeys.DefaultServer);
 		else {
 			MuninServer defaultServer = muninFoo.getOrderedServers().get(defaultServerPosition);
-			Util.setPref(this, "defaultServer", defaultServer.getServerUrl());
+			Util.setPref(this, Util.PrefKeys.DefaultServer, defaultServer.getServerUrl());
 		}
 
-		Util.setPref(context, "userAgent", editText_userAgent.getText().toString());
+		Util.setPref(context, Util.PrefKeys.UserAgent, editText_userAgent.getText().toString());
 		muninFoo.setUserAgent(editText_userAgent.getText().toString());
 		
 		// After saving -> go back to reality
@@ -305,27 +305,11 @@ public class Activity_Settings extends MuninActivity {
 		.setCancelable(false)
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				String serverNumber;
-				for (int i=0; i<100; i++) {
-					if (i<10)	serverNumber = "0" + i;
-					else		serverNumber = ""  + i;
-					if (!Util.getPref(context, "server" + serverNumber + "Url").equals("")) {
-						Util.removePref(context, "server" + serverNumber + "Url");
-						Util.removePref(context, "server" + serverNumber + "Name");
-						Util.removePref(context, "server" + serverNumber + "Plugins");
-						Util.removePref(context, "server" + serverNumber + "AuthLogin");
-						Util.removePref(context, "server" + serverNumber + "AuthPassword");
-						Util.removePref(context, "server" + serverNumber + "GraphURL");
-						Util.removePref(context, "server" + serverNumber + "SSL");
-						Util.removePref(context, "server" + serverNumber + "Position");
-					}
-				}
-				
-				Util.setPref(context, "defaultScale", "day");
-				Util.setPref(context, "addserver_history", "");
-				Util.setPref(context, "screenAlwaysOn", "");
-				Util.setPref(context, "graphsZoom", "false");
-				Util.setPref(context, "hdGraphs", "true");
+				Util.setPref(context, Util.PrefKeys.DefaultScale, "day");
+				Util.setPref(context, Util.PrefKeys.AddServer_History, "");
+				Util.setPref(context, Util.PrefKeys.ScreenAlwaysOn, "");
+				Util.setPref(context, Util.PrefKeys.GraphsZoom, "false");
+				Util.setPref(context, Util.PrefKeys.HDGraphs, "true");
 				
 				
 				muninFoo.sqlite.dbHlpr.deleteGraphWidgets();

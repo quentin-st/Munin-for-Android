@@ -12,10 +12,12 @@ import com.chteuchteu.munin.hlpr.Util;
 public class BootReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		// In our case intent will always be BOOT_COMPLETED, so we can just set the alarm
-		if (Util.getPref(context, "notifications").equals("true")) {
+		if (Util.getPref(context, Util.PrefKeys.Notifications).equals("true")) {
 			int min = 0;
-			if (!Util.getPref(context, "notifs_refreshRate").equals(""))
-				min = Integer.parseInt(Util.getPref(context, "notifs_refreshRate"));
+
+			String refreshRate = Util.getPref(context, Util.PrefKeys.Notifs_RefreshRate);
+			if (!refreshRate.equals(""))
+				min = Integer.parseInt(refreshRate);
 			
 			AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 			Intent i = new Intent(context, Service_Notifications.class);

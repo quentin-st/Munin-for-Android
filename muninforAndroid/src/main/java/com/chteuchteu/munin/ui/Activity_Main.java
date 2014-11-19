@@ -221,9 +221,9 @@ public class Activity_Main extends ActionBarActivity {
 	
 	private void displayTwitterAlertIfNeeded() {
 		int NB_LAUNCHES = 8;
-		String nbLaunches = Util.getPref(this, "twitter_nbLaunches");
+		String nbLaunches = Util.getPref(this, Util.PrefKeys.Twitter_NbLaunches);
 		if (nbLaunches.equals(""))
-			Util.setPref(this, "twitter_nbLaunches", "1");
+			Util.setPref(this, Util.PrefKeys.Twitter_NbLaunches, "1");
 		else if (!nbLaunches.equals("ok")) {
 			int n = Integer.parseInt(nbLaunches);
 			if (n == NB_LAUNCHES) {
@@ -250,9 +250,9 @@ public class Activity_Main extends ActionBarActivity {
 				});
 				AlertDialog alert = builder.create();
 				alert.show();
-				Util.setPref(this, "twitter_nbLaunches", "ok");
+				Util.setPref(this, Util.PrefKeys.Twitter_NbLaunches, "ok");
 			} else
-				Util.setPref(this, "twitter_nbLaunches", String.valueOf(n+1));
+				Util.setPref(this, Util.PrefKeys.Twitter_NbLaunches, String.valueOf(n+1));
 		}
 	}
 	
@@ -271,7 +271,7 @@ public class Activity_Main extends ActionBarActivity {
 	}
 	
 	private void preload() {
-		boolean updateOperations = !Util.getPref(context, "lastMFAVersion").equals(MuninFoo.VERSION + "");
+		boolean updateOperations = !Util.getPref(context, Util.PrefKeys.LastMFAVersion).equals(MuninFoo.VERSION + "");
 		
 		
 		if (updateOperations) {
@@ -284,40 +284,40 @@ public class Activity_Main extends ActionBarActivity {
 	}
 	
 	private void updateActions() {
-		if (Util.getPref(context, "lang").equals(""))
-			Util.setPref(context, "lang", Locale.getDefault().getLanguage());
+		if (Util.getPref(context, Util.PrefKeys.Lang).equals(""))
+			Util.setPref(context, Util.PrefKeys.Lang, Locale.getDefault().getLanguage());
 		
-		if (Util.getPref(context, "graphview_orientation").equals(""))
-			Util.setPref(context, "graphview_orientation", "auto");
+		if (Util.getPref(context, Util.PrefKeys.GraphviewOrientation).equals(""))
+			Util.setPref(context, Util.PrefKeys.GraphviewOrientation, "auto");
 		
-		if (Util.getPref(context, "defaultScale").equals(""))
-			Util.setPref(context, "defaultScale", "day");
+		if (Util.getPref(context, Util.PrefKeys.DefaultScale).equals(""))
+			Util.setPref(context, Util.PrefKeys.DefaultScale, "day");
 		
-		if (Util.hasPref(context, "drawer"))
-			Util.removePref(context, "drawer");
+		if (Util.hasPref(context, Util.PrefKeys.Drawer))
+			Util.removePref(context, Util.PrefKeys.Drawer);
 		
-		if (Util.hasPref(context, "splash"))
-			Util.removePref(context, "splash");
+		if (Util.hasPref(context, Util.PrefKeys.Splash))
+			Util.removePref(context, Util.PrefKeys.Splash);
 		
-		if (Util.hasPref(context, "listViewMode"))
-			Util.removePref(context, "listViewMode");
+		if (Util.hasPref(context, Util.PrefKeys.ListViewMode))
+			Util.removePref(context, Util.PrefKeys.ListViewMode);
 		
-		if (Util.hasPref(context, "transitions"))
-			Util.removePref(context, "transitions");
+		if (Util.hasPref(context, Util.PrefKeys.Transitions))
+			Util.removePref(context, Util.PrefKeys.Transitions);
 
-		if (!Util.hasPref(context, "graphsZoom"))
-			Util.setPref(context, "graphsZoom", "true");
+		if (!Util.hasPref(context, Util.PrefKeys.GraphsZoom))
+			Util.setPref(context, Util.PrefKeys.GraphsZoom, "true");
 		
 		// MfA 3.0 : moved auth attributes from MuninServer to MuninMaster : migrate those if possible
-		String strFromVersion = Util.getPref(context, "lastMFAVersion");
+		String strFromVersion = Util.getPref(context, Util.PrefKeys.LastMFAVersion);
 		double fromVersion = 0;
 		if (!strFromVersion.equals(""))
-			fromVersion = Double.parseDouble(Util.getPref(context, "lastMFAVersion"));
+			fromVersion = Double.parseDouble(Util.getPref(context, Util.PrefKeys.LastMFAVersion));
 
 		if (fromVersion < 4.2) // 4.2 = V3.0
 			muninFoo.sqlite.migrateTo3();
 		
-		Util.setPref(context, "lastMFAVersion", MuninFoo.VERSION + "");
+		Util.setPref(context, Util.PrefKeys.LastMFAVersion, MuninFoo.VERSION + "");
 		muninFoo.resetInstance(this);
 	}
 	

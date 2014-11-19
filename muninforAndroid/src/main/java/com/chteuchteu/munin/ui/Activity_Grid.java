@@ -61,7 +61,7 @@ public class Activity_Grid extends MuninActivity {
 		editing = false;
 		updating = false;
 		
-		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		fs_iv = (ImageView) findViewById(R.id.fullscreen_iv);
@@ -151,7 +151,7 @@ public class Activity_Grid extends MuninActivity {
 			edit();
 		
 		// Launch periodical check
-		if (Util.getPref(this, "autoRefresh").equals("true")) {
+		if (Util.getPref(this, Util.PrefKeys.AutoRefresh).equals("true")) {
 			mHandler = new Handler();
 			final int INTERVAL = 1000 * 60 * 5;
 			mHandlerTask = new Runnable() {
@@ -339,7 +339,7 @@ public class Activity_Grid extends MuninActivity {
 	public void onStop() {
 		super.onStop();
 		
-		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 }

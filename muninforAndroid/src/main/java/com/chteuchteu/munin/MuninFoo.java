@@ -71,7 +71,7 @@ public class MuninFoo {
 		instance = null;
 
 		// User agent
-		String userAgentPref = Util.getPref(context, "userAgent");
+		String userAgentPref = Util.getPref(context, Util.PrefKeys.UserAgent);
 		this.userAgent = userAgentPref.equals("") ? generateUserAgent(context) : userAgentPref;
 
 		loadInstance(context);
@@ -109,12 +109,15 @@ public class MuninFoo {
 		if (this.servers.isEmpty())
 			return;
 
-		if (context != null && !Util.getPref(context, "defaultServer").equals("")) {
-			String defaultServerUrl = Util.getPref(context, "defaultServer");
-			MuninServer defaultServer = getServer(defaultServerUrl);
-			if (defaultServer != null) {
-				this.currentServer = defaultServer;
-				return;
+		if (context != null) {
+			String defaultServerUrl = Util.getPref(context, Util.PrefKeys.DefaultServer);
+
+			if (!defaultServerUrl.equals("")) {
+				MuninServer defaultServer = getServer(defaultServerUrl);
+				if (defaultServer != null) {
+					this.currentServer = defaultServer;
+					return;
+				}
 			}
 		}
 
@@ -177,9 +180,10 @@ public class MuninFoo {
 	 * @param forceLoad Force language load (after language change)
 	 */
 	public static void loadLanguage(Context context, boolean forceLoad) {
-		if (!Util.getPref(context, "lang").equals("")) {
+		String lang = Util.getPref(context, Util.PrefKeys.Lang);
+
+		if (!lang.equals("")) {
 			if (!languageLoaded || forceLoad) {
-				String lang = Util.getPref(context, "lang");
 				// lang == "en" || "fr" || "de" || "ru"
 				if (!(lang.equals("en") || lang.equals("fr") || lang.equals("de") || lang.equals("ru")))
 					lang = "en";
@@ -465,7 +469,7 @@ public class MuninFoo {
 	 * @return
 	 */
 	public static String getUserAgent(Context context) {
-		String userAgentPref = Util.getPref(context, "userAgent");
+		String userAgentPref = Util.getPref(context, Util.PrefKeys.UserAgent);
 		return userAgentPref.equals("") ? generateUserAgent(context) : userAgentPref;
 	}
 	public void setUserAgent(String val) { this.userAgent = val; }

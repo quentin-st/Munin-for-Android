@@ -124,7 +124,8 @@ public class GridItem {
 			fullscreenImageView.setLayoutParams(lParams);*/
 			
 			// Download HD graph if possible
-			if (grid.currentlyOpenedPlugin.getInstalledOn().getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE && !Util.getPref(c, "hdGraphs").equals("false")) {
+			if (grid.currentlyOpenedPlugin.getInstalledOn().getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
+					&& !Util.getPref(c, Util.PrefKeys.HDGraphs).equals("false")) {
 				if (this.hdGraphDownloader != null && this.hdGraphDownloader.isDownloading())
 					this.hdGraphDownloader.killDownload();
 				

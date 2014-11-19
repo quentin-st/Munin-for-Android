@@ -219,7 +219,7 @@ public final class Util {
 	}
 	
 	public static Period getDefaultPeriod(Context c) {
-		return Period.get(Util.getPref(c, "defaultScale"));
+		return Period.get(Util.getPref(c, PrefKeys.DefaultScale));
 	}
 	
 	public static Bitmap removeBitmapBorder(Bitmap original) {
@@ -266,29 +266,53 @@ public final class Util {
 		}
 	}
 	
-	public static boolean hasPref(Context context, String key) {
-		return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).contains(key);
+	public static boolean hasPref(Context context, PrefKeys key) {
+		return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).contains(key.getKey());
+	}
+
+	public enum PrefKeys {
+		GraphviewOrientation("graphview_orientation"),  Notifications("notifications"),
+		ScreenAlwaysOn("screenAlwaysOn"),                 Notifs_RefreshRate("notifs_refreshRate"),
+		DefaultScale("defaultScale"),                      Notifs_ServersList("notifs_serversList"),
+		LastMFAVersion("lastMFAVersion"),				  Notifs_WifiOnly("notifs_wifiOnly"),
+															  Notifs_Vibrate("notifs_vibrate"),
+															  Notifs_LastNotificationText("lastNotificationText"),
+
+		AutoRefresh("autoRefresh"),                        UserAgent("userAgent"),
+		HDGraphs("hdGraphs"),                               Lang("lang"),
+		GraphsZoom("graphsZoom"),                          DefaultServer("defaultServer"),
+
+		Twitter_NbLaunches("twitter_nbLaunches"),        AddServer_History("addserver_history"),
+		Widget2_ForceUpdate("widget2_forceUpdate"),
+
+		// Old prefs
+		Drawer("drawer"), Splash("splash"), ListViewMode("listViewMode"), Transitions("transitions");
+
+		private String key;
+		PrefKeys(String k) { this.key = k; }
+
+		public String getKey() { return this.key; }
+	}
+
+	public static String getPref(Context context, PrefKeys key) {
+		return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key.getKey(), "");
 	}
 	
-	public static String getPref(Context context, String key) {
-		return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key, "");
-	}
-	
-	public static void setPref(Context context, String key, String value) {
+	public static void setPref(Context context, PrefKeys key, String value) {
 		if (value.equals(""))
 			removePref(context, key);
 		else {
 			SharedPreferences prefs = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(key, value);
+			editor.putString(key.getKey(), value);
 			editor.apply();
 		}
 	}
 	
-	public static void removePref(Context context, String key) {
+	public static void removePref(Context context, PrefKeys key) {
 		SharedPreferences prefs = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key);
+		editor.remove(key.getKey());
 		editor.apply();
 	}
 	
@@ -539,8 +563,6 @@ public final class Util {
 	 * @return may be null
 	 */
 	public static View getChild(ViewGroup parent, Class<?> type) {
-		View view = null;
-
 		for (int i=0; i<parent.getChildCount(); i++) {
 			View child = parent.getChildAt(i);
 
@@ -553,7 +575,7 @@ public final class Util {
 			}
 		}
 
-		return view;
+		return null;
 	}
 
 	/**
@@ -593,8 +615,8 @@ public final class Util {
 		int imgViewW = imageView.getWidth();
 		int imgViewH = imageView.getHeight();
 
-		int top = (int) (imgViewH - actH)/2;
-		int left = (int) (imgViewW - actW)/2;
+		int top = (imgViewH - actH)/2;
+		int left = (imgViewW - actW)/2;
 
 		ret[0] = left;
 		ret[1] = top;
@@ -608,7 +630,7 @@ public final class Util {
 	 * @return String
 	 */
 	public static String prettyDate(long timestamp) {
-		return DateFormat.getDateTimeInstance().format(new Date((long) timestamp*1000));
+		return DateFormat.getDateTimeInstance().format(new Date(timestamp*1000));
 	}
 
 	public static final class Animations {
@@ -623,7 +645,7 @@ public final class Util {
 
 		public static void animate(View view, CustomAnimation animation) { animate(view, animation, AnimationSpeed.MEDIUM); }
 		public static void animate(View view, CustomAnimation animation, AnimationSpeed animationSpeed) {
-			if (view != null)
+			if (view == null)
 				return;
 
 			switch (animation) {

@@ -78,7 +78,7 @@ public class Activity_Alerts extends MuninActivity {
 
 		progressBar = Util.UI.prepareGmailStyleProgressBar(this, actionBar);
 		
-		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		everythingsOk = findViewById(R.id.alerts_ok);
@@ -169,7 +169,7 @@ public class Activity_Alerts extends MuninActivity {
 		});
 		
 		// Launch periodical check
-		if (Util.getPref(this, "autoRefresh").equals("true")) {
+		if (Util.getPref(this, Util.PrefKeys.AutoRefresh).equals("true")) {
 			mHandler = new Handler();
 			final int INTERVAL = 1000 * 60 * 5;
 			mHandlerTask = new Runnable() {
@@ -469,7 +469,7 @@ public class Activity_Alerts extends MuninActivity {
 	public void onStop() {
 		super.onStop();
 		
-		if (Util.getPref(this, "screenAlwaysOn").equals("true"))
+		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 }
