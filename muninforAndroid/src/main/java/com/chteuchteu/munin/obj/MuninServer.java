@@ -277,18 +277,22 @@ public class MuninServer {
 	}
 	
 	private List<String> getDistinctCategories() {
-		List<String> l = new ArrayList<String>();
+		List<String> list = new ArrayList<String>();
 		
-		for (MuninPlugin p : plugins) {
+		for (MuninPlugin plugin : plugins) {
+			if (plugin.getCategory() == null)
+				continue;
+
+			// Check if list already contains
 			boolean contains = false;
-			for (String s : l) {
-				if (p.getCategory().equals(s))
+			for (String s : list) {
+				if (plugin.getCategory().equals(s))
 					contains = true;
 			}
 			if (!contains)
-				l.add(p.getCategory());
+				list.add(plugin.getCategory());
 		}
-		return l;
+		return list;
 	}
 	
 	public List<List<MuninPlugin>> getPluginsListWithCategory() {

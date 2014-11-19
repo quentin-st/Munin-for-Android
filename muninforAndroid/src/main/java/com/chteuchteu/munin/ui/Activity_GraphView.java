@@ -136,7 +136,8 @@ public class Activity_GraphView extends MuninActivity {
 		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		actionBar.setTitle(muninFoo.getCurrentServer().getName());
+		((TextView) findViewById(R.id.serverName)).setText(muninFoo.getCurrentServer().getName());
+		actionBar.setTitle("");
 		
 		load_period = Period.get(Util.getPref(this, Util.PrefKeys.DefaultScale));
 		
@@ -215,7 +216,7 @@ public class Activity_GraphView extends MuninActivity {
 					currentPlugin = muninFoo.getCurrentServer().getPlugin(position);
 				else {
 					currentPlugin = label.getPlugins().get(position);
-					actionBar.setTitle(currentPlugin.getInstalledOn().getName());
+					((TextView) findViewById(R.id.serverName)).setText(currentPlugin.getInstalledOn().getName());
 					muninFoo.setCurrentServer(currentPlugin.getInstalledOn());
 				}
 
@@ -585,7 +586,7 @@ public class Activity_GraphView extends MuninActivity {
 		if (image != null) {
 			String root = Environment.getExternalStorageDirectory().toString();
 			File dir = new File(root + "/muninForAndroid/");
-			if(!dir.exists() || !dir.isDirectory())
+			if (!dir.exists() || !dir.isDirectory())
 				dir.mkdir();
 			
 			String pluginName = currentPlugin.getFancyName();

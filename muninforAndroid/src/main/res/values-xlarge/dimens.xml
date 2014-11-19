@@ -2,4 +2,5 @@
 
 	<dimen name="listview_horizontal_margin">25dp</dimen>
 	<dimen name="listview_inner_horizontal_margin">15dp</dimen>
+
 </resources>
