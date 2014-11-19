@@ -107,6 +107,7 @@ public class Activity_GraphView extends MuninActivity {
 	private boolean       isFabShown;
 
 	private MenuItem		item_period;
+	private MenuItem       item_documentation;
 	
 	private Handler		mHandler;
 	private Runnable		mHandlerTask;
@@ -232,37 +233,41 @@ public class Activity_GraphView extends MuninActivity {
 				previousPos = viewFlow.getSelectedItemPosition();
 
 				// Documentation
-				boolean hasDoc = DocumentationHelper.hasDocumentation(currentPlugin);
+				if (item_documentation != null)
+					item_documentation.setVisible(DocumentationHelper.hasDocumentation(currentPlugin));
 
-				if (!hasDoc && isFabShown) { // Hide fab
+				// If changed plugin from drawer and documentation is shown => hide it
+				if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE)
+					hideDocumentation();
+
+				// Dynazoom
+				boolean dynazoomAvailable = currentPlugin.getInstalledOn().getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE;
+
+				if (!dynazoomAvailable && isFabShown) { // Hide fab
 					fab.hide(true);
 					isFabShown = false;
-				} else if (hasDoc && !isFabShown) { // Show fab
+				} else if (dynazoomAvailable && !isFabShown) { // Show fab
 					if (fab.getVisibility() == View.GONE)
 						fab.setVisibility(View.VISIBLE);
 					isFabShown = true;
 					fab.show(true);
 				}
 
-				// If changed plugin from drawer and documentation is shown => hide it
-				if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE)
-					hideDocumentation();
 			}
 		});
 
 		fab = (FloatingActionButton) findViewById(R.id.fab);
-		if (!DocumentationHelper.hasDocumentation(muninFoo.getCurrentServer().getPlugins().get(pos))) {
-			fab.hide(true);
-
-			isFabShown = false;
-		} else {
+		if (currentPlugin.getInstalledOn().getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE) {
 			fab.setVisibility(View.VISIBLE);
 			fab.show();
+		} else {
+			fab.hide(true);
+			isFabShown = false;
 		}
 		fab.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				actionDocumentation();
+				actionDynazoom();
 			}
 		});
 		
@@ -311,13 +316,6 @@ public class Activity_GraphView extends MuninActivity {
 				}
 				break;
 		}
-
-		findViewById(R.id.dynazoomTest).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				actionDynazoom();
-			}
-		});
 	}
 	
 	private class DynaZoomDetector extends AsyncTask<Void, Integer, Void> {
@@ -380,6 +378,8 @@ public class Activity_GraphView extends MuninActivity {
 		getMenuInflater().inflate(R.menu.graphview, menu);
 		
 		item_period = menu.findItem(R.id.menu_period);
+		item_documentation = menu.findItem(R.id.menu_documentation);
+		item_documentation.setVisible(DocumentationHelper.hasDocumentation(currentPlugin));
 		MenuItem item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
         MenuItem item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
 		
@@ -433,6 +433,7 @@ public class Activity_GraphView extends MuninActivity {
 					startActivity(browserIntent);
 				} catch (Exception ex) { ex.printStackTrace(); }
 				return true;
+			case R.id.menu_documentation: actionDocumentation(); return true;
 		}
 		return true;
 	}

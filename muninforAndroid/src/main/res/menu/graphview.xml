@@ -34,6 +34,7 @@
 	<item
 		android:id="@+id/menu_documentation"
 		app:showAsAction="always"
+		android:visible="false"
 		android:title="Documentation"
 		android:icon="@drawable/ic_action_help2"/>
 	<item
