@@ -329,7 +329,7 @@ public class MuninMaster {
 			
 			// Check if Munin or MunStrap
 			if (html.contains("MunStrap")) { // Munstrap
-				Elements domains = doc.select("ul.groupview > li > a");
+				Elements domains = doc.select("ul.groupview > li > a.link-domain");
 				
 				if (domains.size() > 0) {
 					// If there's just one domain : take the domain name as master name.
@@ -343,7 +343,8 @@ public class MuninMaster {
 						// Get every host for that domain
 						Elements hosts = domain.parent().select("ul>li");
 						for (Element host : hosts) {
-							MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
+							Element infos = host.select("a.link-host").get(0);
+							MuninServer serv = new MuninServer(infos.text(), infos.attr("abs:href"));
 							serv.setParent(this);
 							serv.setPosition(hosts.indexOf(host));
 							nbServers++;
