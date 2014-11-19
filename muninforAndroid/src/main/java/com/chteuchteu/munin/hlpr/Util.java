@@ -676,4 +676,6 @@ public final class Util {
 			}
 		}
 	}
+
+	public interface ProgressNotifier { public void notify(int progress, int total); }
 }

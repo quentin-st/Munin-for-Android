@@ -227,9 +227,10 @@ public class MuninFoo {
 		if (this.currentServer.equals(s) && this.servers.size() > 0)
 			this.currentServer = this.servers.get(0);
 	}
-	public void deleteMuninMaster(MuninMaster master) {
+	public void deleteMuninMaster(MuninMaster master) { deleteMuninMaster(master, null); }
+	public void deleteMuninMaster(MuninMaster master, Util.ProgressNotifier progressNotifier) {
 		if (this.masters.remove(master)) {
-			sqlite.dbHlpr.deleteMaster(master, true);
+			sqlite.dbHlpr.deleteMaster(master, true, progressNotifier);
 			
 			// Remove labels relations for the current session
 			for (MuninServer server : master.getChildren()) {

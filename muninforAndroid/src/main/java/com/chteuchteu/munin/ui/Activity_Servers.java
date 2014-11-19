@@ -486,7 +486,8 @@ public class Activity_Servers extends MuninActivity {
 		private ProgressDialog dialog;
 		private Context context;
 		private MuninMaster toBeDeleted;
-		
+		private Util.ProgressNotifier progressNotifier;
+
 		private DeleteMaster(MuninMaster master, Context context) {
 			this.toBeDeleted = master;
 			this.context = context;
@@ -497,11 +498,22 @@ public class Activity_Servers extends MuninActivity {
 			super.onPreExecute();
 			
 			dialog = ProgressDialog.show(context, "", getString(R.string.loading), true);
+			this.progressNotifier = new Util.ProgressNotifier() {
+				@Override
+				public void notify(final int progress, final int total) {
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							dialog.setMessage(getString(R.string.loading) + " " + progress + "/" + total);
+						}
+					});
+				}
+			};
 		}
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			muninFoo.deleteMuninMaster(toBeDeleted);
+			muninFoo.deleteMuninMaster(toBeDeleted, progressNotifier);
 			
 			return null;
 		}

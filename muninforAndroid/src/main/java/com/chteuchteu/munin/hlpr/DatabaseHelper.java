@@ -930,15 +930,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(c, db);
 		return l;
 	}
-	
-	public void deleteMaster(MuninMaster m, boolean deleteChildren) {
+
+	public void deleteMaster(MuninMaster m, boolean deleteChildren) { deleteMaster(m, deleteChildren, null); }
+	public void deleteMaster(MuninMaster m, boolean deleteChildren, Util.ProgressNotifier progressNotifier) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_MUNINMASTERS, KEY_ID + " = ?", new String[] { String.valueOf(m.getId()) });
 		close(null, db);
 		
 		if (deleteChildren) {
-			for (MuninServer s : m.getChildren())
+			for (MuninServer s : m.getChildren()) {
 				deleteServer(s);
+				if (progressNotifier != null)
+					progressNotifier.notify(m.getChildren().indexOf(s)+1, m.getChildren().size());
+			}
 		}
 	}
 	
