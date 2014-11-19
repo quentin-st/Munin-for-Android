@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
+import com.chteuchteu.munin.obj.MuninPlugin;
+import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 
 import org.taptwo.android.widget.TitleProvider;
@@ -81,6 +83,9 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		private int position;
 		private Context context;
 		private ProgressBar progressBar;
+
+		private MuninPlugin plugin;
+		private MuninServer server;
 		
 		private BitmapFetcher (ImageView iv, ProgressBar progressBar, int position, Context context) {
 			super();
@@ -88,6 +93,14 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 			this.position = position;
 			this.context = context;
 			this.progressBar = progressBar;
+
+			if (activity.viewFlowMode == Activity_GraphView.VIEWFLOWMODE_GRAPHS) {
+				this.plugin = muninFoo.getCurrentServer().getPlugin(position);
+				this.server = muninFoo.getCurrentServer();
+			} else {
+				this.plugin = activity.label.getPlugins().get(position);
+				this.server = this.plugin.getInstalledOn();
+			}
 		}
 		
 		@Override
@@ -101,18 +114,15 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		protected Void doInBackground(Void... arg0) {
 			if (activity.isBitmapNull(position)) {
 				String imgUrl;
-				if (muninFoo.getCurrentServer(context).getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
+				if (server.getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
 						&& !Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
-					imgUrl = muninFoo.getCurrentServer().getPlugin(position).getHDImgUrl(
-							activity.load_period, true, graphsDimensions[0], graphsDimensions[1]);
+					imgUrl = plugin.getHDImgUrl(activity.load_period, true, graphsDimensions[0], graphsDimensions[1]);
 				} else
-					imgUrl = muninFoo.getCurrentServer().getPlugin(position).getImgUrl(activity.load_period);
+					imgUrl = plugin.getImgUrl(activity.load_period);
 
 
-				activity.addBitmap(Util.removeBitmapBorder(
-								muninFoo.getCurrentServer().getParent().grabBitmap(imgUrl, muninFoo.getUserAgent())),
-						position);
+				activity.addBitmap(Util.removeBitmapBorder(server.getParent().grabBitmap(imgUrl, muninFoo.getUserAgent())), position);
 			}
 			
 			return null;
@@ -138,7 +148,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 				// If documentation shown && image just loaded : display it
 				if (activity.iv_documentation != null) {
 					Object tag = activity.iv_documentation.getTag();
-					if (tag != null && tag.equals(muninFoo.getCurrentServer().getPlugin(position).getName()))
+					if (tag != null && tag.equals(plugin.getName()))
 						activity.iv_documentation.setImageBitmap(activity.getBitmap(position));
 				}
 			} else {
@@ -152,8 +162,19 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	
 	@Override
 	public String getTitle(int position) {
-		if (position >= 0 && position < muninFoo.getCurrentServer().getPlugins().size())
+		if (position < 0)
+			return "";
+
+		if (activity.viewFlowMode == Activity_GraphView.VIEWFLOWMODE_GRAPHS) {
+			if (position > muninFoo.getCurrentServer().getPlugins().size())
+				return "";
+
 			return muninFoo.getCurrentServer().getPlugin(position).getFancyName();
-		return "";
+		} else {
+			if (position > activity.label.getPlugins().size())
+				return "";
+
+			return activity.label.getPlugins().get(position).getFancyName();
+		}
 	}
 }

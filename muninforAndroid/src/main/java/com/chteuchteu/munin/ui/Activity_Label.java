@@ -25,9 +25,9 @@ import java.util.Map;
 
 
 public class Activity_Label extends MuninActivity {
-	private Label			label;
+	private Label label;
 	private List<MuninPlugin> correspondance;
-	private List<String> 	correspondanceServers;
+	private List<String> correspondanceServers;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -79,17 +79,15 @@ public class Activity_Label extends MuninActivity {
 		labels_listView.setAdapter(adapter);
 		labels_listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-				//TextView line_a = (TextView) view.findViewById(R.id.line_a);
-				//TextView line_b = (TextView) view.findViewById(R.id.line_b);
-				
 				MuninPlugin plugin = correspondance.get(position);
 				String serverUrl = correspondanceServers.get(position);
 				Intent intent = new Intent(Activity_Label.this, Activity_GraphView.class);
 				muninFoo.setCurrentServer(muninFoo.getServer(serverUrl));
-				int pos = muninFoo.getCurrentServer().getPluginPosition(plugin);
+				int pos = label.getPlugins().indexOf(plugin);
 				intent.putExtra("position", pos);
 				intent.putExtra("from", "labels");
 				intent.putExtra("label", label.getName());
+				intent.putExtra("labelId", label.getId());
 				startActivity(intent);
 				Util.setTransition(context, TransitionStyle.DEEPER);
 			}

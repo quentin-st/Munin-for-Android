@@ -10,6 +10,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.util.List;
+
 public class MuninPlugin {
 	private long 		id;
 	private String 		name;
@@ -170,5 +172,17 @@ public class MuninPlugin {
 		}
 		
 		return -1;
+	}
+
+	public static MuninPlugin findFromMastersList(long pluginId, List<MuninMaster> masters) {
+		for (MuninMaster master : masters) {
+			for (MuninServer server : master.getChildren()) {
+				for (MuninPlugin plugin : server.getPlugins()) {
+					if (plugin.getId() == pluginId)
+						return plugin;
+				}
+			}
+		}
+		return null;
 	}
 }

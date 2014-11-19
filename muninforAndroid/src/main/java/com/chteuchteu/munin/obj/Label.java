@@ -79,6 +79,8 @@ public class Label {
 	public void setPlugins(List<MuninPlugin> l) {
 		this.plugins = l;
 	}
+	public List<MuninPlugin> getPlugins() { return this.plugins; }
+
 	public void setName(String name) {
 		this.name = name;
 	}

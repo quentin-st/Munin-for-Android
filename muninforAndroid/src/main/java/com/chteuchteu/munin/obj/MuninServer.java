@@ -299,17 +299,6 @@ public class MuninServer {
 		return l;
 	}
 	
-	public int getPluginPosition(MuninPlugin p) {
-		int i = 0;
-		for (MuninPlugin pl : plugins) {
-			if (pl.equalsApprox(p))
-				return i;
-			i++;
-		}
-		return 0;
-	}
-	
-	
 	public boolean equalsApprox (MuninServer server2) {
 		String address1 = this.getServerUrl();
 		String address2 = server2.getServerUrl();

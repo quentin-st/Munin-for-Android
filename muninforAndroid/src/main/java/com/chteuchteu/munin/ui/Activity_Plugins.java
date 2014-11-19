@@ -216,6 +216,7 @@ public class Activity_Plugins extends MuninActivity {
 					}
 				}
 				intent.putExtra("position", p);
+				intent.putExtra("from", "plugins");
 				startActivity(intent);
 				Util.setTransition(context, TransitionStyle.DEEPER);
 			}

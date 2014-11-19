@@ -62,7 +62,7 @@ public class Widget_AlertsWidget_WidgetProvider extends AppWidgetProvider {
 			if (intent.getAction().equals(ACTION_REFRESH)) {
 				// Only display "No connection" toast if manual refresh
 				if (Util.isOnline(context)) {
-					Util.setPref(context, "widget2_forceUpdate", "true");
+					Util.setPref(context, Util.PrefKeys.Widget2_ForceUpdate, "true");
 					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 					int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
 							new ComponentName(context, Widget_AlertsWidget_WidgetProvider.class));

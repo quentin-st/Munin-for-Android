@@ -626,7 +626,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return l;
 	}
 	
-	public MuninPlugin getPlugin(int id) {
+	public MuninPlugin getPlugin(long id) {
 		String selectQuery = "SELECT * FROM " + TABLE_MUNINPLUGINS 
 				+ " WHERE " + KEY_ID + " = " + id;
 		
@@ -784,9 +784,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return null;
 	}
 	
-	public List<Label> getLabels() {
+	public List<Label> getLabels(List<MuninMaster> masters) {
 		List<Label> list = new ArrayList<Label>();
-			try {
+		try {
 			String selectQuery = "SELECT * FROM " + TABLE_LABELS;
 			
 			SQLiteDatabase db = this.getReadableDatabase();
@@ -797,7 +797,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					Label l = new Label();
 					l.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 					l.setName(c.getString(c.getColumnIndex(KEY_LABELS_NAME)));
-					l.setPlugins(getPlugins(l));
+					l.setPlugins(getPlugins(l, masters));
 					list.add(l);
 				} while (c.moveToNext());
 			}
@@ -810,21 +810,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	/**
 	 * Get all plugins linked to a label
-	 * @param l Label
+	 * @param label Label
+	 * @param masters masters
 	 * @return List<MuninPlugin>
 	 */
-	public List<MuninPlugin> getPlugins(Label l) {
+	public List<MuninPlugin> getPlugins(Label label, List<MuninMaster> masters) {
 		List<MuninPlugin> list = new ArrayList<MuninPlugin>();
 		String selectQuery = "SELECT * FROM " + TABLE_LABELSRELATIONS
-				+ " WHERE " + KEY_LABELSRELATIONS_LABEL + " = " + l.getId();
+				+ " WHERE " + KEY_LABELSRELATIONS_LABEL + " = " + label.getId();
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
 		if (c != null && c.moveToFirst()) {
 			do {
-				MuninPlugin p = getPlugin(c.getInt(c.getColumnIndex(KEY_LABELSRELATIONS_PLUGIN)));
-				list.add(p);
+				// Find plugin
+				long pluginId = c.getInt(c.getColumnIndex(KEY_LABELSRELATIONS_PLUGIN));
+				MuninPlugin plugin = MuninPlugin.findFromMastersList(pluginId, masters);
+				if (plugin == null)
+					plugin = getPlugin(pluginId);
+
+				list.add(plugin);
 			} while (c.moveToNext());
 		}
 		close(c, db);

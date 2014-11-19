@@ -82,7 +82,7 @@ public class MuninFoo {
 	private void loadInstance(Context context) {
 		this.masters = sqlite.dbHlpr.getMasters();
 		this.servers = sqlite.dbHlpr.getServers(this.masters);
-		this.labels = sqlite.dbHlpr.getLabels();
+		this.labels = sqlite.dbHlpr.getLabels(this.masters);
 
 		attachOrphanServers();
 
@@ -372,6 +372,14 @@ public class MuninFoo {
 		for (Label l : labels) {
 			if (l.getName().equals(lname))
 				return l;
+		}
+		return null;
+	}
+
+	public Label getLabel(long labelId) {
+		for (Label label : labels) {
+			if (label.getId() == labelId)
+				return label;
 		}
 		return null;
 	}
