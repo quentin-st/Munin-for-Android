@@ -90,7 +90,8 @@
 				fab:fab_type="mini"
 				fab:fab_colorNormal="@color/primary"
 				fab:fab_colorPressed="@color/primary_pressed"
-				fab:fab_colorRipple="@color/ripple" />
+				fab:fab_colorRipple="@color/ripple"
+				android:visibility="gone"/>
 
 			<Button
 				android:id="@+id/dynazoomTest"
@@ -261,6 +262,11 @@
 						rangebar:tickHeight="3dp"
 						android:layout_gravity="bottom" />
 				</LinearLayout>
+
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="3dp"
+					android:background="@drawable/shadow_gradient"/>
 
 				<FrameLayout
 					android:layout_width="match_parent"

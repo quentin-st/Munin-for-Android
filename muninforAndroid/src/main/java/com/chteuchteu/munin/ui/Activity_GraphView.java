@@ -237,6 +237,8 @@ public class Activity_GraphView extends MuninActivity {
 					fab.hide(true);
 					isFabShown = false;
 				} else if (hasDoc && !isFabShown) { // Show fab
+					if (fab.getVisibility() == View.GONE)
+						fab.setVisibility(View.VISIBLE);
 					isFabShown = true;
 					fab.show(true);
 				}
@@ -252,6 +254,9 @@ public class Activity_GraphView extends MuninActivity {
 			fab.hide(true);
 
 			isFabShown = false;
+		} else {
+			fab.setVisibility(View.VISIBLE);
+			fab.show();
 		}
 		fab.setOnClickListener(new OnClickListener() {
 			@Override
@@ -397,8 +402,7 @@ public class Activity_GraphView extends MuninActivity {
 			dynazoom_from = Util.Dynazoom.getFromPinPoint(load_period);
 			dynazoom_to = Util.Dynazoom.getToPinPoint();
 
-			dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
-					currentPlugin, (ImageView) findViewById(R.id.dynazoom_imageview),
+			dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(currentPlugin, (ImageView) findViewById(R.id.dynazoom_imageview),
 					(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
 					dynazoom_from, dynazoom_to).execute();
 			dynazoom_updateFromTo();
@@ -563,8 +567,7 @@ public class Activity_GraphView extends MuninActivity {
 	
 	private void actionRefresh() {
 		if (isDynazoomOpen()) {
-			dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
-					currentPlugin, (ImageView) findViewById(R.id.dynazoom_imageview),
+			dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(currentPlugin, (ImageView) findViewById(R.id.dynazoom_imageview),
 					(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
 					dynazoom_from, dynazoom_to).execute();
 		} else {
@@ -939,7 +942,7 @@ public class Activity_GraphView extends MuninActivity {
 	}
 
 	private void actionDynazoom() {
-		if (muninFoo.getCurrentServer().getParent().isDynazoomAvailable() != DynazoomAvailability.TRUE)
+		if (currentPlugin.getInstalledOn().getParent().isDynazoomAvailable() != DynazoomAvailability.TRUE)
 			return;
 
 		findViewById(R.id.dynazoom).setVisibility(View.VISIBLE);
@@ -964,7 +967,7 @@ public class Activity_GraphView extends MuninActivity {
 				if (dynazoomFetcher != null && !dynazoomFetcher.isCancelled())
 					dynazoomFetcher.cancel(true);
 
-				dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(), currentPlugin, imageView,
+				dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(currentPlugin, imageView,
 						(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
 						dynazoom_from, dynazoom_to).execute();
 
@@ -982,9 +985,7 @@ public class Activity_GraphView extends MuninActivity {
 				if (imageView.getDrawable() == null)
 					return;
 
-				if (leftThumbIndex == 0 && rightThumbIndex == DynazoomHelper.RANGEBAR_TICKS_COUNT - 1
-						|| leftThumbIndex == rightThumbIndex
-						|| rightThumbIndex-leftThumbIndex < 4) {
+				if (leftThumbIndex == 0 && rightThumbIndex == DynazoomHelper.RANGEBAR_TICKS_COUNT - 1) {
 					highlight1.setVisibility(View.GONE);
 					highlight2.setVisibility(View.GONE);
 				} else {
@@ -1012,6 +1013,9 @@ public class Activity_GraphView extends MuninActivity {
 				if (highlight1.getVisibility() == View.GONE || highlight2.getVisibility() == View.GONE)
 					return;
 
+				if (rangeBar.getLeftIndex() == rangeBar.getRightIndex())
+					return;
+
 				int fromIndex = rangeBar.getLeftIndex();
 				int toIndex = rangeBar.getRightIndex();
 
@@ -1025,9 +1029,9 @@ public class Activity_GraphView extends MuninActivity {
 				highlight2.setVisibility(View.GONE);
 				rangeBar.setThumbIndices(0, DynazoomHelper.RANGEBAR_TICKS_COUNT-1);
 
-				dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(muninFoo.getCurrentServer(),
-						currentPlugin, imageView, (ProgressBar) findViewById(R.id.dynazoom_progressbar),
-						context, muninFoo.getUserAgent(), dynazoom_from, dynazoom_to).execute();
+				dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(currentPlugin, imageView,
+						(ProgressBar) findViewById(R.id.dynazoom_progressbar), context,
+						muninFoo.getUserAgent(), dynazoom_from, dynazoom_to).execute();
 
 				dynazoom_updateFromTo();
 			}

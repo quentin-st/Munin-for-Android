@@ -95,10 +95,10 @@ public final class DynazoomHelper {
 
 		private Bitmap bitmap;
 
-		public DynazoomFetcher (MuninServer server, MuninPlugin plugin, ImageView iv, ProgressBar progressBar, Context context, String userAgent,
+		public DynazoomFetcher (MuninPlugin plugin, ImageView iv, ProgressBar progressBar, Context context, String userAgent,
 		                        long pinPoint1, long pinPoint2) {
 			super();
-			this.server = server;
+			this.server = plugin.getInstalledOn();
 			this.plugin = plugin;
 			this.pinPoint1 = pinPoint1;
 			this.pinPoint2 = pinPoint2;
