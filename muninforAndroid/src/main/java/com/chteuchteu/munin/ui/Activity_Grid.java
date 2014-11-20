@@ -90,7 +90,7 @@ public class Activity_Grid extends MuninActivity {
 			}
 			final int currentSelectedIndex = index;
 			
-			SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(actionBar.getThemedContext(),
+			SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(getApplicationContext(),
 					android.R.layout.simple_spinner_dropdown_item, gridsNames);
 			
 			ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
@@ -285,12 +285,8 @@ public class Activity_Grid extends MuninActivity {
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-			case R.id.menu_refresh:
-				refresh();
-				return true;
-			case R.id.menu_edit:
-				edit();
-				return true;
+			case R.id.menu_refresh: refresh(); return true;
+			case R.id.menu_edit: edit(); return true;
 			case R.id.period_day:
 				this.currentPeriod = Period.DAY;
 				menu_period.setTitle(currentPeriod.getLabel(context));
@@ -311,9 +307,7 @@ public class Activity_Grid extends MuninActivity {
 				menu_period.setTitle(currentPeriod.getLabel(context));
 				refresh();
 				return true;
-			case R.id.menu_open:
-				openGraph();
-				return true;
+			case R.id.menu_open: openGraph(); return true;
 		}
 
 		return true;

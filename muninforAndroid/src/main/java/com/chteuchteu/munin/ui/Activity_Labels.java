@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
@@ -24,11 +23,10 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Label;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class Activity_Labels extends MuninActivity {
-	private ArrayList<HashMap<String,String>> list;
+	private ArrayList<String> list;
 	private ListView listview;
 	
 	@Override
@@ -40,7 +38,7 @@ public class Activity_Labels extends MuninActivity {
 		dh.setDrawerActivity(DrawerHelper.Activity_Labels);
 
 		listview = (ListView) findViewById(R.id.listview);
-		list = new ArrayList<HashMap<String,String>>();
+		list = new ArrayList<String>();
 
 		actionBar.setTitle(getString(R.string.button_labels));
 		
@@ -53,15 +51,10 @@ public class Activity_Labels extends MuninActivity {
 		findViewById(R.id.no_label).setVisibility(View.GONE);
 		
 		if (muninFoo.labels.size() > 0) {
-			HashMap<String,String> item;
-			for(int i=0; i<muninFoo.labels.size(); i++){
-				item = new HashMap<String,String>();
-				item.put("line1", muninFoo.labels.get(i).getName());
-				item.put("line2", muninFoo.labels.get(i).plugins.size() + "");
-				list.add(item);
-			}
-			SimpleAdapter sa = new SimpleAdapter(Activity_Labels.this, list, R.layout.labelselection_list,
-					new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+			for (int i=0; i<muninFoo.labels.size(); i++)
+				list.add(muninFoo.labels.get(i).getName());
+
+			ArrayAdapter<String> sa = new ArrayAdapter<String>(this, R.layout.labelselection_list, R.id.line_a, list);
 			listview.setAdapter(sa);
 
 			listview.setOnItemClickListener(new OnItemClickListener() {

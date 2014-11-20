@@ -3,29 +3,19 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
+	android:gravity="center_vertical"
 	android:paddingLeft="@dimen/listview_inner_horizontal_margin"
 	android:paddingRight="@dimen/listview_inner_horizontal_margin" >
 
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="center_vertical"
 		android:layout_margin="13dp"
 		android:src="@drawable/collections_labels_light" />
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:orientation="vertical" >
-
-		<TextView
-			android:id="@+id/line_a"
-			style="@style/Material_ListItem_Line1" />
-
-		<TextView
-			android:id="@+id/line_b"
-			style="@style/Material_ListItem_Line2" />
-	</LinearLayout>
+	<TextView
+		android:id="@+id/line_a"
+		style="@style/Material_ListItem_Line1"
+		android:layout_marginBottom="2dp"/>
 
 </LinearLayout>
