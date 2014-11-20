@@ -463,22 +463,24 @@ public class Activity_Servers extends MuninActivity {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			dialog.dismiss();
-			
-			new AlertDialog.Builder(activity)
-			.setTitle(R.string.sync_reporttitle)
-			.setMessage(report)
-			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// if "No change" => don't reload servers list
-					if (!report.equals(context.getString(R.string.sync_nochange))) {
-						refreshList();
-						updateDrawerIfNeeded();
-					}
-				}
-			})
-			.show();
+			if (dialog != null && dialog.isShowing()) {
+				dialog.dismiss();
+
+				new AlertDialog.Builder(activity)
+						.setTitle(R.string.sync_reporttitle)
+						.setMessage(report)
+						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// if "No change" => don't reload servers list
+								if (!report.equals(context.getString(R.string.sync_nochange))) {
+									refreshList();
+									updateDrawerIfNeeded();
+								}
+							}
+						})
+						.show();
+			}
 		}
 	}
 	
