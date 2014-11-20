@@ -334,7 +334,7 @@ public class MuninMaster {
 				if (domains.size() > 0) {
 					// If there's just one domain : take the domain name as master name.
 					// Else : generate the name from host url
-					if (domains.size() == 1)
+					if (domains.size() == 1 && !domains.get(0).text().equals("localdomain"))
 						this.name = domains.get(0).text();
 					else
 						this.generateName();
@@ -357,7 +357,7 @@ public class MuninMaster {
 				if (domains.size() > 0) {
 					// If there's just one domain : take the domain name as master name.
 					// Else : generate the name from host url
-					if (domains.size() == 1) {
+					if (domains.size() == 1 && !domains.get(0).text().equals("localdomain")) {
 						Element a = domains.get(0).child(0);
 						this.name = a.text();
 					}
