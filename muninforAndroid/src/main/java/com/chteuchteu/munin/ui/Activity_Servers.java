@@ -464,7 +464,9 @@ public class Activity_Servers extends MuninActivity {
 		@Override
 		protected void onPostExecute(Void result) {
 			if (dialog != null && dialog.isShowing()) {
-				dialog.dismiss();
+				try {
+					dialog.dismiss();
+				} catch (Exception ex) { ex.printStackTrace(); }
 
 				new AlertDialog.Builder(activity)
 						.setTitle(R.string.sync_reporttitle)

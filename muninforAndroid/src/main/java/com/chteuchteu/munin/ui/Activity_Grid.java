@@ -38,10 +38,10 @@ public class Activity_Grid extends MuninActivity {
 	private LinearLayout	container;
 	private ImageView		fs_iv;
 	
-	public static MenuItem	menu_refresh;
-	public static MenuItem	menu_edit;
-	public static MenuItem	menu_period;
-	public static MenuItem	menu_open;
+	public static MenuItem menu_refresh;
+	public static MenuItem menu_edit;
+	public static MenuItem menu_period;
+	public static MenuItem menu_open;
 	
 	private Period currentPeriod;
 	

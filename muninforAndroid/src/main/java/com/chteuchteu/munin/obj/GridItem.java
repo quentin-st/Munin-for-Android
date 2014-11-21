@@ -301,7 +301,7 @@ public class GridItem {
 	
 	private static boolean alreadyAdded(Grid g, MuninPlugin p) {
 		for (GridItem item : g.items) {
-			if (item.plugin.equals(p))
+			if (item != null && item.plugin != null && item.plugin.equals(p)) // hotfix
 				return true;
 		}
 		return false;

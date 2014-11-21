@@ -330,8 +330,12 @@ public class Activity_Main extends ActionBarActivity {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			if (myProgressDialog != null && myProgressDialog.isShowing())
-				myProgressDialog.dismiss();
+			// When rotating the device while updating : may crash
+			if (myProgressDialog != null && myProgressDialog.isShowing()) {
+				try {
+					myProgressDialog.dismiss();
+				} catch (Exception ex) { ex.printStackTrace(); }
+			}
 			
 			onLoadFinished();
 		}
