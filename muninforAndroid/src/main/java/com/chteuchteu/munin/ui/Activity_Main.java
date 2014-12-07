@@ -316,6 +316,16 @@ public class Activity_Main extends ActionBarActivity {
 
 		if (fromVersion < 4.2) // 4.2 = V3.0
 			muninFoo.sqlite.migrateTo3();
+
+		// Update UserAgent
+		String currentUserAgent = muninFoo.getUserAgent();
+		// MuninForAndroid/3.0 (Android 4.4.4 KITKAT)
+		if (currentUserAgent.contains("MuninForAndroid/")
+				&& currentUserAgent.contains(" (Android ")) { // default user agent
+			String newUserAgent = MuninFoo.generateUserAgent(this);
+			muninFoo.setUserAgent(newUserAgent);
+			Util.setPref(this, Util.PrefKeys.UserAgent, newUserAgent);
+		}
 		
 		Util.setPref(context, Util.PrefKeys.LastMFAVersion, MuninFoo.VERSION + "");
 		muninFoo.resetInstance(this);

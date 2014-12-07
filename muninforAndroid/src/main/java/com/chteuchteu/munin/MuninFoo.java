@@ -45,13 +45,13 @@ public class MuninFoo {
 	//							|  2.7		2.8		2.9		3.0		3.1		3.2		3.3		3.4		3.5		3.6		3.7		3.8		3.9		4.0		4.1		4.2 |
 	//							|															beta	beta	beta			fix		fix		fix		fix			|
 	//							|-------------------------------------------------------------------------------------------------------------------------------|
-	//							| 3.1		3.2		3.2.1																										|
-	//							| 34		35		36																											|
-	//							| 4.3		4.4		4.5																						    				|
+	//							| 3.1		3.2		3.2.1   3.3																										|
+	//							| 34		35		36		37																									|
+	//							| 4.3		4.4		4.5		4.6																				    				|
 	//							| fix				fix																											|
 	//							|-------------------------------------------------------------------------------------------------------------------------------|
 	
-	public static final double VERSION = 4.5;
+	public static final double VERSION = 4.6;
 	// =============== //
 	private static final boolean FORCE_NOT_PREMIUM = false;
 	public boolean premium;
@@ -449,7 +449,7 @@ public class MuninFoo {
 	 * Generates "MuninForAndroid/3.0 (Android 4.4.4 KITKAT)" from context
 	 * @param context Application/activity context
 	 */
-	private static String generateUserAgent(Context context) {
+	public static String generateUserAgent(Context context) {
 		if (context == null)
 			return generateUserAgent();
 
