@@ -265,13 +265,13 @@ public class DrawerHelper {
 						View view = inflater.inflate(R.layout.dialog_donate, null);
 						
 						final Spinner spinnerAmount = (Spinner) view.findViewById(R.id.donate_amountSpinner);
-						List<String> list = new ArrayList<String>();
+						List<String> list = new ArrayList<>();
 						String euroSlashDollar = "\u20Ac/\u0024";
 						list.add("1 " + euroSlashDollar);
 						list.add("2 " + euroSlashDollar);
 						list.add("5 " + euroSlashDollar);
 						list.add("20 " + euroSlashDollar);
-						ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(a, android.R.layout.simple_spinner_item, list);
+						ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(a, android.R.layout.simple_spinner_item, list);
 						dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 						spinnerAmount.setAdapter(dataAdapter);
 						
@@ -361,7 +361,7 @@ public class DrawerHelper {
 					search_results_array.clear();
 					search_results_adapter.notifyDataSetChanged();
 				} else {
-					search_results_array = new ArrayList<SearchResult>();
+					search_results_array = new ArrayList<>();
 					search_results_adapter = new SearchAdapter(a, search_results_array);
 					search_results.setAdapter(search_results_adapter);
 				}

@@ -76,11 +76,7 @@
 
 				<LinearLayout
 					android:id="@+id/drawer_graphs_btn"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@drawable/drawer_button"
-					android:orientation="horizontal"
-					android:padding="@dimen/item_padding" >
+					style="@style/Drawer_Item">
 
 					<ImageView
 						android:id="@+id/drawer_graphs_icon"
@@ -106,11 +102,7 @@
 
 				<LinearLayout
 					android:id="@+id/drawer_grid_btn"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@drawable/drawer_button"
-					android:orientation="horizontal"
-					android:padding="@dimen/item_padding" >
+					style="@style/Drawer_Item" >
 
 					<ImageView
 						android:id="@+id/drawer_grids_icon"
@@ -126,11 +118,7 @@
 
 				<LinearLayout
 					android:id="@+id/drawer_alerts_btn"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@drawable/drawer_button"
-					android:orientation="horizontal"
-					android:padding="@dimen/item_padding" >
+					style="@style/Drawer_Item" >
 
 					<ImageView
 						android:id="@+id/drawer_alerts_icon"
@@ -146,11 +134,7 @@
 
 				<LinearLayout
 					android:id="@+id/drawer_labels_btn"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@drawable/drawer_button"
-					android:orientation="horizontal"
-					android:padding="@dimen/item_padding" >
+					style="@style/Drawer_Item" >
 
 					<ImageView
 						android:id="@+id/drawer_labels_icon"
@@ -166,11 +150,7 @@
 
 				<LinearLayout
 					android:id="@+id/drawer_servers_btn"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@drawable/drawer_button"
-					android:orientation="horizontal"
-					android:padding="@dimen/item_padding" >
+					style="@style/Drawer_Item" >
 
 					<ImageView
 						android:id="@+id/drawer_servers_icon"
@@ -186,11 +166,7 @@
 
 				<LinearLayout
 					android:id="@+id/drawer_notifications_btn"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@drawable/drawer_button"
-					android:orientation="horizontal"
-					android:padding="@dimen/item_padding" >
+					style="@style/Drawer_Item" >
 
 					<ImageView
 						android:id="@+id/drawer_notifications_icon"
@@ -206,11 +182,7 @@
 
 				<LinearLayout
 					android:id="@+id/drawer_premium_btn"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@drawable/drawer_button"
-					android:orientation="horizontal"
-					android:padding="@dimen/item_padding"
+					style="@style/Drawer_Item"
 					android:visibility="gone" >
 
 					<ImageView
@@ -227,18 +199,10 @@
 
 				<LinearLayout
 					android:id="@+id/drawer_support_btn"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@drawable/drawer_button"
-					android:orientation="horizontal"
-					android:padding="@dimen/small_item_padding" >
+					style="@style/Drawer_SmallItem">
 
 					<ImageView
-						android:layout_width="20dp"
-						android:layout_height="20dp"
-						android:layout_gravity="center_vertical"
-						android:layout_marginLeft="15dp"
-						android:layout_marginRight="15dp"
+						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/support"
 						android:src="@drawable/ic_action_help_trimmed" />
 
@@ -250,18 +214,10 @@
 
 				<LinearLayout
 					android:id="@+id/drawer_donate_btn"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@drawable/drawer_button"
-					android:orientation="horizontal"
-					android:padding="@dimen/small_item_padding" >
+					style="@style/Drawer_SmallItem" >
 
 					<ImageView
-						android:layout_width="20dp"
-						android:layout_height="20dp"
-						android:layout_gravity="center_vertical"
-						android:layout_marginLeft="15dp"
-						android:layout_marginRight="15dp"
+						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/donate"
 						android:src="@drawable/ic_action_favorite" />
 

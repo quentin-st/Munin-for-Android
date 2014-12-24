@@ -5,11 +5,10 @@
 	<dimen name="activity_vertical_margin">16dp</dimen>
 
 	<!-- Left menu -->
-	<dimen name="item_padding">10dp</dimen>
-	<dimen name="small_item_padding">8dp</dimen>
+	<dimen name="item_padding">16dp</dimen>
 	<dimen name="listview_horizontal_margin">0dp</dimen>
 	<dimen name="listview_inner_horizontal_margin">0dp</dimen>
-	<dimen name="drawer_font_size">20sp</dimen>
+	<dimen name="drawer_font_size">18sp</dimen>
 	<dimen name="drawer_font_size_small">18sp</dimen>
 
 	<!-- AddServer popup -->
