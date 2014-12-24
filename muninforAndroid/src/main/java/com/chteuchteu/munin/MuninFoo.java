@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.chteuchteu.munin.exc.NullMuninFooException;
+import com.chteuchteu.munin.exc.TrialExpirationDateReached;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.Label;
@@ -17,6 +18,7 @@ import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,7 +47,7 @@ public class MuninFoo {
 	//							|  2.7		2.8		2.9		3.0		3.1		3.2		3.3		3.4		3.5		3.6		3.7		3.8		3.9		4.0		4.1		4.2 |
 	//							|															beta	beta	beta			fix		fix		fix		fix			|
 	//							|-------------------------------------------------------------------------------------------------------------------------------|
-	//							| 3.1		3.2		3.2.1   3.3																										|
+	//							| 3.1		3.2		3.2.1   3.3																									|
 	//							| 34		35		36		37																									|
 	//							| 4.3		4.4		4.5		4.6																				    				|
 	//							| fix				fix																											|
@@ -54,7 +56,12 @@ public class MuninFoo {
 	public static final double VERSION = 4.6;
 	// =============== //
 	private static final boolean FORCE_NOT_PREMIUM = false;
-	public boolean premium;
+
+    // Allows an user to test the app until the TRIAL_EXPIRATION date is reached
+    public static final boolean TRIAL = false;
+    public static final Calendar TRIAL_EXPIRATION = new GregorianCalendar(2015, 1, 10);
+
+    public boolean premium;
 	
 	// Import/Export webservice
 	public static final String IMPORT_EXPORT_URI = "http://www.munin-for-android.com/ws/importExport.php";
@@ -75,6 +82,9 @@ public class MuninFoo {
 		this.userAgent = userAgentPref.equals("") ? generateUserAgent(context) : userAgentPref;
 
 		loadInstance(context);
+
+        if (TRIAL && isTrialExpired())
+            throw new RuntimeException(new TrialExpirationDateReached("Trial has expired"));
 	}
 	
 	public static boolean isLoaded() { return instance != null; }
@@ -432,6 +442,9 @@ public class MuninFoo {
 	public static void logE(String tag, String msg) { if (BuildConfig.DEBUG) Log.e(tag, msg); }
 
 	public static boolean isPremium(Context c) {
+        if (TRIAL)
+            return true;
+
 		if (Util.isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
 			if (BuildConfig.DEBUG && FORCE_NOT_PREMIUM)
 				return false;
@@ -444,6 +457,11 @@ public class MuninFoo {
 		}
 		return false;
 	}
+
+    public static boolean isTrialExpired() {
+        Calendar today = Calendar.getInstance();
+        return today.after(TRIAL_EXPIRATION);
+    }
 
 	/**
 	 * Generates "MuninForAndroid/3.0 (Android 4.4.4 KITKAT)" from context

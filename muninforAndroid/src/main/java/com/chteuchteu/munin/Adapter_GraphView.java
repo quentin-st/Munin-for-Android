@@ -94,10 +94,11 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 			this.context = context;
 			this.progressBar = progressBar;
 
+            // ViewFlowMode : graphs / labels
 			if (activity.viewFlowMode == Activity_GraphView.VIEWFLOWMODE_GRAPHS) {
 				this.plugin = muninFoo.getCurrentServer().getPlugin(position);
 				this.server = muninFoo.getCurrentServer();
-			} else {
+			} else { // VIEWFLOWMODE_LABELS
 				this.plugin = activity.label.getPlugins().get(position);
 				this.server = this.plugin.getInstalledOn();
 			}
@@ -118,9 +119,9 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 						&& !Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 					imgUrl = plugin.getHDImgUrl(activity.load_period, true, graphsDimensions[0], graphsDimensions[1]);
+                    MuninFoo.log("Graph url : " + imgUrl);
 				} else
 					imgUrl = plugin.getImgUrl(activity.load_period);
-
 
 				activity.addBitmap(Util.removeBitmapBorder(server.getParent().grabBitmap(imgUrl, muninFoo.getUserAgent())), position);
 			}
