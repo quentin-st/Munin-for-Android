@@ -38,7 +38,7 @@ public class Activity_Labels extends MuninActivity {
 		dh.setDrawerActivity(DrawerHelper.Activity_Labels);
 
 		listview = (ListView) findViewById(R.id.listview);
-		list = new ArrayList<String>();
+		list = new ArrayList<>();
 
 		actionBar.setTitle(getString(R.string.button_labels));
 		
@@ -54,7 +54,7 @@ public class Activity_Labels extends MuninActivity {
 			for (int i=0; i<muninFoo.labels.size(); i++)
 				list.add(muninFoo.labels.get(i).getName());
 
-			ArrayAdapter<String> sa = new ArrayAdapter<String>(this, R.layout.labelselection_list, R.id.line_a, list);
+			ArrayAdapter<String> sa = new ArrayAdapter<>(this, R.layout.labelselection_list, R.id.line_a, list);
 			listview.setAdapter(sa);
 
 			listview.setOnItemClickListener(new OnItemClickListener() {
@@ -75,7 +75,7 @@ public class Activity_Labels extends MuninActivity {
 
 					// Display actions list
 					AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-					final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+					final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
 							context, android.R.layout.simple_list_item_1);
 					arrayAdapter.add(context.getString(R.string.rename_label));
 					arrayAdapter.add(context.getString(R.string.delete));

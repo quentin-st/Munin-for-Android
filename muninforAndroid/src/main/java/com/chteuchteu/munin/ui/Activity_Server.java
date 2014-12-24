@@ -89,7 +89,8 @@ public class Activity_Server extends MuninActivity {
 		tb_serverUrl = (AutoCompleteTextView)findViewById(R.id.textbox_serverUrl);
 		
 		// Servers history
-		ArrayAdapter<String> addServerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, getHistory());
+		ArrayAdapter<String> addServerAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, getHistory());
 		tb_serverUrl.setAdapter(addServerAdapter);
 		
 		tb_serverUrl.addTextChangedListener(new TextWatcher() {
@@ -107,11 +108,11 @@ public class Activity_Server extends MuninActivity {
 		});
 		
 		// Sample server
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		list.add("");
 		list.add("demo.munin-monitoring.org");
 		list.add("munin.ping.uio.no");
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(dataAdapter);
 		
@@ -527,9 +528,9 @@ public class Activity_Server extends MuninActivity {
 						}
 					}
 
-					ArrayList<GraphWidget> widgetsToUpdate = new ArrayList<GraphWidget>();
-					ArrayList<Label> labelsToUpdate = new ArrayList<Label>();
-					ArrayList<GridItem> gridItemsToUpdate = new ArrayList<GridItem>();
+					ArrayList<GraphWidget> widgetsToUpdate = new ArrayList<>();
+					ArrayList<Label> labelsToUpdate = new ArrayList<>();
+					ArrayList<GridItem> gridItemsToUpdate = new ArrayList<>();
 					if (alreadyThereMaster != null) {
 						// Replace
 						// Check if there are labels / widgets / grids in the hierarchy
@@ -604,10 +605,10 @@ public class Activity_Server extends MuninActivity {
 					Fonts.setFont(context, continu, CustomFont.RobotoCondensed_Regular);
 					
 					// AuthType spinner
-					List<String> list2 = new ArrayList<String>();
+					List<String> list2 = new ArrayList<>();
 					list2.add("Basic");
 					list2.add("Digest");
-					ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, list2);
+					ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list2);
 					dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					pop_sp_authType.setAdapter(dataAdapter2);
 					

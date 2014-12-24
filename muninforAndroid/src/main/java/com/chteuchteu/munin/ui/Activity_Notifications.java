@@ -70,10 +70,10 @@ public class Activity_Notifications extends MuninActivity {
 		
 		// Refresh rate spinner
 		String[] values = getString(R.string.text57).split("/");
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		Collections.addAll(list, values);
 		
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sp_refreshRate.setAdapter(dataAdapter);
 		
@@ -91,13 +91,29 @@ public class Activity_Notifications extends MuninActivity {
 		currentRefreshRate = Util.getPref(context, Util.PrefKeys.Notifs_RefreshRate);
 		if (currentRefreshRate.equals(""))
 			currentRefreshRate = "60";
-		if (currentRefreshRate.equals("10"))		sp_refreshRate.setSelection(0);
-		else if (currentRefreshRate.equals("30"))	sp_refreshRate.setSelection(1);
-		else if (currentRefreshRate.equals("60"))	sp_refreshRate.setSelection(2);
-		else if (currentRefreshRate.equals("120"))	sp_refreshRate.setSelection(3);
-		else if (currentRefreshRate.equals("300"))	sp_refreshRate.setSelection(4);
-		else if (currentRefreshRate.equals("600"))	sp_refreshRate.setSelection(5);
-		else if (currentRefreshRate.equals("1440"))	sp_refreshRate.setSelection(6);
+        switch (currentRefreshRate) {
+            case "10":
+                sp_refreshRate.setSelection(0);
+                break;
+            case "30":
+                sp_refreshRate.setSelection(1);
+                break;
+            case "60":
+                sp_refreshRate.setSelection(2);
+                break;
+            case "120":
+                sp_refreshRate.setSelection(3);
+                break;
+            case "300":
+                sp_refreshRate.setSelection(4);
+                break;
+            case "600":
+                sp_refreshRate.setSelection(5);
+                break;
+            case "1440":
+                sp_refreshRate.setSelection(6);
+                break;
+        }
 		
 		sp_refreshRate.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override

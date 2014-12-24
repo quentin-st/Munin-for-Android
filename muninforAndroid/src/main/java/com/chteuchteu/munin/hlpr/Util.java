@@ -456,13 +456,6 @@ public final class Util {
 		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
 	
-	public static View getActionBarView(Activity activity) {
-		Window window = activity.getWindow();
-		View v = window.getDecorView();
-		int resId = activity.getResources().getIdentifier("action_bar_container", "id", "android");
-		return v.findViewById(resId);
-	}
-	
 	/**
 	 * "apache" => "Apache"
 	 * "some words" => "Some words"
@@ -516,15 +509,11 @@ public final class Util {
 
 			try {
 				fieldValue = field.getInt(new Object());
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (NullPointerException e) {
+			} catch (IllegalArgumentException | IllegalAccessException | NullPointerException e) {
 				e.printStackTrace();
 			}
 
-			if (fieldValue == Build.VERSION.SDK_INT)
+            if (fieldValue == Build.VERSION.SDK_INT)
 				str += " " + fieldName;
 		}
 

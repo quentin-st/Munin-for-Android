@@ -62,40 +62,40 @@ public class Activity_Settings extends MuninActivity {
 		
 		
 		// Spinner default period
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		list.add(getString(R.string.text47_1)); list.add(getString(R.string.text47_2));
 		list.add(getString(R.string.text47_3)); list.add(getString(R.string.text47_4));
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_scale.setAdapter(dataAdapter);
 		
 		
 		// Spinner default server
-		List<String> serversList = new ArrayList<String>();
+		List<String> serversList = new ArrayList<>();
 		serversList.add(getString(R.string.text48_3));
 		for (MuninServer server : muninFoo.getOrderedServers())
 			serversList.add(server.getName());
-		ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, serversList);
+		ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, serversList);
 		dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_defaultServer.setAdapter(dataAdapter1);
 		
 		// Spinner language
-		List<String> list2 = new ArrayList<String>();
+		List<String> list2 = new ArrayList<>();
 		list2.add(getString(R.string.lang_english));
 		list2.add(getString(R.string.lang_french));
 		list2.add(getString(R.string.lang_german));
 		list2.add(getString(R.string.lang_russian));
-		ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list2);
+		ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list2);
 		dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_lang.setAdapter(dataAdapter2);
 		
 		
 		// Spinner orientation
-		List<String> list3 = new ArrayList<String>();
+		List<String> list3 = new ArrayList<>();
 		list3.add(getString(R.string.text48_1));
 		list3.add(getString(R.string.text48_2));
 		list3.add(getString(R.string.text48_3));
-		ArrayAdapter<String> dataAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list3);
+		ArrayAdapter<String> dataAdapter3 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list3);
 		dataAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_orientation.setAdapter(dataAdapter3);
 		
@@ -130,15 +130,21 @@ public class Activity_Settings extends MuninActivity {
 			lang = Util.getPref(context, Util.PrefKeys.Lang);
 		else
 			lang = Locale.getDefault().getLanguage();
-		
-		if (lang.equals("en"))
-			spinner_lang.setSelection(0, true);
-		else if (lang.equals("fr"))
-			spinner_lang.setSelection(1, true);
-		else if (lang.equals("de"))
-			spinner_lang.setSelection(2, true);
-		else if (lang.equals("ru"))
-			spinner_lang.setSelection(3, true);
+
+        switch (lang) {
+            case "en":
+                spinner_lang.setSelection(0, true);
+                break;
+            case "fr":
+                spinner_lang.setSelection(1, true);
+                break;
+            case "de":
+                spinner_lang.setSelection(2, true);
+                break;
+            case "ru":
+                spinner_lang.setSelection(3, true);
+                break;
+        }
 		
 		// Graphview orientation
 		if (Util.getPref(context, Util.PrefKeys.GraphviewOrientation).equals("horizontal"))

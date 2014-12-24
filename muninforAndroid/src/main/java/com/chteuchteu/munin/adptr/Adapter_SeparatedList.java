@@ -1,4 +1,4 @@
-package com.chteuchteu.munin;
+package com.chteuchteu.munin.adptr;
 
 import android.content.Context;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 
@@ -16,13 +17,14 @@ import java.util.Map;
 
 public class Adapter_SeparatedList extends BaseAdapter {
 	private Context context;
-	private final Map<String,Adapter> sections = new LinkedHashMap<String,Adapter>();
+	private final Map<String,Adapter> sections;
 	private final ArrayAdapter<String> headers;
 	private final static int TYPE_SECTION_HEADER = 0;
 	private boolean removeMasterPaddingLeft;
 	
 	public Adapter_SeparatedList(Context context, boolean removeMasterPaddingLeft) {
-		this.headers = new ArrayAdapter<String>(context, R.layout.list_header);
+        this.sections = new LinkedHashMap<>();
+		this.headers = new ArrayAdapter<>(context, R.layout.list_header);
 		this.context = context;
 		this.removeMasterPaddingLeft = removeMasterPaddingLeft;
 	}
@@ -104,10 +106,8 @@ public class Adapter_SeparatedList extends BaseAdapter {
 					textView.setPadding(55, textView.getPaddingTop(), textView.getPaddingRight(), textView.getPaddingBottom());
 				return view;
 			}
-			if (position < size) {
-				View view = adapter.getView(position - 1, convertView, parent);
-				return view;
-			}
+			if (position < size)
+				return adapter.getView(position - 1, convertView, parent);
 			
 			// otherwise jump into next section
 			position -= size;

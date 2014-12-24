@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.Adapter_SeparatedList;
+import com.chteuchteu.munin.adptr.Adapter_SeparatedList;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
@@ -54,13 +54,13 @@ public class Activity_Label extends MuninActivity {
 		actionBar.setTitle(label.getName());
 
 		List<List<MuninPlugin>> labelsListCat = label.getPluginsSortedByServer(muninFoo);
-		correspondance = new ArrayList<MuninPlugin>();
-		correspondanceServers = new ArrayList<String>();
+		correspondance = new ArrayList<>();
+		correspondanceServers = new ArrayList<>();
 		Adapter_SeparatedList adapter = new Adapter_SeparatedList(this, false);
 		for (List<MuninPlugin> l : labelsListCat) {
 			correspondanceServers.add("");
 			correspondance.add(new MuninPlugin());
-			List<Map<String,?>> elements = new LinkedList<Map<String,?>>();
+			List<Map<String,?>> elements = new LinkedList<>();
 			String serverName = "";
 			for (MuninPlugin p : l) {
 				elements.add(createItem(p.getFancyName(), p.getName()));
@@ -95,7 +95,7 @@ public class Activity_Label extends MuninActivity {
 	}
 	
 	private Map<String,?> createItem(String title, String caption) {
-		Map<String,String> item = new HashMap<String,String>();  
+		Map<String,String> item = new HashMap<>();
 		item.put("title", title);  
 		item.put("caption", caption);  
 		return item;  

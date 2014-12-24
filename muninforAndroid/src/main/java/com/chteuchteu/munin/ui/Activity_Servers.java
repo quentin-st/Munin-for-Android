@@ -22,7 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.Adapter_ExpandableListView;
+import com.chteuchteu.munin.adptr.Adapter_ExpandableListView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -85,10 +85,10 @@ public class Activity_Servers extends MuninActivity {
 	
 	private Map<MuninMaster, List<String>> getServersCollection() {
 		// Create collection
-		LinkedHashMap<MuninMaster, List<String>> serversCollection = new LinkedHashMap<MuninMaster, List<String>>();
+		LinkedHashMap<MuninMaster, List<String>> serversCollection = new LinkedHashMap<>();
 		
 		for (MuninMaster m : muninFoo.masters) {
-			List<String> childList = new ArrayList<String>();
+			List<String> childList = new ArrayList<>();
 			for (MuninServer s : m.getOrderedChildren())
 				childList.add(s.getName());
 			serversCollection.put(m, childList);
@@ -99,7 +99,7 @@ public class Activity_Servers extends MuninActivity {
 	
 	/**
 	 * Called when a click event is triggered on a child-level element of the listview
-	 * Called from @see com.chteuchteu.munin.Adapter_ExpandableListView#getChildView(int, int, boolean, View, android.view.ViewGroup)
+	 * Called from @see com.chteuchteu.munin.adptr.Adapter_ExpandableListView#getChildView(int, int, boolean, View, android.view.ViewGroup)
 	 * @param groupPosition int
 	 * @param childPosition int
 	 */
@@ -109,7 +109,7 @@ public class Activity_Servers extends MuninActivity {
 	
 	/**
 	 * Called when a long click event is triggered on a child-level element of the listview
-	 * Called from @see com.chteuchteu.munin.Adapter_ExpandableListView#getChildView(int, int, boolean, View, android.view.ViewGroup)
+	 * Called from @see com.chteuchteu.munin.adptr.Adapter_ExpandableListView#getChildView(int, int, boolean, View, android.view.ViewGroup)
 	 * @param groupPosition int
 	 * @param childPosition int
 	 * @return boolean
@@ -172,7 +172,7 @@ public class Activity_Servers extends MuninActivity {
 	/**
 	 * Called when a click event is triggered on the overflow icon on each
 	 * parent-level list item
-	 * Called from @see com.chteuchteu.munin.Adapter_ExpandableListView#getGroupView(int, boolean, View, android.view.ViewGroup)
+	 * Called from @see com.chteuchteu.munin.adptr.Adapter_ExpandableListView#getGroupView(int, boolean, View, android.view.ViewGroup)
 	 * @param position int
 	 */
 	public void onGroupItemOptionsClick(final int position) {
@@ -263,10 +263,10 @@ public class Activity_Servers extends MuninActivity {
         final EditText tb_authPassword = (EditText) dialog_updatecredentials.findViewById(R.id.auth_password);
         final View ll_auth = dialog_updatecredentials.findViewById(R.id.authIds);
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("Basic");
         list.add("Digest");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, list);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_authType.setAdapter(dataAdapter);
 

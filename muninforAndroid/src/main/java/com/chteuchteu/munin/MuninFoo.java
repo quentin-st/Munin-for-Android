@@ -71,9 +71,9 @@ public class MuninFoo {
 	
 	private MuninFoo(Context context) {
 		premium = false;
-		servers = new ArrayList<MuninServer>();
-		labels = new ArrayList<Label>();
-		masters = new ArrayList<MuninMaster>();
+		servers = new ArrayList<>();
+		labels = new ArrayList<>();
+		masters = new ArrayList<>();
 		sqlite = new SQLite(context, this);
 		instance = null;
 
@@ -142,8 +142,8 @@ public class MuninFoo {
 	public void setCurrentServer(MuninServer server) { this.currentServer = server; }
 	
 	public void resetInstance(Context context) {
-		servers = new ArrayList<MuninServer>();
-		labels = new ArrayList<Label>();
+		servers = new ArrayList<>();
+		labels = new ArrayList<>();
 		sqlite = new SQLite(context, this);
 		loadInstance(context);
 	}
@@ -265,7 +265,7 @@ public class MuninFoo {
 		return !contains;
 	}
 	public boolean removeLabel(Label label) {
-		List<Label> list = new ArrayList<Label>();
+		List<Label> list = new ArrayList<>();
 		boolean somthingDeleted = false;
 		for (Label l : labels) {
 			if (!l.equals(label))
@@ -324,7 +324,7 @@ public class MuninFoo {
 		return null;
 	}
 	public List<MuninServer> getOrderedServers() {
-		List<MuninServer> l = new ArrayList<MuninServer>();
+		List<MuninServer> l = new ArrayList<>();
 		for (MuninMaster m : this.masters) {
 			for (MuninServer s : m.getOrderedChildren())
 				l.add(getServersInstanceFromMuninMasterInstance(s));
@@ -332,7 +332,7 @@ public class MuninFoo {
 		return l;
 	}
 	public List<MuninServer> getServersFromPlugin(MuninPlugin pl) {
-		List<MuninServer> l = new ArrayList<MuninServer>();
+		List<MuninServer> l = new ArrayList<>();
 		for (MuninServer s : getOrderedServers()) {
 			for (MuninPlugin p : s.getPlugins()) {
 				if (p.equalsApprox(pl)) {
@@ -404,9 +404,9 @@ public class MuninFoo {
 	}
 	
 	public List<List<MuninServer>> getGroupedServersList() {
-		List<List<MuninServer>> l = new ArrayList<List<MuninServer>>();
+		List<List<MuninServer>> l = new ArrayList<>();
 		for (MuninMaster master : masters) {
-			List<MuninServer> serversList = new ArrayList<MuninServer>();
+			List<MuninServer> serversList = new ArrayList<>();
 			serversList.addAll(master.getChildren());
 			l.add(serversList);
 		}
@@ -492,8 +492,8 @@ public class MuninFoo {
 	public String getUserAgent() { return this.userAgent; }
 	/**
 	 * Get user agent in a context where MuninFoo isn't probably loaded
-	 * @param context
-	 * @return
+	 * @param context Valid context (not nullable)
+	 * @return User Agent
 	 */
 	public static String getUserAgent(Context context) {
 		String userAgentPref = Util.getPref(context, Util.PrefKeys.UserAgent);

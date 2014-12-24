@@ -24,7 +24,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.chteuchteu.munin.Adapter_SeparatedList;
+import com.chteuchteu.munin.adptr.Adapter_SeparatedList;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
@@ -67,7 +67,7 @@ public class Activity_Plugins extends MuninActivity {
 		dh.setDrawerActivity(DrawerHelper.Activity_Plugins);
 
 		this.listview = (ListView) findViewById(R.id.listview);
-		list = new ArrayList<HashMap<String,String>>();
+		list = new ArrayList<>();
 
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(false);
@@ -87,7 +87,7 @@ public class Activity_Plugins extends MuninActivity {
 				
 				Adapter_SeparatedList adapter = new Adapter_SeparatedList(context, true);
 				for (List<MuninServer> l : list) {
-					List<Map<String,?>> elements = new LinkedList<Map<String,?>>();
+					List<Map<String,?>> elements = new LinkedList<>();
 					String masterName = "";
 					for (MuninServer s : l) {
 						elements.add(createItem(s.getName()));
@@ -162,7 +162,7 @@ public class Activity_Plugins extends MuninActivity {
 		this.mode = mode;
 		
 		if (mode == MODE_FLAT) {
-			pluginsList = new ArrayList<MuninPlugin>();
+			pluginsList = new ArrayList<>();
 			for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
 				if (muninFoo.getCurrentServer().getPlugins().get(i) != null)
 					pluginsList.add(muninFoo.getCurrentServer().getPlugins().get(i));
@@ -171,7 +171,7 @@ public class Activity_Plugins extends MuninActivity {
 			list.clear();
 			HashMap<String,String> item;
 			for (MuninPlugin pl : pluginsList) {
-				item = new HashMap<String,String>();
+				item = new HashMap<>();
 				item.put("line1", pl.getFancyName());
 				item.put("line2", pl.getName());
 				list.add(item);
@@ -182,7 +182,7 @@ public class Activity_Plugins extends MuninActivity {
 			// Create plugins list
 			List<List<MuninPlugin>> pluginsListCat = muninFoo.getCurrentServer().getPluginsListWithCategory();
 			
-			pluginsList = new ArrayList<MuninPlugin>();
+			pluginsList = new ArrayList<>();
 			for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
 				if (muninFoo.getCurrentServer().getPlugins().get(i) != null)
 					pluginsList.add(muninFoo.getCurrentServer().getPlugins().get(i));
@@ -190,7 +190,7 @@ public class Activity_Plugins extends MuninActivity {
 			
 			Adapter_SeparatedList adapter = new Adapter_SeparatedList(this, false);
 			for (List<MuninPlugin> l : pluginsListCat) {
-				List<Map<String,?>> elements = new LinkedList<Map<String,?>>();
+				List<Map<String,?>> elements = new LinkedList<>();
 				String categoryName = "";
 				for (MuninPlugin p : l) {
 					elements.add(createItem(p.getFancyName(), p.getName()));
@@ -227,7 +227,7 @@ public class Activity_Plugins extends MuninActivity {
 			public boolean onItemLongClick(AdapterView<?> adapter, final View view, final int position, long arg) {
 				// Display actions list
 				AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
 						context, android.R.layout.simple_list_item_1);
 				arrayAdapter.add(context.getString(R.string.delete_plugin));
 				
@@ -269,14 +269,14 @@ public class Activity_Plugins extends MuninActivity {
 	}
 	
 	private Map<String,?> createItem(String title, String caption) {
-		Map<String,String> item = new HashMap<String,String>();
+		Map<String,String> item = new HashMap<>();
 		item.put("title", title);
 		item.put("caption", caption);
 		return item;
 	}
 	
 	private Map<String,?> createItem(String title) {
-		Map<String,String> item = new HashMap<String,String>();
+		Map<String,String> item = new HashMap<>();
 		item.put("title", title);
 		return item;
 	}
@@ -307,7 +307,7 @@ public class Activity_Plugins extends MuninActivity {
 					HashMap<String,String> item;
 					for (MuninPlugin p : pluginsFilter) {
 						if (p != null) {
-							item = new HashMap<String,String>();
+							item = new HashMap<>();
 							item.put("line1", p.getFancyName());
 							item.put("line2", p.getName());
 							list.add(item);

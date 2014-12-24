@@ -72,12 +72,12 @@ public class Service_Notifications extends Service {
 		
 		@Override
 		protected Void doInBackground(Void... params) {
-			List<MuninServer> servers = new ArrayList<MuninServer>();
+			List<MuninServer> servers = new ArrayList<>();
 			String serversList = Util.getPref(Service_Notifications.this, Util.PrefKeys.Notifs_ServersList);
 			String[] serversToWatch = serversList.split(";");
 
 			DatabaseHelper dbHelper = new DatabaseHelper(Service_Notifications.this);
-			List<MuninMaster> masters = new ArrayList<MuninMaster>();
+			List<MuninMaster> masters = new ArrayList<>();
 			List<MuninServer> dbServers = dbHelper.getServers(masters);
 			
 			nbCriticals = 0;

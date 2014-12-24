@@ -32,7 +32,6 @@ public class MuninActivity extends ActionBarActivity {
 	protected Activity      activity;
 	protected android.support.v7.app.ActionBar actionBar;
 	protected Toolbar       toolbar;
-	private String          activityName;
 	private MaterialMenuIconToolbar materialMenu;
 	private boolean        isDrawerOpened;
 	protected Menu          menu;

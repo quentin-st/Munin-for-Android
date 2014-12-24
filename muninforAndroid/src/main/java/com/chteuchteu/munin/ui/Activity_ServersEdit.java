@@ -40,8 +40,8 @@ public class Activity_ServersEdit extends MuninActivity {
 		long masterId = getIntent().getExtras().getLong("masterId");
 		master = muninFoo.getMasterById((int) masterId);
 		
-		deletedServers = new ArrayList<MuninServer>();
-		serversList = new ArrayList<MuninServer>();
+		deletedServers = new ArrayList<>();
+		serversList = new ArrayList<>();
 		
 		for (MuninServer s : master.getChildren())
 			serversList.add(s);
@@ -52,7 +52,7 @@ public class Activity_ServersEdit extends MuninActivity {
 		SimpleFloatViewManager sfvm = new SimpleFloatViewManager(listview);
 		sfvm.setBackgroundColor(Color.TRANSPARENT);
 		listview.setFloatViewManager(sfvm);
-		list = new ArrayList<HashMap<String,String>>();
+		list = new ArrayList<>();
 
 		updateList(true);
 	}
@@ -61,7 +61,7 @@ public class Activity_ServersEdit extends MuninActivity {
 		list.clear();
 		HashMap<String,String> item;
 		for (MuninServer s : serversList) {
-			item = new HashMap<String,String>();
+			item = new HashMap<>();
 			item.put("line1", s.getName());
 			item.put("line2", s.getServerUrl());
 			list.add(item);

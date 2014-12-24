@@ -46,7 +46,7 @@ public class Activity_Grids extends MuninActivity {
 		actionBar.setTitle(getString(R.string.button_grid));
 
 		listview = (ListView) findViewById(R.id.listview);
-		list = new ArrayList<HashMap<String, String>>();
+		list = new ArrayList<>();
 
 		updateList();
 	}
@@ -60,9 +60,8 @@ public class Activity_Grids extends MuninActivity {
 		if (gridsList.size() == 0)
 			findViewById(R.id.grids_nogrid).setVisibility(View.VISIBLE);
 		else {
-			HashMap<String,String> item;
 			for (Grid g : gridsList) {
-				item = new HashMap<String,String>();
+                HashMap<String,String> item = new HashMap<>();
 				item.put("line1", g.name);
 				item.put("line2", g.getFullWidth() + " x " + g.getFullHeight());
 				list.add(item);
@@ -85,7 +84,7 @@ public class Activity_Grids extends MuninActivity {
 				public boolean onItemLongClick(AdapterView<?> adapter, final View view, int position, long arg) {
 					// Display actions list
 					AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-					final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+					final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
 							context, android.R.layout.simple_list_item_1);
 					arrayAdapter.add(context.getString(R.string.rename_grid));
 					arrayAdapter.add(context.getString(R.string.text73)); // Delete grid

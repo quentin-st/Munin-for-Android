@@ -1,4 +1,4 @@
-package com.chteuchteu.munin;
+package com.chteuchteu.munin.adptr;
 
 import android.content.Context;
 import android.util.TypedValue;
@@ -12,11 +12,6 @@ import java.util.List;
 
 public class Adapter_IconList extends ArrayAdapter<String> {
 	private List<Integer> images;
-
-	public Adapter_IconList(Context context, List<String> items, List<Integer> images) {
-		super(context, android.R.layout.select_dialog_item, items);
-		this.images = images;
-	}
 	
 	public Adapter_IconList(Context context, String[] items, Integer[] images) {
 		super(context, android.R.layout.select_dialog_item, items);

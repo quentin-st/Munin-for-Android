@@ -244,7 +244,7 @@ public class Activity_Alerts extends MuninActivity {
 					if (to >= nbServers)
 						to = nbServers-1;
 
-					// Avoid serial execution
+					//                          Avoid serial execution
 					new AlertsFetcher(from, to).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				}
 			}

@@ -90,7 +90,7 @@ public class Activity_Grid extends MuninActivity {
 			}
 			final int currentSelectedIndex = index;
 			
-			SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(getApplicationContext(),
+			SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(getApplicationContext(),
 					android.R.layout.simple_spinner_dropdown_item, gridsNames);
 			
 			ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {

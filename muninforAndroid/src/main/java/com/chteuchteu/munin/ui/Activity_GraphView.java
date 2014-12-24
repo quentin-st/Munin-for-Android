@@ -51,7 +51,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.Adapter_GraphView;
+import com.chteuchteu.munin.adptr.Adapter_GraphView;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DocumentationHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -525,12 +525,12 @@ public class Activity_GraphView extends MuninActivity {
 		switch_server.startAnimation(a1);
 		findViewById(R.id.serverSwitch_mask).startAnimation(a2);
 		
-		ArrayList<HashMap<String,String>> servers_list = new ArrayList<HashMap<String,String>>();
+		ArrayList<HashMap<String,String>> servers_list = new ArrayList<>();
 		servers_list.clear();
 		HashMap<String,String> item;
 		List<MuninServer> liste = muninFoo.getServersFromPlugin(currentPlugin);
 		for (MuninServer server : liste) {
-			item = new HashMap<String,String>();
+			item = new HashMap<>();
 			item.put("line1", server.getName());
 			item.put("line2", server.getServerUrl());
 			servers_list.add(item);
@@ -659,7 +659,7 @@ public class Activity_GraphView extends MuninActivity {
 		LinearLayout checkboxesContainer = new LinearLayout(this);
 		checkboxesContainer.setPadding(10, 10, 10, 10);
 		checkboxesContainer.setOrientation(LinearLayout.VERTICAL);
-		final List<CheckBox> checkboxes = new ArrayList<CheckBox>();
+		final List<CheckBox> checkboxes = new ArrayList<>();
 		int i = 0;
 		for (Label l : muninFoo.labels) {
 			LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -915,7 +915,7 @@ public class Activity_GraphView extends MuninActivity {
 				spinner.setVisibility(View.VISIBLE);
 				findViewById(R.id.doc_divider).setVisibility(View.VISIBLE);
 
-				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+				ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
 						android.R.layout.simple_spinner_item, nodes);
 				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				spinner.setAdapter(dataAdapter);
