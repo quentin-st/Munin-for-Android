@@ -1,12 +1,12 @@
 package com.chteuchteu.munin.hlpr;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import com.chteuchteu.munin.CustomSSLFactory;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.HTTPResponse;
+import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
@@ -33,11 +33,11 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.security.KeyStore;
 
 import javax.net.ssl.SSLException;
@@ -126,8 +126,7 @@ public class NetHelper {
 			if (response.getHeaders("WWW-Authenticate").length > 0)
 				resp.header_wwwauthenticate = response.getHeaders("WWW-Authenticate")[0].getValue();
 		}
-		catch (SocketTimeoutException e) { e.printStackTrace(); resp.timeout = true; }
-		catch (ConnectTimeoutException e) { e.printStackTrace(); resp.timeout = true; }
+		catch (SocketTimeoutException | ConnectTimeoutException e) { e.printStackTrace(); resp.timeout = true; }
 		catch (SSLPeerUnverifiedException e) {
 			master.setSSL(true);
 			// Update the URL of master / child server if needed
@@ -166,7 +165,7 @@ public class NetHelper {
 		return resp;
 	}
 	
-	public static Bitmap grabBitmap(MuninMaster master, String url, String userAgent) {
+	public static HTTPResponse_Bitmap grabBitmap(MuninMaster master, String url, String userAgent) {
 		return grabBitmap(master, url, userAgent, false);
 	}
 
@@ -179,8 +178,8 @@ public class NetHelper {
 	 *                (recursive call)
 	 * @return Bitmap
 	 */
-	private static Bitmap grabBitmap(MuninMaster master, String url, String userAgent, boolean retried) {
-		Bitmap b;
+	private static HTTPResponse_Bitmap grabBitmap(MuninMaster master, String url, String userAgent, boolean retried) {
+		HTTPResponse_Bitmap respObj = new HTTPResponse_Bitmap();
 		
 		try {
 			HttpClient client;
@@ -237,21 +236,34 @@ public class NetHelper {
 			if (statusCode == HttpURLConnection.HTTP_OK) {
 				HttpEntity entity = response.getEntity();
 				byte[] bytes = EntityUtils.toByteArray(entity);
-				b = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+				respObj.bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 			} else {
 				if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried && response.getHeaders("WWW-Authenticate").length > 0) {
 					master.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
 					return grabBitmap(master, url, userAgent, true);
-				} else
-					throw new IOException("Download failed for URL " + url + " HTTP response code "
-							+ statusCode + " - " + statusLine.getReasonPhrase());
+				} else {
+					respObj.bitmap = null;
+					respObj.responseCode = statusCode;
+					respObj.responseReason = statusLine.getReasonPhrase();
+				}
 			}
 		}
-		catch (SocketTimeoutException e) { e.printStackTrace(); return null; }
-		catch (ConnectTimeoutException e) { e.printStackTrace(); return null; }
-		catch (OutOfMemoryError e) { e.printStackTrace(); return null; }
-		catch (Exception e) { e.printStackTrace(); return null; }
+		catch (SocketTimeoutException | ConnectTimeoutException e) {
+			e.printStackTrace();
+			respObj.responseCode = HttpURLConnection.HTTP_CLIENT_TIMEOUT;
+			respObj.responseReason = "Timeout";
+		}
+		catch (UnknownHostException e) {
+			e.printStackTrace();
+			respObj.responseCode = HTTPResponse_Bitmap.UnknownHostExceptionError;
+			respObj.responseReason = e.getMessage();
+		}
+		catch (OutOfMemoryError | Exception e) {
+			e.printStackTrace();
+			respObj.responseCode = HTTPResponse_Bitmap.UnknownError;
+			respObj.responseReason = "Unknown error";
+		}
 		
-		return b;
+		return respObj;
 	}
 }

@@ -40,7 +40,7 @@ public class MuninMaster {
 		this.id = -1;
 		this.url = "";
 		this.defaultMaster = false;
-		this.children = new ArrayList<MuninServer>();
+		this.children = new ArrayList<>();
 		this.dynazoomAvailability = DynazoomAvailability.AUTO_DETECT;
 		
 		this.authType = AuthType.UNKNOWN;
@@ -138,12 +138,12 @@ public class MuninMaster {
 		
 		// At this point, the dynazoom seems available. Let's try to download a bitmap to
 		// see if we get a bitmap (instead of a custom 404 error)
-		Bitmap bitmap = grabBitmap(hdGraphUrl, userAgent);
+		Bitmap bitmap = grabBitmap(hdGraphUrl, userAgent).bitmap;
 		return bitmap != null;
 	}
 	
 	public void rebuildChildren(MuninFoo f) {
-		this.children = new ArrayList<MuninServer>();
+		this.children = new ArrayList<>();
 		for (MuninServer s : f.getServers()) {
 			if (s.getParent().getId() == this.id)
 				this.children.add(s);
@@ -207,13 +207,13 @@ public class MuninMaster {
 	public List<MuninServer> getOrderedChildren() {
 		// Let's first sort the list.
 		// We'll then clean the positions
-		List<MuninServer> source = new ArrayList<MuninServer>(this.children);
-		List<MuninServer> newList = new ArrayList<MuninServer>();
+		List<MuninServer> source = new ArrayList<>(this.children);
+		List<MuninServer> newList = new ArrayList<>();
 		
 		int curPos = 0;
 		while (source.size() > 0) {
 			while (Util.serversListContainsPos(source, curPos)) {
-				List<MuninServer> toBeDeleted = new ArrayList<MuninServer>();
+				List<MuninServer> toBeDeleted = new ArrayList<>();
 				
 				for (MuninServer s : source) {
 					if (s.getPosition() == curPos) {
@@ -235,7 +235,7 @@ public class MuninMaster {
 		return newList;
 	}
 	
-	public Bitmap grabBitmap(String url, String userAgent) {
+	public HTTPResponse_Bitmap grabBitmap(String url, String userAgent) {
 		return NetHelper.grabBitmap(this, url, userAgent);
 	}
 	
@@ -388,7 +388,7 @@ public class MuninMaster {
 	 * @return ArrayList<GraphWidget> : widgets who should be updated afterwards
 	 */
 	public ArrayList<GraphWidget> reattachWidgets(MuninFoo muninFoo, MuninMaster oldMaster) {
-		ArrayList<GraphWidget> toBeUpdated_graphWidgets = new ArrayList<GraphWidget>();
+		ArrayList<GraphWidget> toBeUpdated_graphWidgets = new ArrayList<>();
 		List<GraphWidget> graphWidgets = muninFoo.sqlite.dbHlpr.getGraphWidgets();
 		
 		if (graphWidgets.isEmpty())
@@ -417,7 +417,7 @@ public class MuninMaster {
 	 * @return ArrayList<Label> : labels who should be updated afterwards
 	 */
 	public ArrayList<Label> reattachLabels(MuninFoo muninFoo, MuninMaster oldMaster) {
-		ArrayList<Label> toBeUpdated_labels = new ArrayList<Label>();
+		ArrayList<Label> toBeUpdated_labels = new ArrayList<>();
 		List<Label> labels = muninFoo.labels;
 		
 		if (labels.isEmpty())
@@ -427,8 +427,8 @@ public class MuninMaster {
 			for (MuninPlugin plugin : server.getPlugins()) {
 				// Check labels
 				for (Label label : labels) {
-					ArrayList<MuninPlugin> toBeRemoved = new ArrayList<MuninPlugin>();
-					ArrayList<MuninPlugin> toBeAdded = new ArrayList<MuninPlugin>();
+					ArrayList<MuninPlugin> toBeRemoved = new ArrayList<>();
+					ArrayList<MuninPlugin> toBeAdded = new ArrayList<>();
 					
 					for (MuninPlugin labelPlugin : label.plugins) {
 						if (labelPlugin.equals(plugin)) {
@@ -456,7 +456,7 @@ public class MuninMaster {
 	 * @return ArrayList<GridItem> : grids who should be updated afterwards
 	 */
 	public ArrayList<GridItem> reattachGrids(MuninFoo muninFoo, Context context, MuninMaster oldMaster) {
-		ArrayList<GridItem> toBeUpdated_grids = new ArrayList<GridItem>();
+		ArrayList<GridItem> toBeUpdated_grids = new ArrayList<>();
 		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(context, muninFoo);
 
 		if (grids.isEmpty())
@@ -508,8 +508,8 @@ public class MuninMaster {
 			if (!onlineMaster.isEmpty()) {
 				// SERVERS DIFF
 				// Add new servers if needed
-				ArrayList<MuninServer> toBeAdded = new ArrayList<MuninServer>();
-				ArrayList<MuninServer> toBeUpdated = new ArrayList<MuninServer>();
+				ArrayList<MuninServer> toBeAdded = new ArrayList<>();
+				ArrayList<MuninServer> toBeUpdated = new ArrayList<>();
 				// Add / update servers
 				for (MuninServer onlineServer : onlineMaster.getChildren()) {
 					// Check if it is in original
@@ -545,7 +545,7 @@ public class MuninMaster {
 				}
 				
 				// Remove offline servers if needed
-				ArrayList<MuninServer> toBeRemoved = new ArrayList<MuninServer>();
+				ArrayList<MuninServer> toBeRemoved = new ArrayList<>();
 				for (MuninServer oldServer : this.children) {
 					// Check if it is still there
 					boolean stillThere = false;
@@ -576,8 +576,8 @@ public class MuninMaster {
 					// If the download hasn't failed
 					if (onlinePlugins != null && onlinePlugins.size() > 0) {
 						// Add new plugins
-						ArrayList<MuninPlugin> pluginsToBeAdded = new ArrayList<MuninPlugin>();
-						ArrayList<MuninPlugin> pluginsToBeUpdated = new ArrayList<MuninPlugin>();
+						ArrayList<MuninPlugin> pluginsToBeAdded = new ArrayList<>();
+						ArrayList<MuninPlugin> pluginsToBeUpdated = new ArrayList<>();
 						for (MuninPlugin onlinePlugin : onlinePlugins) {
 							boolean alreadyThere = false;
 							for (MuninPlugin oldPlugin : server.getPlugins()) {
@@ -611,7 +611,7 @@ public class MuninMaster {
 						
 						
 						// Remove deleted plugins
-						ArrayList<MuninPlugin> pluginsToBeRemoved = new ArrayList<MuninPlugin>();
+						ArrayList<MuninPlugin> pluginsToBeRemoved = new ArrayList<>();
 						for (MuninPlugin oldPlugin : server.getPlugins()) {
 							boolean stillThere = false;
 							for (MuninPlugin onlinePlugin : onlinePlugins) {

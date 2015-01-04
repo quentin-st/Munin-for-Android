@@ -114,7 +114,7 @@ public class Activity_GraphView extends MuninActivity {
 	
 	// If the Adapter_GraphView:getView method should
 	// load the graphs
-	public static boolean	loadGraphs = false;
+	public boolean	loadGraphs = false;
 
 	// Dynazoom
 	private DynazoomFetcher dynazoomFetcher;
@@ -454,36 +454,41 @@ public class Activity_GraphView extends MuninActivity {
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")) {
 			String from = thisIntent.getExtras().getString("from");
-			if (from.equals("labels")) {
-				if (thisIntent.getExtras().containsKey("label")) {
-					Intent intent = new Intent(Activity_GraphView.this, Activity_Label.class);
-					intent.putExtra("label", thisIntent.getExtras().getString("label"));
+			switch (from) {
+				case "labels":
+					if (thisIntent.getExtras().containsKey("label")) {
+						Intent intent = new Intent(Activity_GraphView.this, Activity_Label.class);
+						intent.putExtra("label", thisIntent.getExtras().getString("label"));
+						startActivity(intent);
+						Util.setTransition(context, TransitionStyle.SHALLOWER);
+					}
+					break;
+				case "alerts":
+					if (thisIntent.getExtras().containsKey("server")) {
+						if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
+							muninFoo.setCurrentServer(muninFoo.getServer(thisIntent.getExtras().getString("server")));
+						Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
+						startActivity(intent);
+						Util.setTransition(context, TransitionStyle.SHALLOWER);
+					}
+					break;
+				case "grid":
+					if (thisIntent.getExtras().containsKey("fromGrid")) {
+						Intent intent = new Intent(Activity_GraphView.this, Activity_Grid.class);
+						intent.putExtra("gridName", thisIntent.getExtras().getString("fromGrid"));
+						startActivity(intent);
+						Util.setTransition(context, TransitionStyle.SHALLOWER);
+					} else {
+						startActivity(new Intent(Activity_GraphView.this, Activity_Grids.class));
+						Util.setTransition(context, TransitionStyle.SHALLOWER);
+					}
+					break;
+				case "plugins":
+					Intent intent = new Intent(this, Activity_Plugins.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.SHALLOWER);
-				}
-			} else if (from.equals("alerts")) {
-				if (thisIntent.getExtras().containsKey("server")) {
-					if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
-						muninFoo.setCurrentServer(muninFoo.getServer(thisIntent.getExtras().getString("server")));
-					Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
-					startActivity(intent);
-					Util.setTransition(context, TransitionStyle.SHALLOWER);
-				}
-			} else if (from.equals("grid")) {
-				if (thisIntent.getExtras().containsKey("fromGrid")) {
-					Intent intent = new Intent(Activity_GraphView.this, Activity_Grid.class);
-					intent.putExtra("gridName", thisIntent.getExtras().getString("fromGrid"));
-					startActivity(intent);
-					Util.setTransition(context, TransitionStyle.SHALLOWER);
-				} else {
-					startActivity(new Intent(Activity_GraphView.this, Activity_Grids.class));
-					Util.setTransition(context, TransitionStyle.SHALLOWER);
-				}
-			} else if (from.equals("plugins")) {
-				Intent intent = new Intent(this, Activity_Plugins.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				Util.setTransition(context, TransitionStyle.SHALLOWER);
+					break;
 			}
 		} else {
 			Intent intent = new Intent(this, Activity_Plugins.class);

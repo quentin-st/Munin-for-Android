@@ -13,6 +13,28 @@
 		android:gravity="center"
 		android:scaleType="fitCenter" />
 
+	<LinearLayout
+		android:id="@+id/error"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical|center_horizontal"
+		android:orientation="vertical">
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/download_error"
+			android:layout_gravity="center_horizontal"/>
+
+		<TextView
+			android:id="@+id/error_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:padding="20dp"
+			android:gravity="center_horizontal"/>
+
+	</LinearLayout>
+
 	<ProgressBar
 		android:id="@+id/progressbar"
 		android:layout_width="wrap_content"

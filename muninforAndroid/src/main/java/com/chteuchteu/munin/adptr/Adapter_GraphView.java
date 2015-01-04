@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
@@ -63,13 +65,13 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 			convertView = mInflater.inflate(R.layout.fragment_graphview, null);
 		}
 		
-		if (Activity_GraphView.loadGraphs) {
+		if (activity.loadGraphs) {
 			ImageView imageView = (ImageView) convertView.findViewById(R.id.tiv);
 			ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressbar);
 			
 			if (activity.isBitmapNull(position)) {
-				// Avoid serial execution
-				new BitmapFetcher(imageView, progressBar, position, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				//                                                           Avoid serial execution
+				new BitmapFetcher(imageView, progressBar, convertView, position, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			}
 			else {
 				imageView.setImageBitmap(activity.getBitmap(position));
@@ -85,16 +87,20 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		private int position;
 		private Context context;
 		private ProgressBar progressBar;
+		private View view;
 
 		private MuninPlugin plugin;
 		private MuninServer server;
+
+		private HTTPResponse_Bitmap response;
 		
-		private BitmapFetcher (ImageView iv, ProgressBar progressBar, int position, Context context) {
+		private BitmapFetcher (ImageView iv, ProgressBar progressBar, View view, int position, Context context) {
 			super();
 			this.imageView = iv;
 			this.position = position;
 			this.context = context;
 			this.progressBar = progressBar;
+			this.view = view;
 
             // ViewFlowMode : graphs / labels
 			if (activity.viewFlowMode == Activity_GraphView.VIEWFLOWMODE_GRAPHS) {
@@ -111,6 +117,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 			super.onPreExecute();
 			imageView.setImageBitmap(null);
 			progressBar.setVisibility(View.VISIBLE);
+			view.findViewById(R.id.error).setVisibility(View.GONE);
 		}
 		
 		@Override
@@ -121,11 +128,13 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 						&& !Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 					imgUrl = plugin.getHDImgUrl(activity.load_period, true, graphsDimensions[0], graphsDimensions[1]);
-                    MuninFoo.log("Graph url : " + imgUrl);
 				} else
 					imgUrl = plugin.getImgUrl(activity.load_period);
 
-				activity.addBitmap(Util.removeBitmapBorder(server.getParent().grabBitmap(imgUrl, muninFoo.getUserAgent())), position);
+				this.response = server.getParent().grabBitmap(imgUrl, muninFoo.getUserAgent());
+
+				if (response.bitmap != null)
+					activity.addBitmap(Util.removeBitmapBorder(response.bitmap), position);
 			}
 			
 			return null;
@@ -134,7 +143,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		@Override
 		protected void onPostExecute(Void result) {
 			progressBar.setVisibility(View.GONE);
-			
+
 			if (!activity.isBitmapNull(position)) {
 				imageView.setImageBitmap(activity.getBitmap(position));
 
@@ -155,10 +164,20 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 						activity.iv_documentation.setImageBitmap(activity.getBitmap(position));
 				}
 			} else {
-				// It seems that can actually fire OutOfMemoryError (BitmapFactory.nativeDecodeAsset)
-				try {
-					imageView.setImageResource(R.drawable.download_error);
-				} catch (Exception e) { e.printStackTrace(); }
+				// Display error
+				view.findViewById(R.id.error).setVisibility(View.VISIBLE);
+				TextView errorText = (TextView) view.findViewById(R.id.error_text);
+				Util.Fonts.setFont(context, errorText, Util.Fonts.CustomFont.Roboto_Regular);
+
+				if (response.responseCode < 0) {
+					if (response.responseCode == HTTPResponse_Bitmap.UnknownHostExceptionError
+							&& !Util.isOnline(context))
+						errorText.setText(response.responseReason + "\n " + context.getString(R.string.text30));
+					else
+						errorText.setText(response.responseReason);
+				}
+				else
+					errorText.setText(response.responseCode + " - " + response.responseReason);
 			}
 		}
 	}
