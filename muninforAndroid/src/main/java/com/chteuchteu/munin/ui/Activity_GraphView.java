@@ -65,6 +65,7 @@ import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.crashlytics.android.Crashlytics;
 import com.edmodo.rangebar.RangeBar;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -822,7 +823,17 @@ public class Activity_GraphView extends MuninActivity {
 	}
 
 	public void addBitmap(Bitmap bitmap, int position) { bitmaps[position] = bitmap; }
-	public boolean isBitmapNull(int position) { return bitmaps[position] == null; }
+	public boolean isBitmapNull(int position) {
+		if (position > bitmaps.length-1) {
+			String from = "unknown";
+			Intent thisIntent = getIntent();
+			if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")
+				from = thisIntent.getExtras().getString("from");
+
+			Crashlytics.log("Crash : from " + from);
+		}
+		return bitmaps[position] == null;
+	}
 	public void updateAdapterPosition(int position) {
 		for (int i=0; i<bitmaps.length; i++) {
 			if (i >= position-BITMAPS_PADDING
