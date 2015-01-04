@@ -827,7 +827,7 @@ public class Activity_GraphView extends MuninActivity {
 		if (position > bitmaps.length-1) {
 			String from = "unknown";
 			Intent thisIntent = getIntent();
-			if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from")
+			if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from"))
 				from = thisIntent.getExtras().getString("from");
 
 			Crashlytics.log("Crash : from " + from);
