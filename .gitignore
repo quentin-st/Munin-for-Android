@@ -51,5 +51,6 @@ gradlew.bat
 import-summary.txt
 local.properties
 
-# Ignore importExport credentials
+# Ignore importExport script
+importExport.php
 importExport_credentials.php
