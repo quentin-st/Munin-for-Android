@@ -519,9 +519,17 @@ public class MuninMaster {
 							alreadyThere = true;
 							
 							// Check if we can grab some attributes
+							// GraphURL
 							if (!server.getGraphURL().equals(onlineServer.getGraphURL()) && !onlineServer.getGraphURL().equals("")) {
 								server.setGraphURL(onlineServer.getGraphURL());
 								toBeUpdated.add(server);
+							}
+
+							// HDGraphURL
+							if (!server.getHdGraphURL().equals(onlineServer.getHdGraphURL()) && !onlineServer.getHdGraphURL().equals("")) {
+								server.setHdGraphURL(onlineServer.getHdGraphURL());
+								if (!toBeUpdated.contains(server))
+									toBeUpdated.add(server);
 							}
 							
 							break;

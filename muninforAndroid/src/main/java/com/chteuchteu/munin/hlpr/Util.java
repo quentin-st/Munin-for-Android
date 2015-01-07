@@ -278,7 +278,7 @@ public final class Util {
 															  Notifs_Vibrate("notifs_vibrate"),
 															  Notifs_LastNotificationText("lastNotificationText"),
 
-		AutoRefresh("autoRefresh"),                        UserAgent("userAgent"),
+		AutoRefresh("autoRefresh"),                        UserAgent("userAgent"), UserAgentChanged("userAgentChanged"),
 		HDGraphs("hdGraphs"),                               Lang("lang"),
 		GraphsZoom("graphsZoom"),                          DefaultServer("defaultServer"),
 

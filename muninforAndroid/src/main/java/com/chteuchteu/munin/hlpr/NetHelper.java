@@ -175,7 +175,9 @@ public class NetHelper {
 	 */
 	private static HTTPResponse_Bitmap grabBitmap(MuninMaster master, String url, String userAgent, boolean retried) {
 		HTTPResponse_Bitmap respObj = new HTTPResponse_Bitmap();
-		
+
+		MuninFoo.logV("grabBitmap:url", url);
+
 		try {
 			HttpClient client;
 			if (master.getSSL()) {

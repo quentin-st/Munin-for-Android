@@ -1,6 +1,9 @@
 package com.chteuchteu.munin.obj;
 
+import android.net.Uri;
+
 import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.SpecialBool;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 
@@ -18,6 +21,7 @@ public class MuninServer {
 	private String serverUrl;
 	private List<MuninPlugin> plugins;
 	private String graphURL;
+	private String hdGraphURL;
 	private int position;
 	public MuninMaster master;
 	public boolean isPersistant = false;
@@ -34,6 +38,7 @@ public class MuninServer {
 		this.serverUrl = "";
 		this.plugins = new ArrayList<>();
 		this.graphURL = "";
+		this.hdGraphURL = "";
 		this.position = -1;
 		this.erroredPlugins = new ArrayList<>();
 		this.warnedPlugins = new ArrayList<>();
@@ -44,6 +49,7 @@ public class MuninServer {
 		this.serverUrl = serverUrl;
 		this.plugins = new ArrayList<>();
 		this.graphURL = "";
+		this.hdGraphURL = "";
 		this.position = -1;
 		this.erroredPlugins = new ArrayList<>();
 		this.warnedPlugins = new ArrayList<>();
@@ -77,6 +83,9 @@ public class MuninServer {
 	
 	public void setGraphURL(String url) { this.graphURL = url; }
 	public String getGraphURL() { return this.graphURL; }
+
+	public void setHdGraphURL(String url) { this.hdGraphURL = url; }
+	public String getHdGraphURL() { return this.hdGraphURL; }
 	
 	public void setPluginsList(List<MuninPlugin> pL) { this.plugins = pL; }
 	public List<MuninPlugin> getPlugins() { return this.plugins; }
@@ -162,9 +171,48 @@ public class MuninServer {
 			currentPl.setPluginPageUrl(pluginPageUrl);
 			
 			mp.add(currentPl);
-			
-			if (this.graphURL.equals(""))
-				this.graphURL = image.attr("abs:src").substring(0, image.attr("abs:src").lastIndexOf('/') + 1);
+
+			// Find GraphURL
+			if (this.graphURL.equals("")) {
+				String srcAttr = image.attr("abs:src");
+				this.graphURL = srcAttr.substring(0, srcAttr.lastIndexOf('/') + 1);
+			}
+
+			// Find HDGraphURL
+			if (this.hdGraphURL.equals("") && this.master.isDynazoomAvailable() != MuninMaster.DynazoomAvailability.FALSE) {
+				// To go to the dynazoom page, we have to "click" on the first graph.
+				// Then, on the second page, we have to "click" again on the first graph.
+				// Finally, the only image on this third page is the dynazoom graph.
+				String srcAttr = image.parent().attr("abs:href");
+
+				String secondPageHtml = this.master.grabUrl(srcAttr, userAgent).html;
+				Document secondPage = Jsoup.parse(secondPageHtml, srcAttr);
+
+				Element imageParent = secondPage.select("img[src$=-day.png]").get(0).parent();
+				if (imageParent.tagName().equals("a")) {
+					String srcAttr2 = imageParent.attr("abs:href");
+					String thirdPageHtml = this.master.grabUrl(srcAttr2, userAgent).html;
+					if (thirdPageHtml.equals(""))
+						this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
+					else {
+						// Since the image URL is built in JS on the web page, we have to build it manually
+						Uri uri = Uri.parse(srcAttr2);
+						String cgiUrl = uri.getQueryParameterNames().contains("cgiurl_graph") ? uri.getQueryParameter("cgiurl_graph")
+								: "/munin-cgi/munin-cgi-graph";
+						// localdomain/localhost.localdomain/if_eth0
+						String pluginNameUrl = uri.getQueryParameterNames().contains("plugin_name") ? uri.getQueryParameter("plugin_name")
+								: "localdomain/localhost.localdomain/pluginName";
+						// Remove plugin name from pluginNameUrl
+						pluginNameUrl = pluginNameUrl.substring(0, pluginNameUrl.lastIndexOf('/')+1);
+
+						this.hdGraphURL = "http://" + Util.URLManipulation.getHostFromUrl(this.getServerUrl()) + cgiUrl + "/" + pluginNameUrl;
+						MuninFoo.log("Found HD Graph URL : " + hdGraphURL);
+						this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
+					}
+				}
+				else
+					this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
+			}
 		}
 		return mp;
 	}
@@ -178,6 +226,12 @@ public class MuninServer {
 		}
 		return false;
 	}
+
+	/**
+	 * Get plugin state (OK / WARNING / CRITICAL) for each plugin
+	 * in this server. Used on Activity_Alerts
+	 * @param userAgent String
+	 */
 	public void fetchPluginsStates(String userAgent) {
 		erroredPlugins.clear();
 		warnedPlugins.clear();

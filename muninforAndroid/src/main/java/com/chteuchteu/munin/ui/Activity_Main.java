@@ -27,6 +27,8 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
+import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninServer;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.tjeannin.apprate.AppRate;
@@ -317,16 +319,32 @@ public class Activity_Main extends ActionBarActivity {
 		if (fromVersion < 4.2) // 4.2 = V3.0
 			muninFoo.sqlite.migrateTo3();
 
+		// UserAgentChanged catchup
+		if (Util.getPref(context, Util.PrefKeys.UserAgentChanged).equals("")) {
+			String currentUserAgent = muninFoo.getUserAgent();
+			// MuninForAndroid/3.0 (Android 4.4.4 KITKAT)
+			boolean userAgentChanged = (currentUserAgent.contains("MuninForAndroid/")
+					&& currentUserAgent.contains(" (Android "));
+
+			Util.setPref(context, Util.PrefKeys.UserAgentChanged, String.valueOf(userAgentChanged));
+		}
+
 		// Update UserAgent
-		String currentUserAgent = muninFoo.getUserAgent();
-		// MuninForAndroid/3.0 (Android 4.4.4 KITKAT)
-		if (currentUserAgent.contains("MuninForAndroid/")
-				&& currentUserAgent.contains(" (Android ")) { // default user agent
+		if (Util.getPref(context, Util.PrefKeys.UserAgentChanged).equals("false")) {
 			String newUserAgent = MuninFoo.generateUserAgent(this);
 			muninFoo.setUserAgent(newUserAgent);
 			Util.setPref(this, Util.PrefKeys.UserAgent, newUserAgent);
 		}
-		
+
+		// Munin for Android 3.5 : added MuninServer.hdGraphUrl
+		// Migrate information if there are
+		for (MuninServer server : muninFoo.getServers()) {
+			if (server.getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE) {
+				server.setHdGraphURL(server.getGraphURL());
+				muninFoo.sqlite.dbHlpr.updateMuninServer(server);
+			}
+		}
+
 		Util.setPref(context, Util.PrefKeys.LastMFAVersion, MuninFoo.VERSION + "");
 		muninFoo.resetInstance(this);
 	}

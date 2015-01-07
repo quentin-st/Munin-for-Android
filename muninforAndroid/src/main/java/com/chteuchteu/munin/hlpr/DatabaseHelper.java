@@ -25,7 +25,7 @@ import java.util.List;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 6;
 	private static final String DATABASE_NAME = "muninForAndroid2.db";
 	
 	// Table names
@@ -57,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_MUNINSERVERS_SERVERURL = "serverUrl";
 	private static final String KEY_MUNINSERVERS_NAME = "name";
 	private static final String KEY_MUNINSERVERS_GRAPHURL = "graphURL";
+	private static final String KEY_MUNINSERVERS_HDGRAPHURL = "hdGraphURL";
 	private static final String KEY_MUNINSERVERS_POSITION = "position";
 	private static final String KEY_MUNINSERVERS_MASTER = "master";
 	
@@ -115,6 +116,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_MUNINSERVERS_SERVERURL + " TEXT,"
 			+ KEY_MUNINSERVERS_NAME + " TEXT,"
 			+ KEY_MUNINSERVERS_GRAPHURL + " TEXT,"
+			+ KEY_MUNINSERVERS_HDGRAPHURL + " TEXT,"
 			+ KEY_MUNINSERVERS_POSITION + " INTEGER,"
 			+ KEY_MUNINSERVERS_MASTER + " INTEGER)";
 	
@@ -210,6 +212,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				db.execSQL(CREATE_TABLE_ALERTSWIDGETSRELATIONS);
 			} catch (SQLiteException ex) { ex.printStackTrace(); }
 		}
+		if (oldVersion < 6) // From 5 to 6
+			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_HDGRAPHURL + " TEXT");
 	}
 	
 	public static void close(Cursor c, SQLiteDatabase db) {
@@ -247,6 +251,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_SERVERURL, s.getServerUrl());
 		values.put(KEY_MUNINSERVERS_NAME, s.getName());
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
+		values.put(KEY_MUNINSERVERS_HDGRAPHURL, s.getHdGraphURL());
 		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
 		values.put(KEY_MUNINSERVERS_MASTER, s.master != null ? s.master.getId() : -1);
 		
@@ -445,6 +450,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_SERVERURL, s.getServerUrl());
 		values.put(KEY_MUNINSERVERS_NAME, s.getName());
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
+		values.put(KEY_MUNINSERVERS_HDGRAPHURL, s.getHdGraphURL());
 		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
 		values.put(KEY_MUNINSERVERS_MASTER, s.master.getId());
 		
@@ -484,7 +490,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public List<MuninMaster> getMasters() {
-		List<MuninMaster> l = new ArrayList<MuninMaster>();
+		List<MuninMaster> l = new ArrayList<>();
 		try {
 			String selectQuery = "SELECT * FROM " + TABLE_MUNINMASTERS;
 			
@@ -573,7 +579,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @return List<MuninServer>
 	 */
 	public List<MuninServer> getServers(List<MuninMaster> currentMasters) {
-		List<MuninServer> l = new ArrayList<MuninServer>();
+		List<MuninServer> l = new ArrayList<>();
 		try {
 			String selectQuery = "SELECT * FROM " + TABLE_MUNINSERVERS;
 			
@@ -587,6 +593,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
 					s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 					s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
+					s.setHdGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHURL)));
 					s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 					s.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_MASTER)), currentMasters));
 					s.setPluginsList(getPlugins(s));
@@ -603,7 +610,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public List<MuninPlugin> getPlugins(MuninServer s) {
-		List<MuninPlugin> l = new ArrayList<MuninPlugin>();
+		List<MuninPlugin> l = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_MUNINPLUGINS 
 				+ " WHERE " + KEY_MUNINPLUGINS_SERVER + " = " + s.getId();
 		
@@ -661,6 +668,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
 			s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 			s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
+			s.setHdGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHURL)));
 			s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 			s.setPluginsList(getPlugins(s));
 			s.isPersistant = true;
@@ -671,7 +679,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public List<GraphWidget> getGraphWidgets() {
-		List<GraphWidget> l = new ArrayList<GraphWidget>();
+		List<GraphWidget> l = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_WIDGET_GRAPHWIDGETS;
 		
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -729,7 +737,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	public List<MuninServer> getAlertsWidgetRelations(long widgetId, List<MuninServer> servers) {
-		List<MuninServer> widgetServers = new ArrayList<MuninServer>();
+		List<MuninServer> widgetServers = new ArrayList<>();
 
 		String selectQuery = "SELECT * FROM " + TABLE_WIDGET_ALERTSWIDGETSRELATIONS
 				+ " WHERE " + KEY_WIDGET_ALERTSWIDGETSRELATIONS_WIDGET + " = " + widgetId;
@@ -786,7 +794,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public List<Label> getLabels(List<MuninMaster> masters) {
-		List<Label> list = new ArrayList<Label>();
+		List<Label> list = new ArrayList<>();
 		try {
 			String selectQuery = "SELECT * FROM " + TABLE_LABELS;
 			
@@ -816,7 +824,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @return List<MuninPlugin>
 	 */
 	public List<MuninPlugin> getPlugins(Label label, List<MuninMaster> masters) {
-		List<MuninPlugin> list = new ArrayList<MuninPlugin>();
+		List<MuninPlugin> list = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_LABELSRELATIONS
 				+ " WHERE " + KEY_LABELSRELATIONS_LABEL + " = " + label.getId();
 		
@@ -839,7 +847,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public List<Grid> getGrids(Context co, MuninFoo f) {
-		List<Grid> l = new ArrayList<Grid>();
+		List<Grid> l = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDS;
 		
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -850,10 +858,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), f);
 				g.id = c.getInt(c.getColumnIndex(KEY_ID));
 				// Get all GridItems
-				List<GridItem> li = getGridItems(f, co, g);
-				/*for (GridItem i : li)
-					g.add(i, co, editView);*/
-				g.items = li;
+				g.items = getGridItems(f, co, g);
 				l.add(g);
 			} while (c.moveToNext());
 		}
@@ -862,7 +867,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public List<String> getGridsNames() {
-		List<String> names = new ArrayList<String>();
+		List<String> names = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDS;
 		
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -910,7 +915,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @return List<GridItem>
 	 */
 	public List<GridItem> getGridItems(MuninFoo muninFoo, Context context, Grid grid) {
-		List<GridItem> l = new ArrayList<GridItem>();
+		List<GridItem> l = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDITEMRELATIONS
 				+ " WHERE " + KEY_GRIDITEMRELATIONS_GRID + " = " + grid.id;
 		

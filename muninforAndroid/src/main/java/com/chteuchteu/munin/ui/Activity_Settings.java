@@ -274,10 +274,14 @@ public class Activity_Settings extends MuninActivity {
 			Util.setPref(this, Util.PrefKeys.DefaultServer, defaultServer.getServerUrl());
 		}
 
-		Util.setPref(context, Util.PrefKeys.UserAgent, editText_userAgent.getText().toString());
-		muninFoo.setUserAgent(editText_userAgent.getText().toString());
-		
-		// After saving -> go back to reality
+		boolean userAgentChanged = !Util.getPref(context, Util.PrefKeys.UserAgent).equals(editText_userAgent.getText().toString());
+		if (userAgentChanged) {
+			Util.setPref(context, Util.PrefKeys.UserAgentChanged, "true");
+			Util.setPref(context, Util.PrefKeys.UserAgent, editText_userAgent.getText().toString());
+			muninFoo.setUserAgent(editText_userAgent.getText().toString());
+		}
+
+
 		Toast.makeText(this, getString(R.string.text36), Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(Activity_Settings.this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -7,7 +7,6 @@ import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -67,7 +66,8 @@ public class JSONHelper {
 						jsonServer.put("serverUrl", server.getServerUrl());
 						jsonServer.put("position", server.getPosition());
 						jsonServer.put("graphURL", server.getGraphURL());
-						
+						jsonServer.put("hdGraphURL", server.getHdGraphURL());
+
 						JSONArray jsonPlugins = new JSONArray();
 						for (MuninPlugin plugin : server.getPlugins()) {
 							JSONObject jsonPlugin = new JSONObject();
@@ -92,22 +92,15 @@ public class JSONHelper {
 			
 			obj.put("masters", jsonMasters);
 			return obj.toString();
-		} catch (JSONException ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
-			return "";
-		} catch (NullPointerException ex) {
-			ex.printStackTrace();
-			return "";
-		} catch (Exception e) {
-			e.printStackTrace();
 			return "";
 		}
 	}
 	
 	public static ArrayList<MuninMaster> getMastersFromJSON(JSONObject obj, String seed) {
 		try {
-			ArrayList<MuninMaster> muninMasters = new ArrayList<MuninMaster>();
-			EncryptionHelper encryptionHelper = new EncryptionHelper();
+			ArrayList<MuninMaster> muninMasters = new ArrayList<>();
 			
 			JSONArray jsonMasters = obj.getJSONArray("masters");
 			for (int i=0; i<jsonMasters.length(); i++) {
@@ -118,21 +111,27 @@ public class JSONHelper {
 				master.setUrl(jsonMaster.getString("url"));
 				master.setDynazoomAvailable(DynazoomAvailability.get(jsonMaster.getString("hdGraphs")));
 				String authType = jsonMaster.getString("authType");
-				if (authType.equals("none")) {
-					master.setAuthType(AuthType.NONE);
-				} else if (authType.equals("basic")) {
-					master.setAuthType(AuthType.BASIC);
-					String login = jsonMaster.getString("authLogin");
-					String encryptedBasicPassword = jsonMaster.getString("authPassword");
-					String decryptedBasicPassword = EncryptionHelper.decrypt(seed, encryptedBasicPassword);
-					master.setAuthIds(login, decryptedBasicPassword);
-				} else if (authType.equals("digest")) {
-					master.setAuthType(AuthType.DIGEST);
-					String login = jsonMaster.getString("authLogin");
-					String encryptedDigestPassword = jsonMaster.getString("authPassword");
-					String decryptedDigestPassword = EncryptionHelper.decrypt(seed, encryptedDigestPassword);
-					master.setAuthIds(login, decryptedDigestPassword);
-					master.setAuthString(jsonMaster.getString("authString"));
+				switch (authType) {
+					case "none":
+						master.setAuthType(AuthType.NONE);
+						break;
+					case "basic": {
+						master.setAuthType(AuthType.BASIC);
+						String login = jsonMaster.getString("authLogin");
+						String encryptedBasicPassword = jsonMaster.getString("authPassword");
+						String decryptedBasicPassword = EncryptionHelper.decrypt(seed, encryptedBasicPassword);
+						master.setAuthIds(login, decryptedBasicPassword);
+						break;
+					}
+					case "digest": {
+						master.setAuthType(AuthType.DIGEST);
+						String login = jsonMaster.getString("authLogin");
+						String encryptedDigestPassword = jsonMaster.getString("authPassword");
+						String decryptedDigestPassword = EncryptionHelper.decrypt(seed, encryptedDigestPassword);
+						master.setAuthIds(login, decryptedDigestPassword);
+						master.setAuthString(jsonMaster.getString("authString"));
+						break;
+					}
 				}
 				
 				JSONArray jsonServers = jsonMaster.getJSONArray("servers");
@@ -145,7 +144,8 @@ public class JSONHelper {
 					server.setServerUrl(jsonServer.getString("serverUrl"));
 					server.setPosition(jsonServer.getInt("position"));
 					server.setGraphURL(jsonServer.getString("graphURL"));
-					
+					server.setHdGraphURL(jsonServer.getString("hdGraphURL"));
+
 					JSONArray jsonPlugins = jsonServer.getJSONArray("plugins");
 					for (int z=0; z<jsonPlugins.length(); z++) {
 						JSONObject jsonPlugin = jsonPlugins.getJSONObject(z);
@@ -166,9 +166,6 @@ public class JSONHelper {
 			}
 			
 			return muninMasters;
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
