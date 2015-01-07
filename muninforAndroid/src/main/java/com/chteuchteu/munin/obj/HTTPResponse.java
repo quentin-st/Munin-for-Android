@@ -1,5 +1,8 @@
 package com.chteuchteu.munin.obj;
 
+/**
+ * Object returned from a network operation
+ */
 public class HTTPResponse {
 	public String html;
 	public int responseCode;

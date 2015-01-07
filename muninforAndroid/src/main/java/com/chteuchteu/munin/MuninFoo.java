@@ -22,7 +22,11 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
-
+/**
+ * Main class of the app. This singleton is created on app launch
+ * Its instance is retrieved using MuninFoo.getInstance().
+ *  (we supply a Context reference on first getInstance call)
+ */
 public class MuninFoo {
 	private static MuninFoo instance;
 	private static boolean languageLoaded = false;

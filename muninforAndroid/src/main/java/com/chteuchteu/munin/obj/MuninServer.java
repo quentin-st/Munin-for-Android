@@ -32,21 +32,21 @@ public class MuninServer {
 	public MuninServer() {
 		this.name = "";
 		this.serverUrl = "";
-		this.plugins = new ArrayList<MuninPlugin>();
+		this.plugins = new ArrayList<>();
 		this.graphURL = "";
 		this.position = -1;
-		this.erroredPlugins = new ArrayList<MuninPlugin>();
-		this.warnedPlugins = new ArrayList<MuninPlugin>();
+		this.erroredPlugins = new ArrayList<>();
+		this.warnedPlugins = new ArrayList<>();
 		this.reachable = SpecialBool.UNKNOWN;
 	}
 	public MuninServer (String name, String serverUrl) {
 		this.name = name;
 		this.serverUrl = serverUrl;
-		this.plugins = new ArrayList<MuninPlugin>();
+		this.plugins = new ArrayList<>();
 		this.graphURL = "";
 		this.position = -1;
-		this.erroredPlugins = new ArrayList<MuninPlugin>();
-		this.warnedPlugins = new ArrayList<MuninPlugin>();
+		this.erroredPlugins = new ArrayList<>();
+		this.warnedPlugins = new ArrayList<>();
 		this.reachable = SpecialBool.UNKNOWN;
 		generatePosition();
 	}
@@ -101,7 +101,7 @@ public class MuninServer {
 	
 	
 	public List<MuninPlugin> getPluginsList(String userAgent) {
-		List<MuninPlugin> mp = new ArrayList<MuninPlugin>();
+		List<MuninPlugin> mp = new ArrayList<>();
 		String html = this.master.grabUrl(this.getServerUrl(), userAgent).html;
 		
 		if (html.equals(""))
@@ -258,7 +258,7 @@ public class MuninServer {
 		if (nbNotNull == 0)
 			this.position = 0;
 
-        // Sauvegarde la toute dernière position
+        // Save the latest position
         int higherPosition = -1;
         for (int i=0; i<muninFoo.getServers().size(); i++) {
             if (muninFoo.getServer(i) != null && muninFoo.getServer(i).getPosition() > higherPosition)
@@ -268,7 +268,7 @@ public class MuninServer {
 	}
 	
 	private List<MuninPlugin> getPluginsByCategory(String c) {
-		List<MuninPlugin> l = new ArrayList<MuninPlugin>();
+		List<MuninPlugin> l = new ArrayList<>();
 		for (MuninPlugin p : plugins) {
 			if (p.getCategory() != null && p.getCategory().equals(c))
 				l.add(p);
@@ -277,7 +277,7 @@ public class MuninServer {
 	}
 	
 	private List<String> getDistinctCategories() {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		
 		for (MuninPlugin plugin : plugins) {
 			if (plugin.getCategory() == null)
@@ -296,7 +296,7 @@ public class MuninServer {
 	}
 	
 	public List<List<MuninPlugin>> getPluginsListWithCategory() {
-		List<List<MuninPlugin>> l = new ArrayList<List<MuninPlugin>>();
+		List<List<MuninPlugin>> l = new ArrayList<>();
 		for (String s : getDistinctCategories()) {
 			l.add(getPluginsByCategory(s));
 		}

@@ -81,7 +81,7 @@ import java.util.List;
 
 @SuppressLint({ "DefaultLocale", "InflateParams" })
 public class Activity_GraphView extends MuninActivity {
-	private int			previousPos = -1;
+	private int previousPos = -1;
 
 	public MuninPlugin currentPlugin;
 	public Period load_period;

@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Grid {
-	public long 	id;
-	public String 	name;
-	public int 		nbColumns;
-	public int 		nbLines;
+	public long id;
+	public String name;
+	public int nbColumns;
+	public int nbLines;
 	public List<GridItem> items;
-	public MuninFoo	f;
+	public MuninFoo f;
 	public GridDownloadHelper dHelper;
 	
 	private LinearLayout container;
@@ -30,7 +30,7 @@ public class Grid {
 	
 	public Grid(String name, MuninFoo f) {
 		this.name = name;
-		this.items = new ArrayList<GridItem>();
+		this.items = new ArrayList<>();
 		this.nbColumns = 2;
 		this.nbLines = 2;
 		this.f = f;

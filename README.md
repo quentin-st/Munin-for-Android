@@ -1,10 +1,13 @@
 # Munin for Android #
 
-## Objects structure *(obj)* ##
+Welcome to the public repository for [Munin for Android](https://play.google.com/store/apps/details?id=com.chteuchteu.munin) application. If you're willing to contribute, please read the following indications - please also update them if you make significant changes.
+
+Here are the different packages of the muninForAndroid module:
+
+## Objects *(obj)* ##
 * MuninMaster
 * MuninServer
 * MuninPlugin
-
 * Grid
 * GridItem
 * Label
@@ -29,7 +32,7 @@
 * Activity_Servers
 * Activity_ServersEdit
 * Activity_Settings
-* MuninActivity *- Every class extends MuninActivity to avoid code redundancy *
+* MuninActivity - _Every class extends MuninActivity to avoid code redundancy_
 
 ## Helpers & Utils classes *(hlpr)* ##
 * BillingService
@@ -37,10 +40,13 @@
 * DigestUtils *- Apache digest auth util class*
 * DocumentationHelper
 * DrawerHelper
+* DynazoomHelper
+* EncryptionHelper
 * GridDownloadHelper *- Grids simultaneous downloads helper*
 * ImportExportHelper
 * JSONHelper *- JSON import/export - not used for now*
 * MediaScannerUtil *- warns Android system about a new picture on the filesystem*
+* NetHelper
 * SQLite *- SQLite database top-level methods (saveServers(), ...)*
 * Util *- Generic util methods*
 
@@ -61,9 +67,11 @@
 ## Others ##
 * BootReceiver
 * CustomSSLFactory
+* HackyDrawerLayout
 * MuninFoo *- App Singleton*
 * Service_Notifications
 * HTTPResponse
+* HTTPResponse_Bitmap
 
 ## Custom Exceptions ##
 * ImportExportWebServiceException

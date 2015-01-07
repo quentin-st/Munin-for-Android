@@ -24,6 +24,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 
 /**
  * One class to rule them all
+ * Every Activity_* extends this one to avoid code redundancy
  */
 public class MuninActivity extends ActionBarActivity {
 	protected MuninFoo      muninFoo;

@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 /**
  * On a layout using PhotoView, zooming on the view makes the app crash
  * We have to catch the exception using this custom HackyDrawerLayout.
+ * Used on Adapter_GraphView layout
  */
 public class HackyDrawerLayout extends DrawerLayout {
 	public HackyDrawerLayout(Context context) {

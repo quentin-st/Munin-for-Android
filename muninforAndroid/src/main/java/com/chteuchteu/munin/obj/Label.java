@@ -8,16 +8,15 @@ import java.util.List;
 public class Label {
 	private long id;
 	private String name;
-	
 	public List<MuninPlugin> plugins;
 	
 	public Label() {
-		this.plugins = new ArrayList<MuninPlugin>();
+		this.plugins = new ArrayList<>();
 	}
 	
 	public Label(String name) {
 		this.name = name;
-		this.plugins = new ArrayList<MuninPlugin>();
+		this.plugins = new ArrayList<>();
 	}
 	
 	public void setId(long id) { this.id = id; }
@@ -29,11 +28,11 @@ public class Label {
 	// The loop is made from MuninFoo's servers list (more easy than previous way)
 	//		, and made according to servers sorting positions
 	public List<List<MuninPlugin>> getPluginsSortedByServer(MuninFoo f) {
-		List<List<MuninPlugin>> l = new ArrayList<List<MuninPlugin>>();
+		List<List<MuninPlugin>> l = new ArrayList<>();
 		
 		List<MuninPlugin> curList;
 		for (MuninServer s : f.getOrderedServers()) {
-			curList = new ArrayList<MuninPlugin>();
+			curList = new ArrayList<>();
 			
 			for (MuninPlugin p : plugins) {
 				if (p.getInstalledOn() != null &&
@@ -53,7 +52,7 @@ public class Label {
 	}
 	
 	public void removePlugin(MuninPlugin p) {
-		List<MuninPlugin> newList = new ArrayList<MuninPlugin>();
+		List<MuninPlugin> newList = new ArrayList<>();
 		for (MuninPlugin pl : plugins) {
 			if (!pl.equals(p))
 				newList.add(pl);

@@ -25,6 +25,11 @@ import com.chteuchteu.munin.ui.Activity_Alerts;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Notifications Service
+ * Launched when enabling notifications from the app or
+ * on device boot using BootReceiver class
+ */
 public class Service_Notifications extends Service {
 	private WakeLock mWakeLock;
 	

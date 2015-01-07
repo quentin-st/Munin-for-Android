@@ -13,7 +13,7 @@ public class AlertsWidget {
 	public AlertsWidget() {
 		this.id = -1;
 		this.wifiOnly = false;
-		this.servers = new ArrayList<MuninServer>();
+		this.servers = new ArrayList<>();
 		this.widgetId = -1;
 	}
 
@@ -22,7 +22,6 @@ public class AlertsWidget {
 
 	public boolean isWifiOnly() { return wifiOnly; }
 	public void setWifiOnly(int b) { this.wifiOnly = b == 1; }
-	public void setWifiOnly(boolean wifiOnly) { this.wifiOnly = wifiOnly; }
 
 	public List<MuninServer> getServers() { return servers; }
 	public void setServers(List<MuninServer> servers) { this.servers = servers; }

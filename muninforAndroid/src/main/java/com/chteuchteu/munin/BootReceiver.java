@@ -9,6 +9,10 @@ import android.os.SystemClock;
 
 import com.chteuchteu.munin.hlpr.Util;
 
+/**
+ * BootReceiver called by Android system on device launch
+ *  (we use it to start the notifications service)
+ */
 public class BootReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		// In our case intent will always be BOOT_COMPLETED, so we can just set the alarm
