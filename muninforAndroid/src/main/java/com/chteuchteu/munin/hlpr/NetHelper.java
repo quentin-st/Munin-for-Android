@@ -10,6 +10,7 @@ import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
+import com.crashlytics.android.Crashlytics;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -41,11 +42,14 @@ import java.net.UnknownHostException;
 import java.security.KeyStore;
 
 import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class NetHelper {
 	private static final int CONNECTION_TIMEOUT = 6000; // Default = 6000
 	private static final int SOCKET_TIMEOUT = 7000; // Default = 6000
+
+	public static HTTPResponse grabUrl(MuninMaster master, String url, String userAgent) {
+		return grabUrl(master, url, userAgent, false);
+	}
 
 	/**
 	 * Downloads body response of a HTTP(s) request using master auth information
@@ -53,7 +57,7 @@ public class NetHelper {
 	 * @param url URL to be downloaded
 	 * @return HTTPResponse
 	 */
-	public static HTTPResponse grabUrl(MuninMaster master, String url, String userAgent) {
+	public static HTTPResponse grabUrl(MuninMaster master, String url, String userAgent, boolean retried) {
 		HTTPResponse resp = new HTTPResponse();
 		
 		MuninFoo.logV("grabUrl:url", url);
@@ -127,39 +131,30 @@ public class NetHelper {
 				resp.header_wwwauthenticate = response.getHeaders("WWW-Authenticate")[0].getValue();
 		}
 		catch (SocketTimeoutException | ConnectTimeoutException e) { e.printStackTrace(); resp.timeout = true; }
-		catch (SSLPeerUnverifiedException e) {
-			master.setSSL(true);
-			// Update the URL of master / child server if needed
-			if (master.getUrl().equals(url))
-				master.setUrl(Util.URLManipulation.setHttps(url));
-			else {
-				for (MuninServer server : master.getChildren()) {
-					if (server.getServerUrl().equals(url)) {
-						server.setServerUrl(Util.URLManipulation.setHttps(url));
-						break;
+		catch (SSLException e) { // SSLPeerUnverifiedException
+			e.printStackTrace();
+			Crashlytics.log("grabUrl(retried=" + retried + ")");
+			Crashlytics.logException(e);
+
+			if (!master.getSSL()) {
+				master.setSSL(true);
+				// Update the URL of master / child server if needed
+				if (master.getUrl().equals(url))
+					master.setUrl(Util.URLManipulation.setHttps(url));
+				else {
+					for (MuninServer server : master.getChildren()) {
+						if (server.getServerUrl().equals(url)) {
+							server.setServerUrl(Util.URLManipulation.setHttps(url));
+							break;
+						}
 					}
 				}
+
+				url = Util.URLManipulation.setHttps(url);
 			}
-			
-			url = Util.URLManipulation.setHttps(url);
-			return NetHelper.grabUrl(master, url, userAgent);
-		}
-		catch (SSLException e) {
-			master.setSSL(true);
-			// Update the URL of master / child server if needed
-			if (master.getUrl().equals(url))
-				master.setUrl(Util.URLManipulation.setHttps(url));
-			else {
-				for (MuninServer server : master.getChildren()) {
-					if (server.getServerUrl().equals(url)) {
-						server.setServerUrl(Util.URLManipulation.setHttps(url));
-						break;
-					}
-				}
-			}
-			
-			url = Util.URLManipulation.setHttps(url);
-			return NetHelper.grabUrl(master, url, userAgent);
+
+			if (!retried)
+				return NetHelper.grabUrl(master, url, userAgent, true);
 		}
 		catch (Exception e) { e.printStackTrace(); resp.html = ""; }
 		return resp;
