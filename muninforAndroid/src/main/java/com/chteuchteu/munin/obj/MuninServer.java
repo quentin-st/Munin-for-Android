@@ -206,7 +206,7 @@ public class MuninServer {
 						pluginNameUrl = pluginNameUrl.substring(0, pluginNameUrl.lastIndexOf('/')+1);
 
 						this.hdGraphURL = "http://" + Util.URLManipulation.getHostFromUrl(this.getServerUrl()) + cgiUrl + "/" + pluginNameUrl;
-						MuninFoo.log("Found HD Graph URL : " + hdGraphURL);
+						
 						this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
 					}
 				}

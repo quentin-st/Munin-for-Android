@@ -116,7 +116,7 @@ public class MuninPlugin {
 	}
 
 	public String getHDImgUrl(long pinPoint1, long pinPoint2, boolean forceSize, int size_x, int size_y) {
-		String url = this.getInstalledOn().getGraphURL() + this.getName()
+		String url = this.getInstalledOn().getHdGraphURL() + this.getName()
 				+ "-pinpoint=" + pinPoint1 + "," + pinPoint2 + ".png";
 		if (forceSize)
 			url += "?size_x=" + size_x + "&size_y=" + size_y;
