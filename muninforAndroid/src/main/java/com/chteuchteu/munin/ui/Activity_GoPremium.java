@@ -39,15 +39,23 @@ public class Activity_GoPremium extends MuninActivity {
 		TextView price3 = (TextView)findViewById(R.id.price3);
 		Button buyNow = (Button)findViewById(R.id.buyNow);
 		WebView benefits = (WebView)findViewById(R.id.benefits);
-		
-		Currency currency;
+
+		String cur;
 		try {
-			currency = Currency.getInstance(Locale.getDefault());
+			Currency currency = Currency.getInstance(Locale.getDefault());
+			cur = currency.toString();
 		} catch (IllegalArgumentException ex) {
 			ex.printStackTrace();
-			currency = Currency.getInstance(Locale.ENGLISH);
+			try {
+				Currency currency = Currency.getInstance(Locale.ENGLISH);
+				cur = currency.toString();
+			} catch (IllegalArgumentException ex2) {
+				ex2.printStackTrace();
+				cur = "";
+			}
 		}
-		if (currency.toString().equals("EUR")) {
+
+		if (cur.equals("EUR")) {
 			price1.setText("1");
 			price2.setText("49");
 			price3.setText("€");
