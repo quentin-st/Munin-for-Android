@@ -65,9 +65,11 @@
 	    <body>
 	    <p>Want to say hi? Have an innovative idea to improve the app? Discovered a critical issue? Please feel free to send an email at <b><u>support@munin-for-android.com</u></b>! Thanks!</p>
 	    <p>This app was independently developed - It is not the official app.</p>
-	    
 	    <p></p>
 	    <p>Please go to <a href="http://munin-for-android.com/">munin-for-android.com</a> to see complete changelog and version notes.</p>
+	    <p></p>
+	    <p>Munin for Android is open-source! <a href="https://github.com/chteuchteu/Munin-for-Android">You can contribute to the project on GitHub</a>.
+	    	The app is distributed under the GNU GPL version 2.</p>
 	    
 	    <h2>Special thanks</h2>
 	    <ul>

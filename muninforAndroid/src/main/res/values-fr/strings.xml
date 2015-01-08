@@ -208,8 +208,10 @@
    <p>Si vous voulez dire bonjour, si vous avez des idées d\'améliorations pour <i>Munin for Android</i> ou si vous avez trouvé un bug, vous pouvez m\'envoyer un mail à <b><u>support@munin-for-android.com</u></b>. Merci !</p>
 	<p>Munin for Android n\'est pas une appli officielle.</p>
 	<p></p>
-
    <p>Veuillez visiter <a href="http://munin-for-android.com/">munin-for-android.com</a> pour lire l\'ensemble des changements.</p>
+	<p></p>
+	<p>Munin for Android est open source ! <a href="https://github.com/chteuchteu/Munin-for-Android">Vous pouvez contribuer au projet sur GitHub</a>.
+		Cette application est distribuée sous la licence GNU GPL version 2.</p>
 
    
    <h2>Remerciements</h2>
