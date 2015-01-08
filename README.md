@@ -90,3 +90,7 @@ Here are the different packages of the muninForAndroid module:
 Import/export servers configuration
 Target : munin-for-android.com/ws/importExport.php
 Generic Import/Export class : hlpr / ImportExportHelper.java
+
+## Licensing ##
+Munin for Android is distributed under the GNU GPL version 2. Munin for Android is copyrighted 2015 by its various authors as identified in the source files.
+If you contribute, please add your name in the copyright notice inside each modified source file.
