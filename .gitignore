@@ -1,30 +1,3 @@
-# Project.properties
-project.properties
-
-# built application files
-*.apk
-*.ap_
-
-# files for the dex VM
-*.dex
-
-# Java class files
-*.class
-
-# generated files
-bin/
-gen/
-
-# Local configuration file (sdk path, etc)
-local.properties
-
-# Windows thumbnail db
-Thumbs.db
-
-# Eclipse project files
-.classpath
-.project
-
 # Android Studio
 .idea/
 .gradle
@@ -40,6 +13,9 @@ build/
 *~
 *.swp
 
+# Windows thumbnail db
+Thumbs.db
+
 # Crashlytics export string
 com_crashlytics_export_strings.xml
 crashlytics.properties
@@ -48,7 +24,6 @@ crashlytics-build.properties
 # Additionnal files
 gradlew
 gradlew.bat
-import-summary.txt
 local.properties
 
 # Ignore importExport script
