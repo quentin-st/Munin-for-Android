@@ -8,14 +8,13 @@ android {
         applicationId "com.chteuchteu.munin"
         minSdkVersion 14
         targetSdkVersion 21
+        versionCode 38
+        versionName "3.4"
     }
 
     buildTypes {
-        debug {
-        }
-        release {
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
+        debug { }
+        release { }
     }
 }
 
