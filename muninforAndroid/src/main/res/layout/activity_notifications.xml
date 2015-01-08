@@ -81,9 +81,8 @@
 					<RelativeLayout
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_marginLeft="20dp"
+						android:layout_marginLeft="15dp"
 						android:layout_marginRight="20dp"
-						android:layout_marginTop="5dp"
 						android:gravity="center_vertical"
 						android:orientation="horizontal" >
 
@@ -94,7 +93,7 @@
 							android:layout_centerInParent="true"
 							android:text="@string/text55"
 							android:textColor="#666666"
-							android:textSize="16sp" />
+							android:textSize="14sp" />
 
 						<Spinner
 							android:id="@+id/spinner_refresh"

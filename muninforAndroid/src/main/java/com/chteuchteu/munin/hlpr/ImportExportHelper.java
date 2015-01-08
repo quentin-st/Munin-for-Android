@@ -39,7 +39,7 @@ public class ImportExportHelper {
 			HttpPost httpPost = new HttpPost(MuninFoo.IMPORT_EXPORT_URI + "?export");
 			
 			try {
-				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+				List<NameValuePair> nameValuePairs = new ArrayList<>(2);
 				nameValuePairs.add(new BasicNameValuePair("dataString", jsonString));
 				nameValuePairs.add(new BasicNameValuePair("version", String.valueOf(MuninFoo.IMPORT_EXPORT_VERSION)));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -144,7 +144,7 @@ public class ImportExportHelper {
 			HttpPost httpPost = new HttpPost(MuninFoo.IMPORT_EXPORT_URI+"?import");
 
 			try {
-				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+				List<NameValuePair> nameValuePairs = new ArrayList<>(2);
 				nameValuePairs.add(new BasicNameValuePair("pswd", code));
 				nameValuePairs.add(new BasicNameValuePair("version", String.valueOf(MuninFoo.IMPORT_EXPORT_VERSION)));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));

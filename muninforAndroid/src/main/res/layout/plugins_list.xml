@@ -12,13 +12,7 @@
 		android:orientation="horizontal" >
 
 		<ImageView
-			android:layout_width="26dp"
-			android:layout_height="26dp"
-			android:layout_gravity="center"
-			android:layout_marginBottom="10dp"
-			android:layout_marginLeft="16dp"
-			android:layout_marginRight="13dp"
-			android:layout_marginTop="10dp"
+			style="@style/Material_ListItem_Icon"
 			android:src="@drawable/ic_action_picture" />
 
 		<LinearLayout

@@ -91,6 +91,7 @@
 		<item name="android:layout_marginTop">5dp</item>
 		<item name="android:layout_marginRight">50dp</item><!-- checkbox margin right + checkbox width + checkbox margin left -->
 		<item name="android:textColor">#666666</item>
+		<item name="android:textSize">14sp</item>
 	</style>
 
 	<style name="Settings_Checkbox">
@@ -105,9 +106,11 @@
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_marginRight">10dp</item>
 		<item name="android:layout_marginTop">2dp</item>
+		<item name="android:layout_marginBottom">1dp</item>
 		<item name="android:maxLines">2</item>
-		<item name="android:textSize">18sp</item>
-		<item name="android:textColor">#444444</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:textColor">#000000</item>
+		<item name="android:alpha">0.87</item>
 	</style>
 
 	<style name="Material_ListItem_Line2">
@@ -116,8 +119,18 @@
 		<item name="android:layout_marginRight">10dp</item>
 		<item name="android:layout_marginBottom">4dp</item>
 		<item name="android:maxLines">2</item>
-		<item name="android:textSize">15sp</item>
-		<item name="android:textColor">#777777</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:textColor">#000000</item>
+		<item name="android:alpha">0.54</item>
+	</style>
+
+	<style name="Material_ListItem_Icon">
+		<item name="android:layout_width">30dp</item>
+		<item name="android:layout_height">30dp</item>
+		<item name="android:layout_marginBottom">10dp</item>
+		<item name="android:layout_marginLeft">16dp</item>
+		<item name="android:layout_marginRight">13dp</item>
+		<item name="android:layout_marginTop">10dp</item>
 	</style>
 
 	<style name="Material_ListHeader">

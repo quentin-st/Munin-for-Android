@@ -319,7 +319,7 @@ public class GridItem {
 			
 			if (Y != 0) {
 				items_l.add(c.getString(R.string.move_up));
-				icons_l.add(R.drawable.ic_action_collapse);
+				icons_l.add(R.drawable.ic_action_up);
 			}
 			if (X != 0) {
 				items_l.add(c.getString(R.string.move_left));
@@ -327,7 +327,7 @@ public class GridItem {
 			}
 			if (Y != grid.nbLines-1) {
 				items_l.add(c.getString(R.string.move_down));
-				icons_l.add(R.drawable.ic_action_expand);
+				icons_l.add(R.drawable.ic_action_down);
 			}
 			if (X != grid.nbColumns-1) {
 				items_l.add(c.getString(R.string.move_right));
@@ -430,7 +430,7 @@ public class GridItem {
 				lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 				lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 				ac.setGravity(Gravity.CENTER_HORIZONTAL);
-				b.setImageResource(R.drawable.ic_action_collapse);
+				b.setImageResource(R.drawable.ic_action_up);
 				b.setContentDescription(c.getString(R.string.move_up));
 				b.setOnClickListener(new OnClickListener() {
 					@Override
@@ -456,7 +456,7 @@ public class GridItem {
 				lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 				lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 				ac.setGravity(Gravity.CENTER_HORIZONTAL);
-				b.setImageResource(R.drawable.ic_action_expand);
+				b.setImageResource(R.drawable.ic_action_down);
 				b.setContentDescription(c.getString(R.string.move_down));
 				b.setOnClickListener(new OnClickListener() {
 					@Override
