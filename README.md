@@ -1,10 +1,19 @@
+Welcome to the public repository for [Munin for Android](https://play.google.com/store/apps/details?id=com.chteuchteu.munin) application. If you're willing to contribute, please read the following indications.
+
+If you have any question, don't hesitate to send me an email at [support@munin-for-android.com](mailto:support@munin-for-android.com)!
+
 # Munin for Android #
 
-Welcome to the public repository for [Munin for Android](https://play.google.com/store/apps/details?id=com.chteuchteu.munin) application. If you're willing to contribute, please read the following indications - please also update them if you make significant changes.
+Munin for Android is an Android application allowing munin users to display generated graphs on their Android devices. See [Munin for Android on Google Play](https://play.google.com/store/apps/details?id=com.chteuchteu.munin) for screenshots.
+
+## Links ##
+* [Munin for Android on Google Play](https://play.google.com/store/apps/details?id=com.chteuchteu.munin)
+* [Munin for Android website](http://www.munin-for-android.com)
+* [Munin repository](https://github.com/munin-monitoring/munin)
 
 Here are the different packages of the muninForAndroid module:
 
-## Objects *(obj)* ##
+### Objects *(obj)* ###
 * MuninMaster
 * MuninServer
 * MuninPlugin
@@ -15,7 +24,7 @@ Here are the different packages of the muninForAndroid module:
 * AlertsWidget
 * GraphWidget
 
-## Activities *(ui)* ##
+### Activities *(ui)* ###
 * Activity_About
 * Activity_Alerts
 * Activity_AlertsPluginSelection
@@ -34,7 +43,7 @@ Here are the different packages of the muninForAndroid module:
 * Activity_Settings
 * MuninActivity - _Every class extends MuninActivity to avoid code redundancy_
 
-## Helpers & Utils classes *(hlpr)* ##
+### Helpers & Utils classes *(hlpr)* ###
 * BillingService
 * DatabaseHelper *- SQLite database interface*
 * DigestUtils *- Apache digest auth util class*
@@ -50,13 +59,13 @@ Here are the different packages of the muninForAndroid module:
 * SQLite *- SQLite database top-level methods (saveServers(), ...)*
 * Util *- Generic util methods*
 
-## Adapters ##
+### Adapters ###
 * Adapter_ExpandableListView.java
 * Adapter_GraphView.java
 * Adapter_IconList.java
 * Adapter_SeparatedList.java
 
-## Widgets *(wdget)* ##
+### Widgets *(wdget)* ###
 * Widget_AlertsWidget_Configure
 * Widget_AlertsWidget_ViewsFactory
 * Widget_AlertsWidget_WidgetProvider
@@ -64,7 +73,7 @@ Here are the different packages of the muninForAndroid module:
 * Widget_GraphWidget_Configure
 * Widget_GraphWidget_WidgetProvider
 
-## Others ##
+### Other classes ###
 * BootReceiver
 * CustomSSLFactory
 * HackyDrawerLayout
@@ -73,13 +82,11 @@ Here are the different packages of the muninForAndroid module:
 * HTTPResponse
 * HTTPResponse_Bitmap
 
-## Custom Exceptions ##
+### Custom Exceptions ###
 * ImportExportWebServiceException
 * NullMuninFooException
 
-## WebServices ##
 ### Import / Export ###
-Import/export servers configuration  
-Target : munin-for-android.com/ws/importExport.php  
-Generic Import/Export class : hlpr / ImportExportHelper.java  
-Read more : importExport.php
+Import/export servers configuration
+Target : munin-for-android.com/ws/importExport.php
+Generic Import/Export class : hlpr / ImportExportHelper.java
