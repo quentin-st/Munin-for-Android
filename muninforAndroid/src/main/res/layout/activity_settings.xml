@@ -201,6 +201,28 @@
 					<Spinner
 						android:id="@+id/spinner_orientation"
 						style="@style/Settings_SettingSpinner" />
+
+					<View style="@style/Material_Divider" />
+
+					<!-- GRIDS SETTINGS -->
+
+					<TextView
+						android:id="@+id/title5"
+						style="@style/Material_SubTitle"
+						android:layout_marginLeft="15dp"
+						android:layout_marginRight="15dp"
+						android:text="@string/settings_titlelabel_graphs" />
+
+					<!-- Graphs screen orientation -->
+
+					<TextView
+						android:id="@+id/title6"
+						style="@style/Settings_SettingTitle"
+						android:text="@string/grids_legend" />
+
+					<Spinner
+						android:id="@+id/spinner_gridsLegend"
+						style="@style/Settings_SettingSpinner" />
 				</LinearLayout>
 			</LinearLayout>
 		</ScrollView>

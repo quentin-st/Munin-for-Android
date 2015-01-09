@@ -28,6 +28,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,7 +37,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
@@ -168,9 +168,9 @@ public final class Util {
 			View v;
 			for (int i = 0; i < count; i++) {
 				v = group.getChildAt(i);
-				if (v instanceof TextView || v instanceof EditText || v instanceof Button) {
+				if (v instanceof TextView)
 					((TextView) v).setTypeface(font);
-				} else if (v instanceof ViewGroup)
+				else if (v instanceof ViewGroup)
 					setFont((ViewGroup) v, font);
 			}
 		}
@@ -281,6 +281,7 @@ public final class Util {
 		AutoRefresh("autoRefresh"),                        UserAgent("userAgent"), UserAgentChanged("userAgentChanged"),
 		HDGraphs("hdGraphs"),                               Lang("lang"),
 		GraphsZoom("graphsZoom"),                          DefaultServer("defaultServer"),
+		GridsLegend("gridsLegend"),
 
 		Twitter_NbLaunches("twitter_nbLaunches"),        AddServer_History("addserver_history"),
 		Widget2_ForceUpdate("widget2_forceUpdate"),
@@ -625,40 +626,46 @@ public final class Util {
 	public static final class Animations {
 		public enum CustomAnimation { FADE_IN, FADE_OUT }
 		public enum AnimationSpeed {
-			SLOW(2000), MEDIUM(500), FAST(100);
+			SLOW(1000), MEDIUM(300), FAST(100);
 
 			private int duration;
 			AnimationSpeed(int duration) { this.duration = duration; }
 			public int getDuration() { return this.duration; }
 		}
 
-		public static void animate(View view, CustomAnimation animation) { animate(view, animation, AnimationSpeed.MEDIUM); }
-		public static void animate(View view, CustomAnimation animation, AnimationSpeed animationSpeed) {
+		public static void animate(View view, CustomAnimation animation) { animate(view, animation, AnimationSpeed.MEDIUM, null); }
+		public static void animate(View view, CustomAnimation animation, AnimationSpeed animationSpeed, final Runnable onAnimationEnd) {
 			if (view == null)
 				return;
 
 			switch (animation) {
 				case FADE_IN:
-					if (view.getVisibility() == View.VISIBLE) {
-						MuninFoo.log("View is already visible. Dismissing animation.");
-						return;
-					}
-
 					AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
 					fadeIn.setDuration(animationSpeed.getDuration());
-					fadeIn.setFillAfter(true);
+					fadeIn.setAnimationListener(new Animation.AnimationListener() {
+						@Override public void onAnimationStart(Animation animation) { }
+						@Override
+						public void onAnimationEnd(Animation animation) {
+							if (onAnimationEnd != null)
+								onAnimationEnd.run();
+						}
+						@Override public void onAnimationRepeat(Animation animation) { }
+					});
 					view.startAnimation(fadeIn);
 
 					break;
 				case FADE_OUT:
-					if (view.getVisibility() == View.GONE) {
-						MuninFoo.log("View is already gone. Dismissing animation.");
-						return;
-					}
-
 					AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
 					fadeOut.setDuration(animationSpeed.getDuration());
-					fadeOut.setFillAfter(true);
+					fadeOut.setAnimationListener(new Animation.AnimationListener() {
+						@Override public void onAnimationStart(Animation animation) { }
+						@Override
+						public void onAnimationEnd(Animation animation) {
+							if (onAnimationEnd != null)
+								onAnimationEnd.run();
+						}
+						@Override public void onAnimationRepeat(Animation animation) { }
+					});
 					view.startAnimation(fadeOut);
 
 					break;

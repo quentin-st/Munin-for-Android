@@ -9,9 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -145,7 +142,7 @@ public class Activity_Grid extends MuninActivity {
 			}
 		});
 		
-		Fonts.setFont(this, (TextView) findViewById(R.id.fullscreen_tv), CustomFont.RobotoCondensed_Regular);
+		Fonts.setFont(this, (TextView) findViewById(R.id.fullscreen_tv), CustomFont.Roboto_Regular);
 		
 		if (grid.items.size() == 0)
 			edit();
@@ -180,21 +177,16 @@ public class Activity_Grid extends MuninActivity {
 		if (menu_edit != null)		menu_edit.setVisible(true);
 		if (menu_period != null)	menu_period.setVisible(true);
 		if (menu_open != null)		menu_open.setVisible(false);
-		
-		AlphaAnimation a = new AlphaAnimation(1.0f, 0.0f);
-		a.setDuration(300);
-		a.setAnimationListener(new AnimationListener() {
-			@Override public void onAnimationStart(Animation animation) { }
-			@Override public void onAnimationRepeat(Animation animation) { }
 
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				findViewById(R.id.fullscreen).setVisibility(View.GONE);
-				fs_iv.setImageBitmap(null);
-				((TextView) ((Activity) context).findViewById(R.id.fullscreen_tv)).setText("");
-			}
-		});
-		findViewById(R.id.fullscreen).startAnimation(a);
+		Util.Animations.animate(findViewById(R.id.fullscreen), Util.Animations.CustomAnimation.FADE_OUT,
+				Util.Animations.AnimationSpeed.MEDIUM, new Runnable() {
+					@Override
+					public void run() {
+						findViewById(R.id.fullscreen).setVisibility(View.GONE);
+						fs_iv.setImageBitmap(null);
+						((TextView) ((Activity) context).findViewById(R.id.fullscreen_tv)).setText("");
+					}
+				});
 	}
 	
 	private void setupGrid() {
@@ -241,10 +233,12 @@ public class Activity_Grid extends MuninActivity {
 		if (editing) { // Cancel edit
 			grid.cancelEdit(this);
 			if (menu_edit != null) menu_edit.setIcon(R.drawable.ic_action_image_edit);
+			grid.toggleFootersVisibility(true);
 			muninFoo.sqlite.dbHlpr.saveGridItemsRelations(grid);
 		} else { // Edit
 			grid.edit(this);
 			if (menu_edit != null) menu_edit.setIcon(R.drawable.ic_action_navigation_check);
+			grid.toggleFootersVisibility(false);
 		}
 		
 		editing = !editing;

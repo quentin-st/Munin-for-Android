@@ -436,49 +436,65 @@ public class DrawerHelper {
 	}
 	
 	private void setSelectedMenuItem(String menuItemName) {
-		if (menuItemName.equals("graphs")) {
-			TextView tv = (TextView)a.findViewById(R.id.drawer_graphs_txt);
-			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-			Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-			((ImageView)a.findViewById(R.id.drawer_graphs_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
-		} else if (menuItemName.equals("grid")) {
-			TextView tv = (TextView)a.findViewById(R.id.drawer_grids_txt);
-			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-			Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-			((ImageView)a.findViewById(R.id.drawer_grids_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
-		} else if (menuItemName.equals("alerts")) {
-			TextView tv = (TextView)a.findViewById(R.id.drawer_alerts_txt);
-			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-			Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-			((ImageView)a.findViewById(R.id.drawer_alerts_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
-		} else if (menuItemName.equals("labels")) {
-			TextView tv = (TextView)a.findViewById(R.id.drawer_labels_txt);
-			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-			Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-			((ImageView)a.findViewById(R.id.drawer_labels_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
-		} else if (menuItemName.equals("servers")) {
-			TextView tv = (TextView)a.findViewById(R.id.drawer_servers_txt);
-			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-			Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-			((ImageView)a.findViewById(R.id.drawer_servers_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
-		} else if (menuItemName.equals("notifications")) {
-			TextView tv = (TextView)a.findViewById(R.id.drawer_notifications_txt);
-			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-			Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-			((ImageView)a.findViewById(R.id.drawer_notifications_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
-		} else if (menuItemName.equals("premium")) {
-			TextView tv = (TextView)a.findViewById(R.id.drawer_premium_txt);
-			tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-			Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-			((ImageView)a.findViewById(R.id.drawer_premium_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
-		} else if (menuItemName.equals("")) {
-			((TextView)a.findViewById(R.id.drawer_graphs_txt)).setTextColor(0xffffffff);
-			((TextView)a.findViewById(R.id.drawer_grids_txt)).setTextColor(0xffffffff);
-			((TextView)a.findViewById(R.id.drawer_alerts_txt)).setTextColor(0xffffffff);
-			((TextView)a.findViewById(R.id.drawer_labels_txt)).setTextColor(0xffffffff);
-			((TextView)a.findViewById(R.id.drawer_servers_txt)).setTextColor(0xffffffff);
-			((TextView)a.findViewById(R.id.drawer_notifications_txt)).setTextColor(0xffffffff);
-			((TextView)a.findViewById(R.id.drawer_premium_txt)).setTextColor(0xffffffff);
+		switch (menuItemName) {
+			case "graphs": {
+				TextView tv = (TextView) a.findViewById(R.id.drawer_graphs_txt);
+				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
+				((ImageView) a.findViewById(R.id.drawer_graphs_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				break;
+			}
+			case "grid": {
+				TextView tv = (TextView) a.findViewById(R.id.drawer_grids_txt);
+				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
+				((ImageView) a.findViewById(R.id.drawer_grids_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				break;
+			}
+			case "alerts": {
+				TextView tv = (TextView) a.findViewById(R.id.drawer_alerts_txt);
+				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
+				((ImageView) a.findViewById(R.id.drawer_alerts_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				break;
+			}
+			case "labels": {
+				TextView tv = (TextView) a.findViewById(R.id.drawer_labels_txt);
+				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
+				((ImageView) a.findViewById(R.id.drawer_labels_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				break;
+			}
+			case "servers": {
+				TextView tv = (TextView) a.findViewById(R.id.drawer_servers_txt);
+				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
+				((ImageView) a.findViewById(R.id.drawer_servers_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				break;
+			}
+			case "notifications": {
+				TextView tv = (TextView) a.findViewById(R.id.drawer_notifications_txt);
+				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
+				((ImageView) a.findViewById(R.id.drawer_notifications_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				break;
+			}
+			case "premium": {
+				TextView tv = (TextView) a.findViewById(R.id.drawer_premium_txt);
+				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
+				((ImageView) a.findViewById(R.id.drawer_premium_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				break;
+			}
+			case "":
+				((TextView) a.findViewById(R.id.drawer_graphs_txt)).setTextColor(0xffffffff);
+				((TextView) a.findViewById(R.id.drawer_grids_txt)).setTextColor(0xffffffff);
+				((TextView) a.findViewById(R.id.drawer_alerts_txt)).setTextColor(0xffffffff);
+				((TextView) a.findViewById(R.id.drawer_labels_txt)).setTextColor(0xffffffff);
+				((TextView) a.findViewById(R.id.drawer_servers_txt)).setTextColor(0xffffffff);
+				((TextView) a.findViewById(R.id.drawer_notifications_txt)).setTextColor(0xffffffff);
+				((TextView) a.findViewById(R.id.drawer_premium_txt)).setTextColor(0xffffffff);
+				break;
 		}
 	}
 	

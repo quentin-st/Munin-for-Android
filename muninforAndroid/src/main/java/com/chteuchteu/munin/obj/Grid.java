@@ -156,6 +156,11 @@ public class Grid {
 				i.iv.setAlpha(1f);
 		}
 	}
+
+	public void toggleFootersVisibility(boolean visible) {
+		for (GridItem i : items)
+			i.footer.setVisibility(visible ? View.VISIBLE : View.GONE);
+	}
 	
 	private void removeEmptyColumns(Context c) {
 		for (int x=nbColumns-1; x>=0; x--) {

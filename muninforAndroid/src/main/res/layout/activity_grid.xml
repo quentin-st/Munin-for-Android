@@ -97,11 +97,7 @@
 					android:paddingLeft="20dp"
 					android:paddingRight="20dp"
 					android:paddingTop="8dp"
-					android:shadowColor="#000000"
-					android:shadowDx="0"
-					android:shadowDy="2"
-					android:shadowRadius="2"
-					android:textColor="#f0f0f0"
+					android:textColor="#ffffff"
 					android:textSize="18sp" />
 			</RelativeLayout>
 		</RelativeLayout>

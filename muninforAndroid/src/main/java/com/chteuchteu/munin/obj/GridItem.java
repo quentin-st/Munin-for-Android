@@ -7,10 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -23,9 +21,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.chteuchteu.munin.adptr.Adapter_IconList;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_IconList;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
@@ -34,6 +32,7 @@ import com.chteuchteu.munin.ui.Activity_Grid;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO actions buttons
 public class GridItem {
 	public long			id;
 	public int 			X;
@@ -46,9 +45,14 @@ public class GridItem {
 	private RelativeLayout container;
 	public Bitmap 			graph;
 	public ProgressBar 		pb;
+	public View            footer;
 	private HDGraphDownloader hdGraphDownloader;
 	private Period 			period;
-	
+
+	// Action buttons
+	private View action_up, action_left, action_down,
+			action_right, action_delete;
+
 	private static int 	ICONS_MAX_WIDTH = 220;
 	private static float	ALPHA_EDITING = 0.2f;
 	
@@ -63,23 +67,31 @@ public class GridItem {
 	}
 	
 	public LinearLayout getView(final Context c) {
-		LinearLayout outerContainer = new LinearLayout(c);
+		View view = ((Activity) c).getLayoutInflater().inflate(R.layout.griditem, null);
+
+		LinearLayout outerContainer = (LinearLayout) view.findViewById(R.id.outerContainer);
 		outerContainer.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, grid.getGridItemHeight(c, grid.nbColumns), 1.0f));
-		container = new RelativeLayout(c);
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		lp.setMargins(5, 5, 5, 5);
-		iv = new ImageView(c);
-		iv.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		pb = new ProgressBar(c);
-		pb.setIndeterminate(true);
-		pb.setVisibility(View.GONE);
-		RelativeLayout.LayoutParams lp3 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		lp3.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-		pb.setLayoutParams(lp3);
-		container.addView(iv);
-		container.addView(pb);
-		
-		container.setLayoutParams(lp);
+
+		container = (RelativeLayout) view.findViewById(R.id.container);
+		iv = (ImageView) view.findViewById(R.id.iv);
+		pb = (ProgressBar) view.findViewById(R.id.pb);
+
+		// Footer
+		footer = view.findViewById(R.id.gridItemFooter);
+		TextView pluginName = (TextView) view.findViewById(R.id.pluginName);
+		TextView serverName = (TextView) view.findViewById(R.id.serverName);
+		Util.Fonts.setFont(c, pluginName, Util.Fonts.CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(c, serverName, Util.Fonts.CustomFont.Roboto_Regular);
+		pluginName.setText(plugin.getFancyName());
+		serverName.setText(plugin.getInstalledOn().getName());
+
+		switch (Util.getPref(c, Util.PrefKeys.GridsLegend)) {
+			case "none": footer.setVisibility(View.GONE); break;
+			case "serverName": pluginName.setVisibility(View.GONE); break;
+			case "pluginName": serverName.setVisibility(View.GONE); break;
+		}
+
+		// Preview
 		container.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -91,7 +103,45 @@ public class GridItem {
 					preview(c);
 			}
 		});
-		outerContainer.addView(container);
+
+		// Action buttons
+		action_up = view.findViewById(R.id.iv_up);
+		action_left = view.findViewById(R.id.iv_left);
+		action_down = view.findViewById(R.id.iv_down);
+		action_right = view.findViewById(R.id.iv_right);
+		action_delete = view.findViewById(R.id.iv_remove);
+
+		action_up.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				grid.move(X, Y, X, Y-1);
+			}
+		});
+		action_left.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				grid.move(X, Y, X-1, Y);
+			}
+		});
+		action_down.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				grid.move(X, Y, X, Y+1);
+			}
+		});
+		action_right.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				grid.move(X, Y, X+1, Y);
+			}
+		});
+		action_delete.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				remove();
+			}
+		});
+
 		return outerContainer;
 	}
 	
@@ -108,10 +158,8 @@ public class GridItem {
 			((TextView) ((Activity) c).findViewById(R.id.fullscreen_tv)).setText(plugin.getInstalledOn().getName());
 			View fs = ((Activity) c).findViewById(R.id.fullscreen);
 			fs.setVisibility(View.VISIBLE);
-			AlphaAnimation a = new AlphaAnimation(0.0f, 1.0f);
-			a.setDuration(300);
-			fs.startAnimation(a);
-			
+
+			Util.Animations.animate(fs, Util.Animations.CustomAnimation.FADE_IN);
 			
 			// Translation animation between origin imageview location and fullscreen location
 			// Set original imageview location
@@ -187,29 +235,20 @@ public class GridItem {
 	}
 	
 	public static LinearLayout getEmptyView(final Grid g, final Context c, final MuninFoo f, final int X, final int Y) {
-		LinearLayout outerContainer = new LinearLayout(c);
-		outerContainer.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, g.getGridItemHeight(c, g.nbColumns), 1.0f));
-		RelativeLayout ll = new RelativeLayout(c);
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		lp.setMargins(5, 5, 5, 5);
-		ll.setLayoutParams(lp);
-		ll.setBackgroundResource(R.drawable.grid_emptyitembg);
-		ll.setClickable(true);
+		View view = ((Activity) c).getLayoutInflater().inflate(R.layout.griditem_empty, null);
+
+		LinearLayout outerContainer = (LinearLayout) view.findViewById(R.id.outerContainer);
+		RelativeLayout ll = (RelativeLayout) view.findViewById(R.id.ll);
 		ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				add(c, f, g, X, Y);
 			}
 		});
-		ImageView addButton = new ImageView(c);
-		addButton.setImageResource(R.drawable.ic_action_content_add);
-		RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		lp2.addRule(RelativeLayout.CENTER_IN_PARENT);
-		addButton.setLayoutParams(lp2);
-		ll.addView(addButton);
-		outerContainer.addView(ll);
+
 		if (!Activity_Grid.editing)
 			outerContainer.setVisibility(View.INVISIBLE);
+
 		return outerContainer;
 	}
 	
@@ -309,11 +348,13 @@ public class GridItem {
 	
 	private void edit(final Context c) {
 		if (container.getWidth() > ICONS_MAX_WIDTH) {
+			// Enough space to display buttons on gridItem
 			editing = true;
 			putActionButtons();
 			if (iv != null)
 				iv.setAlpha(ALPHA_EDITING);
 		} else {
+			// Not enough space : show actions list in dialog
 			final List<String> items_l = new ArrayList<>();
 			List<Integer> icons_l = new ArrayList<>();
 			
@@ -368,14 +409,12 @@ public class GridItem {
 		editing = false;
 		if (iv != null)
 			iv.setAlpha(1f);
-		List<View> toBeRemoved = new ArrayList<>();
-		for (int i=0; i<container.getChildCount(); i++) {
-			if (container.getChildAt(i).getTag() != null && container.getChildAt(i).getTag().equals("action"))
-				toBeRemoved.add(container.getChildAt(i));
-		}
-		
-		for (View v : toBeRemoved)
-			container.removeView(v);
+
+		action_up.setVisibility(View.GONE);
+		action_left.setVisibility(View.GONE);
+		action_down.setVisibility(View.GONE);
+		action_right.setVisibility(View.GONE);
+		action_delete.setVisibility(View.GONE);
 	}
 	
 	private void putActionButtons() {
@@ -387,16 +426,16 @@ public class GridItem {
 		
 		if (iv != null)
 			iv.setAlpha(ALPHA_EDITING);
-		
+
 		if (Y != 0)
-			container.addView(getActionButton("up", c));
+			action_up.setVisibility(View.VISIBLE);
 		if (X != 0)
-			container.addView(getActionButton("left", c));
+			action_left.setVisibility(View.VISIBLE);
 		if (Y != grid.nbLines-1)
-			container.addView(getActionButton("down", c));
+			action_down.setVisibility(View.VISIBLE);
 		if (X != grid.nbColumns-1)
-			container.addView(getActionButton("right", c));
-		container.addView(getActionButton("delete", c));
+			action_right.setVisibility(View.VISIBLE);
+		action_delete.setVisibility(View.VISIBLE);
 	}
 	
 	private void remove() {
@@ -418,82 +457,5 @@ public class GridItem {
 		removeActionButtons();
 		if (container.getWidth() > ICONS_MAX_WIDTH)
 			putActionButtons();
-	}
-	
-	private LinearLayout getActionButton(String button, Context c) {
-		LinearLayout ac = new LinearLayout(c);
-		ac.setTag("action");
-		RelativeLayout.LayoutParams lp = null;
-		ImageView b = new ImageView(c);
-		switch (button) {
-			case "up":
-				lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-				lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-				ac.setGravity(Gravity.CENTER_HORIZONTAL);
-				b.setImageResource(R.drawable.ic_action_up);
-				b.setContentDescription(c.getString(R.string.move_up));
-				b.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						grid.move(X, Y, X, Y - 1);
-					}
-				});
-				break;
-			case "left":
-				lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-				lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-				ac.setGravity(Gravity.CENTER_VERTICAL);
-				b.setImageResource(R.drawable.ic_action_previous_item);
-				b.setContentDescription(c.getString(R.string.move_left));
-				b.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						grid.move(X, Y, X - 1, Y);
-					}
-				});
-				break;
-			case "down":
-				lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-				lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-				ac.setGravity(Gravity.CENTER_HORIZONTAL);
-				b.setImageResource(R.drawable.ic_action_down);
-				b.setContentDescription(c.getString(R.string.move_down));
-				b.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						grid.move(X, Y, X, Y + 1);
-					}
-				});
-				break;
-			case "right":
-				lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-				lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-				ac.setGravity(Gravity.CENTER_VERTICAL);
-				b.setImageResource(R.drawable.ic_action_next_item);
-				b.setContentDescription(c.getString(R.string.move_right));
-				b.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						grid.move(X, Y, X + 1, Y);
-					}
-				});
-				break;
-			case "delete":
-				lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-				b.setImageResource(R.drawable.ic_action_remove);
-				b.setContentDescription(c.getString(R.string.delete));
-				b.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						remove();
-					}
-				});
-				break;
-		}
-		ac.setLayoutParams(lp);
-		ac.setPadding(0, 0, 0, 0);
-		ac.addView(b);
-		return ac;
 	}
 }

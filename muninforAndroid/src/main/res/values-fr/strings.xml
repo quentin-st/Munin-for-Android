@@ -264,5 +264,10 @@
 	</string>
 	<string name="from">Du</string>
 	<string name="to">Au</string>
+	<string name="grids_legend">Légende des grilles</string>
+	<string name="grids_legend_none">Aucune</string>
+	<string name="grids_legend_pluginName">Nom du plugin</string>
+	<string name="grids_legend_serverName">Nom du serveur</string>
+	<string name="grids_legend_both">Les deux</string>
 
 </resources>

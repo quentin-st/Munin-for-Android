@@ -266,5 +266,10 @@
 	<string name="user_agent">User Agent</string>
 	<string name="from">From</string>
 	<string name="to">To</string>
+	<string name="grids_legend">Grids legend</string>
+	<string name="grids_legend_none">None</string>
+	<string name="grids_legend_pluginName">Plugin name</string>
+	<string name="grids_legend_serverName">Server name</string>
+	<string name="grids_legend_both">Both</string>
 
 </resources>
