@@ -314,7 +314,7 @@ public class Activity_Alerts extends MuninActivity {
 				List<MuninPlugin> erroredPlugins = server.getErroredPlugins();
 				for (MuninPlugin plugin : erroredPlugins) {
 					if (erroredPlugins.indexOf(plugin) != erroredPlugins.size()-1)
-						toBeShown1 = toBeShown1 + plugin.getFancyName() + ", ";
+						toBeShown1 += plugin.getFancyName() + ", ";
 					else
 						toBeShown1 += plugin.getFancyName();
 				}
@@ -329,7 +329,7 @@ public class Activity_Alerts extends MuninActivity {
 				List<MuninPlugin> warningPlugins = server.getWarnedPlugins();
 				for (MuninPlugin plugin : warningPlugins) {
 					if (warningPlugins.indexOf(plugin) != warningPlugins.size()-1)
-						toBeShown2 = toBeShown2 + plugin.getFancyName() + ", ";
+						toBeShown2 += plugin.getFancyName() + ", ";
 					else
 						toBeShown2 += plugin.getFancyName();
 				}

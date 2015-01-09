@@ -1,12 +1,13 @@
 package com.chteuchteu.munin.adptr;
 
-import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
@@ -53,8 +55,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	public long getItemId(int position) {
 		return position;
 	}
-	
-	@SuppressLint("InflateParams")
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		activity.updateAdapterPosition(position);
@@ -62,15 +63,17 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		if (convertView == null) {
 			if (mInflater == null)
 				mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = mInflater.inflate(R.layout.fragment_graphview, null);
+			convertView = mInflater.inflate(R.layout.fragment_graphview, parent, false);
 		}
+
+		convertView.findViewById(R.id.error).setVisibility(View.GONE);
 		
 		if (activity.loadGraphs) {
 			ImageView imageView = (ImageView) convertView.findViewById(R.id.tiv);
 			ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressbar);
 			
 			if (activity.isBitmapNull(position)) {
-				//                                                           Avoid serial execution
+				//                                                                         Avoid serial execution
 				new BitmapFetcher(imageView, progressBar, convertView, position, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			}
 			else {
@@ -169,16 +172,92 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 				TextView errorText = (TextView) view.findViewById(R.id.error_text);
 				Util.Fonts.setFont(context, errorText, Util.Fonts.CustomFont.Roboto_Regular);
 
-				if (response.responseCode < 0) {
+				Util.Fonts.setFont(context, ((TextView) view.findViewById(R.id.error_title)), Util.Fonts.CustomFont.Roboto_Regular);
+
+				if (response.responseCode < 0) { // Not HTTP error
 					if (response.responseCode == HTTPResponse_Bitmap.UnknownHostExceptionError
 							&& !Util.isOnline(context))
-						errorText.setText(response.responseReason + "\n " + context.getString(R.string.text30));
+						errorText.setText(context.getString(R.string.text30) + "\n" + response.responseReason);
 					else
 						errorText.setText(response.responseReason);
 				}
 				else
 					errorText.setText(response.responseCode + " - " + response.responseReason);
+
+				// Allow user to disable HD Graphs / rescan HD Graphs URL
+				if (Util.getPref(context, Util.PrefKeys.HDGraphs).equals("true")
+						&& this.server.getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
+						&& Util.isOnline(context)) {
+					Button rescanHdGraphsUrl = (Button) view.findViewById(R.id.error_rescanHdGraphsUrl);
+					Button disableHdGraphs = (Button) view.findViewById(R.id.error_disableHdGraphs);
+					rescanHdGraphsUrl.setVisibility(View.VISIBLE);
+					disableHdGraphs.setVisibility(View.VISIBLE);
+
+					Util.Fonts.setFont(context, rescanHdGraphsUrl, Util.Fonts.CustomFont.Roboto_Regular);
+					Util.Fonts.setFont(context, disableHdGraphs, Util.Fonts.CustomFont.Roboto_Regular);
+
+					disableHdGraphs.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							server.getParent().setDynazoomAvailable(DynazoomAvailability.FALSE);
+							MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(server.getParent());
+							activity.fab.hide(true);
+							activity.isFabShown = false;
+							activity.actionRefresh();
+						}
+					});
+
+					rescanHdGraphsUrl.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							new DynazoomUrlScanner(server.getParent(), context).execute();
+						}
+					});
+				} else {
+					view.findViewById(R.id.error_rescanHdGraphsUrl).setVisibility(View.GONE);
+					view.findViewById(R.id.error_disableHdGraphs).setVisibility(View.GONE);
+				}
 			}
+		}
+	}
+
+	private class DynazoomUrlScanner extends AsyncTask<Void, Integer, Void> {
+		private ProgressDialog dialog;
+		private Context context;
+		private MuninMaster master;
+
+		private DynazoomUrlScanner(MuninMaster master, Context context) {
+			this.master = master;
+			this.context = context;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			dialog = ProgressDialog.show(context, "", context.getString(R.string.loading), true);
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			master.rescan(context, muninFoo);
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			if (dialog != null && dialog.isShowing()) {
+				try {
+					dialog.dismiss();
+				} catch (Exception ex) { ex.printStackTrace(); }
+			}
+
+			if (master.isDynazoomAvailable() == DynazoomAvailability.FALSE) {
+				activity.fab.hide(true);
+				activity.isFabShown = false;
+			}
+
+			activity.actionRefresh();
 		}
 	}
 	

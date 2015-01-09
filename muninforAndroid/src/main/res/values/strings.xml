@@ -271,5 +271,8 @@
 	<string name="grids_legend_pluginName">Plugin name</string>
 	<string name="grids_legend_serverName">Server name</string>
 	<string name="grids_legend_both">Both</string>
+	<string name="redetectHdGraphsUrl">Redetect HD Graphs URL</string>
+	<string name="disableHDGraphs">Disable HD Graphs</string>
+	<string name="downloadError">Download error</string>
 
 </resources>

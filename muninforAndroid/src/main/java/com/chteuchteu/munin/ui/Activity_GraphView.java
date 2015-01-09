@@ -104,8 +104,8 @@ public class Activity_GraphView extends MuninActivity {
 	 * of current list position
 	 */
 	private static final int BITMAPS_PADDING = 5;
-	private FloatingActionButton fab;
-	private boolean       isFabShown;
+	public FloatingActionButton fab;
+	public boolean       isFabShown;
 
 	private MenuItem		item_period;
 	private MenuItem       item_documentation;
@@ -272,9 +272,6 @@ public class Activity_GraphView extends MuninActivity {
 				actionDynazoom();
 			}
 		});
-		
-		if (!Util.isOnline(this))
-			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 		
 		// Launch periodical check
 		if (Util.getPref(this, Util.PrefKeys.AutoRefresh).equals("true")) {
@@ -574,7 +571,7 @@ public class Activity_GraphView extends MuninActivity {
 		findViewById(R.id.serverSwitch_mask).startAnimation(a);
 	}
 	
-	private void actionRefresh() {
+	public void actionRefresh() {
 		if (isDynazoomOpen()) {
 			dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(currentPlugin, (ImageView) findViewById(R.id.dynazoom_imageview),
 					(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),

@@ -119,7 +119,7 @@ public class Activity_Servers extends MuninActivity {
 		
 		// Display actions list
 		AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
 				context, android.R.layout.simple_list_item_1);
 		arrayAdapter.add(context.getString(R.string.menu_addserver_delete));
 		
