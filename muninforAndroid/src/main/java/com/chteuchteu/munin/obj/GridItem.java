@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -87,7 +88,7 @@ public class GridItem {
 
 		switch (Util.getPref(c, Util.PrefKeys.GridsLegend)) {
 			case "none": footer.setVisibility(View.GONE); break;
-			case "serverName": pluginName.setVisibility(View.GONE); break;
+			case "serverName": case "": pluginName.setVisibility(View.GONE); break;
 			case "pluginName": serverName.setVisibility(View.GONE); break;
 		}
 
@@ -153,7 +154,7 @@ public class GridItem {
 			Activity_Grid.menu_edit.setVisible(false);
 			
 			grid.currentlyOpenedPlugin = plugin;
-			ImageView fullscreenImageView = (ImageView) ((Activity) c).findViewById(R.id.fullscreen_iv); 
+			final ImageView fullscreenImageView = (ImageView) ((Activity) c).findViewById(R.id.fullscreen_iv);
 			fullscreenImageView.setImageBitmap(graph);
 			((TextView) ((Activity) c).findViewById(R.id.fullscreen_tv)).setText(plugin.getInstalledOn().getName());
 			View fs = ((Activity) c).findViewById(R.id.fullscreen);
@@ -174,11 +175,27 @@ public class GridItem {
 			// Download HD graph if possible
 			if (grid.currentlyOpenedPlugin.getInstalledOn().getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
 					&& !Util.getPref(c, Util.PrefKeys.HDGraphs).equals("false")) {
-				if (this.hdGraphDownloader != null && this.hdGraphDownloader.isDownloading())
-					this.hdGraphDownloader.killDownload();
-				
-				this.hdGraphDownloader = new HDGraphDownloader(grid.currentlyOpenedPlugin, fullscreenImageView, period);
-				this.hdGraphDownloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				// We need to get imageView dimensions (which aren't available right now => globalLayoutListener)
+				fullscreenImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+					@Override
+					public void onGlobalLayout() {
+						Util.removeOnGlobalLayoutListener(fullscreenImageView, this);
+
+						// Check if HD graph is really needed : if the standard-res bitmap isn't upscaled, it's OK
+						float xScale = ((float) fullscreenImageView.getWidth()) / graph.getWidth();
+						float yScale = ((float) fullscreenImageView.getHeight()) / graph.getHeight();
+						float scale = (xScale <= yScale) ? xScale : yScale;
+
+						// Acceptable upscaling factor
+						if (scale > 2.25) {
+							if (hdGraphDownloader != null && hdGraphDownloader.isDownloading())
+								hdGraphDownloader.killDownload();
+
+							hdGraphDownloader = new HDGraphDownloader(grid.currentlyOpenedPlugin, fullscreenImageView, period);
+							hdGraphDownloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+						}
+					}
+				});
 			}
 		}
 	}
@@ -238,6 +255,8 @@ public class GridItem {
 		View view = ((Activity) c).getLayoutInflater().inflate(R.layout.griditem_empty, null);
 
 		LinearLayout outerContainer = (LinearLayout) view.findViewById(R.id.outerContainer);
+		outerContainer.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, g.getGridItemHeight(c, g.nbColumns), 1.0f));
+
 		RelativeLayout ll = (RelativeLayout) view.findViewById(R.id.ll);
 		ll.setOnClickListener(new OnClickListener() {
 			@Override
@@ -350,7 +369,7 @@ public class GridItem {
 		if (container.getWidth() > ICONS_MAX_WIDTH) {
 			// Enough space to display buttons on gridItem
 			editing = true;
-			putActionButtons();
+			showActionButtons();
 			if (iv != null)
 				iv.setAlpha(ALPHA_EDITING);
 		} else {
@@ -383,17 +402,17 @@ public class GridItem {
 			ListAdapter adapter = new Adapter_IconList(c, items, icons);
 			
 			new AlertDialog.Builder(c)
-			.setAdapter(adapter, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int pos) {
-					String selectedPos = items_l.get(pos);
-					
-					if (selectedPos.equals(c.getString(R.string.move_up)))			grid.move(X, Y, X, Y-1); // up
-					else if (selectedPos.equals(c.getString(R.string.move_left)))	grid.move(X, Y, X-1, Y); // left
-					else if (selectedPos.equals(c.getString(R.string.move_down)))	grid.move(X, Y, X, Y+1); // down
-					else if (selectedPos.equals(c.getString(R.string.move_right)))	grid.move(X, Y, X+1, Y); // right
-					else if (selectedPos.equals(c.getString(R.string.delete)))		remove(); // delete
-				}
-			}).show();
+					.setAdapter(adapter, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int pos) {
+							String selectedPos = items_l.get(pos);
+
+							if (selectedPos.equals(c.getString(R.string.move_up))) grid.move(X, Y, X, Y - 1); // up
+							else if (selectedPos.equals(c.getString(R.string.move_left))) grid.move(X, Y, X - 1, Y); // left
+							else if (selectedPos.equals(c.getString(R.string.move_down))) grid.move(X, Y, X, Y + 1); // down
+							else if (selectedPos.equals(c.getString(R.string.move_right))) grid.move(X, Y, X + 1, Y); // right
+							else if (selectedPos.equals(c.getString(R.string.delete))) remove(); // delete
+						}
+					}).show();
 		}
 	}
 	
@@ -401,26 +420,14 @@ public class GridItem {
 		if (editing) {
 			if (iv != null)
 				iv.setAlpha(1f);
-			removeActionButtons();
+			hideActionButtons();
 		}
 	}
-	
-	private void removeActionButtons() {
-		editing = false;
-		if (iv != null)
-			iv.setAlpha(1f);
 
-		action_up.setVisibility(View.GONE);
-		action_left.setVisibility(View.GONE);
-		action_down.setVisibility(View.GONE);
-		action_right.setVisibility(View.GONE);
-		action_delete.setVisibility(View.GONE);
-	}
-	
-	private void putActionButtons() {
+	private void showActionButtons() {
 		for (GridItem i : grid.items) {
 			if (i.editing)
-				i.removeActionButtons();
+				i.hideActionButtons();
 		}
 		editing = true;
 		
@@ -437,6 +444,18 @@ public class GridItem {
 			action_right.setVisibility(View.VISIBLE);
 		action_delete.setVisibility(View.VISIBLE);
 	}
+
+	private void hideActionButtons() {
+		editing = false;
+		if (iv != null)
+			iv.setAlpha(1f);
+
+		action_up.setVisibility(View.GONE);
+		action_left.setVisibility(View.GONE);
+		action_down.setVisibility(View.GONE);
+		action_right.setVisibility(View.GONE);
+		action_delete.setVisibility(View.GONE);
+	}
 	
 	private void remove() {
 		grid.f.sqlite.dbHlpr.deleteGridItemRelation(this);
@@ -445,17 +464,17 @@ public class GridItem {
 	}
 	
 	public void updateActionButtonsAfterAddingColumn() {
-		removeActionButtons();
+		hideActionButtons();
 		int deviceWidth = Util.getDeviceSize(c)[1];
 		int diff = deviceWidth / (grid.nbColumns-1) - deviceWidth / (grid.nbColumns);
 		int newContainerWidth = container.getWidth() - diff;
 		if (newContainerWidth > ICONS_MAX_WIDTH)
-			putActionButtons();
+			showActionButtons();
 	}
 	
 	public void updateActionButtons() {
-		removeActionButtons();
+		hideActionButtons();
 		if (container.getWidth() > ICONS_MAX_WIDTH)
-			putActionButtons();
+			showActionButtons();
 	}
 }

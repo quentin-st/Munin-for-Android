@@ -674,4 +674,11 @@ public final class Util {
 	}
 
 	public interface ProgressNotifier { public void notify(int progress, int total); }
+
+	public static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener){
+		if (Build.VERSION.SDK_INT < 16)
+			v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
+		else
+			v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+	}
 }

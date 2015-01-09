@@ -14,7 +14,6 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -51,8 +50,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.adptr.Adapter_GraphView;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_GraphView;
 import com.chteuchteu.munin.hlpr.DocumentationHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper;
@@ -305,8 +304,8 @@ public class Activity_GraphView extends MuninActivity {
 					vtObserver.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 						@Override
 						public void onGlobalLayout() {
-							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-								viewFlow.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+							Util.removeOnGlobalLayoutListener(viewFlow, this);
+
 							// Now we have the dimensions.
 							loadGraphs = true;
 							actionRefresh();
@@ -987,8 +986,7 @@ public class Activity_GraphView extends MuninActivity {
 						(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
 						dynazoom_from, dynazoom_to).execute();
 
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-					imageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				Util.removeOnGlobalLayoutListener(imageView, this);
 			}
 		});
 

@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -532,16 +531,17 @@ public class DrawerHelper {
 				b.setTextColor(0xffffffff);
 				
 				// setScrollY
-				final ViewTreeObserver obs = b.getViewTreeObserver();
-				obs.addOnGlobalLayoutListener(new OnGlobalLayoutListener() { // Else getHeight returns 0
+				b.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() { // Else getHeight returns 0
 					@Override
 					public void onGlobalLayout() {
+						Util.removeOnGlobalLayoutListener(b, this);
+
 						int scroll;
 						if (scrollY != -1)
 							scroll = scrollY;
 						else
 							scroll = (b.getHeight() + 1) * position;
-						((ScrollView)a.findViewById(R.id.drawer_scrollview)).setScrollY(scroll);
+						a.findViewById(R.id.drawer_scrollview).setScrollY(scroll);
 					}
 				});
 				

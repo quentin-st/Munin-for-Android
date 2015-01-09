@@ -74,18 +74,13 @@
 				</RelativeLayout>
 			</LinearLayout>
 
-			<RelativeLayout
+			<LinearLayout
 				android:id="@+id/fullscreen"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:background="#77000000"
 				android:orientation="vertical"
-				android:visibility="gone" >
-
-				<ImageView
-					android:id="@+id/fullscreen_iv"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent" />
+				android:visibility="gone">
 
 				<TextView
 					android:id="@+id/fullscreen_tv"
@@ -99,7 +94,12 @@
 					android:paddingTop="8dp"
 					android:textColor="#ffffff"
 					android:textSize="18sp" />
-			</RelativeLayout>
+
+				<ImageView
+					android:id="@+id/fullscreen_iv"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" />
+			</LinearLayout>
 		</RelativeLayout>
 
 		<LinearLayout
