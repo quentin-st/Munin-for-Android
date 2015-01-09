@@ -270,7 +270,7 @@
 	<string name="grids_legend_serverName">Nom du serveur</string>
 	<string name="grids_legend_both">Les deux</string>
 	<string name="user_agent">User Agent</string>
-	<string name="redetectHdGraphsUrl">Détection de l'URL des graphs HD</string>
+	<string name="redetectHdGraphsUrl">Détection de l\'URL des graphs HD</string>
 	<string name="downloadError">Erreur de téléchargement</string>
 	<string name="disableHDGraphs">Désactiver les graphs HD</string>
 
