@@ -7,7 +7,7 @@
 
 	<include layout="@layout/incl_actionbar" />
 
-	<com.chteuchteu.munin.HackyDrawerLayout
+	<com.chteuchteu.munin.ui.HackyDrawerLayout
 		android:id="@+id/drawerLayout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
@@ -317,6 +317,6 @@
 			<include layout="@layout/incl_drawer" />
 		</LinearLayout>
 
-	</com.chteuchteu.munin.HackyDrawerLayout>
+	</com.chteuchteu.munin.ui.HackyDrawerLayout>
 
 </LinearLayout>

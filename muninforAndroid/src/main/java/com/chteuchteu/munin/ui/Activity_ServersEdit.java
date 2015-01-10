@@ -39,6 +39,9 @@ public class Activity_ServersEdit extends MuninActivity {
 		
 		long masterId = getIntent().getExtras().getLong("masterId");
 		master = muninFoo.getMasterById((int) masterId);
+
+		if (master == null)
+			startActivity(new Intent(this, Activity_Servers.class));
 		
 		deletedServers = new ArrayList<>();
 		serversList = new ArrayList<>();

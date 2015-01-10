@@ -59,7 +59,7 @@ Here are the different packages of the muninForAndroid module:
 * SQLite *- SQLite database top-level methods (saveServers(), ...)*
 * Util *- Generic util methods*
 
-### Adapters ###
+### Adapters *(adptr)* ###
 * Adapter_ExpandableListView.java
 * Adapter_GraphView.java
 * Adapter_IconList.java
@@ -76,7 +76,7 @@ Here are the different packages of the muninForAndroid module:
 ### Other classes ###
 * BootReceiver
 * CustomSSLFactory
-* HackyDrawerLayout
+* HackyDrawerLayout (ui package)
 * MuninFoo *- App Singleton*
 * Service_Notifications
 * HTTPResponse
@@ -88,7 +88,9 @@ Here are the different packages of the muninForAndroid module:
 
 ### Import / Export ###
 Import/export servers configuration
+
 Target : munin-for-android.com/ws/importExport.php
+
 Generic Import/Export class : hlpr / ImportExportHelper.java
 
 ## Licensing ##

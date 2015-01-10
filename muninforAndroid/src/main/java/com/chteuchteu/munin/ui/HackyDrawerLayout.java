@@ -1,4 +1,4 @@
-package com.chteuchteu.munin;
+package com.chteuchteu.munin.ui;
 
 import android.content.Context;
 import android.support.v4.widget.DrawerLayout;
@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 /**
  * On a layout using PhotoView, zooming on the view makes the app crash
  * We have to catch the exception using this custom HackyDrawerLayout.
- * Used on Adapter_GraphView layout
+ * Used on Activity_GraphView layout (activity_graphview.xml)
  */
 public class HackyDrawerLayout extends DrawerLayout {
 	public HackyDrawerLayout(Context context) {
