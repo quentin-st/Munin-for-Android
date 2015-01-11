@@ -3,6 +3,9 @@ package com.chteuchteu.munin;
 import android.net.SSLCertificateSocketFactory;
 import android.os.Build;
 
+import com.chteuchteu.munin.obj.HTTPResponse;
+
+import org.apache.http.conn.ssl.BrowserCompatHostnameVerifier;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 
 import java.io.IOException;
@@ -16,17 +19,21 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 public class CustomSSLFactory extends SSLSocketFactory {
 	private TrustManager trustManager;
+	private HTTPResponse httpResponse;
 	
-	public CustomSSLFactory(KeyStore truststore) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
+	public CustomSSLFactory(KeyStore truststore, HTTPResponse httpResponse)
+			throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
 		super(truststore);
 		
-		trustManager = new X509TrustManager() {
+		this.trustManager = new X509TrustManager() {
 			public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException { }
 			
 			public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException { }
@@ -35,6 +42,7 @@ public class CustomSSLFactory extends SSLSocketFactory {
 				return null;
 			}
 		};
+		this.httpResponse = httpResponse;
 	}
 	
 	@Override
@@ -65,11 +73,13 @@ public class CustomSSLFactory extends SSLSocketFactory {
 			}
 		}
 
-		// We don't want to verify hostname and certificates actually
-		// verify hostname and certificate
-		//SSLSession session = ssl.getSession();
-		//if (!hostnameVerifier.verify(host, session))
-		//	throw new SSLPeerUnverifiedException("Cannot verify hostname: " + host);
+		// Verify hostname and certificate, but don't throw exception
+		SSLSession session = ssl.getSession();
+		HostnameVerifier hostnameVerifier = new BrowserCompatHostnameVerifier();
+		if (hostnameVerifier.verify(host, session))
+			httpResponse.connectionType = HTTPResponse.ConnectionType.SECURE;
+		else
+			httpResponse.connectionType = HTTPResponse.ConnectionType.INSECURE;
 
 		return ssl;
 	}

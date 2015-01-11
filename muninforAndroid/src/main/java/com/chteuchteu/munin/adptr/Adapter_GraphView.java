@@ -218,6 +218,9 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 					view.findViewById(R.id.error_disableHdGraphs).setVisibility(View.GONE);
 				}
 			}
+
+			// Connection type
+			activity.updateConnectionType(response.connectionType);
 		}
 	}
 

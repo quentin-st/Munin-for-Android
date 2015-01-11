@@ -44,7 +44,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -59,6 +58,7 @@ import com.chteuchteu.munin.hlpr.DynazoomHelper.DynazoomFetcher;
 import com.chteuchteu.munin.hlpr.MediaScannerUtil;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.HTTPResponse;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -85,6 +85,8 @@ public class Activity_GraphView extends MuninActivity {
 	public MuninPlugin currentPlugin;
 	public Period load_period;
 	public ViewFlow viewFlow;
+	private View ic_secure;
+	private View ic_insecure;
 
 	public int viewFlowMode;
 	public static final int VIEWFLOWMODE_GRAPHS = 1;
@@ -139,6 +141,14 @@ public class Activity_GraphView extends MuninActivity {
 
 		((TextView) findViewById(R.id.serverName)).setText(muninFoo.getCurrentServer().getName());
 		actionBar.setTitle("");
+		ic_secure = findViewById(R.id.connection_secure);
+		ic_insecure = findViewById(R.id.connection_insecure);
+		ic_insecure.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(context, R.string.certificate_error, Toast.LENGTH_SHORT).show();
+			}
+		});
 		
 		load_period = Period.get(Util.getPref(this, Util.PrefKeys.DefaultScale));
 		
@@ -921,7 +931,7 @@ public class Activity_GraphView extends MuninActivity {
 			Spinner spinner = (Spinner) findViewById(R.id.doc_spinner);
 			final List<String> nodes = DocumentationHelper.getNodes(plugin);
 
-			((ScrollView) findViewById(R.id.doc_scrollview)).setScrollY(0);
+			findViewById(R.id.doc_scrollview).setScrollY(0);
 
 			if (nodes.size() > 1) {
 				spinner.setVisibility(View.VISIBLE);
@@ -1062,6 +1072,17 @@ public class Activity_GraphView extends MuninActivity {
 	private void dynazoom_updateFromTo(long from, long to) {
 		((TextView) findViewById(R.id.dynazoom_from)).setText(Util.prettyDate(from));
 		((TextView) findViewById(R.id.dynazoom_to)).setText(Util.prettyDate(to));
+	}
+
+	public void updateConnectionType(HTTPResponse.ConnectionType connectionType) {
+		ic_secure.setVisibility(View.GONE);
+		ic_insecure.setVisibility(View.GONE);
+
+		switch (connectionType) {
+			case NORMAL: break;
+			case INSECURE: ic_insecure.setVisibility(View.VISIBLE); break;
+			case SECURE: ic_secure.setVisibility(View.VISIBLE); break;
+		}
 	}
 
 	@Override

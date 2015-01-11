@@ -273,5 +273,6 @@
 	<string name="redetectHdGraphsUrl">Détection de l\'URL des graphs HD</string>
 	<string name="downloadError">Erreur de téléchargement</string>
 	<string name="disableHDGraphs">Désactiver les graphs HD</string>
+	<string name="certificate_error">Votre connexion n\'est pas privée</string>
 
 </resources>

@@ -31,16 +31,44 @@
 					android:background="@color/actionBarColor"
 					android:orientation="vertical" >
 
-					<TextView
-						android:id="@+id/serverName"
-						android:textSize="19sp"
-						android:textColor="#fff"
-						android:layout_gravity="center_horizontal"
-						android:layout_marginLeft="10dp"
-						android:layout_marginBottom="6dp"
-						android:layout_marginRight="10dp"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content" />
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+
+						<ImageView
+							android:id="@+id/connection_secure"
+							android:layout_width="24dp"
+							android:layout_height="24dp"
+							android:layout_marginLeft="10dp"
+							android:layout_alignParentLeft="true"
+							android:layout_centerVertical="true"
+							android:src="@drawable/ic_secure"
+							android:visibility="gone"/>
+
+						<ImageView
+							android:id="@+id/connection_insecure"
+							android:layout_width="24dp"
+							android:layout_height="24dp"
+							android:layout_marginLeft="10dp"
+							android:layout_alignParentLeft="true"
+							android:layout_centerVertical="true"
+							android:src="@drawable/ic_insecure"
+							android:contentDescription="@string/certificate_error"
+							android:visibility="gone"/>
+
+						<TextView
+							android:id="@+id/serverName"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="19sp"
+							android:textColor="#fff"
+							android:layout_centerInParent="true"
+							android:layout_marginLeft="10dp"
+							android:layout_marginBottom="6dp"
+							android:layout_marginRight="10dp" />
+
+
+					</RelativeLayout>
 
 					<org.taptwo.android.widget.TitleFlowIndicator
 						android:id="@+id/viewflowindic"

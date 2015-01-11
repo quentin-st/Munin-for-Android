@@ -274,5 +274,6 @@
 	<string name="redetectHdGraphsUrl">Redetect HD Graphs URL</string>
 	<string name="disableHDGraphs">Disable HD Graphs</string>
 	<string name="downloadError">Download error</string>
+	<string name="certificate_error">Your connection is not private</string>
 
 </resources>

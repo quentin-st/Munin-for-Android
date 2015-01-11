@@ -69,7 +69,7 @@ public class NetHelper {
 					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 					trustStore.load(null, null);
 					
-					CustomSSLFactory sf = new CustomSSLFactory(trustStore);
+					CustomSSLFactory sf = new CustomSSLFactory(trustStore, resp);
 					sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 					
 					HttpParams params = new BasicHttpParams();
@@ -185,8 +185,8 @@ public class NetHelper {
 				try {
 					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 					trustStore.load(null, null);
-					
-					CustomSSLFactory sf = new CustomSSLFactory(trustStore);
+
+					CustomSSLFactory sf = new CustomSSLFactory(trustStore, respObj);
 					sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 					
 					HttpParams params = new BasicHttpParams();

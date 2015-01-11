@@ -9,6 +9,17 @@ public class HTTPResponse {
 	public String responseReason;
 	public String header_wwwauthenticate;
 	public boolean timeout;
+	public ConnectionType connectionType;
+
+	/**
+	 * NORMAL: http
+	 * INSECURE: https with certificate error
+	 * SECURE: https with valid certificate
+	 */
+	public enum ConnectionType {
+		NORMAL, INSECURE, SECURE;
+		public static ConnectionType defaultConnectionType() { return NORMAL; }
+	}
 	
 	public HTTPResponse() {
 		this.html = "";
@@ -16,5 +27,6 @@ public class HTTPResponse {
 		this.responseReason = "";
 		this.header_wwwauthenticate = "";
 		this.timeout = false;
+		this.connectionType = ConnectionType.defaultConnectionType();
 	}
 }
