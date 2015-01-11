@@ -86,6 +86,7 @@ public class NetHelper {
 					
 					client = new DefaultHttpClient(ccm, params);
 				} catch (Exception e) {
+					e.printStackTrace();
 					client = new DefaultHttpClient();
 					master.setSSL(false);
 				}
