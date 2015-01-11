@@ -51,13 +51,13 @@ public class MuninFoo {
 	//							|  2.7		2.8		2.9		3.0		3.1		3.2		3.3		3.4		3.5		3.6		3.7		3.8		3.9		4.0		4.1		4.2 |
 	//							|															beta	beta	beta			fix		fix		fix		fix			|
 	//							|-------------------------------------------------------------------------------------------------------------------------------|
-	//							| 3.1		3.2		3.2.1   3.3		3.4		3.5																					|
-	//							| 34		35		36		37		38		39																					|
-	//							| 4.3		4.4		4.5		4.6		4.7		4.8																    				|
+	//							| 3.1		3.2		3.2.1   3.3		3.4		3.4.5	3.4.6																			|
+	//							| 34		35		36		37		38		39		40																			|
+	//							| 4.3		4.4		4.5		4.6		4.7		4.8		4.9														    				|
 	//							| fix				fix																											|
 	//							|-------------------------------------------------------------------------------------------------------------------------------|
 	
-	public static final double VERSION = 4.8;
+	public static final double VERSION = 4.9;
 	// =============== //
 	private static final boolean FORCE_NOT_PREMIUM = false;
 
@@ -438,11 +438,11 @@ public class MuninFoo {
 		return alerts_lastUpdated.before(updateTreshold);
 	}
 
-	public static void log(String msg) { log("MuninFoo", msg); }
+	public static void log(String msg) { log("Munin for Android", msg); }
 	public static void log(String tag, String msg) { if (BuildConfig.DEBUG) Log.i(tag, msg); }
-	public static void logV(String msg) { logV("MuninFoo", msg); }
+	public static void logV(String msg) { logV("Munin for Android", msg); }
 	public static void logV(String tag, String msg) { if (BuildConfig.DEBUG) Log.v(tag, msg); }
-	public static void logE(String msg) { logE("MuninFoo", msg); }
+	public static void logE(String msg) { logE("Munin for Android", msg); }
 	public static void logE(String tag, String msg) { if (BuildConfig.DEBUG) Log.e(tag, msg); }
 
 	public static boolean isPremium(Context c) {

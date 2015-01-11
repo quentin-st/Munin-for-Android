@@ -8,8 +8,8 @@ android {
         applicationId "com.chteuchteu.munin"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 38
-        versionName "3.4"
+        versionCode 40
+        versionName "3.4.6"
     }
 
     buildTypes {
@@ -20,8 +20,8 @@ android {
 
 dependencies {
     compile project(':dragSortListViewLivrary')
-    compile 'com.android.support:appcompat-v7:21.0.0'
-    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:support-v4:21.0.3'
     compile files('libs/AppRate_1.1.jar')
     compile files('libs/crashlytics.jar')
     compile files('libs/jsoup-1.7.2.jar')

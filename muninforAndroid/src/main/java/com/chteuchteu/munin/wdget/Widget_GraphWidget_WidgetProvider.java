@@ -33,7 +33,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		this.sqlite = new SQLite(context, MuninFoo.getInstance(context));
+		sqlite = new SQLite(context, MuninFoo.getInstance(context));
 		
 		// Get all ids
 		ComponentName thisWidget = new ComponentName(context, Widget_GraphWidget_WidgetProvider.class);
@@ -115,35 +115,46 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 			sqlite = new SQLite(context, MuninFoo.getInstance(context));
 		
 		if (intent.getAction() != null) {
-			if (intent.getAction().equals(ACTION_UPDATE_GRAPH)) {
-				// Check if connection is available
-				if (Util.isOnline(context)) {
+			switch (intent.getAction()) {
+				case ACTION_UPDATE_GRAPH:
+					// Check if connection is available
+					if (Util.isOnline(context)) {
+						Bundle extras = intent.getExtras();
+						if (extras != null) {
+							AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+							int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+
+							updateAppWidget(context, appWidgetManager, widgetId, true);
+						}
+					}
+					break;
+				case ACTION_START_ACTIVITY:
 					Bundle extras = intent.getExtras();
 					if (extras != null) {
-						AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-						int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-						
-						updateAppWidget(context, appWidgetManager, widgetId, true);
+						try {
+							int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+							graphWidget = sqlite.dbHlpr.getGraphWidget(widgetId);
+							Intent intent2 = new Intent(context, Activity_GraphView.class);
+							intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							intent2.putExtra("server", graphWidget.getPlugin().getInstalledOn().getServerUrl());
+							intent2.putExtra("plugin", graphWidget.getPlugin().getName());
+							intent2.putExtra("period", graphWidget.getPeriod());
+							context.startActivity(intent2);
+						}
+						catch (NullPointerException ex) {
+							ex.printStackTrace();
+						}
 					}
-				}
-			} else if (intent.getAction().equals(ACTION_START_ACTIVITY)) {
-				Bundle extras = intent.getExtras();
-				if (extras != null) {
-					int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-					graphWidget = sqlite.dbHlpr.getGraphWidget(widgetId);
-					Intent intent2 = new Intent(context, Activity_GraphView.class);
+					break;
+
+				case ACTION_START_PREMIUM:
+					Intent intent2 = new Intent(context, Activity_GoPremium.class);
 					intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					intent2.putExtra("server", graphWidget.getPlugin().getInstalledOn().getServerUrl());
-					intent2.putExtra("plugin", graphWidget.getPlugin().getName());
-					intent2.putExtra("period", graphWidget.getPeriod());
 					context.startActivity(intent2);
-				}
-			} else if (intent.getAction().equals(ACTION_START_PREMIUM)) {
-				Intent intent2 = new Intent(context, Activity_GoPremium.class);
-				intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(intent2);
-			} else {
-				super.onReceive(context, intent);
+					break;
+				default:
+					super.onReceive(context, intent);
+					break;
 			}
 		} else
 			super.onReceive(context, intent);
