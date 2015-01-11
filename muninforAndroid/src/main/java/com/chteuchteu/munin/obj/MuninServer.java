@@ -85,7 +85,7 @@ public class MuninServer {
 	public String getGraphURL() { return this.graphURL; }
 
 	public void setHdGraphURL(String url) { this.hdGraphURL = url; }
-	public String getHdGraphURL() { return this.hdGraphURL; }
+	public String getHdGraphURL() { return this.hdGraphURL == null ? "" : this.hdGraphURL; }
 	
 	public void setPluginsList(List<MuninPlugin> pL) { this.plugins = pL; }
 	public List<MuninPlugin> getPlugins() { return this.plugins; }
