@@ -1,5 +1,7 @@
 Welcome to the public repository for [Munin for Android](https://play.google.com/store/apps/details?id=com.chteuchteu.munin) application. If you're willing to contribute, please read the following indications.
 
+If you don't know where to start, there may be some [open issues](https://github.com/chteuchteu/Munin-for-Android/issues). Don't hesitate to open new ones if you found a bug!
+
 If you have any question, don't hesitate to send me an email at [support@munin-for-android.com](mailto:support@munin-for-android.com)!
 
 # Munin for Android #
