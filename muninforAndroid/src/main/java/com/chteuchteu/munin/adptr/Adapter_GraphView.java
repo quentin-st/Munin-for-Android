@@ -136,8 +136,8 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 
 				this.response = server.getParent().grabBitmap(imgUrl, muninFoo.getUserAgent());
 
-				if (response.bitmap != null)
-					activity.addBitmap(Util.removeBitmapBorder(response.bitmap), position);
+				if (response.hasSucceeded())
+					activity.addBitmap(Util.removeBitmapBorder(response.getBitmap()), position);
 			}
 			
 			return null;
@@ -174,15 +174,15 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 
 				Util.Fonts.setFont(context, ((TextView) view.findViewById(R.id.error_title)), Util.Fonts.CustomFont.Roboto_Regular);
 
-				if (response.responseCode < 0) { // Not HTTP error
-					if (response.responseCode == HTTPResponse_Bitmap.UnknownHostExceptionError
+				if (response.getResponseCode() < 0) { // Not HTTP error
+					if (response.getResponseCode() == HTTPResponse_Bitmap.UnknownHostExceptionError
 							&& !Util.isOnline(context))
-						errorText.setText(context.getString(R.string.text30) + "\n" + response.responseReason);
+						errorText.setText(context.getString(R.string.text30) + "\n" + response.getResponsePhrase());
 					else
-						errorText.setText(response.responseReason);
+						errorText.setText(response.getResponsePhrase());
 				}
 				else
-					errorText.setText(response.responseCode + " - " + response.responseReason);
+					errorText.setText(response.getResponseCode() + " - " + response.getResponsePhrase());
 
 				// Allow user to disable HD Graphs / rescan HD Graphs URL
 				if (!Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")
@@ -220,7 +220,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 			}
 
 			// Connection type
-			activity.updateConnectionType(response.connectionType);
+			activity.updateConnectionType(response.getConnectionType());
 		}
 	}
 

@@ -10,7 +10,6 @@ import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
-import com.crashlytics.android.Crashlytics;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -125,17 +124,15 @@ public class NetHelper {
 			}
 			in.close();
 			
-			resp.html = str.toString();
-			resp.responseReason = response.getStatusLine().getReasonPhrase();
-			resp.responseCode = response.getStatusLine().getStatusCode();
+			resp.setHtml(str.toString());
+			resp.setResponsePhrase(response.getStatusLine().getReasonPhrase());
+			resp.setResponseCode(response.getStatusLine().getStatusCode());
 			if (response.getHeaders("WWW-Authenticate").length > 0)
-				resp.header_wwwauthenticate = response.getHeaders("WWW-Authenticate")[0].getValue();
+				resp.setAuthenticateHeader(response.getHeaders("WWW-Authenticate")[0].getValue());
 		}
-		catch (SocketTimeoutException | ConnectTimeoutException e) { e.printStackTrace(); resp.timeout = true; }
+		catch (SocketTimeoutException | ConnectTimeoutException e) { resp.setTimeout(true); }
 		catch (SSLException e) { // SSLPeerUnverifiedException
 			e.printStackTrace();
-			Crashlytics.log("grabUrl(retried=" + retried + ")");
-			Crashlytics.logException(e);
 
 			if (!master.getSSL()) {
 				master.setSSL(true);
@@ -157,7 +154,12 @@ public class NetHelper {
 			if (!retried)
 				return NetHelper.grabUrl(master, url, userAgent, true);
 		}
-		catch (Exception e) { e.printStackTrace(); resp.html = ""; }
+		catch (UnknownHostException e) {
+			e.printStackTrace();
+			resp.setResponseCode(HTTPResponse.UnknownHostExceptionError);
+			resp.setResponsePhrase(e.getMessage());
+		}
+		catch (Exception e) { e.printStackTrace(); }
 		return resp;
 	}
 	
@@ -231,34 +233,34 @@ public class NetHelper {
 			HttpResponse response = client.execute(request);
 			StatusLine statusLine = response.getStatusLine();
 
-            respObj.responseCode = statusLine.getStatusCode();
-            respObj.responseReason = statusLine.getReasonPhrase();
-			if (respObj.responseCode == HttpURLConnection.HTTP_OK) {
+            respObj.setResponseCode(statusLine.getStatusCode());
+            respObj.setResponsePhrase(statusLine.getReasonPhrase());
+			if (respObj.requestSucceeded()) {
 				HttpEntity entity = response.getEntity();
 				byte[] bytes = EntityUtils.toByteArray(entity);
-				respObj.bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+				respObj.setBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
 			} else {
 				if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried && response.getHeaders("WWW-Authenticate").length > 0) {
 					master.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
 					return grabBitmap(master, url, userAgent, true);
 				} else
-					respObj.bitmap = null;
+					respObj.setBitmap(null);
 			}
 		}
 		catch (SocketTimeoutException | ConnectTimeoutException e) {
 			e.printStackTrace();
-			respObj.responseCode = HttpURLConnection.HTTP_CLIENT_TIMEOUT;
-			respObj.responseReason = "Timeout";
+			respObj.setResponseCode(HttpURLConnection.HTTP_CLIENT_TIMEOUT);
+			respObj.setResponsePhrase("Timeout");
 		}
 		catch (UnknownHostException e) {
 			e.printStackTrace();
-			respObj.responseCode = HTTPResponse_Bitmap.UnknownHostExceptionError;
-			respObj.responseReason = e.getMessage();
+			respObj.setResponseCode(HTTPResponse.UnknownHostExceptionError);
+			respObj.setResponsePhrase(e.getMessage());
 		}
 		catch (OutOfMemoryError | Exception e) {
 			e.printStackTrace();
-			respObj.responseCode = HTTPResponse_Bitmap.UnknownError;
-			respObj.responseReason = "Unknown error";
+			respObj.setResponseCode(HTTPResponse.UnknownError);
+			respObj.setResponsePhrase("Unknown error");
 		}
 		
 		return respObj;

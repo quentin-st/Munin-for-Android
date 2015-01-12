@@ -6,16 +6,24 @@ import android.graphics.Bitmap;
  * Object returned from a bitmap download operation
  */
 public class HTTPResponse_Bitmap extends HTTPResponse {
-	public static final int UnknownHostExceptionError = -5;
-	public static final int UnknownError = -1;
-
-	public Bitmap bitmap;
+	private Bitmap bitmap;
 
 	public HTTPResponse_Bitmap() {
 		super();
 	}
 
-	public String toString() {
-		return "HTTPResponse_Bitmap[ responseCode=" + responseCode + ", bitmap == null : " + (bitmap == null) + " ]";
+	public void setBitmap(Bitmap val) { this.bitmap = val; }
+	public Bitmap getBitmap() { return this.bitmap; }
+
+	/**
+	 * Same as hasSuceeded(), but doesn't test if bitmap == null
+	 */
+	public boolean requestSucceeded() {
+		return super.hasSucceeded();
+	}
+
+	@Override
+	public boolean hasSucceeded() {
+		return super.hasSucceeded() && this.bitmap != null;
 	}
 }

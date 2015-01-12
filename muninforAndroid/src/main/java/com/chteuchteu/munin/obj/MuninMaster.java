@@ -133,7 +133,7 @@ public class MuninMaster {
 		String hdGraphUrl = plugin.getHDImgUrl(Period.DAY);
 		HTTPResponse_Bitmap res = grabBitmap(hdGraphUrl, userAgent);
 
-		return !res.timeout && res.responseCode == 200 && res.bitmap != null;
+		return res.hasSucceeded();
 	}
 	
 	public void rebuildChildren(MuninFoo f) {
@@ -256,9 +256,7 @@ public class MuninMaster {
 				this.authType = AuthType.BASIC;
 		}
 		
-		if (res.timeout)
-			return "timeout";
-		else if (res.responseCode == 200) {
+		if (res.hasSucceeded()) {
 			Document doc = Jsoup.parse(page, this.url);
 			Elements images = doc.select("img[src$=-day.png]");
 			
@@ -274,10 +272,12 @@ public class MuninMaster {
 				if (muninHosts.size() > 0 || munstrapHosts.size() > 0)
 					return "munin/";
 				else
-					return res.responseCode + " - " + res.responseReason;
+					return res.getResponseCode() + " - " + res.getResponsePhrase();
 			}
-		} else
-			return res.responseCode + " - " + res.responseReason;
+		} else if (res.getTimeout())
+			return "timeout";
+		else
+			return res.getResponseCode() + " - " + res.getResponsePhrase();
 	}
 	
 	/**

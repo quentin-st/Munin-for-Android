@@ -71,7 +71,7 @@ public class GridDownloadHelper {
 						b = Util.dropShadow(
 								Util.removeBitmapBorder(
 										gridItem.plugin.getInstalledOn().getParent().grabBitmap(graphUrl,
-												MuninFoo.getInstance().getUserAgent()).bitmap));
+												MuninFoo.getInstance().getUserAgent()).getBitmap()));
 					}
 				}
 			}

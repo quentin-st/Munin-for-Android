@@ -125,7 +125,7 @@ public class MuninPlugin {
 	}
 	
 	public Bitmap getGraph(String url, String userAgent) {
-		return this.installedOn.getParent().grabBitmap(url, userAgent).bitmap;
+		return this.installedOn.getParent().grabBitmap(url, userAgent).getBitmap();
 	}
 	
 	

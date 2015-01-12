@@ -444,6 +444,8 @@ public class MuninFoo {
 	public static void logV(String tag, String msg) { if (BuildConfig.DEBUG) Log.v(tag, msg); }
 	public static void logE(String msg) { logE("Munin for Android", msg); }
 	public static void logE(String tag, String msg) { if (BuildConfig.DEBUG) Log.e(tag, msg); }
+	public static void logW(String msg) { logW("Munin for Android", msg); }
+	public static void logW(String tag, String msg) { if (BuildConfig.DEBUG) Log.w(tag, msg); }
 
 	public static boolean isPremium(Context c) {
         if (TRIAL)

@@ -77,9 +77,9 @@ public class CustomSSLFactory extends SSLSocketFactory {
 		SSLSession session = ssl.getSession();
 		HostnameVerifier hostnameVerifier = new BrowserCompatHostnameVerifier();
 		if (hostnameVerifier.verify(host, session))
-			httpResponse.connectionType = HTTPResponse.ConnectionType.SECURE;
+			httpResponse.setConnectionType(HTTPResponse.ConnectionType.SECURE);
 		else
-			httpResponse.connectionType = HTTPResponse.ConnectionType.INSECURE;
+			httpResponse.setConnectionType(HTTPResponse.ConnectionType.INSECURE);
 
 		return ssl;
 	}
