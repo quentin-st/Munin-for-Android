@@ -51,4 +51,12 @@ public class HTTPResponse {
 	public boolean hasSucceeded() {
 		return !this.timeout && this.responseCode == HttpURLConnection.HTTP_OK;
 	}
+
+
+	// Logging
+	private long startTime;
+	private long endTime;
+	public void begin() { this.startTime = System.currentTimeMillis(); }
+	public void end() { this.endTime = System.currentTimeMillis(); }
+	public long getExecutionTime() { return this.endTime - this.startTime; }
 }

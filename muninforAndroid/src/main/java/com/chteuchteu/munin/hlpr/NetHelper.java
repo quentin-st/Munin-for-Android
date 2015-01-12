@@ -1,8 +1,10 @@
 package com.chteuchteu.munin.hlpr;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.CustomSSLFactory;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.HTTPResponse;
@@ -11,7 +13,6 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
@@ -30,7 +31,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -113,6 +113,8 @@ public class NetHelper {
 			// Set the default socket timeout (SO_TIMEOUT) in milliseconds which is the timeout for waiting for data.
 			HttpConnectionParams.setSoTimeout(httpParameters, SOCKET_TIMEOUT);
 			((DefaultHttpClient) client).setParams(httpParameters);
+
+			resp.begin();
 			
 			HttpResponse response = client.execute(request);
 			InputStream in = response.getEntity().getContent();
@@ -129,6 +131,10 @@ public class NetHelper {
 			resp.setResponseCode(response.getStatusLine().getStatusCode());
 			if (response.getHeaders("WWW-Authenticate").length > 0)
 				resp.setAuthenticateHeader(response.getHeaders("WWW-Authenticate")[0].getValue());
+
+			resp.end();
+			if (BuildConfig.DEBUG)
+				MuninFoo.logV("grabUrl", "Downloaded " + response.getEntity().getContentLength() + " in " + resp.getExecutionTime() + "ms");
 		}
 		catch (SocketTimeoutException | ConnectTimeoutException e) { resp.setTimeout(true); }
 		catch (SSLException e) { // SSLPeerUnverifiedException
@@ -229,6 +235,8 @@ public class NetHelper {
 			// Set the default socket timeout (SO_TIMEOUT) in milliseconds which is the timeout for waiting for data.
 			HttpConnectionParams.setSoTimeout(httpParameters, 7000);
 			((DefaultHttpClient) client).setParams(httpParameters);
+
+			respObj.begin();
 			
 			HttpResponse response = client.execute(request);
 			StatusLine statusLine = response.getStatusLine();
@@ -236,9 +244,8 @@ public class NetHelper {
             respObj.setResponseCode(statusLine.getStatusCode());
             respObj.setResponsePhrase(statusLine.getReasonPhrase());
 			if (respObj.requestSucceeded()) {
-				HttpEntity entity = response.getEntity();
-				byte[] bytes = EntityUtils.toByteArray(entity);
-				respObj.setBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+				Bitmap bitmap = BitmapFactory.decodeStream(response.getEntity().getContent());
+				respObj.setBitmap(bitmap);
 			} else {
 				if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried && response.getHeaders("WWW-Authenticate").length > 0) {
 					master.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
@@ -246,6 +253,10 @@ public class NetHelper {
 				} else
 					respObj.setBitmap(null);
 			}
+
+			respObj.end();
+			if (BuildConfig.DEBUG)
+				MuninFoo.logV("grabBitmap", "Downloaded bitmap in " + respObj.getExecutionTime() + "ms");
 		}
 		catch (SocketTimeoutException | ConnectTimeoutException e) {
 			e.printStackTrace();
