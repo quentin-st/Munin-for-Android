@@ -178,8 +178,8 @@ public class MuninServer {
 				this.graphURL = srcAttr.substring(0, srcAttr.lastIndexOf('/') + 1);
 			}
 
-			// Find HDGraphURL
-			if (this.hdGraphURL == null || this.hdGraphURL.equals("") && this.master.isDynazoomAvailable() != MuninMaster.DynazoomAvailability.FALSE) {
+			// Find HDGraphURL (if not already done)
+			if ((this.hdGraphURL == null || this.hdGraphURL.equals("")) && this.master.isDynazoomAvailable() != MuninMaster.DynazoomAvailability.FALSE) {
 				// To go to the dynazoom page, we have to "click" on the first graph.
 				// Then, on the second page, we have to "click" again on the first graph.
 				// Finally, the only image on this third page is the dynazoom graph.
@@ -206,8 +206,14 @@ public class MuninServer {
 						pluginNameUrl = pluginNameUrl.substring(0, pluginNameUrl.lastIndexOf('/')+1);
 
 						this.hdGraphURL = "http://" + Util.URLManipulation.getHostFromUrl(this.getServerUrl()) + cgiUrl + "/" + pluginNameUrl;
-						
-						this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
+
+                        // Now that we have the HD Graph URL, let's try to reach it to see if it is available
+                        if (this.master.isDynazoomAvailable(currentPl, userAgent))
+						    this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
+                        else {
+	                        this.hdGraphURL = "";
+	                        this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
+                        }
 					}
 				}
 				else

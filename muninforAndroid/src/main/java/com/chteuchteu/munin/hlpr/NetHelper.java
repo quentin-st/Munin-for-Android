@@ -230,8 +230,10 @@ public class NetHelper {
 			
 			HttpResponse response = client.execute(request);
 			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == HttpURLConnection.HTTP_OK) {
+
+            respObj.responseCode = statusLine.getStatusCode();
+            respObj.responseReason = statusLine.getReasonPhrase();
+			if (respObj.responseCode == HttpURLConnection.HTTP_OK) {
 				HttpEntity entity = response.getEntity();
 				byte[] bytes = EntityUtils.toByteArray(entity);
 				respObj.bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -239,11 +241,8 @@ public class NetHelper {
 				if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried && response.getHeaders("WWW-Authenticate").length > 0) {
 					master.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
 					return grabBitmap(master, url, userAgent, true);
-				} else {
+				} else
 					respObj.bitmap = null;
-					respObj.responseCode = statusCode;
-					respObj.responseReason = statusLine.getReasonPhrase();
-				}
 			}
 		}
 		catch (SocketTimeoutException | ConnectTimeoutException e) {

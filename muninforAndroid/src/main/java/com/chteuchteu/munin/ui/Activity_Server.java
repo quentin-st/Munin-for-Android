@@ -43,10 +43,6 @@ import com.chteuchteu.munin.obj.MuninServer.AuthType;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Only used in order to add a server
- */
-
 @SuppressLint("CommitPrefEdits")
 public class Activity_Server extends MuninActivity {
 	private Spinner  	spinner;
@@ -143,8 +139,7 @@ public class Activity_Server extends MuninActivity {
 			Util.setTransition(context, TransitionStyle.SHALLOWER);
 		}
 	}
-	
-	// Actions
+
 	private void actionSave() {
 		if (!tb_serverUrl.getText().toString().equals("") && !tb_serverUrl.getText().toString().equals("http://")) {
 			addInHistory(tb_serverUrl.getText().toString().trim());

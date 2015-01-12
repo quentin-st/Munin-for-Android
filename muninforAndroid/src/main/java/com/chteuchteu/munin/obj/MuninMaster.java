@@ -1,7 +1,6 @@
 package com.chteuchteu.munin.obj;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -65,8 +64,7 @@ public class MuninMaster {
 			return AUTO_DETECT;
 		}
 		public static DynazoomAvailability get(boolean val) {
-			if (val)	return TRUE;
-			else		return FALSE;
+            return val ? TRUE : FALSE;
 		}
 	}
 	
@@ -128,18 +126,14 @@ public class MuninMaster {
 		if (plugin == null)
 			return false;
 		
+		return isDynazoomAvailable(plugin, userAgent);
+	}
+
+	public boolean isDynazoomAvailable(MuninPlugin plugin, String userAgent) {
 		String hdGraphUrl = plugin.getHDImgUrl(Period.DAY);
-		HTTPResponse res = grabUrl(hdGraphUrl, userAgent);
-		
-		boolean seemsAvailable = !res.timeout && res.responseCode == 200;
-		
-		if (!seemsAvailable)
-			return false;
-		
-		// At this point, the dynazoom seems available. Let's try to download a bitmap to
-		// see if we get a bitmap (instead of a custom 404 error)
-		Bitmap bitmap = grabBitmap(hdGraphUrl, userAgent).bitmap;
-		return bitmap != null;
+		HTTPResponse_Bitmap res = grabBitmap(hdGraphUrl, userAgent);
+
+		return !res.timeout && res.responseCode == 200 && res.bitmap != null;
 	}
 	
 	public void rebuildChildren(MuninFoo f) {
@@ -502,6 +496,9 @@ public class MuninMaster {
 			onlineMaster.setUrl(this.url);
 			onlineMaster.setSSL(this.ssl);
 			onlineMaster.setAuthIds(this.authLogin, this.authPassword, this.authType);
+
+            // Set DynazoomAvailability to UNKNOWN to enable a new check
+            onlineMaster.setDynazoomAvailable(DynazoomAvailability.AUTO_DETECT);
 			
 			onlineMaster.fetchChildren(muninFoo.getUserAgent());
 			
@@ -524,6 +521,12 @@ public class MuninMaster {
 								server.setGraphURL(onlineServer.getGraphURL());
 								toBeUpdated.add(server);
 							}
+
+                            // DynazoomAvailability
+                            if (server.getParent().isDynazoomAvailable() != onlineServer.getParent().isDynazoomAvailable()) {
+                                server.getParent().setDynazoomAvailable(onlineServer.getParent().isDynazoomAvailable());
+                                toBeUpdated.add(server);
+                            }
 
 							// HDGraphURL
 							if (!server.getHdGraphURL().equals(onlineServer.getHdGraphURL()) && !onlineServer.getHdGraphURL().equals("")) {
@@ -579,6 +582,9 @@ public class MuninMaster {
 				// The servers are now synced.
 				// PLUGINS DIFF
 				for (MuninServer server : this.children) {
+                    // Force HD graph URL rescan
+                    server.setHdGraphURL(null);
+
 					List<MuninPlugin> onlinePlugins = server.getPluginsList(muninFoo.getUserAgent());
 					
 					// If the download hasn't failed

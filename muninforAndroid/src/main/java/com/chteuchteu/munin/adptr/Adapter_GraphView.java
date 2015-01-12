@@ -185,7 +185,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 					errorText.setText(response.responseCode + " - " + response.responseReason);
 
 				// Allow user to disable HD Graphs / rescan HD Graphs URL
-				if (Util.getPref(context, Util.PrefKeys.HDGraphs).equals("true")
+				if (!Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")
 						&& this.server.getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
 						&& Util.isOnline(context)) {
 					Button rescanHdGraphsUrl = (Button) view.findViewById(R.id.error_rescanHdGraphsUrl);

@@ -15,4 +15,7 @@ public class HTTPResponse_Bitmap extends HTTPResponse {
 		super();
 	}
 
+	public String toString() {
+		return "HTTPResponse_Bitmap[ responseCode=" + responseCode + ", bitmap == null : " + (bitmap == null) + " ]";
+	}
 }
