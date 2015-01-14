@@ -187,7 +187,7 @@ public class GridItem {
 						float scale = (xScale <= yScale) ? xScale : yScale;
 
 						// Acceptable upscaling factor
-						if (scale > 2.25) {
+						if (scale > 2.5) {
 							if (hdGraphDownloader != null && hdGraphDownloader.isDownloading())
 								hdGraphDownloader.killDownload();
 

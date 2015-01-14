@@ -27,13 +27,13 @@ import org.taptwo.android.widget.TitleProvider;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
+	private static final int[] AVERAGE_GRAPH_DIMENSIONS = {455, 350};
 	private MuninFoo muninFoo;
 	private Activity_GraphView activity;
-	private Context		context;
+	private Context context;
 	private LayoutInflater mInflater;
+	private int count;
 
-	private int			count;
-	
 	public Adapter_GraphView(Activity_GraphView activity, MuninFoo muninFoo, Context context, int count) {
 		this.activity = activity;
 		this.muninFoo = muninFoo;
@@ -129,8 +129,19 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 				String imgUrl;
 				if (server.getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
 						&& !Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")) {
-					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
-					imgUrl = plugin.getHDImgUrl(activity.load_period, true, graphsDimensions[0], graphsDimensions[1]);
+					// Check if HD graph is really needed : if the standard-res bitmap isn't upscaled, it's OK
+					float xScale = ((float) imageView.getWidth()) / AVERAGE_GRAPH_DIMENSIONS[0];
+					float yScale = ((float) imageView.getHeight()) / AVERAGE_GRAPH_DIMENSIONS[1];
+					float scale = (xScale <= yScale) ? xScale : yScale;
+
+					// Acceptable upscaling factor
+					MuninFoo.log("Upscaling factor = " + scale);
+					if (scale > 2.5) {
+						int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
+						imgUrl = plugin.getHDImgUrl(activity.load_period, true, graphsDimensions[0], graphsDimensions[1]);
+					}
+					else
+						imgUrl = plugin.getImgUrl(activity.load_period);
 				} else
 					imgUrl = plugin.getImgUrl(activity.load_period);
 
@@ -149,7 +160,6 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 
 			if (!activity.isBitmapNull(position)) {
 				imageView.setImageBitmap(activity.getBitmap(position));
-
 				// PhotoViewAttacher
 				if (Util.getPref(context, Util.PrefKeys.GraphsZoom).equals("true")) {
 					if (!activity.photoViewAttached[position]) {
@@ -160,7 +170,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 					}
 				}
 
-				// If documentation shown && image just loaded : display it
+				// If documentation shown && image just loaded: display it
 				if (activity.iv_documentation != null) {
 					Object tag = activity.iv_documentation.getTag();
 					if (tag != null && tag.equals(plugin.getName()))
