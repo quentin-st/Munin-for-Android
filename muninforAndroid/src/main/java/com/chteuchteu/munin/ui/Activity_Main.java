@@ -154,6 +154,8 @@ public class Activity_Main extends ActionBarActivity {
 		// after X launches
 		displayTwitterAlertIfNeeded();
 
+		displayOpenSourceAlertIfNeeded();
+
 		// Reset drawer
 		dh.reset();
 		dh.toggle();
@@ -230,7 +232,7 @@ public class Activity_Main extends ActionBarActivity {
 			int n = Integer.parseInt(nbLaunches);
 			if (n == NB_LAUNCHES) {
 				// Display message
-				AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Main.this);
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setMessage("Be the first to try beta versions of the app, and learn cool news like upcoming updates and known issues!")
 				.setTitle("Follow Munin for Android on Twitter")
 				.setCancelable(true)
@@ -255,6 +257,24 @@ public class Activity_Main extends ActionBarActivity {
 				Util.setPref(this, Util.PrefKeys.Twitter_NbLaunches, "ok");
 			} else
 				Util.setPref(this, Util.PrefKeys.Twitter_NbLaunches, String.valueOf(n+1));
+		}
+	}
+
+	private void displayOpenSourceAlertIfNeeded() {
+		if (!Util.getPref(this, Util.PrefKeys.OpenSourceDialogShown).equals("true")) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.alert_opensource)
+					.setCancelable(true)
+					.setPositiveButton(R.string.alert_opensource_action, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialogInterface, int i) {
+							startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/chteuchteu/Munin-for-Android")));
+						}
+					})
+					.setNegativeButton(R.string.close, null);
+			builder.create().show();
+
+			Util.setPref(this, Util.PrefKeys.OpenSourceDialogShown, "true");
 		}
 	}
 	

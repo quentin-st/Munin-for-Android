@@ -188,35 +188,38 @@ public class MuninServer {
 				String secondPageHtml = this.master.grabUrl(srcAttr, userAgent).html;
 				Document secondPage = Jsoup.parse(secondPageHtml, srcAttr);
 
-				Element imageParent = secondPage.select("img[src$=-day.png]").get(0).parent();
-				if (imageParent.tagName().equals("a")) {
-					String srcAttr2 = imageParent.attr("abs:href");
-					String thirdPageHtml = this.master.grabUrl(srcAttr2, userAgent).html;
-					if (thirdPageHtml.equals(""))
+				Elements images2 = secondPage.select("img[src$=-day.png]");
+				if (images2.size() > 0) {
+					Element imageParent = images2.get(0).parent();
+					if (imageParent.tagName().equals("a")) {
+						String srcAttr2 = imageParent.attr("abs:href");
+						String thirdPageHtml = this.master.grabUrl(srcAttr2, userAgent).html;
+						if (thirdPageHtml.equals(""))
+							this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
+						else {
+							// Since the image URL is built in JS on the web page, we have to build it manually
+							Uri uri = Uri.parse(srcAttr2);
+							String cgiUrl = uri.getQueryParameterNames().contains("cgiurl_graph") ? uri.getQueryParameter("cgiurl_graph")
+									: "/munin-cgi/munin-cgi-graph";
+							// localdomain/localhost.localdomain/if_eth0
+							String pluginNameUrl = uri.getQueryParameterNames().contains("plugin_name") ? uri.getQueryParameter("plugin_name")
+									: "localdomain/localhost.localdomain/pluginName";
+							// Remove plugin name from pluginNameUrl
+							pluginNameUrl = pluginNameUrl.substring(0, pluginNameUrl.lastIndexOf('/') + 1);
+
+							this.hdGraphURL = "http://" + Util.URLManipulation.getHostFromUrl(this.getServerUrl()) + cgiUrl + "/" + pluginNameUrl;
+
+							// Now that we have the HD Graph URL, let's try to reach it to see if it is available
+							if (this.master.isDynazoomAvailable(currentPl, userAgent))
+								this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
+							else {
+								this.hdGraphURL = "";
+								this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
+							}
+						}
+					} else
 						this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
-					else {
-						// Since the image URL is built in JS on the web page, we have to build it manually
-						Uri uri = Uri.parse(srcAttr2);
-						String cgiUrl = uri.getQueryParameterNames().contains("cgiurl_graph") ? uri.getQueryParameter("cgiurl_graph")
-								: "/munin-cgi/munin-cgi-graph";
-						// localdomain/localhost.localdomain/if_eth0
-						String pluginNameUrl = uri.getQueryParameterNames().contains("plugin_name") ? uri.getQueryParameter("plugin_name")
-								: "localdomain/localhost.localdomain/pluginName";
-						// Remove plugin name from pluginNameUrl
-						pluginNameUrl = pluginNameUrl.substring(0, pluginNameUrl.lastIndexOf('/')+1);
-
-						this.hdGraphURL = "http://" + Util.URLManipulation.getHostFromUrl(this.getServerUrl()) + cgiUrl + "/" + pluginNameUrl;
-
-                        // Now that we have the HD Graph URL, let's try to reach it to see if it is available
-                        if (this.master.isDynazoomAvailable(currentPl, userAgent))
-						    this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
-                        else {
-	                        this.hdGraphURL = "";
-	                        this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
-                        }
-					}
-				}
-				else
+				} else
 					this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
 			}
 		}

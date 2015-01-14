@@ -275,5 +275,8 @@
 	<string name="disableHDGraphs">Disable HD Graphs</string>
 	<string name="downloadError">Download error</string>
 	<string name="certificate_error">Your connection is not private</string>
+	<string name="alert_opensource">Did you know? Munin for Android is now open-source!</string>
+	<string name="alert_opensource_action">Contribute on GitHub</string>
+	<string name="close">Close</string>
 
 </resources>

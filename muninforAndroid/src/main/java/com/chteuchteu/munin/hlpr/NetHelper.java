@@ -134,7 +134,7 @@ public class NetHelper {
 
 			resp.end();
 			if (BuildConfig.DEBUG)
-				MuninFoo.logV("grabUrl", "Downloaded " + response.getEntity().getContentLength() + " in " + resp.getExecutionTime() + "ms");
+				MuninFoo.logV("grabUrl", "Downloaded " + (response.getEntity().getContentLength()/1000) + "kb in " + resp.getExecutionTime() + "ms");
 		}
 		catch (SocketTimeoutException | ConnectTimeoutException e) { resp.setTimeout(true); }
 		catch (SSLException e) { // SSLPeerUnverifiedException

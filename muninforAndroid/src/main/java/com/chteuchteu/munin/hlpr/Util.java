@@ -284,7 +284,7 @@ public final class Util {
 		GridsLegend("gridsLegend"),
 
 		Twitter_NbLaunches("twitter_nbLaunches"),        AddServer_History("addserver_history"),
-		Widget2_ForceUpdate("widget2_forceUpdate"),
+		Widget2_ForceUpdate("widget2_forceUpdate"),      OpenSourceDialogShown("openSourceDialogShown"),
 
 		// Old prefs
 		Drawer("drawer"), Splash("splash"), ListViewMode("listViewMode"), Transitions("transitions");
