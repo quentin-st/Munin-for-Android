@@ -4,7 +4,7 @@
 
 	<item
 		android:id="@+id/menu_period"
-		app:showAsAction="ifRoom"
+		app:showAsAction="always"
 		android:title="@string/text76">
 		<menu>
 			<item
@@ -23,17 +23,17 @@
 	</item>
 	<item
 		android:id="@+id/menu_labels"
-		app:showAsAction="ifRoom"
+		app:showAsAction="always"
 		android:icon="@drawable/ic_action_label"
 		android:title="@string/button_labels"/>
 	<item
 		android:id="@+id/menu_refresh"
-		app:showAsAction="ifRoom"
+		app:showAsAction="always"
 		android:icon="@drawable/ic_action_navigation_refresh"
 		android:title="@string/menu_graph_refresh"/>
 	<item
 		android:id="@+id/menu_documentation"
-		app:showAsAction="ifRoom"
+		app:showAsAction="always"
 		android:visible="false"
 		android:title="@string/documentation"
 		android:icon="@drawable/ic_action_help2"/>

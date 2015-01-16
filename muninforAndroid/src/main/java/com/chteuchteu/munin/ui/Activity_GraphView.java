@@ -887,10 +887,9 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	private void actionDocumentation() {
 		menu.clear();
-		final MuninPlugin plugin = muninFoo.getCurrentServer().getPlugins().get(viewFlow.getSelectedItemPosition());
 
 		// Get file content
-		String fileContent = DocumentationHelper.getDocumentation(context, plugin, "");
+		String fileContent = DocumentationHelper.getDocumentation(context, currentPlugin, "");
 		if (!fileContent.equals("")) {
 			// Animation
 			View documentation = findViewById(R.id.documentation);
@@ -915,12 +914,12 @@ public class Activity_GraphView extends MuninActivity {
 			// Content filling
 			iv_documentation = (ImageView) findViewById(R.id.doc_imageview);
 			iv_documentation.setImageBitmap(bitmaps[viewFlow.getSelectedItemPosition()]);
-			iv_documentation.setTag(plugin.getName());
+			iv_documentation.setTag(currentPlugin.getName());
 
 			TextView line1 = (TextView) findViewById(R.id.doc_line1);
 			TextView line2 = (TextView) findViewById(R.id.doc_line2);
-			line1.setText(plugin.getFancyName());
-			line2.setText(plugin.getName());
+			line1.setText(currentPlugin.getFancyName());
+			line2.setText(currentPlugin.getName());
 			Util.Fonts.setFont(context, line1, Util.Fonts.CustomFont.Roboto_Regular);
 			Util.Fonts.setFont(context, line2, Util.Fonts.CustomFont.Roboto_Regular);
 
@@ -929,7 +928,7 @@ public class Activity_GraphView extends MuninActivity {
 			Util.Fonts.setFont(context, doc, Util.Fonts.CustomFont.Roboto_Regular);
 
 			Spinner spinner = (Spinner) findViewById(R.id.doc_spinner);
-			final List<String> nodes = DocumentationHelper.getNodes(plugin);
+			final List<String> nodes = DocumentationHelper.getNodes(currentPlugin);
 
 			findViewById(R.id.doc_scrollview).setScrollY(0);
 
@@ -948,7 +947,7 @@ public class Activity_GraphView extends MuninActivity {
 						String node = nodes.get(i);
 						if (node.equals(""))
 							node = "node";
-						String fileContent = DocumentationHelper.getDocumentation(context, plugin, node);
+						String fileContent = DocumentationHelper.getDocumentation(context, currentPlugin, node);
 						doc.setText(Html.fromHtml(fileContent));
 					}
 					@Override public void onNothingSelected(AdapterView<?> adapterView) { }
@@ -970,7 +969,24 @@ public class Activity_GraphView extends MuninActivity {
 		if (currentPlugin.getInstalledOn().getParent().isDynazoomAvailable() != DynazoomAvailability.TRUE)
 			return;
 
-		findViewById(R.id.dynazoom).setVisibility(View.VISIBLE);
+		// Animation
+		View dynazoom = findViewById(R.id.dynazoom);
+
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int screenH = size.y;
+		TranslateAnimation a1 = new TranslateAnimation(
+				Animation.RELATIVE_TO_SELF, 0,
+				Animation.RELATIVE_TO_SELF, 0,
+				Animation.ABSOLUTE, screenH,
+				Animation.RELATIVE_TO_SELF, 0);
+		a1.setDuration(300);
+		a1.setFillAfter(true);
+		a1.setInterpolator(new AccelerateDecelerateInterpolator());
+		dynazoom.setVisibility(View.VISIBLE);
+		dynazoom.startAnimation(a1);
+
 		Util.Fonts.setFont(this, (ViewGroup) findViewById(R.id.dynazoom_params), Util.Fonts.CustomFont.Roboto_Regular);
 
 		dynazoom_from = Util.Dynazoom.getFromPinPoint(load_period);
@@ -1062,7 +1078,28 @@ public class Activity_GraphView extends MuninActivity {
 		});
 	}
 	public void hideDynazoom() {
-		findViewById(R.id.dynazoom).setVisibility(View.GONE);
+		final View dynazoom = findViewById(R.id.dynazoom);
+
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int screenH = size.y;
+		TranslateAnimation a1 = new TranslateAnimation(
+				Animation.RELATIVE_TO_SELF, 0,
+				Animation.RELATIVE_TO_SELF, 0,
+				Animation.RELATIVE_TO_SELF, 0,
+				Animation.ABSOLUTE, screenH);
+		a1.setDuration(300);
+		a1.setInterpolator(new AccelerateDecelerateInterpolator());
+		a1.setAnimationListener(new Animation.AnimationListener() {
+			@Override public void onAnimationStart(Animation animation) { }
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				dynazoom.setVisibility(View.GONE);
+			}
+			@Override public void onAnimationRepeat(Animation animation) { }
+		});
+		dynazoom.startAnimation(a1);
 	}
 	public boolean isDynazoomOpen() { return findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE; }
 	private void dynazoom_updateFromTo() {
