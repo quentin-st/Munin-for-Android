@@ -276,5 +276,6 @@
 	<string name="close">Close</string>
 	<string name="documentation">Documentation</string>
 	<string name="ok">OK</string>
+	<string name="grids_settings">Grids settings</string>
 
 </resources>

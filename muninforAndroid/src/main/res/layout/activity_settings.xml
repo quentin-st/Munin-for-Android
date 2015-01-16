@@ -211,7 +211,7 @@
 						style="@style/Material_SubTitle"
 						android:layout_marginLeft="15dp"
 						android:layout_marginRight="15dp"
-						android:text="@string/settings_titlelabel_graphs" />
+						android:text="@string/grids_settings" />
 
 					<!-- Graphs screen orientation -->
 
