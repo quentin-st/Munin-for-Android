@@ -33,7 +33,6 @@ import com.chteuchteu.munin.ui.Activity_Grid;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO actions buttons
 public class GridItem {
 	public long			id;
 	public int 			X;

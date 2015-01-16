@@ -275,7 +275,7 @@
 	<string name="disableHDGraphs">Désactiver les graphs HD</string>
 	<string name="certificate_error">Votre connexion n\'est pas privée</string>
 	<string name="alert_opensource">Le saviez-vous ? Munin for Android est maintenant open-source !</string>
-	<string name="alert_opensource_action">Contribuer on GitHub</string>
+	<string name="alert_opensource_action">Contribuer sur GitHub</string>
 	<string name="close">Fermer</string>
 
 </resources>
