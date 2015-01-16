@@ -9,8 +9,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.adptr.Adapter_SeparatedList;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_SeparatedList;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -49,7 +49,7 @@ public class Activity_Label extends MuninActivity {
 		
 		setContentView(R.layout.activity_labels_pluginselection);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_Label);
+		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(label.getName());
 
@@ -99,7 +99,10 @@ public class Activity_Label extends MuninActivity {
 		item.put("title", title);  
 		item.put("caption", caption);  
 		return item;  
-	} 
+	}
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Labels; }
 
 	@Override
 	public void onBackPressed() {

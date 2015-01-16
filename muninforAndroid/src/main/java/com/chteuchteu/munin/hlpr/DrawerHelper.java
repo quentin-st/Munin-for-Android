@@ -46,11 +46,14 @@ import com.chteuchteu.munin.obj.SearchResult;
 import com.chteuchteu.munin.obj.SearchResult.SearchResultType;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
+import com.chteuchteu.munin.ui.Activity_GraphView;
+import com.chteuchteu.munin.ui.Activity_Grid;
 import com.chteuchteu.munin.ui.Activity_Grids;
 import com.chteuchteu.munin.ui.Activity_Labels;
 import com.chteuchteu.munin.ui.Activity_Notifications;
 import com.chteuchteu.munin.ui.Activity_Plugins;
 import com.chteuchteu.munin.ui.Activity_Servers;
+import com.chteuchteu.munin.ui.MuninActivity;
 
 import org.taptwo.android.widget.ViewFlow;
 
@@ -60,29 +63,13 @@ import java.util.List;
 
 @SuppressLint("InflateParams")
 public class DrawerHelper {
-	public static final int Activity_About = -1;
-	public static final int Activity_Alerts = 2;
-	public static final int Activity_AlertsPluginSelection = 2;
-	public static final int Activity_Label = 9;
-	public static final int Activity_Labels = 9;
-	public static final int Activity_GoPremium = 10;
-	public static final int Activity_GraphView = 3;
-	public static final int Activity_Grid = 11;
-	public static final int Activity_Grids = 11;
-	public static final int Activity_Main = 0;
-	public static final int Activity_Notifications = 4;
-	public static final int Activity_Plugins = 7;
-	public static final int Activity_Server_Add = 1;
-	public static final int Activity_Servers = 5;
-	public static final int Activity_ServersEdit = 5;
-	public static final int Activity_Settings = 6;
-	
-	private ActionBarActivity a;
-	private Context c;
-	private MuninFoo m;
-	private int n;
-	//private SlidingMenu sm;
+	private ActionBarActivity activity;
+	private Context context;
+	private MuninFoo muninFoo;
+	private MuninActivity currentActivity;
 	private DrawerLayout drawerLayout;
+
+	public enum DrawerMenuItem { None, Servers, Alerts, Graphs, Notifications, Labels, Premium, Grid }
 	
 	private EditText search;
 	private ListView search_results;
@@ -90,61 +77,27 @@ public class DrawerHelper {
 	private ArrayList<SearchResult> search_results_array;
 	private List<String> search_cachedGridsList;
 	
-	public DrawerHelper(ActionBarActivity a, MuninFoo m) {
-		this.a = a;
-		this.m = m;
-		this.c = a.getApplicationContext();
+	public DrawerHelper(ActionBarActivity activity, MuninFoo muninFoo) {
+		this.activity = activity;
+		this.muninFoo = muninFoo;
+		this.context = activity;
 		initDrawer();
 	}
 	
 	public void reset() {
 		initDrawer();
-		setDrawerActivity(n);
+		setDrawerActivity(currentActivity);
 	}
 	
-	public void setDrawerActivity(int activity) {
-		this.n = activity;
-		switch (activity) {
-		case Activity_Main:
-			// Home : nothing
-			setSelectedMenuItem("");
-			break;
-		case Activity_Server_Add:
-			setSelectedMenuItem("servers");
-			break;
-		case Activity_Alerts:
-			setSelectedMenuItem("alerts");
-			break;
-		case Activity_GraphView:
-			setSelectedMenuItem("graphs");
-			//initPluginsList();
-			break;
-		case Activity_Notifications:
-			setSelectedMenuItem("notifications");
-			break;
-		case Activity_Servers: // Activity_ServersEdit
-			setSelectedMenuItem("servers");
-			break;
-		case Activity_Settings:
-			// Nothing selected (ActionBar)
-			setSelectedMenuItem("");
-			break;
-		case Activity_Plugins:
-			setSelectedMenuItem("graphs");
-			break;
-		case Activity_Label: // Activity_Labels
-			setSelectedMenuItem("labels");
-			break;
-		case Activity_GoPremium:
-			setSelectedMenuItem("premium");
-			break;
-		case Activity_Grid: // Activity_Grids
-			setSelectedMenuItem("grid");
-			break;
-		default:
-			setSelectedMenuItem("");
-			break;
+	public void setDrawerActivity(MuninActivity activity) {
+		this.currentActivity = activity;
+
+		if (activity == null) {
+			setSelectedMenuItem(DrawerMenuItem.None);
+			return;
 		}
+
+		setSelectedMenuItem(activity.getDrawerMenuItem());
 	}
 
 	public void toggle() {
@@ -156,89 +109,87 @@ public class DrawerHelper {
 
 	public DrawerLayout getDrawerLayout() { return this.drawerLayout; }
 
+	private int getIntentFlag() {
+		return this.currentActivity instanceof Activity_Grid ? Intent.FLAG_ACTIVITY_CLEAR_TOP
+				: Intent.FLAG_ACTIVITY_NEW_TASK;
+	}
+
 	private void initDrawer() {
-		drawerLayout = (DrawerLayout) a.findViewById(R.id.drawerLayout);
-		
-		a.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+		drawerLayout = (DrawerLayout) activity.findViewById(R.id.drawerLayout);
+
+		activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
 		// Graphs
-		a.findViewById(R.id.drawer_graphs_btn).setOnClickListener(new OnClickListener() {
+		activity.findViewById(R.id.drawer_graphs_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(a, Activity_Plugins.class);
-				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				a.startActivity(i);
-				Util.setTransition(a, TransitionStyle.DEEPER);
+				Intent i = new Intent(activity, Activity_Plugins.class);
+				i.addFlags(getIntentFlag());
+				activity.startActivity(i);
+				Util.setTransition(activity, TransitionStyle.DEEPER);
 			}
 		});
-		a.findViewById(R.id.drawer_grid_btn).setOnClickListener(new OnClickListener() {
+		activity.findViewById(R.id.drawer_grid_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(a, Activity_Grids.class);
-				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				a.startActivity(i);
-				Util.setTransition(a, TransitionStyle.DEEPER);
+				Intent i = new Intent(activity, Activity_Grids.class);
+				i.addFlags(getIntentFlag());
+				activity.startActivity(i);
+				Util.setTransition(activity, TransitionStyle.DEEPER);
 			}
 		});
 		// Alerts
-		a.findViewById(R.id.drawer_alerts_btn).setOnClickListener(new OnClickListener() {
+		activity.findViewById(R.id.drawer_alerts_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(a, Activity_Alerts.class);
-				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				a.startActivity(i);
-				Util.setTransition(a, TransitionStyle.DEEPER);
+				Intent i = new Intent(activity, Activity_Alerts.class);
+				i.addFlags(getIntentFlag());
+				activity.startActivity(i);
+				Util.setTransition(activity, TransitionStyle.DEEPER);
 			}
 		});
 		// Labels
-		a.findViewById(R.id.drawer_labels_btn).setOnClickListener(new OnClickListener() {
+		activity.findViewById(R.id.drawer_labels_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(a, Activity_Labels.class);
-				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				a.startActivity(i);
-				Util.setTransition(a, TransitionStyle.DEEPER);
+				Intent i = new Intent(activity, Activity_Labels.class);
+				i.addFlags(getIntentFlag());
+				activity.startActivity(i);
+				Util.setTransition(activity, TransitionStyle.DEEPER);
 			}
 		});
 		// Servers
-		a.findViewById(R.id.drawer_servers_btn).setOnClickListener(new OnClickListener() {
+		activity.findViewById(R.id.drawer_servers_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(a, Activity_Servers.class);
-				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				a.startActivity(i);
-				Util.setTransition(a, TransitionStyle.DEEPER);
+				Intent i = new Intent(activity, Activity_Servers.class);
+				i.addFlags(getIntentFlag());
+				activity.startActivity(i);
+				Util.setTransition(activity, TransitionStyle.DEEPER);
 			}
 		});
 		// Notifications
-		a.findViewById(R.id.drawer_notifications_btn).setOnClickListener(new OnClickListener() {
+		activity.findViewById(R.id.drawer_notifications_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(a, Activity_Notifications.class);
-				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				a.startActivity(i);
-				Util.setTransition(a, TransitionStyle.DEEPER);
+				Intent i = new Intent(activity, Activity_Notifications.class);
+				i.addFlags(getIntentFlag());
+				activity.startActivity(i);
+				Util.setTransition(activity, TransitionStyle.DEEPER);
 			}
 		});
 		// Premium
-		a.findViewById(R.id.drawer_premium_btn).setOnClickListener(new OnClickListener() {
+		activity.findViewById(R.id.drawer_premium_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(a, Activity_GoPremium.class);
-				if (n == Activity_Grid)	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				else					i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				a.startActivity(i);
-				Util.setTransition(a, TransitionStyle.DEEPER);
+				Intent i = new Intent(activity, Activity_GoPremium.class);
+				i.addFlags(getIntentFlag());
+				activity.startActivity(i);
+				Util.setTransition(activity, TransitionStyle.DEEPER);
 			}
 		});
 		// Support
-		a.findViewById(R.id.drawer_support_btn).setOnClickListener(new OnClickListener() {
+		activity.findViewById(R.id.drawer_support_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent send = new Intent(Intent.ACTION_SENDTO);
@@ -247,20 +198,20 @@ public class DrawerHelper {
 				Uri uri = Uri.parse(uriText);
 				
 				send.setData(uri);
-				a.startActivity(Intent.createChooser(send, c.getString(R.string.choose_email_client)));
+				activity.startActivity(Intent.createChooser(send, context.getString(R.string.choose_email_client)));
 			}
 		});
 		// Donate
-		a.findViewById(R.id.drawer_donate_btn).setOnClickListener(new OnClickListener() {
+		activity.findViewById(R.id.drawer_donate_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new AlertDialog.Builder(a)
+				new AlertDialog.Builder(activity)
 				.setTitle(R.string.donate)
 				.setMessage(R.string.donate_text)
 				.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						LayoutInflater inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+						LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 						View view = inflater.inflate(R.layout.dialog_donate, null);
 						
 						final Spinner spinnerAmount = (Spinner) view.findViewById(R.id.donate_amountSpinner);
@@ -270,11 +221,11 @@ public class DrawerHelper {
 						list.add("2 " + euroSlashDollar);
 						list.add("5 " + euroSlashDollar);
 						list.add("20 " + euroSlashDollar);
-						ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(a, android.R.layout.simple_spinner_item, list);
+						ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, list);
 						dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 						spinnerAmount.setAdapter(dataAdapter);
 						
-						new AlertDialog.Builder(a)
+						new AlertDialog.Builder(activity)
 						.setTitle(R.string.donate)
 						.setView(view)
 						.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
@@ -288,7 +239,7 @@ public class DrawerHelper {
 									case 2: product = BillingService.DONATE_5; break;
 									case 3: product = BillingService.DONATE_20; break;
 								}
-								new DonateAsync(a, product).execute();
+								new DonateAsync(activity, product).execute();
 							}
 						})
 						.setNegativeButton(R.string.text64, null)
@@ -300,28 +251,28 @@ public class DrawerHelper {
 			}
 		});
 		
-		if (!m.premium) {
-			a.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
-			a.findViewById(R.id.drawer_grid_btn).setEnabled(false);
-			a.findViewById(R.id.drawer_notifications_icon).setAlpha(0.5f);
-			a.findViewById(R.id.drawer_notifications_txt).setAlpha(0.5f);
-			a.findViewById(R.id.drawer_grids_icon).setAlpha(0.5f);
-			a.findViewById(R.id.drawer_grids_txt).setAlpha(0.5f);
-			a.findViewById(R.id.drawer_premium_btn).setVisibility(View.VISIBLE);
+		if (!muninFoo.premium) {
+			activity.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
+			activity.findViewById(R.id.drawer_grid_btn).setEnabled(false);
+			activity.findViewById(R.id.drawer_notifications_icon).setAlpha(0.5f);
+			activity.findViewById(R.id.drawer_notifications_txt).setAlpha(0.5f);
+			activity.findViewById(R.id.drawer_grids_icon).setAlpha(0.5f);
+			activity.findViewById(R.id.drawer_grids_txt).setAlpha(0.5f);
+			activity.findViewById(R.id.drawer_premium_btn).setVisibility(View.VISIBLE);
 		}
-		if (m.getServers().size() == 0) {
-			a.findViewById(R.id.drawer_graphs_btn).setEnabled(false);
-			a.findViewById(R.id.drawer_grid_btn).setEnabled(false);
-			a.findViewById(R.id.drawer_alerts_btn).setEnabled(false);
-			a.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
-			a.findViewById(R.id.drawer_labels_btn).setEnabled(false);
+		if (muninFoo.getServers().size() == 0) {
+			activity.findViewById(R.id.drawer_graphs_btn).setEnabled(false);
+			activity.findViewById(R.id.drawer_grid_btn).setEnabled(false);
+			activity.findViewById(R.id.drawer_alerts_btn).setEnabled(false);
+			activity.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
+			activity.findViewById(R.id.drawer_labels_btn).setEnabled(false);
 		}
 		
-		Util.Fonts.setFont(c, (ViewGroup) a.findViewById(R.id.drawer_scrollview), CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(context, (ViewGroup) activity.findViewById(R.id.drawer_scrollview), CustomFont.Roboto_Regular);
 		
 		// Init search
-		search = (EditText) a.findViewById(R.id.drawer_search);
-		search_results = (ListView) a.findViewById(R.id.drawer_search_results);
+		search = (EditText) activity.findViewById(R.id.drawer_search);
+		search_results = (ListView) activity.findViewById(R.id.drawer_search_results);
 		search_results.setVisibility(View.VISIBLE);
 		
 		
@@ -346,13 +297,13 @@ public class DrawerHelper {
 				String string = s.toString().toLowerCase();
 				
 				if (string.length() == 0) {
-					a.findViewById(R.id.drawer_scrollview).setVisibility(View.VISIBLE);
-					a.findViewById(R.id.drawer_search_results).setVisibility(View.GONE);
+					activity.findViewById(R.id.drawer_scrollview).setVisibility(View.VISIBLE);
+					activity.findViewById(R.id.drawer_search_results).setVisibility(View.GONE);
 					search.getCompoundDrawables()[DRAWABLE_RIGHT].setAlpha(0);
 					return;
 				} else {
-					a.findViewById(R.id.drawer_scrollview).setVisibility(View.GONE);
-					a.findViewById(R.id.drawer_search_results).setVisibility(View.VISIBLE);
+					activity.findViewById(R.id.drawer_scrollview).setVisibility(View.GONE);
+					activity.findViewById(R.id.drawer_search_results).setVisibility(View.VISIBLE);
 					search.getCompoundDrawables()[DRAWABLE_RIGHT].setAlpha(255);
 				}
 				
@@ -361,39 +312,39 @@ public class DrawerHelper {
 					search_results_adapter.notifyDataSetChanged();
 				} else {
 					search_results_array = new ArrayList<>();
-					search_results_adapter = new SearchAdapter(a, search_results_array);
+					search_results_adapter = new SearchAdapter(activity, search_results_array);
 					search_results.setAdapter(search_results_adapter);
 				}
 				
 				// Search in plugins and servers
-				for (MuninServer server : MuninFoo.getInstance(c).getServers()) {
+				for (MuninServer server : MuninFoo.getInstance(context).getServers()) {
 					String serverName = server.getName().toLowerCase();
 					String serverUrl = server.getServerUrl().toLowerCase();
 					
 					if (serverName.contains(string) || serverUrl.contains(string))
-						search_results_array.add(new SearchResult(SearchResultType.SERVER, server, c));
+						search_results_array.add(new SearchResult(SearchResultType.SERVER, server, context));
 					
 					
 					for (MuninPlugin plugin : server.getPlugins()) {
 						if (plugin.getName().toLowerCase().contains(string)
 								|| plugin.getFancyName().toLowerCase().contains(string))
-							search_results_array.add(new SearchResult(SearchResultType.PLUGIN, plugin, c));
+							search_results_array.add(new SearchResult(SearchResultType.PLUGIN, plugin, context));
 					}
 				}
 				
 				// Search in grids
 				if (search_cachedGridsList == null)
-					search_cachedGridsList = MuninFoo.getInstance(c).sqlite.dbHlpr.getGridsNames();
+					search_cachedGridsList = MuninFoo.getInstance(context).sqlite.dbHlpr.getGridsNames();
 				
 				for (String grid : search_cachedGridsList) {
 					if (grid.toLowerCase().contains(string))
-						search_results_array.add(new SearchResult(SearchResultType.GRID, grid, c));
+						search_results_array.add(new SearchResult(SearchResultType.GRID, grid, context));
 				}
 				
 				// Search in labels
-				for (Label label : MuninFoo.getInstance(c).labels) {
+				for (Label label : MuninFoo.getInstance(context).labels) {
 					if (label.getName().toLowerCase().contains(string))
-						search_results_array.add(new SearchResult(SearchResultType.LABEL, label, c));
+						search_results_array.add(new SearchResult(SearchResultType.LABEL, label, context));
 				}
 				
 				search_results_adapter.notifyDataSetChanged();
@@ -409,7 +360,7 @@ public class DrawerHelper {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
 				SearchResult searchResult = search_results_array.get(position);
-				searchResult.onClick(a);
+				searchResult.onClick(activity);
 			}
 		});
 		
@@ -420,7 +371,7 @@ public class DrawerHelper {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					if (event.getX() >= (search.getRight() - search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
 						search.setText("");
-						Util.hideKeyboard(a, search);
+						Util.hideKeyboard(activity, search);
 					}
 				}
 				
@@ -434,65 +385,65 @@ public class DrawerHelper {
 			drawerLayout.closeDrawer(Gravity.START);
 	}
 	
-	private void setSelectedMenuItem(String menuItemName) {
+	private void setSelectedMenuItem(DrawerMenuItem menuItemName) {
 		switch (menuItemName) {
-			case "graphs": {
-				TextView tv = (TextView) a.findViewById(R.id.drawer_graphs_txt);
-				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-				((ImageView) a.findViewById(R.id.drawer_graphs_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+			case Graphs: {
+				TextView tv = (TextView) activity.findViewById(R.id.drawer_graphs_txt);
+				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
+				((ImageView) activity.findViewById(R.id.drawer_graphs_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 				break;
 			}
-			case "grid": {
-				TextView tv = (TextView) a.findViewById(R.id.drawer_grids_txt);
-				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-				((ImageView) a.findViewById(R.id.drawer_grids_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+			case Grid: {
+				TextView tv = (TextView) activity.findViewById(R.id.drawer_grids_txt);
+				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
+				((ImageView) activity.findViewById(R.id.drawer_grids_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 				break;
 			}
-			case "alerts": {
-				TextView tv = (TextView) a.findViewById(R.id.drawer_alerts_txt);
-				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-				((ImageView) a.findViewById(R.id.drawer_alerts_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+			case Alerts: {
+				TextView tv = (TextView) activity.findViewById(R.id.drawer_alerts_txt);
+				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
+				((ImageView) activity.findViewById(R.id.drawer_alerts_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 				break;
 			}
-			case "labels": {
-				TextView tv = (TextView) a.findViewById(R.id.drawer_labels_txt);
-				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-				((ImageView) a.findViewById(R.id.drawer_labels_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+			case Labels: {
+				TextView tv = (TextView) activity.findViewById(R.id.drawer_labels_txt);
+				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
+				((ImageView) activity.findViewById(R.id.drawer_labels_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 				break;
 			}
-			case "servers": {
-				TextView tv = (TextView) a.findViewById(R.id.drawer_servers_txt);
-				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-				((ImageView) a.findViewById(R.id.drawer_servers_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+			case Servers: {
+				TextView tv = (TextView) activity.findViewById(R.id.drawer_servers_txt);
+				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
+				((ImageView) activity.findViewById(R.id.drawer_servers_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 				break;
 			}
-			case "notifications": {
-				TextView tv = (TextView) a.findViewById(R.id.drawer_notifications_txt);
-				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-				((ImageView) a.findViewById(R.id.drawer_notifications_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+			case Notifications: {
+				TextView tv = (TextView) activity.findViewById(R.id.drawer_notifications_txt);
+				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
+				((ImageView) activity.findViewById(R.id.drawer_notifications_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 				break;
 			}
-			case "premium": {
-				TextView tv = (TextView) a.findViewById(R.id.drawer_premium_txt);
-				tv.setTextColor(c.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(c, tv, CustomFont.Roboto_Medium);
-				((ImageView) a.findViewById(R.id.drawer_premium_icon)).setColorFilter(c.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+			case Premium: {
+				TextView tv = (TextView) activity.findViewById(R.id.drawer_premium_txt);
+				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
+				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
+				((ImageView) activity.findViewById(R.id.drawer_premium_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
 				break;
 			}
-			case "":
-				((TextView) a.findViewById(R.id.drawer_graphs_txt)).setTextColor(0xffffffff);
-				((TextView) a.findViewById(R.id.drawer_grids_txt)).setTextColor(0xffffffff);
-				((TextView) a.findViewById(R.id.drawer_alerts_txt)).setTextColor(0xffffffff);
-				((TextView) a.findViewById(R.id.drawer_labels_txt)).setTextColor(0xffffffff);
-				((TextView) a.findViewById(R.id.drawer_servers_txt)).setTextColor(0xffffffff);
-				((TextView) a.findViewById(R.id.drawer_notifications_txt)).setTextColor(0xffffffff);
-				((TextView) a.findViewById(R.id.drawer_premium_txt)).setTextColor(0xffffffff);
+			case None:
+				((TextView) activity.findViewById(R.id.drawer_graphs_txt)).setTextColor(0xffffffff);
+				((TextView) activity.findViewById(R.id.drawer_grids_txt)).setTextColor(0xffffffff);
+				((TextView) activity.findViewById(R.id.drawer_alerts_txt)).setTextColor(0xffffffff);
+				((TextView) activity.findViewById(R.id.drawer_labels_txt)).setTextColor(0xffffffff);
+				((TextView) activity.findViewById(R.id.drawer_servers_txt)).setTextColor(0xffffffff);
+				((TextView) activity.findViewById(R.id.drawer_notifications_txt)).setTextColor(0xffffffff);
+				((TextView) activity.findViewById(R.id.drawer_premium_txt)).setTextColor(0xffffffff);
 				break;
 		}
 	}
@@ -502,25 +453,25 @@ public class DrawerHelper {
 	}
 	
 	public int getDrawerScrollY() {
-		ScrollView v = (ScrollView)a.findViewById(R.id.drawer_scrollview);
+		ScrollView v = (ScrollView)activity.findViewById(R.id.drawer_scrollview);
 		if (v != null)
 			return v.getScrollY();
 		return 0;
 	}
 	
 	public void initPluginsList(final int scrollY) {
-		((LinearLayout)a.findViewById(R.id.drawer_containerPlugins)).removeAllViews();
+		((LinearLayout)activity.findViewById(R.id.drawer_containerPlugins)).removeAllViews();
 		
-		a.findViewById(R.id.drawer_containerPlugins).setVisibility(View.VISIBLE);
-		LayoutInflater vi = (LayoutInflater) a.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		activity.findViewById(R.id.drawer_containerPlugins).setVisibility(View.VISIBLE);
+		LayoutInflater vi = (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		final com.chteuchteu.munin.ui.Activity_GraphView activity = (com.chteuchteu.munin.ui.Activity_GraphView) a;
-		final ViewFlow vf = activity.viewFlow;
+		final Activity_GraphView activityGraphView = (Activity_GraphView) activity;
+		final ViewFlow vf = activityGraphView.viewFlow;
 
 
 		int vfpos = vf.getSelectedItemPosition();
 		int pos = 0;
-		for (final MuninPlugin mp : m.getCurrentServer().getPlugins()) {
+		for (final MuninPlugin mp : muninFoo.getCurrentServer().getPlugins()) {
 			View v = vi.inflate(R.layout.drawer_subbutton, null);
 			final TextView b = (TextView)v.findViewById(R.id.button);
 			b.setText(mp.getFancyName());
@@ -541,7 +492,7 @@ public class DrawerHelper {
 							scroll = scrollY;
 						else
 							scroll = (b.getHeight() + 1) * position;
-						a.findViewById(R.id.drawer_scrollview).setScrollY(scroll);
+						activity.findViewById(R.id.drawer_scrollview).setScrollY(scroll);
 					}
 				});
 				
@@ -551,21 +502,21 @@ public class DrawerHelper {
 				public void onClick (View v) {
 					TextView b = (TextView) v;
 					int p = 0;
-					for (int i=0; i<m.getCurrentServer().getPlugins().size(); i++) {
-						if (m.getCurrentServer().getPlugin(i).getFancyName().equals(b.getText().toString())) {
+					for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
+						if (muninFoo.getCurrentServer().getPlugin(i).getFancyName().equals(b.getText().toString())) {
 							p = i;
 							break;
 						}
 					}
 					vf.setSelection(p);
-					initPluginsList(((ScrollView)a.findViewById(R.id.drawer_scrollview)).getScrollY());
-					if (activity.isDynazoomOpen())
-						activity.hideDynazoom();
+					initPluginsList(activity.findViewById(R.id.drawer_scrollview).getScrollY());
+					if (activityGraphView.isDynazoomOpen())
+						activityGraphView.hideDynazoom();
 					toggle();
 				}
 			});
 			
-			View insertPoint = a.findViewById(R.id.drawer_containerPlugins);
+			View insertPoint = activity.findViewById(R.id.drawer_containerPlugins);
 			((ViewGroup) insertPoint).addView(v);
 			pos++;
 		}

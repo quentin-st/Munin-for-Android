@@ -22,9 +22,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.adptr.Adapter_ExpandableListView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_ExpandableListView;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.ImportExportHelper;
 import com.chteuchteu.munin.hlpr.ImportExportHelper.Export.ExportRequestMaker;
@@ -54,7 +54,7 @@ public class Activity_Servers extends MuninActivity {
 
 		setContentView(R.layout.activity_servers);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_Servers);
+		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.serversTitle));
 		
@@ -530,6 +530,9 @@ public class Activity_Servers extends MuninActivity {
 			updateDrawerIfNeeded();
 		}
 	}
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Servers; }
 
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();

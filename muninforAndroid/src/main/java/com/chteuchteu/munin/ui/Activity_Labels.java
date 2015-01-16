@@ -35,7 +35,7 @@ public class Activity_Labels extends MuninActivity {
 		
 		setContentView(R.layout.activity_labelselection);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_Labels);
+		dh.setDrawerActivity(this);
 
 		listview = (ListView) findViewById(R.id.listview);
 		list = new ArrayList<>();
@@ -136,6 +136,10 @@ public class Activity_Labels extends MuninActivity {
 		else
 			findViewById(R.id.no_label).setVisibility(View.VISIBLE);
 	}
+
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Labels; }
 
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();

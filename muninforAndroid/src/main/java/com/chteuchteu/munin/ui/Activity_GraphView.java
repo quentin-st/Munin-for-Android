@@ -134,7 +134,7 @@ public class Activity_GraphView extends MuninActivity {
 
 		setContentView(R.layout.activity_graphview);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_GraphView);
+		dh.setDrawerActivity(this);
 
 		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -1084,6 +1084,9 @@ public class Activity_GraphView extends MuninActivity {
 			case SECURE: ic_secure.setVisibility(View.VISIBLE); break;
 		}
 	}
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Graphs; }
 
 	@Override
 	public void onStop() {

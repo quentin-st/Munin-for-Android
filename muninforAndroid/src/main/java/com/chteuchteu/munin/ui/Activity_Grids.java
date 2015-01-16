@@ -41,7 +41,7 @@ public class Activity_Grids extends MuninActivity {
 
 		setContentView(R.layout.activity_grids);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_Grids);
+		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.button_grid));
 
@@ -172,6 +172,10 @@ public class Activity_Grids extends MuninActivity {
 		Button okButton = d.getButton(DialogInterface.BUTTON_POSITIVE);
 		okButton.setOnClickListener(new CustomListener(input, d));
 	}
+
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Grid; }
 
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();

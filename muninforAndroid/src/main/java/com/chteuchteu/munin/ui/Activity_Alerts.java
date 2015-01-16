@@ -70,7 +70,7 @@ public class Activity_Alerts extends MuninActivity {
 
 		setContentView(R.layout.activity_alerts);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_Alerts);
+		dh.setDrawerActivity(this);
 
 		listMode_flat = false;
 
@@ -442,7 +442,10 @@ public class Activity_Alerts extends MuninActivity {
 
 		return true;
 	}
-	
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Alerts; }
+
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent(this, Activity_Main.class);

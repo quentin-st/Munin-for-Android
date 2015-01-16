@@ -30,7 +30,7 @@ public class Activity_GoPremium extends MuninActivity {
 
 		setContentView(R.layout.activity_go_premium);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_GoPremium);
+		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.goPremiumTitle));
 		
@@ -98,6 +98,9 @@ public class Activity_GoPremium extends MuninActivity {
 		Util.Fonts.setFont(this, price3, CustomFont.RobotoCondensed_Regular);
 		Util.Fonts.setFont(this, buyNow, CustomFont.RobotoCondensed_Regular);
 	}
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Premium; }
 	
 	@Override
 	public void onBackPressed() {

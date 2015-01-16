@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.SimpleAdapter;
 
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
@@ -33,7 +32,7 @@ public class Activity_ServersEdit extends MuninActivity {
 		
 		setContentView(R.layout.activity_servers_edit);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_ServersEdit);
+		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.editServersTitle));
 		

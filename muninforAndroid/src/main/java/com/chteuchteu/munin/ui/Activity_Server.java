@@ -75,9 +75,9 @@ public class Activity_Server extends MuninActivity {
 		
 		setContentView(R.layout.activity_server);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_Server_Add);
+		dh.setDrawerActivity(this);
 
-		actionBar.setTitle(getString(R.string.addServerTitle)); // Add a server
+		actionBar.setTitle(getString(R.string.addServerTitle));
 
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.muninMasterUrlLabel), CustomFont.Roboto_Medium);
 		
@@ -804,4 +804,6 @@ public class Activity_Server extends MuninActivity {
 			return his.split(";");
 	}
 
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Servers; }
 }

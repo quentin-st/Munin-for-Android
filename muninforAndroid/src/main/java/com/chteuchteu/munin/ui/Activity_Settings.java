@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -45,7 +44,7 @@ public class Activity_Settings extends MuninActivity {
 
 		setContentView(R.layout.activity_settings);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_Settings);
+		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.settingsTitle));
 		

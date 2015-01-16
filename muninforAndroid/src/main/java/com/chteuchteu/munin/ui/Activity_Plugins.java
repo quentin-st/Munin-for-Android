@@ -24,8 +24,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.chteuchteu.munin.adptr.Adapter_SeparatedList;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_SeparatedList;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -64,7 +64,7 @@ public class Activity_Plugins extends MuninActivity {
 
 		setContentView(R.layout.activity_plugins);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_Plugins);
+		dh.setDrawerActivity(this);
 
 		this.listview = (ListView) findViewById(R.id.listview);
 		list = new ArrayList<>();
@@ -324,6 +324,9 @@ public class Activity_Plugins extends MuninActivity {
 			public void onTextChanged(CharSequence s, int start, int before, int count) { }
 		});
 	}
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Graphs; }
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

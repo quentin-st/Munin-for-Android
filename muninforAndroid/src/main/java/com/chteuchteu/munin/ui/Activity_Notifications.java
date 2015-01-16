@@ -59,7 +59,7 @@ public class Activity_Notifications extends MuninActivity {
 
 		setContentView(R.layout.activity_notifications);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_Notifications);
+		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.notificationsTitle));
 		
@@ -316,6 +316,9 @@ public class Activity_Notifications extends MuninActivity {
 				Toast.makeText(context, R.string.text56, Toast.LENGTH_SHORT).show();
 		}
 	}
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Notifications; }
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

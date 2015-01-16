@@ -145,6 +145,7 @@ public class MuninActivity extends ActionBarActivity {
 		return true;
 	}
 
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.None; }
 	protected void setOnDrawerOpen(Runnable val) { this.onDrawerOpen = val; }
 	protected void setOnDrawerClose(Runnable val) { this.onDrawerClose = val; }
 

@@ -53,7 +53,7 @@ public class Activity_Grid extends MuninActivity {
 
 		setContentView(R.layout.activity_grid);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_Grid);
+		dh.setDrawerActivity(this);
 
 		editing = false;
 		updating = false;
@@ -273,6 +273,9 @@ public class Activity_Grid extends MuninActivity {
 		context.startActivity(i);
 		Util.setTransition(context, TransitionStyle.DEEPER);
 	}
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Grid; }
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

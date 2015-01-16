@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -29,7 +28,7 @@ public class Activity_AlertsPluginSelection extends MuninActivity {
 		
 		setContentView(R.layout.activity_alerts_pluginselection);
 		super.onContentViewSet();
-		dh.setDrawerActivity(DrawerHelper.Activity_AlertsPluginSelection);
+		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(muninFoo.getCurrentServer().getName());
 		
