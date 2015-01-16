@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
 
 	<string name="app_name">Munin for Android</string>
 	<string name="button_graphs">Graphiques</string>
 	<string name="button_server">Serveurs</string>
-	<string name="button_premium">Go premium</string>
+	<string name="button_premium">Premium</string>
 	<string name="button_alerts">Alertes</string>
 	<string name="button_labels">Labels</string>
 	<string name="button_grid">Grilles</string>
 	<string name="button_notifications">Notifications</string>
-	<string name="settings_URL_label">Munin-master URL</string>
+	<string name="settings_URL_label">URL du master</string>
 	<string name="settings_URL_label2">ex: https://88.180.108.192:80/munin/</string>
-	<string name="settings_text">… ou choisissez un serveur d\'exemple</string>
+	<string name="settings_text">… ou choisissez un serveur d\'exemple :</string>
 	<string name="settings_http_auth2">Authentification HTTP requise</string>
 	<string name="settings_hdgraphs">Activer les graphs HD</string>
 	<string name="settings_hdgraphs_text">Essayer d\'utiliser DynaZoom pour récupérer des graphs de meilleure qualité</string>
@@ -30,7 +30,7 @@
 	<string name="save_button">Sauvegarder</string>
 	<string name="menu_graph_refresh">Actualiser</string>
 	<string name="menu_graph_save">Sauvegarder le graph sur la carte SD</string>
-	<string name="menu_graph_switch">Changer de serveur…</string>
+	<string name="menu_graph_switch">Changer de serveur</string>
 	<string name="menu_addserver_save">Sauvegarder le serveur</string>
 	<string name="menu_addserver_delete">Supprimer le serveur</string>
 	<string name="loading">Chargement…</string>
@@ -38,29 +38,29 @@
 	<string name="about_eraseData">Remise à zéro de l\'appli</string>
 	<string name="about_gplay">Notez l\'application sur Google Play</string>
 	<string name="graphView_ImageViewDescription">Graphique</string>
-	<string name="renameMaster">Rename master</string>
+	<string name="renameMaster">Renommer</string>
 	<string name="addServerTitle">Ajouter un serveur</string>
 	<string name="serversTitle">Serveurs</string>
 	<string name="settingsTitle">Options</string>
 	<string name="editServersTitle">Edition des serveurs</string>
 	<string name="aboutTitle">A propos de Munin for Android</string>
-	<string name="goPremiumTitle">Go Premium</string>
+	<string name="goPremiumTitle">Premium</string>
 	<string name="alertsTitle">Alertes</string>
 	<string name="notificationsTitle">Notifications</string>
 	<string name="menu_serversedit_revert">Annuler les modifications</string>
 	<string name="servers_noservers_1">Aucun serveur</string>
 	<string name="servers_noservers_2">Ajoutez-en en cliquant sur +</string>
 	<string name="buy_now">BUY NOW</string>
-	<string name="splashDesc">Loading</string>
+	<string name="splashDesc">Chargement</string>
 	<string name="edit">Editer</string>
-	<string name="widget_configuration1">Félicitations! Le widget a été ajouté avec succès à votre écran d\'accueil. Conseil: vous pouvez actualiser le graph en tapant sur la barre horizontale grise en-dessous de celui-ci.</string>
+	<string name="widget_configuration1">Félicitations ! Le widget a été ajouté avec succès à votre écran d\'accueil. Conseil : vous pouvez actualiser le graph en tapant sur la barre horizontale grise en-dessous de celui-ci !</string>
 	<string name="widget_configuration2">Rafraîchissement auto du graph par Wifi uniquement (1 par heure)</string>
 	<string name="widget_configuration3">Masquer le nom du serveur</string>
 	<string name="text01">Les paramètres et la configuration des serveurs vont être remis à zéro. Etes-vous sûr(e) ?</string>
 	<string name="text02">Remise à zéro effectuée.</string>
-	<string name="text09">Erreur</string>
-	<string name="text11">L\'application Google Play ne semble pas être installée sur votre appareil</string>
-	<string name="text16">L\'URL semble être incorrecte. Veuillez la vérifier</string>
+	<string name="text09">Erreur !</string>
+	<string name="text11">L\'application Google Play ne semble pas être installée sur votre appareil.</string>
+	<string name="text16">L\'URL semble être incorrecte. Veuillez la vérifier.</string>
 	<string name="text18">Félicitations !</string>
 	<string name="text21.1"> serveur</string>
 	<string name="text21.2"> ajouté(s) !</string>
@@ -68,7 +68,7 @@
 	<string name="text27"> plugins trouvés !</string>
 	<string name="text28">Graph sauvegardé sous /muninForAndroid/</string>
 	<string name="text29">Erreur lors de la sauvegarde du graphique</string>
-	<string name="text30">Pas de connexion…</string>
+	<string name="text30">Pas de connexion internet</string>
 	<string name="text33">Oui</string>
 	<string name="text34">Non</string>
 	<string name="text35">En savoir plus…</string>
@@ -133,7 +133,7 @@
 	<string name="export_servers">Exporter</string>
 	<string name="import_export">Importer / Exporter</string>
 	<string name="export_failed">Erreur lors de l\'export…</string>
-	<string name="export_subject">Munin for Android Export</string>
+	<string name="export_subject">Export Munin for Android</string>
 	<string name="import_title">Importation</string>
 	<string name="import_sentence">Veuillez entrer le code généré sur le premier appareil</string>
 	<string name="settings_defaultserver">Default server</string>
@@ -168,7 +168,7 @@
 	<string name="alerts_ok">Bonne nouvelle - tout va bien</string>
 	<string name="update_credentials">Mettre à jour les infos de connexion</string>
 	<string name="long_click">Appui long pour éditer</string>
-	<string name="rescan">Rescan</string>
+	<string name="rescan">Re-scanner</string>
 	<string name="support">Support</string>
 	<string name="choose_email_client">Veuillez sélectionner votre application mail</string>
 	<string name="donate">Donation</string>
@@ -182,8 +182,8 @@
 	<string name="sync_pluginsadded">XXX plugin(s) ajouté(s)\n</string>
 	<string name="sync_pluginsupdated">XXX plugin(s) mis à jour\n</string>
 	<string name="sync_pluginsdeleted">XXX plugin(s) supprimé(s)\n</string>
-	<string name="sync_nochange">No change</string>
-	<string name="sync_reporttitle">Scan report</string>
+	<string name="sync_nochange">Aucun changement</string>
+	<string name="sync_reporttitle">Rapport du scan</string>
 	<string name="follow">Suivre sur Twitter</string>
 	<string name="notifs_vibrate">Activer le vibreur</string>
 	<string name="graphwidgetname">Munin for Android : Widget graphique</string>
