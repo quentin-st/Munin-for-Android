@@ -83,11 +83,11 @@ public class Widget_GraphWidget_Configure extends Activity {
 					finish();
 				}
 				
-				ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+				ArrayList<HashMap<String,String>> list = new ArrayList<>();
 				list.clear();
 				HashMap<String,String> item;
 				for(MuninServer server : muninFoo.getOrderedServers()) {
-					item = new HashMap<String,String>();
+					item = new HashMap<>();
 					item.put("line1", server.getName());
 					item.put("line2", server.getServerUrl());
 					list.add(item);
@@ -107,11 +107,11 @@ public class Widget_GraphWidget_Configure extends Activity {
 						// Populate lv2
 						List<MuninPlugin> plugins = selectedServer.getPlugins();
 						
-						ArrayList<HashMap<String,String>> list2 = new ArrayList<HashMap<String,String>>();
+						ArrayList<HashMap<String,String>> list2 = new ArrayList<>();
 						list2.clear();
 						HashMap<String,String> item2;
 						for (MuninPlugin plugin : plugins) {
-							item2 = new HashMap<String,String>();
+							item2 = new HashMap<>();
 							item2.put("line1", plugin.getFancyName());
 							item2.put("line2", plugin.getName());
 							list2.add(item2);
@@ -131,12 +131,12 @@ public class Widget_GraphWidget_Configure extends Activity {
 								
 								lv2.setVisibility(View.GONE);
 								
-								ArrayList<HashMap<String,String>> list3 = new ArrayList<HashMap<String,String>>();
+								ArrayList<HashMap<String,String>> list3 = new ArrayList<>();
 
 								String[] periods = { getString(R.string.text47_1), getString(R.string.text47_2),
 										getString(R.string.text47_3), getString(R.string.text47_4) };
 								for (String str : periods) {
-									HashMap<String,String> item3 = new HashMap<String,String>();
+									HashMap<String,String> item3 = new HashMap<>();
 									item3.put("line1", str);
 									list3.add(item3);
 								}

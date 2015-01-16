@@ -54,7 +54,7 @@ public class DocumentationHelper {
 	}
 
 	public static List<String> getNodes(MuninPlugin plugin) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 
 		try {
 			JSONObject obj = new JSONObject(jsonStruct);

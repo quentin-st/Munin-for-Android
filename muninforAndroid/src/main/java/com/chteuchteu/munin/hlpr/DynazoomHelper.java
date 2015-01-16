@@ -15,11 +15,11 @@ import com.chteuchteu.munin.obj.MuninServer;
 import com.edmodo.rangebar.RangeBar;
 
 public final class DynazoomHelper {
-	public static int GRAPH_LEFT_MARGIN = 155;
-	public static int GRAPH_RIGHT_MARGIN = 50;
+	private static int GRAPH_LEFT_MARGIN = 155;
+	private static int GRAPH_RIGHT_MARGIN = 50;
 	// Because of the bitmap shadow
-	public static int GRAPH_TOP_MARGIN = 7;
-	public static int GRAPH_BOTTOM_MARGIN = 13;
+	private static int GRAPH_TOP_MARGIN = 7;
+	private static int GRAPH_BOTTOM_MARGIN = 13;
 
 	public static int RANGEBAR_TICKS_COUNT = 30;
 

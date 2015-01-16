@@ -265,11 +265,6 @@ public class Activity_Alerts extends MuninActivity {
 		}
 		
 		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-		
-		@Override
 		protected Void doInBackground(Void... arg0) {
 			for (int i=fromIndex; i<=toIndex; i++) {
 				muninFoo.getServer(i).fetchPluginsStates(muninFoo.getUserAgent());

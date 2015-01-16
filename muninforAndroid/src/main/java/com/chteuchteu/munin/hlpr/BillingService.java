@@ -9,10 +9,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.chteuchteu.munin.R;
 
 public class BillingService {
 	private static BillingService instance;
@@ -80,10 +78,6 @@ public class BillingService {
 			ex.printStackTrace();
 		}
 	}
-
-	public void displayErrorToast() {
-		Toast.makeText(activityContext, R.string.text09, Toast.LENGTH_SHORT).show();
-	}
 	
 	private void unbind() {
 		if (mService != null && isBound) {
@@ -94,8 +88,6 @@ public class BillingService {
 		}
 	}
 	
-	public boolean isBound() { return this.isBound; }
-	public static boolean isLoaded() { return instance != null; }
 	public static BillingService getInstance() { return instance; }
 	private void setProductToBuy(String val) { this.productToBuy = val; }
 	private void setProgressDialog(ProgressDialog val) { this.progressDialog = val; }

@@ -10,11 +10,7 @@
 	<string name="settings_login">"Login"</string>
 	<string name="settings_password">"Passwort"</string>
 	<string name="settings_default_scale">"Standardskalierung der Graphen"</string>
-	<string name="settings_delete_button">"Löschen"</string>
-	<string name="servers_btn_add_server">"Server hinzufügen"</string>
 	<string name="save_button">"Speichern"</string>
-	<string name="menu_graph_previous">"Zurück"</string>
-	<string name="menu_graph_next">"Vorwärts"</string>
 	<string name="menu_graph_refresh">"Aktualisieren"</string>
 	<string name="menu_graph_save">"Graphen auf SD Karte speichern"</string>
 	<string name="menu_addserver_save">"Server speichern"</string>

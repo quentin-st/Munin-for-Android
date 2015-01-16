@@ -321,7 +321,7 @@ public class GridItem {
 					selectedItems.remove(Integer.valueOf(indexSelected));
 			}
 		})
-		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				if (g.nbColumns < 3 && selectedItems.size() > 3)

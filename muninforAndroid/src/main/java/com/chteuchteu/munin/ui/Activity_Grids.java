@@ -103,7 +103,7 @@ public class Activity_Grids extends MuninActivity {
 									new AlertDialog.Builder(context)
 											.setTitle(R.string.rename_grid)
 											.setView(input)
-											.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+											.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 												public void onClick(DialogInterface dialog, int whichButton) {
 													String value = input.getText().toString();
 													if (!value.equals(gridName)) {
@@ -159,7 +159,7 @@ public class Activity_Grids extends MuninActivity {
 		AlertDialog.Builder b = new AlertDialog.Builder(Activity_Grids.this)
 		.setTitle(getText(R.string.text69))
 		.setView(ll)
-		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				// Overrided by the CustomListener class
 			}

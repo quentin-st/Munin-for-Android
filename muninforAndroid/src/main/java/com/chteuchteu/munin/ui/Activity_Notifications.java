@@ -163,7 +163,7 @@ public class Activity_Notifications extends MuninActivity {
 				new AlertDialog.Builder(context)
 				.setTitle(R.string.text56)
 				.setView(scrollView)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						saveServersListSettings();

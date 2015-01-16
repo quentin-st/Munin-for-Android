@@ -191,7 +191,7 @@ public class Grid {
 	
 	public void setupLayout() {
 		List<GridItem> l = items;
-		items = new ArrayList<GridItem>();
+		items = new ArrayList<>();
 		for (GridItem i : l)
 			this.preAdd(i);
 	}

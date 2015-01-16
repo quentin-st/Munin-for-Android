@@ -20,7 +20,6 @@
 	<string name="settings_password">Mot de passe</string>
 	<string name="settings_default_scale">Période par défaut des graphs</string>
 	<string name="settings_graphview_orientation">Orientation de l\'écran des graphs</string>
-	<string name="settings_delete_button">Supprimer</string>
 	<string name="settings_screenalwayson_label">Garder l\'écran allumé</string>
 	<string name="settings_screenalwayson_checkbox">Empêcher l\'écran de s\'éteindre lors de l\'affichage de graphs / alertes</string>
 	<string name="settings_autorefresh_label">Actualisation automatique</string>
@@ -28,10 +27,7 @@
 	<string name="settings_enablegraphszoom">Activer le zoom sur les graphs</string>
 	<string name="settings_titlelabel_app">Paramètres de l\'application</string>
 	<string name="settings_titlelabel_graphs">Paramètres des graphiques</string>
-	<string name="servers_btn_add_server">Ajouter un serveur</string>
 	<string name="save_button">Sauvegarder</string>
-	<string name="menu_graph_previous">Précédent</string>
-	<string name="menu_graph_next">Suivant</string>
 	<string name="menu_graph_refresh">Actualiser</string>
 	<string name="menu_graph_save">Sauvegarder le graph sur la carte SD</string>
 	<string name="menu_graph_switch">Changer de serveur…</string>
@@ -277,5 +273,7 @@
 	<string name="alert_opensource">Le saviez-vous ? Munin for Android est maintenant open-source !</string>
 	<string name="alert_opensource_action">Contribuer sur GitHub</string>
 	<string name="close">Fermer</string>
+	<string name="documentation">Documentation</string>
+	<string name="ok">OK</string>
 
 </resources>

@@ -405,7 +405,7 @@ public class Activity_Server extends MuninActivity {
 									// Error!
 									ad.setTitle(getString(R.string.text09));
 									ad.setMessage(getString(R.string.text11));
-									ad.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+									ad.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok), new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog, int which) { ad.dismiss(); }
 									});
 									ad.setIcon(R.drawable.alerts_and_states_error);

@@ -10,11 +10,7 @@
 	<string name="settings_login">"Логин"</string>
 	<string name="settings_password">"Пароль"</string>
 	<string name="settings_default_scale">"масштаб графика по умолчанию"</string>
-	<string name="settings_delete_button">"Удалить"</string>
-	<string name="servers_btn_add_server">"Добавить сервер"</string>
 	<string name="save_button">"Сохранить"</string>
-	<string name="menu_graph_previous">"Предыдущий"</string>
-	<string name="menu_graph_next">"Следующий"</string>
 	<string name="menu_graph_refresh">"Обновить"</string>
 	<string name="menu_graph_save">"Сохранить график на SD-карту"</string>
 	<string name="menu_addserver_save">"Сохранить"</string>

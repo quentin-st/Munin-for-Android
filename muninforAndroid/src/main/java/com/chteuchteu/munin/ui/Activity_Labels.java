@@ -91,7 +91,7 @@ public class Activity_Labels extends MuninActivity {
 									new AlertDialog.Builder(context)
 											.setTitle(R.string.rename_label)
 											.setView(input)
-											.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+											.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 												public void onClick(DialogInterface dialog, int whichButton) {
 													String value = input.getText().toString();
 													if (!value.equals(labelName)) {
@@ -158,7 +158,7 @@ public class Activity_Labels extends MuninActivity {
 				new AlertDialog.Builder(activity)
 				.setTitle(getText(R.string.text70_2))
 				.setView(ll)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						String value = input.getText().toString();
 						if (!value.trim().equals(""))
@@ -166,7 +166,7 @@ public class Activity_Labels extends MuninActivity {
 						dialog.dismiss();
 						updateListView();
 					}
-				}).setNegativeButton(getText(R.string.text64), new DialogInterface.OnClickListener() {
+				}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) { }
 				}).show();
 					

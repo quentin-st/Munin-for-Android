@@ -178,7 +178,7 @@ public class Activity_Servers extends MuninActivity {
 	public void onGroupItemOptionsClick(final int position) {
 		// Display actions list
 		AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
 				context, android.R.layout.simple_list_item_1);
 		arrayAdapter.add(context.getString(R.string.rescan));
 		arrayAdapter.add(context.getString(R.string.renameMaster));
@@ -204,7 +204,7 @@ public class Activity_Servers extends MuninActivity {
 						new AlertDialog.Builder(context)
 						.setTitle(R.string.renameMaster)
 						.setView(input)
-						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								String value = input.getText().toString();
 								if (!value.equals(master.getName())) {
@@ -296,7 +296,7 @@ public class Activity_Servers extends MuninActivity {
         new AlertDialog.Builder(context)
                 .setTitle(R.string.update_credentials)
                 .setView(dialog_updatecredentials)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (cb_auth.isChecked()) {
                             AuthType authType;
@@ -333,7 +333,7 @@ public class Activity_Servers extends MuninActivity {
 		new AlertDialog.Builder(context)
 				.setTitle(R.string.settings_hdgraphs)
 				.setView(dialog_checkbox)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						if (checkbox.isChecked())
 							master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
@@ -358,7 +358,7 @@ public class Activity_Servers extends MuninActivity {
 		.setTitle(R.string.import_title)
 		.setView(dialogView)
 		.setCancelable(true)
-		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String code = ((EditText) dialogView.findViewById(R.id.import_code)).getText().toString();
@@ -381,7 +381,7 @@ public class Activity_Servers extends MuninActivity {
 		.setTitle(R.string.export_success_title)
 		.setView(dialogView)
 		.setCancelable(true)
-		.setPositiveButton("OK", null)
+		.setPositiveButton(R.string.ok, null)
 		.show();
 	}
 	
@@ -394,7 +394,7 @@ public class Activity_Servers extends MuninActivity {
 		.setTitle(R.string.import_success_title)
 		.setMessage(R.string.import_success_txt1)
 		.setCancelable(true)
-		.setPositiveButton("OK", new OnClickListener() {
+		.setPositiveButton(R.string.ok, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				context.startActivity(new Intent(context, Activity_Servers.class));
@@ -417,7 +417,7 @@ public class Activity_Servers extends MuninActivity {
 		.setTitle(R.string.export_servers)
 		.setMessage(R.string.export_explanation)
 		.setCancelable(true)
-		.setPositiveButton("OK", new OnClickListener() {
+		.setPositiveButton(R.string.ok, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance(context).getMasters(), ImportExportHelper.ENCRYPTION_SEED);
@@ -471,7 +471,7 @@ public class Activity_Servers extends MuninActivity {
 				new AlertDialog.Builder(activity)
 						.setTitle(R.string.sync_reporttitle)
 						.setMessage(report)
-						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								// if "No change" => don't reload servers list

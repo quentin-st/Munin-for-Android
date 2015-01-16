@@ -21,7 +21,6 @@
 	<string name="settings_password">Password</string>
 	<string name="settings_default_scale">Graph default scale</string>
 	<string name="settings_graphview_orientation">Graphs screen orientation</string>
-	<string name="settings_delete_button">Delete</string>
 	<string name="settings_screenalwayson_label">Screen always on</string>
 	<string name="settings_screenalwayson_checkbox">Prevent screen from turning off while displaying graphs / alerts</string>
 	<string name="settings_autorefresh_label">Auto refresh</string>
@@ -29,10 +28,7 @@
 	<string name="settings_enablegraphszoom">Enable graphs zoom</string>
 	<string name="settings_titlelabel_app">Application settings</string>
 	<string name="settings_titlelabel_graphs">Graphs settings</string>
-	<string name="servers_btn_add_server">Add a server</string>
 	<string name="save_button">Save</string>
-	<string name="menu_graph_previous">Previous</string>
-	<string name="menu_graph_next">Next</string>
 	<string name="menu_graph_refresh">Refresh</string>
 	<string name="menu_graph_save">Save graph to SD card</string>
 	<string name="menu_graph_switch">Switch server</string>
@@ -278,5 +274,7 @@
 	<string name="alert_opensource">Did you know? Munin for Android is now open-source!</string>
 	<string name="alert_opensource_action">Contribute on GitHub</string>
 	<string name="close">Close</string>
+	<string name="documentation">Documentation</string>
+	<string name="ok">OK</string>
 
 </resources>

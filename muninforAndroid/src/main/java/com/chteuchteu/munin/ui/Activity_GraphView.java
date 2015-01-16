@@ -82,7 +82,7 @@ import java.util.List;
 public class Activity_GraphView extends MuninActivity {
 	private int previousPos = -1;
 
-	public MuninPlugin currentPlugin;
+	private MuninPlugin currentPlugin;
 	public Period load_period;
 	public ViewFlow viewFlow;
 	private View ic_secure;
@@ -339,11 +339,6 @@ public class Activity_GraphView extends MuninActivity {
 			super();
 			this.server = server;
 			this.dynazoomAvailable = false;
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
 		}
 		
 		@Override
@@ -656,7 +651,7 @@ public class Activity_GraphView extends MuninActivity {
 		new AlertDialog.Builder(Activity_GraphView.this)
 		.setTitle(getText(R.string.text70_2))
 		.setView(ll)
-		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String value = input.getText().toString();
 				if (!value.trim().equals(""))
@@ -727,7 +722,7 @@ public class Activity_GraphView extends MuninActivity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getText(R.string.button_labels));
 		builder.setView(checkboxesContainer)
-		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				// OK
@@ -816,7 +811,7 @@ public class Activity_GraphView extends MuninActivity {
 					AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 					builder.setView(customView);
 					builder.setTitle(getText(R.string.fieldsDescription));
-					builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
 							dialog.dismiss();

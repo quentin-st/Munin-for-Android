@@ -87,7 +87,7 @@ public class SQLite {
 		
 		// We don't necessarily have a default master
 		if (defaultMaster != null) {
-			ArrayList<MuninMaster> newMasters = new ArrayList<MuninMaster>();
+			ArrayList<MuninMaster> newMasters = new ArrayList<>();
 			
 			for (MuninServer server : defaultMaster.getChildren()) {
 				// Check if there already is a master for this server in newMasters

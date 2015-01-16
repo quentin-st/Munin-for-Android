@@ -29,7 +29,7 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 		this.context = context;
 		this.widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 				AppWidgetManager.INVALID_APPWIDGET_ID);
-		this.servers = new ArrayList<MuninServer>();
+		this.servers = new ArrayList<>();
 		this.pluginsStatesFetched = false;
 
 		refresh();
@@ -57,7 +57,7 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 			AlertsWidget alertsWidget = dbHelper.getAlertsWidget(appWidgetId, null);
 
 			// Remove servers duplicates (duplicated in db for no reason)
-			List<MuninServer> newServersList = new ArrayList<MuninServer>();
+			List<MuninServer> newServersList = new ArrayList<>();
 			for (MuninServer server : alertsWidget.getServers()) {
 				if (!newServersList.contains(server))
 					newServersList.add(server);
