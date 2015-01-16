@@ -8,7 +8,7 @@
 <p>Link this into @@CONFDIR@@/plugins/ and restart the munin-node.</p> 
 <h1>INTERPRETATION</h1> 
 <p>The plugin shows the average time a IO-operation needs to complete for each disk or block device on the system.</p> 
-<p>Simple partitioned disks will only show as the whole disk. When/if you use some device layer over that, such as LVM then LV devices will show up individualy.</p> 
+<p>Simple partitioned disks will only show as the whole disk. When/if you use some device layer over that, such as LVM then LV devices will show up individually.</p> 
 <p>When the IO-operation time here increases it is to be expected that the iowait on the CPU graph increases, but please read about how iowait reporting works to fully understand that number.</p> 
 <h1>MAGIC MARKERS</h1> 
 <pre>  #%# family=legacy

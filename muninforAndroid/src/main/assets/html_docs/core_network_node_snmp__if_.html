@@ -10,8 +10,8 @@
 <p>In general SNMP is not very secure at all unless you use SNMP version 3 which supports authentication and privacy (encryption). But in any case the community string for your devices should not be &quot;public&quot;.</p> 
 <p>Please see 'perldoc Munin::Plugin::SNMP' for further configuration information.</p> 
 <h1>INTERPRETATION</h1> 
-<p>The graph shows a stright forward &quot;bits per second&quot; incomming and outgoing thruput. &quot;Incomming&quot; is towards the monitored device.</p> 
-<p>Note: The internal representation of the speeds is in bytes pr. second. The plugin multiplies everyting by 8 to get bits pr. second.</p> 
+<p>The graph shows a stright forward &quot;bits per second&quot; incoming and outgoing thruput. &quot;Incoming&quot; is towards the monitored device.</p> 
+<p>Note: The internal representation of the speeds is in bytes pr. second. The plugin multiplies everything by 8 to get bits pr. second.</p> 
 <h1>MIB INFORMATION</h1> 
 <p>This plugin requires the IF-MIB the standard IETF MIB for network interfaces. It reports the contents of the IF-MIB::ifHCInOctets/IF-MIB::ifHCOutOctets if available, IF-MIB::ifInOctets/IF-MIB::ifOutOctets if not. The former are 64 bit counters only available with SNMP 2 and later. The later are 32 bit counters (see FEATURES below).</p> 
 <h1>MAGIC MARKERS</h1> 

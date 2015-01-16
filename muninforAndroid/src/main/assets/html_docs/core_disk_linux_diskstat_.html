@@ -13,7 +13,7 @@
 <p>Linux provides a counter which increments in a millisecond-interval for as long as there are outstanding I/O requests. If this counter is close to 1000msec in a given 1 second timeframe the device is nearly 100% saturated. This plugin provides values averaged over a 5 minute time frame per default, so it can't catch short-lived saturations, but it'll give a nice trend for semi-uniform load patterns as they're expected in most server or multi-user environments.</p> 
 <h2>Device IO Time</h2> 
 <p>The <code>Device IO Time</code> takes the counter described under <code>Device Utilization</code> and divides it by the number of I/Os that happened in the given time frame, resulting in an average time per I/O on the block-device level.</p> 
-<p>This value can give you a good comparison base amongst different controllers, storage subsystems and disks for similiar workloads.</p> 
+<p>This value can give you a good comparison base amongst different controllers, storage subsystems and disks for similar workloads.</p> 
 <h2>Syscall Wait Time</h2> 
 <p>These values describe the average time it takes between an application issuing a syscall resulting in a hit to a blockdevice to the syscall returning to the application.</p> 
 <p>The values are bound to be higher (at least for read requests) than the time it takes the device itself to fulfill the requests, since calling overhead, queuing times and probably a dozen other things are included in those times.</p> 

@@ -13,7 +13,7 @@
 <p>The exact location of this file is package/site specific, but munin_update will know where it is unless you have made changes.</p> 
 <h1>INTERPRETATION</h1> 
 <p>The script reads the munin-update &quot;stats&quot; file to determine how long it takes to query the nodes about each host configured in Munin.</p> 
-<p>Munin is run from cron every 5 minutes and before the next run of munin-update the previous run needs to be done. Each run of munin-update forks one process pr. host that needs to get data collected, so all collection runs in paralell.</p> 
+<p>Munin is run from cron every 5 minutes and before the next run of munin-update the previous run needs to be done. Each run of munin-update forks one process pr. host that needs to get data collected, so all collection runs in parallel.</p> 
 <p>Any host that is slow, for example slower than 4 miniutes, causes a risk that the next run of munin-update must be cancled due to the lateness of the previous run. In such cases there will be single line gaps in the &quot;by day&quot; graph.</p> 
 <p>Keep your hosts updating quickly and all will be well.</p> 
 <h1>MAGIC MARKERS</h1> 
