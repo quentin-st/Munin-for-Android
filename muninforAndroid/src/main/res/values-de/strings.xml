@@ -42,7 +42,7 @@
 	<string name="text30">"Keine Internetverbindung"</string>
 	<string name="yes">"Ja"</string>
 	<string name="no">"Nein"</string>
-	<string name="text35">"Mehr über..."</string>
+	<string name="text35">Mehr erfahren ...</string>
 	<string name="text36">"Einstellungen erfolgreich gespeichert!"</string>
 	<string name="text37">"Keine Server vorhanden. Bitte füge einen in den Einstellungen hinzu."</string>
 	<string name="text39">"Bitte warte, während sich die App aktualisiert..."</string>
@@ -225,4 +225,5 @@
 	<string name="sync_reporttitle">"Scan-Report"</string>
 	<string name="text84">"Der Master wird gelöscht. Sicher?"</string>
 <string name="follow">Munin auf Twitter folgen</string>
+	<string name="notifs_vibrate">Vibration</string>
 	</resources>
