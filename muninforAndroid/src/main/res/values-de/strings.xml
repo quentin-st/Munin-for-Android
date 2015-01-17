@@ -5,7 +5,7 @@
 	<string name="button_server">"Server"</string>
 	<string name="settings_URL_label">"URL des Masterservers"</string>
 	<string name="settings_URL_label2">"z.B.: http(s)://88.180.108.192/munin/"</string>
-	<string name="settings_text">"oder wähle einen Beispielserver aus."</string>
+	<string name="settings_text">... oder wähle einen Beispielserver aus:</string>
 	<string name="settings_http_auth2">"HTTP Authentifizierung erforderlich"</string>
 	<string name="settings_login">"Login"</string>
 	<string name="settings_password">"Passwort"</string>
@@ -15,7 +15,7 @@
 	<string name="menu_graph_save">"Graphen auf SD Karte speichern"</string>
 	<string name="menu_addserver_save">"Server speichern"</string>
 	<string name="menu_addserver_delete">"Server löschen"</string>
-	<string name="loading">Lade…</string>
+	<string name="loading">Lade...</string>
 	<string name="search">"Suche"</string>
 	<string name="about_eraseData">"App zurücksetzen"</string>
 
@@ -50,7 +50,7 @@
 	<string name="lang_french">"Französisch"</string>
 	<string name="lang_german">"Deutsch"</string>
 	<string name="lang_english">"Englisch"</string>
-	<string name="button_premium">"Nimm' Premium!"</string>
+	<string name="button_premium">Munin Premium</string>
 	<string name="goPremiumBenefits"><![CDATA[ <head> <style> p { padding: 0px 15px; } h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 5px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; border: 2px solid #1578C4; border-width: 0px 0px 2px 0px; } body { text-align: justify; color: #555; font-size:1em; } li { margin-bottom: 5px; } </style> <meta http-equiv=Content-Type content=text/html; charset=UTF-8 /> </head> <body> <h2>Munin für Android Premiumfunktionen</h2> <ul> <li>SSL Support</li> <li>Graph Widgets</li> <li>Benachrichtigungen</li> <li>Bevorzugter Support</li> <li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li> <li>Aktiviere die automatischen Update in Google Play um neue Premiumfunktionen automatisch zu erhalten.</li> </ul> <br /> </body>]]></string>
 	<string name="buy_now">"JETZT KAUFEN"</string>
 	<string name="goPremiumTitle">"Nimm' Premium!"</string>
@@ -72,7 +72,7 @@
 	<string name="button_labels">"Labels"</string>
 	<string name="button_notifications">"Benachrichtigungen"</string>
 	<string name="settings_auth_type">"Authentifizierungsart"</string>
-	<string name="settings_titlelabel_app">"APP"</string>
+	<string name="settings_titlelabel_app">Einstellungen</string>
 	<string name="settings_titlelabel_graphs">"GRAPHEN"</string>
 	<string name="menu_graph_switch">"Server wechseln"</string>
 	<string name="menu_serversedit_revert">"Server zurücksetzen"</string>
@@ -172,11 +172,11 @@
 	<string name="rate_long">"Wenn Dir diese App gefällt, würdest Du sie dann im Play Store bewerten? Vielen Dank!"</string>
 	<string name="not_now">"Nicht jetzt"</string>
 	<string name="settings_screenalwayson_label">"Bildschirm immer an"</string>
-	<string name="settings_screenalwayson_checkbox">"Bildschirm an lassen, wenn Graphen oder Alarme angezeigt werden"</string>
+	<string name="settings_screenalwayson_checkbox">Bildschirm nicht abschalten, wenn Graphen oder Alarme angezeigt werden</string>
 	<string name="settings_autorefresh_label">"Automatische Aktualisierung"</string>
-	<string name="settings_autorefresh_checkbox">"Graphen automatisch aktualisieren / Alarm alle 5 Minuten während diese angezeigt werden"</string>
+	<string name="settings_autorefresh_checkbox">Graphen/Alarme automatisch alle 5 Minuten aktualisieren, während diese angezeigt werden</string>
 	<string name="lang_russian">"Russisch"</string>
-	<string name="settings_hdgraphs">"Hochauflösende Graphen aktivieren"</string>
+	<string name="settings_hdgraphs">Hochauflösende Graphen verwenden</string>
 	<string name="settings_hdgraphs_text">"Nutze DynaZoom, um hochauflösende Graphen anzuzeigen"</string>
 	<string name="settings_enablegraphszoom">"Graphen-Zoom aktivieren"</string>
 	<string name="yourerunning">"Es läuft."</string>
