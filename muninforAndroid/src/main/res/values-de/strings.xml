@@ -53,7 +53,7 @@
 	<string name="button_premium">Munin Premium</string>
 	<string name="goPremiumBenefits"><![CDATA[ <head> <style> p { padding: 0px 15px; } h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 5px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; border: 2px solid #1578C4; border-width: 0px 0px 2px 0px; } body { text-align: justify; color: #555; font-size:1em; } li { margin-bottom: 5px; } </style> <meta http-equiv=Content-Type content=text/html; charset=UTF-8 /> </head> <body> <h2>Munin für Android Premiumfunktionen</h2> <ul> <li>SSL Support</li> <li>Graph Widgets</li> <li>Benachrichtigungen</li> <li>Bevorzugter Support</li> <li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li> <li>Aktiviere die automatischen Update in Google Play um neue Premiumfunktionen automatisch zu erhalten.</li> </ul> <br /> </body>]]></string>
 	<string name="buy_now">"JETZT KAUFEN"</string>
-	<string name="goPremiumTitle">"Nimm' Premium!"</string>
+	<string name="goPremiumTitle">Munin Premium</string>
 	<string name="text41">"SSL-Support ist über das Munin für Android Feature Pack verfügbar (1,49€). Möchtest du es auf Google Play kaufen?"</string>
 	<string name="text42">"Laden..."</string>
 	<string name="text43">"Bitte warten..."</string>
@@ -183,7 +183,7 @@
 	<string name="openInBrowser">"Im Browser öffnen"</string>
 	<string name="fieldsDescription">"Feld-Beschreibung"</string>
 	<string name="renameMaster">"Master umbenennen"</string>
-	<string name="widget_configuration3">"Servernamen verstecken"</string>
+	<string name="widget_configuration3">Servername verstecken</string>
 	<string name="settings_defaultserver">"Standardserver"</string>
 	<string name="rename_grid">"Gitter umbenennen"</string>
 	<string name="text80">"Dieses Gitter wird gelöscht. Sicher?"</string>
@@ -225,7 +225,7 @@
 	<string name="sync_reporttitle">"Scan-Report"</string>
 	<string name="text84">"Der Master wird gelöscht. Sicher?"</string>
 <string name="follow">Munin für Android auf Twitter folgen</string>
-	<string name="notifs_vibrate">Vibration</string>
+	<string name="notifs_vibrate">Vibrieren</string>
 	<string name="graphwidgetname">Munin für Android: Graph Widget</string>
 	<string name="alertswidgetname">Munin für Android: Alarm Widget</string>
 	<string name="featuresPackNeeded">Munin für Android Features Pack benötigt</string>
