@@ -226,4 +226,19 @@
 	<string name="text84">"Der Master wird gelöscht. Sicher?"</string>
 <string name="follow">Munin auf Twitter folgen</string>
 	<string name="notifs_vibrate">Vibration</string>
+	<string name="graphwidgetname">Munin für Android: Graph Widget</string>
+	<string name="alertswidgetname">Munin für Android: Alarm Widget</string>
+	<string name="featuresPackNeeded">Munin für Android Features Pack benötigt</string>
+	<string name="user_agent">User Agent</string>
+	<string name="from">Von</string>
+	<string name="to">Bis</string>
+	<string name="grids_legend">Gitter-Legende</string>
+	<string name="grids_legend_none">Keine</string>
+	<string name="grids_legend_pluginName">Plugin-Name</string>
+	<string name="grids_legend_serverName">Server-Name</string>
+	<string name="grids_legend_both">Beides</string>
+	<string name="redetectHdGraphsUrl">HD-Graph URL neu bestimmen</string>
+	<string name="disableHDGraphs">HD-Graphen deaktivieren</string>
+	<string name="downloadError">Fehler beim Herunterladen</string>
+	<string name="certificate_error">Verschlüsselte Verbindung fehlgeschlagen</string>
 	</resources>
