@@ -276,4 +276,6 @@
 	<string name="documentation">Documentation</string>
 	<string name="ok">OK</string>
 
+<string name="grids_settings">Paramètres des grilles</string>
+
 </resources>
