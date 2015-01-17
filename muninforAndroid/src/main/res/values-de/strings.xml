@@ -15,7 +15,7 @@
 	<string name="menu_graph_save">"Graphen auf SD Karte speichern"</string>
 	<string name="menu_addserver_save">"Server speichern"</string>
 	<string name="menu_addserver_delete">"Server löschen"</string>
-	<string name="loading">"Lade"</string>
+	<string name="loading">Lade…</string>
 	<string name="search">"Suche"</string>
 	<string name="about_eraseData">"App zurücksetzen"</string>
 
