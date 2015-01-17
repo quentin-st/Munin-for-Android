@@ -408,8 +408,8 @@ public class Activity_GraphView extends MuninActivity {
 			viewFlow.setSelection(viewFlow.getSelectedItemPosition());
 
 		if (isDynazoomOpen()) {
-			dynazoom_from = Util.Dynazoom.getFromPinPoint(load_period);
-			dynazoom_to = Util.Dynazoom.getToPinPoint();
+			dynazoom_from = DynazoomHelper.getFromPinPoint(load_period);
+			dynazoom_to = DynazoomHelper.getToPinPoint();
 
 			dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(currentPlugin, (ImageView) findViewById(R.id.dynazoom_imageview),
 					(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
@@ -989,8 +989,8 @@ public class Activity_GraphView extends MuninActivity {
 
 		Util.Fonts.setFont(this, (ViewGroup) findViewById(R.id.dynazoom_params), Util.Fonts.CustomFont.Roboto_Regular);
 
-		dynazoom_from = Util.Dynazoom.getFromPinPoint(load_period);
-		dynazoom_to = Util.Dynazoom.getToPinPoint();
+		dynazoom_from = DynazoomHelper.getFromPinPoint(load_period);
+		dynazoom_to = DynazoomHelper.getToPinPoint();
 
 		((TextView) findViewById(R.id.dynazoom_pluginName)).setText(currentPlugin.getFancyName());
 		((TextView) findViewById(R.id.dynazoom_from)).setText(Util.prettyDate(dynazoom_from));

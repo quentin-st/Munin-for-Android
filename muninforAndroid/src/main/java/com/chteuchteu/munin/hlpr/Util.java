@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.BlurMaskFilter.Blur;
@@ -50,7 +49,6 @@ import java.net.URI;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -78,17 +76,7 @@ public final class Util {
 				}
 			}
 		}
-		
-		/**
-		 * Show loading spinner on actionbar
-			activity.requestWindowFeature(Window.FEATURE_PROGRESS);
-		 * @param val boolean
-		 * @param activity Activity
-		 */
-		public static void setLoading(boolean val, Activity activity) {
-			activity.setProgressBarIndeterminateVisibility(val);
-		}
-		
+
 		/**
 		 * Prepares a Gmail-style progressbar on the actionBar
 		 * Should be call in onCreate
@@ -117,8 +105,7 @@ public final class Util {
 				@Override
 				public void onGlobalLayout() {
 					View contentView = decorView.findViewById(android.R.id.content);
-					int actionBarHeight = actionBar != null ? actionBar.getHeight() : Util.getActionBarHeight(activity);
-					int y = Util.getStatusBarHeight(activity) + actionBarHeight;
+					int y = Util.getStatusBarHeight(activity) + actionBar.getHeight();
 
 					progressBar.setY(y + contentView.getY() - 10);
 					progressBar.setProgressDrawable(activity.getResources().getDrawable(
@@ -201,14 +188,6 @@ public final class Util {
 		if (resourceId > 0)
 			result = c.getResources().getDimensionPixelSize(resourceId);
 		return result;
-	}
-	
-	public static int getActionBarHeight(Context c) {
-		final TypedArray styledAttributes = c.getTheme().obtainStyledAttributes(
-				new int[] { android.R.attr.actionBarSize });
-		int height = (int) styledAttributes.getDimension(0, 0);
-		styledAttributes.recycle();
-		return height;
 	}
 	
 	public static boolean isOnline(Context c) {
@@ -423,32 +402,6 @@ public final class Util {
 			res[0] = dimens_x;
 			res[1] = dimens_y;
 			return res;
-		}
-	}
-
-	public static final class Dynazoom {
-		public static long getFromPinPoint(Period period) {
-			Calendar cal = Calendar.getInstance();
-			switch (period) {
-				case DAY:
-					cal.add(Calendar.HOUR, -24);
-					break;
-				case WEEK:
-					cal.add(Calendar.DAY_OF_MONTH, -7);
-					break;
-				case MONTH:
-					cal.add(Calendar.DAY_OF_MONTH, -30);
-					break;
-				case YEAR:
-					cal.add(Calendar.YEAR, -1);
-					break;
-			}
-
-			return cal.getTime().getTime() / 1000;
-		}
-
-		public static long getToPinPoint() {
-			return Calendar.getInstance().getTime().getTime() / 1000;
 		}
 	}
 	
@@ -675,6 +628,7 @@ public final class Util {
 
 	public interface ProgressNotifier { public void notify(int progress, int total); }
 
+	@SuppressWarnings("deprecation")
 	public static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener){
 		if (Build.VERSION.SDK_INT < 16)
 			v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);

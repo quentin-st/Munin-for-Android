@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.DynazoomHelper;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -107,10 +107,10 @@ public class MuninPlugin {
 	
 	public String getHDImgUrl(Period period, boolean forceSize, int size_x, int size_y) {
 		// From
-		long pinPoint1 = Util.Dynazoom.getFromPinPoint(period);
+		long pinPoint1 = DynazoomHelper.getFromPinPoint(period);
 
 		// To = now
-		long pinPoint2 = Util.Dynazoom.getToPinPoint();
+		long pinPoint2 = DynazoomHelper.getToPinPoint();
 
 		return getHDImgUrl(pinPoint1, pinPoint2, forceSize, size_x, size_y);
 	}

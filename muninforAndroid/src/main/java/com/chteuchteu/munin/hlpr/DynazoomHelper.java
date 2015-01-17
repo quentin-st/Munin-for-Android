@@ -14,6 +14,8 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.edmodo.rangebar.RangeBar;
 
+import java.util.Calendar;
+
 public final class DynazoomHelper {
 	private static int GRAPH_LEFT_MARGIN = 155;
 	private static int GRAPH_RIGHT_MARGIN = 50;
@@ -79,6 +81,30 @@ public final class DynazoomHelper {
 		areaXDimens[0] = hlAreaX1;
 		areaXDimens[1] = hlAreaX2;
 		return areaXDimens;
+	}
+
+	public static long getFromPinPoint(MuninPlugin.Period period) {
+		Calendar cal = Calendar.getInstance();
+		switch (period) {
+			case DAY:
+				cal.add(Calendar.HOUR, -24);
+				break;
+			case WEEK:
+				cal.add(Calendar.DAY_OF_MONTH, -7);
+				break;
+			case MONTH:
+				cal.add(Calendar.DAY_OF_MONTH, -30);
+				break;
+			case YEAR:
+				cal.add(Calendar.YEAR, -1);
+				break;
+		}
+
+		return cal.getTime().getTime() / 1000;
+	}
+
+	public static long getToPinPoint() {
+		return Calendar.getInstance().getTime().getTime() / 1000;
 	}
 
 	public static class DynazoomFetcher extends AsyncTask<Void, Integer, Void> {
