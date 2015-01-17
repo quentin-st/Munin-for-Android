@@ -224,7 +224,7 @@
 	<string name="sync_nochange">"Keine Änderung"</string>
 	<string name="sync_reporttitle">"Scan-Report"</string>
 	<string name="text84">"Der Master wird gelöscht. Sicher?"</string>
-<string name="follow">Munin auf Twitter folgen</string>
+<string name="follow">Munin für Android auf Twitter folgen</string>
 	<string name="notifs_vibrate">Vibration</string>
 	<string name="graphwidgetname">Munin für Android: Graph Widget</string>
 	<string name="alertswidgetname">Munin für Android: Alarm Widget</string>
