@@ -241,5 +241,13 @@
 	<string name="disableHDGraphs">HD-Graphen deaktivieren</string>
 	<string name="downloadError">Fehler beim Herunterladen</string>
 	<string name="certificate_error">Verschlüsselte Verbindung fehlgeschlagen</string>
-	<string name="alert_opensource">Schon gewusst? Munin für Android ist jetzt open-source!</string>
-	</resources>
+	<string name="alert_opensource">Schon gewusst? Munin für Android ist jetzt Open Source!</string>
+	<string name="alert_opensource_action">Auf GitHub beitragen</string>
+	<string name="close">Schließen</string>
+	<string name="documentation">Dokumentation</string>
+	<string name="ok">OK</string>
+	<string name="grids_settings">Gitter-Einstellungen</string>
+	<string name="alert_i18n">Ist die Übersetzung unvollständig oder fehlerhaft? Wenn ja, hilf uns sie zu verbessern!</string>
+	<string name="alert_i18n_yes">Vielen Dank! Wir benutzen ein einfaches Online-Tool zum Übersetzen. Du kannst es unter http://www.munin-for-android.com/i18n.php erreichen</string>
+
+</resources>
