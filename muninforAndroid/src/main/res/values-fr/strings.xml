@@ -69,8 +69,8 @@
 	<string name="text28">Graph sauvegardé sous /muninForAndroid/</string>
 	<string name="text29">Erreur lors de la sauvegarde du graphique</string>
 	<string name="text30">Pas de connexion internet</string>
-	<string name="text33">Oui</string>
-	<string name="text34">Non</string>
+	<string name="yes">Oui</string>
+	<string name="no">Non</string>
 	<string name="text35">En savoir plus…</string>
 	<string name="text36">Paramètres enregistrés avec succès !</string>
 	<string name="text37">Aucun serveur paramétré… Veuillez en configurer un dans \'Serveurs\'.</string>

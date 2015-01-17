@@ -126,7 +126,7 @@ public class Activity_Grids extends MuninActivity {
 									new AlertDialog.Builder(context)
 											.setTitle(R.string.delete)
 											.setMessage(R.string.text80)
-											.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+											.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 												@Override
 												public void onClick(DialogInterface dialog, int which) {
 													Grid grid = muninFoo.sqlite.dbHlpr.getGrid(context, muninFoo, gridName);
@@ -134,7 +134,7 @@ public class Activity_Grids extends MuninActivity {
 													updateList();
 												}
 											})
-											.setNegativeButton(R.string.text34, null)
+											.setNegativeButton(R.string.no, null)
 											.show();
 
 									break;

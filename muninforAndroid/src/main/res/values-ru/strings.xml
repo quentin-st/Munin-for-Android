@@ -38,8 +38,8 @@
 	<string name="text28">"График сохранён как /muninForAndroid/"</string>
 	<string name="text29">"Ошибка сохранения графика"</string>
 	<string name="text30">"Нет подключения к Интернету"</string>
-	<string name="text33">"Да"</string>
-	<string name="text34">"Нет"</string>
+	<string name="yes">"Да"</string>
+	<string name="no">"Нет"</string>
 	<string name="text35">"Подробнее…"</string>
 	<string name="text36">"Настройки успешно сохранены"</string>
 	<string name="text37">"Серверы не добавлены. Добавьте их в настройках"</string>

@@ -24,6 +24,7 @@ import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.I18nHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
@@ -64,7 +65,7 @@ public class Activity_Main extends ActionBarActivity {
 		preloading = true;
 		boolean loaded = MuninFoo.isLoaded();
 		muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
+		I18nHelper.loadLanguage(this, muninFoo);
 		optionsMenuLoaded = false;
 		if (loaded)
 			preloading = false;
@@ -141,8 +142,8 @@ public class Activity_Main extends ActionBarActivity {
 			.setTitle(getText(R.string.rate))
 			.setIcon(R.drawable.launcher_icon)
 			.setMessage(getText(R.string.rate_long))
-			.setPositiveButton(getText(R.string.text33), null) // Yes
-			.setNegativeButton(getText(R.string.text34), null) // No
+			.setPositiveButton(getText(R.string.yes), null) // Yes
+			.setNegativeButton(getText(R.string.no), null) // No
 			.setNeutralButton(getText(R.string.not_now), null); // Not now
 		new AppRate(this)
 			.setCustomDialog(builder)
@@ -155,6 +156,8 @@ public class Activity_Main extends ActionBarActivity {
 		displayTwitterAlertIfNeeded();
 
 		displayOpenSourceAlertIfNeeded();
+
+		displayI18nAlertIfNeeded();
 
 		// Reset drawer
 		dh.reset();
@@ -275,6 +278,41 @@ public class Activity_Main extends ActionBarActivity {
 			builder.create().show();
 
 			Util.setPref(this, Util.PrefKeys.OpenSourceDialogShown, "true");
+		}
+	}
+
+	private void displayI18nAlertIfNeeded() {
+		// Only display the alertDialog if the device language is not fr/en/de/ru
+		String deviceLanguage = Locale.getDefault().getLanguage();
+
+		if (!I18nHelper.isLanguageSupported(deviceLanguage)) {
+			// Don't display OpenSource & I18n dialogs at the same time
+			if (Util.getPref(this, Util.PrefKeys.OpenSourceDialogShown).equals("true")
+					&& !Util.getPref(this, Util.PrefKeys.I18NDialogShown).equals("true")) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage(R.string.alert_i18n)
+						.setCancelable(true)
+						.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialogInterface, int i) {
+								AlertDialog.Builder builder = new AlertDialog.Builder(context);
+								builder.setMessage(R.string.alert_i18n_yes)
+										.setCancelable(true)
+										.setPositiveButton(R.string.openInBrowser, new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialogInterface, int i) {
+												startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.munin-for-android.com/i18n.php")));
+											}
+										})
+										.setNegativeButton(R.string.close, null);
+								builder.create().show();
+							}
+						})
+						.setNegativeButton(R.string.no, null);
+				builder.create().show();
+
+				Util.setPref(this, Util.PrefKeys.I18NDialogShown, "true");
+			}
 		}
 	}
 	

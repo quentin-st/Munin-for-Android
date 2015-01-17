@@ -151,8 +151,8 @@
 	<string name="text28">Graph saved as /muninForAndroid/</string>
 	<string name="text29">Error while saving the graph</string>
 	<string name="text30">No internet connection</string>
-	<string name="text33">Yes</string>
-	<string name="text34">No</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
 	<string name="text35">Learn more…</string>
 	<string name="text36">Settings saved successfully!</string>
 	<string name="text37">No server set. Please set one in the settings.</string>
@@ -277,5 +277,8 @@
 	<string name="documentation">Documentation</string>
 	<string name="ok">OK</string>
 	<string name="grids_settings">Grids settings</string>
+	<string name="alert_i18n">It seems that the app isn\'t available in your native language. Could you help us making it available
+		in your language please?</string>
+	<string name="alert_i18n_yes">Thank you very much! We use an easy to use online tool to manage translations. Use this link to reach it: www.munin-for-android.com/i18n.php</string>
 
 </resources>

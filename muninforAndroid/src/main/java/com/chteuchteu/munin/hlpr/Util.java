@@ -284,6 +284,7 @@ public final class Util {
 
 		Twitter_NbLaunches("twitter_nbLaunches"),        AddServer_History("addserver_history"),
 		Widget2_ForceUpdate("widget2_forceUpdate"),      OpenSourceDialogShown("openSourceDialogShown"),
+														 I18NDialogShown("i18nDialogShown"),
 
 		// Old prefs
 		Drawer("drawer"), Splash("splash"), ListViewMode("listViewMode"), Transitions("transitions");

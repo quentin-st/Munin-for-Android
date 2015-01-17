@@ -394,7 +394,7 @@ public class Activity_Server extends MuninActivity {
 						builder.setMessage(message_text)
 						.setCancelable(false)
 						// Yes
-						.setPositiveButton(getString(R.string.text33), new DialogInterface.OnClickListener() {
+						.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								try {
 									Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -422,7 +422,7 @@ public class Activity_Server extends MuninActivity {
 							}
 						})
 						// No
-						.setNegativeButton(getString(R.string.text34), new DialogInterface.OnClickListener() {
+						.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.cancel();
 							}

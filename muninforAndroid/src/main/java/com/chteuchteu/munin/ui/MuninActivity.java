@@ -18,6 +18,7 @@ import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.I18nHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -25,6 +26,8 @@ import com.google.analytics.tracking.android.EasyTracker;
 /**
  * One class to rule them all
  * Every Activity_* extends this one to avoid code redundancy
+ * Note: Activity_Main doesn't extend it because of it special
+ *  way of working (loading app before displaying anything)
  */
 public class MuninActivity extends ActionBarActivity {
 	protected MuninFoo      muninFoo;
@@ -49,7 +52,7 @@ public class MuninActivity extends ActionBarActivity {
 		this.context = this;
 		this.activity = this;
 		this.muninFoo = MuninFoo.getInstance(this);
-		MuninFoo.loadLanguage(this);
+		I18nHelper.loadLanguage(this, muninFoo);
 
 		// setContentView...
 	}

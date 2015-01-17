@@ -16,8 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.I18nHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -82,10 +82,8 @@ public class Activity_Settings extends MuninActivity {
 		
 		// Language spinner
 		List<String> list2 = new ArrayList<>();
-		list2.add(getString(R.string.lang_english));
-		list2.add(getString(R.string.lang_french));
-		list2.add(getString(R.string.lang_german));
-		list2.add(getString(R.string.lang_russian));
+		for (I18nHelper.AppLanguage lang : I18nHelper.AppLanguage.values())
+			list2.add(getString(lang.localeNameRes));
 		ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list2);
 		dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_lang.setAdapter(dataAdapter2);
@@ -134,26 +132,17 @@ public class Activity_Settings extends MuninActivity {
 		}
 		
 		// App language
-		String lang;
+		I18nHelper.AppLanguage appLanguage;
 		if (!Util.getPref(context, Util.PrefKeys.Lang).equals(""))
-			lang = Util.getPref(context, Util.PrefKeys.Lang);
-		else
-			lang = Locale.getDefault().getLanguage();
+			appLanguage = I18nHelper.AppLanguage.get(Util.getPref(context, Util.PrefKeys.Lang));
+		else {
+			if (I18nHelper.isLanguageSupported(Locale.getDefault().getLanguage()))
+				appLanguage = I18nHelper.AppLanguage.get(Locale.getDefault().getLanguage());
+			else
+				appLanguage = I18nHelper.AppLanguage.defaultLang();
+		}
 
-        switch (lang) {
-            case "en":
-                spinner_lang.setSelection(0, true);
-                break;
-            case "fr":
-                spinner_lang.setSelection(1, true);
-                break;
-            case "de":
-                spinner_lang.setSelection(2, true);
-                break;
-            case "ru":
-                spinner_lang.setSelection(3, true);
-                break;
-        }
+		spinner_lang.setSelection(appLanguage.getIndex());
 		
 		// Graphview orientation
 		switch (Util.getPref(context, Util.PrefKeys.GraphviewOrientation)) {
@@ -238,16 +227,12 @@ public class Activity_Settings extends MuninActivity {
 		}
 		
 		// App language
-		String currentLang = Util.getPref(context, Util.PrefKeys.Lang);
-		switch (spinner_lang.getSelectedItemPosition()) {
-			case 0: Util.setPref(context, Util.PrefKeys.Lang, "en"); break;
-			case 1: Util.setPref(context, Util.PrefKeys.Lang, "fr"); break;
-			case 2: Util.setPref(context, Util.PrefKeys.Lang, "de"); break;
-			case 3: Util.setPref(context, Util.PrefKeys.Lang, "ru"); break;
-		}
-		String newLang = Util.getPref(context, Util.PrefKeys.Lang);
-		if (!currentLang.equals(newLang))
-			MuninFoo.loadLanguage(context, true);
+		I18nHelper.AppLanguage currentLang = I18nHelper.AppLanguage.get(Util.getPref(context, Util.PrefKeys.Lang));
+		I18nHelper.AppLanguage newLang = I18nHelper.AppLanguage.values()[spinner_lang.getSelectedItemPosition()];
+		Util.setPref(context, Util.PrefKeys.Lang, newLang.langCode);
+
+		if (currentLang != newLang)
+			I18nHelper.loadLanguage(context, muninFoo, true);
 		
 		// Orientation
 		switch (spinner_orientation.getSelectedItemPosition()) {

@@ -1,9 +1,6 @@
 package com.chteuchteu.munin;
 
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.chteuchteu.munin.exc.NullMuninFooException;
@@ -20,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Main class of the app. This singleton is created on app launch
@@ -29,7 +25,7 @@ import java.util.Locale;
  */
 public class MuninFoo {
 	private static MuninFoo instance;
-	private static boolean languageLoaded = false;
+	public boolean languageLoaded = false;
 	
 	private List<MuninServer> servers;
 	public List<Label> labels;
@@ -184,34 +180,6 @@ public class MuninFoo {
 		
 		if (n > 0)
 			this.masters.add(defMaster);
-	}
-	
-	public static void loadLanguage(Context context) { loadLanguage(context, false); }
-	/**
-	 * Load language according to preferences, if set. If not : lang is
-	 *  already set according to device locale.
-	 * @param context Activity context
-	 * @param forceLoad Force language load (after language change)
-	 */
-	public static void loadLanguage(Context context, boolean forceLoad) {
-		String lang = Util.getPref(context, Util.PrefKeys.Lang);
-
-		if (!lang.equals("")) {
-			if (!languageLoaded || forceLoad) {
-				// lang == "en" || "fr" || "de" || "ru"
-				if (!(lang.equals("en") || lang.equals("fr") || lang.equals("de") || lang.equals("ru")))
-					lang = "en";
-				
-				Resources res = context.getApplicationContext().getResources();
-				DisplayMetrics dm = res.getDisplayMetrics();
-				Configuration conf = res.getConfiguration();
-				conf.locale = new Locale(lang);
-				res.updateConfiguration(conf, dm);
-				
-				languageLoaded = true;
-			}
-		}
-		// else: lang set according to device locale
 	}
 	
 	public void addServer(MuninServer server) {

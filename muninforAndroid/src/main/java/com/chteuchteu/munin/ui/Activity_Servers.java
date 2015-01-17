@@ -131,7 +131,7 @@ public class Activity_Servers extends MuninActivity {
 						new AlertDialog.Builder(context)
 						.setTitle(R.string.delete)
 						.setMessage(R.string.text83)
-						.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+						.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								muninFoo.sqlite.dbHlpr.deleteServer(server);
@@ -148,7 +148,7 @@ public class Activity_Servers extends MuninActivity {
 								updateDrawerIfNeeded();
 							}
 						})
-						.setNegativeButton(R.string.text34, null)
+						.setNegativeButton(R.string.no, null)
 						.show();
 						break;
 				}
@@ -234,13 +234,13 @@ public class Activity_Servers extends MuninActivity {
 						new AlertDialog.Builder(context)
 						.setTitle(R.string.delete)
 						.setMessage(R.string.text84)
-						.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+						.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								new DeleteMaster(master, context).execute();
 							}
 						})
-						.setNegativeButton(R.string.text34, null)
+						.setNegativeButton(R.string.no, null)
 						.show();
 						break;
 				}

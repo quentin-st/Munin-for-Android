@@ -111,7 +111,7 @@ public class Activity_Labels extends MuninActivity {
 									new AlertDialog.Builder(context)
 											.setTitle(R.string.delete)
 											.setMessage(R.string.text82)
-											.setPositiveButton(R.string.text33, new DialogInterface.OnClickListener() {
+											.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 												@Override
 												public void onClick(DialogInterface dialog, int which) {
 													Label label = muninFoo.getLabel(labelName);
@@ -120,7 +120,7 @@ public class Activity_Labels extends MuninActivity {
 													updateListView();
 												}
 											})
-											.setNegativeButton(R.string.text34, null)
+											.setNegativeButton(R.string.no, null)
 											.show();
 
 									break;

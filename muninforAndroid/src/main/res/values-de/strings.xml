@@ -40,8 +40,8 @@
 	<string name="text28">"Graphen unter /muninForAndroid/ gespeichert"</string>
 	<string name="text29">"Fehler beim Speichern des Graphen"</string>
 	<string name="text30">"Keine Internetverbindung"</string>
-	<string name="text33">"Ja"</string>
-	<string name="text34">"Nein"</string>
+	<string name="yes">"Ja"</string>
+	<string name="no">"Nein"</string>
 	<string name="text35">"Mehr über..."</string>
 	<string name="text36">"Einstellungen erfolgreich gespeichert!"</string>
 	<string name="text37">"Keine Server vorhanden. Bitte füge einen in den Einstellungen hinzu."</string>
