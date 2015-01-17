@@ -241,4 +241,5 @@
 	<string name="disableHDGraphs">HD-Graphen deaktivieren</string>
 	<string name="downloadError">Fehler beim Herunterladen</string>
 	<string name="certificate_error">Verschlüsselte Verbindung fehlgeschlagen</string>
+	<string name="alert_opensource">Schon gewusst? Munin für Android ist jetzt open-source!</string>
 	</resources>
