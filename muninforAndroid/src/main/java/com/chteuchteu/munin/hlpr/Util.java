@@ -485,7 +485,7 @@ public final class Util {
 	}
 
 	public static List<View> getViewsByTag(ViewGroup root, String tag) {
-		List<View> views = new ArrayList<View>();
+		List<View> views = new ArrayList<>();
 		final int childCount = root.getChildCount();
 		for (int i=0; i<childCount; i++) {
 			final View child = root.getChildAt(i);

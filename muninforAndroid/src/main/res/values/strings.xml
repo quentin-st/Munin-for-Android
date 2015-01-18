@@ -138,6 +138,7 @@
 	<string name="lang_french">French</string>
 	<string name="lang_german">German</string>
 	<string name="lang_russian">Russian</string>
+	<string name="lang_spanish">Spanish</string>
 	<string name="text01">Settings and servers configuration will be reset. Are you sure?</string>
 	<string name="text02">Reset performed.</string>
 	<string name="text09">Error!</string>
