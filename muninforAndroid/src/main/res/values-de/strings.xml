@@ -5,7 +5,7 @@
 	<string name="button_server">"Server"</string>
 	<string name="settings_URL_label">"URL des Masterservers"</string>
 	<string name="settings_URL_label2">"z.B.: http(s)://88.180.108.192/munin/"</string>
-	<string name="settings_text">"oder wähle einen Beispielserver aus."</string>
+	<string name="settings_text">... oder wähle einen Beispielserver aus:</string>
 	<string name="settings_http_auth2">"HTTP Authentifizierung erforderlich"</string>
 	<string name="settings_login">"Login"</string>
 	<string name="settings_password">"Passwort"</string>
@@ -15,12 +15,12 @@
 	<string name="menu_graph_save">"Graphen auf SD Karte speichern"</string>
 	<string name="menu_addserver_save">"Server speichern"</string>
 	<string name="menu_addserver_delete">"Server löschen"</string>
-	<string name="loading">"Lade"</string>
+	<string name="loading">Lade…</string>
 	<string name="search">"Suche"</string>
 	<string name="about_eraseData">"App zurücksetzen"</string>
 
 	<!-- I don't get it.. whats the meaning of this? -->
-	<string name="about_gplay">App bewerten</string>
+	<string name="about_gplay">Bewerte die App</string>
 	<string name="splashDesc">"Laden..."</string>
 	<string name="graphView_ImageViewDescription">"Graph"</string>
 	<string name="addServerTitle">"Server hinzufügen"</string>
@@ -42,7 +42,7 @@
 	<string name="text30">"Keine Internetverbindung"</string>
 	<string name="yes">"Ja"</string>
 	<string name="no">"Nein"</string>
-	<string name="text35">"Mehr über..."</string>
+	<string name="text35">Mehr erfahren ...</string>
 	<string name="text36">"Einstellungen erfolgreich gespeichert!"</string>
 	<string name="text37">"Keine Server vorhanden. Bitte füge einen in den Einstellungen hinzu."</string>
 	<string name="text39">"Bitte warte, während sich die App aktualisiert..."</string>
@@ -50,7 +50,7 @@
 	<string name="lang_french">"Französisch"</string>
 	<string name="lang_german">"Deutsch"</string>
 	<string name="lang_english">"Englisch"</string>
-	<string name="button_premium">"Nimm' Premium!"</string>
+	<string name="button_premium">Munin Premium</string>
 	<string name="goPremiumBenefits"><![CDATA[ <head> <style> p { padding: 0px 15px; } h2 { width: 100%; background-color: #259DE2; color:#fff; padding: 5px 0px; text-align: center; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.3em; border: 2px solid #1578C4; border-width: 0px 0px 2px 0px; } body { text-align: justify; color: #555; font-size:1em; } li { margin-bottom: 5px; } </style> <meta http-equiv=Content-Type content=text/html; charset=UTF-8 /> </head> <body> <h2>Munin für Android Premiumfunktionen</h2> <ul> <li>SSL Support</li> <li>Graph Widgets</li> <li>Benachrichtigungen</li> <li>Bevorzugter Support</li> <li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li> <li>Aktiviere die automatischen Update in Google Play um neue Premiumfunktionen automatisch zu erhalten.</li> </ul> <br /> </body>]]></string>
 	<string name="buy_now">"JETZT KAUFEN"</string>
 	<string name="goPremiumTitle">"Nimm' Premium!"</string>
@@ -72,11 +72,11 @@
 	<string name="button_labels">"Labels"</string>
 	<string name="button_notifications">"Benachrichtigungen"</string>
 	<string name="settings_auth_type">"Authentifizierungsart"</string>
-	<string name="settings_titlelabel_app">"APP"</string>
+	<string name="settings_titlelabel_app">Einstellungen</string>
 	<string name="settings_titlelabel_graphs">"GRAPHEN"</string>
 	<string name="menu_graph_switch">"Server wechseln"</string>
 	<string name="menu_serversedit_revert">"Server zurücksetzen"</string>
-	<string name="servers_noservers_1">"Noch keine Server"</string>
+	<string name="servers_noservers_1">Noch kein Server vorhanden</string>
 	<string name="servers_noservers_2">"Eigene oder Beispielserver mit einem Klick auf + hinzufügen"</string>
 	<string name="editServersTitle">"Server löschen / reorganisieren"</string>
 	<string name="alertsTitle">"Alarme"</string>
@@ -172,11 +172,11 @@
 	<string name="rate_long">"Wenn Dir diese App gefällt, würdest Du sie dann im Play Store bewerten? Vielen Dank!"</string>
 	<string name="not_now">"Nicht jetzt"</string>
 	<string name="settings_screenalwayson_label">"Bildschirm immer an"</string>
-	<string name="settings_screenalwayson_checkbox">"Bildschirm an lassen, wenn Graphen oder Alarme angezeigt werden"</string>
+	<string name="settings_screenalwayson_checkbox">Bildschirm nicht abschalten, wenn Graphen oder Alarme angezeigt werden</string>
 	<string name="settings_autorefresh_label">"Automatische Aktualisierung"</string>
-	<string name="settings_autorefresh_checkbox">"Graphen automatisch aktualisieren / Alarm alle 5 Minuten während diese angezeigt werden"</string>
+	<string name="settings_autorefresh_checkbox">Graphen/Alarme automatisch alle 5 Minuten aktualisieren, während diese angezeigt werden</string>
 	<string name="lang_russian">"Russisch"</string>
-	<string name="settings_hdgraphs">"Hochauflösende Graphen aktivieren"</string>
+	<string name="settings_hdgraphs">Hochauflösende Graphen verwenden</string>
 	<string name="settings_hdgraphs_text">"Nutze DynaZoom, um hochauflösende Graphen anzuzeigen"</string>
 	<string name="settings_enablegraphszoom">"Graphen-Zoom aktivieren"</string>
 	<string name="yourerunning">"Es läuft."</string>
@@ -224,5 +224,30 @@
 	<string name="sync_nochange">"Keine Änderung"</string>
 	<string name="sync_reporttitle">"Scan-Report"</string>
 	<string name="text84">"Der Master wird gelöscht. Sicher?"</string>
-<string name="follow">Munin auf Twitter folgen</string>
-	</resources>
+<string name="follow">Munin für Android auf Twitter folgen</string>
+	<string name="notifs_vibrate">Vibration</string>
+	<string name="graphwidgetname">Munin für Android: Graph Widget</string>
+	<string name="alertswidgetname">Munin für Android: Alarm Widget</string>
+	<string name="featuresPackNeeded">Munin für Android Features Pack benötigt</string>
+	<string name="user_agent">User Agent</string>
+	<string name="from">Von</string>
+	<string name="to">Bis</string>
+	<string name="grids_legend">Gitter-Legende</string>
+	<string name="grids_legend_none">Keine</string>
+	<string name="grids_legend_pluginName">Plugin-Name</string>
+	<string name="grids_legend_serverName">Server-Name</string>
+	<string name="grids_legend_both">Beides</string>
+	<string name="redetectHdGraphsUrl">HD-Graph URL neu bestimmen</string>
+	<string name="disableHDGraphs">HD-Graphen deaktivieren</string>
+	<string name="downloadError">Fehler beim Herunterladen</string>
+	<string name="certificate_error">Verschlüsselte Verbindung fehlgeschlagen</string>
+	<string name="alert_opensource">Schon gewusst? Munin für Android ist jetzt Open Source!</string>
+	<string name="alert_opensource_action">Auf GitHub beitragen</string>
+	<string name="close">Schließen</string>
+	<string name="documentation">Dokumentation</string>
+	<string name="ok">OK</string>
+	<string name="grids_settings">Gitter-Einstellungen</string>
+	<string name="alert_i18n">Ist die Übersetzung unvollständig oder fehlerhaft? Wenn ja, hilf uns sie zu verbessern!</string>
+	<string name="alert_i18n_yes">Vielen Dank! Wir benutzen ein einfaches Online-Tool zum Übersetzen. Du kannst es unter http://www.munin-for-android.com/i18n.php erreichen</string>
+
+</resources>
