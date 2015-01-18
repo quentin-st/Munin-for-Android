@@ -423,7 +423,11 @@ public final class Util {
 		
 		return original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
-	
+
+	/**
+	 * Extended boolean, especially useful when we don't know something's state at first
+	 * For example: documentation availability: UNKNOWN => (TRUE/FALSE)
+	 */
 	public static enum SpecialBool { UNKNOWN, TRUE, FALSE }
 
 	public static String readFromAssets(Context context, String file) {

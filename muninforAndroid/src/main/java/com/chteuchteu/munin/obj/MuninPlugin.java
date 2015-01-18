@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DynazoomHelper;
+import com.chteuchteu.munin.hlpr.Util;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,12 +21,14 @@ public class MuninPlugin {
 	private String 		category;
 	private AlertState 	state;
 	private String 		pluginPageUrl;
+	private Util.SpecialBool isDocumentationAvailable;
 	
 	public MuninPlugin () {
 		this.name = "unknown";
 		this.state = AlertState.UNDEFINED;
 		this.category = "";
 		this.pluginPageUrl = "";
+		this.isDocumentationAvailable = Util.SpecialBool.UNKNOWN;
 	}
 	public MuninPlugin (String name, MuninServer server) {
 		this.name = name;
@@ -33,6 +36,7 @@ public class MuninPlugin {
 		this.state = AlertState.UNDEFINED;
 		this.category = "";
 		this.pluginPageUrl = "";
+		this.isDocumentationAvailable = Util.SpecialBool.UNKNOWN;
 	}
 	
 	public enum Period {
@@ -185,4 +189,7 @@ public class MuninPlugin {
 		}
 		return null;
 	}
+
+	public Util.SpecialBool isDocumentationAvailable() { return this.isDocumentationAvailable; }
+	public void setDocumentationAvailability(boolean val) { this.isDocumentationAvailable = val ? Util.SpecialBool.TRUE : Util.SpecialBool.FALSE; }
 }

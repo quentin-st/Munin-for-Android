@@ -249,8 +249,13 @@ public class Activity_GraphView extends MuninActivity {
 				previousPos = viewFlow.getSelectedItemPosition();
 
 				// Documentation
-				if (item_documentation != null)
-					item_documentation.setVisible(DocumentationHelper.hasDocumentation(currentPlugin));
+				if (item_documentation != null) {
+					// DocumentationAvailability is cached in order to avoid browsing the JSON array too much
+					if (currentPlugin.isDocumentationAvailable() == Util.SpecialBool.UNKNOWN)
+						currentPlugin.setDocumentationAvailability(DocumentationHelper.hasDocumentation(currentPlugin));
+
+					item_documentation.setVisible(currentPlugin.isDocumentationAvailable() == Util.SpecialBool.TRUE);
+				}
 
 				// If changed plugin from drawer and documentation is shown => hide it
 				if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE)
