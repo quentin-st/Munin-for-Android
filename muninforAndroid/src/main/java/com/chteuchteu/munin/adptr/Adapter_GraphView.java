@@ -34,11 +34,11 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	private LayoutInflater mInflater;
 	private int count;
 
-	public Adapter_GraphView(Activity_GraphView activity, MuninFoo muninFoo, Context context, int count) {
+	public Adapter_GraphView(Activity_GraphView activity, MuninFoo muninFoo, int count) {
 		this.activity = activity;
 		this.muninFoo = muninFoo;
 		this.count = count;
-		this.context = context;
+		this.context = activity;
 	}
 	
 	@Override
@@ -135,7 +135,6 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 					float scale = (xScale <= yScale) ? xScale : yScale;
 
 					// Acceptable upscaling factor
-					MuninFoo.log("Upscaling factor = " + scale);
 					if (scale > 2.5) {
 						int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 						imgUrl = plugin.getHDImgUrl(activity.load_period, true, graphsDimensions[0], graphsDimensions[1]);

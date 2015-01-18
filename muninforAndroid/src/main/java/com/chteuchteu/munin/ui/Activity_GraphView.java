@@ -217,7 +217,7 @@ public class Activity_GraphView extends MuninActivity {
 		bitmaps = new Bitmap[nbPlugins];
 		photoViewAttached = new boolean[nbPlugins];
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
-		Adapter_GraphView adapter = new Adapter_GraphView(this, muninFoo, this, nbPlugins);
+		Adapter_GraphView adapter = new Adapter_GraphView(this, muninFoo, nbPlugins);
 		viewFlow.setAdapter(adapter, pos);
 		viewFlow.setAnimationEnabled(false);
 		TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);

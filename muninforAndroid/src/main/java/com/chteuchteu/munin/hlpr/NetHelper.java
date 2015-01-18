@@ -138,8 +138,6 @@ public class NetHelper {
 		}
 		catch (SocketTimeoutException | ConnectTimeoutException e) { resp.setTimeout(true); }
 		catch (SSLException e) { // SSLPeerUnverifiedException
-			e.printStackTrace();
-
 			if (!master.getSSL()) {
 				master.setSSL(true);
 				// Update the URL of master / child server if needed
