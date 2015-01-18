@@ -1,2 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='utf-8'?>
+<resources><string name="app_name">Munin para Android</string>
+	<string name="button_graphs">Gráfico</string>
+	<string name="button_server">Servidores</string>
+	<string name="button_premium">Cambia a premium</string>
+	<string name="button_alerts">Alertas</string>
+	<string name="button_labels">Etiquetas</string>
+	<string name="button_grid">Grillas</string>
+	<string name="button_notifications">Notificaciones</string>
+	<string name="settings_URL_label">URL de Munin</string>
+	<string name="settings_URL_label2">por ejemplo: https://88.180.108.192:80/munin/</string>
+	<string name="settings_text">... o elija un servidor de prueba:</string>
+	<string name="settings_http_auth2">autenticación HTTP requerida</string>
+	<string name="settings_hdgraphs">Habilitar gráficos HD</string>
+	<string name="settings_hdgraphs_text">Intenta utilizar DynaZoom para obtener gráficos en alta definición</string>
+	<string name="settings_auth_type">Tipo de autenticación</string>
+	<string name="settings_login">Iniciar sesión</string>
+	<string name="settings_password">Contraseña</string>
+	<string name="settings_default_scale">Escala por defecto para los gráficos</string>
+	<string name="settings_graphview_orientation">Orientación de los gráficos</string>
+	<string name="settings_screenalwayson_label">Pantalla siempre encendida</string>
+	<string name="settings_screenalwayson_checkbox">Impedir que la pantalla se apague al mostrar gráficos / alertas</string>
+	<string name="settings_autorefresh_label">Refresco automático</string>
+	<string name="settings_autorefresh_checkbox">Refrescar automáticamente los gráficos y alertas cada 5 minutos cuando éstos están siendo mostrados</string>
+	<string name="settings_enablegraphszoom">Habilitar zoom para gráficos</string>
+	<string name="settings_titlelabel_app">Configuración de la aplicación</string>
+	<string name="settings_titlelabel_graphs">Configuración de los gráficos</string>
+	<string name="save_button">Guardar</string>
+	<string name="menu_graph_refresh">Refrescar</string>
+	<string name="menu_graph_save">Guardar gráfico en la tarjeta SD</string>
+	<string name="menu_graph_switch">Cambiar de servidor</string>
+	<string name="menu_addserver_save">Guardar servidor</string>
+	<string name="menu_addserver_delete">Borrar servidor</string>
+	<string name="loading">Cargando…</string>
+	<string name="search">Buscar</string>
+	<string name="about_eraseData">Borrar datos de la aplicación</string>
+	<string name="about_gplay">Calificar la aplicación</string>
+	<string name="menu_serversedit_revert">Revertir servidores</string>
+	<string name="servers_noservers_1">No hay un servidor aún</string>
+	</resources>
