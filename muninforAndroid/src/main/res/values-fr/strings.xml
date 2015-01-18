@@ -141,7 +141,8 @@
 	<string name="lang_french">Français</string>
 	<string name="lang_german">Allemand</string>
 	<string name="lang_english">Anglais</string>
-	<string name="lang_russian">Russian</string>
+	<string name="lang_russian">Russe</string>
+	<string name="lang_spanish">Espagnol</string>
 	<string name="delete">Supprimer</string>
 	<string name="move_up">Déplacer vers le haut</string>
 	<string name="move_right">Déplacer vers la droite</string>
