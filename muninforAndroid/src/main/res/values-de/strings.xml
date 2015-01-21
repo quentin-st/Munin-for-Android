@@ -253,4 +253,5 @@
 	<string name="alert_i18n">Ist die Übersetzung unvollständig oder fehlerhaft? Wenn ja, hilf uns sie zu verbessern!</string>
 	<string name="alert_i18n_yes">Vielen Dank! Wir benutzen ein einfaches Online-Tool zum Übersetzen. Du kannst es unter http://www.munin-for-android.com/i18n.php erreichen</string>
 
-</resources>
+<string name="lang_spanish">Spanisch</string>
+	</resources>
