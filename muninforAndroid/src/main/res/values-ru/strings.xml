@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
 	<string name="app_name">"Munin для Android"</string>
 	<string name="button_graphs">"Графики"</string>
 	<string name="button_server">"Серверы"</string>
 	<string name="settings_URL_label">"мастер-URL Munin"</string>
 	<string name="settings_URL_label2">"пример: https://88.180.108.192:80/munin/"</string>
-	<string name="settings_text">"… либо выберите сервер согласно примеру"</string>
+	<string name="settings_text">… либо выберите сервер согласно примеру:</string>
 	<string name="settings_http_auth2">"необходима HTTP аутентификация"</string>
 	<string name="settings_login">"Логин"</string>
 	<string name="settings_password">"Пароль"</string>
@@ -26,23 +26,23 @@
 	<string name="settingsTitle">"Настройки"</string>
 	<string name="aboutTitle">"О программе Munin for Android"</string>
 	<string name="text01">"Будет произведен сброс настроек. Вы уверены?"</string>
-	<string name="text02">"Сброс выполнен"</string>
+	<string name="text02">Сброс выполнен.</string>
 	<string name="text09">"Ошибка!"</string>
-	<string name="text11">"На вашем устройстве не установлен Google Play"</string>
-	<string name="text16">"Некорректный URL. Пожалуйста, проверьте настройки"</string>
+	<string name="text11">На вашем устройстве не установлен Google Play.</string>
+	<string name="text16">Некорректный URL. Пожалуйста, проверьте настройки.</string>
 	<string name="text18">"Готово!"</string>
 	<string name="text21.1">"Суб-сервер"</string>
-	<string name="text21.2">"Добавлено!"</string>
+	<string name="text21.2">" Добавлено!\n"</string>
 	<string name="text24">"Готово"</string>
-	<string name="text27">"плагины найдены"</string>
+	<string name="text27">" плагины найдены!"</string>
 	<string name="text28">"График сохранён как /muninForAndroid/"</string>
 	<string name="text29">"Ошибка сохранения графика"</string>
 	<string name="text30">"Нет подключения к Интернету"</string>
 	<string name="yes">"Да"</string>
 	<string name="no">"Нет"</string>
 	<string name="text35">"Подробнее…"</string>
-	<string name="text36">"Настройки успешно сохранены"</string>
-	<string name="text37">"Серверы не добавлены. Добавьте их в настройках"</string>
+	<string name="text36">Настройки успешно сохранены!</string>
+	<string name="text37">Серверы не добавлены. Добавьте их в настройках.</string>
 	<string name="text39">"Идет обновление приложения. Пожалуйста, подождите…"</string>
 	<string name="settings_lang">"Язык"</string>
 	<string name="lang_french">"Français"</string>
@@ -51,7 +51,7 @@
 	<string name="button_premium">"Премиум версия"</string>
 	<string name="buy_now">"КУПИТЬ СЕЙЧАС"</string>
 	<string name="goPremiumTitle">"Премиум версия"</string>
-	<string name="text41">"Поддержка SSL доступна в пакете дополнительных возможностей Munin for Android($1.49). Хотите купить его в Google Play? "</string>
+	<string name="text41">Поддержка SSL доступна в пакете дополнительных возможностей Munin for Android($1.49). Хотите купить его в Google Play?</string>
 	<string name="text42">"Загрузка…"</string>
 	<string name="text43">"Пожалуйста, подождите…"</string>
 	<string name="text44">"получение URL…"</string>
@@ -80,7 +80,7 @@
 	<string name="notificationsTitle">"Уведомления"</string>
 
 	<!-- MAIN BUTTON -->
-	<string name="widget_configuration1">"Готово! Виджет добавлен на главный экран. Подсказка: для обновления графика коснитесь серой полоски на виджете"</string>
+	<string name="widget_configuration1">Готово! Виджет добавлен на главный экран. Подсказка: для обновления графика коснитесь серой полоски на виджете!</string>
 	<string name="widget_configuration2">"Авто-обновление графика только по WiFi (1 раз в час)"</string>
 	<string name="text49.1">"Скрыть серверы с норм. статусом"</string>
 	<string name="text49.2">"Показать серверы с норм. статусом"</string>
@@ -102,7 +102,7 @@
 	<string name="text65">"Аутентификация доступна в пакете дополнительных возможностей Munin for Android($1.49)."</string>
 	<string name="text65.1">"Аутентификация доступна в пакете дополнительных возможностей Munin for Android($1.49). Хотите купить его в Google Play?"</string>
 	<string name="text66">"Очистить историю URL"</string>
-	<string name="text66.1">"История URL очищена"</string>
+	<string name="text66.1">История URL очищена.</string>
 	<string name="text67">"Метка не назначена"</string>
 	<string name="text68">"Время ожидания ответа от сервера истекло"</string>
 	<string name="button_grid">"Сетка"</string>
@@ -113,9 +113,9 @@
 	<string name="text71">"Выберите сервер"</string>
 	<string name="text72">"Выберите плагины для добавления"</string>
 	<string name="text73">"Удалить сетку"</string>
-	<string name="text74">"Сетка с таким именем уже существует"</string>
+	<string name="text74">Сетка с таким именем уже существует.</string>
 	<string name="text75">"Сетка"</string>
-	<string name="text76">"Изменить период"</string>
+	<string name="text76">Изменить период…</string>
 	<string name="text77">"Без сетки"</string>
 	<string name="text78">"Добавьте сетку нажатием на +"</string>
 	<string name="text79">"Открыть"</string>
@@ -149,12 +149,11 @@
 	<string name="import_servers">"Импорт"</string>
 	<string name="export_servers">"Экспорт"</string>
 	<string name="import_export">"Импорт / Экспорт"</string>
-	<string name="export_failed">"Не удалось экспортировать"</string>
+	<string name="export_failed">Не удалось экспортировать…</string>
 	<string name="export_subject">"Экспорт Munin for Android"</string>
 	<string name="import_title">"Импорт"</string>
 	<string name="import_sentence">"Пожалуйста, введите код, сгенерированный на первом устройстве"</string>
-<string name="export_explanation">"Ваши настройки будут выгружены, после этого их можно будет загрузить на ваше второе устройство. Пароли будут зашифрованы. При завершении экспорта будет сгенерирован случайный код, который позволит вам загрузить конфигурацию со второго устройства.
- Конфигурация будет удалена сразу после скачивания с сервера, либо по истечении 24 часов"</string>
+<string name="export_explanation">Ваши настройки будут выгружены, после этого их можно будет загрузить на ваше второе устройство. Пароли будут зашифрованы. При завершении экспорта будет сгенерирован случайный код, который позволит вам загрузить конфигурацию со второго устройства.\n Конфигурация будет удалена сразу после скачивания с сервера, либо по истечении 24 часов.</string>
 	<string name="export_success_title">"Экспорт успешно выполнен"</string>
 	<string name="export_success_txt1">"Настройки ваших серверов успешно выгружены. Пожалуйста, используйте этот код на втором устройстве для импорта настроек."</string>
 	<string name="import_success_title">"Импорт успешно выполнен"</string>
