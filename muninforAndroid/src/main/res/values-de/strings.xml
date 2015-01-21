@@ -21,20 +21,20 @@
 
 	<!-- I don't get it.. whats the meaning of this? -->
 	<string name="about_gplay">Bewerte die App</string>
-	<string name="splashDesc">"Laden..."</string>
+	<string name="splashDesc">Laden</string>
 	<string name="graphView_ImageViewDescription">"Graph"</string>
 	<string name="addServerTitle">"Server hinzufügen"</string>
 	<string name="serversTitle">"Server"</string>
 	<string name="settingsTitle">"Einstellungen"</string>
 	<string name="aboutTitle">"Über Munin für Android"</string>
 	<string name="text01">Einstellungen werden zurückgesetzt. Sind Sie sicher?</string>
-	<string name="text02">"Erfolgreich zurückgesetzt"</string>
+	<string name="text02">Erfolgreich zurückgesetzt.</string>
 	<string name="text09">"Fehler!"</string>
 	<string name="text11">Google Play scheint nicht installiert zu sein.</string>
 	<string name="text16">"Diese URL scheint fehlerhaft zu sein. Bitte prüfen."</string>
 	<string name="text18">Erfolgreich!</string>
 	<string name="text21.1">"Subserver"</string>
-	<string name="text21.2">"hinzugefügt!"</string>
+	<string name="text21.2">" hinzugefügt!\n"</string>
 	<string name="text24">Erfolgreich</string>
 	<string name="text27">"Plugins gefunden!"</string>
 	<string name="text28">"Graphen unter /muninForAndroid/ gespeichert"</string>
@@ -42,7 +42,7 @@
 	<string name="text30">"Keine Internetverbindung"</string>
 	<string name="yes">"Ja"</string>
 	<string name="no">"Nein"</string>
-	<string name="text35">Mehr erfahren ...</string>
+	<string name="text35">Mehr erfahren …</string>
 	<string name="text36">"Einstellungen erfolgreich gespeichert!"</string>
 	<string name="text37">Kein Server eingerichtet. Bitte einen in den Einstellungen hinzufügen.</string>
 	<string name="text39">Bitte warten, die App wird aktualisiert …</string>
@@ -57,9 +57,9 @@
 	<string name="text41">SSL-Support ist über das Munin für Android Features Pack verfügbar ($1,49). Auf Google Play kaufen?</string>
 	<string name="text42">Laden …</string>
 	<string name="text43">Bitte warten …</string>
-	<string name="text44">"Lade URL..."</string>
+	<string name="text44">Lade URL…</string>
 	<string name="text45">"Speichern!"</string>
-	<string name="text46">"Kontaktiere Server..."</string>
+	<string name="text46">"Kontaktiere Server… "</string>
 	<string name="settings_graphview_orientation">"Bildschirmausrichtung der Graphen"</string>
 	<string name="text47.1">"Tag"</string>
 	<string name="text47.2">"Woche"</string>
@@ -83,7 +83,7 @@
 	<string name="notificationsTitle">"Benachrichtigungen"</string>
 
 	<!-- MAIN BUTTON -->
-	<string name="widget_configuration1">"Das Widget wurde erfolgreich zum Homescreen hinzugefügt. Tipp: Der Graph kann durch Tippen auf die graue Leiste unten aktualisiert werden."</string>
+	<string name="widget_configuration1">Das Widget wurde erfolgreich zum Homescreen hinzugefügt. Tipp: Der Graph kann durch Tippen auf die graue Leiste unten aktualisiert werden!</string>
 	<string name="widget_configuration2">"Graphen nur im WLAN automatisch aktualisieren (1 Update pro Stunde)"</string>
 	<string name="text49.1">"Normal operierende Server ausblenden"</string>
 	<string name="text49.2">"Normal operierende Server anzeigen"</string>
@@ -162,7 +162,7 @@
 	<string name="text73">"Gitter löschen"</string>
 	<string name="text74">"Ein Gitter mit diesem Namen existiert bereits."</string>
 	<string name="text75">"Gitter"</string>
-	<string name="text76">Zeitraum ändern ...</string>
+	<string name="text76">Zeitraum ändern …</string>
 	<string name="text77">"Kein Gitter"</string>
 	<string name="text78">"Drücke \"+\" zum hinzufügen"</string>
 	<string name="text79">"Öffnen"</string>
@@ -182,7 +182,7 @@
 	<string name="settings_hdgraphs">Hochauflösende Graphen verwenden</string>
 	<string name="settings_hdgraphs_text">"Nutze DynaZoom, um hochauflösende Graphen anzuzeigen"</string>
 	<string name="settings_enablegraphszoom">"Graphen-Zoom aktivieren"</string>
-	<string name="yourerunning">"Es läuft."</string>
+	<string name="yourerunning">Es läuft</string>
 	<string name="openInBrowser">"Im Browser öffnen"</string>
 	<string name="fieldsDescription">"Feld-Beschreibung"</string>
 	<string name="renameMaster">"Master umbenennen"</string>
@@ -201,7 +201,7 @@
 	<string name="import_title">Importieren</string>
 	<string name="import_sentence">Bitte den Code eingeben, der auf dem ersten Gerät generiert wurde</string>
 	<string name="export_explanation">"Deine Konfiguration wird hochgeladen, damit diese auf dem zweiten Gerät heruntergeladen werden kann. Wenn Passwörter vorhanden sind, dann werden diese verschlüsselt. Am Ende des Exports wird ein zufällig generierter Code angezeigt, mit dem Du die Konfiguration auf dem anderen Gerät herunterladen kannst. Die Konfiguration wird auf den Munin für Android-Servern gelöscht, so bald Du sie heruntergeladen hast. Wenn Du die Konfiguration nicht innerhalb von 24 Stunden herunterlädst, wird Sie auch gelöscht."</string>
-	<string name="export_success_title">"Export erfolgreich."</string>
+	<string name="export_success_title">Export erfolgreich</string>
 	<string name="export_success_txt1">"Die Konfiguration der App wurde erfolgreich hochgeladen. Bitte nutze den folgenden Code, um die Konfiguration auf dem anderen Gerät zu importieren."</string>
 	<string name="import_success_title">"Import erfolgreich"</string>
 	<string name="import_success_txt1">"Der Server-Import war erfolgreich"</string>
@@ -216,14 +216,14 @@
 	<string name="support">"Support"</string>
 	<string name="choose_email_client">"Bitte wähle Deine E-Mail-App"</string>
 	<string name="donate">"Spenden"</string>
-	<string name="donate_text">"Entwicklung einer App dieser Größe benötigt eine große Menge an Zeit und Einsatz. Die App erleichtert Dir Dein tägliches Leben? Dann würde es mich freuen, wenn Du Dir überlegst, etwas zu spenden. Danke! Wenn Du etwas spenden möchtest, sende mir bitte ein E-Mail, damit ich Dir persönlich danken kann."</string>
+	<string name="donate_text">Entwicklung einer App dieser Größe benötigt eine große Menge an Zeit und Einsatz. Die App erleichtert Dir Dein tägliches Leben? Dann würde es mich freuen, wenn Du Dir überlegst, etwas zu spenden. Danke! Wenn Du etwas spenden möchtest, sende mir bitte ein E-Mail, damit ich Dir persönlich danken kann!</string>
 	<string name="donate_amount">"Bitte wähle die Höhe der Spende (33% dieses Wertes gehen an Google)"</string>
-	<string name="sync_serversadded">"XXX Server hinzugefügt."</string>
-	<string name="sync_serversupdated">"XXX Server aktualisiert."</string>
-	<string name="sync_serversdeleted">"XXX Server gelöscht."</string>
-	<string name="sync_pluginsadded">"XXX Server hinzugefügt."</string>
-	<string name="sync_pluginsupdated">"XXX Plugins aktualisiert."</string>
-	<string name="sync_pluginsdeleted">"XXX Plugins gelöscht."</string>
+	<string name="sync_serversadded">XXX Server hinzugefügt\n</string>
+	<string name="sync_serversupdated">XXX Server aktualisiert\n</string>
+	<string name="sync_serversdeleted">XXX Server gelöscht\n</string>
+	<string name="sync_pluginsadded">XXX Server hinzugefügt\n</string>
+	<string name="sync_pluginsupdated">XXX Plugins aktualisiert\n</string>
+	<string name="sync_pluginsdeleted">XXX Plugins gelöscht\n</string>
 	<string name="sync_nochange">"Keine Änderung"</string>
 	<string name="sync_reporttitle">"Scan-Report"</string>
 	<string name="text84">"Der Master wird gelöscht. Sicher?"</string>
