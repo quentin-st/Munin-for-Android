@@ -229,6 +229,8 @@ public class Activity_GraphView extends MuninActivity {
 		viewFlow.setOnViewSwitchListener(new ViewSwitchListener() {
 			public void onSwitched(View v, int position) {
 				Activity_GraphView.position = position;
+				cleanBitmaps(position);
+
 				if (viewFlowMode == VIEWFLOWMODE_GRAPHS)
 					currentPlugin = muninFoo.getCurrentServer().getPlugin(position);
 				else {
@@ -845,7 +847,11 @@ public class Activity_GraphView extends MuninActivity {
 		}
 		return bitmaps[position] == null;
 	}
-	public void updateAdapterPosition(int position) {
+
+	/**
+	 * Deleted every bitmap that is out of the BITMAPS_PADDING range from position
+	 */
+	private void cleanBitmaps(int position) {
 		for (int i=0; i<bitmaps.length; i++) {
 			if (i >= position-BITMAPS_PADDING
 					&& i <= position+BITMAPS_PADDING)
