@@ -58,8 +58,6 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		activity.updateAdapterPosition(position);
-
 		if (convertView == null) {
 			if (mInflater == null)
 				mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -180,6 +178,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 				view.findViewById(R.id.error).setVisibility(View.VISIBLE);
 				TextView errorText = (TextView) view.findViewById(R.id.error_text);
 				Util.Fonts.setFont(context, errorText, Util.Fonts.CustomFont.Roboto_Regular);
+				imageView.setImageBitmap(null);
 
 				Util.Fonts.setFont(context, ((TextView) view.findViewById(R.id.error_title)), Util.Fonts.CustomFont.Roboto_Regular);
 
