@@ -198,8 +198,8 @@
 	<string name="import_export">"Import / Export"</string>
 	<string name="export_failed">Exportieren fehlgeschlagen …</string>
 	<string name="export_subject">"Munin für Android-Export"</string>
-	<string name="import_title">"Import"</string>
-	<string name="import_sentence">"Bitte gib den Code ein, der auf dem ersten Gerät generiert wurde"</string>
+	<string name="import_title">Importieren</string>
+	<string name="import_sentence">Bitte den Code eingeben, der auf dem ersten Gerät generiert wurde</string>
 	<string name="export_explanation">"Deine Konfiguration wird hochgeladen, damit diese auf dem zweiten Gerät heruntergeladen werden kann. Wenn Passwörter vorhanden sind, dann werden diese verschlüsselt. Am Ende des Exports wird ein zufällig generierter Code angezeigt, mit dem Du die Konfiguration auf dem anderen Gerät herunterladen kannst. Die Konfiguration wird auf den Munin für Android-Servern gelöscht, so bald Du sie heruntergeladen hast. Wenn Du die Konfiguration nicht innerhalb von 24 Stunden herunterlädst, wird Sie auch gelöscht."</string>
 	<string name="export_success_title">"Export erfolgreich."</string>
 	<string name="export_success_txt1">"Die Konfiguration der App wurde erfolgreich hochgeladen. Bitte nutze den folgenden Code, um die Konfiguration auf dem anderen Gerät zu importieren."</string>
