@@ -232,6 +232,15 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 						activity.actionRefresh();
 					}
 				});
+
+				View openInBrowser = view.findViewById(R.id.error_openInBrowser);
+				openInBrowser.setVisibility(plugin.hasPluginPageUrl() ? View.VISIBLE : View.GONE);
+				openInBrowser.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						activity.actionOpenInBrowser();
+					}
+				});
 			}
 
 			// Connection type
