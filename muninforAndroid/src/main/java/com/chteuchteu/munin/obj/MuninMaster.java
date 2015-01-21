@@ -481,7 +481,6 @@ public class MuninMaster {
 	 * Contacts the URL to check if there are some other servers / plugins for each server
 	 */
 	public String rescan(Context context, MuninFoo muninFoo) {
-		// Take first server since it contains connection information
 		if (isEmpty())
 			return null;
 		
@@ -500,7 +499,7 @@ public class MuninMaster {
 			onlineMaster.setSSL(this.ssl);
 			onlineMaster.setAuthIds(this.authLogin, this.authPassword, this.authType);
 
-            // Set DynazoomAvailability to UNKNOWN to enable a new check
+            // Set DynazoomAvailability to AUTO_DETECT to enable a new check
             onlineMaster.setDynazoomAvailable(DynazoomAvailability.AUTO_DETECT);
 			
 			onlineMaster.fetchChildren(muninFoo.getUserAgent());
