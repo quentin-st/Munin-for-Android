@@ -259,6 +259,9 @@ public class MuninMaster {
 		if (res.hasSucceeded()) {
 			Document doc = Jsoup.parse(page, this.url);
 			Elements images = doc.select("img[src$=-day.png]");
+
+			if (images.size() == 0)
+				images = doc.select("img[src$=-day.svg]");
 			
 			if (images.size() > 0)
 				return "munin/x/";

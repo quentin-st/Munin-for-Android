@@ -119,6 +119,9 @@ public class MuninServer {
 		//						   code  base_uri
 		Document doc = Jsoup.parse(html, this.getServerUrl());
 		Elements images = doc.select("img[src$=-day.png]");
+
+		if (images.size() == 0)
+			images = doc.select("img[src$=-day.svg]");
 		
 		for (Element image : images) {
 			String pluginName = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
@@ -189,6 +192,9 @@ public class MuninServer {
 				Document secondPage = Jsoup.parse(secondPageHtml, srcAttr);
 
 				Elements images2 = secondPage.select("img[src$=-day.png]");
+				if (images2.size() == 0)
+					images2 = doc.select("img[src$=-day.svg]");
+
 				if (images2.size() > 0) {
 					Element imageParent = images2.get(0).parent();
 					if (imageParent.tagName().equals("a")) {
@@ -258,6 +264,9 @@ public class MuninServer {
 			
 			Document doc = Jsoup.parse(response.html, this.getServerUrl());
 			Elements images = doc.select("img[src$=-day.png]");
+
+			if (images.size() == 0)
+				images = doc.select("img[src$=-day.svg]");
 			
 			for (Element image : images) {
 				String pluginName = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
