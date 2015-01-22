@@ -239,15 +239,7 @@ public class Activity_GraphView extends MuninActivity {
 					muninFoo.setCurrentServer(currentPlugin.getInstalledOn());
 				}
 
-				int scroll = dh.getDrawerScrollY();
-				if (previousPos != -1) {
-					if (previousPos < viewFlow.getSelectedItemPosition())
-						scroll += 97;
-					else
-						scroll -= 97;
-				}
-				
-				dh.initPluginsList(scroll);
+				dh.updatePluginsList();
 				previousPos = viewFlow.getSelectedItemPosition();
 
 				// Documentation

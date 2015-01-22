@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -76,6 +77,8 @@ public class DrawerHelper {
 	private SearchAdapter search_results_adapter;
 	private ArrayList<SearchResult> search_results_array;
 	private List<String> search_cachedGridsList;
+
+	private int pluginsList_currentlySelectedItem;
 	
 	public DrawerHelper(ActionBarActivity activity, MuninFoo muninFoo) {
 		this.activity = activity;
@@ -470,7 +473,10 @@ public class DrawerHelper {
 
 
 		int vfpos = vf.getSelectedItemPosition();
+		this.pluginsList_currentlySelectedItem = vfpos;
 		int pos = 0;
+		View insertPoint = activity.findViewById(R.id.drawer_containerPlugins);
+
 		for (final MuninPlugin mp : muninFoo.getCurrentServer().getPlugins()) {
 			View v = vi.inflate(R.layout.drawer_subbutton, null);
 			final TextView b = (TextView)v.findViewById(R.id.button);
@@ -495,7 +501,6 @@ public class DrawerHelper {
 						activity.findViewById(R.id.drawer_scrollview).setScrollY(scroll);
 					}
 				});
-				
 			}
 			
 			b.setOnClickListener(new OnClickListener() {
@@ -515,11 +520,38 @@ public class DrawerHelper {
 					toggle();
 				}
 			});
-			
-			View insertPoint = activity.findViewById(R.id.drawer_containerPlugins);
+
 			((ViewGroup) insertPoint).addView(v);
 			pos++;
 		}
+	}
+
+	/**
+	 * Update selected item in plugins list
+	 */
+	public void updatePluginsList() {
+		// Remove background styling for previously selected element
+		ViewGroup container = (ViewGroup) activity.findViewById(R.id.drawer_containerPlugins);
+		View selectedItem = container.getChildAt(this.pluginsList_currentlySelectedItem);
+
+		TextView tv = (TextView) selectedItem.findViewById(R.id.button);
+		tv.setBackgroundColor(Color.TRANSPARENT);
+		tv.setTextColor(0xffbbbbbb);
+
+		// Set background styling for current element
+		final Activity_GraphView activityGraphView = (Activity_GraphView) activity;
+		final ViewFlow vf = activityGraphView.viewFlow;
+
+		this.pluginsList_currentlySelectedItem = vf.getSelectedItemPosition();
+
+		View newSelectedItem = container.getChildAt(this.pluginsList_currentlySelectedItem);
+		final TextView tv2 = (TextView) newSelectedItem.findViewById(R.id.button);
+		tv2.setBackgroundResource(R.drawable.drawer_selectedsubbutton);
+		tv2.setTextColor(0xffffffff);
+
+		// setScrollY
+		int scroll = (newSelectedItem.getHeight() + 1) * pluginsList_currentlySelectedItem;
+		activity.findViewById(R.id.drawer_scrollview).setScrollY(scroll);
 	}
 	
 	private class SearchAdapter extends BaseAdapter {
