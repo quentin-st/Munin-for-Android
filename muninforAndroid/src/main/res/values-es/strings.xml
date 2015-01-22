@@ -186,7 +186,7 @@
 	<string name="graphwidgetname">Munin para Android : Widgets de gráficos</string>
 	<string name="alertswidgetname">Munin para Android: Widgets de alertas</string>
 	<string name="featuresPackNeeded">Se requiere el paquete de funcionalidades de Munin para Android</string>
-	<string name="user_agent">User Agent</string>
+	<string name="user_agent">Agente de usuario</string>
 	<string name="from">De</string>
 	<string name="to">A</string>
 	<string name="grids_legend">Leyenda de las grillas</string>
