@@ -442,12 +442,7 @@ public class Activity_GraphView extends MuninActivity {
 			case R.id.period_week:    changePeriod(Period.WEEK); return true;
 			case R.id.period_month:   changePeriod(Period.MONTH); return true;
 			case R.id.period_year:    changePeriod(Period.YEAR); return true;
-			case R.id.menu_openinbrowser:
-				try {
-					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentPlugin.getPluginPageUrl()));
-					startActivity(browserIntent);
-				} catch (Exception ex) { ex.printStackTrace(); }
-				return true;
+			case R.id.menu_openinbrowser: actionOpenInBrowser(); return true;
 			case R.id.menu_documentation: actionDocumentation(); return true;
 		}
 		return true;
@@ -753,6 +748,13 @@ public class Activity_GraphView extends MuninActivity {
 		});
 		dialog = builder.create();
 		dialog.show();
+	}
+
+	public void actionOpenInBrowser() {
+		try {
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentPlugin.getPluginPageUrl()));
+			startActivity(browserIntent);
+		} catch (Exception ex) { ex.printStackTrace(); }
 	}
 	
 	private void actionFieldsDescription() {

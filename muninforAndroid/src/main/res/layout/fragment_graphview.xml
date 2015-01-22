@@ -66,7 +66,15 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				style="@style/Material_SmallButtonText"
-				android:text="@string/menu_graph_refresh"/>
+				android:text="@string/menu_graph_refresh"
+				android:layout_marginBottom="10dp"/>
+
+			<Button
+				android:id="@+id/error_openInBrowser"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				style="@style/Material_SmallButtonText"
+				android:text="@string/openInBrowser"/>
 
 		</LinearLayout>
 	</ScrollView>
