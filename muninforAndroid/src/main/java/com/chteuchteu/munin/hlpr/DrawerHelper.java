@@ -32,7 +32,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -454,14 +453,7 @@ public class DrawerHelper {
 	public void initPluginsList() {
 		initPluginsList(-1);
 	}
-	
-	public int getDrawerScrollY() {
-		ScrollView v = (ScrollView)activity.findViewById(R.id.drawer_scrollview);
-		if (v != null)
-			return v.getScrollY();
-		return 0;
-	}
-	
+
 	public void initPluginsList(final int scrollY) {
 		((LinearLayout)activity.findViewById(R.id.drawer_containerPlugins)).removeAllViews();
 		
