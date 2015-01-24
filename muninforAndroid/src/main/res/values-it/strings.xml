@@ -206,5 +206,5 @@
 	<string name="alert_i18n">Sembra che l\'app non sia disponibile nella tua lingua. Puoi aiutarci rendendola disponibile nella tua lingua, per favore?</string>
 	<string name="alert_i18n_yes">Grazie molte! Usiamo un tool online semplice da usare per gestire le traduzioni. Usa questo link per raggiungerlo: www.munin-for-android.com/i18n.php</string>
 
-<string name="text53">Aggiorna solo via Wifi</string>
+<string name="text53">Aggiorna solo con Wifi</string>
 	</resources>
