@@ -14,6 +14,7 @@ Munin for Android is an Android application allowing munin users to display gene
 * [Munin for Android on Google Play](https://play.google.com/store/apps/details?id=com.chteuchteu.munin)
 * [Munin for Android website](http://www.munin-for-android.com)
 * [Munin repository](https://github.com/munin-monitoring/munin)
+* [APK Files](https://github.com/chteuchteu/Munin-for-Android/releases) (download and install those manually if you don't use Google services (Google Play) on your device. You'll have to install updates by yourself)
 
 ## Project structure ##
 
