@@ -23,6 +23,7 @@ public class MuninMaster {
 	private String url;
 	private List<MuninServer> children;
 	private DynazoomAvailability dynazoomAvailability;
+	private SVGAvailability svgGraphsAvailability;
 	
 	private Boolean ssl;
 	private AuthType authType;
@@ -41,6 +42,7 @@ public class MuninMaster {
 		this.defaultMaster = false;
 		this.children = new ArrayList<>();
 		this.dynazoomAvailability = DynazoomAvailability.AUTO_DETECT;
+		this.svgGraphsAvailability = SVGAvailability.AUTO_DETECT;
 		
 		this.authType = AuthType.UNKNOWN;
 		this.authLogin = "";
@@ -66,6 +68,22 @@ public class MuninMaster {
 		public static DynazoomAvailability get(boolean val) {
             return val ? TRUE : FALSE;
 		}
+	}
+
+	public enum SVGAvailability {
+		AUTO_DETECT(""), FALSE("false"), TRUE("true");
+		private String val = "";
+		SVGAvailability(String val) { this.val = val; }
+		public String getVal() { return this.val; }
+		public String toString() { return this.val; }
+		public static SVGAvailability get(String val) {
+			for (SVGAvailability s : values()) {
+				if (s.val.equals(val))
+					return s;
+			}
+			return AUTO_DETECT;
+		}
+		public SVGAvailability get(boolean val) { return val ? TRUE : FALSE; }
 	}
 	
 	public void setAuthType(AuthType t) { this.authType = t; }
@@ -163,6 +181,9 @@ public class MuninMaster {
 	public void setDynazoomAvailable(DynazoomAvailability val) { this.dynazoomAvailability = val; }
 	public DynazoomAvailability isDynazoomAvailable() { return this.dynazoomAvailability; }
 
+	public void setSVGGraphsAvailability(SVGAvailability val) { this.svgGraphsAvailability = val; }
+	public SVGAvailability isSVGAvailable() { return this.svgGraphsAvailability; }
+
 	public List<MuninServer> getChildren() { return this.children; }
 	public void addChild(MuninServer s) {
 		if (!this.children.contains(s)) {
@@ -231,6 +252,9 @@ public class MuninMaster {
 	
 	public HTTPResponse_Bitmap grabBitmap(String url, String userAgent) {
 		return NetHelper.grabBitmap(this, url, userAgent);
+	}
+	public HTTPResponse_Image grabImage(String url, String userAgent, NetHelper.ImageType imageType) {
+		return NetHelper.grabImage(this, url, userAgent, imageType);
 	}
 	
 	public HTTPResponse grabUrl(String url, String userAgent) {

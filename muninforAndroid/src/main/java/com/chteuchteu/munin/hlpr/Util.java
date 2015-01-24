@@ -14,6 +14,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PictureDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -39,6 +40,7 @@ import android.widget.TextView;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninServer;
+import com.larvalabs.svgandroid.SVG;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.io.IOException;
@@ -638,5 +640,14 @@ public final class Util {
 			v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
 		else
 			v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+	}
+
+	public static Bitmap svgToBitmap(SVG svg) {
+		PictureDrawable pictureDrawable = svg.createPictureDrawable();
+		Bitmap bitmap = Bitmap.createBitmap(pictureDrawable.getIntrinsicWidth(),
+				pictureDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		canvas.drawPicture(pictureDrawable.getPicture());
+		return bitmap;
 	}
 }

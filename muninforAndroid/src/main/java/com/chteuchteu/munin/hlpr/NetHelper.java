@@ -172,6 +172,10 @@ public class NetHelper {
 		catch (Exception e) { e.printStackTrace(); }
 		return resp;
 	}
+
+	public static HTTPResponse_Image grabImage(MuninMaster master, String url, String userAgent, ImageType imageType) {
+		return grabImage(master, url, userAgent, imageType, false);
+	}
 	
 	public static HTTPResponse_Bitmap grabBitmap(MuninMaster master, String url, String userAgent) {
 		return (HTTPResponse_Bitmap) grabImage(master, url, userAgent, ImageType.BITMAP, false);

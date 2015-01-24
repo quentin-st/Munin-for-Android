@@ -10,6 +10,6 @@ public class HTTPResponse_Bitmap extends HTTPResponse_Image {
 		super();
 	}
 
-	public void setBitmap(Bitmap val) { this.image = val; }
 	public Bitmap getBitmap() { return (Bitmap) this.image; }
+	public void setBitmap(Bitmap val) { this.image = val; }
 }

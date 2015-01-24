@@ -27,7 +27,6 @@ dependencies {
     compile files('libs/jsoup-1.7.2.jar')
     compile files('libs/libGoogleAnalyticsServices.jar')
     compile files('libs/systembartint-1.0.4.jar')
-    compile files('libs/svg-android-1.1.jar')
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.4.0'
     compile 'com.melnykov:floatingactionbutton:1.0.6'
     compile 'com.edmodo:rangebar:1.0.0'

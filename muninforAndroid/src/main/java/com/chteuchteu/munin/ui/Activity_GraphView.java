@@ -80,8 +80,6 @@ import java.util.List;
 
 @SuppressLint({ "DefaultLocale", "InflateParams" })
 public class Activity_GraphView extends MuninActivity {
-	private int previousPos = -1;
-
 	private MuninPlugin currentPlugin;
 	public Period load_period;
 	public ViewFlow viewFlow;
@@ -240,7 +238,6 @@ public class Activity_GraphView extends MuninActivity {
 				}
 
 				dh.updatePluginsList();
-				previousPos = viewFlow.getSelectedItemPosition();
 
 				// Documentation
 				if (item_documentation != null) {
