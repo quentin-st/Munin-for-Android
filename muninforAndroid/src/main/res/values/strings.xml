@@ -47,48 +47,48 @@
 	<string name="fieldsDescription">Fields description</string>
 	<string name="follow">Follow on Twitter</string>
 	<string name="notifs_vibrate">Vibrate</string>
-	<string name="aboutText">
-<![CDATA[
+	<string name="aboutHTMLStructure" translatable="false">
+		<![CDATA[
 	    <head>
 	    <style>
-	    	p { padding: 0px 10px; }
+	    	p { padding: 0px 10px; } body { text-align: justify; color: #555; font-size:0.95em; } a { color: #1184C3; text-decoration: none; }
 	    	h2 { width: 100%; color:#1184C3; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.6em; }
-	    	body { text-align: justify; color: #555; font-size:0.95em; }
-	    	a { color: #1184C3; text-decoration: none; }
 	    </style>
 	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	    </head>
 	    <body>
-	    <p>Want to say hi? Have an innovative idea to improve the app? Discovered a critical issue? Please feel free to send an email at <b><u>support@munin-for-android.com</u></b>! Thanks!</p>
-	    <p>This app was independently developed - It is not the official app.</p>
-	    <p></p>
-	    <p>Please go to <a href="http://munin-for-android.com/">munin-for-android.com</a> to see complete changelog and version notes.</p>
-	    <p></p>
-	    <p>Munin for Android is open-source! <a href="https://github.com/chteuchteu/Munin-for-Android">You can contribute to the project on GitHub</a>.
-	    	The app is distributed under the GNU GPL version 2.</p>
-	    
-	    <h2>Special thanks</h2>
-	    <ul>
-	    <li>Steve Schnepp, lead dev. of Munin</li>
+	    <p>{firstPhrase}</p> <p>{independantApp}</p> <p></p> <p>{changelog}</p> <p></p> <p>{openSource}</p>
+	    <h2>{specialThanksTitle}</h2>
+	    <ul>{specialThanks}</ul>
+	    <h2>{librariesTitle}</h2>
+	    <ul>{libraries}</ul>
+	    <br />
+	    </body>]]>
+	</string>
+	<string name="about_firstPhrase"><![CDATA[Want to say hi? Have an innovative idea to improve the app? Discovered a critical issue? Please feel free to send an email at <b><u>support@munin-for-android.com</u></b>! Thanks!]]></string>
+	<string name="about_independantApp">This app was independently developed - It is not the official app.</string>
+	<string name="about_changelog"><![CDATA[Please go to <a href="http://munin-for-android.com/">munin-for-android.com</a> to see complete changelog and version notes.]]></string>
+	<string name="about_openSource"><![CDATA[Munin for Android is open-source! <a href="https://github.com/chteuchteu/Munin-for-Android">You can contribute to the project on GitHub</a>.
+	    	The app is distributed under the GNU GPL version 2.]]></string>
+	<string name="about_specialThanksTitle">Special thanks</string>
+	<string name="about_specialThanks" translatable="false"><![CDATA[
+		<li>Steve Schnepp, lead dev. of Munin</li>
 	    <li>Alessandro <i>\"override\"</i></li>
 	    <li>#munin IRC: olasd</li>
 	    <li>Christian Petri, <a href="http://lucas-garte.com/">Lucas Garte</a>, Jan Vonde: german translation</li>
 	    <li>Konstantin Batkin: russian translation</li>
 	    <li>Edwin van Ouwerkerk Moria</li>
 	    <li>Juan Moyano (wincus): spanish translation</li>
-	    </ul>
-	    
-	    <h2>Libraries</h2>
-	    <ul>
-	    <li><a href="http://jsoup.org/">jsoup</a></li>
+	    <li>Project contributors on GitHub</li>
+	]]></string>
+	<string name="about_librariesTitle">Libraries</string>
+	<string name="about_libraries" translatable="false"><![CDATA[
+		<li><a href="http://jsoup.org/">jsoup</a></li>
 	    <li><a href="https://crashlytics.com">Crashlytics</a></li>
 	    <li><a href="https://github.com/TimotheeJeannin/AppRate">AppRate</a></li>
 	    <li><a href="https://github.com/jgilfelt/SystemBarTint">SystemBarTint</a></li>
 	    <li><a href="https://github.com/bauerca/drag-sort-listview">DragSortListview</a></li>
-	    </ul>
-	    <br />
-	    </body>]]>
-	</string>
+	]]></string>
 	<string name="goPremiumBenefits">
 <![CDATA[
 	    <head>

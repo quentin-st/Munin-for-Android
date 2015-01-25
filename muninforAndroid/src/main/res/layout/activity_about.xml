@@ -48,7 +48,7 @@
 						android:text="@string/yourerunning"
 						android:textColor="#333333"
 						android:textSize="14sp"
-						android:textStyle="italic" />
+						android:textAllCaps="true"/>
 
 					<TextView
 						android:id="@+id/about_txt2"
@@ -98,5 +98,4 @@
 		</LinearLayout>
 
 	</android.support.v4.widget.DrawerLayout>
-
 </LinearLayout>

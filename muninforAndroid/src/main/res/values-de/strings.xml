@@ -111,50 +111,11 @@
 	<string name="text68">Timeout - Der Server benötigte zu lange, um die Anfrage zu bearbeiten</string>
 	<string name="button_grid">"Gitter"</string>
 	<string name="edit">"Bearbeiten"</string>
-	<string name="aboutText">
-<![CDATA[
-   <head>
-   <style>
-   	p { padding: 0px 15px; }
-   	h2 { width: 100%; color:#1184C3; margin: 40px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.6em; }
-	body { text-align: justify; color: #555; font-size:0.95em; }
-	a { color: #1184C3; text-decoration: none; }
-   </style>
-   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-   </head>
-   <body>
-   <p>Wenn du Verbesserungsvorschl&auml;ge f&uuml;r <i>Munin f&uuml;r Android</i> oder einen Bug gefunden hast, schreibe am besten eine E-Mail an <b><u>support@munin-for-android.com</u></b>. Vielen Dank!</p>
-	    <p>Ich bin kein Angeh&ouml;riger der Linux-Software <i>munin</i>.</p>
-	<p></p>
-
-   <p>Bitte gehe auf <a href="http://chteuchteu.com/munin-for-android/">chteuchteu.com/munin-for-android</a> um ein Changelog zu sehen.</p>
-	<p></p>
-	<p>Munin for Android is open-source! <a href="https://github.com/chteuchteu/Munin-for-Android">You can contribute to the project on GitHub</a>.
-		The app is distributed under the GNU GPL version 2.</p>
-
-   <h2>Besonderen Dank</h2>
-	<ul>
-	<li>Steve Schnepp, Haupt-Entwickler von Munin</li>
-	<li>Alessandro <i>\"override\"</i></li>
-	<li>#munin IRC: olasd</li>
-	<li>Christian Petri, <a href="http://lucas-garte.com/">Lucas Garte</a>, Jan Vonde: deutsche &Uuml;bersetzung</li>
-	<li>Konstantin Batkin: russian translation</li>
-	<li>Edwin van Ouwerkerk Moria</li>
-	<li>Juan Moyano (wincus): spanish translation</li>
-	</ul>
-
-	<h2>Libraries</h2>
-	<ul>
-	<li><a href="http://jsoup.org/">jsoup</a></li>
-	<li><a href="https://crashlytics.com">Crashlytics</a></li>
-	<li><a href="https://github.com/TimotheeJeannin/AppRate">AppRate</a></li>
-	<li><a href="https://github.com/jgilfelt/SystemBarTint">SystemBarTint</a></li>
-	<li><a href="https://github.com/bauerca/drag-sort-listview">DragSortListview</a></li>
-	</ul>
-   <br />
-   </body>]]>
-	</string>
-
+	<string name="about_firstPhrase"><![CDATA[ Wenn du Verbesserungsvorschl&auml;ge f&uuml;r <i>Munin f&uuml;r Android</i> oder einen Bug gefunden hast, schreibe am besten eine E-Mail an <b><u>support@munin-for-android.com</u></b>. Vielen Dank! ]]></string>
+	<string name="about_independantApp"><![CDATA[ Ich bin kein Angeh&ouml;riger der Linux-Software <i>munin</i>. ]]></string>
+	<string name="about_changelog"><![CDATA[ Bitte gehe auf <a href="http://chteuchteu.com/munin-for-android/">chteuchteu.com/munin-for-android</a> um ein Changelog zu sehen. ]]></string>
+	<string name="about_specialThanksTitle">Besonderen Dank</string>
+	<string name="about_librariesTitle">Libraries</string>
 	<string name="text69">"Gittername"</string>
 	<string name="text70">"Gitter hinzufügen"</string>
 	<string name="text70.2">"Label hinzufügen"</string>
