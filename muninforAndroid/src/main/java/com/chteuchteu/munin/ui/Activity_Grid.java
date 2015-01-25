@@ -172,21 +172,23 @@ public class Activity_Grid extends MuninActivity {
 	}*/
 	
 	private void hidePreview() {
-		grid.currentlyOpenedPlugin = null;
+		if (grid.currentlyOpenedGridItem == null)
+			return;
+
+		// Lollipop animation (fallback if necessary)
+		View fs = findViewById(R.id.fullscreen);
+		View gridItem = (View) grid.currentlyOpenedGridItem.container.getParent();
+		View gridItemParent = (View) grid.currentlyOpenedGridItem.container.getParent().getParent();
+		int cx = (gridItem.getLeft() + gridItem.getRight()) / 2;
+		int cy = (gridItemParent.getTop() + gridItemParent.getBottom()) / 2;
+		int initialRadius = Math.max(fs.getWidth(), fs.getHeight());
+		Util.Animations.reveal_hide(fs, new int[]{cx, cy}, initialRadius);
+
+		grid.currentlyOpenedGridItem = null;
 		if (menu_refresh != null)	menu_refresh.setVisible(true);
 		if (menu_edit != null)		menu_edit.setVisible(true);
 		if (menu_period != null)	menu_period.setVisible(true);
 		if (menu_open != null)		menu_open.setVisible(false);
-
-		Util.Animations.animate(findViewById(R.id.fullscreen), Util.Animations.CustomAnimation.FADE_OUT,
-				Util.Animations.AnimationSpeed.MEDIUM, new Runnable() {
-					@Override
-					public void run() {
-						findViewById(R.id.fullscreen).setVisibility(View.GONE);
-						fs_iv.setImageBitmap(null);
-						((TextView) ((Activity) context).findViewById(R.id.fullscreen_tv)).setText("");
-					}
-				});
 	}
 	
 	private void setupGrid() {
@@ -261,11 +263,11 @@ public class Activity_Grid extends MuninActivity {
 	}
 	
 	private void openGraph() {
-		if (grid.currentlyOpenedPlugin == null)
+		if (grid.currentlyOpenedGridItem == null)
 			return;
-		grid.f.setCurrentServer(grid.currentlyOpenedPlugin.getInstalledOn());
+		grid.f.setCurrentServer(grid.currentlyOpenedGridItem.plugin.getInstalledOn());
 		Intent i = new Intent(context, Activity_GraphView.class);
-		i.putExtra("plugin", grid.currentlyOpenedPlugin.getName());
+		i.putExtra("plugin", grid.currentlyOpenedGridItem.plugin.getName());
 		i.putExtra("from", "grid");
 		Intent gridIntent = ((Activity) context).getIntent();
 		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("gridName"))
