@@ -89,22 +89,25 @@
 	    <li><a href="https://github.com/jgilfelt/SystemBarTint">SystemBarTint</a></li>
 	    <li><a href="https://github.com/bauerca/drag-sort-listview">DragSortListview</a></li>
 	]]></string>
-	<string name="goPremiumBenefits">
-<![CDATA[
+	<string name="goPremiumHTMLStructure">
+		<![CDATA[
 	    <head>
 	    <style>
-	    	p { padding: 0px 15px; }
+	    	p { padding: 0px 15px; } a { color: #1184C3; text-decoration: none; } li { margin-bottom: 5px; }
 	    	h2 { width: 100%; color:#1184C3; margin: 10px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.6em; }
 	    	body { text-align: justify; color: #555; font-size:1em; }
-	    	li { margin-bottom: 5px; }
-	    	a { color: #1184C3; text-decoration: none; }
 	    </style>
 	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	    </head>
 	    <body>
-	    <h2>Munin for Android Features Pack</h2>
-	    <ul>
-	    <li>Graphs grids</li>
+	    <h2>{title}</h2>
+	    <ul> {features} </ul>
+	    <br />
+	    </body>]]>
+	</string>
+	<string name="goPremium_title">Munin for Android Features Pack</string>
+	<string name="goPremium_features"><![CDATA[
+		<li>Graphs grids</li>
 	    <li>SSL Support</li>
 	    <li>Graph Widgets</li>
 	    <li>Digest auth</li>
@@ -112,10 +115,7 @@
 	    <li>High-priority support</li>
 	    <li>Single pack of premium features: pay once for actual and upcoming premium features!</li>
 	    <li>And more to come! Be sure to enable auto-updates in Google Play to receive latest premium features</li>
-	    </ul>
-	    <br />
-	    </body>]]>
-	</string>
+	]]></string>
 	<string name="buy_now">BUY NOW</string>
 	<string name="splashDesc">Loading</string>
 	<string name="graphView_ImageViewDescription">Graph</string>

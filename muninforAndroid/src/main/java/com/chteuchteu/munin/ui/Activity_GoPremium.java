@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.TagFormat;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -63,11 +64,17 @@ public class Activity_GoPremium extends MuninActivity {
 			price1.setText("$1");
 			price2.setText("49");
 		}
+
+		// Generate HTML content
+		String html = TagFormat.from(this, R.string.goPremiumHTMLStructure)
+				.with("title", R.string.goPremium_title)
+				.with("features", R.string.goPremium_features)
+				.format();
 		
 		benefits.setVerticalScrollBarEnabled(true);
 		benefits.setBackgroundColor(0x00000000);
 		benefits.getSettings().setDefaultTextEncodingName("utf-8");
-		benefits.loadDataWithBaseURL(null, getString(R.string.goPremiumBenefits), "text/html", "utf-8", null);
+		benefits.loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
 		benefits.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 		benefits.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 		benefits.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);

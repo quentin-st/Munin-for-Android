@@ -49,8 +49,17 @@
 	<string name="about_openSource"><![CDATA[Munin para Android es ahora software libre! <a href=https://github.com/chteuchteu/Munin-for-Android>Puede contribuir al proyecto en GitHub</a>. La aplicación se distribuye bajo la licencia GNU GPL versión 2.]]></string>
 	<string name="about_specialThanksTitle">Agradecimientos</string>
 	<string name="about_librariesTitle">Librerías</string>
-
-	<string name="goPremiumBenefits"> &lt;head&gt; &lt;style&gt; p { padding: 0px 15px; } h2 { width: 100%; color:#1184C3; margin: 10px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.6em; } body { text-align: justify; color: #555; font-size:1em; } li { margin-bottom: 5px; } a { color: #1184C3; text-decoration: none; } &lt;/style&gt; &lt;meta http-equiv=Content-Type content=text/html; charset=UTF-8 /&gt; &lt;/head&gt; &lt;body&gt; &lt;h2&gt; Paquete de funcionalidades de Munin para Android &lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Grilla de gráficos&lt;/li&gt; &lt;li&gt;Soporte SSL&lt;/li&gt; &lt;li&gt;Herramientas de gráficos&lt;/li&gt; &lt;li&gt;Autenticación Digest&lt;/li&gt; &lt;li&gt;Notificaciones&lt;/li&gt; &lt;li&gt;Soporte de alta prioridad&lt;/li&gt; &lt;li&gt;Funcionalidades de paquete único: pague por única vez para obtener las actuales y futuras funcionalidades premium!&lt;/li&gt; &lt;li&gt;Hay mas en camino! Asegúrese de habilitar las actualizaciones automáticas en Google Play para recibir las funcionalidades premium mas recientes&lt;/li&gt; &lt;/ul&gt; &lt;br /&gt; &lt;/body&gt; </string>
+	<string name="goPremium_title">Paquete de funcionalidades de Munin para Android</string>
+	<string name="goPremium_features"><![CDATA[
+		<li>Grilla de gráficos</li>
+		<li>Soporte SSL</li>
+		<li>Herramientas de gráficos</li>
+		<li>Autenticación Digest</li>
+		<li>Notificaciones</li>
+		<li>Soporte de alta prioridad</li>
+		<li>Funcionalidades de paquete único: pague por única vez para obtener las actuales y futuras funcionalidades premium!</li>
+		<li>Hay mas en camino! Asegúrese de habilitar las actualizaciones automáticas en Google Play para recibir las funcionalidades premium mas recientes</li>
+	]]></string>
 	<string name="buy_now">COMPRE AHORA</string>
 	<string name="splashDesc">Cargando</string>
 	<string name="graphView_ImageViewDescription">Gráfico</string>

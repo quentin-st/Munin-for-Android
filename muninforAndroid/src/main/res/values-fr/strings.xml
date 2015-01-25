@@ -198,33 +198,17 @@
 		Cette application est distribuée sous la licence GNU GPL version 2.]]></string>
 	<string name="about_specialThanksTitle">Remerciements</string>
 	<string name="about_librariesTitle">Bibliothèques</string>
-	<string name="goPremiumBenefits">
-<![CDATA[
-  <head>
-  <style>
-  	p { padding: 0px 15px; }
-  	h2 { width: 100%; color:#1184C3; margin: 10px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.6em; }
-  	body { text-align: justify; color: #555; font-size:0.95em; }
-  	li { margin-bottom: 5px; }
-  	a { color: #1184C3; text-decoration: none; }
-  </style>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  </head>
-  <body>
-  <h2>Munin for Android Features Pack</h2>
-  <ul>
-  <li>Grilles de graphs</li>
-  <li>Support SSL</li>
-  <li>Widgets</li>
-  <li>Authentification digest</li>
-  <li>Notifications</li>
-  <li>Support haute-priorité</li>
-  <li>Pack de fonctionnalités unique: payez une fois pour recevoir les prochaines fonctionnalités premium !</li>
-  <li>Et plus encore, à venir ! Veuillez vous assurer d\'accepter les mises à jour automatiques afin de recevoir automatiquement les prochaines fonctionnalités premium !</li>
-  </ul>
-  <br />
-  </body>]]>
-	</string>
+	<string name="goPremium_title">Munin for Android Features Pack</string>
+	<string name="goPremium_features"><![CDATA[
+		<li>Grilles de graphs</li>
+		<li>Support SSL</li>
+		<li>Widgets</li>
+		<li>Authentification digest</li>
+		<li>Notifications</li>
+		<li>Support haute-priorité</li>
+		<li>Pack de fonctionnalités unique: payez une fois pour recevoir les prochaines fonctionnalités premium !</li>
+		<li>Et plus encore, à venir ! Veuillez vous assurer d\'accepter les mises à jour automatiques afin de recevoir automatiquement les prochaines fonctionnalités premium !</li>
+	]]></string>
 	<string name="from">Du</string>
 	<string name="to">Au</string>
 	<string name="grids_legend">Légende des grilles</string>

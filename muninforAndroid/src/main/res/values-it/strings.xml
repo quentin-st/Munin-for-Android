@@ -50,8 +50,17 @@
 	<string name="about_openSource"><![CDATA[Munin per Android è open-source! <a href=https://github.com/chteuchteu/Munin-for-Android>Puoi contribuire al progetto su GitHub</a>. L\'app è distribuita secondo la licenza GNU GPL versione 2.]]></string>
 	<string name="about_specialThanksTitle">Ringraziamenti speciali</string>
 	<string name="about_librariesTitle">Librerie</string>
-
-	<string name="goPremiumBenefits"> &lt;head&gt; &lt;style&gt; p { padding: 0px 15px; } h2 { width: 100%; color:#1184C3; margin: 10px 0px 4px 0px; font-weight: bold; font-variant:small-caps; font-size:1.6em; } body { text-align: justify; color: #555; font-size:1em; } li { margin-bottom: 5px; } a { color: #1184C3; text-decoration: none; } &lt;/style&gt; &lt;meta http-equiv=Content-Type content=text/html; charset=UTF-8 /&gt; &lt;/head&gt; &lt;body&gt; &lt;h2&gt;Pacchetto feature premium&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Griglie di grafici&lt;/li&gt; &lt;li&gt;Supporto SSL&lt;/li&gt; &lt;li&gt;Widgets dei grafici&lt;/li&gt; &lt;li&gt;Autenticazione Digest&lt;/li&gt; &lt;li&gt;Notifiche&lt;/li&gt; &lt;li&gt;Supporto prioritario&lt;/li&gt; &lt;li&gt;Pacchetti singoli di funzionalità premium: paga una volta per le funzionalità attuali e future!&lt;/li&gt; &lt;li&gt;E altre a venire! Assicurati di attivare gli aggiornamenti automatici in Google Play per ricevere le ultime funzionalità premium&lt;/li&gt; &lt;/ul&gt; &lt;br /&gt; &lt;/body&gt; </string>
+	<string name="goPremium_title">Pacchetto feature premium</string>
+	<string name="goPremium_features"><![CDATA[
+		<li>Griglie di grafici</li>
+		<li>Supporto SSL</li>
+		<li>Widgets dei grafici</li>
+		<li>Autenticazione Digest</li>
+		<li>Notifiche</li>
+		<li>Supporto prioritario</li>
+		<li>Pacchetti singoli di funzionalità premium: paga una volta per le funzionalità attuali e future!</li>
+		<li>E altre a venire! Assicurati di attivare gli aggiornamenti automatici in Google Play per ricevere le ultime funzionalità premium</li>
+	]]></string>
 	<string name="buy_now">COMPRA ORA</string>
 	<string name="splashDesc">Caricamento</string>
 	<string name="graphView_ImageViewDescription">Grafico</string>
