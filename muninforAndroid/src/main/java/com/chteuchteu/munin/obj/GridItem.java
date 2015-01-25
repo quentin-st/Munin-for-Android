@@ -42,7 +42,7 @@ public class GridItem {
 	public Grid 			grid;
 	private Context 		c;
 	public boolean 		editing = false;
-	private RelativeLayout container;
+	public RelativeLayout container;
 	public Bitmap 			graph;
 	public ProgressBar 		pb;
 	public View            footer;
@@ -152,15 +152,21 @@ public class GridItem {
 			Activity_Grid.menu_refresh.setVisible(false);
 			Activity_Grid.menu_edit.setVisible(false);
 			
-			grid.currentlyOpenedPlugin = plugin;
+			grid.currentlyOpenedGridItem = this;
 			final ImageView fullscreenImageView = (ImageView) ((Activity) c).findViewById(R.id.fullscreen_iv);
 			fullscreenImageView.setImageBitmap(graph);
 			((TextView) ((Activity) c).findViewById(R.id.fullscreen_tv)).setText(plugin.getInstalledOn().getName());
 			View fs = ((Activity) c).findViewById(R.id.fullscreen);
-			fs.setVisibility(View.VISIBLE);
 
-			Util.Animations.animate(fs, Util.Animations.CustomAnimation.FADE_IN);
-			
+			// Lollipop animation (fallback if necessary)
+			fs.setVisibility(View.VISIBLE);
+			View parent = (View) container.getParent();
+			View parentParent = (View) container.getParent().getParent();
+			int cx = (parent.getLeft() + parent.getRight()) / 2;
+			int cy = (parentParent.getTop() + parentParent.getBottom()) / 2;
+			int finalRadius = Math.max(fullscreenImageView.getWidth(), fullscreenImageView.getHeight());
+			Util.Animations.reveal_show(fs, new int[]{cx, cy}, finalRadius);
+
 			// Translation animation between origin imageview location and fullscreen location
 			// Set original imageview location
 			/*int[] originalImageLocation = new int[2];
@@ -172,7 +178,7 @@ public class GridItem {
 			fullscreenImageView.setLayoutParams(lParams);*/
 			
 			// Download HD graph if possible
-			if (grid.currentlyOpenedPlugin.getInstalledOn().getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
+			if (grid.currentlyOpenedGridItem.plugin.getInstalledOn().getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
 					&& !Util.getPref(c, Util.PrefKeys.HDGraphs).equals("false")) {
 				// We need to get imageView dimensions (which aren't available right now => globalLayoutListener)
 				fullscreenImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -190,7 +196,7 @@ public class GridItem {
 							if (hdGraphDownloader != null && hdGraphDownloader.isDownloading())
 								hdGraphDownloader.killDownload();
 
-							hdGraphDownloader = new HDGraphDownloader(grid.currentlyOpenedPlugin, fullscreenImageView, period);
+							hdGraphDownloader = new HDGraphDownloader(grid.currentlyOpenedGridItem.plugin, fullscreenImageView, period);
 							hdGraphDownloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 						}
 					}

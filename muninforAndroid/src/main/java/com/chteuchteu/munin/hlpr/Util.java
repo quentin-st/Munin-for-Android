@@ -1,5 +1,7 @@
 package com.chteuchteu.munin.hlpr;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -21,6 +23,7 @@ import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
@@ -590,6 +593,38 @@ public final class Util {
 			private int duration;
 			AnimationSpeed(int duration) { this.duration = duration; }
 			public int getDuration() { return this.duration; }
+		}
+
+		public static void reveal_show(View view, int[] center, int finalRadius) {
+			if (Build.VERSION.SDK_INT >= 21) {
+				Animator anim = ViewAnimationUtils.createCircularReveal(view, center[0], center[1], 0, finalRadius);
+				view.setVisibility(View.VISIBLE);
+				anim.start();
+			}
+			else
+				Animations.animate(view, CustomAnimation.FADE_IN);
+		}
+
+		public static void reveal_hide(final View view, int[] center, int initialRadius) {
+			if (Build.VERSION.SDK_INT >= 21) {
+				Animator anim = ViewAnimationUtils.createCircularReveal(view, center[0], center[1], initialRadius, 0);
+				anim.addListener(new AnimatorListenerAdapter() {
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						super.onAnimationEnd(animation);
+						view.setVisibility(View.GONE);
+					}
+				});
+
+				anim.start();
+			}
+			else
+				Animations.animate(view, CustomAnimation.FADE_OUT, AnimationSpeed.MEDIUM, new Runnable() {
+					@Override
+					public void run() {
+						view.setVisibility(View.GONE);
+					}
+				});
 		}
 
 		public static void animate(View view, CustomAnimation animation) { animate(view, animation, AnimationSpeed.MEDIUM, null); }

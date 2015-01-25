@@ -26,7 +26,7 @@ public class Grid {
 	
 	private LinearLayout container;
 	
-	public MuninPlugin currentlyOpenedPlugin = null;
+	public GridItem currentlyOpenedGridItem = null;
 	
 	public Grid(String name, MuninFoo f) {
 		this.name = name;
