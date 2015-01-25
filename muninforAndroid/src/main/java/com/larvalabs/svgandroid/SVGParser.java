@@ -2,22 +2,32 @@ package com.larvalabs.svgandroid;
 
 import android.content.res.AssetManager;
 import android.content.res.Resources;
-import android.graphics.*;
-import android.graphics.drawable.PictureDrawable;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Picture;
+import android.graphics.RadialGradient;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.util.Log;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /*
 
@@ -194,6 +204,7 @@ public class SVGParser {
             }
             return result;
         } catch (Exception e) {
+	        e.printStackTrace();
             throw new SVGParseException(e);
         }
     }
@@ -999,8 +1010,13 @@ public class SVGParser {
                 return;
             }
             if (localName.equals("svg")) {
-                int width = (int) Math.ceil(getFloatAttr("width", atts));
-                int height = (int) Math.ceil(getFloatAttr("height", atts));
+                /*int width = (int) Math.ceil(getFloatAttr("width", atts));
+                int height = (int) Math.ceil(getFloatAttr("height", atts));*/
+	            // Munin SVG graphs actually have "pt" as unit for width & height
+	            String sWidth = getStringAttr("width", atts);
+	            int width = Integer.parseInt(sWidth.substring(0, sWidth.indexOf('p')));
+	            String sHeight = getStringAttr("height", atts);
+	            int height = Integer.parseInt(sHeight.substring(0, sHeight.indexOf('p')));
                 canvas = picture.beginRecording(width, height);
             } else if (localName.equals("defs")) {
                 // Ignore
@@ -1149,17 +1165,20 @@ public class SVGParser {
                     }
                 }
             } else if (!hidden && localName.equals("path")) {
-                Path p = doPath(getStringAttr("d", atts));
-                pushTransform(atts);
-                Properties props = new Properties(atts);
-                if (doFill(props, gradientMap)) {
-                    doLimits(p);
-                    canvas.drawPath(p, paint);
-                }
-                if (doStroke(props)) {
-                    canvas.drawPath(p, paint);
-                }
-                popTransform();
+	            String dAttr = getStringAttr("d", atts);
+	            if (!dAttr.isEmpty()) {
+		            Path p = doPath(getStringAttr("d", atts));
+		            pushTransform(atts);
+		            Properties props = new Properties(atts);
+		            if (doFill(props, gradientMap)) {
+			            doLimits(p);
+			            canvas.drawPath(p, paint);
+		            }
+		            if (doStroke(props)) {
+			            canvas.drawPath(p, paint);
+		            }
+		            popTransform();
+	            }
             } else if (!hidden) {
                 Log.d(TAG, "UNRECOGNIZED SVG COMMAND: " + localName);
             }

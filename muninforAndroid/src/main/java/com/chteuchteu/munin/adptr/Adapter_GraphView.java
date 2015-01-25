@@ -33,7 +33,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	/**
 	 * SVG debugging: static svg file URL, force SVGAvailability to TRUE
 	 */
-	private static final boolean SVG_DEBUG = false;
+	private static final boolean SVG_DEBUG = true;
 
 	private static final int[] AVERAGE_GRAPH_DIMENSIONS = {455, 350};
 	private MuninFoo muninFoo;
@@ -138,7 +138,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 				if (server.getParent().isSVGAvailable() == MuninMaster.SVGAvailability.TRUE || SVG_DEBUG) { // SVG graphs
 					imgUrl = plugin.getSVGImgUrl(activity.load_period);
 					if (SVG_DEBUG)
-						imgUrl = "http://www.munin-for-android.com/img/if1sec_eth0-day.svg";
+						imgUrl = "http://demo.munin-monitoring.org/munin-cgi-graph/munin-monitoring.org/demo.munin-monitoring.org/multicpu1sec-week.svg";
 					imageType = NetHelper.ImageType.SVG;
 				}
 				else if (server.getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
