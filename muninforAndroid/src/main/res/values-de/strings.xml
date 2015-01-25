@@ -119,9 +119,9 @@
 	<string name="text68">Timeout - Der Server benötigte zu lange, um die Anfrage zu bearbeiten</string>
 	<string name="button_grid">"Gitter"</string>
 	<string name="edit">"Bearbeiten"</string>
-	<string name="about_firstPhrase"><![CDATA[ Wenn du Verbesserungsvorschl&auml;ge f&uuml;r <i>Munin f&uuml;r Android</i> oder einen Bug gefunden hast, schreibe am besten eine E-Mail an <b><u>support@munin-for-android.com</u></b>. Vielen Dank! ]]></string>
-	<string name="about_independantApp"><![CDATA[ Ich bin kein Angeh&ouml;riger der Linux-Software <i>munin</i>. ]]></string>
-	<string name="about_changelog"><![CDATA[ Bitte gehe auf <a href="http://chteuchteu.com/munin-for-android/">chteuchteu.com/munin-for-android</a> um ein Changelog zu sehen. ]]></string>
+	<string name="about_firstPhrase">Wenn du Verbesserungsvorschl&amp;auml;ge oder einen Bug gefunden hast, schreibe am besten eine E-Mail an <b><u>support@munin-for-android.com</u></b>. Vielen Dank!</string>
+	<string name="about_independantApp">Ich bin kein Angeh&amp;ouml;riger der Linux-Software munin.</string>
+	<string name="about_changelog">Bitte gehe auf &lt;a href=http://chteuchteu.com/munin-for-android/&gt;chteuchteu.com/munin-for-android&lt;/a&gt; um ein Changelog zu sehen.</string>
 	<string name="about_specialThanksTitle">Besonderen Dank</string>
 	<string name="about_librariesTitle">Libraries</string>
 	<string name="text69">"Gittername"</string>
