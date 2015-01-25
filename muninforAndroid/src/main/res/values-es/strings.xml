@@ -68,6 +68,7 @@
 	<string name="lang_german">Alemán</string>
 	<string name="lang_russian">Ruso</string>
 	<string name="lang_spanish">Español</string>
+	<string name="lang_italian">Italiano</string>
 	<string name="text01">Los ajustes y la configuración de los servidores se eliminará. Está Ud Seguro?</string>
 	<string name="text02">Borrado realizado.</string>
 	<string name="text09">Error!</string>
