@@ -33,7 +33,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 	/**
 	 * SVG debugging: static svg file URL, force SVGAvailability to TRUE
 	 */
-	private static final boolean SVG_DEBUG = true;
+	private static final boolean SVG_DEBUG = false;
 
 	private static final int[] AVERAGE_GRAPH_DIMENSIONS = {455, 350};
 	private MuninFoo muninFoo;
@@ -135,6 +135,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 				String imgUrl;
 				NetHelper.ImageType imageType;
 
+				// SVG graphs aren't used for now
 				if (server.getParent().isSVGAvailable() == MuninMaster.SVGAvailability.TRUE || SVG_DEBUG) { // SVG graphs
 					imgUrl = plugin.getSVGImgUrl(activity.load_period);
 					if (SVG_DEBUG)

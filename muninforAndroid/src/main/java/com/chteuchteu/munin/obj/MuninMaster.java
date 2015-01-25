@@ -23,6 +23,10 @@ public class MuninMaster {
 	private String url;
 	private List<MuninServer> children;
 	private DynazoomAvailability dynazoomAvailability;
+	/**
+	 * SVG availability server-side
+	 * Not used for now
+	 */
 	private SVGAvailability svgGraphsAvailability;
 	
 	private Boolean ssl;
