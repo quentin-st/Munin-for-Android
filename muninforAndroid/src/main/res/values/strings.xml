@@ -89,7 +89,7 @@
 	    <li><a href="https://github.com/jgilfelt/SystemBarTint">SystemBarTint</a></li>
 	    <li><a href="https://github.com/bauerca/drag-sort-listview">DragSortListview</a></li>
 	]]></string>
-	<string name="goPremiumHTMLStructure">
+	<string name="goPremiumHTMLStructure" translatable="false">
 		<![CDATA[
 	    <head>
 	    <style>

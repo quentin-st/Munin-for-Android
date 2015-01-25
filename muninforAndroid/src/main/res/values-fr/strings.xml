@@ -191,7 +191,7 @@
 	<string name="graphwidgetname">Munin for Android : Widget graphique</string>
 	<string name="alertswidgetname">Munin for Android : Widget alertes</string>
 	<string name="featuresPackNeeded">Munin for Android Features Pack requis</string>
-	<string name="about_firstPhrase"><![CDATA[Si vous voulez dire bonjour, si vous avez des idées d\'améliorations pour <i>Munin for Android</i> ou si vous avez trouvé un bug, vous pouvez m\'envoyer un mail à <b><u>support@munin-for-android.com</u></b>. Merci !]]></string>
+	<string name="about_firstPhrase"><![CDATA[Si vous voulez dire bonjour, si vous avez des idées d\'améliorations ou si vous avez trouvé un bug, vous pouvez m\'envoyer un mail à <b><u>support@munin-for-android.com</u></b>. Merci !]]></string>
 	<string name="about_independantApp">Munin for Android est développée de manière indépendante, ce n\'est pas l\'application officielle.</string>
 	<string name="about_changelog"><![CDATA[Veuillez visiter <a href="http://munin-for-android.com/">munin-for-android.com</a> pour lire l\'ensemble des changements.]]></string>
 	<string name="about_openSource"><![CDATA[Munin for Android est open source ! <a href="https://github.com/chteuchteu/Munin-for-Android">Vous pouvez contribuer au projet sur GitHub</a>.
