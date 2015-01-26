@@ -100,22 +100,6 @@
 						android:layout_height="match_parent"
 						android:paddingTop="5dp"
 						app:sidebuffer="1" />
-
-					<LinearLayout
-						android:id="@+id/serverSwitch_mask"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:background="#88000000"
-						android:orientation="vertical"
-						android:visibility="gone" />
-
-					<ListView
-						android:id="@+id/serverSwitch_listview"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:layout_alignParentBottom="true"
-						android:background="#88FFFFFF"
-						android:visibility="gone" />
 				</RelativeLayout>
 			</LinearLayout>
 

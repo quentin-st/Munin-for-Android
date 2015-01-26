@@ -28,7 +28,6 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.webkit.WebSettings;
@@ -500,52 +499,24 @@ public class Activity_GraphView extends MuninActivity {
 		if (isDynazoomOpen())
 			hideDynazoom();
 
-		ListView switch_server = (ListView) findViewById(R.id.serverSwitch_listview);
-		switch_server.setVisibility(View.VISIBLE);
-		findViewById(R.id.serverSwitch_mask).setVisibility(View.VISIBLE);
-		
-		findViewById(R.id.serverSwitch_mask).setOnClickListener(new OnClickListener() { @Override public void onClick(View v) { actionServerSwitchQuit(); } });
-		
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int screenH = size.y;
-		
-		// Animation translation listview
-		TranslateAnimation a1 = new TranslateAnimation(
-				Animation.RELATIVE_TO_SELF, 0,
-				Animation.RELATIVE_TO_SELF, 0,
-				Animation.ABSOLUTE, screenH,
-				Animation.RELATIVE_TO_SELF, 0);
-		a1.setDuration(300);
-		a1.setFillAfter(true);
-		a1.setInterpolator(new AccelerateDecelerateInterpolator());
-		
-		// Animation alpha fond
-		AlphaAnimation a2 = new AlphaAnimation(0.0f, 1.0f);
-		a2.setDuration(300);
-		
-		switch_server.startAnimation(a1);
-		findViewById(R.id.serverSwitch_mask).startAnimation(a2);
-		
+		ListView listView = new ListView(this);
 		ArrayList<HashMap<String,String>> servers_list = new ArrayList<>();
-		servers_list.clear();
 		HashMap<String,String> item;
-		List<MuninServer> liste = muninFoo.getServersFromPlugin(currentPlugin);
-		for (MuninServer server : liste) {
+		List<MuninServer> list = muninFoo.getServersFromPlugin(currentPlugin);
+		for (MuninServer server : list) {
 			item = new HashMap<>();
 			item.put("line1", server.getName());
 			item.put("line2", server.getServerUrl());
 			servers_list.add(item);
 		}
-		SimpleAdapter sa = new SimpleAdapter(this, servers_list, R.layout.servers_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
-		switch_server.setAdapter(sa);
-		
-		switch_server.setOnItemClickListener(new OnItemClickListener() {
+		SimpleAdapter sa = new SimpleAdapter(this, servers_list, R.layout.servers_list, new String[] { "line1", "line2" }, new int[] {R.id.line_a, R.id.line_b});
+		listView.setAdapter(sa);
+
+		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 				TextView url = (TextView) view.findViewById(R.id.line_b);
 				MuninServer s = muninFoo.getServer(url.getText().toString());
-				
+
 				if (!s.equalsApprox(muninFoo.getCurrentServer())) {
 					muninFoo.setCurrentServer(s);
 					Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
@@ -553,22 +524,15 @@ public class Activity_GraphView extends MuninActivity {
 					intent.putExtra("position", muninFoo.getCurrentServer().getPosition(currentPlugin));
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.DEEPER);
-				} else
-					actionServerSwitchQuit();
+				}
 			}
 		});
-	}
-	private void actionServerSwitchQuit() {
-		ListView switch_server = (ListView) findViewById(R.id.serverSwitch_listview);
-		switch_server.setVisibility(View.GONE);
-		findViewById(R.id.serverSwitch_mask).setVisibility(View.GONE);
-		
-		// Animation alpha
-		AlphaAnimation a = new AlphaAnimation(1.0f, 0.0f);
-		a.setDuration(300);
-		
-		switch_server.startAnimation(a);
-		findViewById(R.id.serverSwitch_mask).startAnimation(a);
+
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.menu_graph_switch)
+				.setView(listView)
+				.setNegativeButton(R.string.close, null)
+				.show();
 	}
 	
 	public void actionRefresh() {
