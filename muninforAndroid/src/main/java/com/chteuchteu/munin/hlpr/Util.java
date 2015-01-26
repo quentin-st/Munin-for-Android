@@ -13,6 +13,7 @@ import android.graphics.BlurMaskFilter.Blur;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -22,6 +23,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
@@ -30,8 +32,10 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -586,7 +590,10 @@ public final class Util {
 	}
 
 	public static final class Animations {
-		public enum CustomAnimation { FADE_IN, FADE_OUT }
+		public enum CustomAnimation {
+			FADE_IN, FADE_OUT,
+			SLIDE_IN, SLIDE_OUT
+		}
 		public enum AnimationSpeed {
 			SLOW(1000), MEDIUM(300), FAST(100);
 
@@ -595,17 +602,17 @@ public final class Util {
 			public int getDuration() { return this.duration; }
 		}
 
-		public static void reveal_show(View view, int[] center, int finalRadius) {
+		public static void reveal_show(Context context, View view, int[] center, int finalRadius, CustomAnimation fallbackAnimation) {
 			if (Build.VERSION.SDK_INT >= 21) {
 				Animator anim = ViewAnimationUtils.createCircularReveal(view, center[0], center[1], 0, finalRadius);
 				view.setVisibility(View.VISIBLE);
 				anim.start();
 			}
 			else
-				Animations.animate(view, CustomAnimation.FADE_IN);
+				Animations.animate(context, view, fallbackAnimation);
 		}
 
-		public static void reveal_hide(final View view, int[] center, int initialRadius) {
+		public static void reveal_hide(Context context, final View view, int[] center, int initialRadius, CustomAnimation fallbackAnimation) {
 			if (Build.VERSION.SDK_INT >= 21) {
 				Animator anim = ViewAnimationUtils.createCircularReveal(view, center[0], center[1], initialRadius, 0);
 				anim.addListener(new AnimatorListenerAdapter() {
@@ -619,7 +626,7 @@ public final class Util {
 				anim.start();
 			}
 			else
-				Animations.animate(view, CustomAnimation.FADE_OUT, AnimationSpeed.MEDIUM, new Runnable() {
+				Animations.animate(context, view, fallbackAnimation, AnimationSpeed.MEDIUM, new Runnable() {
 					@Override
 					public void run() {
 						view.setVisibility(View.GONE);
@@ -627,8 +634,9 @@ public final class Util {
 				});
 		}
 
-		public static void animate(View view, CustomAnimation animation) { animate(view, animation, AnimationSpeed.MEDIUM, null); }
-		public static void animate(View view, CustomAnimation animation, AnimationSpeed animationSpeed, final Runnable onAnimationEnd) {
+		public static void animate(Context context, View view, CustomAnimation animation) { animate(context, view, animation, AnimationSpeed.MEDIUM, null); }
+		public static void animate(Context context, final View view, CustomAnimation animation,
+		                           AnimationSpeed animationSpeed, final Runnable onAnimationEnd) {
 			if (view == null)
 				return;
 
@@ -663,6 +671,46 @@ public final class Util {
 					view.startAnimation(fadeOut);
 
 					break;
+				case SLIDE_IN: {
+					Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+					Point size = new Point();
+					display.getSize(size);
+					int screenH = size.y;
+					TranslateAnimation a1 = new TranslateAnimation(
+							Animation.RELATIVE_TO_SELF, 0,
+							Animation.RELATIVE_TO_SELF, 0,
+							Animation.ABSOLUTE, screenH,
+							Animation.RELATIVE_TO_SELF, 0);
+					a1.setDuration(300);
+					a1.setFillAfter(true);
+					a1.setInterpolator(new AccelerateDecelerateInterpolator());
+					view.setVisibility(View.VISIBLE);
+					view.startAnimation(a1);
+					break;
+				}
+				case SLIDE_OUT: {
+					Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+					Point size = new Point();
+					display.getSize(size);
+					int screenH = size.y;
+					TranslateAnimation a1 = new TranslateAnimation(
+							Animation.RELATIVE_TO_SELF, 0,
+							Animation.RELATIVE_TO_SELF, 0,
+							Animation.RELATIVE_TO_SELF, 0,
+							Animation.ABSOLUTE, screenH);
+					a1.setDuration(300);
+					a1.setInterpolator(new AccelerateDecelerateInterpolator());
+					a1.setAnimationListener(new Animation.AnimationListener() {
+						@Override public void onAnimationStart(Animation animation) { }
+						@Override public void onAnimationEnd(Animation animation) {
+							view.setVisibility(View.GONE);
+						}
+						@Override public void onAnimationRepeat(Animation animation) { }
+					});
+					view.startAnimation(a1);
+
+					break;
+				}
 			}
 		}
 	}

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -33,8 +32,7 @@ public class Activity_Grid extends MuninActivity {
 	public static boolean	editing;
 	private Grid			grid;
 	private LinearLayout	container;
-	private ImageView		fs_iv;
-	
+
 	public static MenuItem menu_refresh;
 	public static MenuItem menu_edit;
 	public static MenuItem menu_period;
@@ -60,8 +58,6 @@ public class Activity_Grid extends MuninActivity {
 		
 		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		
-		fs_iv = (ImageView) findViewById(R.id.fullscreen_iv);
 		
 		container = (LinearLayout) findViewById(R.id.grid_root_container);
 		currentPeriod = Util.getDefaultPeriod(this);
@@ -182,7 +178,7 @@ public class Activity_Grid extends MuninActivity {
 		int cx = (gridItem.getLeft() + gridItem.getRight()) / 2;
 		int cy = (gridItemParent.getTop() + gridItemParent.getBottom()) / 2;
 		int initialRadius = Math.max(fs.getWidth(), fs.getHeight());
-		Util.Animations.reveal_hide(fs, new int[]{cx, cy}, initialRadius);
+		Util.Animations.reveal_hide(context, fs, new int[]{cx, cy}, initialRadius, Util.Animations.CustomAnimation.FADE_OUT);
 
 		grid.currentlyOpenedGridItem = null;
 		if (menu_refresh != null)	menu_refresh.setVisible(true);

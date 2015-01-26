@@ -973,21 +973,14 @@ public class Activity_GraphView extends MuninActivity {
 
 		// Animation
 		View dynazoom = findViewById(R.id.dynazoom);
-
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int screenH = size.y;
-		TranslateAnimation a1 = new TranslateAnimation(
-				Animation.RELATIVE_TO_SELF, 0,
-				Animation.RELATIVE_TO_SELF, 0,
-				Animation.ABSOLUTE, screenH,
-				Animation.RELATIVE_TO_SELF, 0);
-		a1.setDuration(300);
-		a1.setFillAfter(true);
-		a1.setInterpolator(new AccelerateDecelerateInterpolator());
+		View mainContainer = findViewById(R.id.mainContainer);
 		dynazoom.setVisibility(View.VISIBLE);
-		dynazoom.startAnimation(a1);
+		int cx = (fab.getLeft() + fab.getRight()) / 2;
+		int cy = (fab.getTop() + fab.getBottom()) / 2;
+		int finalRadius = Math.max(mainContainer.getWidth(), mainContainer.getHeight());
+		Util.Animations.reveal_show(this, dynazoom, new int[]{cx, cy}, finalRadius, Util.Animations.CustomAnimation.SLIDE_IN);
+
+		fab.hide();
 
 		Util.Fonts.setFont(this, (ViewGroup) findViewById(R.id.dynazoom_params), Util.Fonts.CustomFont.Roboto_Regular);
 
@@ -1082,26 +1075,13 @@ public class Activity_GraphView extends MuninActivity {
 	public void hideDynazoom() {
 		final View dynazoom = findViewById(R.id.dynazoom);
 
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int screenH = size.y;
-		TranslateAnimation a1 = new TranslateAnimation(
-				Animation.RELATIVE_TO_SELF, 0,
-				Animation.RELATIVE_TO_SELF, 0,
-				Animation.RELATIVE_TO_SELF, 0,
-				Animation.ABSOLUTE, screenH);
-		a1.setDuration(300);
-		a1.setInterpolator(new AccelerateDecelerateInterpolator());
-		a1.setAnimationListener(new Animation.AnimationListener() {
-			@Override public void onAnimationStart(Animation animation) { }
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				dynazoom.setVisibility(View.GONE);
-			}
-			@Override public void onAnimationRepeat(Animation animation) { }
-		});
-		dynazoom.startAnimation(a1);
+		View mainContainer = findViewById(R.id.mainContainer);
+		int cx = (fab.getLeft() + fab.getRight()) / 2;
+		int cy = (fab.getTop() + fab.getBottom()) / 2;
+		int initialRadius = Math.max(mainContainer.getWidth(), mainContainer.getHeight());
+		Util.Animations.reveal_hide(context, dynazoom, new int[]{cx, cy}, initialRadius, Util.Animations.CustomAnimation.SLIDE_OUT);
+
+		fab.show();
 	}
 	public boolean isDynazoomOpen() { return findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE; }
 	private void dynazoom_updateFromTo() {

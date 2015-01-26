@@ -159,13 +159,14 @@ public class GridItem {
 			View fs = ((Activity) c).findViewById(R.id.fullscreen);
 
 			// Lollipop animation (fallback if necessary)
+			View mainContainer = ((Activity) c).findViewById(R.id.mainContainer);
 			fs.setVisibility(View.VISIBLE);
 			View parent = (View) container.getParent();
 			View parentParent = (View) container.getParent().getParent();
 			int cx = (parent.getLeft() + parent.getRight()) / 2;
 			int cy = (parentParent.getTop() + parentParent.getBottom()) / 2;
-			int finalRadius = Math.max(fullscreenImageView.getWidth(), fullscreenImageView.getHeight());
-			Util.Animations.reveal_show(fs, new int[]{cx, cy}, finalRadius);
+			int finalRadius = Math.max(mainContainer.getWidth(), mainContainer.getHeight());
+			Util.Animations.reveal_show(c, fs, new int[]{cx, cy}, finalRadius, Util.Animations.CustomAnimation.FADE_IN);
 
 			// Translation animation between origin imageview location and fullscreen location
 			// Set original imageview location
