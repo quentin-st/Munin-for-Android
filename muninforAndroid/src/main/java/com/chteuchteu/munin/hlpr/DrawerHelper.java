@@ -207,10 +207,14 @@ public class DrawerHelper {
 	}
 
 	private void startActivity(Class<?> targetActivity) {
-		Intent intent = new Intent(activity, targetActivity);
-		intent.addFlags(getIntentFlag());
-		activity.startActivity(intent);
-		Util.setTransition(activity, TransitionStyle.DEEPER);
+		if (((Object) activity).getClass() == targetActivity)
+			closeDrawerIfOpened();
+		else {
+			Intent intent = new Intent(activity, targetActivity);
+			intent.addFlags(getIntentFlag());
+			activity.startActivity(intent);
+			Util.setTransition(activity, TransitionStyle.DEEPER);
+		}
 	}
 
 	private void initSearch() {
