@@ -35,7 +35,6 @@ public class JSONHelper {
 					jsonMaster.put("name", master.getName());
 					jsonMaster.put("url", master.getUrl());
 					jsonMaster.put("hdGraphs", master.isDynazoomAvailable().getVal());
-					jsonMaster.put("svg", master.isSVGAvailable().getVal());
 					jsonMaster.put("ssl", master.getSSL());
 					switch (master.getAuthType()) {
 						case NONE: case UNKNOWN:
@@ -111,7 +110,6 @@ public class JSONHelper {
 				master.setName(jsonMaster.getString("name"));
 				master.setUrl(jsonMaster.getString("url"));
 				master.setDynazoomAvailable(DynazoomAvailability.get(jsonMaster.getString("hdGraphs")));
-				master.setSVGGraphsAvailability(MuninMaster.SVGAvailability.get(jsonMaster.getString("svg")));
 				String authType = jsonMaster.getString("authType");
 				switch (authType) {
 					case "none":

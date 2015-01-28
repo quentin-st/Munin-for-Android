@@ -3,13 +3,28 @@ package com.chteuchteu.munin.obj;
 import android.graphics.Bitmap;
 
 /**
- * Object returned from a bitmap download operation
+ * Object returned from an image (bitmap/svg) download operation
  */
-public class HTTPResponse_Bitmap extends HTTPResponse_Image {
+public class HTTPResponse_Bitmap extends HTTPResponse {
+	protected Bitmap bitmap;
+
 	public HTTPResponse_Bitmap() {
 		super();
 	}
 
-	public Bitmap getBitmap() { return (Bitmap) this.image; }
-	public void setBitmap(Bitmap val) { this.image = val; }
+	public void setBitmap(Bitmap val) { this.bitmap = val; }
+
+	/**
+	 * Same as hasSuceeded(), but doesn't test if bitmap == null
+	 */
+	public boolean requestSucceeded() {
+		return super.hasSucceeded();
+	}
+
+	@Override
+	public boolean hasSucceeded() {
+		return super.hasSucceeded() && this.bitmap != null;
+	}
+
+	public Bitmap getBitmap() { return this.bitmap; }
 }

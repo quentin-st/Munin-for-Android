@@ -9,13 +9,9 @@ import com.chteuchteu.munin.CustomSSLFactory;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.HTTPResponse;
 import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
-import com.chteuchteu.munin.obj.HTTPResponse_Image;
-import com.chteuchteu.munin.obj.HTTPResponse_SVG;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -49,8 +45,6 @@ import javax.net.ssl.SSLException;
 public class NetHelper {
 	private static final int CONNECTION_TIMEOUT = 6000; // Default = 6000
 	private static final int SOCKET_TIMEOUT = 7000; // Default = 6000
-
-	public enum ImageType { BITMAP, SVG }
 
 	public static HTTPResponse grabUrl(MuninMaster master, String url, String userAgent) {
 		return grabUrl(master, url, userAgent, false);
@@ -172,17 +166,9 @@ public class NetHelper {
 		catch (Exception e) { e.printStackTrace(); }
 		return resp;
 	}
-
-	public static HTTPResponse_Image grabImage(MuninMaster master, String url, String userAgent, ImageType imageType) {
-		return grabImage(master, url, userAgent, imageType, false);
-	}
 	
 	public static HTTPResponse_Bitmap grabBitmap(MuninMaster master, String url, String userAgent) {
-		return (HTTPResponse_Bitmap) grabImage(master, url, userAgent, ImageType.BITMAP, false);
-	}
-
-	public static HTTPResponse_SVG grabSVG(MuninMaster master, String url, String userAgent) {
-		return (HTTPResponse_SVG) grabImage(master, url, userAgent, ImageType.SVG, false);
+		return grabBitmap(master, url, userAgent, false);
 	}
 
 	/**
@@ -190,15 +176,14 @@ public class NetHelper {
 	 *  using master auth information
 	 * @param master Needed for SSL/Apache basic/digest auth
 	 * @param url URL of the image
-	 * @param imageType Target image type (png / svg)
 	 * @param retried Retry after getting digest auth information
 	 *                (recursive call)
 	 * @return Bitmap
 	 */
-	private static HTTPResponse_Image grabImage(MuninMaster master, String url, String userAgent, ImageType imageType, boolean retried) {
-		HTTPResponse_Image respObj = imageType == ImageType.BITMAP ? new HTTPResponse_Bitmap() : new HTTPResponse_SVG();
+	private static HTTPResponse_Bitmap grabBitmap(MuninMaster master, String url, String userAgent, boolean retried) {
+		HTTPResponse_Bitmap respObj = new HTTPResponse_Bitmap();
 
-		MuninFoo.logV("grabImage(" + imageType.name() + "):url", url);
+		MuninFoo.logV("grabImage:url", url);
 
 		try {
 			HttpClient client;
@@ -257,28 +242,20 @@ public class NetHelper {
             respObj.setResponseCode(statusLine.getStatusCode());
             respObj.setResponsePhrase(statusLine.getReasonPhrase());
 			if (respObj.requestSucceeded()) {
-				switch (imageType) {
-					case BITMAP:
-						Bitmap bitmap = BitmapFactory.decodeStream(response.getEntity().getContent());
-						((HTTPResponse_Bitmap) respObj).setBitmap(bitmap);
-						break;
-					case SVG:
-						SVG svg = SVGParser.getSVGFromInputStream(response.getEntity().getContent());
-						((HTTPResponse_SVG) respObj).setSVG(svg);
-						break;
-				}
+				Bitmap bitmap = BitmapFactory.decodeStream(response.getEntity().getContent());
+				respObj.setBitmap(bitmap);
 			} else {
 				if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried
 						&& response.getHeaders("WWW-Authenticate").length > 0) {
 					master.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
-					return grabImage(master, url, userAgent, imageType, true);
+					return grabBitmap(master, url, userAgent, true);
 				} else
-					respObj.setImage(null);
+					respObj.setBitmap(null);
 			}
 
 			respObj.end();
 			if (BuildConfig.DEBUG)
-				MuninFoo.logV("grabImage", "Downloaded " + imageType.name().toLowerCase() + " in " + respObj.getExecutionTime() + "ms");
+				MuninFoo.logV("grabImage", "Downloaded bitmap in " + respObj.getExecutionTime() + "ms");
 		}
 		catch (SocketTimeoutException | ConnectTimeoutException e) {
 			e.printStackTrace();

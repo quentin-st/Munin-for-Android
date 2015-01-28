@@ -25,7 +25,7 @@ import java.util.List;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 7;
+	private static final int DATABASE_VERSION = 6;
 	private static final String DATABASE_NAME = "muninForAndroid2.db";
 	
 	// Table names
@@ -52,7 +52,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_MUNINMASTERS_AUTHTYPE = "authType";
 	private static final String KEY_MUNINMASTERS_AUTHSTRING = "authString";
 	private static final String KEY_MUNINMASTERS_HDGRAPHS = "hdGraphs";
-	private static final String KEY_MUNINMASTERS_SVGGRAPHS = "svgGraphs";
 
 	// MuninServers
 	private static final String KEY_MUNINSERVERS_SERVERURL = "serverUrl";
@@ -110,8 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_MUNINMASTERS_AUTHTYPE + " INTEGER,"
 			+ KEY_MUNINMASTERS_AUTHSTRING + " TEXT,"
 			+ KEY_MUNINMASTERS_SSL + " INTEGER,"
-			+ KEY_MUNINMASTERS_HDGRAPHS + " TEXT,"
-			+ KEY_MUNINMASTERS_SVGGRAPHS + " TEXT)";
+			+ KEY_MUNINMASTERS_HDGRAPHS + " TEXT)";
 	
 	private static final String CREATE_TABLE_MUNINSERVERS = "CREATE TABLE " + TABLE_MUNINSERVERS + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
@@ -216,8 +214,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 		if (oldVersion < 6) // From 5 to 6
 			db.execSQL("ALTER TABLE " + TABLE_MUNINSERVERS + " ADD COLUMN " + KEY_MUNINSERVERS_HDGRAPHURL + " TEXT");
-		if (oldVersion < 7) // From 6 to 7
-			db.execSQL("ALTER TABLE " + TABLE_MUNINMASTERS + " ADD COLUMN " + KEY_MUNINMASTERS_SVGGRAPHS + " TEXT");
 	}
 	
 	public static void close(Cursor c, SQLiteDatabase db) {
@@ -237,7 +233,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINMASTERS_AUTHTYPE, m.getAuthType().getVal());
 		values.put(KEY_MUNINMASTERS_AUTHSTRING, m.getAuthString());
 		values.put(KEY_MUNINMASTERS_HDGRAPHS, m.isDynazoomAvailable().getVal());
-		values.put(KEY_MUNINMASTERS_SVGGRAPHS, m.isSVGAvailable().getVal());
 		
 		long id = db.insert(TABLE_MUNINMASTERS, null, values);
 		m.setId(id);
@@ -442,7 +437,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINMASTERS_AUTHTYPE, m.getAuthType().getVal());
 		values.put(KEY_MUNINMASTERS_AUTHSTRING, m.getAuthString());
 		values.put(KEY_MUNINMASTERS_HDGRAPHS, m.isDynazoomAvailable().getVal());
-		values.put(KEY_MUNINMASTERS_SVGGRAPHS, m.isSVGAvailable().getVal());
 		
 		int nbRows = db.update(TABLE_MUNINMASTERS, values, KEY_ID + " = ?", new String[] { String.valueOf(m.getId()) });
 		close(null, db);
@@ -515,7 +509,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					m.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_AUTHSTRING)));
 					m.setSSL(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_SSL)) == 1);
 					m.setDynazoomAvailable(DynazoomAvailability.get(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_HDGRAPHS))));
-					m.setSVGGraphsAvailability(MuninMaster.SVGAvailability.get(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_SVGGRAPHS))));
 					m.isPersistant = true;
 					l.add(m);
 				} while (c.moveToNext());
@@ -557,7 +550,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			m.setAuthString(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_AUTHSTRING)));
 			m.setSSL(c.getInt(c.getColumnIndex(KEY_MUNINMASTERS_SSL)) == 1);
 			m.setDynazoomAvailable(DynazoomAvailability.get(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_HDGRAPHS))));
-			m.setSVGGraphsAvailability(MuninMaster.SVGAvailability.get(c.getString(c.getColumnIndex(KEY_MUNINMASTERS_SVGGRAPHS))));
 			m.isPersistant = true;
 			close(c, db);
 			return m;

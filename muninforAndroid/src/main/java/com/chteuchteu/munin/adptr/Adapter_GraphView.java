@@ -14,11 +14,8 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.hlpr.NetHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
-import com.chteuchteu.munin.obj.HTTPResponse_Image;
-import com.chteuchteu.munin.obj.HTTPResponse_SVG;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -30,11 +27,6 @@ import org.taptwo.android.widget.TitleProvider;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
-	/**
-	 * SVG debugging: static svg file URL, force SVGAvailability to TRUE
-	 */
-	private static final boolean SVG_DEBUG = false;
-
 	private static final int[] AVERAGE_GRAPH_DIMENSIONS = {455, 350};
 	private MuninFoo muninFoo;
 	private Activity_GraphView activity;
@@ -101,7 +93,7 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		private MuninPlugin plugin;
 		private MuninServer server;
 
-		private HTTPResponse_Image response;
+		private HTTPResponse_Bitmap response;
 		
 		private BitmapFetcher (ImageView iv, ProgressBar progressBar, View view, int position, Context context) {
 			super();
@@ -133,16 +125,8 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 		protected Void doInBackground(Void... arg0) {
 			if (activity.isBitmapNull(position)) {
 				String imgUrl;
-				NetHelper.ImageType imageType;
 
-				// SVG graphs aren't used for now
-				if (server.getParent().isSVGAvailable() == MuninMaster.SVGAvailability.TRUE || SVG_DEBUG) { // SVG graphs
-					imgUrl = plugin.getSVGImgUrl(activity.load_period);
-					if (SVG_DEBUG)
-						imgUrl = "http://demo.munin-monitoring.org/munin-cgi-graph/munin-monitoring.org/demo.munin-monitoring.org/multicpu1sec-week.svg";
-					imageType = NetHelper.ImageType.SVG;
-				}
-				else if (server.getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
+				if (server.getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
 						&& !Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")) { // Dynazoom (HD graph)
 					// Check if HD graph is really needed : if the standard-res bitmap isn't upscaled, it's OK
 					float xScale = ((float) imageView.getWidth()) / AVERAGE_GRAPH_DIMENSIONS[0];
@@ -156,27 +140,13 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 					}
 					else
 						imgUrl = plugin.getImgUrl(activity.load_period);
-
-					imageType = NetHelper.ImageType.BITMAP;
-				} else { // Standard graph
+				} else // Standard graph
 					imgUrl = plugin.getImgUrl(activity.load_period);
-					imageType = NetHelper.ImageType.BITMAP;
-				}
 
-				this.response = server.getParent().grabImage(imgUrl, muninFoo.getUserAgent(), imageType);
+				this.response = server.getParent().grabBitmap(imgUrl, muninFoo.getUserAgent());
 
-				if (response.hasSucceeded()) {
-					switch (imageType) {
-						case BITMAP:
-							HTTPResponse_Bitmap bitmapResponse = (HTTPResponse_Bitmap) response;
-							activity.addBitmap(Util.removeBitmapBorder(bitmapResponse.getBitmap()), position);
-							break;
-						case SVG:
-							HTTPResponse_SVG svgResponse = (HTTPResponse_SVG) response;
-							activity.addBitmap(svgResponse.getBitmap(), position);
-							break;
-					}
-				}
+				if (response.hasSucceeded())
+					activity.addBitmap(Util.removeBitmapBorder(response.getBitmap()), position);
 			}
 			
 			return null;

@@ -23,11 +23,6 @@ public class MuninMaster {
 	private String url;
 	private List<MuninServer> children;
 	private DynazoomAvailability dynazoomAvailability;
-	/**
-	 * SVG availability server-side
-	 * Not used for now
-	 */
-	private SVGAvailability svgGraphsAvailability;
 	
 	private Boolean ssl;
 	private AuthType authType;
@@ -46,7 +41,6 @@ public class MuninMaster {
 		this.defaultMaster = false;
 		this.children = new ArrayList<>();
 		this.dynazoomAvailability = DynazoomAvailability.AUTO_DETECT;
-		this.svgGraphsAvailability = SVGAvailability.AUTO_DETECT;
 		
 		this.authType = AuthType.UNKNOWN;
 		this.authLogin = "";
@@ -167,7 +161,7 @@ public class MuninMaster {
 		if (this.children.size() == 0)
 			deleteSelf(f);
 	}
-	
+
 	private void deleteSelf(MuninFoo f) {
 		// If there's no more server under this, delete self.
 		f.deleteMuninMaster(this);
@@ -184,9 +178,6 @@ public class MuninMaster {
 	
 	public void setDynazoomAvailable(DynazoomAvailability val) { this.dynazoomAvailability = val; }
 	public DynazoomAvailability isDynazoomAvailable() { return this.dynazoomAvailability; }
-
-	public void setSVGGraphsAvailability(SVGAvailability val) { this.svgGraphsAvailability = val; }
-	public SVGAvailability isSVGAvailable() { return this.svgGraphsAvailability; }
 
 	public List<MuninServer> getChildren() { return this.children; }
 	public void addChild(MuninServer s) {
@@ -256,9 +247,6 @@ public class MuninMaster {
 	
 	public HTTPResponse_Bitmap grabBitmap(String url, String userAgent) {
 		return NetHelper.grabBitmap(this, url, userAgent);
-	}
-	public HTTPResponse_Image grabImage(String url, String userAgent, NetHelper.ImageType imageType) {
-		return NetHelper.grabImage(this, url, userAgent, imageType);
 	}
 	
 	public HTTPResponse grabUrl(String url, String userAgent) {
