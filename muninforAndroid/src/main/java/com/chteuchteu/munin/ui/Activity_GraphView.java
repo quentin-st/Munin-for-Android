@@ -586,10 +586,9 @@ public class Activity_GraphView extends MuninActivity {
 				
 				// Make the image appear in gallery
 				new MediaScannerUtil(Activity_GraphView.this, file).execute();
-				// Graph saved as /muninForAndroid/[...]
+
 				Toast.makeText(this, getString(R.string.text28) + fileName1 + fileName2, Toast.LENGTH_LONG).show();
 			} catch (Exception e) {
-				// Error while saving the graph
 				Toast.makeText(this, getString(R.string.text29), Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
@@ -680,14 +679,12 @@ public class Activity_GraphView extends MuninActivity {
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
-				// OK
 				dialog.dismiss();
 			}
 		})
 		.setNeutralButton(getText(R.string.text70_2), new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// Add a label
 				dialog.dismiss();
 				actionAddLabel();
 			}
@@ -695,7 +692,6 @@ public class Activity_GraphView extends MuninActivity {
 		.setNegativeButton(getText(R.string.text64), new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
-				// Cancel
 				dialog.dismiss();
 			}
 		});

@@ -93,13 +93,7 @@ public class DrawerHelper {
 	
 	public void setDrawerActivity(MuninActivity activity) {
 		this.currentActivity = activity;
-
-		if (activity == null) {
-			setSelectedMenuItem(DrawerMenuItem.None);
-			return;
-		}
-
-		setSelectedMenuItem(activity.getDrawerMenuItem());
+		setSelectedMenuItem(activity == null ? DrawerMenuItem.None : activity.getDrawerMenuItem());
 	}
 
 	public void toggle() {
@@ -125,69 +119,48 @@ public class DrawerHelper {
 		activity.findViewById(R.id.drawer_graphs_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(activity, Activity_Plugins.class);
-				i.addFlags(getIntentFlag());
-				activity.startActivity(i);
-				Util.setTransition(activity, TransitionStyle.DEEPER);
+				startActivity(Activity_Plugins.class);
 			}
 		});
 		activity.findViewById(R.id.drawer_grid_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(activity, Activity_Grids.class);
-				i.addFlags(getIntentFlag());
-				activity.startActivity(i);
-				Util.setTransition(activity, TransitionStyle.DEEPER);
+				startActivity(Activity_Grids.class);
 			}
 		});
 		// Alerts
 		activity.findViewById(R.id.drawer_alerts_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(activity, Activity_Alerts.class);
-				i.addFlags(getIntentFlag());
-				activity.startActivity(i);
-				Util.setTransition(activity, TransitionStyle.DEEPER);
+				startActivity(Activity_Alerts.class);
 			}
 		});
 		// Labels
 		activity.findViewById(R.id.drawer_labels_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(activity, Activity_Labels.class);
-				i.addFlags(getIntentFlag());
-				activity.startActivity(i);
-				Util.setTransition(activity, TransitionStyle.DEEPER);
+				startActivity(Activity_Labels.class);
 			}
 		});
 		// Servers
 		activity.findViewById(R.id.drawer_servers_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(activity, Activity_Servers.class);
-				i.addFlags(getIntentFlag());
-				activity.startActivity(i);
-				Util.setTransition(activity, TransitionStyle.DEEPER);
+				startActivity(Activity_Servers.class);
 			}
 		});
 		// Notifications
 		activity.findViewById(R.id.drawer_notifications_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(activity, Activity_Notifications.class);
-				i.addFlags(getIntentFlag());
-				activity.startActivity(i);
-				Util.setTransition(activity, TransitionStyle.DEEPER);
+				startActivity(Activity_Notifications.class);
 			}
 		});
 		// Premium
 		activity.findViewById(R.id.drawer_premium_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(activity, Activity_GoPremium.class);
-				i.addFlags(getIntentFlag());
-				activity.startActivity(i);
-				Util.setTransition(activity, TransitionStyle.DEEPER);
+				startActivity(Activity_GoPremium.class);
 			}
 		});
 		// Support
@@ -207,49 +180,7 @@ public class DrawerHelper {
 		activity.findViewById(R.id.drawer_donate_btn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new AlertDialog.Builder(activity)
-				.setTitle(R.string.donate)
-				.setMessage(R.string.donate_text)
-				.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-						View view = inflater.inflate(R.layout.dialog_donate, null);
-						
-						final Spinner spinnerAmount = (Spinner) view.findViewById(R.id.donate_amountSpinner);
-						List<String> list = new ArrayList<>();
-						String euroSlashDollar = "\u20Ac/\u0024";
-						list.add("1 " + euroSlashDollar);
-						list.add("2 " + euroSlashDollar);
-						list.add("5 " + euroSlashDollar);
-						list.add("20 " + euroSlashDollar);
-						ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, list);
-						dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-						spinnerAmount.setAdapter(dataAdapter);
-						
-						new AlertDialog.Builder(activity)
-						.setTitle(R.string.donate)
-						.setView(view)
-						.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								// Launch BillingService, and then purchase the thing
-								String product = "";
-								switch (spinnerAmount.getSelectedItemPosition()) {
-									case 0: product = BillingService.DONATE_1; break;
-									case 1: product = BillingService.DONATE_2; break;
-									case 2: product = BillingService.DONATE_5; break;
-									case 3: product = BillingService.DONATE_20; break;
-								}
-								new DonateAsync(activity, product).execute();
-							}
-						})
-						.setNegativeButton(R.string.text64, null)
-						.show();
-					}
-				})
-				.setNegativeButton(R.string.text64, null)
-				.show();
+				donate();
 			}
 		});
 		
@@ -271,33 +202,43 @@ public class DrawerHelper {
 		}
 		
 		Util.Fonts.setFont(context, (ViewGroup) activity.findViewById(R.id.drawer_scrollview), CustomFont.Roboto_Regular);
-		
-		// Init search
+
+		initSearch();
+	}
+
+	private void startActivity(Class<?> targetActivity) {
+		Intent intent = new Intent(activity, targetActivity);
+		intent.addFlags(getIntentFlag());
+		activity.startActivity(intent);
+		Util.setTransition(activity, TransitionStyle.DEEPER);
+	}
+
+	private void initSearch() {
 		search = (EditText) activity.findViewById(R.id.drawer_search);
 		search_results = (ListView) activity.findViewById(R.id.drawer_search_results);
 		search_results.setVisibility(View.VISIBLE);
-		
-		
+
+
 		// Cancel button
 		//final int DRAWABLE_LEFT = 0;
 		//final int DRAWABLE_TOP = 1;
 		final int DRAWABLE_RIGHT = 2;
 		//final int DRAWABLE_BOTTOM = 3;
 		search.getCompoundDrawables()[DRAWABLE_RIGHT].setAlpha(0);
-		
+
 		search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				return actionId == EditorInfo.IME_ACTION_SEARCH;
 			}
 		});
-		
+
 		search.addTextChangedListener(new TextWatcher() {
 			@SuppressLint("DefaultLocale")
 			@Override
 			public void afterTextChanged(Editable s) {
 				String string = s.toString().toLowerCase();
-				
+
 				if (string.length() == 0) {
 					activity.findViewById(R.id.drawer_scrollview).setVisibility(View.VISIBLE);
 					activity.findViewById(R.id.drawer_search_results).setVisibility(View.GONE);
@@ -308,7 +249,7 @@ public class DrawerHelper {
 					activity.findViewById(R.id.drawer_search_results).setVisibility(View.VISIBLE);
 					search.getCompoundDrawables()[DRAWABLE_RIGHT].setAlpha(255);
 				}
-				
+
 				if (search_results_adapter != null) {
 					search_results_array.clear();
 					search_results_adapter.notifyDataSetChanged();
@@ -317,47 +258,47 @@ public class DrawerHelper {
 					search_results_adapter = new SearchAdapter(activity, search_results_array);
 					search_results.setAdapter(search_results_adapter);
 				}
-				
+
 				// Search in plugins and servers
 				for (MuninServer server : MuninFoo.getInstance(context).getServers()) {
 					String serverName = server.getName().toLowerCase();
 					String serverUrl = server.getServerUrl().toLowerCase();
-					
+
 					if (serverName.contains(string) || serverUrl.contains(string))
 						search_results_array.add(new SearchResult(SearchResultType.SERVER, server, context));
-					
-					
+
+
 					for (MuninPlugin plugin : server.getPlugins()) {
 						if (plugin.getName().toLowerCase().contains(string)
 								|| plugin.getFancyName().toLowerCase().contains(string))
 							search_results_array.add(new SearchResult(SearchResultType.PLUGIN, plugin, context));
 					}
 				}
-				
+
 				// Search in grids
 				if (search_cachedGridsList == null)
 					search_cachedGridsList = MuninFoo.getInstance(context).sqlite.dbHlpr.getGridsNames();
-				
+
 				for (String grid : search_cachedGridsList) {
 					if (grid.toLowerCase().contains(string))
 						search_results_array.add(new SearchResult(SearchResultType.GRID, grid, context));
 				}
-				
+
 				// Search in labels
 				for (Label label : MuninFoo.getInstance(context).labels) {
 					if (label.getName().toLowerCase().contains(string))
 						search_results_array.add(new SearchResult(SearchResultType.LABEL, label, context));
 				}
-				
+
 				search_results_adapter.notifyDataSetChanged();
 			}
-			
+
 			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) { }
 		});
-		
+
 		search_results.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
@@ -365,7 +306,7 @@ public class DrawerHelper {
 				searchResult.onClick(activity);
 			}
 		});
-		
+
 		// Cancel button listener
 		search.setOnTouchListener(new OnTouchListener() {
 			@SuppressLint("ClickableViewAccessibility") @Override
@@ -376,77 +317,114 @@ public class DrawerHelper {
 						Util.hideKeyboard(activity, search);
 					}
 				}
-				
+
 				return false;
 			}
 		});
 	}
-	
+
+	private void donate() {
+		new AlertDialog.Builder(activity)
+				.setTitle(R.string.donate)
+				.setMessage(R.string.donate_text)
+				.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+						View view = inflater.inflate(R.layout.dialog_donate, null);
+
+						final Spinner spinnerAmount = (Spinner) view.findViewById(R.id.donate_amountSpinner);
+						List<String> list = new ArrayList<>();
+						String euroSlashDollar = "\u20Ac/\u0024";
+						list.add("1 " + euroSlashDollar);
+						list.add("2 " + euroSlashDollar);
+						list.add("5 " + euroSlashDollar);
+						list.add("20 " + euroSlashDollar);
+						ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, list);
+						dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+						spinnerAmount.setAdapter(dataAdapter);
+
+						new AlertDialog.Builder(activity)
+								.setTitle(R.string.donate)
+								.setView(view)
+								.setPositiveButton(R.string.donate, new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										// Launch BillingService, and then purchase the thing
+										String product = "";
+										switch (spinnerAmount.getSelectedItemPosition()) {
+											case 0: product = BillingService.DONATE_1; break;
+											case 1: product = BillingService.DONATE_2; break;
+											case 2: product = BillingService.DONATE_5; break;
+											case 3: product = BillingService.DONATE_20; break;
+										}
+										new DonateAsync(activity, product).execute();
+									}
+								})
+								.setNegativeButton(R.string.text64, null)
+								.show();
+					}
+				})
+				.setNegativeButton(R.string.text64, null)
+				.show();
+	}
+
 	public void closeDrawerIfOpened() {
 		if (drawerLayout.isDrawerOpen(Gravity.START))
 			drawerLayout.closeDrawer(Gravity.START);
 	}
 	
 	private void setSelectedMenuItem(DrawerMenuItem menuItemName) {
+		int textViewResId = -1;
+		int iconResId = -1;
+
+
 		switch (menuItemName) {
 			case Graphs: {
-				TextView tv = (TextView) activity.findViewById(R.id.drawer_graphs_txt);
-				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
-				((ImageView) activity.findViewById(R.id.drawer_graphs_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				textViewResId = R.id.drawer_graphs_txt;
+				iconResId = R.id.drawer_graphs_icon;
 				break;
 			}
 			case Grid: {
-				TextView tv = (TextView) activity.findViewById(R.id.drawer_grids_txt);
-				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
-				((ImageView) activity.findViewById(R.id.drawer_grids_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				textViewResId = R.id.drawer_grids_txt;
+				iconResId = R.id.drawer_grids_icon;
 				break;
 			}
 			case Alerts: {
-				TextView tv = (TextView) activity.findViewById(R.id.drawer_alerts_txt);
-				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
-				((ImageView) activity.findViewById(R.id.drawer_alerts_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				textViewResId = R.id.drawer_alerts_txt;
+				iconResId = R.id.drawer_alerts_icon;
 				break;
 			}
 			case Labels: {
-				TextView tv = (TextView) activity.findViewById(R.id.drawer_labels_txt);
-				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
-				((ImageView) activity.findViewById(R.id.drawer_labels_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				textViewResId = R.id.drawer_labels_txt;
+				iconResId = R.id.drawer_labels_icon;
 				break;
 			}
 			case Servers: {
-				TextView tv = (TextView) activity.findViewById(R.id.drawer_servers_txt);
-				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
-				((ImageView) activity.findViewById(R.id.drawer_servers_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				textViewResId = R.id.drawer_servers_txt;
+				iconResId = R.id.drawer_servers_icon;
 				break;
 			}
 			case Notifications: {
-				TextView tv = (TextView) activity.findViewById(R.id.drawer_notifications_txt);
-				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
-				((ImageView) activity.findViewById(R.id.drawer_notifications_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				textViewResId = R.id.drawer_notifications_txt;
+				iconResId = R.id.drawer_notifications_icon;
 				break;
 			}
 			case Premium: {
-				TextView tv = (TextView) activity.findViewById(R.id.drawer_premium_txt);
-				tv.setTextColor(context.getResources().getColor(R.color.selectedDrawerItem));
-				Util.Fonts.setFont(context, tv, CustomFont.Roboto_Medium);
-				((ImageView) activity.findViewById(R.id.drawer_premium_icon)).setColorFilter(context.getResources().getColor(R.color.selectedDrawerItem), Mode.MULTIPLY);
+				textViewResId = R.id.drawer_premium_txt;
+				iconResId = R.id.drawer_premium_icon;
 				break;
 			}
-			case None:
-				((TextView) activity.findViewById(R.id.drawer_graphs_txt)).setTextColor(0xffffffff);
-				((TextView) activity.findViewById(R.id.drawer_grids_txt)).setTextColor(0xffffffff);
-				((TextView) activity.findViewById(R.id.drawer_alerts_txt)).setTextColor(0xffffffff);
-				((TextView) activity.findViewById(R.id.drawer_labels_txt)).setTextColor(0xffffffff);
-				((TextView) activity.findViewById(R.id.drawer_servers_txt)).setTextColor(0xffffffff);
-				((TextView) activity.findViewById(R.id.drawer_notifications_txt)).setTextColor(0xffffffff);
-				((TextView) activity.findViewById(R.id.drawer_premium_txt)).setTextColor(0xffffffff);
-				break;
+			case None: break;
+		}
+
+		if (textViewResId != -1) {
+			int selectedDrawerItemColor = context.getResources().getColor(R.color.selectedDrawerItem);
+			TextView textView = (TextView) activity.findViewById(textViewResId);
+			textView.setTextColor(selectedDrawerItemColor);
+			Util.Fonts.setFont(context, textView, CustomFont.Roboto_Medium);
+			ImageView icon = (ImageView) activity.findViewById(iconResId);
+			icon.setColorFilter(selectedDrawerItemColor, Mode.MULTIPLY);
 		}
 	}
 	

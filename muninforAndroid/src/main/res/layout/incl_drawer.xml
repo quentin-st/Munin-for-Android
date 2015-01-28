@@ -202,7 +202,7 @@
 					style="@style/Drawer_SmallItem">
 
 					<ImageView
-						style="@style/Drawer_Item_Icon"
+						style="@style/Drawer_SmallItem_Icon"
 						android:contentDescription="@string/support"
 						android:src="@drawable/ic_action_help_trimmed" />
 
@@ -217,7 +217,7 @@
 					style="@style/Drawer_SmallItem" >
 
 					<ImageView
-						style="@style/Drawer_Item_Icon"
+						style="@style/Drawer_SmallItem_Icon"
 						android:contentDescription="@string/donate"
 						android:src="@drawable/ic_action_favorite" />
 
