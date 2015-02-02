@@ -224,4 +224,5 @@
 	<string name="alert_i18n_yes">Vielen Dank! Wir benutzen ein einfaches Online-Tool zum Übersetzen. Du kannst es unter http://www.munin-for-android.com/i18n.php erreichen</string>
 
 <string name="lang_spanish">Spanisch</string>
+	<string name="about_openSource">Munin für Android ist Open Source! <a href="https://github.com/chteuchteu/Munin-for-Android">Du kannst uns auf GitHub unterstützen</a>. Die App wird unter der GNU GPL version 2 entwickelt.</string>
 	</resources>
