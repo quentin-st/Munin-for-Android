@@ -380,14 +380,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return id;
 	}
 	
-	public long insertGrid(Grid g) {
+	public long insertGrid(String gridName) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_GRIDS_NAME, g.name);
+		values.put(KEY_GRIDS_NAME, gridName);
 		
 		long id = db.insert(TABLE_GRIDS, null, values);
-		g.id = id;
 		close(null, db);
 		return id;
 	}
@@ -846,7 +845,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return list;
 	}
 	
-	public List<Grid> getGrids(Context co, MuninFoo f) {
+	public List<Grid> getGrids(MuninFoo f) {
 		List<Grid> l = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDS;
 		
@@ -855,10 +854,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		if (c != null && c.moveToFirst()) {
 			do {
-				Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), f);
+				Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)));
 				g.id = c.getInt(c.getColumnIndex(KEY_ID));
 				// Get all GridItems
-				g.items = getGridItems(f, co, g);
+				g.items = getGridItems(f, g);
 				l.add(g);
 			} while (c.moveToNext());
 		}
@@ -884,12 +883,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	/**
 	 * Get a grid from its name
-	 * @param context Context
 	 * @param muninFoo MuninFoo instance
 	 * @param gridName Grid name
 	 * @return Grid
 	 */
-	public Grid getGrid(Context context, MuninFoo muninFoo, String gridName) {
+	public Grid getGrid(MuninFoo muninFoo, String gridName) {
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDS
 				+ " WHERE " + KEY_GRIDS_NAME + " = '" + gridName + "'";
 		
@@ -897,11 +895,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		Cursor c = db.rawQuery(selectQuery, null);
 		
 		if (c != null && c.moveToFirst()) {
-			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), muninFoo);
+			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)));
 			g.id = c.getInt(c.getColumnIndex(KEY_ID));
 			// Get all GridItems
-			g.items = getGridItems(muninFoo, context, g);
+			g.items = getGridItems(muninFoo, g);
 			
+			close(c, db);
+			return g;
+		}
+		return null;
+	}
+
+	/**
+	 * Get a grid from its id
+	 * @param muninFoo MuninFoo instance
+	 * @param gridId Grid id
+	 * @return Grid
+	 */
+	public Grid getGrid(MuninFoo muninFoo, long gridId) {
+		String selectQuery = "SELECT * FROM " + TABLE_GRIDS
+				+ " WHERE " + KEY_ID + " = " + gridId;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		if (c != null && c.moveToFirst()) {
+			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)));
+			g.id = c.getInt(c.getColumnIndex(KEY_ID));
+			// Get all GridItems
+			g.items = getGridItems(muninFoo, g);
+
 			close(c, db);
 			return g;
 		}
@@ -910,11 +933,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	/**
 	 * Get all grid items from a Grid
-	 * @param context Activity context
 	 * @param grid Grid
 	 * @return List<GridItem>
 	 */
-	public List<GridItem> getGridItems(MuninFoo muninFoo, Context context, Grid grid) {
+	public List<GridItem> getGridItems(MuninFoo muninFoo, Grid grid) {
 		List<GridItem> l = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDITEMRELATIONS
 				+ " WHERE " + KEY_GRIDITEMRELATIONS_GRID + " = " + grid.id;
@@ -926,7 +948,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			do {
 				int pluginId = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_PLUGIN));
 				MuninPlugin plugin = muninFoo.getPlugin(pluginId);
-				GridItem i = new GridItem(grid, plugin, context);
+				GridItem i = new GridItem(grid, plugin);
 				i.id = c.getInt(c.getColumnIndex(KEY_ID));
 				i.X = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X));
 				i.Y = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_Y));

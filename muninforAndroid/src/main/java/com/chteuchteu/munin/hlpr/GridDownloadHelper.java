@@ -8,46 +8,41 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-import com.chteuchteu.munin.ui.Activity_Grid;
-
-import java.util.List;
+import com.chteuchteu.munin.ui.Fragment_Grid;
 
 public class GridDownloadHelper {
-	private Grid g;
+	private Grid grid;
+	private int nbSimultaneousDownloads;
+	private Period period;
+	private Fragment_Grid fragment;
 	
-	private int nbSimultaneousDownloads = 3;
-	public Period period = Period.DAY;
-	
-	private List<GridItem> items;
-	
-	public GridDownloadHelper(Grid g) {
-		this.g = g;
-	}
-	
-	public void init(int nbSimultaneousDownloads, Period p) {
+	public GridDownloadHelper(Grid grid, int nbSimultaneousDownloads, Period period, Fragment_Grid fragment) {
+		this.grid = grid;
 		this.nbSimultaneousDownloads = nbSimultaneousDownloads;
-		this.period = p;
-		items = g.items;
+		this.period = period;
+		this.fragment = fragment;
 	}
+
+	public void setPeriod(Period val) { this.period = val; }
 	
 	public void start(boolean forceUpdate) {
-		for (GridItem i : items)
-			i.pb.setVisibility(View.VISIBLE);
+		for (GridItem item : grid.items)
+			item.pb.setVisibility(View.VISIBLE);
 		
 		onStart();
 		
 		for (int i=0; i<this.nbSimultaneousDownloads; i++) {
-			if (items.size() > i)
+			if (grid.items.size() > i)
 				new DownloadBitmaps(i, forceUpdate).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		}
 	}
 	
 	private void onStart() {
-		Activity_Grid.updating = true;
+		fragment.setUpdating(true);
 	}
 	
 	private void onStop() {
-		Activity_Grid.updating = false;
+		fragment.setUpdating(false);
 	}
 	
 	private class DownloadBitmaps extends AsyncTask<Void, Integer, Void> {
@@ -62,8 +57,8 @@ public class GridDownloadHelper {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			if (i < g.items.size()) {
-				GridItem gridItem = items.get(i);
+			if (i < grid.items.size()) {
+				GridItem gridItem = grid.items.get(i);
 				if (forceUpdate || gridItem.iv.getDrawable() == null) {
 					if (gridItem != null && gridItem.plugin != null && gridItem.plugin.getInstalledOn() != null
 							&& gridItem.plugin.getInstalledOn().getParent() != null) {
@@ -80,19 +75,19 @@ public class GridDownloadHelper {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			if (i == g.items.size() - 1)
+			if (i == grid.items.size() - 1)
 				onStop();
-			if (i < g.items.size()) {
-				if (items.get(i) != null) {
+			if (i < grid.items.size()) {
+				if (grid.items.get(i) != null) {
 					if (b != null) {
-						items.get(i).iv.setImageBitmap(b);
-						items.get(i).graph = b;
+						grid.items.get(i).iv.setImageBitmap(b);
+						grid.items.get(i).graph = b;
 					}
-					items.get(i).pb.setVisibility(View.GONE);
+					grid.items.get(i).pb.setVisibility(View.GONE);
 				}
 				
 				int next = i + nbSimultaneousDownloads;
-				if (next < items.size())
+				if (next < grid.items.size())
 					new DownloadBitmaps(next, forceUpdate).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			}
 		}

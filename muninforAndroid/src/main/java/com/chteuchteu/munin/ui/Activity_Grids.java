@@ -34,6 +34,7 @@ import java.util.List;
 public class Activity_Grids extends MuninActivity {
 	private ArrayList<HashMap<String, String>> list;
 	private ListView listview;
+	private List<Grid> grids;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,17 +51,26 @@ public class Activity_Grids extends MuninActivity {
 
 		updateList();
 	}
+
+	private Grid getGridFromName(String gridName) {
+		for (Grid grid : grids) {
+			if (grid.name.equals(gridName))
+				return grid;
+		}
+
+		return null;
+	}
 	
 	private void updateList() {
 		list.clear();
 		listview.setAdapter(null);
 		
-		List<Grid> gridsList = muninFoo.sqlite.dbHlpr.getGrids(this, muninFoo);
+		grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
 		
-		if (gridsList.size() == 0)
+		if (grids.size() == 0)
 			findViewById(R.id.grids_nogrid).setVisibility(View.VISIBLE);
 		else {
-			for (Grid g : gridsList) {
+			for (Grid g : grids) {
                 HashMap<String,String> item = new HashMap<>();
 				item.put("line1", g.name);
 				item.put("line2", g.getFullWidth() + " x " + g.getFullHeight());
@@ -73,7 +83,7 @@ public class Activity_Grids extends MuninActivity {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					TextView gridName = (TextView) view.findViewById(R.id.line_a);
 					Intent intent = new Intent(Activity_Grids.this, Activity_Grid.class);
-					intent.putExtra("gridName", gridName.getText().toString());
+					intent.putExtra("gridId", getGridFromName(gridName.getText().toString()).id);
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.DEEPER);
 				}
@@ -129,7 +139,7 @@ public class Activity_Grids extends MuninActivity {
 											.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 												@Override
 												public void onClick(DialogInterface dialog, int which) {
-													Grid grid = muninFoo.sqlite.dbHlpr.getGrid(context, muninFoo, gridName);
+													Grid grid = getGridFromName(gridName);
 													muninFoo.sqlite.dbHlpr.deleteGrid(grid);
 													updateList();
 												}
@@ -161,12 +171,10 @@ public class Activity_Grids extends MuninActivity {
 		.setView(ll)
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				// Overrided by the CustomListener class
+				// Overridden by the CustomListener class
 			}
 		})
-		.setNegativeButton(getText(R.string.text64), new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) { }
-		});
+		.setNegativeButton(getText(R.string.text64), null);
 		AlertDialog d = b.create();
 		d.show();
 		Button okButton = d.getButton(DialogInterface.BUTTON_POSITIVE);
@@ -223,10 +231,10 @@ public class Activity_Grids extends MuninActivity {
 						available = false;
 				}
 				if (available) {
-					muninFoo.sqlite.dbHlpr.insertGrid(new Grid(value, muninFoo));
+					long id = muninFoo.sqlite.dbHlpr.insertGrid(value);
 					dialog.dismiss();
 					Intent i = new Intent(Activity_Grids.this, Activity_Grid.class);
-					i.putExtra("gridName", value);
+					i.putExtra("gridId", id);
 					startActivity(i);
 					Util.setTransition(context, TransitionStyle.DEEPER);
 				}

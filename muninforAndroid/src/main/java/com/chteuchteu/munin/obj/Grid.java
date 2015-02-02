@@ -11,6 +11,8 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.GridDownloadHelper;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.ui.Fragment_Grid;
+import com.chteuchteu.munin.ui.IActivity_Grid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,19 +23,29 @@ public class Grid {
 	public int nbColumns;
 	public int nbLines;
 	public List<GridItem> items;
+
 	public MuninFoo f;
 	public GridDownloadHelper dHelper;
-	
 	private LinearLayout container;
-	
 	public GridItem currentlyOpenedGridItem = null;
+	private IActivity_Grid activity;
+	private Fragment_Grid fragment;
 	
-	public Grid(String name, MuninFoo f) {
+	public Grid(String name) {
 		this.name = name;
 		this.items = new ArrayList<>();
 		this.nbColumns = 2;
 		this.nbLines = 2;
-		this.f = f;
+	}
+
+	public void setActivityReferences(Context context, MuninFoo muninFoo, IActivity_Grid activity, Fragment_Grid fragment) {
+		this.f = muninFoo;
+		this.activity = activity;
+		this.fragment = fragment;
+
+		// Set references for children
+		for (GridItem item : items)
+			item.setActivityReferences(context, activity, fragment);
 	}
 	
 	private void preAdd(GridItem item) {
@@ -120,9 +132,9 @@ public class Grid {
 			// Column per column
 			for (int x=0; x<nbColumns; x++) {
 				if (get(x, y) == null)
-					line.addView(GridItem.getEmptyView(this, c, f, x, y));
+					line.addView(GridItem.getEmptyView(this, c, f, activity, fragment, x, y, line));
 				else
-					line.addView(get(x, y).getView(c));
+					line.addView(get(x, y).getView(line));
 			}
 			
 			container.addView(line);
@@ -130,9 +142,9 @@ public class Grid {
 		return container;
 	}
 	
-	public void edit(Activity a) {
-		a.findViewById(R.id.add_line_bottom).setVisibility(View.VISIBLE);
-		a.findViewById(R.id.add_column_right).setVisibility(View.VISIBLE);
+	public void edit(View gridView) {
+		gridView.findViewById(R.id.add_line_bottom).setVisibility(View.VISIBLE);
+		gridView.findViewById(R.id.add_column_right).setVisibility(View.VISIBLE);
 		reEnablePlusButtons();
 	}
 	
@@ -180,12 +192,11 @@ public class Grid {
 		}
 	}
 	
-	public int getGridItemHeight(Context c, int nbCol) {
+	public int getGridItemHeight(Context context) {
 		float ratio = (float) (800.0 / 600.0);
-		int deviceWidth = Util.getDeviceSize(c)[0];
-		int gridItemWidth = deviceWidth / nbCol;
-		int gridItemHeight = Math.round(gridItemWidth / ratio);
-		return gridItemHeight;
+		int deviceWidth = Util.getDeviceSize(context)[0];
+		int gridItemWidth = deviceWidth / this.nbColumns;
+		return Math.round(gridItemWidth / ratio);
 	}
 	
 	
@@ -204,7 +215,7 @@ public class Grid {
 			line.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 			line.setOrientation(LinearLayout.HORIZONTAL);
 			for (int i=0; i<nbColumns; i++)
-				line.addView(GridItem.getEmptyView(this, c, f, i, nbLines-1));
+				line.addView(GridItem.getEmptyView(this, c, f, activity, fragment, i, nbLines-1, line));
 			
 			container.addView(line);
 			
@@ -222,7 +233,7 @@ public class Grid {
 			for (int i=0; i<nbLines; i++) {
 				// Get the layout to add the view
 				LinearLayout row = (LinearLayout) container.getChildAt(i);
-				row.addView(GridItem.getEmptyView(this, c, f, nbColumns-1, i));
+				row.addView(GridItem.getEmptyView(this, c, f, activity, fragment, nbColumns-1, i, row));
 			}
 			
 			// Update each view
@@ -350,7 +361,7 @@ public class Grid {
 	
 	private void updateGridSize(LinearLayout v, Context c) {
 		if (v != null)
-			v.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, getGridItemHeight(c, nbColumns), 1.0f));
+			v.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, getGridItemHeight(c), 1.0f));
 	}
 	
 	public LinearLayout getViewAt(int x, int y) {

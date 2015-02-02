@@ -470,7 +470,7 @@ public class MuninMaster {
 	 */
 	public ArrayList<GridItem> reattachGrids(MuninFoo muninFoo, Context context, MuninMaster oldMaster) {
 		ArrayList<GridItem> toBeUpdated_grids = new ArrayList<>();
-		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(context, muninFoo);
+		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
 
 		if (grids.isEmpty())
 			return toBeUpdated_grids;

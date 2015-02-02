@@ -1,15 +1,15 @@
 package com.chteuchteu.munin.obj;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -26,9 +26,9 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_IconList;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-import com.chteuchteu.munin.ui.Activity_Grid;
+import com.chteuchteu.munin.ui.Fragment_Grid;
+import com.chteuchteu.munin.ui.IActivity_Grid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,16 +38,19 @@ public class GridItem {
 	public int 			X;
 	public int 			Y;
 	public MuninPlugin 		plugin;
-	public ImageView 		iv;
 	public Grid 			grid;
-	private Context 		c;
-	public boolean 		editing = false;
-	public RelativeLayout container;
-	public Bitmap 			graph;
+
+	private Context 		context;
+	private IActivity_Grid  activity;
+	private Fragment_Grid   fragment;
+	public ImageView 		iv;
 	public ProgressBar 		pb;
-	public View            footer;
-	private HDGraphDownloader hdGraphDownloader;
-	private Period 			period;
+	public View             footer;
+	public RelativeLayout   container;
+
+	public boolean 		    editing = false;
+	public Bitmap 			graph;
+	public HDGraphDownloader hdGraphDownloader;
 
 	// Action buttons
 	private View action_up, action_left, action_down,
@@ -56,21 +59,25 @@ public class GridItem {
 	private static int 	ICONS_MAX_WIDTH = 220;
 	private static float	ALPHA_EDITING = 0.2f;
 	
-	public GridItem(Grid g, MuninPlugin p, Context c) {
+	public GridItem(Grid grid, MuninPlugin plugin) {
 		this.X = 0;
 		this.Y = 0;
-		this.plugin = p;
-		this.grid = g;
-		this.c = c;
+		this.plugin = plugin;
+		this.grid = grid;
 		this.hdGraphDownloader = null;
-		this.period = Util.getDefaultPeriod(c);
+	}
+
+	public void setActivityReferences(Context context, IActivity_Grid activity, Fragment_Grid fragment) {
+		this.context = context;
+		this.activity = activity;
+		this.fragment = fragment;
 	}
 	
-	public LinearLayout getView(final Context c) {
-		View view = ((Activity) c).getLayoutInflater().inflate(R.layout.griditem, null);
+	public LinearLayout getView(ViewGroup parent) {
+		View view = LayoutInflater.from(context).inflate(R.layout.griditem, parent, false);
 
 		LinearLayout outerContainer = (LinearLayout) view.findViewById(R.id.outerContainer);
-		outerContainer.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, grid.getGridItemHeight(c, grid.nbColumns), 1.0f));
+		outerContainer.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, grid.getGridItemHeight(context), 1.0f));
 
 		container = (RelativeLayout) view.findViewById(R.id.container);
 		iv = (ImageView) view.findViewById(R.id.iv);
@@ -80,12 +87,12 @@ public class GridItem {
 		footer = view.findViewById(R.id.gridItemFooter);
 		TextView pluginName = (TextView) view.findViewById(R.id.pluginName);
 		TextView serverName = (TextView) view.findViewById(R.id.serverName);
-		Util.Fonts.setFont(c, pluginName, Util.Fonts.CustomFont.Roboto_Regular);
-		Util.Fonts.setFont(c, serverName, Util.Fonts.CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(context, pluginName, Util.Fonts.CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(context, serverName, Util.Fonts.CustomFont.Roboto_Regular);
 		pluginName.setText(plugin.getFancyName());
 		serverName.setText(plugin.getInstalledOn().getName());
 
-		switch (Util.getPref(c, Util.PrefKeys.GridsLegend)) {
+		switch (Util.getPref(context, Util.PrefKeys.GridsLegend)) {
 			case "none": footer.setVisibility(View.GONE); break;
 			case "serverName": case "": pluginName.setVisibility(View.GONE); break;
 			case "pluginName": serverName.setVisibility(View.GONE); break;
@@ -95,12 +102,12 @@ public class GridItem {
 		container.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (!editing && Activity_Grid.editing) {
+				if (!editing && fragment.isEditing()) {
 					grid.cancelAlpha();
-					edit(c);
+					edit(context);
 				}
-				else if (!editing && !Activity_Grid.editing)
-					preview(c);
+				else if (!editing && !fragment.isEditing())
+					preview();
 			}
 		});
 
@@ -145,78 +152,20 @@ public class GridItem {
 		return outerContainer;
 	}
 	
-	private void preview(final Context c) {
-		if (graph != null) {
-			Activity_Grid.menu_open.setVisible(true);
-			Activity_Grid.menu_period.setVisible(false);
-			Activity_Grid.menu_refresh.setVisible(false);
-			Activity_Grid.menu_edit.setVisible(false);
-			
-			grid.currentlyOpenedGridItem = this;
-			final ImageView fullscreenImageView = (ImageView) ((Activity) c).findViewById(R.id.fullscreen_iv);
-			fullscreenImageView.setImageBitmap(graph);
-			((TextView) ((Activity) c).findViewById(R.id.fullscreen_tv)).setText(plugin.getInstalledOn().getName());
-			View fs = ((Activity) c).findViewById(R.id.fullscreen);
-
-			// Lollipop animation (fallback if necessary)
-			View mainContainer = ((Activity) c).findViewById(R.id.mainContainer);
-			fs.setVisibility(View.VISIBLE);
-			View parent = (View) container.getParent();
-			View parentParent = (View) container.getParent().getParent();
-			int cx = (parent.getLeft() + parent.getRight()) / 2;
-			int cy = (parentParent.getTop() + parentParent.getBottom()) / 2;
-			int finalRadius = Math.max(mainContainer.getWidth(), mainContainer.getHeight());
-			Util.Animations.reveal_show(c, fs, new int[]{cx, cy}, finalRadius, Util.Animations.CustomAnimation.FADE_IN);
-
-			// Translation animation between origin imageview location and fullscreen location
-			// Set original imageview location
-			/*int[] originalImageLocation = new int[2];
-			iv.getLocationOnScreen(originalImageLocation);
-			originalImageLocation[1] -= (Util.getStatusBarHeight(c) + Util.getActionBarHeight(c));
-			
-			LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(iv.getWidth(), iv.getHeight());
-			lParams.setMargins(originalImageLocation[0], originalImageLocation[1], 0, 0);
-			fullscreenImageView.setLayoutParams(lParams);*/
-			
-			// Download HD graph if possible
-			if (grid.currentlyOpenedGridItem.plugin.getInstalledOn().getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE
-					&& !Util.getPref(c, Util.PrefKeys.HDGraphs).equals("false")) {
-				// We need to get imageView dimensions (which aren't available right now => globalLayoutListener)
-				fullscreenImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-					@Override
-					public void onGlobalLayout() {
-						Util.removeOnGlobalLayoutListener(fullscreenImageView, this);
-
-						// Check if HD graph is really needed : if the standard-res bitmap isn't upscaled, it's OK
-						float xScale = ((float) fullscreenImageView.getWidth()) / graph.getWidth();
-						float yScale = ((float) fullscreenImageView.getHeight()) / graph.getHeight();
-						float scale = (xScale <= yScale) ? xScale : yScale;
-
-						// Acceptable upscaling factor
-						if (scale > 2.5) {
-							if (hdGraphDownloader != null && hdGraphDownloader.isDownloading())
-								hdGraphDownloader.killDownload();
-
-							hdGraphDownloader = new HDGraphDownloader(grid.currentlyOpenedGridItem.plugin, fullscreenImageView, period);
-							hdGraphDownloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-						}
-					}
-				});
-			}
-		}
+	private void preview() {
+		fragment.preview(this);
 	}
 	
-	public void setPeriod(Period period) { this.period = period; }
-	
-	private class HDGraphDownloader extends AsyncTask<Void, Integer, Void> {
+	public static class HDGraphDownloader extends AsyncTask<Void, Integer, Void> {
 		private MuninPlugin plugin;
 		private ImageView imageView;
 		private Period period;
 		private Bitmap bitmap;
+		private Context context;
 		private boolean downloadKilled;
 		private boolean isDownloading;
 		
-		private HDGraphDownloader (MuninPlugin plugin, ImageView imageView, Period period) {
+		public HDGraphDownloader (Context context, MuninPlugin plugin, ImageView imageView, Period period) {
 			super();
 			this.plugin = plugin;
 			this.imageView = imageView;
@@ -224,6 +173,7 @@ public class GridItem {
 			this.downloadKilled = false;
 			this.isDownloading = false;
 			this.period = period;
+			this.context = context;
 		}
 		
 		@Override
@@ -234,7 +184,7 @@ public class GridItem {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			int[] dim = Util.HDGraphs.getBestImageDimensions(imageView, c);
+			int[] dim = Util.HDGraphs.getBestImageDimensions(imageView, context);
 			String graphUrl = plugin.getHDImgUrl(period, true, dim[0], dim[1]);
 			bitmap = Util.dropShadow(
 					Util.removeBitmapBorder(plugin.getInstalledOn().getParent().grabBitmap(
@@ -251,39 +201,41 @@ public class GridItem {
 				imageView.setImageBitmap(bitmap);
 		}
 		
-		private void killDownload() {
+		public void killDownload() {
 			downloadKilled = true;
 			isDownloading = false;
 		}
 		public boolean isDownloading() { return this.isDownloading; }
 	}
 	
-	public static LinearLayout getEmptyView(final Grid g, final Context c, final MuninFoo f, final int X, final int Y) {
-		View view = ((Activity) c).getLayoutInflater().inflate(R.layout.griditem_empty, null);
+	public static LinearLayout getEmptyView(final Grid grid, final Context context, final MuninFoo muninFoo, final IActivity_Grid activity, final Fragment_Grid fragment,
+	                                        final int X, final int Y, ViewGroup parent) {
+		View view = LayoutInflater.from(context).inflate(R.layout.griditem_empty, parent, false);
 
 		LinearLayout outerContainer = (LinearLayout) view.findViewById(R.id.outerContainer);
-		outerContainer.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, g.getGridItemHeight(c, g.nbColumns), 1.0f));
+		outerContainer.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, grid.getGridItemHeight(context), 1.0f));
 
 		RelativeLayout ll = (RelativeLayout) view.findViewById(R.id.ll);
 		ll.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				add(c, f, g, X, Y);
+				add(context, muninFoo, grid, activity, fragment, X, Y);
 			}
 		});
 
-		if (!Activity_Grid.editing)
+		if (!fragment.isEditing())
 			outerContainer.setVisibility(View.INVISIBLE);
 
 		return outerContainer;
 	}
 	
-	private static void add(Context c, MuninFoo f, Grid g, int X, int Y) {
-		add_serversListDialog(c, f, g, X, Y);
+	private static void add(Context c, MuninFoo f, Grid g, IActivity_Grid activity, Fragment_Grid fragment, int X, int Y) {
+		add_serversListDialog(c, f, g, activity, fragment, X, Y);
 	}
 	
 	@SuppressWarnings("deprecation")
-	private static void add_serversListDialog(final Context c, final MuninFoo f, final Grid g, final int X, final int Y) {
+	private static void add_serversListDialog(final Context c, final MuninFoo f, final Grid g, final IActivity_Grid activity, final Fragment_Grid fragment,
+	                                          final int X, final int Y) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(c);
 		builder.setTitle(c.getText(R.string.text71));
 		ListView modeList = new ListView(c);
@@ -299,13 +251,14 @@ public class GridItem {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
 				dialog.dismiss();
-				add_pluginsListDialog(c, pos, f, g, X, Y);
+				add_pluginsListDialog(c, pos, f, g, activity, fragment, X, Y);
 			}
 		});
 		dialog.show();
 	}
 	
-	private static void add_pluginsListDialog(final Context c, int pos, final MuninFoo f, final Grid g, final int X, final int Y) {
+	private static void add_pluginsListDialog(final Context c, int pos, final MuninFoo f, final Grid g, final IActivity_Grid activity, final Fragment_Grid fragment,
+	                                          final int X, final int Y) {
 		@SuppressWarnings("deprecation")
 		final MuninServer s = f.getServerFromFlatPosition(pos);
 		List<MuninPlugin> l = s.getPlugins();
@@ -339,12 +292,13 @@ public class GridItem {
 				for (Integer i : selectedItems) {
 					MuninPlugin p = s.getPlugin(i);
 					if (!alreadyAdded(g, p)) {
-						GridItem item = new GridItem(g, p, c);
+						GridItem item = new GridItem(g, p);
+						item.setActivityReferences(c, activity, fragment);
 						int[] pos = g.getNextAvailable(X, Y, maxWidth, c);
 						item.X = pos[0];
 						item.Y = pos[1];
 						g.add(item, c, f, true);
-						g.swapViews(g.getViewAt(item.X, item.Y), item.getView(c));
+						g.swapViews(g.getViewAt(item.X, item.Y), item.getView(null));
 					}
 				}
 				
@@ -467,12 +421,12 @@ public class GridItem {
 	private void remove() {
 		grid.f.sqlite.dbHlpr.deleteGridItemRelation(this);
 		grid.remove(X, Y);
-		grid.swapViews(grid.getViewAt(X, Y), getEmptyView(grid, c, grid.f, X, Y));
+		grid.swapViews(grid.getViewAt(X, Y), getEmptyView(grid, context, grid.f, activity, fragment, X, Y, null));
 	}
 	
 	public void updateActionButtonsAfterAddingColumn() {
 		hideActionButtons();
-		int deviceWidth = Util.getDeviceSize(c)[1];
+		int deviceWidth = Util.getDeviceSize(context)[1];
 		int diff = deviceWidth / (grid.nbColumns-1) - deviceWidth / (grid.nbColumns);
 		int newContainerWidth = container.getWidth() - diff;
 		if (newContainerWidth > ICONS_MAX_WIDTH)
