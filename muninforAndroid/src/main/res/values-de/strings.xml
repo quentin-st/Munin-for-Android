@@ -53,14 +53,7 @@
 	<string name="lang_italian">Italienisch</string>
 	<string name="button_premium">Munin Premium</string>
 	<string name="goPremium_title">Munin für Android Premiumfunktionen</string>
-	<string name="goPremium_features"><![CDATA[
-		<li>SSL Support</li>
-		<li>Graph Widgets</li>
-		<li>Benachrichtigungen</li>
-		<li>Bevorzugter Support</li>
-		<li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li>
-		<li>Aktiviere die automatischen Update in Google Play um neue Premiumfunktionen automatisch zu erhalten.</li>
-	]]></string>
+	<string name="goPremium_features"> <li>Graphen-Gitter</li> <li>SSL Support</li> <li>Graph Widgets</li> <li>Digest-Authentifikation</li> <li>Benachrichtigungen</li> <li>Bevorzugter Support</li> <li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li> <li>Aktiviere die automatischen Update in Google Play um neue Premiumfunktionen automatisch zu erhalten.</li> </string>
 	<string name="buy_now">"JETZT KAUFEN"</string>
 	<string name="goPremiumTitle">Munin Premium</string>
 	<string name="text41">SSL-Support ist über das Munin für Android Features Pack verfügbar ($1,49). Auf Google Play kaufen?</string>
@@ -123,7 +116,7 @@
 	<string name="about_independantApp">Ich bin kein Angeh&amp;ouml;riger der Linux-Software munin.</string>
 	<string name="about_changelog">Bitte gehe auf &lt;a href=http://chteuchteu.com/munin-for-android/&gt;chteuchteu.com/munin-for-android&lt;/a&gt; um ein Changelog zu sehen.</string>
 	<string name="about_specialThanksTitle">Besonderen Dank</string>
-	<string name="about_librariesTitle">Libraries</string>
+	<string name="about_librariesTitle">Bibliotheken</string>
 	<string name="text69">"Gittername"</string>
 	<string name="text70">"Gitter hinzufügen"</string>
 	<string name="text70.2">"Label hinzufügen"</string>
