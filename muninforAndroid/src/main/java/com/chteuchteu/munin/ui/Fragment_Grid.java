@@ -30,9 +30,9 @@ public class Fragment_Grid extends Fragment {
 	private IActivity_Grid activity;
 	private boolean editing;
 	private Grid grid;
-	private View view;
 	private LinearLayout container;
 	private MuninPlugin.Period currentPeriod;
+	private View view;
 
 	private boolean updating;
 
@@ -59,8 +59,7 @@ public class Fragment_Grid extends Fragment {
 		this.editing = false;
 		this.updating = false;
 
-		View view = inflater.inflate(R.layout.fragment_grid, container, false);
-		this.view = view;
+		this.view = inflater.inflate(R.layout.fragment_grid, container, false);
 
 		this.container = (LinearLayout) view.findViewById(R.id.grid_root_container);
 		this.currentPeriod = Util.getDefaultPeriod(context);

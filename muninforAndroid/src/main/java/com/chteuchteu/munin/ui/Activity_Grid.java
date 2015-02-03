@@ -84,14 +84,15 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 				@Override
 				public boolean onNavigationItemSelected(int itemPosition, long itemId) {
 					if (itemPosition != currentSelectedIndex) {
-						Intent intent = new Intent(Activity_Grid.this, Activity_Grid.class);
+						// TODO manage this with fragments
+						/*Intent intent = new Intent(Activity_Grid.this, Activity_Grid.class);
 						intent.putExtra("gridName", gridsNames.get(itemPosition));
 						startActivity(intent);
 						// Animation : RTL / LTR
 						if (itemPosition > currentSelectedIndex)
 							Util.setTransition(context, TransitionStyle.DEEPER);
 						else
-							Util.setTransition(context, TransitionStyle.SHALLOWER);
+							Util.setTransition(context, TransitionStyle.SHALLOWER);*/
 					}
 					return false;
 				}
