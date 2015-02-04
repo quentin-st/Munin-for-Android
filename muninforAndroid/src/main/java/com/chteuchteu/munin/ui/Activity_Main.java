@@ -43,7 +43,7 @@ import java.util.Locale;
  * is very different from others (showing UI elements only when the app
  * is loaded)
  */
-public class Activity_Main extends ActionBarActivity implements IActivity_Grid {
+public class Activity_Main extends ActionBarActivity implements IGridActivity {
 	private MuninFoo		muninFoo;
 	private MaterialMenuIconToolbar materialMenu;
 

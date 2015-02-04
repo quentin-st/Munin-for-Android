@@ -12,7 +12,7 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.GridDownloadHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.ui.Fragment_Grid;
-import com.chteuchteu.munin.ui.IActivity_Grid;
+import com.chteuchteu.munin.ui.IGridActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class Grid {
 	public GridDownloadHelper dHelper;
 	private LinearLayout container;
 	public GridItem currentlyOpenedGridItem = null;
-	private IActivity_Grid activity;
+	private IGridActivity activity;
 	private Fragment_Grid fragment;
 	
 	public Grid(String name) {
@@ -38,7 +38,7 @@ public class Grid {
 		this.nbLines = 2;
 	}
 
-	public void setActivityReferences(Context context, MuninFoo muninFoo, IActivity_Grid activity, Fragment_Grid fragment) {
+	public void setActivityReferences(Context context, MuninFoo muninFoo, IGridActivity activity, Fragment_Grid fragment) {
 		this.f = muninFoo;
 		this.activity = activity;
 		this.fragment = fragment;

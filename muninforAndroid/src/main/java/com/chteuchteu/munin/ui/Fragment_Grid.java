@@ -33,7 +33,7 @@ public class Fragment_Grid extends Fragment {
 	public static final String ARG_OVERFLOW_ACTIONS = "overflowActions";
 
 	private Context context;
-	private IActivity_Grid activity;
+	private IGridActivity activity;
 	private boolean editing;
 	private Grid grid;
 	private LinearLayout container;
@@ -48,7 +48,7 @@ public class Fragment_Grid extends Fragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		this.context = activity;
-		this.activity = (IActivity_Grid) activity;
+		this.activity = (IGridActivity) activity;
 	}
 
 	@Override

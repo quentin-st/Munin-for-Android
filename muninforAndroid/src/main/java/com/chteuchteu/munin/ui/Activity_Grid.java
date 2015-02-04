@@ -22,7 +22,7 @@ import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Activity_Grid extends MuninActivity implements IActivity_Grid {
+public class Activity_Grid extends MuninActivity implements IGridActivity {
 	private MenuItem menu_refresh;
 	private MenuItem menu_edit;
 	private MenuItem menu_period;

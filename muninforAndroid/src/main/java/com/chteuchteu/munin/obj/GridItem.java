@@ -29,7 +29,7 @@ import com.chteuchteu.munin.adptr.Adapter_IconList;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.ui.Fragment_Grid;
-import com.chteuchteu.munin.ui.IActivity_Grid;
+import com.chteuchteu.munin.ui.IGridActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class GridItem {
 	private Grid 			grid;
 
 	private Context 		context;
-	private IActivity_Grid  activity;
+	private IGridActivity activity;
 	private Fragment_Grid   fragment;
 	public ImageView 		iv;
 	public ProgressBar 		pb;
@@ -68,7 +68,7 @@ public class GridItem {
 		this.hdGraphDownloader = null;
 	}
 
-	public void setActivityReferences(Context context, IActivity_Grid activity, Fragment_Grid fragment) {
+	public void setActivityReferences(Context context, IGridActivity activity, Fragment_Grid fragment) {
 		this.context = context;
 		this.activity = activity;
 		this.fragment = fragment;
@@ -211,7 +211,7 @@ public class GridItem {
 		public boolean isDownloading() { return this.isDownloading; }
 	}
 	
-	public static LinearLayout getEmptyView(final Grid grid, final Context context, final MuninFoo muninFoo, final IActivity_Grid activity, final Fragment_Grid fragment,
+	public static LinearLayout getEmptyView(final Grid grid, final Context context, final MuninFoo muninFoo, final IGridActivity activity, final Fragment_Grid fragment,
 	                                        final int X, final int Y, ViewGroup parent) {
 		View view = LayoutInflater.from(context).inflate(R.layout.griditem_empty, parent, false);
 
@@ -232,12 +232,12 @@ public class GridItem {
 		return outerContainer;
 	}
 	
-	private static void add(Context c, MuninFoo f, Grid g, IActivity_Grid activity, Fragment_Grid fragment, int X, int Y) {
+	private static void add(Context c, MuninFoo f, Grid g, IGridActivity activity, Fragment_Grid fragment, int X, int Y) {
 		add_serversListDialog(c, f, g, activity, fragment, X, Y);
 	}
 	
 	@SuppressWarnings("deprecation")
-	private static void add_serversListDialog(final Context c, final MuninFoo f, final Grid g, final IActivity_Grid activity, final Fragment_Grid fragment,
+	private static void add_serversListDialog(final Context c, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
 	                                          final int X, final int Y) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(c);
 		builder.setTitle(c.getText(R.string.text71));
@@ -260,7 +260,7 @@ public class GridItem {
 		dialog.show();
 	}
 	
-	private static void add_pluginsListDialog(final Context c, int pos, final MuninFoo f, final Grid g, final IActivity_Grid activity, final Fragment_Grid fragment,
+	private static void add_pluginsListDialog(final Context c, int pos, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
 	                                          final int X, final int Y) {
 		@SuppressWarnings("deprecation")
 		final MuninServer s = f.getServerFromFlatPosition(pos);
