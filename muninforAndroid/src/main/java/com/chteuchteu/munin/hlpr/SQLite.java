@@ -69,7 +69,7 @@ public class SQLite {
 			// We can't easily group credentials here
 			if (!master.defaultMaster && !master.isEmpty()) {
 				// Get the first server
-				MuninServer model = master.getChildAt(0);
+				MuninServer model = master.getChildren().get(0);
 				
 				getOldAuthInformation(model.getId(), master, true);
 			}

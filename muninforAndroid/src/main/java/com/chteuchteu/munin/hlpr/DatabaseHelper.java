@@ -884,31 +884,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(c, db);
 		return names;
 	}
-	
-	/**
-	 * Get a grid from its name
-	 * @param muninFoo MuninFoo instance
-	 * @param gridName Grid name
-	 * @return Grid
-	 */
-	public Grid getGrid(MuninFoo muninFoo, String gridName) {
-		String selectQuery = "SELECT * FROM " + TABLE_GRIDS
-				+ " WHERE " + KEY_GRIDS_NAME + " = '" + gridName + "'";
-		
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.rawQuery(selectQuery, null);
-		
-		if (c != null && c.moveToFirst()) {
-			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)));
-			g.id = c.getInt(c.getColumnIndex(KEY_ID));
-			// Get all GridItems
-			g.items = getGridItems(muninFoo, g);
-			
-			close(c, db);
-			return g;
-		}
-		return null;
-	}
 
 	/**
 	 * Get a grid from its id

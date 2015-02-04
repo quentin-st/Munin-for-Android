@@ -104,8 +104,6 @@ public class MuninPlugin {
 	public String getImgUrl(Period period) {
 		return this.getInstalledOn().getGraphURL() + this.getName() + "-" + period + ".png";
 	}
-
-	public String getSVGImgUrl(Period period) { return this.getInstalledOn().getGraphURL() + this.getName() + "-" + period + ".svg"; }
 	
 	public String getHDImgUrl(Period period) {
 		return getHDImgUrl(period, false, 0, 0);

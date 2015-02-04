@@ -67,22 +67,6 @@ public class MuninMaster {
             return val ? TRUE : FALSE;
 		}
 	}
-
-	public enum SVGAvailability {
-		AUTO_DETECT(""), FALSE("false"), TRUE("true");
-		private String val = "";
-		SVGAvailability(String val) { this.val = val; }
-		public String getVal() { return this.val; }
-		public String toString() { return this.val; }
-		public static SVGAvailability get(String val) {
-			for (SVGAvailability s : values()) {
-				if (s.val.equals(val))
-					return s;
-			}
-			return AUTO_DETECT;
-		}
-		public SVGAvailability get(boolean val) { return val ? TRUE : FALSE; }
-	}
 	
 	public void setAuthType(AuthType t) { this.authType = t; }
 	public AuthType getAuthType() { return this.authType; }
@@ -135,7 +119,7 @@ public class MuninMaster {
 		if (this.defaultMaster || this.isEmpty())
 			return false;
 		
-		MuninServer server = getChildAt(0);
+		MuninServer server = getChildren().get(0);
 		if (server == null)
 			return false;
 		MuninPlugin plugin = server.getPlugin(0);
@@ -185,11 +169,6 @@ public class MuninMaster {
 			this.children.add(s);
 			s.setParent(this);
 		}
-	}
-	public MuninServer getChildAt(int i) {
-		if (i >= 0 && i < this.children.size())
-			return this.children.get(i);
-		return null;
 	}
 	
 	public boolean isEmpty() { return this.children.isEmpty(); }

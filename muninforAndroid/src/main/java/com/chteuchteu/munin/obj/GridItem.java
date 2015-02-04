@@ -452,5 +452,4 @@ public class GridItem {
 	public void setPlugin(MuninPlugin plugin) { this.plugin = plugin; }
 
 	public Grid getGrid() { return grid; }
-	public void setGrid(Grid grid) { this.grid = grid; }
 }

@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Activity_Grid extends MuninActivity implements IActivity_Grid {
-	public MenuItem menu_refresh;
-	public MenuItem menu_edit;
-	public MenuItem menu_period;
-	public MenuItem menu_open;
+	private MenuItem menu_refresh;
+	private MenuItem menu_edit;
+	private MenuItem menu_period;
+	private MenuItem menu_open;
 
 	private List<Grid> grids;
 	private Grid grid;
