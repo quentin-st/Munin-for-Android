@@ -250,6 +250,27 @@ public final class Util {
 			return src;
 		}
 	}
+
+	/**
+	 * Remove legend and useless padding from graphs
+	 *  (but keep graph name)
+	 * @param src Bitmap
+	 * @return New graph
+	 */
+	public static Bitmap extractGraph(Bitmap src) {
+		if (src == null)
+			return null;
+
+		try {
+			final int LEFT_PADDING = 35; // px
+			final int RIGHT_PADDING = 25; // px
+			final int TOP_PADDING = 5; // px
+			final int HEIGHT = 220; // px
+			return Bitmap.createBitmap(src, LEFT_PADDING, TOP_PADDING, src.getWidth() - (LEFT_PADDING + RIGHT_PADDING), HEIGHT);
+		} catch (Exception ex) {
+			return src;
+		}
+	}
 	
 	public static boolean hasPref(Context context, PrefKeys key) {
 		return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).contains(key.getKey());

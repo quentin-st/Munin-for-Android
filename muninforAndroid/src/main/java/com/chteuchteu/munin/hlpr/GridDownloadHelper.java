@@ -63,10 +63,11 @@ public class GridDownloadHelper {
 					if (gridItem != null && gridItem.getPlugin() != null && gridItem.getPlugin().getInstalledOn() != null
 							&& gridItem.getPlugin().getInstalledOn().getParent() != null) {
 						String graphUrl = gridItem.getPlugin().getImgUrl(period);
-						b = Util.dropShadow(
-								Util.removeBitmapBorder(
-										gridItem.getPlugin().getInstalledOn().getParent().grabBitmap(graphUrl,
-												MuninFoo.getInstance().getUserAgent()).getBitmap()));
+
+						Bitmap downloadedBitmap = gridItem.getPlugin().getInstalledOn().getParent().grabBitmap(graphUrl,
+								MuninFoo.getInstance().getUserAgent()).getBitmap();
+
+						b = Util.dropShadow(Util.extractGraph(Util.removeBitmapBorder(downloadedBitmap)));
 					}
 				}
 			}
