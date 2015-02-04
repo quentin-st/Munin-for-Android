@@ -18,11 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Grid {
-	public long id;
-	public String name;
-	public int nbColumns;
-	public int nbLines;
-	public List<GridItem> items;
+	private long id;
+	private String name;
+	private int nbColumns;
+	private int nbLines;
+	private List<GridItem> items;
 
 	public MuninFoo f;
 	public GridDownloadHelper dHelper;
@@ -52,22 +52,22 @@ public class Grid {
 		// Check if exists
 		boolean exists = false;
 		for (GridItem i : items) {
-			if (i.grid.name.equals(this.name) && i.plugin != null && i.plugin.equals(item.plugin))
+			if (i.getGrid().name.equals(this.name) && i.getPlugin() != null && i.getPlugin().equals(item.getPlugin()))
 				exists = true;
 		}
 		if (exists)
 			return;
 		
 		// Add columns / lines if necessary
-		while (item.X+1 > nbColumns)
+		while (item.getX()+1 > nbColumns)
 			nbColumns++;
-		while (item.Y+1 > nbLines)
+		while (item.getY()+1 > nbLines)
 			nbLines++;
 		
-		if (get(item.X, item.Y) == null)
+		if (get(item.getX(), item.getY()) == null)
 			this.items.add(item);
 		else
-			MuninFoo.logE("This item cannot be placed (" + item.X + "," + item.Y + ")");
+			MuninFoo.logE("This item cannot be placed (" + item.getX() + "," + item.getY() + ")");
 	}
 	
 	public void updateLayoutSizes(Context c) {
@@ -83,26 +83,26 @@ public class Grid {
 		// Check if exists
 		boolean exists = false;
 		for (GridItem i : items) {
-			if (i.grid.name.equals(name) && i.plugin.equals(item.plugin))
+			if (i.getGrid().name.equals(name) && i.getPlugin().equals(item.getPlugin()))
 				exists = true;
 		}
 		if (exists)
 			return;
 		
 		// Add columns / lines if necessary
-		while (item.X+1 >= nbColumns)
+		while (item.getX()+1 >= nbColumns)
 			addColumn(c, editView);
-		while (item.Y+1 >= nbLines)
+		while (item.getY()+1 >= nbLines)
 			addLine(c, editView);
 		
-		if (get(item.X, item.Y) == null)
+		if (get(item.getX(), item.getY()) == null)
 			this.items.add(item);
 		else
-			MuninFoo.logE("", "This item cannot be placed (" + item.X + "," + item.Y + ")");
+			MuninFoo.logE("", "This item cannot be placed (" + item.getX() + "," + item.getY() + ")");
 		
 		// Update this items size on this line
 		for (int x=0; x<nbColumns; x++) {
-			LinearLayout ll = getViewAt(x, item.Y);
+			LinearLayout ll = getViewAt(x, item.getY());
 			if (ll != null)
 				updateGridSize(ll, c);
 		}
@@ -112,7 +112,7 @@ public class Grid {
 	
 	private GridItem get(int posX, int posY) {
 		for (GridItem i : items) {
-			if (i.X == posX && i.Y == posY)
+			if (i.getX() == posX && i.getY() == posY)
 				return i;
 		}
 		return null;
@@ -306,11 +306,11 @@ public class Grid {
 		if (curItem != null) {
 			GridItem destItem = get(newX, newY);
 			if (destItem != null) {
-				destItem.X = x;
-				destItem.Y = y;
+				destItem.setX(x);
+				destItem.setY(y);
 			}
-			curItem.X = newX;
-			curItem.Y = newY;
+			curItem.setX(newX);
+			curItem.setY(newY);
 			curItem.updateActionButtons();
 			
 			swapViews(curView, destView);
@@ -374,8 +374,8 @@ public class Grid {
 	private int getGridWidth() {
 		int curWidth = 0;
 		for (GridItem i : items) {
-			if (i.X > curWidth)
-				curWidth = i.X;
+			if (i.getX() > curWidth)
+				curWidth = i.getX();
 		}
 		return curWidth+1;
 	}
@@ -395,8 +395,8 @@ public class Grid {
 	private int getGridHeight() {
 		int curHeight = 0;
 		for (GridItem i : items) {
-			if (i.Y > curHeight)
-				curHeight = i.Y;
+			if (i.getY() > curHeight)
+				curHeight = i.getY();
 		}
 		return curHeight+1;
 	}
@@ -453,4 +453,16 @@ public class Grid {
 		
 		return r;
 	}
+
+	public long getId() { return id; }
+	public void setId(long id) { this.id = id; }
+
+	public String getName() { return name; }
+	public void setName(String name) { this.name = name; }
+
+	public int getNbColumns() { return nbColumns; }
+	public int getNbLines() { return nbLines; }
+
+	public List<GridItem> getItems() { return items; }
+	public void setItems(List<GridItem> items) { this.items = items; }
 }

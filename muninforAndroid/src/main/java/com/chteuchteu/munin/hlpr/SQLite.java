@@ -55,7 +55,7 @@ public class SQLite {
 	public void saveGridItemRelations(Grid g) {
 		// Simplest way of doing it ;)
 		dbHlpr.deleteGridItemRelations(g);
-		for (GridItem i : g.items)
+		for (GridItem i : g.getItems())
 			dbHlpr.insertGridItemRelation(i);
 	}
 	

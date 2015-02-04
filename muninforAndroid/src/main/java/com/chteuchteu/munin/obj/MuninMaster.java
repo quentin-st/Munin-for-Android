@@ -468,7 +468,7 @@ public class MuninMaster {
 	 * Here, we reattach and save the grids.
 	 * @return ArrayList<GridItem> : grids who should be updated afterwards
 	 */
-	public ArrayList<GridItem> reattachGrids(MuninFoo muninFoo, Context context, MuninMaster oldMaster) {
+	public ArrayList<GridItem> reattachGrids(MuninFoo muninFoo, MuninMaster oldMaster) {
 		ArrayList<GridItem> toBeUpdated_grids = new ArrayList<>();
 		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
 
@@ -479,10 +479,10 @@ public class MuninMaster {
 			for (MuninPlugin plugin : server.getPlugins()) {
 				// Check grids
 				for (Grid grid : grids) {
-					for (GridItem item : grid.items) {
-						if (item.plugin.equals(plugin)) {
+					for (GridItem item : grid.getItems()) {
+						if (item.getPlugin().equals(plugin)) {
 							// Reattach
-							item.plugin = this.getServer(server.getServerUrl()).getPlugin(item.plugin.getName());
+							item.setPlugin(this.getServer(server.getServerUrl()).getPlugin(item.getPlugin().getName()));
 							toBeUpdated_grids.add(item);
 						}
 					}

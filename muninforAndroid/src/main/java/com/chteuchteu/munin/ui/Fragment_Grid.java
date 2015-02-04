@@ -101,7 +101,7 @@ public class Fragment_Grid extends Fragment {
 
 		Util.Fonts.setFont(context, (TextView) view.findViewById(R.id.fullscreen_tv), Util.Fonts.CustomFont.Roboto_Regular);
 
-		if (grid.items.size() == 0)
+		if (grid.getItems().size() == 0)
 			edit();
 
 		return view;
@@ -116,7 +116,7 @@ public class Fragment_Grid extends Fragment {
 		grid.currentlyOpenedGridItem = item;
 		final ImageView fullscreenImageView = (ImageView) view.findViewById(R.id.fullscreen_iv);
 		fullscreenImageView.setImageBitmap(item.graph);
-		((TextView) view.findViewById(R.id.fullscreen_tv)).setText(item.plugin.getInstalledOn().getName());
+		((TextView) view.findViewById(R.id.fullscreen_tv)).setText(item.getPlugin().getInstalledOn().getName());
 		View fs = view.findViewById(R.id.fullscreen);
 
 		// Lollipop animation (fallback if necessary)
@@ -140,7 +140,7 @@ public class Fragment_Grid extends Fragment {
 			fullscreenImageView.setLayoutParams(lParams);*/
 
 		// Download HD graph if possible
-		if (grid.currentlyOpenedGridItem.plugin.getInstalledOn().getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE
+		if (grid.currentlyOpenedGridItem.getPlugin().getInstalledOn().getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE
 				&& !Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")) {
 			// We need to get imageView dimensions (which aren't available right now => globalLayoutListener)
 			fullscreenImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -158,7 +158,8 @@ public class Fragment_Grid extends Fragment {
 						if (item.hdGraphDownloader != null && item.hdGraphDownloader.isDownloading())
 							item.hdGraphDownloader.killDownload();
 
-						item.hdGraphDownloader = new GridItem.HDGraphDownloader(context, grid.currentlyOpenedGridItem.plugin, fullscreenImageView, currentPeriod);
+						item.hdGraphDownloader = new GridItem.HDGraphDownloader(context, grid.currentlyOpenedGridItem.getPlugin(),
+								fullscreenImageView, currentPeriod);
 						item.hdGraphDownloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 					}
 				}

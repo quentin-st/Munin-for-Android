@@ -34,11 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GridItem {
-	public long			id;
-	public int 			X;
-	public int 			Y;
-	public MuninPlugin 		plugin;
-	public Grid 			grid;
+	private long			id;
+	private int 			X;
+	private int 			Y;
+	private MuninPlugin 	plugin;
+	private Grid 			grid;
 
 	private Context 		context;
 	private IActivity_Grid  activity;
@@ -284,11 +284,11 @@ public class GridItem {
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
-				if (g.nbColumns < 3 && selectedItems.size() > 3)
-					while (g.nbColumns < 3)
+				if (g.getNbColumns() < 3 && selectedItems.size() > 3)
+					while (g.getNbColumns() < 3)
 						g.addColumn(c, true);
 				
-				int maxWidth = g.nbColumns;
+				int maxWidth = g.getNbColumns();
 				for (Integer i : selectedItems) {
 					MuninPlugin p = s.getPlugin(i);
 					if (!alreadyAdded(g, p)) {
@@ -319,7 +319,7 @@ public class GridItem {
 	}
 	
 	private static boolean alreadyAdded(Grid g, MuninPlugin p) {
-		for (GridItem item : g.items) {
+		for (GridItem item : g.getItems()) {
 			if (item != null && item.plugin != null && item.plugin.equals(p)) // hotfix
 				return true;
 		}
@@ -346,11 +346,11 @@ public class GridItem {
 				items_l.add(c.getString(R.string.move_left));
 				icons_l.add(R.drawable.ic_action_previous_item);
 			}
-			if (Y != grid.nbLines-1) {
+			if (Y != grid.getNbLines()-1) {
 				items_l.add(c.getString(R.string.move_down));
 				icons_l.add(R.drawable.ic_action_down);
 			}
-			if (X != grid.nbColumns-1) {
+			if (X != grid.getNbColumns()-1) {
 				items_l.add(c.getString(R.string.move_right));
 				icons_l.add(R.drawable.ic_action_next_item);
 			}
@@ -386,7 +386,7 @@ public class GridItem {
 	}
 
 	private void showActionButtons() {
-		for (GridItem i : grid.items) {
+		for (GridItem i : grid.getItems()) {
 			if (i.editing)
 				i.hideActionButtons();
 		}
@@ -399,9 +399,9 @@ public class GridItem {
 			action_up.setVisibility(View.VISIBLE);
 		if (X != 0)
 			action_left.setVisibility(View.VISIBLE);
-		if (Y != grid.nbLines-1)
+		if (Y != grid.getNbLines()-1)
 			action_down.setVisibility(View.VISIBLE);
-		if (X != grid.nbColumns-1)
+		if (X != grid.getNbColumns()-1)
 			action_right.setVisibility(View.VISIBLE);
 		action_delete.setVisibility(View.VISIBLE);
 	}
@@ -427,7 +427,7 @@ public class GridItem {
 	public void updateActionButtonsAfterAddingColumn() {
 		hideActionButtons();
 		int deviceWidth = Util.getDeviceSize(context)[1];
-		int diff = deviceWidth / (grid.nbColumns-1) - deviceWidth / (grid.nbColumns);
+		int diff = deviceWidth / (grid.getNbColumns()-1) - deviceWidth / (grid.getNbColumns());
 		int newContainerWidth = container.getWidth() - diff;
 		if (newContainerWidth > ICONS_MAX_WIDTH)
 			showActionButtons();
@@ -438,4 +438,19 @@ public class GridItem {
 		if (container.getWidth() > ICONS_MAX_WIDTH)
 			showActionButtons();
 	}
+
+	public long getId() { return id; }
+	public void setId(long id) { this.id = id; }
+
+	public int getX() { return X; }
+	public void setX(int x) { this.X = x; }
+
+	public int getY() { return this.Y; }
+	public void setY(int y) { this.Y = y; }
+
+	public MuninPlugin getPlugin() { return plugin; }
+	public void setPlugin(MuninPlugin plugin) { this.plugin = plugin; }
+
+	public Grid getGrid() { return grid; }
+	public void setGrid(Grid grid) { this.grid = grid; }
 }

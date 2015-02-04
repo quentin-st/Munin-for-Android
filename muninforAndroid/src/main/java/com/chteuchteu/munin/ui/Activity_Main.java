@@ -456,7 +456,7 @@ public class Activity_Main extends ActionBarActivity implements IActivity_Grid {
 	@Override public void onPreview() { }
 	@Override
 	public void onGridLoaded(Grid grid) {
-		toolbar.setSubtitle(grid.name);
+		toolbar.setSubtitle(grid.getName());
 	}
 
 	private class UpdateOperations extends AsyncTask<Void, Integer, Void> {

@@ -58,7 +58,7 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 
 		this.grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
 		this.grid = getGrid(grids, gridId);
-		actionBar.setTitle(getText(R.string.text75) + " " + grid.name);
+		actionBar.setTitle(getText(R.string.text75) + " " + grid.getName());
 
 		if (!Util.isOnline(context))
 			Toast.makeText(context, getString(R.string.text30), Toast.LENGTH_LONG).show();
@@ -76,7 +76,7 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 				@Override
 				public boolean onNavigationItemSelected(int itemPosition, long itemId) {
 					if (itemPosition != grids.indexOf(grid)) {
-						long gridId = grids.get(itemPosition).id;
+						long gridId = grids.get(itemPosition).getId();
 						grid = getGrid(grids, gridId);
 
 						// If editing / previewing: cancel those
@@ -88,7 +88,7 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 
 						fragment = new Fragment_Grid();
 						Bundle bundle = new Bundle();
-						bundle.putLong(Fragment_Grid.ARG_GRIDID, grids.get(itemPosition).id);
+						bundle.putLong(Fragment_Grid.ARG_GRIDID, grids.get(itemPosition).getId());
 						fragment.setArguments(bundle);
 						getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
 					}
@@ -118,7 +118,7 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 
 	private static Grid getGrid(List<Grid> grids, long gridId) {
 		for (Grid grid : grids) {
-			if (grid.id == gridId)
+			if (grid.getId() == gridId)
 				return grid;
 		}
 		return null;
@@ -127,7 +127,7 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 	private static List<String> getGridsNames(List<Grid> grids) {
 		List<String> list = new ArrayList<>();
 		for (Grid grid : grids)
-			list.add(grid.name);
+			list.add(grid.getName());
 		return list;
 	}
 
@@ -186,9 +186,9 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 		if (grid.currentlyOpenedGridItem == null)
 			return;
 
-		grid.f.setCurrentServer(grid.currentlyOpenedGridItem.plugin.getInstalledOn());
+		grid.f.setCurrentServer(grid.currentlyOpenedGridItem.getPlugin().getInstalledOn());
 		Intent i = new Intent(context, Activity_GraphView.class);
-		i.putExtra("plugin", grid.currentlyOpenedGridItem.plugin.getName());
+		i.putExtra("plugin", grid.currentlyOpenedGridItem.getPlugin().getName());
 		i.putExtra("from", "grid");
 		Intent gridIntent = ((Activity) context).getIntent();
 		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("gridName"))

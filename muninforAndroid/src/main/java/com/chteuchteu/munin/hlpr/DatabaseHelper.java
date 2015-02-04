@@ -396,24 +396,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		ContentValues values = new ContentValues();
 		try {
-			values.put(KEY_GRIDITEMRELATIONS_GRID, i.grid.id);
-			values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.plugin.getId());
-			values.put(KEY_GRIDITEMRELATIONS_X, i.X);
-			values.put(KEY_GRIDITEMRELATIONS_Y, i.Y);
+			values.put(KEY_GRIDITEMRELATIONS_GRID, i.getGrid().getId());
+			values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.getPlugin().getId());
+			values.put(KEY_GRIDITEMRELATIONS_X, i.getX());
+			values.put(KEY_GRIDITEMRELATIONS_Y, i.getY());
 		} catch (NullPointerException ex) {
 			ex.printStackTrace();
 			return -1;
 		}
 		
 		long id = db.insert(TABLE_GRIDITEMRELATIONS, null, values);
-		i.id = id;
+		i.setId(id);
 		close(null, db);
 		return id;
 	}
 	
 	public void saveGridItemsRelations(Grid g) {
 		deleteGridItemRelations(g);
-		for (GridItem i : g.items)
+		for (GridItem i : g.getItems())
 			insertGridItemRelation(i);
 	}
 	
@@ -855,9 +855,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		if (c != null && c.moveToFirst()) {
 			do {
 				Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)));
-				g.id = c.getInt(c.getColumnIndex(KEY_ID));
+				g.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 				// Get all GridItems
-				g.items = getGridItems(f, g);
+				g.setItems(getGridItems(f, g));
 				l.add(g);
 			} while (c.moveToNext());
 		}
@@ -925,9 +925,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		if (c != null && c.moveToFirst()) {
 			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)));
-			g.id = c.getInt(c.getColumnIndex(KEY_ID));
+			g.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 			// Get all GridItems
-			g.items = getGridItems(muninFoo, g);
+			g.setItems(getGridItems(muninFoo, g));
 
 			close(c, db);
 			return g;
@@ -943,7 +943,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public List<GridItem> getGridItems(MuninFoo muninFoo, Grid grid) {
 		List<GridItem> l = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDITEMRELATIONS
-				+ " WHERE " + KEY_GRIDITEMRELATIONS_GRID + " = " + grid.id;
+				+ " WHERE " + KEY_GRIDITEMRELATIONS_GRID + " = " + grid.getId();
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
@@ -953,9 +953,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				int pluginId = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_PLUGIN));
 				MuninPlugin plugin = muninFoo.getPlugin(pluginId);
 				GridItem i = new GridItem(grid, plugin);
-				i.id = c.getInt(c.getColumnIndex(KEY_ID));
-				i.X = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X));
-				i.Y = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_Y));
+				i.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+				i.setX(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X)));
+				i.setY(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_Y)));
 				l.add(i);
 			} while (c.moveToNext());
 		}
@@ -1028,20 +1028,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public void deleteGrid(Grid g) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_GRIDS, KEY_ID + " = ?", new String[] { String.valueOf(g.id) });
+		db.delete(TABLE_GRIDS, KEY_ID + " = ?", new String[] { String.valueOf(g.getId()) });
 		close(null, db);
 		deleteGridItemRelations(g);
 	}
 	
 	public void deleteGridItemRelations(Grid g) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_GRID + " = ?", new String[] { String.valueOf(g.id) });
+		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_GRID + " = ?", new String[] { String.valueOf(g.getId()) });
 		close(null, db);
 	}
 	
 	public void deleteGridItemRelation(GridItem i) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_GRIDITEMRELATIONS, KEY_ID + " = ?", new String[] { String.valueOf(i.id) });
+		db.delete(TABLE_GRIDITEMRELATIONS, KEY_ID + " = ?", new String[] { String.valueOf(i.getId()) });
 		close(null, db);
 	}
 	

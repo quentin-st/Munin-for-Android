@@ -54,7 +54,7 @@ public class Activity_Grids extends MuninActivity {
 
 	private Grid getGridFromName(String gridName) {
 		for (Grid grid : grids) {
-			if (grid.name.equals(gridName))
+			if (grid.getName().equals(gridName))
 				return grid;
 		}
 
@@ -72,7 +72,7 @@ public class Activity_Grids extends MuninActivity {
 		else {
 			for (Grid g : grids) {
                 HashMap<String,String> item = new HashMap<>();
-				item.put("line1", g.name);
+				item.put("line1", g.getName());
 				item.put("line2", g.getFullWidth() + " x " + g.getFullHeight());
 				list.add(item);
 			}
@@ -83,7 +83,7 @@ public class Activity_Grids extends MuninActivity {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					TextView gridName = (TextView) view.findViewById(R.id.line_a);
 					Intent intent = new Intent(Activity_Grids.this, Activity_Grid.class);
-					intent.putExtra("gridId", getGridFromName(gridName.getText().toString()).id);
+					intent.putExtra("gridId", getGridFromName(gridName.getText().toString()).getId());
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.DEEPER);
 				}

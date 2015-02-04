@@ -140,7 +140,7 @@ public class Activity_Settings extends MuninActivity {
 			findViewById(R.id.defaultActivity_grid_container).setVisibility(View.VISIBLE);
 			List<String> gridsList = new ArrayList<>();
 			for (Grid grid : grids)
-				gridsList.add(grid.name);
+				gridsList.add(grid.getName());
 			ArrayAdapter<String> dataAdapter6 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, gridsList);
 			dataAdapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinner_defaultActivity_grid.setAdapter(dataAdapter6);
@@ -248,7 +248,7 @@ public class Activity_Settings extends MuninActivity {
 		if (spinner_defaultActivity.getSelectedItemPosition() == 1) {
 			int gridId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_GridId));
 			for (Grid grid : grids) {
-				if (grid.id == gridId)
+				if (grid.getId() == gridId)
 					spinner_defaultActivity_grid.setSelection(grids.indexOf(grid));
 			}
 		}
@@ -345,7 +345,7 @@ public class Activity_Settings extends MuninActivity {
 			case 1:
 				Util.setPref(this, Util.PrefKeys.DefaultActivity, "grid");
 				Util.setPref(this, Util.PrefKeys.DefaultActivity_GridId,
-						String.valueOf(grids.get(spinner_defaultActivity_grid.getSelectedItemPosition()).id));
+						String.valueOf(grids.get(spinner_defaultActivity_grid.getSelectedItemPosition()).getId()));
 				break;
 		}
 
