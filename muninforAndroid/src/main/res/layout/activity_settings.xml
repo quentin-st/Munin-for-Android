@@ -85,6 +85,43 @@
 
 					<View style="@style/Material_Divider" />
 
+					<!-- Default activity -->
+
+					<LinearLayout
+						android:id="@+id/defaultActivityContainer"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="vertical">
+
+						<TextView
+							android:id="@+id/title14"
+							style="@style/Settings_SettingTitle"
+							android:text="@string/defaultActivity" />
+
+						<Spinner
+							android:id="@+id/spinner_defaultActivity"
+							style="@style/Settings_SettingSpinner"/>
+					</LinearLayout>
+
+					<!-- Default activity - grid -->
+					<LinearLayout
+						android:id="@+id/defaultActivity_grid_container"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="vertical">
+
+						<TextView
+							android:id="@+id/title15"
+							style="@style/Settings_SettingTitle"
+							android:text="@string/text75" />
+
+						<Spinner
+							android:id="@+id/spinner_defaultActivity_grid"
+							style="@style/Settings_SettingSpinner"/>
+					</LinearLayout>
+
+					<View style="@style/Material_Divider" />
+
 					<!-- GRAPHS SETTINGS -->
 
 					<TextView

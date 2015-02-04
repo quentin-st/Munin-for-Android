@@ -864,6 +864,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(c, db);
 		return l;
 	}
+
+	public boolean hasGrids() {
+		return GenericQueries.getNbLines(this, TABLE_GRIDS, "") > 0;
+	}
 	
 	public List<String> getGridsNames() {
 		List<String> names = new ArrayList<>();
@@ -1107,7 +1111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		 * @return int nbLines
 		 */
 		public static int getNbLines(SQLiteOpenHelper sqloh, String table, String where) {
-			String query = "SELECT COUNT(*) FROM " + table + " WHERE " + where;
+			String query = "SELECT COUNT(*) FROM " + table + (where.equals("") ? "" : (" WHERE " + where));
 			SQLiteDatabase db = sqloh.getReadableDatabase();
 			Cursor cursor = db.rawQuery(query, null);
 			try {

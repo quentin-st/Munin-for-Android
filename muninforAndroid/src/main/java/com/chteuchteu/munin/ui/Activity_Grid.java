@@ -150,6 +150,9 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 							: R.drawable.ic_action_navigation_check);
 	}
 
+	@Override
+	public void onGridLoaded(Grid grid) {}
+
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();
 

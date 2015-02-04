@@ -9,6 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,6 +25,7 @@ import com.chteuchteu.munin.hlpr.I18nHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.MuninServer;
 
 import java.util.ArrayList;
@@ -33,11 +38,15 @@ public class Activity_Settings extends MuninActivity {
 	private Spinner	spinner_lang;
 	private Spinner	spinner_orientation;
 	private Spinner    spinner_gridsLegend;
+	private Spinner    spinner_defaultActivity;
+	private Spinner    spinner_defaultActivity_grid;
 	private CheckBox checkbox_alwaysOn;
 	private CheckBox checkbox_autoRefresh;
 	private CheckBox checkbox_graphsZoom;
 	private CheckBox checkbox_hdGraphs;
 	private EditText editText_userAgent;
+
+	private List<Grid> grids;
 	
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,6 +62,8 @@ public class Activity_Settings extends MuninActivity {
 		spinner_lang = (Spinner)findViewById(R.id.spinner_lang);
 		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);
 		spinner_gridsLegend = (Spinner)findViewById(R.id.spinner_gridsLegend);
+		spinner_defaultActivity = (Spinner)findViewById(R.id.spinner_defaultActivity);
+		spinner_defaultActivity_grid = (Spinner)findViewById(R.id.spinner_defaultActivity_grid);
 
 		checkbox_alwaysOn = (CheckBox)findViewById(R.id.checkbox_screenalwayson);
 		checkbox_autoRefresh = (CheckBox)findViewById(R.id.checkbox_autorefresh);
@@ -106,7 +117,35 @@ public class Activity_Settings extends MuninActivity {
 		ArrayAdapter<String> dataAdapter4 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list4);
 		dataAdapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_gridsLegend.setAdapter(dataAdapter4);
-		
+
+		// Default activity spinner
+		grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
+		List<String> list5 = new ArrayList<>();
+		list5.add(getString(R.string.grids_legend_none));
+		if (!grids.isEmpty() && muninFoo.premium)
+			list5.add(getString(R.string.button_grid));
+		ArrayAdapter<String> dataAdapter5 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list5);
+		dataAdapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner_defaultActivity.setAdapter(dataAdapter5);
+		spinner_defaultActivity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+				findViewById(R.id.defaultActivity_grid_container).setVisibility((i == 1 && muninFoo.premium) ? View.VISIBLE : View.GONE);
+			}
+			@Override public void onNothingSelected(AdapterView<?> adapterView) { }
+		});
+
+		// Default activity - Grid spinner
+		if (!grids.isEmpty() && muninFoo.premium) {
+			findViewById(R.id.defaultActivity_grid_container).setVisibility(View.VISIBLE);
+			List<String> gridsList = new ArrayList<>();
+			for (Grid grid : grids)
+				gridsList.add(grid.name);
+			ArrayAdapter<String> dataAdapter6 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, gridsList);
+			dataAdapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner_defaultActivity_grid.setAdapter(dataAdapter6);
+		}
+
 		// Set fonts
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title1), CustomFont.Roboto_Medium);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title2), CustomFont.Roboto_Medium);
@@ -121,7 +160,9 @@ public class Activity_Settings extends MuninActivity {
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title11), CustomFont.Roboto_Medium);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title12), CustomFont.Roboto_Medium);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title13), CustomFont.Roboto_Medium);
-		
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title14), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title15), CustomFont.Roboto_Medium);
+
 		// Apply current settings
 		// Graph default scale
 		switch (Util.getPref(context, Util.PrefKeys.DefaultScale)) {
@@ -197,6 +238,21 @@ public class Activity_Settings extends MuninActivity {
 			case "both": spinner_gridsLegend.setSelection(3); break;
 		}
 
+		// Default activity
+		switch (Util.getPref(this, Util.PrefKeys.DefaultActivity)) {
+			case "": spinner_defaultActivity.setSelection(0); break;
+			case "grid": spinner_defaultActivity.setSelection(1); break;
+		}
+
+		// Default activity_grid
+		if (spinner_defaultActivity.getSelectedItemPosition() == 1) {
+			int gridId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_GridId));
+			for (Grid grid : grids) {
+				if (grid.id == gridId)
+					spinner_defaultActivity_grid.setSelection(grids.indexOf(grid));
+			}
+		}
+
 
 		// Since we manually defined the checkbox and text
 		// (so the checkbox can be at the right and still have the view tinting introduced
@@ -215,6 +271,18 @@ public class Activity_Settings extends MuninActivity {
 
 		// Avoid keyboard showing up because of user agent edittext
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+		// Highlight "Default Activity" when coming from main activity
+		if (getIntent() != null && getIntent().getExtras() != null
+				&& getIntent().getExtras().containsKey("highlightDefaultActivity")
+				&& getIntent().getExtras().getBoolean("highlightDefaultActivity")) {
+			final Animation animation = new AlphaAnimation(1, 0);
+			animation.setDuration(500);
+			animation.setInterpolator(new LinearInterpolator());
+			animation.setRepeatCount(4);
+			animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
+			findViewById(R.id.defaultActivityContainer).startAnimation(animation);
+		}
 	}
 	
 	private void actionSave() {
@@ -269,6 +337,16 @@ public class Activity_Settings extends MuninActivity {
 			case 1: Util.setPref(this, Util.PrefKeys.GridsLegend, "pluginName"); break;
 			case 2: Util.setPref(this, Util.PrefKeys.GridsLegend, "serverName"); break;
 			case 3: Util.setPref(this, Util.PrefKeys.GridsLegend, "both"); break;
+		}
+
+		// Default activity
+		switch (spinner_defaultActivity.getSelectedItemPosition()) {
+			case 0: Util.setPref(this, Util.PrefKeys.DefaultActivity, ""); break;
+			case 1:
+				Util.setPref(this, Util.PrefKeys.DefaultActivity, "grid");
+				Util.setPref(this, Util.PrefKeys.DefaultActivity_GridId,
+						String.valueOf(grids.get(spinner_defaultActivity_grid.getSelectedItemPosition()).id));
+				break;
 		}
 
 		Toast.makeText(this, getString(R.string.text36), Toast.LENGTH_SHORT).show();

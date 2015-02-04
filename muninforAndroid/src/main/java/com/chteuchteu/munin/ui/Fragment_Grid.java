@@ -55,7 +55,12 @@ public class Fragment_Grid extends Fragment {
 		Bundle args = getArguments();
 		long gridId = args.getLong(ARG_GRIDID);
 		this.grid = muninFoo.sqlite.dbHlpr.getGrid(muninFoo, gridId);
+
+		if (this.grid == null)
+			return inflater.inflate(R.layout.empty_view, container, false);
+
 		this.grid.setActivityReferences(context, muninFoo, activity, this);
+		activity.onGridLoaded(grid);
 		this.editing = false;
 		this.updating = false;
 
