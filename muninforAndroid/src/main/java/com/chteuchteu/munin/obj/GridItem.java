@@ -49,8 +49,9 @@ public class GridItem {
 	public View             footer;
 	public RelativeLayout   container;
 
-	public boolean 		    editing = false;
-	public Bitmap 			graph;
+	public boolean 		 editing = false;
+	public Bitmap           originalGraph;
+	public Bitmap           croppedGraph;
 	public HDGraphDownloader hdGraphDownloader;
 
 	// Action buttons
@@ -444,7 +445,7 @@ public class GridItem {
 
 	public void applyPlaceholder() {
 		iv.setImageBitmap(Util.dropShadow(
-				BitmapFactory.decodeResource(context.getResources(), R.drawable.graphplaceholder)));
+				BitmapFactory.decodeResource(context.getResources(), R.drawable.croppedgraphplaceholder)));
 	}
 
 	public long getId() { return id; }

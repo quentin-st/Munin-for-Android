@@ -193,7 +193,7 @@ public class Grid {
 	}
 	
 	public int getGridItemHeight(Context context) {
-		float ratio = (float) (800.0 / 600.0);
+		float ratio = 1.7f;
 		int deviceWidth = Util.getDeviceSize(context)[0];
 		int gridItemWidth = deviceWidth / this.nbColumns;
 		return Math.round(gridItemWidth / ratio);

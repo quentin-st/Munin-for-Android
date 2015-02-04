@@ -175,14 +175,14 @@ public class Fragment_Grid extends Fragment {
 	}
 
 	public void preview(final GridItem item) {
-		if (item == null || item.graph == null)
+		if (item == null || item.originalGraph == null)
 			return;
 
 		activity.onPreview();
 
 		grid.currentlyOpenedGridItem = item;
 		final ImageView fullscreenImageView = (ImageView) view.findViewById(R.id.fullscreen_iv);
-		fullscreenImageView.setImageBitmap(item.graph);
+		fullscreenImageView.setImageBitmap(item.originalGraph);
 		((TextView) view.findViewById(R.id.fullscreen_tv)).setText(item.getPlugin().getInstalledOn().getName());
 		View fs = view.findViewById(R.id.fullscreen);
 
@@ -216,8 +216,8 @@ public class Fragment_Grid extends Fragment {
 					Util.removeOnGlobalLayoutListener(fullscreenImageView, this);
 
 					// Check if HD graph is really needed : if the standard-res bitmap isn't upscaled, it's OK
-					float xScale = ((float) fullscreenImageView.getWidth()) / item.graph.getWidth();
-					float yScale = ((float) fullscreenImageView.getHeight()) / item.graph.getHeight();
+					float xScale = ((float) fullscreenImageView.getWidth()) / item.originalGraph.getWidth();
+					float yScale = ((float) fullscreenImageView.getHeight()) / item.originalGraph.getHeight();
 					float scale = (xScale <= yScale) ? xScale : yScale;
 
 					// Acceptable upscaling factor

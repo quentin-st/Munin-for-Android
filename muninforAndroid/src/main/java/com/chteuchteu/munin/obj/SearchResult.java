@@ -10,6 +10,7 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 import com.chteuchteu.munin.ui.Activity_Grid;
+import com.chteuchteu.munin.ui.Activity_Labels;
 import com.chteuchteu.munin.ui.Activity_Plugins;
 
 
@@ -66,14 +67,12 @@ public class SearchResult {
 				
 				break;
 			case LABEL:
-				/*Label label = (Label) object;
+				Label label = (Label) object;
 				
-				intent = new Intent(activity, Activity_Label.class);
-				intent.putExtra("label", label.getName());
+				intent = new Intent(activity, Activity_Labels.class);
+				intent.putExtra("labelId", label.getId());
 				activity.startActivity(intent);
-				Util.setTransition(activity, TransitionStyle.DEEPER);*/
-
-				// TODO
+				Util.setTransition(activity, TransitionStyle.DEEPER);
 				
 				break;
 			case PLUGIN:

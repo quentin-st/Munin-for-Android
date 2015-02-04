@@ -262,10 +262,10 @@ public final class Util {
 			return null;
 
 		try {
-			final int LEFT_PADDING = 35; // px
-			final int RIGHT_PADDING = 25; // px
-			final int TOP_PADDING = 5; // px
-			final int HEIGHT = 220; // px
+			final int LEFT_PADDING = 15; // px
+			final int RIGHT_PADDING = 20; // px
+			final int TOP_PADDING = 0; // px
+			final int HEIGHT = 225; // px
 			return Bitmap.createBitmap(src, LEFT_PADDING, TOP_PADDING, src.getWidth() - (LEFT_PADDING + RIGHT_PADDING), HEIGHT);
 		} catch (Exception ex) {
 			return src;
