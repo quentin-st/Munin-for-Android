@@ -5,10 +5,14 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +30,7 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 public class Fragment_Grid extends Fragment {
 	public static final String ARG_GRIDID = "gridId";
 	public static final String ARG_AUTOLOAD = "autoLoad";
+	public static final String ARG_OVERFLOW_ACTIONS = "overflowActions";
 
 	private Context context;
 	private IActivity_Grid activity;
@@ -56,6 +61,7 @@ public class Fragment_Grid extends Fragment {
 		Bundle args = getArguments();
 		long gridId = args.getLong(ARG_GRIDID);
 		boolean autoLoad = args.getBoolean(ARG_AUTOLOAD, true);
+		boolean overflowActions = args.getBoolean(ARG_OVERFLOW_ACTIONS, false);
 		this.grid = muninFoo.sqlite.dbHlpr.getGrid(muninFoo, gridId);
 
 		if (this.grid == null)
@@ -114,6 +120,53 @@ public class Fragment_Grid extends Fragment {
 				public void onClick(View v) {
 					view.findViewById(R.id.manual_load).setVisibility(View.GONE);
 					grid.dHelper.start(true);
+				}
+			});
+		}
+
+		if (overflowActions) {
+			final ImageButton overflowButton = (ImageButton) view.findViewById(R.id.overflow);
+			overflowButton.setVisibility(View.VISIBLE);
+			overflowButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// Avoid menu opening when manual_hide is shown
+					if (view.findViewById(R.id.manual_load).getVisibility() == View.VISIBLE)
+						return;
+
+					PopupMenu popup = new PopupMenu(context, overflowButton);
+					final Menu menu = popup.getMenu();
+					popup.getMenuInflater().inflate(R.menu.grid, menu);
+					menu.findItem(R.id.menu_edit).setVisible(false);
+					menu.findItem(R.id.menu_open).setVisible(false);
+
+					popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+						public boolean onMenuItemClick(MenuItem item) {
+							switch (item.getItemId()) {
+								case R.id.menu_refresh: refresh(); break;
+								case R.id.menu_edit: edit(); break;
+								case R.id.period_day:
+									setCurrentPeriod(MuninPlugin.Period.DAY);
+									refresh();
+									return true;
+								case R.id.period_week:
+									setCurrentPeriod(MuninPlugin.Period.WEEK);
+									refresh();
+									return true;
+								case R.id.period_month:
+									setCurrentPeriod(MuninPlugin.Period.MONTH);
+									refresh();
+									return true;
+								case R.id.period_year:
+									setCurrentPeriod(MuninPlugin.Period.YEAR);
+									refresh();
+									return true;
+							}
+							return true;
+						}
+					});
+
+					popup.show(); //showing popup menu
 				}
 			});
 		}

@@ -192,6 +192,7 @@ public class Activity_Main extends ActionBarActivity implements IActivity_Grid {
 				long gridId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_GridId));
 				bundle.putLong(Fragment_Grid.ARG_GRIDID, gridId);
 				bundle.putBoolean(Fragment_Grid.ARG_AUTOLOAD, false);
+				bundle.putBoolean(Fragment_Grid.ARG_OVERFLOW_ACTIONS, true);
 				fragmentGrid.setArguments(bundle);
 				getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragmentGrid).commit();
 
