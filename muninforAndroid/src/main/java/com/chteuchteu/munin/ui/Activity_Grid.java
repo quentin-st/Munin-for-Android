@@ -19,6 +19,7 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Activity_Grid extends MuninActivity implements IActivity_Grid {
@@ -27,6 +28,7 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 	public MenuItem menu_period;
 	public MenuItem menu_open;
 
+	private List<Grid> grids;
 	private Grid grid;
 	private Handler mHandler;
 	private Runnable mHandlerTask;
@@ -54,7 +56,8 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 		this.fragment.setArguments(bundle);
 		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, this.fragment).commit();
 
-		this.grid = muninFoo.sqlite.dbHlpr.getGrid(muninFoo, gridId);
+		this.grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
+		this.grid = getGrid(grids, gridId);
 		actionBar.setTitle(getText(R.string.text75) + " " + grid.name);
 
 		if (!Util.isOnline(context))
@@ -62,44 +65,39 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 
 		
 		// ActionBar spinner if needed
-		final List<String> gridsNames = muninFoo.sqlite.dbHlpr.getGridsNames();
-		if (gridsNames.size() > 1) {
+		if (grids.size() > 1) {
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 			actionBar.setDisplayShowTitleEnabled(false);
-			
-			// Get current index
-			int index = -1;
-			int i=0;
-			for (String gridName : gridsNames) {
-				if (gridName.equals(grid.name))
-					index = i;
-				i++;
-			}
-			final int currentSelectedIndex = index;
-			
+
 			SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(getApplicationContext(),
-					android.R.layout.simple_spinner_dropdown_item, gridsNames);
+					android.R.layout.simple_spinner_dropdown_item, getGridsNames(grids));
 			
 			ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
 				@Override
 				public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-					if (itemPosition != currentSelectedIndex) {
-						// TODO manage this with fragments
-						/*Intent intent = new Intent(Activity_Grid.this, Activity_Grid.class);
-						intent.putExtra("gridName", gridsNames.get(itemPosition));
-						startActivity(intent);
-						// Animation : RTL / LTR
-						if (itemPosition > currentSelectedIndex)
-							Util.setTransition(context, TransitionStyle.DEEPER);
-						else
-							Util.setTransition(context, TransitionStyle.SHALLOWER);*/
+					if (itemPosition != grids.indexOf(grid)) {
+						long gridId = grids.get(itemPosition).id;
+						grid = getGrid(grids, gridId);
+
+						// If editing / previewing: cancel those
+						if (fragment.isPreviewing())
+							fragment.hidePreview();
+
+						if (fragment.isEditing())
+							fragment.edit();
+
+						fragment = new Fragment_Grid();
+						Bundle bundle = new Bundle();
+						bundle.putLong(Fragment_Grid.ARG_GRIDID, grids.get(itemPosition).id);
+						fragment.setArguments(bundle);
+						getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
 					}
 					return false;
 				}
 			};
 			actionBar.setListNavigationCallbacks(spinnerAdapter, navigationListener);
-			if (currentSelectedIndex != -1)
-				actionBar.setSelectedNavigationItem(currentSelectedIndex);
+			if (grids.indexOf(grid) != -1)
+				actionBar.setSelectedNavigationItem(grids.indexOf(grid));
 		}
 
 		// Launch periodical check
@@ -116,6 +114,21 @@ public class Activity_Grid extends MuninActivity implements IActivity_Grid {
 			};
 			mHandlerTask.run();
 		}
+	}
+
+	private static Grid getGrid(List<Grid> grids, long gridId) {
+		for (Grid grid : grids) {
+			if (grid.id == gridId)
+				return grid;
+		}
+		return null;
+	}
+
+	private static List<String> getGridsNames(List<Grid> grids) {
+		List<String> list = new ArrayList<>();
+		for (Grid grid : grids)
+			list.add(grid.name);
+		return list;
 	}
 
 	@Override
