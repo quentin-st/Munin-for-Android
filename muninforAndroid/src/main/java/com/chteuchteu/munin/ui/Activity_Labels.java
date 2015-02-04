@@ -19,6 +19,7 @@ import com.chteuchteu.munin.obj.Label;
 public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 	private Fragment_LabelsList labelsListFragment;
 	private Fragment_LabelsItemsList labelsItemsListFragment;
+	private MenuItem addLabel;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,17 +38,20 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 	}
 
 	@Override
-	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Labels; }
+	public void onLabelsItemsListFragmentLoaded() {
+		if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey("labelId"))
+			onLabelClick(muninFoo.getLabel(getIntent().getExtras().getLong("labelId")));
+	}
 
 	@Override
-	public void onLabelLoaded(String labelName) {
-		this.actionBar.setTitle(labelName);
-	}
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Labels; }
 
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();
 
 		getMenuInflater().inflate(R.menu.labels, menu);
+		this.addLabel = menu.findItem(R.id.menu_add);
+		this.addLabel.setVisible(findViewById(R.id.labelsItemsListfragment_container).getVisibility() == View.GONE);
 	}
 
 	@Override
@@ -55,6 +59,9 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 		labelsItemsListFragment.setLabel(label);
 		findViewById(R.id.labelsListfragment_container).setVisibility(View.GONE);
 		findViewById(R.id.labelsItemsListfragment_container).setVisibility(View.VISIBLE);
+		if (addLabel != null)
+			addLabel.setVisible(false);
+		actionBar.setTitle(label.getName());
 	}
 
 	@Override
@@ -103,9 +110,16 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 	
 	@Override
 	public void onBackPressed() {
-		Intent intent = new Intent(this, Activity_Main.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
-		Util.setTransition(context, TransitionStyle.SHALLOWER);
+		if (findViewById(R.id.labelsItemsListfragment_container).getVisibility() == View.VISIBLE) {
+			findViewById(R.id.labelsItemsListfragment_container).setVisibility(View.GONE);
+			findViewById(R.id.labelsListfragment_container).setVisibility(View.VISIBLE);
+			addLabel.setVisible(true);
+			actionBar.setTitle(getString(R.string.button_labels));
+		} else {
+			Intent intent = new Intent(this, Activity_Main.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			Util.setTransition(context, TransitionStyle.SHALLOWER);
+		}
 	}
 }

@@ -43,6 +43,13 @@ public class Fragment_LabelsItemsList extends Fragment {
 		muninFoo = MuninFoo.getInstance();
 
 		this.view = inflater.inflate(R.layout.fragment_label, container, false);
+
+		Bundle args = getArguments();
+		if (args != null && args.containsKey("labelId"))
+			setLabel(muninFoo.getLabel(args.getLong("labelId")));
+
+		activity.onLabelsItemsListFragmentLoaded();
+
 		return this.view;
 	}
 
@@ -51,8 +58,6 @@ public class Fragment_LabelsItemsList extends Fragment {
 
 		if (this.label == null)
 			return;
-
-		activity.onLabelLoaded(label.getName());
 
 		List<List<MuninPlugin>> labelsListCat = label.getPluginsSortedByServer(muninFoo);
 		final List<MuninPlugin> correspondance = new ArrayList<>();

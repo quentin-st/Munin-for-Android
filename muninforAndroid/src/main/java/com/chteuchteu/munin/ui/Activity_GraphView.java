@@ -454,11 +454,10 @@ public class Activity_GraphView extends MuninActivity {
 			switch (from) {
 				case "labels":
 					if (thisIntent.getExtras().containsKey("label")) {
-						// TODO
-						/*Intent intent = new Intent(Activity_GraphView.this, Activity_Label.class);
-						intent.putExtra("label", thisIntent.getExtras().getString("label"));
+						Intent intent = new Intent(Activity_GraphView.this, Activity_Labels.class);
+						intent.putExtra("labelId", thisIntent.getExtras().getLong("labelId"));
 						startActivity(intent);
-						Util.setTransition(context, TransitionStyle.SHALLOWER);*/
+						Util.setTransition(context, TransitionStyle.SHALLOWER);
 					}
 					break;
 				case "alerts":
