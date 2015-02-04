@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -148,6 +149,8 @@ public class GridItem {
 				remove();
 			}
 		});
+
+		this.applyPlaceholder();
 
 		return outerContainer;
 	}
@@ -437,6 +440,11 @@ public class GridItem {
 		hideActionButtons();
 		if (container.getWidth() > ICONS_MAX_WIDTH)
 			showActionButtons();
+	}
+
+	public void applyPlaceholder() {
+		iv.setImageBitmap(Util.dropShadow(
+				BitmapFactory.decodeResource(context.getResources(), R.drawable.graphplaceholder)));
 	}
 
 	public long getId() { return id; }

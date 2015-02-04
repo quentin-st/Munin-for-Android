@@ -286,5 +286,6 @@
 	<string name="alert_i18n_yes">Thank you very much! We use an easy to use online tool to manage translations. Use this link to reach it: www.munin-for-android.com/i18n.php</string>
 	<string name="defaultActivity">Default activity</string>
 	<string name="setDefaultActivity">Set default activity</string>
+	<string name="load">Load</string>
 
 </resources>

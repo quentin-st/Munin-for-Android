@@ -25,6 +25,7 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 
 public class Fragment_Grid extends Fragment {
 	public static final String ARG_GRIDID = "gridId";
+	public static final String ARG_AUTOLOAD = "autoLoad";
 
 	private Context context;
 	private IActivity_Grid activity;
@@ -54,6 +55,7 @@ public class Fragment_Grid extends Fragment {
 		// Load grid
 		Bundle args = getArguments();
 		long gridId = args.getLong(ARG_GRIDID);
+		boolean autoLoad = args.getBoolean(ARG_AUTOLOAD, true);
 		this.grid = muninFoo.sqlite.dbHlpr.getGrid(muninFoo, gridId);
 
 		if (this.grid == null)
@@ -77,7 +79,8 @@ public class Fragment_Grid extends Fragment {
 
 		// Launch graphs downloader
 		grid.dHelper = new GridDownloadHelper(grid, 3, currentPeriod, this);
-		grid.dHelper.start(false);
+		if (autoLoad)
+			grid.dHelper.start(true);
 
 		// Set edit onclick listeners
 		view.findViewById(R.id.add_line_bottom).setOnClickListener(new View.OnClickListener() {
@@ -103,6 +106,17 @@ public class Fragment_Grid extends Fragment {
 
 		if (grid.getItems().size() == 0)
 			edit();
+
+		if (!autoLoad) {
+			view.findViewById(R.id.manual_load).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.manual_load_action).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					view.findViewById(R.id.manual_load).setVisibility(View.GONE);
+					grid.dHelper.start(true);
+				}
+			});
+		}
 
 		return view;
 	}
