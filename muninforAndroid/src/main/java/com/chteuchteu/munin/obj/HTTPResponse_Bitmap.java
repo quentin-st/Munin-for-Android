@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
  * Object returned from an image (bitmap/svg) download operation
  */
 public class HTTPResponse_Bitmap extends HTTPResponse {
-	protected Bitmap bitmap;
+	private Bitmap bitmap;
 
 	public HTTPResponse_Bitmap() {
 		super();

@@ -17,11 +17,11 @@ import com.edmodo.rangebar.RangeBar;
 import java.util.Calendar;
 
 public final class DynazoomHelper {
-	private static int GRAPH_LEFT_MARGIN = 155;
-	private static int GRAPH_RIGHT_MARGIN = 50;
+	private static final int GRAPH_LEFT_MARGIN = 155;
+	private static final int GRAPH_RIGHT_MARGIN = 50;
 	// Because of the bitmap shadow
-	private static int GRAPH_TOP_MARGIN = 7;
-	private static int GRAPH_BOTTOM_MARGIN = 13;
+	private static final int GRAPH_TOP_MARGIN = 7;
+	private static final int GRAPH_BOTTOM_MARGIN = 13;
 
 	public static int RANGEBAR_TICKS_COUNT = 30;
 
@@ -61,7 +61,7 @@ public final class DynazoomHelper {
 		view.invalidate();
 	}
 
-	public static int[] getHighlightedAreaFromSteps(int[] steps, int nbSteps, int imageViewWidth, int highlightedAreaIndex) {
+	private static int[] getHighlightedAreaFromSteps(int[] steps, int nbSteps, int imageViewWidth, int highlightedAreaIndex) {
 		int[] areaXDimens = new int[2];
 
 		int imgX1 = DynazoomHelper.GRAPH_LEFT_MARGIN;

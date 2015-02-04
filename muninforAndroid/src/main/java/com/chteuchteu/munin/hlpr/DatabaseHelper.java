@@ -380,14 +380,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return id;
 	}
 	
-	public long insertGrid(Grid g) {
+	public long insertGrid(String gridName) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_GRIDS_NAME, g.name);
+		values.put(KEY_GRIDS_NAME, gridName);
 		
 		long id = db.insert(TABLE_GRIDS, null, values);
-		g.id = id;
 		close(null, db);
 		return id;
 	}
@@ -397,24 +396,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		ContentValues values = new ContentValues();
 		try {
-			values.put(KEY_GRIDITEMRELATIONS_GRID, i.grid.id);
-			values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.plugin.getId());
-			values.put(KEY_GRIDITEMRELATIONS_X, i.X);
-			values.put(KEY_GRIDITEMRELATIONS_Y, i.Y);
+			values.put(KEY_GRIDITEMRELATIONS_GRID, i.getGrid().getId());
+			values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.getPlugin().getId());
+			values.put(KEY_GRIDITEMRELATIONS_X, i.getX());
+			values.put(KEY_GRIDITEMRELATIONS_Y, i.getY());
 		} catch (NullPointerException ex) {
 			ex.printStackTrace();
 			return -1;
 		}
 		
 		long id = db.insert(TABLE_GRIDITEMRELATIONS, null, values);
-		i.id = id;
+		i.setId(id);
 		close(null, db);
 		return id;
 	}
 	
 	public void saveGridItemsRelations(Grid g) {
 		deleteGridItemRelations(g);
-		for (GridItem i : g.items)
+		for (GridItem i : g.getItems())
 			insertGridItemRelation(i);
 	}
 	
@@ -846,7 +845,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return list;
 	}
 	
-	public List<Grid> getGrids(Context co, MuninFoo f) {
+	public List<Grid> getGrids(MuninFoo f) {
 		List<Grid> l = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDS;
 		
@@ -855,15 +854,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		if (c != null && c.moveToFirst()) {
 			do {
-				Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), f);
-				g.id = c.getInt(c.getColumnIndex(KEY_ID));
+				Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)));
+				g.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 				// Get all GridItems
-				g.items = getGridItems(f, co, g);
+				g.setItems(getGridItems(f, g));
 				l.add(g);
 			} while (c.moveToNext());
 		}
 		close(c, db);
 		return l;
+	}
+
+	public boolean hasGrids() {
+		return GenericQueries.getNbLines(this, TABLE_GRIDS, "") > 0;
 	}
 	
 	public List<String> getGridsNames() {
@@ -881,27 +884,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(c, db);
 		return names;
 	}
-	
+
 	/**
-	 * Get a grid from its name
-	 * @param context Context
+	 * Get a grid from its id
 	 * @param muninFoo MuninFoo instance
-	 * @param gridName Grid name
+	 * @param gridId Grid id
 	 * @return Grid
 	 */
-	public Grid getGrid(Context context, MuninFoo muninFoo, String gridName) {
+	public Grid getGrid(MuninFoo muninFoo, long gridId) {
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDS
-				+ " WHERE " + KEY_GRIDS_NAME + " = '" + gridName + "'";
-		
+				+ " WHERE " + KEY_ID + " = " + gridId;
+
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
-		
+
 		if (c != null && c.moveToFirst()) {
-			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)), muninFoo);
-			g.id = c.getInt(c.getColumnIndex(KEY_ID));
+			Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)));
+			g.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 			// Get all GridItems
-			g.items = getGridItems(muninFoo, context, g);
-			
+			g.setItems(getGridItems(muninFoo, g));
+
 			close(c, db);
 			return g;
 		}
@@ -910,14 +912,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	/**
 	 * Get all grid items from a Grid
-	 * @param context Activity context
 	 * @param grid Grid
 	 * @return List<GridItem>
 	 */
-	public List<GridItem> getGridItems(MuninFoo muninFoo, Context context, Grid grid) {
+	public List<GridItem> getGridItems(MuninFoo muninFoo, Grid grid) {
 		List<GridItem> l = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_GRIDITEMRELATIONS
-				+ " WHERE " + KEY_GRIDITEMRELATIONS_GRID + " = " + grid.id;
+				+ " WHERE " + KEY_GRIDITEMRELATIONS_GRID + " = " + grid.getId();
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
@@ -926,10 +927,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			do {
 				int pluginId = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_PLUGIN));
 				MuninPlugin plugin = muninFoo.getPlugin(pluginId);
-				GridItem i = new GridItem(grid, plugin, context);
-				i.id = c.getInt(c.getColumnIndex(KEY_ID));
-				i.X = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X));
-				i.Y = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_Y));
+				GridItem i = new GridItem(grid, plugin);
+				i.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+				i.setX(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X)));
+				i.setY(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_Y)));
 				l.add(i);
 			} while (c.moveToNext());
 		}
@@ -1002,20 +1003,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public void deleteGrid(Grid g) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_GRIDS, KEY_ID + " = ?", new String[] { String.valueOf(g.id) });
+		db.delete(TABLE_GRIDS, KEY_ID + " = ?", new String[] { String.valueOf(g.getId()) });
 		close(null, db);
 		deleteGridItemRelations(g);
 	}
 	
 	public void deleteGridItemRelations(Grid g) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_GRID + " = ?", new String[] { String.valueOf(g.id) });
+		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_GRID + " = ?", new String[] { String.valueOf(g.getId()) });
 		close(null, db);
 	}
 	
 	public void deleteGridItemRelation(GridItem i) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_GRIDITEMRELATIONS, KEY_ID + " = ?", new String[] { String.valueOf(i.id) });
+		db.delete(TABLE_GRIDITEMRELATIONS, KEY_ID + " = ?", new String[] { String.valueOf(i.getId()) });
 		close(null, db);
 	}
 	
@@ -1085,7 +1086,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		 * @return int nbLines
 		 */
 		public static int getNbLines(SQLiteOpenHelper sqloh, String table, String where) {
-			String query = "SELECT COUNT(*) FROM " + table + " WHERE " + where;
+			String query = "SELECT COUNT(*) FROM " + table + (where.equals("") ? "" : (" WHERE " + where));
 			SQLiteDatabase db = sqloh.getReadableDatabase();
 			Cursor cursor = db.rawQuery(query, null);
 			try {

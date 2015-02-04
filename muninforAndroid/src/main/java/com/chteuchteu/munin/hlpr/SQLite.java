@@ -55,7 +55,7 @@ public class SQLite {
 	public void saveGridItemRelations(Grid g) {
 		// Simplest way of doing it ;)
 		dbHlpr.deleteGridItemRelations(g);
-		for (GridItem i : g.items)
+		for (GridItem i : g.getItems())
 			dbHlpr.insertGridItemRelation(i);
 	}
 	
@@ -69,7 +69,7 @@ public class SQLite {
 			// We can't easily group credentials here
 			if (!master.defaultMaster && !master.isEmpty()) {
 				// Get the first server
-				MuninServer model = master.getChildAt(0);
+				MuninServer model = master.getChildren().get(0);
 				
 				getOldAuthInformation(model.getId(), master, true);
 			}

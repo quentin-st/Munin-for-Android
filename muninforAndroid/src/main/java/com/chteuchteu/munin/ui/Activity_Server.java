@@ -531,7 +531,7 @@ public class Activity_Server extends MuninActivity {
 						// Check if there are labels / widgets / grids in the hierarchy
 						widgetsToUpdate = master.reattachWidgets(muninFoo, alreadyThereMaster);
 						labelsToUpdate = master.reattachLabels(muninFoo, alreadyThereMaster);
-						gridItemsToUpdate = master.reattachGrids(muninFoo, context, alreadyThereMaster);
+						gridItemsToUpdate = master.reattachGrids(muninFoo, alreadyThereMaster);
 					}
 
 					// Delete old duplicate

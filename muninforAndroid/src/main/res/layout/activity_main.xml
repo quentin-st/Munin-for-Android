@@ -16,34 +16,54 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:orientation="vertical"
-			android:gravity="center_vertical"
 			android:background="@drawable/bottom_shadow">
 
-			<ImageView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:layout_marginBottom="30dp"
-				android:contentDescription="@string/splashDesc"
-				android:src="@drawable/splash_overlay_logo" />
+			<LinearLayout
+				android:id="@+id/empty_layout"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical"
+				android:gravity="center_vertical">
 
-			<TextView
-				android:id="@+id/main_clear_appname"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:layout_marginBottom="10dp"
-				android:contentDescription="@string/splashDesc"
-				android:shadowColor="#888888"
-				android:shadowDx="0"
-				android:shadowDy="1"
-				android:shadowRadius="2"
-				android:text="@string/app_name"
-				android:textColor="#ffffff"
-				android:textSize="47sp" />
+				<ImageView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_marginBottom="30dp"
+					android:contentDescription="@string/splashDesc"
+					android:src="@drawable/splash_overlay_logo" />
 
+				<TextView
+					android:id="@+id/main_clear_appname"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_marginBottom="10dp"
+					android:contentDescription="@string/splashDesc"
+					android:shadowColor="#888888"
+					android:shadowDx="0"
+					android:shadowDy="1"
+					android:shadowRadius="2"
+					android:text="@string/app_name"
+					android:textColor="#ffffff"
+					android:textSize="47sp" />
+
+				<Button
+					android:id="@+id/setDefaultActivity"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_horizontal"
+					android:layout_marginTop="15dp"
+					android:text="@string/setDefaultActivity"
+					style="@style/Material_ButtonText"/>
+			</LinearLayout>
+
+			<FrameLayout
+				android:id="@+id/fragment_container"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:visibility="gone"/>
 		</LinearLayout>
-
 		<LinearLayout
 			android:layout_width="@dimen/drawer_width"
 			android:layout_height="match_parent"

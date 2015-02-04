@@ -67,22 +67,6 @@ public class MuninMaster {
             return val ? TRUE : FALSE;
 		}
 	}
-
-	public enum SVGAvailability {
-		AUTO_DETECT(""), FALSE("false"), TRUE("true");
-		private String val = "";
-		SVGAvailability(String val) { this.val = val; }
-		public String getVal() { return this.val; }
-		public String toString() { return this.val; }
-		public static SVGAvailability get(String val) {
-			for (SVGAvailability s : values()) {
-				if (s.val.equals(val))
-					return s;
-			}
-			return AUTO_DETECT;
-		}
-		public SVGAvailability get(boolean val) { return val ? TRUE : FALSE; }
-	}
 	
 	public void setAuthType(AuthType t) { this.authType = t; }
 	public AuthType getAuthType() { return this.authType; }
@@ -135,7 +119,7 @@ public class MuninMaster {
 		if (this.defaultMaster || this.isEmpty())
 			return false;
 		
-		MuninServer server = getChildAt(0);
+		MuninServer server = getChildren().get(0);
 		if (server == null)
 			return false;
 		MuninPlugin plugin = server.getPlugin(0);
@@ -185,11 +169,6 @@ public class MuninMaster {
 			this.children.add(s);
 			s.setParent(this);
 		}
-	}
-	public MuninServer getChildAt(int i) {
-		if (i >= 0 && i < this.children.size())
-			return this.children.get(i);
-		return null;
 	}
 	
 	public boolean isEmpty() { return this.children.isEmpty(); }
@@ -468,9 +447,9 @@ public class MuninMaster {
 	 * Here, we reattach and save the grids.
 	 * @return ArrayList<GridItem> : grids who should be updated afterwards
 	 */
-	public ArrayList<GridItem> reattachGrids(MuninFoo muninFoo, Context context, MuninMaster oldMaster) {
+	public ArrayList<GridItem> reattachGrids(MuninFoo muninFoo, MuninMaster oldMaster) {
 		ArrayList<GridItem> toBeUpdated_grids = new ArrayList<>();
-		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(context, muninFoo);
+		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
 
 		if (grids.isEmpty())
 			return toBeUpdated_grids;
@@ -479,10 +458,10 @@ public class MuninMaster {
 			for (MuninPlugin plugin : server.getPlugins()) {
 				// Check grids
 				for (Grid grid : grids) {
-					for (GridItem item : grid.items) {
-						if (item.plugin.equals(plugin)) {
+					for (GridItem item : grid.getItems()) {
+						if (item.getPlugin().equals(plugin)) {
 							// Reattach
-							item.plugin = this.getServer(server.getServerUrl()).getPlugin(item.plugin.getName());
+							item.setPlugin(this.getServer(server.getServerUrl()).getPlugin(item.getPlugin().getName()));
 							toBeUpdated_grids.add(item);
 						}
 					}

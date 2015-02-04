@@ -14,8 +14,7 @@ public class GraphWidget {
 		this.wifiOnly = false;
 		this.hideServerName = false;
 	}
-	
-	public long getId() { return this.id; }
+
 	public void setId(long id) { this.id = id; }
 	
 	public String getPeriod() { return period; }

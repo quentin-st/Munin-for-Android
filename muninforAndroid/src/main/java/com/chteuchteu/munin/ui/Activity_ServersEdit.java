@@ -78,7 +78,7 @@ public class Activity_ServersEdit extends MuninActivity {
 	
 	private void actionSave() {
 		for (MuninServer s: deletedServers) {
-			muninFoo.deleteServer(s, true);
+			muninFoo.deleteServer(s);
 			muninFoo.sqlite.dbHlpr.deleteServer(s);
 		}
 		

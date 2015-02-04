@@ -58,8 +58,8 @@ public class MuninFoo {
 	private static final boolean FORCE_NOT_PREMIUM = false;
 
     // Allows an user to test the app until the TRIAL_EXPIRATION date is reached
-    public static final boolean TRIAL = false;
-    public static final Calendar TRIAL_EXPIRATION = new GregorianCalendar(2015, 1, 10);
+    private static final boolean TRIAL = false;
+    private static final Calendar TRIAL_EXPIRATION = new GregorianCalendar(2015, 1, 10);
 
     public boolean premium;
 	
@@ -195,15 +195,13 @@ public class MuninFoo {
 		else
 			servers.add(server);
 	}
-	public void deleteServer(MuninServer s, boolean rebuildChildren) {
-		if (rebuildChildren)
-			s.getParent().rebuildChildren(this);
+	public void deleteServer(MuninServer s) {
+		s.getParent().rebuildChildren(this);
 		
 		// Delete from servers list
 		this.servers.remove(s);
 		
-		if (rebuildChildren)
-			s.getParent().rebuildChildren(this);
+		s.getParent().rebuildChildren(this);
 		
 		// Update current server
 		if (this.currentServer.equals(s) && this.servers.size() > 0)

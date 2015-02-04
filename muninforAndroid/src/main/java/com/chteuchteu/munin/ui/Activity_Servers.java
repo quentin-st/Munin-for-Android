@@ -135,7 +135,7 @@ public class Activity_Servers extends MuninActivity {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								muninFoo.sqlite.dbHlpr.deleteServer(server);
-								muninFoo.deleteServer(server, true);
+								muninFoo.deleteServer(server);
 								
 								// Delete labels relations stored in MuninFoo.labels for the current session
 								for (MuninPlugin plugin : server.getPlugins())

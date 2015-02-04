@@ -56,7 +56,7 @@ public class NetHelper {
 	 * @param url URL to be downloaded
 	 * @return HTTPResponse
 	 */
-	public static HTTPResponse grabUrl(MuninMaster master, String url, String userAgent, boolean retried) {
+	private static HTTPResponse grabUrl(MuninMaster master, String url, String userAgent, boolean retried) {
 		HTTPResponse resp = new HTTPResponse();
 		
 		MuninFoo.logV("grabUrl:url", url);

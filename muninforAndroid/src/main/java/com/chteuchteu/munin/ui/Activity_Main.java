@@ -28,7 +28,9 @@ import com.chteuchteu.munin.hlpr.I18nHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
+import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -41,10 +43,11 @@ import java.util.Locale;
  * is very different from others (showing UI elements only when the app
  * is loaded)
  */
-public class Activity_Main extends ActionBarActivity {
+public class Activity_Main extends ActionBarActivity implements IActivity_Grid {
 	private MuninFoo		muninFoo;
 	private MaterialMenuIconToolbar materialMenu;
 
+	private Toolbar        toolbar;
 	private Menu 			menu;
 	private boolean		doubleBackPressed;
 
@@ -73,7 +76,7 @@ public class Activity_Main extends ActionBarActivity {
 		context = this;
 		setContentView(R.layout.activity_main);
 
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View v) {
@@ -159,10 +162,49 @@ public class Activity_Main extends ActionBarActivity {
 
 		displayI18nAlertIfNeeded();
 
+		// Load fragment if needed
+		boolean fragmentLoaded = false;
+
+		switch (Util.getPref(context, Util.PrefKeys.DefaultActivity)) {
+			case "":
+				fragmentLoaded = false;
+				if (muninFoo.sqlite.dbHlpr.hasGrids() && muninFoo.premium) {
+					findViewById(R.id.setDefaultActivity).setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							Intent intent = new Intent(Activity_Main.this, Activity_Settings.class);
+							intent.putExtra("highlightDefaultActivity", true);
+							startActivity(intent);
+							Util.setTransition(Activity_Main.this, Util.TransitionStyle.DEEPER);
+						}
+					});
+				}
+				else
+					findViewById(R.id.setDefaultActivity).setVisibility(View.GONE);
+				break;
+			case "grid":
+				fragmentLoaded = true;
+				findViewById(R.id.empty_layout).setVisibility(View.GONE);
+				findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
+
+				Fragment_Grid fragmentGrid = new Fragment_Grid();
+				Bundle bundle = new Bundle();
+				long gridId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_GridId));
+				bundle.putLong(Fragment_Grid.ARG_GRIDID, gridId);
+				fragmentGrid.setArguments(bundle);
+				getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragmentGrid).commit();
+
+				break;
+		}
+
 		// Reset drawer
 		dh.reset();
-		dh.toggle();
-		materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
+		if (!fragmentLoaded) {
+			dh.toggle();
+			materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
+		}
+		else
+			materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
 	}
 	
 	@Override
@@ -406,7 +448,17 @@ public class Activity_Main extends ActionBarActivity {
 		Util.setPref(context, Util.PrefKeys.LastMFAVersion, MuninFoo.VERSION + "");
 		muninFoo.resetInstance(this);
 	}
-	
+
+	/* Grid fragment */
+	@Override public void updatePeriodMenuItem(MuninPlugin.Period newPeriod) { }
+	@Override public void onPreviewHide() { }
+	@Override public void onEditModeChange(boolean editing) { }
+	@Override public void onPreview() { }
+	@Override
+	public void onGridLoaded(Grid grid) {
+		toolbar.setSubtitle(grid.getName());
+	}
+
 	private class UpdateOperations extends AsyncTask<Void, Integer, Void> {
 		@Override
 		protected Void doInBackground(Void... arg0) {

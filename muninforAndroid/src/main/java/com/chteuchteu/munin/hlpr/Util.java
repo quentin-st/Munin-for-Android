@@ -260,7 +260,7 @@ public final class Util {
 		ScreenAlwaysOn("screenAlwaysOn"),                 Notifs_RefreshRate("notifs_refreshRate"),
 		DefaultScale("defaultScale"),                      Notifs_ServersList("notifs_serversList"),
 		LastMFAVersion("lastMFAVersion"),				  Notifs_WifiOnly("notifs_wifiOnly"),
-															  Notifs_Vibrate("notifs_vibrate"),
+											                  Notifs_Vibrate("notifs_vibrate"),
 															  Notifs_LastNotificationText("lastNotificationText"),
 
 		AutoRefresh("autoRefresh"),                        UserAgent("userAgent"), UserAgentChanged("userAgentChanged"),
@@ -270,7 +270,9 @@ public final class Util {
 
 		Twitter_NbLaunches("twitter_nbLaunches"),        AddServer_History("addserver_history"),
 		Widget2_ForceUpdate("widget2_forceUpdate"),      OpenSourceDialogShown("openSourceDialogShown"),
-														 I18NDialogShown("i18nDialogShown"),
+														       I18NDialogShown("i18nDialogShown"),
+		DefaultActivity("defaultActivity"),
+		DefaultActivity_GridId("defaultActivity_gridId"),
 
 		// Old prefs
 		Drawer("drawer"), Splash("splash"), ListViewMode("listViewMode"), Transitions("transitions");

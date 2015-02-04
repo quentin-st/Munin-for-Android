@@ -1,5 +1,6 @@
 package com.chteuchteu.munin.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,7 @@ import com.google.analytics.tracking.android.EasyTracker;
  * Note: Activity_Main doesn't extend it because of it special
  *  way of working (loading app before displaying anything)
  */
+@SuppressLint("Registered")
 public class MuninActivity extends ActionBarActivity {
 	protected MuninFoo      muninFoo;
 	protected DrawerHelper  dh;
