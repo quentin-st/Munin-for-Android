@@ -294,6 +294,7 @@ public final class Util {
 														       I18NDialogShown("i18nDialogShown"),
 		DefaultActivity("defaultActivity"),
 		DefaultActivity_GridId("defaultActivity_gridId"),
+		DefaultActivity_LabelId("defaultActivity_labelId"),
 
 		// Old prefs
 		Drawer("drawer"), Splash("splash"), ListViewMode("listViewMode"), Transitions("transitions");

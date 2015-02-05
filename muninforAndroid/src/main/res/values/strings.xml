@@ -287,5 +287,6 @@
 	<string name="defaultActivity">Default activity</string>
 	<string name="setDefaultActivity">Set default activity</string>
 	<string name="load">Load</string>
+	<string name="label">Label</string>
 
 </resources>

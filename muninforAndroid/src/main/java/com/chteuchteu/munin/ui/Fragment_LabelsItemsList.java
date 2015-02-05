@@ -27,7 +27,6 @@ public class Fragment_LabelsItemsList extends Fragment {
 	private MuninFoo muninFoo;
 	private Context context;
 	private ILabelsActivity activity;
-	private Label label;
 	private View view;
 
 	@Override
@@ -54,9 +53,7 @@ public class Fragment_LabelsItemsList extends Fragment {
 	}
 
 	public void setLabel(final Label label) {
-		this.label = label;
-
-		if (this.label == null)
+		if (label == null)
 			return;
 
 		List<List<MuninPlugin>> labelsListCat = label.getPluginsSortedByServer(muninFoo);

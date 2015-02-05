@@ -29,6 +29,7 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.obj.Grid;
+import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
@@ -43,7 +44,7 @@ import java.util.Locale;
  * is very different from others (showing UI elements only when the app
  * is loaded)
  */
-public class Activity_Main extends ActionBarActivity implements IGridActivity {
+public class Activity_Main extends ActionBarActivity implements IGridActivity, ILabelsActivity {
 	private MuninFoo		muninFoo;
 	private MaterialMenuIconToolbar materialMenu;
 
@@ -182,7 +183,7 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity {
 				else
 					findViewById(R.id.setDefaultActivity).setVisibility(View.GONE);
 				break;
-			case "grid":
+			case "grid": {
 				fragmentLoaded = true;
 				findViewById(R.id.empty_layout).setVisibility(View.GONE);
 				findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
@@ -195,8 +196,22 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity {
 				bundle.putBoolean(Fragment_Grid.ARG_OVERFLOW_ACTIONS, true);
 				fragmentGrid.setArguments(bundle);
 				getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragmentGrid).commit();
-
 				break;
+			}
+			case "label": {
+				fragmentLoaded = true;
+				findViewById(R.id.empty_layout).setVisibility(View.GONE);
+				findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
+
+				Fragment_LabelsItemsList fragmentLabels = new Fragment_LabelsItemsList();
+				Bundle bundle = new Bundle();
+				long labelId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_LabelId));
+				bundle.putLong("labelId", labelId);
+				fragmentLabels.setArguments(bundle);
+				getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragmentLabels).commit();
+				toolbar.setSubtitle(muninFoo.getLabel(labelId).getName());
+				break;
+			}
 		}
 
 		// Reset drawer
@@ -460,6 +475,19 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity {
 	public void onGridLoaded(Grid grid) {
 		toolbar.setSubtitle(grid.getName());
 	}
+
+	/* Label fragment */
+	@Override public void onLabelClick(Label label) { } // Not used here
+	@Override public void onLabelItemClick(int pos, String labelName, long labelId) {
+		Intent intent = new Intent(context, Activity_GraphView.class);
+		intent.putExtra("position", pos);
+		intent.putExtra("from", "main_labels");
+		intent.putExtra("label", labelName);
+		intent.putExtra("labelId", labelId);
+		startActivity(intent);
+		Util.setTransition(context, Util.TransitionStyle.DEEPER);
+	}
+	@Override public void onLabelsItemsListFragmentLoaded() { }
 
 	private class UpdateOperations extends AsyncTask<Void, Integer, Void> {
 		@Override

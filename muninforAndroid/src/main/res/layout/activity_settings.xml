@@ -103,6 +103,23 @@
 							style="@style/Settings_SettingSpinner"/>
 					</LinearLayout>
 
+					<!-- Default activity - label -->
+					<LinearLayout
+						android:id="@+id/defaultActivity_label_container"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="vertical">
+
+						<TextView
+							android:id="@+id/title15"
+							style="@style/Settings_SettingTitle"
+							android:text="@string/label" />
+
+						<Spinner
+							android:id="@+id/spinner_defaultActivity_label"
+							style="@style/Settings_SettingSpinner"/>
+					</LinearLayout>
+
 					<!-- Default activity - grid -->
 					<LinearLayout
 						android:id="@+id/defaultActivity_grid_container"
@@ -111,7 +128,7 @@
 						android:orientation="vertical">
 
 						<TextView
-							android:id="@+id/title15"
+							android:id="@+id/title16"
 							style="@style/Settings_SettingTitle"
 							android:text="@string/text75" />
 

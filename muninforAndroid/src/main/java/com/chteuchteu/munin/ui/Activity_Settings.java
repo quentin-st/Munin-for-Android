@@ -26,6 +26,7 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
+import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninServer;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class Activity_Settings extends MuninActivity {
 	private Spinner    spinner_gridsLegend;
 	private Spinner    spinner_defaultActivity;
 	private Spinner    spinner_defaultActivity_grid;
+	private Spinner    spinner_defaultActivity_label;
 	private CheckBox checkbox_alwaysOn;
 	private CheckBox checkbox_autoRefresh;
 	private CheckBox checkbox_graphsZoom;
@@ -64,6 +66,7 @@ public class Activity_Settings extends MuninActivity {
 		spinner_gridsLegend = (Spinner)findViewById(R.id.spinner_gridsLegend);
 		spinner_defaultActivity = (Spinner)findViewById(R.id.spinner_defaultActivity);
 		spinner_defaultActivity_grid = (Spinner)findViewById(R.id.spinner_defaultActivity_grid);
+		spinner_defaultActivity_label = (Spinner)findViewById(R.id.spinner_defaultActivity_label);
 
 		checkbox_alwaysOn = (CheckBox)findViewById(R.id.checkbox_screenalwayson);
 		checkbox_autoRefresh = (CheckBox)findViewById(R.id.checkbox_autorefresh);
@@ -122,8 +125,8 @@ public class Activity_Settings extends MuninActivity {
 		grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
 		List<String> list5 = new ArrayList<>();
 		list5.add(getString(R.string.grids_legend_none));
-		if (!grids.isEmpty() && muninFoo.premium)
-			list5.add(getString(R.string.button_grid));
+		list5.add(getString(R.string.button_grid));
+		list5.add(getString(R.string.button_labels));
 		ArrayAdapter<String> dataAdapter5 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list5);
 		dataAdapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_defaultActivity.setAdapter(dataAdapter5);
@@ -131,19 +134,33 @@ public class Activity_Settings extends MuninActivity {
 			@Override
 			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 				findViewById(R.id.defaultActivity_grid_container).setVisibility((i == 1 && muninFoo.premium) ? View.VISIBLE : View.GONE);
+				findViewById(R.id.defaultActivity_label_container).setVisibility((i == 2 && muninFoo.premium) ? View.VISIBLE : View.GONE);
 			}
 			@Override public void onNothingSelected(AdapterView<?> adapterView) { }
 		});
 
 		// Default activity - Grid spinner
-		if (!grids.isEmpty() && muninFoo.premium) {
-			findViewById(R.id.defaultActivity_grid_container).setVisibility(View.VISIBLE);
-			List<String> gridsList = new ArrayList<>();
-			for (Grid grid : grids)
-				gridsList.add(grid.getName());
-			ArrayAdapter<String> dataAdapter6 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, gridsList);
-			dataAdapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			spinner_defaultActivity_grid.setAdapter(dataAdapter6);
+		List<String> gridsList = new ArrayList<>();
+		for (Grid grid : grids)
+			gridsList.add(grid.getName());
+		ArrayAdapter<String> dataAdapter6 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, gridsList);
+		dataAdapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner_defaultActivity_grid.setAdapter(dataAdapter6);
+		if (grids.isEmpty() || !muninFoo.premium) {
+			findViewById(R.id.title16).setAlpha(0.5f);
+			findViewById(R.id.spinner_defaultActivity_grid).setEnabled(false);
+		}
+
+		// Default activity - Labels spinner
+		List<String> labelsList = new ArrayList<>();
+		for (Label label : muninFoo.labels)
+			labelsList.add(label.getName());
+		ArrayAdapter<String> dataAdapter7 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, labelsList);
+		dataAdapter7.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner_defaultActivity_label.setAdapter(dataAdapter7);
+		if (labelsList.isEmpty()) {
+			findViewById(R.id.title15).setAlpha(0.5f);
+			findViewById(R.id.spinner_defaultActivity_label).setEnabled(false);
 		}
 
 		// Set fonts
@@ -162,6 +179,7 @@ public class Activity_Settings extends MuninActivity {
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title13), CustomFont.Roboto_Medium);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title14), CustomFont.Roboto_Medium);
 		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title15), CustomFont.Roboto_Medium);
+		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title16), CustomFont.Roboto_Medium);
 
 		// Apply current settings
 		// Graph default scale
@@ -253,6 +271,12 @@ public class Activity_Settings extends MuninActivity {
 			}
 		}
 
+		// Default activity label
+		if (spinner_defaultActivity.getSelectedItemPosition() == 2) {
+			int labelId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_LabelId));
+			spinner_defaultActivity_label.setSelection(muninFoo.labels.indexOf(muninFoo.getLabel(labelId)));
+		}
+
 
 		// Since we manually defined the checkbox and text
 		// (so the checkbox can be at the right and still have the view tinting introduced
@@ -341,11 +365,20 @@ public class Activity_Settings extends MuninActivity {
 
 		// Default activity
 		switch (spinner_defaultActivity.getSelectedItemPosition()) {
-			case 0: Util.setPref(this, Util.PrefKeys.DefaultActivity, ""); break;
+			case 0:
+				Util.removePref(this, Util.PrefKeys.DefaultActivity);
+				Util.removePref(this, Util.PrefKeys.DefaultActivity_GridId);
+				Util.removePref(this, Util.PrefKeys.DefaultActivity_LabelId);
+				break;
 			case 1:
 				Util.setPref(this, Util.PrefKeys.DefaultActivity, "grid");
 				Util.setPref(this, Util.PrefKeys.DefaultActivity_GridId,
 						String.valueOf(grids.get(spinner_defaultActivity_grid.getSelectedItemPosition()).getId()));
+				break;
+			case 2:
+				Util.setPref(this, Util.PrefKeys.DefaultActivity, "label");
+				Util.setPref(this, Util.PrefKeys.DefaultActivity_LabelId,
+						String.valueOf(muninFoo.labels.get(spinner_defaultActivity_label.getSelectedItemPosition()).getId()));
 				break;
 		}
 

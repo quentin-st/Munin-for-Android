@@ -460,6 +460,11 @@ public class Activity_GraphView extends MuninActivity {
 						Util.setTransition(context, TransitionStyle.SHALLOWER);
 					}
 					break;
+				case "main_labels": {
+					startActivity(new Intent(Activity_GraphView.this, Activity_Main.class));
+					Util.setTransition(context, TransitionStyle.SHALLOWER);
+					break;
+				}
 				case "alerts":
 					if (thisIntent.getExtras().containsKey("server")) {
 						if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
