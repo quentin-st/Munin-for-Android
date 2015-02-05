@@ -260,6 +260,7 @@ public class Activity_Settings extends MuninActivity {
 		switch (Util.getPref(this, Util.PrefKeys.DefaultActivity)) {
 			case "": spinner_defaultActivity.setSelection(0); break;
 			case "grid": spinner_defaultActivity.setSelection(1); break;
+			case "label": spinner_defaultActivity.setSelection(2); break;
 		}
 
 		// Default activity_grid

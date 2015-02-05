@@ -189,7 +189,7 @@ public class Activity_GraphView extends MuninActivity {
 			pos = savedInstanceState.getInt("position");
 
 		String from = thisIntent != null && thisIntent.getExtras() != null ? thisIntent.getExtras().getString("from") : "";
-		if (from != null && from.equals("labels")) {
+		if (from != null && (from.equals("labels") || from.equals("main_labels"))) {
 			viewFlowMode = VIEWFLOWMODE_LABELS;
 			long labelId = thisIntent != null && thisIntent.getExtras() != null ? thisIntent.getExtras().getLong("labelId") : -1;
 			this.label = muninFoo.getLabel(labelId);
