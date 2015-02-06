@@ -169,7 +169,7 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 		switch (Util.getPref(context, Util.PrefKeys.DefaultActivity)) {
 			case "":
 				fragmentLoaded = false;
-				if (muninFoo.sqlite.dbHlpr.hasGrids() && muninFoo.premium) {
+				if (muninFoo.sqlite.dbHlpr.hasGrids() && muninFoo.premium || !muninFoo.labels.isEmpty()) {
 					findViewById(R.id.setDefaultActivity).setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
