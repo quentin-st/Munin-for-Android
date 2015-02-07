@@ -218,4 +218,7 @@
 
 <string name="lang_spanish">Spanisch</string>
 	<string name="about_openSource">Munin für Android ist Open Source! <a href="https://github.com/chteuchteu/Munin-for-Android">Du kannst uns auf GitHub unterstützen</a>. Die App wird unter der GNU GPL version 2 entwickelt.</string>
+	<string name="lang_ukrainian">Ukrainisch</string>
+	<string name="defaultActivity">Startansicht</string>
+	<string name="setDefaultActivity">Startansicht setzen</string>
 	</resources>
