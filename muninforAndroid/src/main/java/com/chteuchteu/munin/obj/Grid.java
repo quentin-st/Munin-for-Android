@@ -120,7 +120,7 @@ public class Grid {
 	
 	public LinearLayout buildLayout(Context c) {
 		container = new LinearLayout(c);
-		container.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		container.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		container.setOrientation(LinearLayout.VERTICAL);
 		// Line per line
 		LinearLayout line;
