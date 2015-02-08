@@ -17,15 +17,7 @@
 			android:layout_height="match_parent"
 			android:background="@drawable/bottom_shadow">
 
-			<FrameLayout
-				android:id="@+id/labelsListfragment_container"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"/>
-			<FrameLayout
-				android:id="@+id/labelsItemsListfragment_container"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:visibility="gone"/>
+			<include layout="@layout/incl_labels_layout" />
 
 		</RelativeLayout>
 

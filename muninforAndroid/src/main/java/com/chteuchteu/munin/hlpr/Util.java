@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.BlurMaskFilter.Blur;
@@ -745,5 +746,20 @@ public final class Util {
 			v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
 		else
 			v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+	}
+
+	public enum DeviceSizeCategory { SMALL, NORMAL, LARGE, XLARGE, UNKNOWN }
+	public static DeviceSizeCategory getDeviceSizeCategory(Context context) {
+		int screenLayout = context.getResources().getConfiguration().screenLayout;
+		if ((screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE)
+			return DeviceSizeCategory.XLARGE;
+		else if ((screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE)
+			return DeviceSizeCategory.LARGE;
+		else if ((screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_NORMAL)
+			return DeviceSizeCategory.NORMAL;
+		else if ((screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_SMALL)
+			return DeviceSizeCategory.SMALL;
+		else
+			return DeviceSizeCategory.UNKNOWN;
 	}
 }

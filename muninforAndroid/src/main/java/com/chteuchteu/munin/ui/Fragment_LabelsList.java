@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_SelectableList;
 import com.chteuchteu.munin.obj.Label;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class Fragment_LabelsList extends Fragment {
 	private MuninFoo muninFoo;
 	private Context context;
 	private ILabelsActivity activity;
+	private Adapter_SelectableList selectableAdapter;
 	private View view;
 
 	@Override
@@ -52,18 +54,19 @@ public class Fragment_LabelsList extends Fragment {
 		ListView listview = (ListView) view.findViewById(R.id.listview);
 		List<String> list = new ArrayList<>();
 
-		view.findViewById(R.id.no_label).setVisibility(muninFoo.labels.size() == 0 ? View.VISIBLE : View.GONE);
+		view.findViewById(R.id.no_label).setVisibility(muninFoo.labels.isEmpty() ? View.VISIBLE : View.GONE);
 
 		if (muninFoo.labels.size() > 0) {
 			for (int i=0; i<muninFoo.labels.size(); i++)
 				list.add(muninFoo.labels.get(i).getName());
 
-			ArrayAdapter<String> sa = new ArrayAdapter<>(context, R.layout.labelselection_list, R.id.line_a, list);
-			listview.setAdapter(sa);
+			selectableAdapter = new Adapter_SelectableList(context, R.layout.labelselection_list, R.id.line_a, list);
+			listview.setAdapter(selectableAdapter);
 
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					activity.onLabelClick(muninFoo.labels.get(position));
+					selectableAdapter.setSelectedItem(position);
 				}
 			});
 

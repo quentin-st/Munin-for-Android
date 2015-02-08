@@ -236,5 +236,7 @@
 	<string name="setDefaultActivity">Définir l\'activité par défaut</string>
 	<string name="load">Charger</string>
 	<string name="label">Label</string>
+	<string name="selectALabel">Sélectionnez un label</string>
+	<string name="emptyLabel">Label vide</string>
 
 </resources>

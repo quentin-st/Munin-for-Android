@@ -28,6 +28,7 @@ public class Fragment_LabelsItemsList extends Fragment {
 	private Context context;
 	private ILabelsActivity activity;
 	private View view;
+	private ListView listView;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -42,10 +43,13 @@ public class Fragment_LabelsItemsList extends Fragment {
 		muninFoo = MuninFoo.getInstance();
 
 		this.view = inflater.inflate(R.layout.fragment_label, container, false);
+		this.listView = (ListView) view.findViewById(R.id.listView);
 
 		Bundle args = getArguments();
 		if (args != null && args.containsKey("labelId"))
 			setLabel(muninFoo.getLabel(args.getLong("labelId")));
+		else
+			view.findViewById(R.id.selectALabel).setVisibility(View.VISIBLE);
 
 		activity.onLabelsItemsListFragmentLoaded();
 
@@ -55,6 +59,9 @@ public class Fragment_LabelsItemsList extends Fragment {
 	public void setLabel(final Label label) {
 		if (label == null)
 			return;
+
+		view.findViewById(R.id.selectALabel).setVisibility(View.GONE);
+		view.findViewById(R.id.emptyLabel).setVisibility(label.getPlugins().isEmpty() ? View.VISIBLE : View.GONE);
 
 		List<List<MuninPlugin>> labelsListCat = label.getPluginsSortedByServer(muninFoo);
 		final List<MuninPlugin> correspondance = new ArrayList<>();
@@ -77,10 +84,8 @@ public class Fragment_LabelsItemsList extends Fragment {
 					new String[] { "title", "caption" }, new int[] { R.id.line_a, R.id.line_b }));
 		}
 
-		ListView labels_listView = (ListView) view.findViewById(R.id.labels_listview);
-
-		labels_listView.setAdapter(adapter);
-		labels_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 				MuninPlugin plugin = correspondance.get(position);
 				String serverUrl = correspondanceServers.get(position);
@@ -89,6 +94,14 @@ public class Fragment_LabelsItemsList extends Fragment {
 				activity.onLabelItemClick(pos, label.getName(), label.getId());
 			}
 		});
+	}
+
+	/**
+	 * Called when hitting back button on side-by-side (labels list - label) layout
+	 */
+	public void unselectLabel() {
+		listView.setAdapter(null);
+		view.findViewById(R.id.selectALabel).setVisibility(View.VISIBLE);
 	}
 
 	private Map<String,?> createItem(String title, String caption) {
