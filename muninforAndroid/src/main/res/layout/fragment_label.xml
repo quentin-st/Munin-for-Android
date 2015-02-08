@@ -8,6 +8,8 @@
 		android:id="@+id/labels_listview"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:paddingLeft="@dimen/listview_horizontal_margin"
+		android:paddingRight="@dimen/listview_horizontal_margin"
 		android:divider="@null" />
 
 </LinearLayout>

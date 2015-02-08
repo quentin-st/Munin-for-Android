@@ -189,8 +189,8 @@ public class Fragment_Grid extends Fragment {
 		// Lollipop animation (fallback if necessary)
 		View mainContainer = view.findViewById(R.id.mainContainer);
 		fs.setVisibility(View.VISIBLE);
-		View parent = (View) container.getParent();
-		View parentParent = (View) container.getParent().getParent();
+		View parent = (View) item.container.getParent();
+		View parentParent = (View) item.container.getParent().getParent();
 		int cx = (parent.getLeft() + parent.getRight()) / 2;
 		int cy = (parentParent.getTop() + parentParent.getBottom()) / 2;
 		int finalRadius = Math.max(mainContainer.getWidth(), mainContainer.getHeight());
