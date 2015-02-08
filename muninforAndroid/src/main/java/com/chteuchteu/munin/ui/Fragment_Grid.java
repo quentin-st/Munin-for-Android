@@ -80,7 +80,7 @@ public class Fragment_Grid extends Fragment {
 		// Init grid
 		container.removeAllViews();
 		grid.setupLayout();
-		container.addView(grid.buildLayout(context));
+		this.container.addView(grid.buildLayout(context));
 		grid.updateLayoutSizes(context);
 
 		// Launch graphs downloader

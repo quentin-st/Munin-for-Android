@@ -3,57 +3,51 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-	<RelativeLayout
-		android:id="@+id/mainContainer"
+	<ScrollView
+		android:id="@+id/scrollView"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent" >
-
-		<ScrollView
-			android:id="@+id/grid_scroll"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-			<LinearLayout
-				android:id="@+id/grid_root_container"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:background="#123456"/>
-		</ScrollView>
+		android:layout_height="match_parent"
+		android:fillViewport="true">
 
 		<LinearLayout
-			android:id="@+id/add_column_right"
-			android:layout_width="30dp"
-			android:layout_height="match_parent"
-			android:layout_alignParentRight="true"
-			android:layout_marginBottom="30dp"
-			android:background="#33555555"
-			android:gravity="center_vertical"
-			android:orientation="vertical"
-			android:visibility="gone" >
-
-			<ImageView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:src="@drawable/ic_action_new" />
-		</LinearLayout>
-
-		<LinearLayout
-			android:id="@+id/add_line_bottom"
+			android:id="@+id/grid_root_container"
 			android:layout_width="match_parent"
-			android:layout_height="30dp"
-			android:layout_alignParentBottom="true"
-			android:background="#33555555"
-			android:gravity="center_horizontal"
-			android:orientation="horizontal"
-			android:visibility="gone" >
+			android:layout_height="wrap_content"
+			android:orientation="vertical"/>
+	</ScrollView>
 
-			<ImageView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:src="@drawable/ic_action_new" />
-		</LinearLayout>
-	</RelativeLayout>
+	<LinearLayout
+		android:id="@+id/add_column_right"
+		android:layout_width="30dp"
+		android:layout_height="match_parent"
+		android:layout_alignParentRight="true"
+		android:layout_marginBottom="30dp"
+		android:background="#33555555"
+		android:gravity="center_vertical"
+		android:orientation="vertical"
+		android:visibility="gone" >
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_action_new" />
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/add_line_bottom"
+		android:layout_width="match_parent"
+		android:layout_height="30dp"
+		android:layout_alignParentBottom="true"
+		android:background="#33555555"
+		android:gravity="center_horizontal"
+		android:orientation="horizontal"
+		android:visibility="gone" >
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_action_new" />
+	</LinearLayout>
 
 	<ImageButton
 		android:id="@+id/overflow"
