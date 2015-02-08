@@ -29,6 +29,7 @@ public class Fragment_LabelsList extends Fragment {
 	private ILabelsActivity activity;
 	private Adapter_SelectableList selectableAdapter;
 	private View view;
+	private ListView listView;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -44,14 +45,20 @@ public class Fragment_LabelsList extends Fragment {
 		muninFoo = MuninFoo.getInstance();
 
 		this.view = inflater.inflate(R.layout.fragment_labelslist, container, false);
+		this.listView = (ListView) view.findViewById(R.id.listview);
 
 		updateListView();
+
+		activity.onLabelsFragmentLoaded();
 
 		return view;
 	}
 
+	public void setSelectedItem(int position) {
+		selectableAdapter.setSelectedItem(position);
+	}
+
 	public void updateListView() {
-		ListView listview = (ListView) view.findViewById(R.id.listview);
 		List<String> list = new ArrayList<>();
 
 		view.findViewById(R.id.no_label).setVisibility(muninFoo.labels.isEmpty() ? View.VISIBLE : View.GONE);
@@ -61,16 +68,16 @@ public class Fragment_LabelsList extends Fragment {
 				list.add(muninFoo.labels.get(i).getName());
 
 			selectableAdapter = new Adapter_SelectableList(context, R.layout.labelselection_list, R.id.line_a, list);
-			listview.setAdapter(selectableAdapter);
+			listView.setAdapter(selectableAdapter);
 
-			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					activity.onLabelClick(muninFoo.labels.get(position));
 					selectableAdapter.setSelectedItem(position);
 				}
 			});
 
-			listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 				@Override
 				public boolean onItemLongClick(AdapterView<?> adapter, View view, int pos, long arg) {
 					final TextView labelNameTextView = (TextView) view.findViewById(R.id.line_a);

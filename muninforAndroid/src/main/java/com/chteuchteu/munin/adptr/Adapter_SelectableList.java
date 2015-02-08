@@ -29,10 +29,11 @@ public class Adapter_SelectableList extends ArrayAdapter {
 	}
 
 	public void setSelectedItem(int position) {
-		if (this.selectedIndex != -1)
+		if (this.selectedIndex != -1 && viewsList.containsKey(this.selectedIndex))
 			viewsList.get(this.selectedIndex).setBackgroundColor(Color.TRANSPARENT);
 
-		viewsList.get(position).setBackgroundColor(0x11000000);
+		if (viewsList.containsKey(position))
+			viewsList.get(position).setBackgroundColor(0x11000000);
 
 		this.selectedIndex = position;
 	}

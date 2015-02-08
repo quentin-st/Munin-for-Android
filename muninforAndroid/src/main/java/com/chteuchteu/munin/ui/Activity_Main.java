@@ -488,6 +488,8 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 		Util.setTransition(context, Util.TransitionStyle.DEEPER);
 	}
 	@Override public void onLabelsItemsListFragmentLoaded() { }
+	@Override
+	public void onLabelsFragmentLoaded() { }
 
 	private class UpdateOperations extends AsyncTask<Void, Integer, Void> {
 		@Override

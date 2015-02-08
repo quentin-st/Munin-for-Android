@@ -54,6 +54,12 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 	}
 
 	@Override
+	public void onLabelsFragmentLoaded() {
+		if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey("labelId"))
+			labelsListFragment.setSelectedItem(muninFoo.labels.indexOf(muninFoo.getLabel(getIntent().getExtras().getLong("labelId"))));
+	}
+
+	@Override
 	public void onLabelsItemsListFragmentLoaded() {
 		if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey("labelId"))
 			onLabelClick(muninFoo.getLabel(getIntent().getExtras().getLong("labelId")));

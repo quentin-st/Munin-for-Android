@@ -6,4 +6,5 @@ public interface ILabelsActivity {
 	public void onLabelClick(Label label);
 	public void onLabelItemClick(int pos, String labelName, long labelId);
 	public void onLabelsItemsListFragmentLoaded();
+	public void onLabelsFragmentLoaded();
 }
