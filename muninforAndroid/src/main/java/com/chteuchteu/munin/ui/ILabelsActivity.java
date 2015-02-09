@@ -7,4 +7,5 @@ public interface ILabelsActivity {
 	public void onLabelItemClick(int pos, String labelName, long labelId);
 	public void onLabelsItemsListFragmentLoaded();
 	public void onLabelsFragmentLoaded();
+	public void unselectLabel();
 }

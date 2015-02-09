@@ -25,6 +25,10 @@ public class Adapter_SelectableList extends ArrayAdapter {
 
 		viewsList.put(position, view);
 
+		// setSelectedItem was called before this view was inflated
+		if (position == selectedIndex)
+			setSelectedItem(position);
+
 		return view;
 	}
 
@@ -37,4 +41,5 @@ public class Adapter_SelectableList extends ArrayAdapter {
 
 		this.selectedIndex = position;
 	}
+	public int getSelectedItem() { return this.selectedIndex; }
 }

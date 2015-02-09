@@ -23,8 +23,8 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 
 	private enum ActivityState { SELECTING_LABEL, SELECTING_PLUGIN }
 	private ActivityState activityState;
-
-	private Util.DeviceSizeCategory deviceSizeCategory;
+	private enum LayoutStyle { FULLSCREEN, SIDE_BY_SIDE }
+	private LayoutStyle layoutStyle;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,9 +36,16 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 		actionBar.setTitle(getString(R.string.button_labels));
 
 		activityState = ActivityState.SELECTING_LABEL;
+		layoutStyle = isDeviceLarge(Util.getDeviceSizeCategory(this)) ? LayoutStyle.SIDE_BY_SIDE : LayoutStyle.FULLSCREEN;
+
+		if (layoutStyle == LayoutStyle.FULLSCREEN)
+			findViewById(R.id.labelsItemsListfragment_container).setVisibility(View.GONE);
 
 		if (savedInstanceState == null) {
+			Bundle arguments = new Bundle();
+			arguments.putBoolean(Fragment_LabelsList.SELECT_CURRENT_ITEM, layoutStyle == LayoutStyle.SIDE_BY_SIDE);
 			labelsListFragment = new Fragment_LabelsList();
+			labelsListFragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction().add(R.id.labelsListfragment_container, labelsListFragment, "labelsList").commit();
 
 			labelsItemsListFragment = new Fragment_LabelsItemsList();
@@ -47,16 +54,16 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 			labelsListFragment = (Fragment_LabelsList) getSupportFragmentManager().findFragmentByTag("labelsList");
 			labelsItemsListFragment = (Fragment_LabelsItemsList) getSupportFragmentManager().findFragmentByTag("labelsItemsList");
 		}
-
-		deviceSizeCategory = Util.getDeviceSizeCategory(this);
-		if (!isDeviceLarge())
-			findViewById(R.id.labelsItemsListfragment_container).setVisibility(View.GONE);
 	}
 
 	@Override
 	public void onLabelsFragmentLoaded() {
-		if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey("labelId"))
-			labelsListFragment.setSelectedItem(muninFoo.labels.indexOf(muninFoo.getLabel(getIntent().getExtras().getLong("labelId"))));
+		// On side-by-side layout, select current label when coming back from Activity_GraphView
+		if (layoutStyle == LayoutStyle.SIDE_BY_SIDE
+				&& getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey("labelId")) {
+			long labelId = getIntent().getExtras().getLong("labelId");
+			labelsListFragment.setSelectedItem(muninFoo.labels.indexOf(muninFoo.getLabel(labelId)));
+		}
 	}
 
 	@Override
@@ -81,7 +88,7 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 		activityState = ActivityState.SELECTING_PLUGIN;
 		labelsItemsListFragment.setLabel(label);
 
-		if (!isDeviceLarge()) {
+		if (layoutStyle == LayoutStyle.FULLSCREEN) {
 			findViewById(R.id.labelsListfragment_container).setVisibility(View.GONE);
 			findViewById(R.id.labelsItemsListfragment_container).setVisibility(View.VISIBLE);
 			if (addLabel != null)
@@ -101,6 +108,9 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 		startActivity(intent);
 		Util.setTransition(context, Util.TransitionStyle.DEEPER);
 	}
+
+	@Override
+	public void unselectLabel() { labelsItemsListFragment.unselectLabel(); }
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -141,7 +151,7 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 		if (activityState == ActivityState.SELECTING_PLUGIN) {
 			labelsItemsListFragment.unselectLabel();
 
-			if (!isDeviceLarge()) {
+			if (layoutStyle == LayoutStyle.FULLSCREEN) {
 				findViewById(R.id.labelsItemsListfragment_container).setVisibility(View.GONE);
 				findViewById(R.id.labelsListfragment_container).setVisibility(View.VISIBLE);
 			}
@@ -155,7 +165,7 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 		}
 	}
 
-	private boolean isDeviceLarge() {
+	private static boolean isDeviceLarge(Util.DeviceSizeCategory deviceSizeCategory) {
 		return deviceSizeCategory == Util.DeviceSizeCategory.LARGE || deviceSizeCategory == Util.DeviceSizeCategory.XLARGE;
 	}
 }

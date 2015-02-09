@@ -24,12 +24,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Fragment_LabelsList extends Fragment {
+	public static final String SELECT_CURRENT_ITEM = "selectCurrentItem";
 	private MuninFoo muninFoo;
 	private Context context;
 	private ILabelsActivity activity;
 	private Adapter_SelectableList selectableAdapter;
 	private View view;
 	private ListView listView;
+	/**
+	 * Don't select current item on Activity_Labels with FULLSCREEN layoutType
+	 */
+	private boolean selectCurrentItem;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -46,6 +51,8 @@ public class Fragment_LabelsList extends Fragment {
 
 		this.view = inflater.inflate(R.layout.fragment_labelslist, container, false);
 		this.listView = (ListView) view.findViewById(R.id.listview);
+		if (getArguments() != null)
+			this.selectCurrentItem = getArguments().getBoolean(SELECT_CURRENT_ITEM, true);
 
 		updateListView();
 
@@ -55,7 +62,8 @@ public class Fragment_LabelsList extends Fragment {
 	}
 
 	public void setSelectedItem(int position) {
-		selectableAdapter.setSelectedItem(position);
+		if (selectCurrentItem)
+			selectableAdapter.setSelectedItem(position);
 	}
 
 	public void updateListView() {
@@ -73,13 +81,14 @@ public class Fragment_LabelsList extends Fragment {
 			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					activity.onLabelClick(muninFoo.labels.get(position));
-					selectableAdapter.setSelectedItem(position);
+					if (selectCurrentItem)
+						selectableAdapter.setSelectedItem(position);
 				}
 			});
 
 			listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 				@Override
-				public boolean onItemLongClick(AdapterView<?> adapter, View view, int pos, long arg) {
+				public boolean onItemLongClick(final AdapterView<?> adapter, View view, int pos, long arg) {
 					final TextView labelNameTextView = (TextView) view.findViewById(R.id.line_a);
 					final String labelName = labelNameTextView.getText().toString();
 
@@ -106,9 +115,14 @@ public class Fragment_LabelsList extends Fragment {
 													String value = input.getText().toString();
 													if (!value.equals(labelName)) {
 														Label label = muninFoo.getLabel(labelName);
-														label.setName(value);
-														MuninFoo.getInstance(context).sqlite.dbHlpr.updateLabel(label);
-														labelNameTextView.setText(value);
+														if (label != null) {
+															label.setName(value);
+															MuninFoo.getInstance(context).sqlite.dbHlpr.updateLabel(label);
+															labelNameTextView.setText(value);
+															activity.unselectLabel();
+															updateListView();
+														}
+
 													}
 													dialog.dismiss();
 												}
