@@ -41,4 +41,5 @@ public class Adapter_SelectableList extends ArrayAdapter {
 
 		this.selectedIndex = position;
 	}
+	public int getSelectedItem() { return this.selectedIndex; }
 }

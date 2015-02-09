@@ -209,7 +209,9 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 				bundle.putLong("labelId", labelId);
 				fragmentLabels.setArguments(bundle);
 				getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragmentLabels).commit();
-				toolbar.setSubtitle(muninFoo.getLabel(labelId).getName());
+				Label label = muninFoo.getLabel(labelId);
+				if (label != null)
+					toolbar.setSubtitle(label.getName());
 				break;
 			}
 		}
@@ -490,6 +492,8 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 	@Override public void onLabelsItemsListFragmentLoaded() { }
 	@Override
 	public void onLabelsFragmentLoaded() { }
+	@Override
+	public void unselectLabel() { }
 
 	private class UpdateOperations extends AsyncTask<Void, Integer, Void> {
 		@Override
