@@ -223,4 +223,6 @@
 	<string name="alert_i18n_yes">Grazie molte! Usiamo un tool online semplice da usare per gestire le traduzioni. Usa questo link per raggiungerlo: www.munin-for-android.com/i18n.php</string>
 
 <string name="text53">Aggiorna solo con Wifi</string>
+	<string name="lang_ukrainian">Ucraino</string>
+	<string name="lang_dutch">Olandese</string>
 	</resources>
