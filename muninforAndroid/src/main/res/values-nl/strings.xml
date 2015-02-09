@@ -43,7 +43,7 @@
 	<string name="openInBrowser">Openen in browser</string>
 	<string name="fieldsDescription">Omschrijving van de velden</string>
 	<string name="follow">Volgen op Twitter</string>
-	<string name="notifs_vibrate">Trillen</string>
+	<string name="notifs_vibrate">Trilfunctie</string>
 	<string name="about_firstPhrase">Wil je hallo zeggen? Heb je een innovatief idee voor deze app? Heb je een cruciale fout ontdekt? Stuur dan een e-mail naar <b><u>support@munin-for-android.com</u></b>! Bedankt!</string>
 	<string name="about_independantApp">Deze app is onafhankelijk ontwikkeld. Het is niet de officiële app.</string>
 	<string name="about_changelog">Ga naar &lt;a href=http://munin-for-android.com/&gt;munin-for-android.com&lt;/a&gt; om de volledige changelog en versienotities te bekijken.</string>
@@ -221,4 +221,5 @@
 	<string name="selectALabel">Selecteer een label</string>
 	<string name="emptyLabel">Leeg label</string>
 
-</resources>
+<string name="lang_dutch">Nederlands</string>
+	</resources>
