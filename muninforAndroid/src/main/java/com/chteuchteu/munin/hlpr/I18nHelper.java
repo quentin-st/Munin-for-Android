@@ -13,7 +13,8 @@ import java.util.Locale;
 
 public final class I18nHelper {
 	public enum AppLanguage {
-		EN("en", R.string.lang_english), FR("fr", R.string.lang_french), DE("de", R.string.lang_german), RU("ru", R.string.lang_russian), ES("es", R.string.lang_spanish), IT("it", R.string.lang_italian), UK("uk", R.string.lang_ukrainian);
+		EN("en", R.string.lang_english), FR("fr", R.string.lang_french), DE("de", R.string.lang_german), RU("ru", R.string.lang_russian),
+		ES("es", R.string.lang_spanish), IT("it", R.string.lang_italian), UK("uk", R.string.lang_ukrainian), NL("nl", R.string.lang_dutch);
 
 		public String langCode;
 		public int localeNameRes;
