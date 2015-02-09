@@ -1,2 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='utf-8'?>
+<resources><string name="app_name">Munin voor Android</string>
+	<string name="button_graphs">Grafieken</string>
+	<string name="button_server">Servers</string>
+	<string name="button_premium">Ga voor premium</string>
+	<string name="button_alerts">Meldingen</string>
+	<string name="button_labels">etiketten</string>
+	<string name="button_grid">Tegels</string>
+	<string name="button_notifications">Notificaties</string>
+	<string name="settings_URL_label">Munin-master URL</string>
+	<string name="settings_URL_label2">bijvoorbeeld: https://88.180.108.192:80/munin/</string>
+	<string name="settings_text">... of selecteer een voorbeeld server:</string>
+	<string name="settings_http_auth2">HTTP authenticatie vereist</string>
+	<string name="settings_hdgraphs">Gebruik HD grafieken</string>
+	<string name="settings_hdgraphs_text">Probeer DynaZoom te gebruiken voor grafieken in hoge resolutie</string>
+	<string name="settings_auth_type">Authenticatie type</string>
+	<string name="settings_password">Wachtwoord</string>
+	<string name="settings_login">Gebruikersnaam</string>
+	<string name="settings_default_scale">Standaard grafiek schaal</string>
+	<string name="settings_graphview_orientation">Schermoriëntatie grafieken</string>
+	<string name="settings_screenalwayson_label">Scherm gaat niet uit</string>
+	<string name="settings_screenalwayson_checkbox">Voorkom dat het scherm uitgaat wanneer grafieken / waarschuwingen worden weergegeven.</string>
+	<string name="settings_autorefresh_label">Automatisch verversen</string>
+	<string name="settings_autorefresh_checkbox">Ververs grafieken / waarschuwingen elke 5 minuten, wanneer deze worden weergegeven</string>
+	<string name="settings_enablegraphszoom">Sta het inzoomen van grafieken toe</string>
+	<string name="settings_titlelabel_app">App instellingen</string>
+	<string name="settings_titlelabel_graphs">Instellingen voor grafieken</string>
+	<string name="save_button">Opslaan</string>
+	<string name="menu_graph_refresh">Verversen</string>
+	<string name="menu_graph_save">Bewaar grafiek op SD kaart</string>
+	<string name="menu_graph_switch">Wissel van server</string>
+	<string name="menu_addserver_save">Bewaar server</string>
+	<string name="menu_addserver_delete">Verwijder server</string>
+	<string name="loading">Aan het laden…</string>
+	<string name="search">Zoeken</string>
+	<string name="about_eraseData">App opnieuw instellen</string>
+	<string name="about_gplay">Beoordeel deze app</string>
+	<string name="menu_serversedit_revert">Servers opnieuw instellen</string>
+	<string name="servers_noservers_1">Er zijn nog geen servers toegevoegd</string>
+	<string name="servers_noservers_2">Voeg je server toe, of kies een voorbeeld server door op + te tikken</string>
+	<string name="edit">Aanpassen</string>
+	<string name="yourerunning">Je gebruikt versie</string>
+	<string name="openInBrowser">Openen in browser</string>
+	<string name="fieldsDescription">Omschrijving van de velden</string>
+	<string name="follow">Volgen op Twitter</string>
+	<string name="notifs_vibrate">Trillen</string>
+	<string name="about_firstPhrase">Wil je hallo zeggen? Heb je een innovatief idee voor deze app? Heb je een cruciale fout ontdekt? Stuur dan een e-mail naar <b><u>support@munin-for-android.com</u></b>! Bedankt!</string>
+	</resources>
