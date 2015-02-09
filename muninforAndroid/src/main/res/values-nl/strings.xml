@@ -103,7 +103,7 @@
 	<string name="text45">Aan het opslaan!</string>
 	<string name="text46">"Server benaderen "</string>
 	<string name="text47.1">dag</string>
-	<string name="text47.2">week</string>
+	<string name="text47.2">weekw</string>
 	<string name="text47.3">maand</string>
 	<string name="text47.4">jaar</string>
 	<string name="text48.1">Forceer horizontale weergave</string>
@@ -194,7 +194,7 @@
 	<string name="graphwidgetname">Munin voor Android: Grafiek widget</string>
 	<string name="alertswidgetname">Munin voor Android: Waarschuwingen widget</string>
 	<string name="featuresPackNeeded">Munin voor Android Features pakket nodig</string>
-	<string name="user_agent">User Agent</string>
+	<string name="user_agent">Gebruikersagent</string>
 	<string name="from">Van</string>
 	<string name="to">Naar</string>
 	<string name="grids_legend">Tegel legenda</string>
