@@ -223,4 +223,6 @@
 	<string name="alert_i18n">Tal parece que la aplicación no está disponible en su lenguaje. Podría Ud ayudarnos en hacerla disponible en su lenguaje?</string>
 	<string name="alert_i18n_yes">"Muchas gracias! Utilizamos una herramienta en línea para gestionar las traducciones. Use este enlace para alcanzarla:  www.munin-for-android.com/i18n.php"</string>
 
-</resources>
+<string name="lang_ukrainian">Ucranio</string>
+	<string name="lang_dutch">Holandés</string>
+	</resources>
