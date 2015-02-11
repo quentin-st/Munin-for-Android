@@ -30,4 +30,6 @@ dependencies {
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.4.0'
     compile 'com.melnykov:floatingactionbutton:1.0.6'
     compile 'com.edmodo:rangebar:1.0.0'
+    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'com.android.support:mediarouter-v7:21.0.0'
 }

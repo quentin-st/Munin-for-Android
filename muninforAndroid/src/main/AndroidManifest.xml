@@ -35,7 +35,6 @@
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Grid" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Grids" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Labels" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Label" />
 		<activity
 			android:name="com.chteuchteu.munin.ui.Activity_Main"
 			android:icon="@drawable/launcher_icon"
@@ -73,7 +72,6 @@
 				android:name="android.appwidget.provider"
 				android:resource="@xml/widget_graphwidget_meta" />
 		</receiver>
-
 		<activity
 			android:name=".wdget.Widget_GraphWidget_Configure"
 			android:theme="@android:style/Theme.Dialog" >
@@ -96,7 +94,6 @@
 				android:name="android.appwidget.provider"
 				android:resource="@xml/widget_alertswidget_meta" />
 		</receiver>
-
 		<activity
 			android:name=".wdget.Widget_AlertsWidget_Configure"
 			android:theme="@android:style/Theme.Dialog" >
@@ -104,7 +101,6 @@
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 			</intent-filter>
 		</activity>
-
 		<service android:name=".wdget.Widget_AlertsWidget_WidgetService"
 				 android:permission="android.permission.BIND_REMOTEVIEWS" />
 
@@ -114,14 +110,18 @@
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
-
 		<service
 			android:name=".Service_Notifications"
 			android:enabled="true" />
 
+		<!-- Crashlytics -->
 		<meta-data
 			android:name="com.crashlytics.ApiKey"
 			android:value="b7bc84aa870bd35d3de03f69309f1748a52354a4" />
-	</application>
 
+		<!-- Google Play services -->
+		<meta-data
+			android:name="com.google.android.gms.version"
+			android:value="@integer/google_play_services_version"/>
+	</application>
 </manifest>
