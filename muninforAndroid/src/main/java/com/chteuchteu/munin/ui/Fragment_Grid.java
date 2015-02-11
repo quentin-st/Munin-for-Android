@@ -270,6 +270,7 @@ public class Fragment_Grid extends Fragment {
 	public void setUpdating(boolean val) { this.updating = val; }
 	public boolean isEditing() { return this.editing; }
 	public boolean isPreviewing() { return grid.currentlyOpenedGridItem != null; }
+	public Grid getGrid() { return this.grid; }
 
 	public MuninPlugin.Period getCurrentPeriod() { return this.currentPeriod; }
 	public void setCurrentPeriod(MuninPlugin.Period period) { this.currentPeriod = period; }

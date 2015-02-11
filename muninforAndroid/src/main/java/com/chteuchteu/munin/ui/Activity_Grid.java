@@ -28,8 +28,12 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	private MenuItem menu_period;
 	private MenuItem menu_open;
 
+	/**
+	 * Temporary grid object used activity instantiation. Should not be used
+	 *  for main interactions with grid (ie. grid.currentlyOpenedGridItem)
+	 */
+	private Grid tmpGrid;
 	private List<Grid> grids;
-	private Grid grid;
 	private Handler mHandler;
 	private Runnable mHandlerTask;
 
@@ -57,8 +61,10 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, this.fragment).commit();
 
 		this.grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
-		this.grid = getGrid(grids, gridId);
-		actionBar.setTitle(getText(R.string.text75) + " " + grid.getName());
+		// tmpGrid: temporary grid object used to instantiate activity.
+		// Should not be used afterwards (use Fragment_Grid.grid instead)
+		tmpGrid = getGrid(grids, gridId);
+		actionBar.setTitle(getText(R.string.text75) + " " + tmpGrid.getName());
 
 		if (!Util.isOnline(context))
 			Toast.makeText(context, getString(R.string.text30), Toast.LENGTH_LONG).show();
@@ -75,9 +81,9 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
 				@Override
 				public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-					if (itemPosition != grids.indexOf(grid)) {
+					if (itemPosition != grids.indexOf(tmpGrid)) {
 						long gridId = grids.get(itemPosition).getId();
-						grid = getGrid(grids, gridId);
+						tmpGrid = getGrid(grids, gridId);
 
 						// If editing / previewing: cancel those
 						if (fragment.isPreviewing())
@@ -96,8 +102,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 				}
 			};
 			actionBar.setListNavigationCallbacks(spinnerAdapter, navigationListener);
-			if (grids.indexOf(grid) != -1)
-				actionBar.setSelectedNavigationItem(grids.indexOf(grid));
+			if (grids.indexOf(tmpGrid) != -1)
+				actionBar.setSelectedNavigationItem(grids.indexOf(tmpGrid));
 		}
 
 		// Launch periodical check
@@ -164,7 +170,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	}
 
 	@Override
-	public void onGridLoaded(Grid grid) {}
+	public void onGridLoaded(Grid grid) { }
 
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();
@@ -183,12 +189,12 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	}
 
 	private void openGraph() {
-		if (grid.currentlyOpenedGridItem == null)
+		if (fragment.getGrid().currentlyOpenedGridItem == null)
 			return;
 
-		grid.f.setCurrentServer(grid.currentlyOpenedGridItem.getPlugin().getInstalledOn());
+		fragment.getGrid().f.setCurrentServer(fragment.getGrid().currentlyOpenedGridItem.getPlugin().getInstalledOn());
 		Intent i = new Intent(context, Activity_GraphView.class);
-		i.putExtra("plugin", grid.currentlyOpenedGridItem.getPlugin().getName());
+		i.putExtra("plugin", fragment.getGrid().currentlyOpenedGridItem.getPlugin().getName());
 		i.putExtra("from", "grid");
 		Intent gridIntent = ((Activity) context).getIntent();
 		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("gridName"))
