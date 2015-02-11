@@ -4,12 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.MediaRouteActionProvider;
-import android.support.v7.media.MediaRouteSelector;
-import android.support.v7.media.MediaRouter;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,23 +12,14 @@ import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-import com.google.android.gms.cast.ApplicationMetadata;
-import com.google.android.gms.cast.Cast;
-import com.google.android.gms.cast.CastDevice;
-import com.google.android.gms.cast.CastMediaControlIntent;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,19 +40,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 
 	private Fragment_Grid fragment;
 
-	// Chromecast
-	private MediaRouter mMediaRouter;
-	private MediaRouteSelector mMediaRouteSelector;
-	private MediaRouter.Callback mMediaRouterCallback;
-	private CastDevice mSelectedDevice;
-	private GoogleApiClient mApiClient;
-	private Cast.Listener mCastListener;
-	private ConnectionCallbacks mConnectionCallbacks;
-	private ConnectionFailedListener mConnectionFailedListener;
-	private HelloWorldChannel mHelloWorldChannel;
-	private boolean mApplicationStarted;
-	private boolean mWaitingForReconnect;
-	private String mSessionId;
+	private ChromecastHelper chromecastHelper;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -151,39 +125,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		}
 
 		// Chromecast
-		mMediaRouter = MediaRouter.getInstance(getApplicationContext());
-		mMediaRouteSelector = new MediaRouteSelector.Builder()
-				.addControlCategory(CastMediaControlIntent.categoryForCast(MuninFoo.CHROMECAST_APPLICATION_ID))
-				.build();
-		mMediaRouterCallback = new MyMediaRouterCallback();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback, MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
-	}
-
-	@Override
-	protected void onPause() {
-		if (isFinishing())
-			mMediaRouter.removeCallback(mMediaRouterCallback);
-		super.onPause();
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback, MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
-	}
-
-	@Override
-	public void onStop() {
-		mMediaRouter.removeCallback(mMediaRouterCallback);
-		super.onStop();
-
-		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
-			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		chromecastHelper = ChromecastHelper.create(this);
+		chromecastHelper.onCreate();
 	}
 
 	private static Grid getGrid(List<Grid> grids, long gridId) {
@@ -251,9 +194,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			menu_edit.setIcon(R.drawable.ic_action_image_edit);
 		menu_period.setTitle(fragment.getCurrentPeriod().getLabel(this));
 
-		MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
-		MediaRouteActionProvider mediaRouteActionProvider = (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
-		mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
+		chromecastHelper.createOptionsMenu(menu);
 	}
 
 	private void openGraph() {
@@ -279,7 +220,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-			case R.id.menu_refresh: fragment.refresh(); return true;
+			case R.id.menu_refresh: chromecastHelper.sendMessage(":-)"); /*fragment.refresh();*/ return true;
 			case R.id.menu_edit: fragment.edit(); return true;
 			case R.id.period_day:
 				fragment.setCurrentPeriod(Period.DAY);
@@ -323,258 +264,31 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		}
 	}
 
-	/* Chromecast */
-	private String TAG = "chromecast";
-	/**
-	 * Callback for MediaRouter events
-	 */
-	private class MyMediaRouterCallback extends MediaRouter.Callback {
-
-		@Override
-		public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
-			log("onRouteSelected");
-			// Handle the user route selection.
-			mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
-
-			launchReceiver();
-		}
-
-		@Override
-		public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
-			log("onRouteUnselected: info=" + info);
-			teardown();
-			mSelectedDevice = null;
-		}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		chromecastHelper.onResume();
 	}
 
-	/**
-	 * Start the receiver app
-	 */
-	private void launchReceiver() {
-		try {
-			mCastListener = new Cast.Listener() {
-
-				@Override
-				public void onApplicationDisconnected(int errorCode) {
-					log("application has stopped");
-					teardown();
-				}
-
-			};
-			// Connect to Google Play services
-			mConnectionCallbacks = new ConnectionCallbacks();
-			mConnectionFailedListener = new ConnectionFailedListener();
-			Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions
-					.builder(mSelectedDevice, mCastListener);
-			mApiClient = new GoogleApiClient.Builder(this)
-					.addApi(Cast.API, apiOptionsBuilder.build())
-					.addConnectionCallbacks(mConnectionCallbacks)
-					.addOnConnectionFailedListener(mConnectionFailedListener)
-					.build();
-
-			mApiClient.connect();
-		} catch (Exception e) {
-			Log.e(TAG, "Failed launchReceiver", e);
-		}
+	@Override
+	protected void onPause() {
+		if (isFinishing())
+			chromecastHelper.onPause();
+		super.onPause();
 	}
 
-	/**
-	 * Google Play services callbacks
-	 */
-	private class ConnectionCallbacks implements
-			GoogleApiClient.ConnectionCallbacks {
-		@Override
-		public void onConnected(Bundle connectionHint) {
-			Log.d(TAG, "onConnected");
-
-			if (mApiClient == null) {
-				// We got disconnected while this runnable was pending
-				// execution.
-				return;
-			}
-
-			try {
-				if (mWaitingForReconnect) {
-					mWaitingForReconnect = false;
-
-					// Check if the receiver app is still running
-					if ((connectionHint != null)
-							&& connectionHint
-							.getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
-						Log.d(TAG, "App  is no longer running");
-						teardown();
-					} else {
-						// Re-create the custom message channel
-						try {
-							Cast.CastApi.setMessageReceivedCallbacks(
-									mApiClient,
-									mHelloWorldChannel.getNamespace(),
-									mHelloWorldChannel);
-						} catch (IOException e) {
-							Log.e(TAG, "Exception while creating channel", e);
-						}
-					}
-				} else {
-					// Launch the receiver app
-					Cast.CastApi
-							.launchApplication(mApiClient, MuninFoo.CHROMECAST_APPLICATION_ID, false)
-							.setResultCallback(
-									new ResultCallback<Cast.ApplicationConnectionResult>() {
-										@Override
-										public void onResult(
-												Cast.ApplicationConnectionResult result) {
-											Status status = result.getStatus();
-											Log.d(TAG,
-													"ApplicationConnectionResultCallback.onResult: statusCode"
-															+ status.getStatusCode());
-											Log.d(TAG, "...onResult: message: " + status.getStatusMessage());
-											if (status.isSuccess()) {
-												ApplicationMetadata applicationMetadata = result
-														.getApplicationMetadata();
-												mSessionId = result
-														.getSessionId();
-												String applicationStatus = result
-														.getApplicationStatus();
-												boolean wasLaunched = result
-														.getWasLaunched();
-												Log.d(TAG,
-														"application name: "
-																+ applicationMetadata
-																.getName()
-																+ ", status: "
-																+ applicationStatus
-																+ ", sessionId: "
-																+ mSessionId
-																+ ", wasLaunched: "
-																+ wasLaunched);
-												mApplicationStarted = true;
-
-												// Create the custom message
-												// channel
-												mHelloWorldChannel = new HelloWorldChannel();
-												try {
-													Cast.CastApi
-															.setMessageReceivedCallbacks(
-																	mApiClient,
-																	mHelloWorldChannel.getNamespace(),
-																	mHelloWorldChannel);
-												} catch (IOException e) {
-													Log.e(TAG,
-															"Exception while creating channel",
-															e);
-												}
-
-												// set the initial instructions
-												// on the receiver
-												sendMessage("Nuthin");
-											} else {
-												Log.e(TAG,
-														"application could not launch");
-												teardown();
-											}
-										}
-									});
-				}
-			} catch (Exception e) {
-				Log.e(TAG, "Failed to launch application", e);
-			}
-		}
-
-		@Override
-		public void onConnectionSuspended(int cause) {
-			Log.d(TAG, "onConnectionSuspended");
-			mWaitingForReconnect = true;
-		}
+	@Override
+	protected void onStart() {
+		super.onStart();
+		chromecastHelper.onStart();
 	}
 
-	/**
-	 * Google Play services callbacks
-	 */
-	private class ConnectionFailedListener implements
-			GoogleApiClient.OnConnectionFailedListener {
-		@Override
-		public void onConnectionFailed(ConnectionResult result) {
-			Log.e(TAG, "onConnectionFailed ");
+	@Override
+	public void onStop() {
+		chromecastHelper.onStop();
+		super.onStop();
 
-			teardown();
-		}
-	}
-
-	/**
-	 * Tear down the connection to the receiver
-	 */
-	private void teardown() {
-		Log.d(TAG, "teardown");
-		if (mApiClient != null) {
-			if (mApplicationStarted) {
-				if (mApiClient.isConnected() || mApiClient.isConnecting()) {
-					try {
-						Cast.CastApi.stopApplication(mApiClient, mSessionId);
-						if (mHelloWorldChannel != null) {
-							Cast.CastApi.removeMessageReceivedCallbacks(
-									mApiClient,
-									mHelloWorldChannel.getNamespace());
-							mHelloWorldChannel = null;
-						}
-					} catch (IOException e) {
-						Log.e(TAG, "Exception while removing channel", e);
-					}
-					mApiClient.disconnect();
-				}
-				mApplicationStarted = false;
-			}
-			mApiClient = null;
-		}
-		mSelectedDevice = null;
-		mWaitingForReconnect = false;
-		mSessionId = null;
-	}
-
-	/**
-	 * Send a text message to the receiver
-	 * @param message
-	 */
-	private void sendMessage(String message) {
-		if (mApiClient != null && mHelloWorldChannel != null) {
-			try {
-				Cast.CastApi.sendMessage(mApiClient,
-						mHelloWorldChannel.getNamespace(), message)
-						.setResultCallback(new ResultCallback<Status>() {
-							@Override
-							public void onResult(Status result) {
-								if (!result.isSuccess()) {
-									Log.e(TAG, "Sending message failed");
-								}
-							}
-						});
-			} catch (Exception e) {
-				Log.e(TAG, "Exception while sending message", e);
-			}
-		} else {
-			Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-		}
-	}
-
-	/**
-	 * Custom message channel
-	 */
-	class HelloWorldChannel implements Cast.MessageReceivedCallback {
-
-		/**
-		 * @return custom namespace
-		 */
-		public String getNamespace() {
-			return MuninFoo.CHROMECAST_CHANNEL_NAMESPACE;
-		}
-
-		/*
-		 * Receive message from the receiver app
-		 */
-		@Override
-		public void onMessageReceived(CastDevice castDevice, String namespace,
-		                              String message) {
-			Log.d(TAG, "onMessageReceived: " + message);
-		}
-
+		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 }
