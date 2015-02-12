@@ -39,18 +39,20 @@ public class ChromecastHelper {
 	private boolean mApplicationStarted;
 	private boolean mWaitingForReconnect;
 	private String mSessionId;
+	private Runnable onConnectionSuccess;
 
 	private ChromecastHelper(Context context) {
 		this.context = context;
 	}
 	public static ChromecastHelper create(Context context) { return new ChromecastHelper(context); }
 
-	public void onCreate() {
+	public void onCreate(Runnable onConnectionSuccess) {
 		mMediaRouter = MediaRouter.getInstance(context);
 		mMediaRouteSelector = new MediaRouteSelector.Builder()
 				.addControlCategory(CastMediaControlIntent.categoryForCast(MuninFoo.CHROMECAST_APPLICATION_ID))
 				.build();
 		mMediaRouterCallback = new CustomMediaRouterCallback();
+		this.onConnectionSuccess = onConnectionSuccess;
 	}
 
 	private static void log(String msg) { MuninFoo.log("Chromecast", msg); }
@@ -178,9 +180,8 @@ public class ChromecastHelper {
 													e.printStackTrace();
 												}
 
-												// set the initial instructions
-												// on the receiver
-												sendMessage("Nuthin");
+												if (onConnectionSuccess != null)
+													onConnectionSuccess.run();
 											} else {
 												log("Application could not launch");
 												shutdownConnection();
