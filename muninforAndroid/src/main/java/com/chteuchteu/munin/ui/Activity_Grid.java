@@ -18,12 +18,7 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
-import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,25 +129,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		chromecastHelper.onCreate(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					JSONObject msg = new JSONObject();
-					msg.put("gridName", tmpGrid.getName());
-					JSONArray msg_gridItems = new JSONArray();
-					for (GridItem item : tmpGrid.getItems()) {
-						JSONObject msg_GridItem = new JSONObject();
-						msg_GridItem.put("x", item.getX());
-						msg_GridItem.put("y", item.getY());
-						msg_GridItem.put("graphUrl", item.getPlugin().getImgUrl(Period.DAY));
-						msg_GridItem.put("pluginName", item.getPlugin().getFancyName());
-						msg_GridItem.put("serverName", item.getPlugin().getInstalledOn().getName());
-						msg_gridItems.put(msg_GridItem);
-					}
-					msg.put("gridItems", msg_gridItems);
-
-					chromecastHelper.sendMessage(msg.toString());
-				} catch (JSONException ex) {
-					ex.printStackTrace();
-				}
+				chromecastHelper.sendMessage_inflateGrid(tmpGrid);
 			}
 		});
 	}
@@ -184,6 +161,9 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		menu_period.setVisible(false);
 		menu_refresh.setVisible(false);
 		menu_edit.setVisible(false);
+
+		if (chromecastHelper != null)
+			chromecastHelper.sendMessage_preview(fragment.getGrid().currentlyOpenedGridItem);
 	}
 
 	@Override
@@ -192,6 +172,9 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		if (menu_edit != null)		menu_edit.setVisible(true);
 		if (menu_period != null)	menu_period.setVisible(true);
 		if (menu_open != null)		menu_open.setVisible(false);
+
+		if (chromecastHelper != null)
+			chromecastHelper.sendMessage_cancelPreview();
 	}
 
 	@Override

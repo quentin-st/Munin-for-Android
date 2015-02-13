@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.obj.Grid;
+import com.chteuchteu.munin.obj.GridItem;
+import com.chteuchteu.munin.obj.MuninPlugin;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
@@ -20,6 +23,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -246,7 +253,7 @@ public class ChromecastHelper {
 	/**
 	 * Send a text message to the receiver
 	 */
-	public void sendMessage(String message) {
+	private void sendMessage(String message) {
 		if (mApiClient != null && mHelloWorldChannel != null) {
 			try {
 				log("Sending message [" + message + "]...");
@@ -254,7 +261,6 @@ public class ChromecastHelper {
 						.setResultCallback(new ResultCallback<Status>() {
 							@Override
 							public void onResult(Status result) {
-								log("sendMessage.onResult. Success: " + result.isSuccess() + ", " + result.toString());
 								if (!result.isSuccess())
 									log("Sending message failed");
 							}
@@ -265,6 +271,53 @@ public class ChromecastHelper {
 			}
 		} else
 			Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+	}
+
+	public void sendMessage_inflateGrid(Grid grid) {
+		try {
+			JSONObject msg = new JSONObject();
+			msg.put("action", "inflate_grid");
+			msg.put("gridName", grid.getName());
+			JSONArray msg_gridItems = new JSONArray();
+			for (GridItem item : grid.getItems()) {
+				JSONObject msg_GridItem = new JSONObject();
+				msg_GridItem.put("x", item.getX());
+				msg_GridItem.put("y", item.getY());
+				msg_GridItem.put("graphUrl", item.getPlugin().getImgUrl(MuninPlugin.Period.DAY));
+				msg_GridItem.put("pluginName", item.getPlugin().getFancyName());
+				msg_GridItem.put("serverName", item.getPlugin().getInstalledOn().getName());
+				msg_gridItems.put(msg_GridItem);
+			}
+			msg.put("gridItems", msg_gridItems);
+
+			sendMessage(msg.toString());
+		} catch (JSONException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public void sendMessage_preview(GridItem gridItem) {
+		try {
+			JSONObject msg = new JSONObject();
+			msg.put("action", "preview");
+			msg.put("x", gridItem.getX());
+			msg.put("y", gridItem.getY());
+
+			sendMessage(msg.toString());
+		} catch (JSONException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public void sendMessage_cancelPreview() {
+		try {
+			JSONObject msg = new JSONObject();
+			msg.put("action", "cancelPreview");
+
+			sendMessage(msg.toString());
+		} catch (JSONException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	/**
