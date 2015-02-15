@@ -174,7 +174,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		if (menu_open != null)		menu_open.setVisible(false);
 
 		if (chromecastHelper != null)
-			chromecastHelper.sendMessage_cancelPreview();
+			chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.CANCELPREVIEW);
 	}
 
 	@Override
@@ -231,7 +231,13 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-			case R.id.menu_refresh: fragment.refresh(); return true;
+			case R.id.menu_refresh:
+				fragment.refresh();
+
+				if (chromecastHelper != null)
+					chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.REFRESH);
+
+				return true;
 			case R.id.menu_edit: fragment.edit(); return true;
 			case R.id.period_day:
 				fragment.setCurrentPeriod(Period.DAY);

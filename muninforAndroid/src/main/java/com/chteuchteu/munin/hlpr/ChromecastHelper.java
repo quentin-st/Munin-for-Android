@@ -8,7 +8,6 @@ import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -269,8 +268,7 @@ public class ChromecastHelper {
 				log("Exception while sending message: ");
 				e.printStackTrace();
 			}
-		} else
-			Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	public void sendMessage_inflateGrid(Grid grid) {
@@ -309,10 +307,11 @@ public class ChromecastHelper {
 		}
 	}
 
-	public void sendMessage_cancelPreview() {
+	public enum SimpleChromecastAction { CANCELPREVIEW, REFRESH }
+	public void sendMessage(SimpleChromecastAction chromecastAction) {
 		try {
 			JSONObject msg = new JSONObject();
-			msg.put("action", "cancelPreview");
+			msg.put("action", chromecastAction.name().toLowerCase());
 
 			sendMessage(msg.toString());
 		} catch (JSONException ex) {
