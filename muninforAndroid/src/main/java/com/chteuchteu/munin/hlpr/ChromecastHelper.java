@@ -32,7 +32,7 @@ import java.io.IOException;
 
 /**
  * The aim of this class is to avoid flooding an activity with ChromeCast code.
- * The activity classes will be created here and manually called from activity.
+ * The activity corresponding methods will be manually called from activity.
  */
 public class ChromecastHelper {
 	private Context context;

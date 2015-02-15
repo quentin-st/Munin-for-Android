@@ -178,9 +178,10 @@ public class Fragment_Grid extends Fragment {
 		if (item == null || item.originalGraph == null)
 			return;
 
+		grid.currentlyOpenedGridItem = item;
+
 		activity.onPreview();
 
-		grid.currentlyOpenedGridItem = item;
 		final ImageView fullscreenImageView = (ImageView) view.findViewById(R.id.fullscreen_iv);
 		fullscreenImageView.setImageBitmap(item.originalGraph);
 		((TextView) view.findViewById(R.id.fullscreen_tv)).setText(item.getPlugin().getInstalledOn().getName());
