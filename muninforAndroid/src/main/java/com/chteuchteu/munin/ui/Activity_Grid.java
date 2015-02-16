@@ -13,6 +13,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -31,6 +32,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	/**
 	 * Temporary grid object used activity instantiation. Should not be used
 	 *  for main interactions with grid (ie. grid.currentlyOpenedGridItem)
+     *  since Activity.tmpGrid is not the same instance as Fragment.grid
 	 */
 	private Grid tmpGrid;
 	private List<Grid> grids;
@@ -38,6 +40,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	private Runnable mHandlerTask;
 
 	private Fragment_Grid fragment;
+
+	private ChromecastHelper chromecastHelper;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -120,6 +124,17 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			};
 			mHandlerTask.run();
 		}
+
+		// Chromecast
+        if (muninFoo.premium) {
+            chromecastHelper = ChromecastHelper.create(this);
+            chromecastHelper.onCreate(new Runnable() {
+                @Override
+                public void run() {
+                    chromecastHelper.sendMessage_inflateGrid(tmpGrid, Util.getDefaultPeriod(context));
+                }
+            });
+        }
 	}
 
 	private static Grid getGrid(List<Grid> grids, long gridId) {
@@ -149,6 +164,9 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		menu_period.setVisible(false);
 		menu_refresh.setVisible(false);
 		menu_edit.setVisible(false);
+
+		if (ChromecastHelper.isConnected(chromecastHelper))
+			chromecastHelper.sendMessage_preview(fragment.getGrid().currentlyOpenedGridItem);
 	}
 
 	@Override
@@ -157,6 +175,9 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		if (menu_edit != null)		menu_edit.setVisible(true);
 		if (menu_period != null)	menu_period.setVisible(true);
 		if (menu_open != null)		menu_open.setVisible(false);
+
+		if (ChromecastHelper.isConnected(chromecastHelper))
+			chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.CANCELPREVIEW);
 	}
 
 	@Override
@@ -186,6 +207,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		else
 			menu_edit.setIcon(R.drawable.ic_action_image_edit);
 		menu_period.setTitle(fragment.getCurrentPeriod().getLabel(this));
+
+		chromecastHelper.createOptionsMenu(menu);
 	}
 
 	private void openGraph() {
@@ -211,27 +234,40 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-			case R.id.menu_refresh: fragment.refresh(); return true;
+			case R.id.menu_refresh:
+				fragment.refresh();
+
+				if (ChromecastHelper.isConnected(chromecastHelper))
+					chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.REFRESH);
+				return true;
 			case R.id.menu_edit: fragment.edit(); return true;
 			case R.id.period_day:
 				fragment.setCurrentPeriod(Period.DAY);
 				menu_period.setTitle(Period.DAY.getLabel(context));
 				fragment.refresh();
+                if (ChromecastHelper.isConnected(chromecastHelper))
+                    chromecastHelper.sendMessage_changePeriod(Period.DAY);
 				return true;
 			case R.id.period_week:
 				fragment.setCurrentPeriod(Period.WEEK);
 				menu_period.setTitle(Period.WEEK.getLabel(context));
 				fragment.refresh();
+                if (ChromecastHelper.isConnected(chromecastHelper))
+                    chromecastHelper.sendMessage_changePeriod(Period.WEEK);
 				return true;
 			case R.id.period_month:
 				fragment.setCurrentPeriod(Period.MONTH);
 				menu_period.setTitle(Period.MONTH.getLabel(context));
 				fragment.refresh();
+                if (ChromecastHelper.isConnected(chromecastHelper))
+                    chromecastHelper.sendMessage_changePeriod(Period.MONTH);
 				return true;
 			case R.id.period_year:
 				fragment.setCurrentPeriod(Period.YEAR);
 				menu_period.setTitle(Period.YEAR.getLabel(context));
 				fragment.refresh();
+                if (ChromecastHelper.isConnected(chromecastHelper))
+                    chromecastHelper.sendMessage_changePeriod(Period.YEAR);
 				return true;
 			case R.id.menu_open: openGraph(); return true;
 		}
@@ -254,11 +290,31 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			}
 		}
 	}
-	
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		chromecastHelper.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		if (isFinishing())
+			chromecastHelper.onPause();
+		super.onPause();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		chromecastHelper.onStart();
+	}
+
 	@Override
 	public void onStop() {
+		chromecastHelper.onStop();
 		super.onStop();
-		
+
 		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}

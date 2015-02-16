@@ -155,7 +155,7 @@ public class MuninActivity extends ActionBarActivity {
 	protected void setOnDrawerClose(Runnable val) { this.onDrawerClose = val; }
 
 	@Override
-	public void onStart() {
+	protected void onStart() {
 		super.onStart();
 
 		if (!BuildConfig.DEBUG)
@@ -163,7 +163,7 @@ public class MuninActivity extends ActionBarActivity {
 	}
 
 	@Override
-	public void onStop() {
+	protected void onStop() {
 		super.onStop();
 
 		if (!BuildConfig.DEBUG)
