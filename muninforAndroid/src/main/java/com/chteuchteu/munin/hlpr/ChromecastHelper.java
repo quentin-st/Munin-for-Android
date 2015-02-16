@@ -63,11 +63,16 @@ public class ChromecastHelper {
 
 	private static void log(String msg) { MuninFoo.log("Chromecast", msg); }
 
+    public static boolean isConnected(ChromecastHelper chromecastHelperInstance) {
+        return chromecastHelperInstance != null
+                && chromecastHelperInstance.mApiClient != null
+                && chromecastHelperInstance.mHelloWorldChannel != null;
+    }
+
 	/**
 	 * Callback for MediaRouter events
 	 */
 	private class CustomMediaRouterCallback extends MediaRouter.Callback {
-
 		@Override
 		public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
 			log("onRouteSelected");
@@ -96,7 +101,6 @@ public class ChromecastHelper {
 					log("Application has stopped. Error code: " + errorCode);
 					shutdownConnection();
 				}
-
 			};
 
 			// Connect to Google Play services
