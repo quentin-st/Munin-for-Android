@@ -271,17 +271,21 @@ public class ChromecastHelper {
 		}
 	}
 
-	public void sendMessage_inflateGrid(Grid grid) {
+	public void sendMessage_inflateGrid(Grid grid, MuninPlugin.Period period) {
+        if (mApiClient == null || mHelloWorldChannel == null)
+            return;
+
 		try {
 			JSONObject msg = new JSONObject();
 			msg.put("action", "inflate_grid");
 			msg.put("gridName", grid.getName());
+            msg.put("period", period.name());
 			JSONArray msg_gridItems = new JSONArray();
 			for (GridItem item : grid.getItems()) {
 				JSONObject msg_GridItem = new JSONObject();
 				msg_GridItem.put("x", item.getX());
 				msg_GridItem.put("y", item.getY());
-				msg_GridItem.put("graphUrl", item.getPlugin().getImgUrl(MuninPlugin.Period.DAY));
+				msg_GridItem.put("graphUrl", item.getPlugin().getImgUrl("{period}"));
 				msg_GridItem.put("pluginName", item.getPlugin().getFancyName());
 				msg_GridItem.put("serverName", item.getPlugin().getInstalledOn().getName());
 				msg_gridItems.put(msg_GridItem);
@@ -295,6 +299,9 @@ public class ChromecastHelper {
 	}
 
 	public void sendMessage_preview(GridItem gridItem) {
+        if (mApiClient == null || mHelloWorldChannel == null)
+            return;
+
 		try {
 			JSONObject msg = new JSONObject();
 			msg.put("action", "preview");
@@ -307,8 +314,26 @@ public class ChromecastHelper {
 		}
 	}
 
+    public void sendMessage_changePeriod(MuninPlugin.Period period) {
+        if (mApiClient == null || mHelloWorldChannel == null)
+            return;
+
+        try {
+            JSONObject msg = new JSONObject();
+            msg.put("action", "changePeriod");
+            msg.put("period", period.name());
+
+            sendMessage(msg.toString());
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 	public enum SimpleChromecastAction { CANCELPREVIEW, REFRESH }
 	public void sendMessage(SimpleChromecastAction chromecastAction) {
+        if (mApiClient == null || mHelloWorldChannel == null)
+            return;
+
 		try {
 			JSONObject msg = new JSONObject();
 			msg.put("action", chromecastAction.name().toLowerCase());
@@ -332,7 +357,6 @@ public class ChromecastHelper {
 		public void onMessageReceived(CastDevice castDevice, String namespace, String message) {
 			log("onMessageReceived: " + message);
 		}
-
 	}
 
 	public void createOptionsMenu(Menu menu) {

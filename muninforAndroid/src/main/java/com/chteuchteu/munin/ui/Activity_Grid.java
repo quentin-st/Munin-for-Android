@@ -236,28 +236,35 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 
 				if (chromecastHelper != null)
 					chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.REFRESH);
-
 				return true;
 			case R.id.menu_edit: fragment.edit(); return true;
 			case R.id.period_day:
 				fragment.setCurrentPeriod(Period.DAY);
 				menu_period.setTitle(Period.DAY.getLabel(context));
 				fragment.refresh();
+                if (chromecastHelper != null)
+                    chromecastHelper.sendMessage_changePeriod(Period.DAY);
 				return true;
 			case R.id.period_week:
 				fragment.setCurrentPeriod(Period.WEEK);
 				menu_period.setTitle(Period.WEEK.getLabel(context));
 				fragment.refresh();
+                if (chromecastHelper != null)
+                    chromecastHelper.sendMessage_changePeriod(Period.WEEK);
 				return true;
 			case R.id.period_month:
 				fragment.setCurrentPeriod(Period.MONTH);
 				menu_period.setTitle(Period.MONTH.getLabel(context));
 				fragment.refresh();
+                if (chromecastHelper != null)
+                    chromecastHelper.sendMessage_changePeriod(Period.MONTH);
 				return true;
 			case R.id.period_year:
 				fragment.setCurrentPeriod(Period.YEAR);
 				menu_period.setTitle(Period.YEAR.getLabel(context));
 				fragment.refresh();
+                if (chromecastHelper != null)
+                    chromecastHelper.sendMessage_changePeriod(Period.YEAR);
 				return true;
 			case R.id.menu_open: openGraph(); return true;
 		}
