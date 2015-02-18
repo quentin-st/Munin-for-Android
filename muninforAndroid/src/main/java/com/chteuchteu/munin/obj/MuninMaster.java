@@ -252,6 +252,13 @@ public class MuninMaster {
 		}
 		
 		if (res.hasSucceeded()) {
+			if (res.wasRedirected()) {
+				// Redirected from http to https
+				if (res.getLastUrl().contains("https") && !this.url.contains("https"))
+					this.setSSL(true);
+				this.url = res.getLastUrl();
+			}
+
 			Document doc = Jsoup.parse(page, this.url);
 			Elements images = doc.select("img[src$=-day.png]");
 

@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.CustomSSLFactory;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.HTTPResponse;
@@ -13,11 +12,13 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.scheme.PlainSocketFactory;
@@ -30,7 +31,10 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -58,6 +62,7 @@ public class NetHelper {
 	 */
 	private static HTTPResponse grabUrl(MuninMaster master, String url, String userAgent, boolean retried) {
 		HTTPResponse resp = new HTTPResponse();
+		resp.setRequestUrl(url);
 		
 		MuninFoo.logV("grabUrl:url", url);
 		
@@ -115,8 +120,9 @@ public class NetHelper {
 			((DefaultHttpClient) client).setParams(httpParameters);
 
 			resp.begin();
-			
-			HttpResponse response = client.execute(request);
+
+			HttpContext context = new BasicHttpContext();
+			HttpResponse response = client.execute(request, context);
 			InputStream in = response.getEntity().getContent();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			StringBuilder str = new StringBuilder();
@@ -133,8 +139,14 @@ public class NetHelper {
 				resp.setAuthenticateHeader(response.getHeaders("WWW-Authenticate")[0].getValue());
 
 			resp.end();
-			if (BuildConfig.DEBUG)
-				MuninFoo.logV("grabUrl", "Downloaded " + (response.getEntity().getContentLength()/1024) + "kb in " + resp.getExecutionTime() + "ms");
+
+			// Get current URL (detect redirection)
+			HttpUriRequest currentReq = (HttpUriRequest) context.getAttribute(ExecutionContext.HTTP_REQUEST);
+			HttpHost currentHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+			String currentUrl = (currentReq.getURI().isAbsolute()) ? currentReq.getURI().toString() : (currentHost.toURI() + currentReq.getURI());
+			resp.setLastUrl(currentUrl);
+
+			MuninFoo.logV("grabUrl", "Downloaded " + (response.getEntity().getContentLength()/1024) + "kb in " + resp.getExecutionTime() + "ms");
 		}
 		catch (SocketTimeoutException | ConnectTimeoutException e) { resp.setTimeout(true); }
 		catch (SSLException e) { // SSLPeerUnverifiedException
@@ -182,6 +194,7 @@ public class NetHelper {
 	 */
 	private static HTTPResponse_Bitmap grabBitmap(MuninMaster master, String url, String userAgent, boolean retried) {
 		HTTPResponse_Bitmap respObj = new HTTPResponse_Bitmap();
+		respObj.setRequestUrl(url);
 
 		MuninFoo.logV("grabImage:url", url);
 
@@ -254,8 +267,7 @@ public class NetHelper {
 			}
 
 			respObj.end();
-			if (BuildConfig.DEBUG)
-				MuninFoo.logV("grabImage", "Downloaded bitmap in " + respObj.getExecutionTime() + "ms");
+			MuninFoo.logV("grabImage", "Downloaded bitmap in " + respObj.getExecutionTime() + "ms");
 		}
 		catch (SocketTimeoutException | ConnectTimeoutException e) {
 			e.printStackTrace();
