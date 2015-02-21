@@ -225,4 +225,11 @@
 <string name="text53">Aggiorna solo con Wifi</string>
 	<string name="lang_ukrainian">Ucraino</string>
 	<string name="lang_dutch">Olandese</string>
-	</resources>
+	<string name="defaultActivity">Attività predefinita</string>
+	<string name="setDefaultActivity">Imposta attività predefinita</string>
+	<string name="load">Carica</string>
+	<string name="label">Etichetta</string>
+	<string name="selectALabel">Seleziona un\'etichetta</string>
+	<string name="emptyLabel">Etichetta vuota</string>
+
+</resources>
