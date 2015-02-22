@@ -2,6 +2,7 @@ package com.chteuchteu.munin.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -139,6 +140,7 @@ public class Fragment_Grid extends Fragment {
 					popup.getMenuInflater().inflate(R.menu.grid, menu);
 					menu.findItem(R.id.menu_edit).setVisible(false);
 					menu.findItem(R.id.menu_open).setVisible(false);
+					menu.findItem(R.id.menu_openInActivity).setVisible(true);
 
 					popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 						public boolean onMenuItemClick(MenuItem item) {
@@ -161,6 +163,11 @@ public class Fragment_Grid extends Fragment {
 									setCurrentPeriod(MuninPlugin.Period.YEAR);
 									refresh();
 									return true;
+								case R.id.menu_openInActivity:
+									Intent intent = new Intent(context, Activity_Grid.class);
+									intent.putExtra(Activity_Grid.ARG_GRIDID, grid.getId());
+									startActivity(intent);
+									break;
 							}
 							return true;
 						}

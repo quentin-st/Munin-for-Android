@@ -83,7 +83,7 @@ public class Activity_Grids extends MuninActivity {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 					TextView gridName = (TextView) view.findViewById(R.id.line_a);
 					Intent intent = new Intent(Activity_Grids.this, Activity_Grid.class);
-					intent.putExtra("gridId", getGridFromName(gridName.getText().toString()).getId());
+					intent.putExtra(Activity_Grid.ARG_GRIDID, getGridFromName(gridName.getText().toString()).getId());
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.DEEPER);
 				}

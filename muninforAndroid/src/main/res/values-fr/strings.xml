@@ -239,5 +239,6 @@
 	<string name="label">Label</string>
 	<string name="selectALabel">Sélectionnez un label</string>
 	<string name="emptyLabel">Label vide</string>
+	<string name="openGrid">Ouvrir</string>
 
 </resources>

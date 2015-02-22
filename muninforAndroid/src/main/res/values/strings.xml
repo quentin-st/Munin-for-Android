@@ -291,5 +291,6 @@
 	<string name="label">Label</string>
 	<string name="selectALabel">Select a label</string>
 	<string name="emptyLabel">Empty label</string>
+	<string name="openGrid">Open grid</string>
 
 </resources>

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Activity_Grid extends MuninActivity implements IGridActivity {
+	public static final String ARG_GRIDID = "gridId";
 	private MenuItem menu_refresh;
 	private MenuItem menu_edit;
 	private MenuItem menu_period;
@@ -59,7 +60,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		this.fragment = new Fragment_Grid();
 		// Pass the gridId
 		Bundle bundle = new Bundle();
-		long gridId = getIntent().getExtras().getLong("gridId");
+		long gridId = getIntent().getExtras().getLong(ARG_GRIDID);
 		bundle.putLong(Fragment_Grid.ARG_GRIDID, gridId);
 		this.fragment.setArguments(bundle);
 		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, this.fragment).commit();
