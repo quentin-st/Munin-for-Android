@@ -111,7 +111,7 @@ public class Fragment_Grid extends Fragment {
 
 		Util.Fonts.setFont(context, (TextView) view.findViewById(R.id.fullscreen_tv), Util.Fonts.CustomFont.Roboto_Regular);
 
-		if (grid.getItems().size() == 0)
+		if (autoLoad && grid.getItems().size() == 0)
 			edit();
 
 		if (!autoLoad) {
@@ -167,6 +167,7 @@ public class Fragment_Grid extends Fragment {
 									Intent intent = new Intent(context, Activity_Grid.class);
 									intent.putExtra(Activity_Grid.ARG_GRIDID, grid.getId());
 									startActivity(intent);
+									Util.setTransition(context, Util.TransitionStyle.DEEPER);
 									break;
 							}
 							return true;

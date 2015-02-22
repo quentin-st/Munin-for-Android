@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.BlurMaskFilter.Blur;
@@ -168,6 +169,14 @@ public final class Util {
 					setFont((ViewGroup) v, font);
 			}
 		}
+	}
+
+	public static int dpToPx(int dp) {
+		return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
+	}
+
+	public static int pxToDp(int px) {
+		return (int) (px / Resources.getSystem().getDisplayMetrics().density);
 	}
 	
 	public static int[] getDeviceSize(Context c) {

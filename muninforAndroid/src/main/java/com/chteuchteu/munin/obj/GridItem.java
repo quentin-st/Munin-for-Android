@@ -58,7 +58,6 @@ public class GridItem {
 	private View action_up, action_left, action_down,
 			action_right, action_delete;
 
-	private static int 	ICONS_MAX_WIDTH = 220;
 	private static float	ALPHA_EDITING = 0.2f;
 	
 	public GridItem(Grid grid, MuninPlugin plugin) {
@@ -329,9 +328,19 @@ public class GridItem {
 		}
 		return false;
 	}
+
+	/**
+	 * Returns true if there is enough room for actions buttons
+	 *  (false when they are overlapping)
+	 */
+	private boolean enoughRoomForActionButtons(int containerWidth) {
+		int ICONS_MIN_WIDTH = 170;
+		return Util.pxToDp(containerWidth) > ICONS_MIN_WIDTH;
+	}
+	private boolean enoughRoomForActionButtons() { return enoughRoomForActionButtons(container.getWidth()); }
 	
 	private void edit(final Context c) {
-		if (container.getWidth() > ICONS_MAX_WIDTH) {
+		if (enoughRoomForActionButtons()) {
 			// Enough space to display buttons on gridItem
 			editing = true;
 			showActionButtons();
@@ -433,13 +442,13 @@ public class GridItem {
 		int deviceWidth = Util.getDeviceSize(context)[1];
 		int diff = deviceWidth / (grid.getNbColumns()-1) - deviceWidth / (grid.getNbColumns());
 		int newContainerWidth = container.getWidth() - diff;
-		if (newContainerWidth > ICONS_MAX_WIDTH)
+		if (enoughRoomForActionButtons(newContainerWidth))
 			showActionButtons();
 	}
 	
 	public void updateActionButtons() {
 		hideActionButtons();
-		if (container.getWidth() > ICONS_MAX_WIDTH)
+		if (enoughRoomForActionButtons())
 			showActionButtons();
 	}
 

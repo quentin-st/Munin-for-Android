@@ -230,6 +230,13 @@ public class Grid {
 		this.nbColumns++;
 		
 		if (editView) {
+			// Hide edit buttons on each grid item
+			for (GridItem i : items) {
+				if (i.editing)
+					i.cancelEdit();
+			}
+
+			// Add one empty view on each line
 			for (int i=0; i<nbLines; i++) {
 				// Get the layout to add the view
 				LinearLayout row = (LinearLayout) container.getChildAt(i);
