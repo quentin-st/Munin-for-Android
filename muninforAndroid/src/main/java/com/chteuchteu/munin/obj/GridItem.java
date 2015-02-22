@@ -151,7 +151,7 @@ public class GridItem {
 			}
 		});
 
-		this.applyPlaceholder();
+		this.applyPlaceholder(false);
 
 		return outerContainer;
 	}
@@ -443,9 +443,11 @@ public class GridItem {
 			showActionButtons();
 	}
 
-	public void applyPlaceholder() {
+	public void applyPlaceholder(boolean error) {
+		int imgRes = error ? R.drawable.croppedgraphplaceholder_error
+				: R.drawable.croppedgraphplaceholder;
 		iv.setImageBitmap(Util.dropShadow(
-				BitmapFactory.decodeResource(context.getResources(), R.drawable.croppedgraphplaceholder)));
+				BitmapFactory.decodeResource(context.getResources(), imgRes)));
 	}
 
 	public long getId() { return id; }

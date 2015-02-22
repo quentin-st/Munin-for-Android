@@ -82,17 +82,20 @@ public class GridDownloadHelper {
 		protected void onPostExecute(Void result) {
 			int gridItemsSize = grid.getItems().size();
 			List<GridItem> gridItems = grid.getItems();
+			GridItem gridItem = gridItems.get(i);
 
 			if (i == gridItemsSize - 1)
 				onStop();
 			if (i < gridItemsSize) {
 				if (gridItems.get(i) != null) {
-					if (originalBitmap != null) {
-						gridItems.get(i).iv.setImageBitmap(croppedBitmap);
-						gridItems.get(i).originalGraph = originalBitmap;
-						gridItems.get(i).croppedGraph = croppedBitmap;
+					if (originalBitmap != null && croppedBitmap != null) {
+						gridItem.iv.setImageBitmap(croppedBitmap);
+						gridItem.originalGraph = originalBitmap;
+						gridItem.croppedGraph = croppedBitmap;
 					}
-					gridItems.get(i).pb.setVisibility(View.GONE);
+					else
+						gridItem.applyPlaceholder(true);
+					gridItem.pb.setVisibility(View.GONE);
 				}
 				
 				int next = i + nbSimultaneousDownloads;
