@@ -79,7 +79,7 @@ public class Grid {
 		}
 	}
 	
-	public void add(GridItem item, Context c, MuninFoo f, boolean editView) {
+	public void add(GridItem item, Context c, MuninFoo f, boolean editView, boolean insertInDb) {
 		// Check if exists
 		boolean exists = false;
 		for (GridItem i : items) {
@@ -98,7 +98,7 @@ public class Grid {
 		if (get(item.getX(), item.getY()) == null)
 			this.items.add(item);
 		else
-			MuninFoo.logE("", "This item cannot be placed (" + item.getX() + "," + item.getY() + ")");
+			MuninFoo.logE("This item cannot be put here (" + item.getX() + "," + item.getY() + ")");
 		
 		// Update this items size on this line
 		for (int x=0; x<nbColumns; x++) {
@@ -106,8 +106,9 @@ public class Grid {
 			if (ll != null)
 				updateGridSize(ll, c);
 		}
-		
-		f.sqlite.saveGridItemRelations(this);
+
+		if (insertInDb)
+			f.sqlite.dbHlpr.insertGridItemRelation(item);
 	}
 	
 	private GridItem get(int posX, int posY) {

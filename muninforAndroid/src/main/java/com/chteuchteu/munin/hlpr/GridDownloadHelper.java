@@ -14,13 +14,11 @@ import java.util.List;
 
 public class GridDownloadHelper {
 	private Grid grid;
-	private int nbSimultaneousDownloads;
 	private Period period;
 	private Fragment_Grid fragment;
 	
-	public GridDownloadHelper(Grid grid, int nbSimultaneousDownloads, Period period, Fragment_Grid fragment) {
+	public GridDownloadHelper(Grid grid, Period period, Fragment_Grid fragment) {
 		this.grid = grid;
-		this.nbSimultaneousDownloads = nbSimultaneousDownloads;
 		this.period = period;
 		this.fragment = fragment;
 	}
@@ -33,9 +31,27 @@ public class GridDownloadHelper {
 		
 		onStart();
 		
-		for (int i=0; i<this.nbSimultaneousDownloads; i++) {
-			if (grid.getItems().size() > i)
-				new DownloadBitmaps(i, forceUpdate).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		for (GridItem item : grid.getItems()) {
+			boolean onStopWhenFinished = grid.getItems().indexOf(item) == grid.getItems().size()-1;
+			new BitmapDownloader(item, forceUpdate, onStopWhenFinished).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		}
+	}
+
+	/**
+	 * Only download graph for those items
+	 */
+	public void startForItems(List<GridItem> items) {
+		if (items.isEmpty())
+			return;
+
+		for (GridItem item : items)
+			item.pb.setVisibility(View.VISIBLE);
+
+		onStart();
+
+		for (GridItem item : items) {
+			boolean onStopWhenFinished = items.indexOf(item) == items.size()-1;
+			new BitmapDownloader(item, true, onStopWhenFinished).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		}
 	}
 	
@@ -47,60 +63,51 @@ public class GridDownloadHelper {
 		fragment.setUpdating(false);
 	}
 	
-	private class DownloadBitmaps extends AsyncTask<Void, Integer, Void> {
-		private int i;
+	private class BitmapDownloader extends AsyncTask<Void, Integer, Void> {
+		private GridItem gridItem;
 		private boolean forceUpdate;
 		private Bitmap originalBitmap;
 		private Bitmap croppedBitmap;
+		private boolean onStopWhenFinished;
 		
-		private DownloadBitmaps(int i, boolean forceUpdate) {
-			this.i = i;
+		private BitmapDownloader(GridItem item, boolean forceUpdate, boolean onStopWhenFinished) {
+			this.gridItem = item;
 			this.forceUpdate = forceUpdate;
+			this.onStopWhenFinished = onStopWhenFinished;
 		}
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			if (i < grid.getItems().size()) {
-				GridItem gridItem = grid.getItems().get(i);
-				if (forceUpdate || gridItem.iv.getDrawable() == null) {
-					if (gridItem != null && gridItem.getPlugin() != null && gridItem.getPlugin().getInstalledOn() != null
-							&& gridItem.getPlugin().getInstalledOn().getParent() != null) {
-						String graphUrl = gridItem.getPlugin().getImgUrl(period);
+			if (forceUpdate || gridItem.iv.getDrawable() == null) {
+				if (gridItem != null && gridItem.getPlugin() != null && gridItem.getPlugin().getInstalledOn() != null
+						&& gridItem.getPlugin().getInstalledOn().getParent() != null) {
+					String graphUrl = gridItem.getPlugin().getImgUrl(period);
 
-						Bitmap downloadedBitmap = Util.removeBitmapBorder(gridItem.getPlugin().getInstalledOn().getParent().grabBitmap(graphUrl,
-								MuninFoo.getInstance().getUserAgent()).getBitmap());
+					Bitmap downloadedBitmap = Util.removeBitmapBorder(gridItem.getPlugin().getInstalledOn().getParent().grabBitmap(graphUrl,
+							MuninFoo.getInstance().getUserAgent()).getBitmap());
 
-						originalBitmap = Util.dropShadow(downloadedBitmap);
-						croppedBitmap = Util.dropShadow(Util.extractGraph(downloadedBitmap));
-					}
+					originalBitmap = Util.dropShadow(downloadedBitmap);
+					croppedBitmap = Util.dropShadow(Util.extractGraph(downloadedBitmap));
 				}
 			}
+
 			return null;
 		}
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			int gridItemsSize = grid.getItems().size();
-			List<GridItem> gridItems = grid.getItems();
-			GridItem gridItem = gridItems.get(i);
-
-			if (i == gridItemsSize - 1)
+			if (onStopWhenFinished)
 				onStop();
-			if (i < gridItemsSize) {
-				if (gridItems.get(i) != null) {
-					if (originalBitmap != null && croppedBitmap != null) {
-						gridItem.iv.setImageBitmap(croppedBitmap);
-						gridItem.originalGraph = originalBitmap;
-						gridItem.croppedGraph = croppedBitmap;
-					}
-					else
-						gridItem.applyPlaceholder(true);
-					gridItem.pb.setVisibility(View.GONE);
+
+			if (gridItem != null) {
+				if (originalBitmap != null && croppedBitmap != null) {
+					gridItem.iv.setImageBitmap(croppedBitmap);
+					gridItem.originalGraph = originalBitmap;
+					gridItem.croppedGraph = croppedBitmap;
 				}
-				
-				int next = i + nbSimultaneousDownloads;
-				if (next < gridItemsSize)
-					new DownloadBitmaps(next, forceUpdate).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				else if (forceUpdate)
+					gridItem.applyPlaceholder(true);
+				gridItem.pb.setVisibility(View.GONE);
 			}
 		}
 	}

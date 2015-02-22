@@ -92,6 +92,8 @@ public class GridItem {
 		Util.Fonts.setFont(context, serverName, Util.Fonts.CustomFont.Roboto_Regular);
 		pluginName.setText(plugin.getFancyName());
 		serverName.setText(plugin.getInstalledOn().getName());
+		if (fragment.isEditing())
+			footer.setVisibility(View.GONE);
 
 		switch (Util.getPref(context, Util.PrefKeys.GridsLegend)) {
 			case "none": footer.setVisibility(View.GONE); break;
@@ -233,6 +235,10 @@ public class GridItem {
 	}
 	
 	private static void add(Context c, MuninFoo f, Grid g, IGridActivity activity, Fragment_Grid fragment, int X, int Y) {
+		// Cancel any editing grid item
+		for (GridItem item : g.getItems())
+			item.cancelEdit();
+
 		add_serversListDialog(c, f, g, activity, fragment, X, Y);
 	}
 	
@@ -287,11 +293,15 @@ public class GridItem {
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
+				if (selectedItems.isEmpty())
+					return;
+
 				if (g.getNbColumns() < 3 && selectedItems.size() > 3)
 					while (g.getNbColumns() < 3)
 						g.addColumn(c, true);
 				
 				int maxWidth = g.getNbColumns();
+				List<GridItem> addedItems = new ArrayList<>();
 				for (Integer i : selectedItems) {
 					MuninPlugin p = s.getPlugin(i);
 					if (!alreadyAdded(g, p)) {
@@ -300,15 +310,15 @@ public class GridItem {
 						int[] pos = g.getNextAvailable(X, Y, maxWidth, c);
 						item.X = pos[0];
 						item.Y = pos[1];
-						g.add(item, c, f, true);
+						g.add(item, c, f, true, false);
 						g.swapViews(g.getViewAt(item.X, item.Y), item.getView(null));
+						addedItems.add(item);
 					}
 				}
-				
-				if (selectedItems.size() > 0) {
-					f.sqlite.saveGridItemRelations(g);
-					g.dHelper.start(false);
-				}
+
+				f.sqlite.dbHlpr.insertGridItemRelations(addedItems);
+				// Load graph for those items
+				g.dHelper.startForItems(addedItems);
 			}
 		})
 		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

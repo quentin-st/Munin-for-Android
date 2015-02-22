@@ -85,7 +85,7 @@ public class Fragment_Grid extends Fragment {
 		grid.updateLayoutSizes(context);
 
 		// Launch graphs downloader
-		grid.dHelper = new GridDownloadHelper(grid, 3, currentPeriod, this);
+		grid.dHelper = new GridDownloadHelper(grid, currentPeriod, this);
 		if (autoLoad)
 			grid.dHelper.start(true);
 
