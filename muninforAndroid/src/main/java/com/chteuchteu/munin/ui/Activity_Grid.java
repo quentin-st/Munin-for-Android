@@ -132,7 +132,10 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
             chromecastHelper.onCreate(new Runnable() {
                 @Override
                 public void run() {
-                    chromecastHelper.sendMessage_inflateGrid(tmpGrid, Util.getDefaultPeriod(context));
+	                if (fragment == null || fragment.getGrid() == null)
+		                return;
+
+                    chromecastHelper.sendMessage_inflateGrid(fragment.getGrid(), Util.getDefaultPeriod(context));
                 }
             });
         }
