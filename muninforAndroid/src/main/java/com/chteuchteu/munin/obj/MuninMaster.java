@@ -305,7 +305,7 @@ public class MuninMaster {
 			 */
 			if (!doc.select("span.comparison").isEmpty()) {
 				// Replace the current master URL
-				String parentUrl = "test";
+				String parentUrl = "";
 				Elements parentLinks = doc.select("a[href=..]");
 				if (parentLinks.size() == 1)
 					parentUrl = parentLinks.get(0).absUrl("href");
@@ -500,6 +500,20 @@ public class MuninMaster {
 			onlineMaster.setUrl(this.url);
 			onlineMaster.setSSL(this.ssl);
 			onlineMaster.setAuthIds(this.authLogin, this.authPassword, this.authType);
+			// Redetect HTTPS
+			String res = onlineMaster.detectPageType(muninFoo.getUserAgent());
+			if (res.equals("munin/x/") || res.equals("munin/")) {
+				// SSL
+				if (onlineMaster.getSSL() != this.getSSL()) {
+					MuninFoo.logV("rescan", "master.SSL: " + this.getSSL() + " -> " + onlineMaster.getSSL());
+					this.setSSL(onlineMaster.getSSL());
+				}
+				// Master url
+				if (!onlineMaster.getUrl().equals(this.getUrl()) && !onlineMaster.getUrl().equals("")) {
+					MuninFoo.logV("rescan", "master.url: " + this.getUrl() + " -> " + onlineMaster.getUrl());
+					this.setUrl(onlineMaster.getUrl());
+				}
+			}
 
             // Set DynazoomAvailability to AUTO_DETECT to enable a new check
             onlineMaster.setDynazoomAvailable(DynazoomAvailability.AUTO_DETECT);
@@ -518,23 +532,28 @@ public class MuninMaster {
 					for (MuninServer server : this.children) {
 						if (server.equalsApprox(onlineServer)) {
 							alreadyThere = true;
-							
-							// Check if we can grab some attributes
-							// GraphURL
-							if (!server.getGraphURL().equals(onlineServer.getGraphURL()) && !onlineServer.getGraphURL().equals("")) {
-								server.setGraphURL(onlineServer.getGraphURL());
-								toBeUpdated.add(server);
-							}
 
+							// Check if we can grab some attributes
                             // DynazoomAvailability
                             if (server.getParent().isDynazoomAvailable() != onlineServer.getParent().isDynazoomAvailable()) {
+	                            MuninFoo.logV("rescan", "Dynazoom availability has changed");
                                 server.getParent().setDynazoomAvailable(onlineServer.getParent().isDynazoomAvailable());
-                                toBeUpdated.add(server);
+	                            if (!toBeUpdated.contains(server))
+	                                toBeUpdated.add(server);
                             }
 
 							// HDGraphURL
 							if (!server.getHdGraphURL().equals(onlineServer.getHdGraphURL()) && !onlineServer.getHdGraphURL().equals("")) {
+								MuninFoo.logV("rescan", "HDGraphUrl has changed");
 								server.setHdGraphURL(onlineServer.getHdGraphURL());
+								if (!toBeUpdated.contains(server))
+									toBeUpdated.add(server);
+							}
+
+							// Server URL (http => https)
+							if (!server.getServerUrl().equals(onlineServer.getServerUrl()) && !onlineServer.getServerUrl().equals("")) {
+								MuninFoo.logV("rescan", "server url has changed");
+								server.setServerUrl(onlineServer.getServerUrl());
 								if (!toBeUpdated.contains(server))
 									toBeUpdated.add(server);
 							}
@@ -547,17 +566,24 @@ public class MuninMaster {
 					if (!alreadyThere)
 						toBeAdded.add(onlineServer);
 				}
-				
+
+				// Save MuninMaster
+				muninFoo.sqlite.dbHlpr.updateMuninMaster(this);
+
+				// Save servers changes
 				for (MuninServer server : toBeAdded) {
 					addChild(server);
 					muninFoo.addServer(server);
 					muninFoo.sqlite.dbHlpr.insertMuninServer(server);
 					nbAddedServers++;
 				}
+				toBeAdded.clear();
+
 				for (MuninServer server : toBeUpdated) {
 					muninFoo.sqlite.dbHlpr.updateMuninServer(server);
 					nbUpdatedServers++;
 				}
+				toBeUpdated.clear();
 				
 				// Remove offline servers if needed
 				ArrayList<MuninServer> toBeRemoved = new ArrayList<>();
@@ -582,15 +608,24 @@ public class MuninMaster {
 					muninFoo.sqlite.dbHlpr.deleteServer(server);
 					nbDeletedServers++;
 				}
+				toBeRemoved.clear();
 				
-				// The servers are now synced.
+				// Servers are now synced.
 				// PLUGINS DIFF
 				for (MuninServer server : this.children) {
                     // Force HD graph URL rescan
                     server.setHdGraphURL(null);
 
+					boolean graphUrlChanged = false;
+					String oldGraphUrl = server.getGraphURL();
+
 					List<MuninPlugin> onlinePlugins = server.getPluginsList(muninFoo.getUserAgent());
-					
+
+					// Detect graphUrl change
+					String newGraphUrl = server.getGraphURL();
+					if (!oldGraphUrl.equals(newGraphUrl))
+						graphUrlChanged = true;
+
 					// If the download hasn't failed
 					if (onlinePlugins != null && onlinePlugins.size() > 0) {
 						// Add new plugins
@@ -603,8 +638,8 @@ public class MuninMaster {
 									alreadyThere = true;
 									
 									// Get other values
-									if (!oldPlugin.getCategory().equals(onlinePlugin.getCategory())
-											&& !onlinePlugin.getCategory().equals("")) {
+									// Plugin category
+									if (!oldPlugin.getCategory().equals(onlinePlugin.getCategory()) && !onlinePlugin.getCategory().equals("")) {
 										oldPlugin.setCategory(onlinePlugin.getCategory());
 										pluginsToBeUpdated.add(oldPlugin);
 									}
@@ -649,6 +684,9 @@ public class MuninMaster {
 							muninFoo.sqlite.dbHlpr.deletePlugin(plugin);
 							nbDeletedPlugins++;
 						}
+
+						if (graphUrlChanged)
+							muninFoo.sqlite.dbHlpr.updateMuninServer(server);
 					}
 				}
 			}

@@ -321,7 +321,7 @@ public class GridItem {
 				g.dHelper.startForItems(addedItems);
 			}
 		})
-		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		.setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.dismiss();
