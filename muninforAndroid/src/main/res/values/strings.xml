@@ -247,7 +247,7 @@
 	<string name="update_credentials">Edit connection credentials</string>
 	<string name="long_click">Long click to edit</string>
 	<string name="rescan">Rescan</string>
-	<string name="support">Support</string>
+	<string name="support">Support / feedback</string>
 	<string name="choose_email_client">Please choose your email app</string>
 	<string name="donate">Donate</string>
 	<string name="donate_text">Developing such a big application requires a huge amount of time and involvement. If the app is useful
