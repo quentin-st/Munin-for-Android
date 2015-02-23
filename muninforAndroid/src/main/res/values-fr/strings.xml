@@ -173,7 +173,7 @@
 	<string name="update_credentials">Mettre à jour les infos de connexion</string>
 	<string name="long_click">Appui long pour éditer</string>
 	<string name="rescan">Re-scanner</string>
-	<string name="support">Support</string>
+	<string name="support">Support / suggestions</string>
 	<string name="choose_email_client">Veuillez sélectionner votre application mail</string>
 	<string name="donate">Donation</string>
 	<string name="donate_text">Développer une telle application nécessite beaucoup de temps et de dévotion. Si Munin for Android vous est utile,
