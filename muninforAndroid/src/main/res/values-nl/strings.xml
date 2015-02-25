@@ -222,4 +222,6 @@
 	<string name="emptyLabel">Leeg label</string>
 
 <string name="lang_dutch">Nederlands</string>
-	</resources>
+	<string name="openGrid">Open raster</string>
+
+</resources>
