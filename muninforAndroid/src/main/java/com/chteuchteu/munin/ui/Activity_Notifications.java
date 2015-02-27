@@ -33,6 +33,7 @@ import com.chteuchteu.munin.Service_Notifications;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.MuninServer;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -124,7 +125,7 @@ public class Activity_Notifications extends MuninActivity {
 			@Override public void onNothingSelected(AdapterView<?> arg0) { }
 		});
 		
-		checkboxes = new CheckBox[muninFoo.getOrderedServers().size()];
+		checkboxes = new CheckBox[muninFoo.getServers().size()];
 		
 		findViewById(R.id.btn_selectServersToWatch).setOnClickListener(new OnClickListener() {
 			@Override
@@ -134,7 +135,9 @@ public class Activity_Notifications extends MuninActivity {
 				ScrollView scrollView = new ScrollView(activity);
 				checkboxesView = new LinearLayout(activity);
 				checkboxesView.setOrientation(LinearLayout.VERTICAL);
-				for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
+				for (int i=0; i<muninFoo.getServers().size(); i++) {
+                    MuninServer server = muninFoo.getServers().get(i);
+
 					LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 					View v = vi.inflate(R.layout.servers_list_checkbox, null);
 					
@@ -142,7 +145,7 @@ public class Activity_Notifications extends MuninActivity {
 					int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
 					checkboxes[i].setButtonDrawable(id);
 					
-					if (watchedServers.contains(muninFoo.getOrderedServers().get(i).getServerUrl()))
+					if (watchedServers.contains(server.getServerUrl()))
 						checkboxes[i].setChecked(true);
 					
 					v.findViewById(R.id.ll_container).setOnClickListener(new OnClickListener() {
@@ -153,8 +156,8 @@ public class Activity_Notifications extends MuninActivity {
 						}
 					});
 					
-					((TextView)v.findViewById(R.id.line_a)).setText(muninFoo.getOrderedServers().get(i).getName());
-					((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.getOrderedServers().get(i).getServerUrl());
+					((TextView)v.findViewById(R.id.line_a)).setText(server.getName());
+					((TextView)v.findViewById(R.id.line_b)).setText(server.getServerUrl());
 					
 					checkboxesView.addView(v);
 				}
@@ -235,9 +238,9 @@ public class Activity_Notifications extends MuninActivity {
 		for (CheckBox checkbox: checkboxes) {
 			if (checkbox.isChecked()) {
 				if (i != checkboxes.length - 1)
-					servers = servers + muninFoo.getOrderedServers().get(i).getServerUrl() + ";";
+					servers = servers + muninFoo.getServers().get(i).getServerUrl() + ";";
 				else
-					servers = servers + muninFoo.getOrderedServers().get(i).getServerUrl();
+					servers = servers + muninFoo.getServers().get(i).getServerUrl();
 			}
 			i++;
 		}

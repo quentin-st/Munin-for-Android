@@ -58,7 +58,7 @@ public class Adapter_ExpandableListView extends BaseExpandableListAdapter {
 		convertView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.onChildClick(groupPosition, childPosition);
+				activity.onChildClick();
 			}
 		});
 		

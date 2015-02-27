@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
-import com.chteuchteu.munin.obj.Grid;
-import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -26,10 +24,6 @@ public class SQLite {
 	}
 	
 	public void insertMuninMaster(MuninMaster master) {
-		// Update servers positions
-		for (MuninServer server : master.getChildren())
-			server.setPosition(master.getChildren().indexOf(server));
-		
 		// Insert master
 		dbHlpr.insertMuninMaster(master);
 		// Insert servers
@@ -50,13 +44,6 @@ public class SQLite {
 			for (MuninPlugin p : l.plugins)
 				dbHlpr.insertLabelRelation(p, l);
 		}
-	}
-	
-	public void saveGridItemRelations(Grid g) {
-		// Simplest way of doing it ;)
-		dbHlpr.deleteGridItemRelations(g);
-		for (GridItem i : g.getItems())
-			dbHlpr.insertGridItemRelation(i);
 	}
 	
 	public void migrateTo3() {

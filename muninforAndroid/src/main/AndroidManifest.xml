@@ -48,7 +48,6 @@
 		</activity>
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Notifications" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Plugins" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_ServersEdit" />
 		<activity
 			android:name="com.chteuchteu.munin.ui.Activity_Server"
 			android:configChanges="orientation|screenSize|keyboardHidden"

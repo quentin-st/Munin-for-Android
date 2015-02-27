@@ -87,11 +87,11 @@ public class Activity_Servers extends MuninActivity {
 		// Create collection
 		LinkedHashMap<MuninMaster, List<String>> serversCollection = new LinkedHashMap<>();
 		
-		for (MuninMaster m : muninFoo.masters) {
+		for (MuninMaster master : muninFoo.masters) {
 			List<String> childList = new ArrayList<>();
-			for (MuninServer s : m.getOrderedChildren())
-				childList.add(s.getName());
-			serversCollection.put(m, childList);
+			for (MuninServer server : master.getChildren())
+				childList.add(server.getName());
+			serversCollection.put(master, childList);
 		}
 		
 		return serversCollection;
@@ -100,10 +100,8 @@ public class Activity_Servers extends MuninActivity {
 	/**
 	 * Called when a click event is triggered on a child-level element of the listview
 	 * Called from @see com.chteuchteu.munin.adptr.Adapter_ExpandableListView#getChildView(int, int, boolean, View, android.view.ViewGroup)
-	 * @param groupPosition int
-	 * @param childPosition int
 	 */
-	public void onChildClick(int groupPosition, int childPosition) {
+	public void onChildClick() {
 		Toast.makeText(this, R.string.long_click, Toast.LENGTH_SHORT).show();
 	}
 	
@@ -115,7 +113,7 @@ public class Activity_Servers extends MuninActivity {
 	 * @return boolean
 	 */
 	public boolean onChildLongClick(int groupPosition, int childPosition) {
-		final MuninServer server = muninFoo.masters.get(groupPosition).getServerFromFlatPosition(childPosition);
+		final MuninServer server = muninFoo.masters.get(groupPosition).getChildren().get(childPosition);
 		
 		// Display actions list
 		AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
@@ -182,7 +180,6 @@ public class Activity_Servers extends MuninActivity {
 				context, android.R.layout.simple_list_item_1);
 		arrayAdapter.add(context.getString(R.string.rescan));
 		arrayAdapter.add(context.getString(R.string.renameMaster));
-		arrayAdapter.add(context.getString(R.string.editServersTitle));
 		arrayAdapter.add(context.getString(R.string.update_credentials));
 		arrayAdapter.add(context.getString(R.string.settings_hdgraphs));
 		arrayAdapter.add(context.getString(R.string.delete_master));
@@ -218,19 +215,13 @@ public class Activity_Servers extends MuninActivity {
 							public void onClick(DialogInterface dialog, int whichButton) { }
 						}).show();
 						break;
-					case 2: // Reorganize / delete servers
-						Intent i = new Intent(context, Activity_ServersEdit.class);
-						i.putExtra("masterId", master.getId());
-						context.startActivity(i);
-						Util.setTransition(context, TransitionStyle.DEEPER);
-						break;
-					case 3: // Edit connection credentials
+					case 2: // Edit connection credentials
 						displayCredentialsDialog(master);
 						break;
-					case 4: // HD Graphs
+					case 3: // HD Graphs
 						displayHDGraphsDialog(master);
 						break;
-					case 5: // Delete master
+					case 4: // Delete master
 						new AlertDialog.Builder(context)
 						.setTitle(R.string.delete)
 						.setMessage(R.string.text84)

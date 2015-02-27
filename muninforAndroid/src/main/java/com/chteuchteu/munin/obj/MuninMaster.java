@@ -177,51 +177,12 @@ public class MuninMaster {
 		return p != null && this.url.equals(p.url);
 	}
 	
-	public MuninServer getServerFromFlatPosition(int position) {
-		// si pos -> 0 1 4 8 9 11
-		// gSFFP(2) -> 4 (!= null)
-		if (position >= 0 && position < getOrderedChildren().size())
-			return getOrderedChildren().get(position);
-		return null;
-	}
-	
 	private MuninServer getServer(String serverUrl) {
 		for (MuninServer server : this.children) {
 			if (server.getServerUrl().equals(serverUrl))
 				return server;
 		}
 		return null;
-	}
-	
-	public List<MuninServer> getOrderedChildren() {
-		// Let's first sort the list.
-		// We'll then clean the positions
-		List<MuninServer> source = new ArrayList<>(this.children);
-		List<MuninServer> newList = new ArrayList<>();
-		
-		int curPos = 0;
-		while (source.size() > 0) {
-			while (Util.serversListContainsPos(source, curPos)) {
-				List<MuninServer> toBeDeleted = new ArrayList<>();
-				
-				for (MuninServer s : source) {
-					if (s.getPosition() == curPos) {
-						newList.add(s);
-						toBeDeleted.add(s);
-					}
-				}
-				
-				for (MuninServer s : toBeDeleted)
-					source.remove(s);
-			}
-			curPos++;
-		}
-		
-		// We now have a sorted list in newList. Let's restablish the pos
-		for (int i=0; i<newList.size(); i++)
-			newList.get(i).setPosition(i);
-		
-		return newList;
 	}
 	
 	public HTTPResponse_Bitmap grabBitmap(String url, String userAgent) {
@@ -345,7 +306,6 @@ public class MuninMaster {
 							Element infos = host.select("a.link-host").get(0);
 							MuninServer serv = new MuninServer(infos.text(), infos.attr("abs:href"));
 							serv.setParent(this);
-							serv.setPosition(hosts.indexOf(host));
 							nbServers++;
 						}
 					}
@@ -369,7 +329,6 @@ public class MuninMaster {
 						for (Element host : hosts) {
 							MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
 							serv.setParent(this);
-							serv.setPosition(hosts.indexOf(host));
 							nbServers++;
 						}
 					}

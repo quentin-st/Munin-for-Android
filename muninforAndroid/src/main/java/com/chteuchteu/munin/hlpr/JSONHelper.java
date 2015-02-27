@@ -64,7 +64,6 @@ public class JSONHelper {
 						jsonServer.put("id", server.getId());
 						jsonServer.put("name", server.getName());
 						jsonServer.put("serverUrl", server.getServerUrl());
-						jsonServer.put("position", server.getPosition());
 						jsonServer.put("graphURL", server.getGraphURL());
 						jsonServer.put("hdGraphURL", server.getHdGraphURL());
 
@@ -142,7 +141,6 @@ public class JSONHelper {
 					server.setId(jsonServer.getLong("id"));
 					server.setName(jsonServer.getString("name"));
 					server.setServerUrl(jsonServer.getString("serverUrl"));
-					server.setPosition(jsonServer.getInt("position"));
 					server.setGraphURL(jsonServer.getString("graphURL"));
 					server.setHdGraphURL(jsonServer.getString("hdGraphURL"));
 

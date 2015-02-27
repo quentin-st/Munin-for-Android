@@ -76,7 +76,6 @@
 	<string name="menu_serversedit_revert">"Вернуться"</string>
 	<string name="servers_noservers_1">"Серверы не добавлены"</string>
 	<string name="servers_noservers_2">"Добавьте ваш или тестовый сервер, кликните +"</string>
-	<string name="editServersTitle">"Упорядочить / удалить серверы"</string>
 	<string name="alertsTitle">"Оповещения"</string>
 	<string name="notificationsTitle">"Уведомления"</string>
 

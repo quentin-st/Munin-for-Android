@@ -58,7 +58,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_MUNINSERVERS_NAME = "name";
 	private static final String KEY_MUNINSERVERS_GRAPHURL = "graphURL";
 	private static final String KEY_MUNINSERVERS_HDGRAPHURL = "hdGraphURL";
-	private static final String KEY_MUNINSERVERS_POSITION = "position";
 	private static final String KEY_MUNINSERVERS_MASTER = "master";
 	
 	// MuninPlugins
@@ -117,7 +116,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_MUNINSERVERS_NAME + " TEXT,"
 			+ KEY_MUNINSERVERS_GRAPHURL + " TEXT,"
 			+ KEY_MUNINSERVERS_HDGRAPHURL + " TEXT,"
-			+ KEY_MUNINSERVERS_POSITION + " INTEGER,"
 			+ KEY_MUNINSERVERS_MASTER + " INTEGER)";
 	
 	private static final String CREATE_TABLE_MUNINPLUGINS = "CREATE TABLE " + TABLE_MUNINPLUGINS + " ("
@@ -252,7 +250,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_NAME, s.getName());
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
 		values.put(KEY_MUNINSERVERS_HDGRAPHURL, s.getHdGraphURL());
-		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
 		values.put(KEY_MUNINSERVERS_MASTER, s.master != null ? s.master.getId() : -1);
 		
 		long id = db.insert(TABLE_MUNINSERVERS, null, values);
@@ -261,16 +258,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		close(null, db);
 		return id;
-	}
-
-	@Deprecated
-	public long saveMuninServer(MuninServer s) {
-		if (s.getParent() != null)
-			saveMuninMaster(s.getParent());
-		if (s.isPersistant)
-			return updateMuninServer(s);
-		else
-			return insertMuninServer(s);
 	}
 	
 	public long insertMuninPlugin(MuninPlugin p) {
@@ -475,7 +462,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_NAME, s.getName());
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
 		values.put(KEY_MUNINSERVERS_HDGRAPHURL, s.getHdGraphURL());
-		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
 		values.put(KEY_MUNINSERVERS_MASTER, s.master.getId());
 		
 		int nbRows = db.update(TABLE_MUNINSERVERS, values, KEY_ID + " = ?", new String[] { String.valueOf(s.getId()) });
@@ -591,6 +577,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		if (c != null && c.moveToFirst()) {
 			long masterId = c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_MASTER));
+			close(c, db);
 			return getMaster(masterId, null);
 		}
 
@@ -618,7 +605,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 					s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
 					s.setHdGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHURL)));
-					s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 					s.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_MASTER)), currentMasters));
 					s.setPluginsList(getPlugins(s));
 					s.isPersistant = true;
@@ -693,7 +679,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 			s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
 			s.setHdGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHURL)));
-			s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 			s.setPluginsList(getPlugins(s));
 			s.isPersistant = true;
 			close(c, db);

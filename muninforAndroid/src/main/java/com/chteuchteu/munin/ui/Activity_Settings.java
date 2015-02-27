@@ -88,7 +88,7 @@ public class Activity_Settings extends MuninActivity {
 		// Default server spinner
 		List<String> serversList = new ArrayList<>();
 		serversList.add(getString(R.string.text48_3));
-		for (MuninServer server : muninFoo.getOrderedServers())
+		for (MuninServer server : muninFoo.getServers())
 			serversList.add(server.getName());
 		ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, serversList);
 		dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -233,7 +233,7 @@ public class Activity_Settings extends MuninActivity {
 		if (!defaultServerUrl.equals("")) {
 			int pos = -1;
 			int i = 0;
-			for (MuninServer server : muninFoo.getOrderedServers()) {
+			for (MuninServer server : muninFoo.getServers()) {
 				if (server.getServerUrl().equals(defaultServerUrl)) {
 					pos = i;
 					break;
@@ -344,7 +344,7 @@ public class Activity_Settings extends MuninActivity {
 		if (defaultServerPosition == -1)
 			Util.removePref(this, Util.PrefKeys.DefaultServer);
 		else {
-			MuninServer defaultServer = muninFoo.getOrderedServers().get(defaultServerPosition);
+			MuninServer defaultServer = muninFoo.getServers().get(defaultServerPosition);
 			Util.setPref(this, Util.PrefKeys.DefaultServer, defaultServer.getServerUrl());
 		}
 
