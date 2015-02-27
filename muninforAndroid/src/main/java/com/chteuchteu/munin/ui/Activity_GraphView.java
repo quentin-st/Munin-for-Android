@@ -15,7 +15,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.text.Html;
 import android.view.Display;
@@ -54,7 +53,6 @@ import com.chteuchteu.munin.hlpr.DocumentationHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper.DynazoomFetcher;
-import com.chteuchteu.munin.hlpr.MediaScannerUtil;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.HTTPResponse;
@@ -71,8 +69,6 @@ import org.taptwo.android.widget.TitleFlowIndicator;
 import org.taptwo.android.widget.ViewFlow;
 import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -547,47 +543,16 @@ public class Activity_GraphView extends MuninActivity {
 			image = ((BitmapDrawable) ((ImageView) findViewById(R.id.dynazoom_imageview)).getDrawable()).getBitmap();
 		else if (viewFlow.getSelectedItemPosition() >= 0 && viewFlow.getSelectedItemPosition() < bitmaps.length)
 			image = bitmaps[viewFlow.getSelectedItemPosition()];
-		if (image != null) {
-			String root = Environment.getExternalStorageDirectory().toString();
-			File dir = new File(root + "/muninForAndroid/");
-			if (!dir.exists() || !dir.isDirectory())
-				dir.mkdir();
-			
-			String pluginName = currentPlugin.getFancyName();
-			
-			String fileName1 = muninFoo.getCurrentServer().getName() + " - " + pluginName + " by " + item_period.getTitle().toString();
-			String fileName2 = "01.png";
-			File file = new File(dir, fileName1 + fileName2);
-			int i = 1; 	String i_s;
-			while (file.exists()) {
-				if (i<99) {
-					if (i<10)	i_s = "0" + i;
-					else		i_s = "" + i;
-					fileName2 = i_s + ".png";
-					file = new File(dir, fileName1 + fileName2);
-					i++;
-				}
-				else
-					break;
-			}
-			if (file.exists())
-				file.delete();
-			
-			try {
-				FileOutputStream out = new FileOutputStream(file);
-				image.compress(Bitmap.CompressFormat.PNG, 100, out);
-				out.flush();
-				out.close();
-				
-				// Make the image appear in gallery
-				new MediaScannerUtil(Activity_GraphView.this, file).execute();
 
-				Toast.makeText(this, getString(R.string.text28) + fileName1 + fileName2, Toast.LENGTH_LONG).show();
-			} catch (Exception e) {
-				Toast.makeText(this, getString(R.string.text29), Toast.LENGTH_LONG).show();
-				e.printStackTrace();
-			}
-		}
+		if (image == null)
+			return;
+
+		String fileName = Util.saveBitmap(context, image, currentPlugin, load_period);
+
+		if (fileName != null)
+			Toast.makeText(this, getString(R.string.text28) + fileName, Toast.LENGTH_LONG).show();
+		else
+			Toast.makeText(this, getString(R.string.text29), Toast.LENGTH_LONG).show();
 	}
 	
 	private void actionAddLabel() {

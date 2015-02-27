@@ -22,6 +22,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -46,9 +47,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -761,5 +765,55 @@ public final class Util {
 			return DeviceSizeCategory.SMALL;
 		else
 			return DeviceSizeCategory.UNKNOWN;
+	}
+
+	/**
+	 * Save Bitmap on SD card (Activity_GraphView)
+	 */
+	public static String saveBitmap(Context context, Bitmap bitmap, MuninPlugin plugin, Period period) {
+		String root = Environment.getExternalStorageDirectory().toString();
+		File dir = new File(root + "/muninForAndroid/");
+		if (!dir.exists() || !dir.isDirectory()) {
+			if (!dir.mkdir())
+				return null;
+		}
+
+		String pluginName = plugin.getFancyName();
+
+		String fileName1 = plugin.getInstalledOn().getParent().getName() + "." + plugin.getInstalledOn().getName()
+				+ " - " + pluginName + " - " + period.getLabel(context) + " ";
+		String fileName2 = "01.png";
+		File file = new File(dir, fileName1 + fileName2);
+		int i = 1; 	String i_s;
+		while (file.exists()) {
+			if (i<99) {
+				if (i<10)	i_s = "0" + i;
+				else		i_s = "" + i;
+				fileName2 = i_s + ".png";
+				file = new File(dir, fileName1 + fileName2);
+				i++;
+			}
+			else
+				break;
+		}
+		if (file.exists()) {
+			if (!file.delete())
+				return null;
+		}
+
+		try {
+			FileOutputStream out = new FileOutputStream(file);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+			out.flush();
+			out.close();
+
+			// Make the image appear in gallery
+			new MediaScannerUtil(context, file).execute();
+
+			return fileName1 + fileName2;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
