@@ -157,7 +157,7 @@ public class Activity_Notifications extends MuninActivity {
 					});
 					
 					((TextView)v.findViewById(R.id.line_a)).setText(server.getName());
-					((TextView)v.findViewById(R.id.line_b)).setText(server.getServerUrl());
+					((TextView)v.findViewById(R.id.line_b)).setText(server.getParent().getName());
 					
 					checkboxesView.addView(v);
 				}
