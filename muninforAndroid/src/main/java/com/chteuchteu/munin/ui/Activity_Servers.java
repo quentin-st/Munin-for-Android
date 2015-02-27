@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,7 +8,9 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -43,8 +44,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressLint("DefaultLocale")
-public class Activity_Servers extends MuninActivity {
+public class Activity_Servers extends MuninActivity implements IServersActivity {
 	private static Context context;
 	private ExpandableListView expListView;
 	
@@ -96,22 +96,20 @@ public class Activity_Servers extends MuninActivity {
 		
 		return serversCollection;
 	}
-	
+
+	/* IServersActivity */
 	/**
 	 * Called when a click event is triggered on a child-level element of the listview
-	 * Called from @see com.chteuchteu.munin.adptr.Adapter_ExpandableListView#getChildView(int, int, boolean, View, android.view.ViewGroup)
 	 */
+	@Override
 	public void onChildClick() {
-		Toast.makeText(this, R.string.long_click, Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, R.string.long_click, Toast.LENGTH_SHORT).show();
 	}
 	
 	/**
 	 * Called when a long click event is triggered on a child-level element of the listview
-	 * Called from @see com.chteuchteu.munin.adptr.Adapter_ExpandableListView#getChildView(int, int, boolean, View, android.view.ViewGroup)
-	 * @param groupPosition int
-	 * @param childPosition int
-	 * @return boolean
 	 */
+	@Override
 	public boolean onChildLongClick(int groupPosition, int childPosition) {
 		final MuninServer server = muninFoo.masters.get(groupPosition).getChildren().get(childPosition);
 		
@@ -168,79 +166,74 @@ public class Activity_Servers extends MuninActivity {
 	}
 	
 	/**
-	 * Called when a click event is triggered on the overflow icon on each
-	 * parent-level list item
-	 * Called from @see com.chteuchteu.munin.adptr.Adapter_ExpandableListView#getGroupView(int, boolean, View, android.view.ViewGroup)
-	 * @param position int
+	 * Called when a click event is triggered on the overflow icon on each parent-level list item
 	 */
-	public void onGroupItemOptionsClick(final int position) {
+	@Override
+	public void onParentOptionsClick(View overflowIcon, final int position) {
 		// Display actions list
-		AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-				context, android.R.layout.simple_list_item_1);
-		arrayAdapter.add(context.getString(R.string.rescan));
-		arrayAdapter.add(context.getString(R.string.renameMaster));
-		arrayAdapter.add(context.getString(R.string.update_credentials));
-		arrayAdapter.add(context.getString(R.string.settings_hdgraphs));
-		arrayAdapter.add(context.getString(R.string.delete_master));
-		
-		builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-			@SuppressLint("InflateParams")
+		PopupMenu popupMenu = new PopupMenu(context, overflowIcon);
+		Menu menu = popupMenu.getMenu();
+		popupMenu.getMenuInflater().inflate(R.menu.servers_overflow, menu);
+		popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
+			public boolean onMenuItemClick(MenuItem menuItem) {
 				final MuninMaster master = muninFoo.masters.get(position);
-				
-				switch (which) {
-					case 0: // Rescan
+
+				switch (menuItem.getItemId()) {
+					case R.id.menu_rescan:
 						new MasterScanner(master, context).execute();
-						break;
-					case 1: // Rename master
+						return true;
+					case R.id.menu_renameMaster:
 						final EditText input = new EditText(context);
 						input.setText(master.getName());
-						
+
 						new AlertDialog.Builder(context)
-						.setTitle(R.string.renameMaster)
-						.setView(input)
-						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+								.setTitle(R.string.renameMaster)
+								.setView(input)
+								.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton) {
+										String value = input.getText().toString();
+										if (!value.equals(master.getName())) {
+											master.setName(value);
+											MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
+											refreshList();
+										}
+										dialog.dismiss();
+									}
+								}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								String value = input.getText().toString();
-								if (!value.equals(master.getName())) {
-									master.setName(value);
-									MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
-									refreshList();
-								}
-								dialog.dismiss();
 							}
-						}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) { }
 						}).show();
-						break;
-					case 2: // Edit connection credentials
+						return true;
+					case R.id.menu_updateCredentials:
 						displayCredentialsDialog(master);
-						break;
-					case 3: // HD Graphs
+						return true;
+					case R.id.menu_HdGraphs:
 						displayHDGraphsDialog(master);
-						break;
-					case 4: // Delete master
+						return true;
+					case R.id.menu_deleteMaster:
 						new AlertDialog.Builder(context)
-						.setTitle(R.string.delete)
-						.setMessage(R.string.text84)
-						.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								new DeleteMaster(master, context).execute();
-							}
-						})
-						.setNegativeButton(R.string.no, null)
-						.show();
-						break;
+								.setTitle(R.string.delete)
+								.setMessage(R.string.text84)
+								.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										new DeleteMaster(master, context).execute();
+									}
+								})
+								.setNegativeButton(R.string.no, null)
+								.show();
+						return true;
 				}
+				return false;
 			}
 		});
-		builderSingle.show();
+
+		popupMenu.show();
 	}
 
-    public void onGroupItemCredentialsClick(int parentPosition) {
+	@Override
+    public void onParentCredentialsClick(int parentPosition) {
         displayCredentialsDialog(muninFoo.getMasters().get(parentPosition));
     }
 

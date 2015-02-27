@@ -73,8 +73,8 @@ public class NetHelper {
 					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 					trustStore.load(null, null);
 					
-					CustomSSLFactory sf = new CustomSSLFactory(trustStore, resp);
-					sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+					CustomSSLFactory sslFactory = new CustomSSLFactory(trustStore, resp);
+					sslFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 					
 					HttpParams params = new BasicHttpParams();
 					HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
@@ -84,7 +84,7 @@ public class NetHelper {
 					
 					SchemeRegistry registry = new SchemeRegistry();
 					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-					registry.register(new Scheme("https", sf, 443));
+					registry.register(new Scheme("https", sslFactory, 443));
 					
 					ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
 					
@@ -205,21 +205,24 @@ public class NetHelper {
 					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 					trustStore.load(null, null);
 
-					CustomSSLFactory sf = new CustomSSLFactory(trustStore, respObj);
-					sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+					CustomSSLFactory sslFactory = new CustomSSLFactory(trustStore, respObj);
+					sslFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 					
 					HttpParams params = new BasicHttpParams();
 					HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
 					HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+					HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
+					HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
 					
 					SchemeRegistry registry = new SchemeRegistry();
 					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-					registry.register(new Scheme("https", sf, 443));
+					registry.register(new Scheme("https", sslFactory, 443));
 					
 					ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
 					
 					client = new DefaultHttpClient(ccm, params);
 				} catch (Exception e) {
+					e.printStackTrace();
 					client = new DefaultHttpClient();
 					master.setSSL(false);
 				}

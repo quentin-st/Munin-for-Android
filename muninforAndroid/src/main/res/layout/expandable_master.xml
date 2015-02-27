@@ -2,10 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:paddingBottom="10dp"
+	android:paddingBottom="5dp"
 	android:paddingLeft="10dp"
 	android:paddingRight="10dp"
-	android:paddingTop="10dp" >
+	android:paddingTop="5dp"
+	android:descendantFocusability="blocksDescendants">
 
 	<TextView
 		android:id="@+id/master"
@@ -19,23 +20,23 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
-		android:layout_centerVertical="true" >
+		android:layout_centerVertical="true"
+		android:gravity="center_vertical">
 
-		<ImageView
+		<ImageButton
 			android:id="@+id/credentials"
-			android:layout_width="30dp"
-			android:layout_height="30dp"
+			android:layout_width="20dp"
+			android:layout_height="20dp"
 			android:layout_marginRight="7dp"
-			android:padding="4dp"
-			android:src="@drawable/ic_action_accounts"
-			android:visibility="gone" />
+			android:adjustViewBounds="true"
+			android:background="@drawable/ic_action_accounts"
+			android:visibility="gone"/>
 
-		<ImageView
+		<ImageButton
 			android:id="@+id/edit"
-			android:layout_width="30dp"
-			android:layout_height="30dp"
-			android:padding="4dp"
-			android:src="@drawable/ic_action_overflow" />
+			android:layout_width="40dp"
+			android:layout_height="40dp"
+			android:src="@drawable/ic_action_overflow"
+			android:background="@null"/>
 	</LinearLayout>
-
 </RelativeLayout>

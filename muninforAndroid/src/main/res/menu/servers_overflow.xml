@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/menu_rescan"
+		android:title="@string/rescan" />
+	<item
+		android:id="@+id/menu_renameMaster"
+		android:title="@string/renameMaster" />
+	<item
+		android:id="@+id/menu_updateCredentials"
+		android:title="@string/update_credentials" />
+	<item
+		android:id="@+id/menu_HdGraphs"
+		android:title="@string/settings_hdgraphs" />
+	<item
+		android:id="@+id/menu_deleteMaster"
+		android:title="@string/delete_master" />
+</menu>
