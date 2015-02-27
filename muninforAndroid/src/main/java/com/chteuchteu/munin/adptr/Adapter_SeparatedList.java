@@ -87,7 +87,7 @@ public class Adapter_SeparatedList extends BaseAdapter {
 	}
 	
 	public boolean isEnabled(int position) {
-		return (getItemViewType(position) != TYPE_SECTION_HEADER);
+		return getItemViewType(position) != TYPE_SECTION_HEADER;
 	}
 	
 	@Override

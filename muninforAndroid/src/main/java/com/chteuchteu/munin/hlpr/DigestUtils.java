@@ -68,7 +68,7 @@ public class DigestUtils {
 		
 		// = to skip
 		match += token.length() + 1;
-		int traillingComa = headerLine.indexOf(",", match);
+		int traillingComa = headerLine.indexOf(',', match);
 		String value = headerLine.substring(match, traillingComa > 0 ? traillingComa : headerLine.length());
 		value = value.endsWith("\"") ? value.substring(0, value.length() - 1) : value;
 		return value.startsWith("\"") ? value.substring(1) : value;

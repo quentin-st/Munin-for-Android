@@ -277,18 +277,6 @@ public class MuninFoo {
 		else
 			return null;
 	}
-	private MuninServer getServersInstanceFromMuninMasterInstance(MuninServer s) {
-		for (MuninServer server : this.servers) {
-			if (server.getId() == s.getId())
-				return server;
-		}
-		// Couldn't get server from its id, trying with equals method
-		for (MuninServer server : this.servers) {
-			if (server.equalsApprox(s))
-				return server;
-		}
-		return null;
-	}
 	public List<MuninServer> getServersFromPlugin(MuninPlugin pl) {
 		List<MuninServer> l = new ArrayList<>();
 		for (MuninServer s : this.servers) {
@@ -317,7 +305,7 @@ public class MuninFoo {
 		return null;
 	}
 	
-	public ArrayList<MuninMaster> getMasters() { return (ArrayList<MuninMaster>) this.masters; }
+	public List<MuninMaster> getMasters() { return this.masters; }
 
 	public MuninMaster getMasterById(int id) {
 		for (MuninMaster m : this.masters) {

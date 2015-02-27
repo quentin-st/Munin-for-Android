@@ -345,8 +345,8 @@ public class MuninMaster {
 	 * Here, we reattach and save the widgets.
 	 * @return ArrayList<GraphWidget> : widgets who should be updated afterwards
 	 */
-	public ArrayList<GraphWidget> reattachWidgets(MuninFoo muninFoo, MuninMaster oldMaster) {
-		ArrayList<GraphWidget> toBeUpdated_graphWidgets = new ArrayList<>();
+	public List<GraphWidget> reattachWidgets(MuninFoo muninFoo, MuninMaster oldMaster) {
+		List<GraphWidget> toBeUpdated_graphWidgets = new ArrayList<>();
 		List<GraphWidget> graphWidgets = muninFoo.sqlite.dbHlpr.getGraphWidgets();
 		
 		if (graphWidgets.isEmpty())
@@ -374,8 +374,8 @@ public class MuninMaster {
 	 * Here, we reattach and save the labels.
 	 * @return ArrayList<Label> : labels who should be updated afterwards
 	 */
-	public ArrayList<Label> reattachLabels(MuninFoo muninFoo, MuninMaster oldMaster) {
-		ArrayList<Label> toBeUpdated_labels = new ArrayList<>();
+	public List<Label> reattachLabels(MuninFoo muninFoo, MuninMaster oldMaster) {
+		List<Label> toBeUpdated_labels = new ArrayList<>();
 		List<Label> labels = muninFoo.labels;
 		
 		if (labels.isEmpty())
@@ -413,8 +413,8 @@ public class MuninMaster {
 	 * Here, we reattach and save the grids.
 	 * @return ArrayList<GridItem> : grids who should be updated afterwards
 	 */
-	public ArrayList<GridItem> reattachGrids(MuninFoo muninFoo, MuninMaster oldMaster) {
-		ArrayList<GridItem> toBeUpdated_grids = new ArrayList<>();
+	public List<GridItem> reattachGrids(MuninFoo muninFoo, MuninMaster oldMaster) {
+		List<GridItem> toBeUpdated_grids = new ArrayList<>();
 		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
 
 		if (grids.isEmpty())
@@ -586,7 +586,7 @@ public class MuninMaster {
 						graphUrlChanged = true;
 
 					// If the download hasn't failed
-					if (onlinePlugins != null && onlinePlugins.size() > 0) {
+					if (onlinePlugins != null && !onlinePlugins.isEmpty()) {
 						// Add new plugins
 						ArrayList<MuninPlugin> pluginsToBeAdded = new ArrayList<>();
 						ArrayList<MuninPlugin> pluginsToBeUpdated = new ArrayList<>();

@@ -157,7 +157,7 @@ public class Grid {
 				i.cancelEdit();
 		}
 		disablePlusButtons();
-		if (items.size() > 0) {
+		if (!items.isEmpty()) {
 			removeEmptyColumns(c);
 			removeEmptyLines();
 		}

@@ -523,9 +523,9 @@ public class Activity_Server extends MuninActivity {
 						}
 					}
 
-					ArrayList<GraphWidget> widgetsToUpdate = new ArrayList<>();
-					ArrayList<Label> labelsToUpdate = new ArrayList<>();
-					ArrayList<GridItem> gridItemsToUpdate = new ArrayList<>();
+					List<GraphWidget> widgetsToUpdate = new ArrayList<>();
+					List<Label> labelsToUpdate = new ArrayList<>();
+					List<GridItem> gridItemsToUpdate = new ArrayList<>();
 					if (alreadyThereMaster != null) {
 						// Replace
 						// Check if there are labels / widgets / grids in the hierarchy

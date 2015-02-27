@@ -40,7 +40,7 @@ public class Label {
 					curList.add(p);
 			}
 			
-			if (curList.size() > 0)
+			if (!curList.isEmpty())
 				l.add(curList);
 		}
 		
@@ -72,7 +72,7 @@ public class Label {
 	}
 	
 	public boolean equals(Label l) {
-		return (this.name.equals(l.getName()));
+		return this.name.equals(l.getName());
 	}
 	
 	public void setPlugins(List<MuninPlugin> l) {

@@ -32,7 +32,7 @@ import java.util.List;
 
 
 public class Activity_Grids extends MuninActivity {
-	private ArrayList<HashMap<String, String>> list;
+	private List<HashMap<String, String>> list;
 	private ListView listview;
 	private List<Grid> grids;
 	
@@ -67,7 +67,7 @@ public class Activity_Grids extends MuninActivity {
 		
 		grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
 		
-		if (grids.size() == 0)
+		if (grids.isEmpty())
 			findViewById(R.id.grids_nogrid).setVisibility(View.VISIBLE);
 		else {
 			for (Grid g : grids) {

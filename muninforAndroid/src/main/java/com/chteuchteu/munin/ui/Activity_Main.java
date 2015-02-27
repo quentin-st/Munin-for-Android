@@ -442,8 +442,8 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 		if (Util.getPref(context, Util.PrefKeys.UserAgentChanged).equals("")) {
 			String currentUserAgent = muninFoo.getUserAgent();
 			// MuninForAndroid/3.0 (Android 4.4.4 KITKAT)
-			boolean userAgentChanged = (currentUserAgent.contains("MuninForAndroid/")
-					&& currentUserAgent.contains(" (Android "));
+			boolean userAgentChanged = currentUserAgent.contains("MuninForAndroid/")
+					&& currentUserAgent.contains(" (Android ");
 
 			Util.setPref(context, Util.PrefKeys.UserAgentChanged, String.valueOf(userAgentChanged));
 		}

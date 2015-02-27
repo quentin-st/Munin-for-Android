@@ -160,11 +160,6 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 			super.onReceive(context, intent);
 	}
 	
-	@Override
-	public void onEnabled(Context context) {
-		super.onEnabled(context);
-	}
-	
 	private static class ApplyBitmap extends AsyncTask<Void, Integer, Void> {
 		private Bitmap bm;
 

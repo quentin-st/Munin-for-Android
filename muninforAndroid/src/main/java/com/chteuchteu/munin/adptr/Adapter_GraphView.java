@@ -160,13 +160,12 @@ public class Adapter_GraphView extends BaseAdapter implements TitleProvider {
 				imageView.setImageBitmap(activity.getBitmap(position));
 
 				// PhotoViewAttacher
-				if (Util.getPref(context, Util.PrefKeys.GraphsZoom).equals("true")) {
-					if (!activity.photoViewAttached[position]) {
-						activity.photoViewAttached[position] = true;
-						PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
-						if (mAttacher.getMidScale() < 2f)
-							mAttacher.setMaxScale(2f);
-					}
+				if (Util.getPref(context, Util.PrefKeys.GraphsZoom).equals("true")
+						&& !activity.photoViewAttached[position]) {
+					activity.photoViewAttached[position] = true;
+					PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
+					if (mAttacher.getMidScale() < 2f)
+						mAttacher.setMaxScale(2f);
 				}
 
 				// If documentation shown && image just loaded: display it

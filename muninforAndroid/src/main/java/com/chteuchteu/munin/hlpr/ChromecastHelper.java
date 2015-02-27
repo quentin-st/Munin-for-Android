@@ -140,7 +140,7 @@ public class ChromecastHelper {
 					mWaitingForReconnect = false;
 
 					// Check if the receiver app is still running
-					if ((connectionHint != null) && connectionHint.getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
+					if (connectionHint != null && connectionHint.getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
 						log("App is no longer running");
 						shutdownConnection();
 					} else {

@@ -43,7 +43,7 @@ import java.util.Map;
 
 public class Activity_Plugins extends MuninActivity {
 	private SimpleAdapter 		sa;
-	private ArrayList<HashMap<String,String>> list;
+	private List<HashMap<String,String>> list;
 	private List<MuninPlugin>	pluginsList;
 	private MuninPlugin[] 		pluginsFilter;
 
@@ -293,7 +293,7 @@ public class Activity_Plugins extends MuninActivity {
 			@SuppressLint("DefaultLocale")
 			@Override
 			public void afterTextChanged(Editable s) {
-				if (pluginsList != null && pluginsList.size() > 0 && s != null) {
+				if (pluginsList != null && !pluginsList.isEmpty() && s != null) {
 					list.clear();
 					String search = s.toString();
 					

@@ -143,7 +143,7 @@ public class NetHelper {
 			// Get current URL (detect redirection)
 			HttpUriRequest currentReq = (HttpUriRequest) context.getAttribute(ExecutionContext.HTTP_REQUEST);
 			HttpHost currentHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
-			String currentUrl = (currentReq.getURI().isAbsolute()) ? currentReq.getURI().toString() : (currentHost.toURI() + currentReq.getURI());
+			String currentUrl = currentReq.getURI().isAbsolute() ? currentReq.getURI().toString() : (currentHost.toURI() + currentReq.getURI());
 			resp.setLastUrl(currentUrl);
 
 			MuninFoo.logV("grabUrl", "Downloaded " + (response.getEntity().getContentLength()/1024) + "kb in " + resp.getExecutionTime() + "ms");

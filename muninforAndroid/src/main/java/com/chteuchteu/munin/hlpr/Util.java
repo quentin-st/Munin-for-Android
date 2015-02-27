@@ -213,7 +213,7 @@ public final class Util {
 	public static boolean isOnline(Context c) {
 		ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		return (netInfo != null && netInfo.isConnectedOrConnecting());
+		return netInfo != null && netInfo.isConnectedOrConnecting();
 	}
 	
 	public static Period getDefaultPeriod(Context c) {

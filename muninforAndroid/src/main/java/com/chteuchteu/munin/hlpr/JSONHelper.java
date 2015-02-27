@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Serialization util class
@@ -23,7 +24,7 @@ public class JSONHelper {
 	 * @param seed Seed used in order to encrypt passwords
 	 * @return JSON representation of the masters parameter
 	 */
-	public static String getMastersJSONString(ArrayList<MuninMaster> masters, String seed) {
+	public static String getMastersJSONString(List<MuninMaster> masters, String seed) {
 		try {
 			JSONObject obj = new JSONObject();
 			JSONArray jsonMasters = new JSONArray();
@@ -97,9 +98,9 @@ public class JSONHelper {
 		}
 	}
 	
-	public static ArrayList<MuninMaster> getMastersFromJSON(JSONObject obj, String seed) {
+	public static List<MuninMaster> getMastersFromJSON(JSONObject obj, String seed) {
 		try {
-			ArrayList<MuninMaster> muninMasters = new ArrayList<>();
+			List<MuninMaster> muninMasters = new ArrayList<>();
 			
 			JSONArray jsonMasters = obj.getJSONArray("masters");
 			for (int i=0; i<jsonMasters.length(); i++) {

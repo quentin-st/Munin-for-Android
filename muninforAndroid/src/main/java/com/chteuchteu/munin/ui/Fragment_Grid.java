@@ -227,7 +227,7 @@ public class Fragment_Grid extends Fragment {
 					// Check if HD graph is really needed : if the standard-res bitmap isn't upscaled, it's OK
 					float xScale = ((float) fullscreenImageView.getWidth()) / item.originalGraph.getWidth();
 					float yScale = ((float) fullscreenImageView.getHeight()) / item.originalGraph.getHeight();
-					float scale = (xScale <= yScale) ? xScale : yScale;
+					float scale = xScale <= yScale ? xScale : yScale;
 
 					// Acceptable upscaling factor
 					if (scale > 2.5) {

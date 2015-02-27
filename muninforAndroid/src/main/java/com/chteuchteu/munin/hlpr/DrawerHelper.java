@@ -74,7 +74,7 @@ public class DrawerHelper {
 	private EditText search;
 	private ListView search_results;
 	private SearchAdapter search_results_adapter;
-	private ArrayList<SearchResult> search_results_array;
+	private List<SearchResult> search_results_array;
 	private List<String> search_cachedGridsList;
 
 	private int pluginsList_currentlySelectedItem;
@@ -529,11 +529,11 @@ public class DrawerHelper {
 	}
 	
 	private class SearchAdapter extends BaseAdapter {
-		private ArrayList<SearchResult> searchArrayList;
+		private List<SearchResult> searchArrayList;
 		private Context context;
 		private LayoutInflater mInflater;
 		
-		private SearchAdapter(Context context, ArrayList<SearchResult> results) {
+		private SearchAdapter(Context context, List<SearchResult> results) {
 			this.searchArrayList = results;
 			this.mInflater = LayoutInflater.from(context);
 			this.context = context;

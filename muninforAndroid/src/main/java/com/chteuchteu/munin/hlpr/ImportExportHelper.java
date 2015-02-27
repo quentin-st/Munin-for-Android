@@ -121,7 +121,7 @@ public class ImportExportHelper {
 	
 	public static class Import {
 		public static void applyImportation(Context context, JSONObject jsonObject, String code) {
-			ArrayList<MuninMaster> newMasters = JSONHelper.getMastersFromJSON(jsonObject, code);
+			List<MuninMaster> newMasters = JSONHelper.getMastersFromJSON(jsonObject, code);
 			removeIds(newMasters);
 
 			MuninFoo muninFooRef = MuninFoo.getInstance(context);
@@ -229,7 +229,7 @@ public class ImportExportHelper {
 	/**
 	 * Removes the ids contained in the structure given as parameter
 	 */
-	private static void removeIds(ArrayList<MuninMaster> masters) {
+	private static void removeIds(List<MuninMaster> masters) {
 		for (MuninMaster master : masters) {
 			master.setId(-1);
 			for (MuninServer server : master.getChildren()) {
