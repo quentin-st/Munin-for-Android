@@ -66,7 +66,6 @@
 	<string name="graphView_ImageViewDescription">Grafico</string>
 
 	<string name="addServerTitle">Aggiungi un server</string>
-	<string name="editServersTitle">Riorganizza / cancella server</string>
 	<string name="renameMaster">Rinomina master</string>
 	<string name="serversTitle">Server</string>
 	<string name="settingsTitle">Impostazioni</string>

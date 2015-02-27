@@ -56,7 +56,6 @@
 	<string name="graphView_ImageViewDescription">Графік</string>
 
 	<string name="addServerTitle">Додати сервер</string>
-	<string name="editServersTitle">Перешикувати або видалити сервери</string>
 	<string name="renameMaster">Перейменування майстра</string>
 	<string name="serversTitle">Сервери</string>
 	<string name="settingsTitle">Налаштування</string>

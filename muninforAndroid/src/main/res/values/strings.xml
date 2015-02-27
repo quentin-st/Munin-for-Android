@@ -122,7 +122,6 @@
 
 	<!-- TITLES -->
 	<string name="addServerTitle">Add a server</string>
-	<string name="editServersTitle">Reorganize / delete servers</string>
 	<string name="renameMaster">Rename master</string>
 	<string name="serversTitle">Servers</string>
 	<string name="settingsTitle">Settings</string>

@@ -47,7 +47,6 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-import com.chteuchteu.munin.obj.MuninServer;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.io.IOException;
@@ -400,14 +399,6 @@ public final class Util {
 			
 			return newUrl;
 		}
-	}
-	
-	public static boolean serversListContainsPos(List<MuninServer> l, int pos) {
-		for (MuninServer s : l) {
-			if (s.getPosition() == pos)
-				return true;
-		}
-		return false;
 	}
 	
 	public static final class HDGraphs {

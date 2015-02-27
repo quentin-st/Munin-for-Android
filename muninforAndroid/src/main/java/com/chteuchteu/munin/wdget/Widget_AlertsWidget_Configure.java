@@ -69,7 +69,7 @@ public class Widget_AlertsWidget_Configure extends Activity {
 
 			final CheckBox[] checkboxes = new CheckBox[muninFoo.getServers().size()];
 
-			for (int i=0; i<muninFoo.getOrderedServers().size(); i++) {
+			for (int i=0; i<muninFoo.getServers().size(); i++) {
 				LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				View v = vi.inflate(R.layout.servers_list_checkbox, null);
 
@@ -85,8 +85,8 @@ public class Widget_AlertsWidget_Configure extends Activity {
 					}
 				});
 
-				((TextView)v.findViewById(R.id.line_a)).setText(muninFoo.getOrderedServers().get(i).getName());
-				((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.getOrderedServers().get(i).getServerUrl());
+				((TextView)v.findViewById(R.id.line_a)).setText(muninFoo.getServers().get(i).getName());
+				((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.getServers().get(i).getServerUrl());
 
 				checkboxesView.addView(v);
 			}
@@ -102,7 +102,7 @@ public class Widget_AlertsWidget_Configure extends Activity {
 							int i = 0;
 							for (CheckBox checkbox : checkboxes) {
 								if (checkbox.isChecked())
-									alertsWidget.getServers().add(muninFoo.getOrderedServers().get(i));
+									alertsWidget.getServers().add(muninFoo.getServers().get(i));
 
 								i++;
 							}
@@ -124,7 +124,7 @@ public class Widget_AlertsWidget_Configure extends Activity {
 	
 	/**
 	 * Configures the created widget
-	 * @param context
+	 * @param context Context
 	 */
 	private void configureWidget(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

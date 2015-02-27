@@ -57,7 +57,6 @@
 	<string name="graphView_ImageViewDescription">Grafiek</string>
 
 	<string name="addServerTitle">Server toevoegen</string>
-	<string name="editServersTitle">Organiseer / verwijder servers</string>
 	<string name="renameMaster">Master hernoemen</string>
 	<string name="serversTitle">Servers</string>
 	<string name="settingsTitle">Instellingen</string>

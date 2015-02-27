@@ -2,7 +2,6 @@ package com.chteuchteu.munin.obj;
 
 import android.net.Uri;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.SpecialBool;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
@@ -22,7 +21,6 @@ public class MuninServer {
 	private List<MuninPlugin> plugins;
 	private String graphURL;
 	private String hdGraphURL;
-	private int position;
 	public MuninMaster master;
 	public boolean isPersistant = false;
 	/**
@@ -39,7 +37,6 @@ public class MuninServer {
 		this.plugins = new ArrayList<>();
 		this.graphURL = "";
 		this.hdGraphURL = "";
-		this.position = -1;
 		this.erroredPlugins = new ArrayList<>();
 		this.warnedPlugins = new ArrayList<>();
 		this.reachable = SpecialBool.UNKNOWN;
@@ -50,11 +47,9 @@ public class MuninServer {
 		this.plugins = new ArrayList<>();
 		this.graphURL = "";
 		this.hdGraphURL = "";
-		this.position = -1;
 		this.erroredPlugins = new ArrayList<>();
 		this.warnedPlugins = new ArrayList<>();
 		this.reachable = SpecialBool.UNKNOWN;
-		generatePosition();
 	}
 	
 	public enum AuthType {
@@ -89,9 +84,6 @@ public class MuninServer {
 	
 	public void setPluginsList(List<MuninPlugin> pL) { this.plugins = pL; }
 	public List<MuninPlugin> getPlugins() { return this.plugins; }
-	
-	public void setPosition(int position) { this.position = position; }
-	public int getPosition() { return this.position; }
 
 	public List<MuninPlugin> getErroredPlugins() { return this.erroredPlugins; }
 	public List<MuninPlugin> getWarnedPlugins() { return this.warnedPlugins; }
@@ -315,28 +307,6 @@ public class MuninServer {
 				return i;
 		}
 		return 0;
-	}
-	
-	
-	private void generatePosition() {
-		MuninFoo muninFoo = MuninFoo.getInstance();
-		// Si toutes positions == -1 -> pos = 0
-		int nbNotNull = 0;
-		
-		for (int i=0; i<muninFoo.getServers().size(); i++) {
-			if (muninFoo.getServer(i) != null && muninFoo.getServer(i).getPosition() != -1)
-				nbNotNull++;
-		}
-		if (nbNotNull == 0)
-			this.position = 0;
-
-        // Save the latest position
-        int higherPosition = -1;
-        for (int i=0; i<muninFoo.getServers().size(); i++) {
-            if (muninFoo.getServer(i) != null && muninFoo.getServer(i).getPosition() > higherPosition)
-                higherPosition = muninFoo.getServer(i).getPosition();
-        }
-        this.position = higherPosition + 1;
 	}
 	
 	private List<MuninPlugin> getPluginsByCategory(String c) {

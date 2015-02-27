@@ -86,7 +86,7 @@ public class Widget_GraphWidget_Configure extends Activity {
 				ArrayList<HashMap<String,String>> list = new ArrayList<>();
 				list.clear();
 				HashMap<String,String> item;
-				for(MuninServer server : muninFoo.getOrderedServers()) {
+				for(MuninServer server : muninFoo.getServers()) {
 					item = new HashMap<>();
 					item.put("line1", server.getName());
 					item.put("line2", server.getServerUrl());
@@ -197,7 +197,7 @@ public class Widget_GraphWidget_Configure extends Activity {
 	
 	/**
 	 * Configures the created widget
-	 * @param context
+	 * @param context Context
 	 */
 	private void configureWidget(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

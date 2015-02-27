@@ -31,7 +31,7 @@ public class Label {
 		List<List<MuninPlugin>> l = new ArrayList<>();
 		
 		List<MuninPlugin> curList;
-		for (MuninServer s : f.getOrderedServers()) {
+		for (MuninServer s : f.getServers()) {
 			curList = new ArrayList<>();
 			
 			for (MuninPlugin p : plugins) {

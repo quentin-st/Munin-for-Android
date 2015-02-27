@@ -250,7 +250,7 @@ public class GridItem {
 		ListView modeList = new ListView(c);
 		String[] stringArray = new String[f.getServers().size()];
 		for (int i=0; i<f.getServers().size(); i++)
-			stringArray[i] = f.getServerFromFlatPosition(i).getName();
+			stringArray[i] = f.getServers().get(i).getName();
 		
 		ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(c, android.R.layout.simple_list_item_1, android.R.id.text1, stringArray);
 		modeList.setAdapter(modeAdapter);
@@ -269,7 +269,7 @@ public class GridItem {
 	private static void add_pluginsListDialog(final Context c, int pos, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
 	                                          final int X, final int Y) {
 		@SuppressWarnings("deprecation")
-		final MuninServer s = f.getServerFromFlatPosition(pos);
+		final MuninServer s = f.getServers().get(pos);
 		List<MuninPlugin> l = s.getPlugins();
 		
 		final CharSequence[] items = new CharSequence[l.size()];

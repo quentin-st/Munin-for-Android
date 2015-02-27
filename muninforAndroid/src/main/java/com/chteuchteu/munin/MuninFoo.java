@@ -277,14 +277,6 @@ public class MuninFoo {
 		else
 			return null;
 	}
-	@Deprecated
-	public MuninServer getServerFromFlatPosition(int position) {
-		// si pos -> 0 1 4 8 9 11
-		// gSFFP(2) -> 4 (!= null)
-		if (position >= 0 && position < getOrderedServers().size())
-			return getOrderedServers().get(position);
-		return null;
-	}
 	private MuninServer getServersInstanceFromMuninMasterInstance(MuninServer s) {
 		for (MuninServer server : this.servers) {
 			if (server.getId() == s.getId())
@@ -297,17 +289,9 @@ public class MuninFoo {
 		}
 		return null;
 	}
-	public List<MuninServer> getOrderedServers() {
-		List<MuninServer> l = new ArrayList<>();
-		for (MuninMaster m : this.masters) {
-			for (MuninServer s : m.getOrderedChildren())
-				l.add(getServersInstanceFromMuninMasterInstance(s));
-		}
-		return l;
-	}
 	public List<MuninServer> getServersFromPlugin(MuninPlugin pl) {
 		List<MuninServer> l = new ArrayList<>();
-		for (MuninServer s : getOrderedServers()) {
+		for (MuninServer s : this.servers) {
 			for (MuninPlugin p : s.getPlugins()) {
 				if (p.equalsApprox(pl)) {
 					l.add(s); break;

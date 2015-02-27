@@ -42,7 +42,6 @@
 	<string name="addServerTitle">Ajouter un serveur</string>
 	<string name="serversTitle">Serveurs</string>
 	<string name="settingsTitle">Options</string>
-	<string name="editServersTitle">Edition des serveurs</string>
 	<string name="aboutTitle">A propos de Munin for Android</string>
 	<string name="goPremiumTitle">Premium</string>
 	<string name="alertsTitle">Alertes</string>
