@@ -43,13 +43,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_GraphView;
+import com.chteuchteu.munin.adptr.Adapter_ServersList;
 import com.chteuchteu.munin.hlpr.DocumentationHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper;
@@ -74,7 +74,6 @@ import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @SuppressLint({ "DefaultLocale", "InflateParams" })
@@ -505,27 +504,18 @@ public class Activity_GraphView extends MuninActivity {
 			hideDynazoom();
 
 		ListView listView = new ListView(this);
-		ArrayList<HashMap<String,String>> servers_list = new ArrayList<>();
-		HashMap<String,String> item;
 		List<MuninServer> list = muninFoo.getServersFromPlugin(currentPlugin);
-		for (MuninServer server : list) {
-			item = new HashMap<>();
-			item.put("line1", server.getName());
-			item.put("line2", server.getServerUrl());
-			servers_list.add(item);
-		}
-		SimpleAdapter sa = new SimpleAdapter(this, servers_list, R.layout.servers_list, new String[] { "line1", "line2" }, new int[] {R.id.line_a, R.id.line_b});
-		listView.setAdapter(sa);
+		final Adapter_ServersList serversList = new Adapter_ServersList(context, list);
+		listView.setAdapter(serversList);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-				TextView url = (TextView) view.findViewById(R.id.line_b);
-				MuninServer s = muninFoo.getServer(url.getText().toString());
+				MuninServer s = serversList.getItem(position);
 
 				if (!s.equalsApprox(muninFoo.getCurrentServer())) {
 					muninFoo.setCurrentServer(s);
 					Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
-					intent.putExtra("contextServerUrl", url.getText().toString());
+					intent.putExtra("contextServerUrl", s.getServerUrl());
 					intent.putExtra("position", muninFoo.getCurrentServer().getPosition(currentPlugin));
 					startActivity(intent);
 					Util.setTransition(context, TransitionStyle.DEEPER);

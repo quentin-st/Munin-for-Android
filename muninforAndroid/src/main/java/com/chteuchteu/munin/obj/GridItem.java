@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -26,6 +25,7 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_IconList;
+import com.chteuchteu.munin.adptr.Adapter_ServersList;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.ui.Fragment_Grid;
@@ -248,29 +248,24 @@ public class GridItem {
 		AlertDialog.Builder builder = new AlertDialog.Builder(c);
 		builder.setTitle(c.getText(R.string.text71));
 		ListView modeList = new ListView(c);
-		String[] stringArray = new String[f.getServers().size()];
-		for (int i=0; i<f.getServers().size(); i++)
-			stringArray[i] = f.getServers().get(i).getName();
-		
-		ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(c, android.R.layout.simple_list_item_1, android.R.id.text1, stringArray);
-		modeList.setAdapter(modeAdapter);
+
+		final Adapter_ServersList serversAdapter = new Adapter_ServersList(c, f.getServers());
 		builder.setView(modeList);
 		final Dialog dialog = builder.create();
+		modeList.setAdapter(serversAdapter);
 		modeList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
 				dialog.dismiss();
-				add_pluginsListDialog(c, pos, f, g, activity, fragment, X, Y);
+				add_pluginsListDialog(c, serversAdapter.getItem(pos), f, g, activity, fragment, X, Y);
 			}
 		});
 		dialog.show();
 	}
 	
-	private static void add_pluginsListDialog(final Context c, int pos, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
+	private static void add_pluginsListDialog(final Context c, final MuninServer server, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
 	                                          final int X, final int Y) {
-		@SuppressWarnings("deprecation")
-		final MuninServer s = f.getServers().get(pos);
-		List<MuninPlugin> l = s.getPlugins();
+		List<MuninPlugin> l = server.getPlugins();
 		
 		final CharSequence[] items = new CharSequence[l.size()];
 		for (int i=0; i<l.size(); i++)
@@ -303,7 +298,7 @@ public class GridItem {
 				int maxWidth = g.getNbColumns();
 				List<GridItem> addedItems = new ArrayList<>();
 				for (Integer i : selectedItems) {
-					MuninPlugin p = s.getPlugin(i);
+					MuninPlugin p = server.getPlugin(i);
 					if (!alreadyAdded(g, p)) {
 						GridItem item = new GridItem(g, p);
 						item.setActivityReferences(c, activity, fragment);

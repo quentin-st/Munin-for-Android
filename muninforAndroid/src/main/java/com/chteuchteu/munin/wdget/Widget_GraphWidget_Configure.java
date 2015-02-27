@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_ServersList;
 import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
@@ -32,7 +33,6 @@ import java.util.List;
 public class Widget_GraphWidget_Configure extends Activity {
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private MuninFoo muninFoo;
-	private MuninServer selectedServer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,34 +78,19 @@ public class Widget_GraphWidget_Configure extends Activity {
 					finish();
 				}
 				if (!muninFoo.premium) {
-					Toast.makeText(this, "Munin for Android features pack needed", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, getString(R.string.featuresPackNeeded), Toast.LENGTH_SHORT).show();
 					dialog.dismiss();
 					finish();
 				}
 				
-				ArrayList<HashMap<String,String>> list = new ArrayList<>();
-				list.clear();
-				HashMap<String,String> item;
-				for(MuninServer server : muninFoo.getServers()) {
-					item = new HashMap<>();
-					item.put("line1", server.getName());
-					item.put("line2", server.getServerUrl());
-					list.add(item);
-				}
-				SimpleAdapter sa = new SimpleAdapter(context, list, R.layout.servers_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
-				lv1.setAdapter(sa);
+				final Adapter_ServersList serversListAdapter = new Adapter_ServersList(context, muninFoo.getServers());
+				lv1.setAdapter(serversListAdapter);
 				lv1.setOnItemClickListener(new OnItemClickListener() {
 					public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-						String adresse = ((TextView) view.findViewById(R.id.line_b)).getText().toString();
-						
-						for (MuninServer s : muninFoo.getServers()) {
-							if (s.getServerUrl().equals(adresse)) {
-								selectedServer = s; break;
-							}
-						}
-						
+						final MuninServer server = serversListAdapter.getItem(position);
+
 						// Populate lv2
-						List<MuninPlugin> plugins = selectedServer.getPlugins();
+						List<MuninPlugin> plugins = server.getPlugins();
 						
 						ArrayList<HashMap<String,String>> list2 = new ArrayList<>();
 						list2.clear();
@@ -124,7 +109,7 @@ public class Widget_GraphWidget_Configure extends Activity {
 							public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 								String pluginName = ((TextView) view.findViewById(R.id.line_b)).getText().toString();
 
-								for (MuninPlugin p : selectedServer.getPlugins()) {
+								for (MuninPlugin p : server.getPlugins()) {
 									if (p.getName().equals(pluginName))
 										graphWidget.setPlugin(p);
 								}
