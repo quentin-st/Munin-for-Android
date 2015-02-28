@@ -58,6 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_MUNINSERVERS_NAME = "name";
 	private static final String KEY_MUNINSERVERS_GRAPHURL = "graphURL";
 	private static final String KEY_MUNINSERVERS_HDGRAPHURL = "hdGraphURL";
+	private static final String KEY_MUNINSERVERS_POSITION = "position";
 	private static final String KEY_MUNINSERVERS_MASTER = "master";
 	
 	// MuninPlugins
@@ -116,6 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_MUNINSERVERS_NAME + " TEXT,"
 			+ KEY_MUNINSERVERS_GRAPHURL + " TEXT,"
 			+ KEY_MUNINSERVERS_HDGRAPHURL + " TEXT,"
+			+ KEY_MUNINSERVERS_POSITION + " INTEGER,"
 			+ KEY_MUNINSERVERS_MASTER + " INTEGER)";
 	
 	private static final String CREATE_TABLE_MUNINPLUGINS = "CREATE TABLE " + TABLE_MUNINPLUGINS + " ("
@@ -250,6 +252,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_NAME, s.getName());
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
 		values.put(KEY_MUNINSERVERS_HDGRAPHURL, s.getHdGraphURL());
+		values.put(KEY_MUNINSERVERS_POSITION, s.getPosition());
 		values.put(KEY_MUNINSERVERS_MASTER, s.master != null ? s.master.getId() : -1);
 		
 		long id = db.insert(TABLE_MUNINSERVERS, null, values);
@@ -462,6 +465,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		values.put(KEY_MUNINSERVERS_NAME, s.getName());
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
 		values.put(KEY_MUNINSERVERS_HDGRAPHURL, s.getHdGraphURL());
+		values.put(KEY_MUNINSERVERS_POSITION ,s.getPosition());
 		values.put(KEY_MUNINSERVERS_MASTER, s.master.getId());
 		
 		int nbRows = db.update(TABLE_MUNINSERVERS, values, KEY_ID + " = ?", new String[] { String.valueOf(s.getId()) });
@@ -592,7 +596,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public List<MuninServer> getServers(List<MuninMaster> currentMasters) {
 		List<MuninServer> l = new ArrayList<>();
 		try {
-			String selectQuery = "SELECT * FROM " + TABLE_MUNINSERVERS + " ORDER BY " + KEY_MUNINSERVERS_MASTER + ", " + KEY_ID;
+			String selectQuery = "SELECT * FROM " + TABLE_MUNINSERVERS
+					+ " ORDER BY " + KEY_MUNINSERVERS_MASTER + ", " + KEY_MUNINSERVERS_POSITION + ", " + KEY_ID;
 			
 			SQLiteDatabase db = this.getReadableDatabase();
 			Cursor c = db.rawQuery(selectQuery, null);
@@ -606,6 +611,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
 					s.setHdGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHURL)));
 					s.setParent(getMaster(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_MASTER)), currentMasters));
+					s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 					s.setPluginsList(getPlugins(s));
 					s.isPersistant = true;
 					l.add(s);
@@ -679,6 +685,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 			s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
 			s.setHdGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHURL)));
+			s.setPosition(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_POSITION)));
 			s.setPluginsList(getPlugins(s));
 			s.isPersistant = true;
 			close(c, db);

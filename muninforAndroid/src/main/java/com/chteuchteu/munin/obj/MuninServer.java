@@ -22,6 +22,7 @@ public class MuninServer {
 	private String graphURL;
 	private String hdGraphURL;
 	public MuninMaster master;
+	private int position;
 	public boolean isPersistant = false;
 	/**
 	 * Used for Alerts (display if server is unreachable)
@@ -40,6 +41,7 @@ public class MuninServer {
 		this.erroredPlugins = new ArrayList<>();
 		this.warnedPlugins = new ArrayList<>();
 		this.reachable = SpecialBool.UNKNOWN;
+		this.position = -1;
 	}
 	public MuninServer (String name, String serverUrl) {
 		this.name = name;
@@ -50,6 +52,7 @@ public class MuninServer {
 		this.erroredPlugins = new ArrayList<>();
 		this.warnedPlugins = new ArrayList<>();
 		this.reachable = SpecialBool.UNKNOWN;
+		this.position = -1;
 	}
 	
 	public enum AuthType {
@@ -84,6 +87,9 @@ public class MuninServer {
 	
 	public void setPluginsList(List<MuninPlugin> pL) { this.plugins = pL; }
 	public List<MuninPlugin> getPlugins() { return this.plugins; }
+
+	public void setPosition(int val) { this.position = val; }
+	public int getPosition() { return this.position; }
 
 	public List<MuninPlugin> getErroredPlugins() { return this.erroredPlugins; }
 	public List<MuninPlugin> getWarnedPlugins() { return this.warnedPlugins; }

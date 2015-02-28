@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
@@ -167,26 +166,13 @@ public class SQLite {
 	}
 	
     public void logMasters() {
-	    if (!BuildConfig.DEBUG)
-		    return;
-
         MuninFoo.log("");
-        logLine(60);
+	    MuninFoo.log("============================================================");
         for (MuninMaster m : this.muninFoo.masters) {
-	        MuninFoo.log("[" + m.getName() + "] - " + m.getUrl());
+	        MuninFoo.log("[" + m.getName() + "]");
             for (MuninServer s : m.getChildren())
-	            MuninFoo.log("  - " + s.getName() + " - " + s.getServerUrl());
+	            MuninFoo.log(" - (" + s.getPosition() + ") " + s.getName());
         }
-        logLine(60);
-    }
-    private void logLine(int nb) {
-        if (nb == 0)
-            logLine(88);
-        else {
-            String s = "";
-            for (int i=0; i<nb; i++)
-                s += "=";
-	        MuninFoo.log(s);
-        }
+	    MuninFoo.log("============================================================");
     }
 }

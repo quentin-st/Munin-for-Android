@@ -299,6 +299,7 @@ public class MuninMaster {
 					else
 						this.generateName();
 
+					int previousPosition = -1;
 					for (Element domain : domains) {
 						// Get every host for that domain
 						Elements hosts = domain.parent().select("ul>li");
@@ -306,6 +307,8 @@ public class MuninMaster {
 							Element infos = host.select("a.link-host").get(0);
 							MuninServer serv = new MuninServer(infos.text(), infos.attr("abs:href"));
 							serv.setParent(this);
+							previousPosition++;
+							serv.setPosition(previousPosition);
 							nbServers++;
 						}
 					}
@@ -322,13 +325,16 @@ public class MuninMaster {
 					}
 					else
 						this.generateName();
-					
+
+					int previousPosition = -1;
 					for (Element domain : domains) {
 						// Get every host for that domain
 						Elements hosts = domain.parent().select("span.host");
 						for (Element host : hosts) {
 							MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
 							serv.setParent(this);
+							previousPosition++;
+							serv.setPosition(previousPosition);
 							nbServers++;
 						}
 					}
@@ -513,6 +519,14 @@ public class MuninMaster {
 							if (!server.getServerUrl().equals(onlineServer.getServerUrl()) && !onlineServer.getServerUrl().equals("")) {
 								MuninFoo.logV("rescan", "server url has changed");
 								server.setServerUrl(onlineServer.getServerUrl());
+								if (!toBeUpdated.contains(server))
+									toBeUpdated.add(server);
+							}
+
+							// Server position
+							if (server.getPosition() != onlineServer.getPosition() && onlineServer.getPosition() != -1) {
+								MuninFoo.logV("rescan", "server position has changed");
+								server.setPosition(onlineServer.getPosition());
 								if (!toBeUpdated.contains(server))
 									toBeUpdated.add(server);
 							}

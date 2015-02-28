@@ -67,6 +67,7 @@ public class JSONHelper {
 						jsonServer.put("serverUrl", server.getServerUrl());
 						jsonServer.put("graphURL", server.getGraphURL());
 						jsonServer.put("hdGraphURL", server.getHdGraphURL());
+						jsonServer.put("position", server.getPosition());
 
 						JSONArray jsonPlugins = new JSONArray();
 						for (MuninPlugin plugin : server.getPlugins()) {
@@ -144,6 +145,7 @@ public class JSONHelper {
 					server.setServerUrl(jsonServer.getString("serverUrl"));
 					server.setGraphURL(jsonServer.getString("graphURL"));
 					server.setHdGraphURL(jsonServer.getString("hdGraphURL"));
+					server.setPosition(jsonServer.getInt("position"));
 
 					JSONArray jsonPlugins = jsonServer.getJSONArray("plugins");
 					for (int z=0; z<jsonPlugins.length(); z++) {
