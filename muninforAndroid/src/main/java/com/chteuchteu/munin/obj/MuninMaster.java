@@ -500,7 +500,8 @@ public class MuninMaster {
 
 							// Check if we can grab some attributes
                             // DynazoomAvailability
-                            if (server.getParent().isDynazoomAvailable() != onlineServer.getParent().isDynazoomAvailable()) {
+                            if (server.getParent().isDynazoomAvailable() != onlineServer.getParent().isDynazoomAvailable()
+		                            && onlineServer.getParent().isDynazoomAvailable() != DynazoomAvailability.AUTO_DETECT) {
 	                            MuninFoo.logV("rescan", "Dynazoom availability has changed");
                                 server.getParent().setDynazoomAvailable(onlineServer.getParent().isDynazoomAvailable());
 	                            if (!toBeUpdated.contains(server))
