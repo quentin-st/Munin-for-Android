@@ -131,7 +131,12 @@ public class Activity_GraphView extends MuninActivity {
 		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		((TextView) findViewById(R.id.serverName)).setText(muninFoo.getCurrentServer().getName());
+		TextView serverName = (TextView) findViewById(R.id.serverName);
+		if (muninFoo.getCurrentServer().getName().equals("localhost.localdomain"))
+			serverName.setText(muninFoo.getCurrentServer().getParent().getName() + " - " + muninFoo.getCurrentServer().getName());
+		else
+			serverName.setText(muninFoo.getCurrentServer().getName());
+
 		actionBar.setTitle("");
 		ic_secure = findViewById(R.id.connection_secure);
 		ic_insecure = findViewById(R.id.connection_insecure);

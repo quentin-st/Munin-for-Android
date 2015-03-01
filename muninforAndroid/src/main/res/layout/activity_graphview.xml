@@ -57,18 +57,24 @@
 							android:contentDescription="@string/certificate_error"
 							android:visibility="gone"/>
 
-						<TextView
-							android:id="@+id/serverName"
+						<HorizontalScrollView
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:textSize="19sp"
-							android:textColor="#fff"
 							android:layout_centerInParent="true"
 							android:layout_marginLeft="10dp"
-							android:layout_marginBottom="6dp"
-							android:layout_marginRight="10dp" />
+							android:layout_marginRight="10dp"
+							android:overScrollMode="never">
 
+							<TextView
+								android:id="@+id/serverName"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_marginBottom="6dp"
+								android:textSize="19sp"
+								android:textColor="#ffffff"
+								android:maxLines="1"/>
 
+						</HorizontalScrollView>
 					</RelativeLayout>
 
 					<org.taptwo.android.widget.TitleFlowIndicator
