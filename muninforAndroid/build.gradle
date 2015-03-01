@@ -23,10 +23,10 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     compile files('libs/AppRate_1.1.jar')
     compile files('libs/crashlytics.jar')
-    compile files('libs/jsoup-1.7.2.jar')
     compile files('libs/libGoogleAnalyticsServices.jar')
-    compile files('libs/systembartint-1.0.4.jar')
+    compile 'org.jsoup:jsoup:1.8.1'
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.4.0'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.4'
     compile 'com.melnykov:floatingactionbutton:1.0.6'
     compile 'com.edmodo:rangebar:1.0.0'
     compile 'com.google.android.gms:play-services:6.5.87'
