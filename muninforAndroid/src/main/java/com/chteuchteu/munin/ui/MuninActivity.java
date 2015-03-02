@@ -39,7 +39,7 @@ public class MuninActivity extends ActionBarActivity {
 	protected android.support.v7.app.ActionBar actionBar;
 	protected Toolbar       toolbar;
 	private MaterialMenuIconToolbar materialMenu;
-	private boolean        isDrawerOpened;
+	private boolean         isDrawerOpen;
 	protected Menu          menu;
 
 	private Runnable    onDrawerOpen;
@@ -106,13 +106,13 @@ public class MuninActivity extends ActionBarActivity {
 			public void onDrawerSlide(View view, float slideOffset) {
 				materialMenu.setTransformationOffset(
 						MaterialMenuDrawable.AnimationState.BURGER_ARROW,
-						isDrawerOpened ? 2 - slideOffset : slideOffset
+						isDrawerOpen ? 2 - slideOffset : slideOffset
 				);
 			}
 
 			@Override
 			public void onDrawerOpened(View view) {
-				isDrawerOpened = true;
+				isDrawerOpen = true;
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 
 				actionBar.setSubtitle(actionBar.getTitle());
@@ -128,7 +128,7 @@ public class MuninActivity extends ActionBarActivity {
 
 			@Override
 			public void onDrawerClosed(View view) {
-				isDrawerOpened = false;
+				isDrawerOpen = false;
 				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
 
 				actionBar.setTitle(actionBar.getSubtitle());

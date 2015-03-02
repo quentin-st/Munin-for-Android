@@ -292,6 +292,12 @@ public class Fragment_Grid extends Fragment {
 	}
 
 	public void autoRefresh() {
+        // Either grid or grid.dHelper may be null when auto-refresh it set
+        // (activity will try to refresh in its onCreate method, when the dHelper
+        //      hasn't been created yet)
+        if (grid == null || grid.dHelper == null)
+            return;
+
 		grid.dHelper.setPeriod(this.currentPeriod);
 		grid.dHelper.start(true);
 	}
