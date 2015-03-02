@@ -816,4 +816,17 @@ public final class Util {
 			return null;
 		}
 	}
+
+	public static String pluginsListAsString(List<MuninPlugin> list) {
+		String str = "";
+
+		for (MuninPlugin plugin : list) {
+			if (list.indexOf(plugin) != list.size()-1)
+				str += plugin.getFancyName() + ", ";
+			else
+				str += plugin.getFancyName();
+		}
+
+		return str;
+	}
 }
