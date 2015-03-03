@@ -19,4 +19,10 @@
 
 	<color name="gradient_start">#15000000</color>
 
+    <color name="alerts_bg_color_undefined">#B2B2B2</color>
+    <color name="alerts_bg_color_ok">#8EC842</color>
+    <color name="alerts_bg_color_warning">#FFAE5B</color>
+    <color name="alerts_bg_color_critical">#FF7B68</color>
+    <color name="alerts_text_color">#333333</color>
+
 </resources>

@@ -31,27 +31,38 @@
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				android:textColor="#ffffff" />
 
-			<TextView
-				android:id="@+id/alerts_ok"
+			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:gravity="center_vertical|center_horizontal"
-				android:shadowColor="#ffffff"
-				android:shadowDx="0"
-				android:shadowDy="2"
-				android:shadowRadius="1"
-				android:text="@string/alerts_ok"
-				android:textColor="#4E5258"
-				android:textSize="30sp"
-				android:visibility="gone"/>
-
-			<ListView
-				android:id="@+id/listview"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
 				android:paddingLeft="@dimen/listview_horizontal_margin"
-				android:paddingRight="@dimen/listview_horizontal_margin" />
+				android:paddingRight="@dimen/listview_horizontal_margin">
 
+				<TextView
+					android:id="@+id/alerts_ok"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true"
+					android:shadowColor="#ffffff"
+					android:shadowDx="0"
+					android:shadowDy="2"
+					android:shadowRadius="1"
+					android:text="@string/alerts_ok"
+					android:textColor="#4E5258"
+					android:textSize="30sp"
+					android:visibility="gone"/>
+
+				<ScrollView
+					android:layout_width="match_parent"
+					android:layout_height="match_parent">
+
+					<LinearLayout
+						android:id="@+id/alerts_insertPoint"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="vertical"/>
+
+				</ScrollView>
+			</RelativeLayout>
 		</LinearLayout>
 
 		<LinearLayout

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,15 +13,15 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_AlertsPluginSelection;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Adapter_Alerts extends ArrayAdapter<MuninServer> {
+public class Adapter_Alerts {
 	private List<AlertPart> parts;
 	private Context context;
+	private LayoutInflater layoutInflater;
 
 	public enum ListItemSize { REDUCED, EXPANDED }
 	private ListItemSize listItemSize;
@@ -30,9 +29,17 @@ public class Adapter_Alerts extends ArrayAdapter<MuninServer> {
 	public enum ListItemPolicy { SHOW_ALL, HIDE_NORMAL }
 	private ListItemPolicy listItemPolicy;
 
+	private Runnable onUpdateStart;
+	private Runnable onUpdateFinished;
+
+    private int COLOR_BG_CRITICAL;
+    private int COLOR_BG_WARNING;
+    private int COLOR_BG_OK;
+    private int COLOR_BG_UNDEFINED;
+    private int COLOR_TEXT_COLOR;
+
 	public Adapter_Alerts(Context context, List<MuninServer> items,
 	                      ListItemSize listItemSize, ListItemPolicy listItemPolicy) {
-		super(context, R.layout.alerts_part, items);
 		this.context = context;
 		this.listItemSize = listItemSize;
 		this.listItemPolicy = listItemPolicy;
@@ -40,26 +47,37 @@ public class Adapter_Alerts extends ArrayAdapter<MuninServer> {
 
 		for (MuninServer server : items)
 			this.parts.add(new AlertPart(server, this));
+
+        // Resolve colors from resources
+        this.COLOR_BG_CRITICAL = context.getResources().getColor(R.color.alerts_bg_color_critical);
+        this.COLOR_BG_WARNING = context.getResources().getColor(R.color.alerts_bg_color_warning);
+        this.COLOR_BG_OK = context.getResources().getColor(R.color.alerts_bg_color_ok);
+        this.COLOR_BG_UNDEFINED = context.getResources().getColor(R.color.alerts_bg_color_undefined);
+        this.COLOR_TEXT_COLOR = context.getResources().getColor(R.color.alerts_text_color);
 	}
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position, ViewGroup parent) {
 		AlertPart alertPart = parts.get(position);
+		if (this.layoutInflater == null)
+			this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View view;
-		if (convertView != null)
-			view = convertView;
-		else
-			view = LayoutInflater.from(context).inflate(R.layout.alerts_part, parent, false);
-
+		View view = layoutInflater.inflate(R.layout.alerts_part, parent, false);
 		return alertPart.inflate(context, view);
 	}
 
+    public void updateViews(int from, int to) {
+        for (int i=from; i<=to; i++)
+            parts.get(i).updateView();
+    }
 	public void updateViews() {
 		for (AlertPart alertPart : parts)
 			alertPart.updateView();
 	}
 
+    public void updateViewsPartial(int from, int to) {
+        for (int i=from; i<=to; i++)
+            parts.get(i).updateViewPartial();
+    }
 	public void updateViewsPartial() {
 		for (AlertPart alertPart : parts)
 			alertPart.updateViewPartial();
@@ -79,6 +97,7 @@ public class Adapter_Alerts extends ArrayAdapter<MuninServer> {
 
 	public void setListItemPolicy(ListItemPolicy val) { this.listItemPolicy = val; }
 	public ListItemPolicy getListItemPolicy() { return this.listItemPolicy; }
+
 	public boolean isEverythingOk() {
 		for (AlertPart alertPart : parts) {
 			if (!alertPart.isEverythingOk())
@@ -87,7 +106,12 @@ public class Adapter_Alerts extends ArrayAdapter<MuninServer> {
 		return true;
 	}
 
+    public boolean shouldDisplayEverythingsOkMessage() {
+        return this.listItemPolicy == ListItemPolicy.HIDE_NORMAL && isEverythingOk();
+    }
+
 	public class AlertPart {
+		private boolean viewInflated;
 		private Adapter_Alerts adapter;
 		private MuninServer server;
 		private LinearLayout part;
@@ -106,10 +130,14 @@ public class Adapter_Alerts extends ArrayAdapter<MuninServer> {
 			this.server = server;
 			this.adapter = adapter;
 			this.everythingsOk = true;
+			this.viewInflated = false;
 		}
 
 		public View inflate(final Context context, View v) {
-			MuninFoo.log("Inflating server " + server.getName());
+			if (viewInflated)
+				return v;
+
+			viewInflated = true;
 			part 					= (LinearLayout) v.findViewById(R.id.alerts_part);
 			serverName 				= (TextView) v.findViewById(R.id.alerts_part_serverName);
 			criticals 				= (LinearLayout) v.findViewById(R.id.alerts_part_criticals);
@@ -145,18 +173,18 @@ public class Adapter_Alerts extends ArrayAdapter<MuninServer> {
 				everythingsOk = nbErrors == 0 && nbWarnings == 0;
 
 				if (nbErrors > 0) {
-					criticals.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_CRITICAL));
+					criticals.setBackgroundColor(COLOR_BG_CRITICAL);
 					criticalsPluginsList.setText(Util.pluginsListAsString(server.getErroredPlugins()));
 				}
 				else
-					criticals.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_OK));
+					criticals.setBackgroundColor(COLOR_BG_OK);
 
 				if (nbWarnings > 0) {
-					warnings.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_WARNING));
+					warnings.setBackgroundColor(COLOR_BG_WARNING);
 					warningsPluginsList.setText(Util.pluginsListAsString(server.getWarnedPlugins()));
 				}
 				else
-					warnings.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_OK));
+					warnings.setBackgroundColor(COLOR_BG_OK);
 
 				criticalsAmount.setText(String.valueOf(nbErrors));
 				criticalsLabel.setText(context.getString(
@@ -178,8 +206,8 @@ public class Adapter_Alerts extends ArrayAdapter<MuninServer> {
 				warningsAmount.setText("?");
 				criticalsLabel.setText(context.getString(R.string.text50_2));
 				warningsLabel.setText(context.getString(R.string.text51_2));
-				criticals.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
-				warnings.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
+				criticals.setBackgroundColor(COLOR_BG_UNDEFINED);
+				warnings.setBackgroundColor(COLOR_BG_UNDEFINED);
 			}
 
 			updateViewPartial();
@@ -228,7 +256,8 @@ public class Adapter_Alerts extends ArrayAdapter<MuninServer> {
 		}
 
 		public void setGray() {
-			criticals.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_UNDEFINED));
+			criticals.setBackgroundColor(COLOR_BG_UNDEFINED);
+			warnings.setBackgroundColor(COLOR_BG_UNDEFINED);
 		}
 
 		public void switchArrow(boolean value) {
@@ -243,9 +272,10 @@ public class Adapter_Alerts extends ArrayAdapter<MuninServer> {
 				// Expand
 				criticals.setVisibility(View.VISIBLE);
 				warnings.setVisibility(View.VISIBLE);
-				serverName.setTextColor(Color.parseColor(Activity_Alerts.TEXT_COLOR));
+				serverName.setTextColor(COLOR_TEXT_COLOR);
 				serverName.setBackgroundColor(Color.WHITE);
 			} else {
+                // Reduce
 				criticals.setVisibility(View.GONE);
 				warnings.setVisibility(View.GONE);
 
@@ -256,9 +286,9 @@ public class Adapter_Alerts extends ArrayAdapter<MuninServer> {
 
 				if (i_criticalsAmount > 0 || i_warningsAmount > 0) {
 					if (i_criticalsAmount > 0)
-						serverName.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_CRITICAL));
+						serverName.setBackgroundColor(COLOR_BG_CRITICAL);
 					else if (i_warningsAmount > 0)
-						serverName.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_WARNING));
+						serverName.setBackgroundColor(COLOR_BG_WARNING);
 
 					serverName.setTextColor(Color.WHITE);
 				}

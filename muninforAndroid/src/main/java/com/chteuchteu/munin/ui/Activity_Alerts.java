@@ -2,14 +2,15 @@ package com.chteuchteu.munin.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,23 +20,20 @@ import com.chteuchteu.munin.adptr.Adapter_Alerts;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.obj.MuninServer;
 
 import java.util.Calendar;
 
+/**
+ * Since using a listView for alert parts would be too tricky,
+ *  we're copying the way adapter works (using a getView method)
+ */
 public class Activity_Alerts extends MuninActivity {
 	private MenuItem		menu_flatList;
-	private boolean		shouldDisplayEverythingsOk;
 	private View			everythingsOk;
 
 	private TextView        tv_hideNoAlerts;
-	private ListView        listView;
 	private Adapter_Alerts  adapter;
-	
-	public static final String	BG_COLOR_UNDEFINED = "#B2B2B2";
-	public static final String	BG_COLOR_OK = "#8EC842";
-	public static final String	BG_COLOR_WARNING = "#FFAE5B";
-	public static final String	BG_COLOR_CRITICAL = "#FF7B68";
-	public static final String	TEXT_COLOR = "#333333";
 	
 	private Handler		    mHandler;
 	private Runnable		mHandlerTask;
@@ -56,12 +54,18 @@ public class Activity_Alerts extends MuninActivity {
 		actionBar.setTitle(getString(R.string.alertsTitle));
 		progressBar = Util.UI.prepareGmailStyleProgressBar(this, actionBar);
 		everythingsOk = findViewById(R.id.alerts_ok);
-		listView = (ListView) findViewById(R.id.listview);
 		tv_hideNoAlerts = (TextView) findViewById(R.id.hideNoAlerts);
 
 		adapter = new Adapter_Alerts(this, muninFoo.getServers(),
 				Adapter_Alerts.ListItemSize.EXPANDED, Adapter_Alerts.ListItemPolicy.HIDE_NORMAL);
-		listView.setAdapter(adapter);
+
+		// Build layout
+		ViewGroup insertPoint = (ViewGroup) findViewById(R.id.alerts_insertPoint);
+
+		for (MuninServer server : muninFoo.getServers()) {
+			View view = adapter.getView(muninFoo.getServers().indexOf(server), insertPoint);
+			insertPoint.addView(view);
+		}
 		
 		// If coming from PluginSelection : don't check again
 		// TODO : list isn't inflated yet...
@@ -101,7 +105,7 @@ public class Activity_Alerts extends MuninActivity {
 			mHandlerTask = new Runnable() {
 				@Override 
 				public void run() {
-					updateStates(true);
+					refresh(true);
 					mHandler.postDelayed(mHandlerTask, INTERVAL);
 				}
 			};
@@ -116,12 +120,14 @@ public class Activity_Alerts extends MuninActivity {
 	 * Update UI
 	 * @param fetch Use cached data or not
 	 */
-	private void updateStates(boolean fetch) {
+	private void refresh(boolean fetch) {
 		if (fetch && !Util.isOnline(this)) {
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 			return;
 		}
 
+		tv_hideNoAlerts.setEnabled(false);
+		tv_hideNoAlerts.setBackgroundColor(Color.GRAY);
 		adapter.setAllGray();
 
 		int nbServers = muninFoo.getServers().size();
@@ -129,7 +135,6 @@ public class Activity_Alerts extends MuninActivity {
 			currentLoadingProgress = 0;
 			progressBar.setVisibility(View.VISIBLE);
 			progressBar.setProgress(0);
-			shouldDisplayEverythingsOk = true;
 			everythingsOk.setVisibility(View.GONE);
 
 			for (int i=0; i<nbServers; i++) {
@@ -169,9 +174,9 @@ public class Activity_Alerts extends MuninActivity {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			adapter.updateViews();
+			adapter.updateViews(fromIndex, toIndex);
 
-			// TODO
+			// TODO this is bad
 			if (this.toIndex == muninFoo.getServers().size()-1)
 				progressBar.setVisibility(View.GONE);
 		}
@@ -203,7 +208,7 @@ public class Activity_Alerts extends MuninActivity {
 				switchListMode();
 				return true;
 			case R.id.menu_refresh:
-				updateStates(true);
+				refresh(true);
 				return true;
 		}
 

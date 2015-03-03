@@ -3,7 +3,6 @@ package com.chteuchteu.munin.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,9 +44,9 @@ public class Activity_AlertsPluginSelection extends MuninActivity {
 				line_b.setText(plugin.getName());
 				
 				if (plugin.getState() == AlertState.WARNING)
-					part.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_WARNING));
+					part.setBackgroundColor(context.getResources().getColor(R.color.alerts_bg_color_warning));
 				else if (plugin.getState() == AlertState.CRITICAL)
-					part.setBackgroundColor(Color.parseColor(Activity_Alerts.BG_COLOR_CRITICAL));
+					part.setBackgroundColor(context.getResources().getColor(R.color.alerts_bg_color_critical));
 				
 				final int indexOfPlugin = muninFoo.getCurrentServer().getPlugins().indexOf(plugin);
 				
