@@ -71,10 +71,6 @@ public class Adapter_Alerts {
 			alertPart.updateView();
 	}
 
-    public void updateViewsPartial(int from, int to) {
-        for (int i=from; i<=to; i++)
-            parts.get(i).updateViewPartial();
-    }
 	public void updateViewsPartial() {
 		for (AlertPart alertPart : parts)
 			alertPart.updateViewPartial();
@@ -224,26 +220,6 @@ public class Adapter_Alerts {
 			}
 
 			updateViewPartial();
-
-			/*
-			if (nbErrors > 0 || nbWarnings > 0)
-			shouldDisplayEverythingsOk = false;
-
-			if (!hideNormalStateServers)
-				shouldDisplayEverythingsOk = false;
-
-			// Can't flat the list before the first loading is finished
-			if (index == muninFoo.getServers().size()-1) {
-				// menu_flatList can be null if onCreateMenu hasn't been called yet
-				if (menu_flatList != null)
-					menu_flatList.setVisible(true);
-
-				if (shouldDisplayEverythingsOk)
-					everythingsOk.setVisibility(View.VISIBLE);
-				else
-					everythingsOk.setVisibility(View.GONE);
-			}
-			 */
 		}
 
 		public void updateViewPartial() {

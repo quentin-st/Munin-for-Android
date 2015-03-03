@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_Alerts;
+import com.chteuchteu.munin.async.AlertsScanner;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -27,7 +28,7 @@ import java.util.Calendar;
  * Since using a listView for alert parts would be too tricky,
  *  we're copying the way adapter works (using a getView method)
  */
-public class Activity_Alerts extends MuninActivity {
+public class Activity_Alerts extends MuninActivity implements IAlertsActivity {
 	private View			everythingsOk;
 
 	private TextView        tv_hideNoAlerts;
@@ -41,7 +42,6 @@ public class Activity_Alerts extends MuninActivity {
 	private boolean         loading;
 	
 	private static final int SERVERS_BY_THREAD = 3;
-	private int             loading_remainingServers;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -120,6 +120,20 @@ public class Activity_Alerts extends MuninActivity {
 		everythingsOk.setVisibility(
 				adapter.shouldDisplayEverythingsOkMessage() ? View.VISIBLE : View.GONE);
 	}
+
+	@Override
+	public void onScanProgress(int finishedIndex) {
+		currentLoadingProgress++;
+		progressBar.setProgress(currentLoadingProgress*100/muninFoo.getServers().size());
+	}
+
+	@Override
+	public void onGroupScanFinished(int fromIndex, int toIndex) {
+		adapter.updateViews(fromIndex, toIndex);
+
+		if (currentLoadingProgress == muninFoo.getServers().size())
+			onLoadingFinished();
+	}
 	
 	/**
 	 * Update UI
@@ -139,12 +153,10 @@ public class Activity_Alerts extends MuninActivity {
 
 		int nbServers = muninFoo.getServers().size();
 		if (fetch) {
-			currentLoadingProgress = 0;
 			progressBar.setVisibility(View.VISIBLE);
 			progressBar.setProgress(0);
 			everythingsOk.setVisibility(View.GONE);
-
-			loading_remainingServers = nbServers;
+			currentLoadingProgress = 0;
 
 			for (int i=0; i<nbServers; i++) {
 				if (i%SERVERS_BY_THREAD == 0) {
@@ -152,46 +164,16 @@ public class Activity_Alerts extends MuninActivity {
 					if (to >= nbServers)
 						to = nbServers-1;
 
-					//                          Avoid serial execution
-					new AlertsFetcher(i, to).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+					AlertsScanner scanner = new AlertsScanner(i, to, this);
+					//      Avoid serial execution
+					scanner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				}
 			}
 			muninFoo.alerts_lastUpdated = Calendar.getInstance();
 		} else
 			adapter.updateViews();
 	}
-	
-	private class AlertsFetcher extends AsyncTask<Void, Integer, Void> {
-		private int fromIndex;
-		private int toIndex;
-		
-		private AlertsFetcher(int fromIndex, int toIndex) {
-			this.fromIndex = fromIndex;
-			this.toIndex = toIndex;
-		}
-		
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			for (int i=fromIndex; i<=toIndex; i++) {
-				muninFoo.getServer(i).fetchPluginsStates(muninFoo.getUserAgent());
-				currentLoadingProgress++;
-				progressBar.setProgress(currentLoadingProgress*100/muninFoo.getServers().size());
-			}
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Void result) {
-			adapter.updateViews(fromIndex, toIndex);
 
-			loading_remainingServers -= (toIndex-fromIndex+1);
-
-			if (loading_remainingServers == 0)
-				onLoadingFinished();
-		}
-	}
-	
 	/**
 	 * Switch from flat to expanded list mode
 	 */
