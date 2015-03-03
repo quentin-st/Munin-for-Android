@@ -2,7 +2,6 @@ package com.chteuchteu.munin.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,7 +28,6 @@ import java.util.Calendar;
  *  we're copying the way adapter works (using a getView method)
  */
 public class Activity_Alerts extends MuninActivity {
-	private MenuItem		menu_flatList;
 	private View			everythingsOk;
 
 	private TextView        tv_hideNoAlerts;
@@ -40,8 +38,10 @@ public class Activity_Alerts extends MuninActivity {
 	
 	private ProgressBar 	progressBar;
 	private int 			currentLoadingProgress;
+	private boolean         loading;
 	
 	private static final int SERVERS_BY_THREAD = 3;
+	private int             loading_remainingServers;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -55,6 +55,7 @@ public class Activity_Alerts extends MuninActivity {
 		progressBar = Util.UI.prepareGmailStyleProgressBar(this, actionBar);
 		everythingsOk = findViewById(R.id.alerts_ok);
 		tv_hideNoAlerts = (TextView) findViewById(R.id.hideNoAlerts);
+		loading = false;
 
 		adapter = new Adapter_Alerts(this, muninFoo.getServers(),
 				Adapter_Alerts.ListItemSize.EXPANDED, Adapter_Alerts.ListItemPolicy.HIDE_NORMAL);
@@ -66,34 +67,30 @@ public class Activity_Alerts extends MuninActivity {
 			View view = adapter.getView(muninFoo.getServers().indexOf(server), insertPoint);
 			insertPoint.addView(view);
 		}
-		
-		// If coming from PluginSelection : don't check again
-		// TODO : list isn't inflated yet...
-		/*Intent thisIntent = getIntent();
+
+		Intent thisIntent = getIntent();
 		if (thisIntent.hasExtra("dontCheckAgain") && thisIntent.getExtras().getBoolean("dontCheckAgain"))
-			updateStates(false);
-		else {
-			if (muninFoo.shouldUpdateAlerts())
-				updateStates(true);
-			else
-				updateStates(false);
-		}*/
+			refresh(false);
+		else
+			refresh(muninFoo.shouldUpdateAlerts());
 
 		tv_hideNoAlerts.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				if (adapter.getListItemPolicy() == Adapter_Alerts.ListItemPolicy.HIDE_NORMAL) {
-					// => show all servers
-					adapter.setListItemPolicy(Adapter_Alerts.ListItemPolicy.SHOW_ALL);
-					tv_hideNoAlerts.setText(getString(R.string.text49_1));
-					adapter.updateViewsPartial();
-					// TODO if shouldDisplayEverythingsOk
-				} else {
-					// => hide normal servers
-					adapter.setListItemPolicy(Adapter_Alerts.ListItemPolicy.HIDE_NORMAL);
-					tv_hideNoAlerts.setText(getString(R.string.text49_2));
-					adapter.updateViewsPartial();
-					// TODO if shouldDisplayEverythingsOk
+				switchListItemPolicy();
+				switch (adapter.getListItemPolicy()) {
+					case HIDE_NORMAL:
+						adapter.setListItemPolicy(Adapter_Alerts.ListItemPolicy.HIDE_NORMAL);
+						tv_hideNoAlerts.setText(getString(R.string.text49_2));
+						adapter.updateViewsPartial();
+						everythingsOk.setVisibility(adapter.isEverythingOk() ? View.VISIBLE : View.GONE);
+						break;
+					case SHOW_ALL:
+						adapter.setListItemPolicy(Adapter_Alerts.ListItemPolicy.SHOW_ALL);
+						tv_hideNoAlerts.setText(getString(R.string.text49_1));
+						adapter.updateViewsPartial();
+						everythingsOk.setVisibility(View.GONE);
+						break;
 				}
 			}
 		});
@@ -115,19 +112,29 @@ public class Activity_Alerts extends MuninActivity {
 		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
+
+	public void onLoadingFinished() {
+		loading = false;
+		progressBar.setVisibility(View.GONE);
+
+		everythingsOk.setVisibility(
+				adapter.shouldDisplayEverythingsOkMessage() ? View.VISIBLE : View.GONE);
+	}
 	
 	/**
 	 * Update UI
 	 * @param fetch Use cached data or not
 	 */
 	private void refresh(boolean fetch) {
+		if (loading)
+			return;
+		loading = true;
+
 		if (fetch && !Util.isOnline(this)) {
 			Toast.makeText(this, getString(R.string.text30), Toast.LENGTH_LONG).show();
 			return;
 		}
 
-		tv_hideNoAlerts.setEnabled(false);
-		tv_hideNoAlerts.setBackgroundColor(Color.GRAY);
 		adapter.setAllGray();
 
 		int nbServers = muninFoo.getServers().size();
@@ -136,6 +143,8 @@ public class Activity_Alerts extends MuninActivity {
 			progressBar.setVisibility(View.VISIBLE);
 			progressBar.setProgress(0);
 			everythingsOk.setVisibility(View.GONE);
+
+			loading_remainingServers = nbServers;
 
 			for (int i=0; i<nbServers; i++) {
 				if (i%SERVERS_BY_THREAD == 0) {
@@ -176,14 +185,15 @@ public class Activity_Alerts extends MuninActivity {
 		protected void onPostExecute(Void result) {
 			adapter.updateViews(fromIndex, toIndex);
 
-			// TODO this is bad
-			if (this.toIndex == muninFoo.getServers().size()-1)
-				progressBar.setVisibility(View.GONE);
+			loading_remainingServers -= (toIndex-fromIndex+1);
+
+			if (loading_remainingServers == 0)
+				onLoadingFinished();
 		}
 	}
 	
 	/**
-	 * Switchs from flat to expanded list mode
+	 * Switch from flat to expanded list mode
 	 */
 	private void switchListMode() {
 		adapter.setListItemSize(
@@ -192,11 +202,17 @@ public class Activity_Alerts extends MuninActivity {
 						: Adapter_Alerts.ListItemSize.REDUCED);
 	}
 
+	private void switchListItemPolicy() {
+		adapter.setListItemPolicy(
+				adapter.getListItemPolicy() == Adapter_Alerts.ListItemPolicy.HIDE_NORMAL
+						? Adapter_Alerts.ListItemPolicy.SHOW_ALL
+						: Adapter_Alerts.ListItemPolicy.HIDE_NORMAL);
+	}
+
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();
 
 		getMenuInflater().inflate(R.menu.alerts, menu);
-		this.menu_flatList = menu.findItem(R.id.menu_flatlist);
 	}
 	
 	@Override

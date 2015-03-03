@@ -29,9 +29,6 @@ public class Adapter_Alerts {
 	public enum ListItemPolicy { SHOW_ALL, HIDE_NORMAL }
 	private ListItemPolicy listItemPolicy;
 
-	private Runnable onUpdateStart;
-	private Runnable onUpdateFinished;
-
     private int COLOR_BG_CRITICAL;
     private int COLOR_BG_WARNING;
     private int COLOR_BG_OK;
@@ -169,6 +166,9 @@ public class Adapter_Alerts {
 			int nbErrors = server.getErroredPlugins().size();
 			int nbWarnings = server.getWarnedPlugins().size();
 
+			// We set view states for both ListItemSize.REDUCED _and_ EXPANDED
+			// when possible, to make switching from one to another easier
+
 			if (server.reachable == Util.SpecialBool.TRUE) {
 				everythingsOk = nbErrors == 0 && nbWarnings == 0;
 
@@ -197,6 +197,19 @@ public class Adapter_Alerts {
 						nbWarnings == 1 ? R.string.text51_1 // warning
 								: R.string.text51_2 // warnings
 				));
+
+				if (adapter.getListItemSize() == ListItemSize.REDUCED) {
+					serverName.setBackgroundColor(Color.TRANSPARENT);
+
+					if (nbErrors > 0 || nbWarnings > 0) {
+						if (nbErrors > 0)
+							serverName.setBackgroundColor(COLOR_BG_CRITICAL);
+						else if (nbWarnings > 0)
+							serverName.setBackgroundColor(COLOR_BG_WARNING);
+
+						serverName.setTextColor(Color.WHITE);
+					}
+				}
 			}
 			else if (server.reachable == Util.SpecialBool.FALSE) {
 				everythingsOk = true;
@@ -244,12 +257,12 @@ public class Adapter_Alerts {
 				if (hideNormal)
 					hide = true;
 				serverName.setClickable(false);
-				switchArrow(false);
+				serverName.setCompoundDrawables(null, null, null, null);
 			} else {
 				if (hideNormal)
 					hide = false;
 				serverName.setClickable(true);
-				switchArrow(true);
+				serverName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow, 0);
 			}
 
 			part.setVisibility(hide ? View.GONE : View.VISIBLE);
@@ -260,39 +273,39 @@ public class Adapter_Alerts {
 			warnings.setBackgroundColor(COLOR_BG_UNDEFINED);
 		}
 
-		public void switchArrow(boolean value) {
-			if (value)
-				serverName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow, 0);
-			else
-				serverName.setCompoundDrawables(null, null, null, null);
+		public void onListItemSizeChange() {
+			switch (adapter.getListItemSize()) {
+				case REDUCED:
+					criticals.setVisibility(View.GONE);
+					warnings.setVisibility(View.GONE);
+
+					int i_criticalsAmount = getIntFromTextView(criticalsAmount);
+					int i_warningsAmount = getIntFromTextView(warningsAmount);
+
+					serverName.setBackgroundColor(Color.TRANSPARENT);
+					if (i_criticalsAmount > 0 || i_warningsAmount > 0) {
+						if (i_criticalsAmount > 0)
+							serverName.setBackgroundColor(COLOR_BG_CRITICAL);
+						else if (i_warningsAmount > 0)
+							serverName.setBackgroundColor(COLOR_BG_WARNING);
+
+						serverName.setTextColor(Color.WHITE);
+					}
+					break;
+				case EXPANDED:
+					criticals.setVisibility(View.VISIBLE);
+					warnings.setVisibility(View.VISIBLE);
+					serverName.setTextColor(COLOR_TEXT_COLOR);
+					serverName.setBackgroundColor(Color.WHITE);
+					break;
+			}
 		}
 
-		public void onListItemSizeChange() {
-			if (adapter.getListItemSize() == ListItemSize.REDUCED) {
-				// Expand
-				criticals.setVisibility(View.VISIBLE);
-				warnings.setVisibility(View.VISIBLE);
-				serverName.setTextColor(COLOR_TEXT_COLOR);
-				serverName.setBackgroundColor(Color.WHITE);
-			} else {
-                // Reduce
-				criticals.setVisibility(View.GONE);
-				warnings.setVisibility(View.GONE);
-
-				String s_criticalsAmount = criticalsAmount.getText().toString();
-				int i_criticalsAmount = s_criticalsAmount.equals("?") ? -1 : Integer.parseInt(s_criticalsAmount);
-				String s_warningsNumber = warningsAmount.getText().toString();
-				int i_warningsAmount = s_warningsNumber.equals("?") ? -1 : Integer.parseInt(s_warningsNumber);
-
-				if (i_criticalsAmount > 0 || i_warningsAmount > 0) {
-					if (i_criticalsAmount > 0)
-						serverName.setBackgroundColor(COLOR_BG_CRITICAL);
-					else if (i_warningsAmount > 0)
-						serverName.setBackgroundColor(COLOR_BG_WARNING);
-
-					serverName.setTextColor(Color.WHITE);
-				}
-			}
+		public int getIntFromTextView(TextView tv) {
+			String txt = tv.getText().toString();
+			if (txt.isEmpty() || txt.equals("?"))
+				return -1;
+			return Integer.parseInt(txt);
 		}
 
 		public boolean isEverythingOk() { return this.everythingsOk; }
