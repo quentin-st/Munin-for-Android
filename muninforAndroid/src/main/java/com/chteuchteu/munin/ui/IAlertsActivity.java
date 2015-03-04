@@ -1,6 +1,7 @@
 package com.chteuchteu.munin.ui;
 
 public interface IAlertsActivity {
-	public void onScanProgress(int finishedIndex);
-	public void onGroupScanFinished(int fromIndex, int toIndex);
+	public void setLoading(boolean val);
+	public void setLoadingProgress(int progress);
+	public boolean shouldCheckAgain();
 }

@@ -3,17 +3,17 @@ package com.chteuchteu.munin.async;
 import android.os.AsyncTask;
 
 import com.chteuchteu.munin.MuninFoo;
-import com.chteuchteu.munin.ui.IAlertsActivity;
+import com.chteuchteu.munin.ui.Fragment_Alerts;
 
 public class AlertsScanner extends AsyncTask<Void, Integer, Void> {
 	private int fromIndex;
 	private int toIndex;
-	private IAlertsActivity activity;
+	private Fragment_Alerts fragment;
 
-	public AlertsScanner(int fromIndex, int toIndex, IAlertsActivity activity) {
+	public AlertsScanner(int fromIndex, int toIndex, Fragment_Alerts fragment) {
 		this.fromIndex = fromIndex;
 		this.toIndex = toIndex;
-		this.activity = activity;
+		this.fragment = fragment;
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class AlertsScanner extends AsyncTask<Void, Integer, Void> {
 
 		for (int i=fromIndex; i<=toIndex; i++) {
 			muninFoo.getServer(i).fetchPluginsStates(muninFoo.getUserAgent());
-			activity.onScanProgress(i);
+			fragment.onScanProgress();
 		}
 
 		return null;
@@ -30,6 +30,6 @@ public class AlertsScanner extends AsyncTask<Void, Integer, Void> {
 
 	@Override
 	protected void onPostExecute(Void result) {
-		activity.onGroupScanFinished(this.fromIndex, this.toIndex);
+		fragment.onGroupScanFinished(this.fromIndex, this.toIndex);
 	}
 }

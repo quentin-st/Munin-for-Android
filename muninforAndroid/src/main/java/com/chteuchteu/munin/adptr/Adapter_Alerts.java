@@ -34,7 +34,8 @@ public class Adapter_Alerts {
     private int COLOR_BG_WARNING;
     private int COLOR_BG_OK;
     private int COLOR_BG_UNDEFINED;
-    private int COLOR_TEXT_COLOR;
+    private int COLOR_SERVERNAME_TEXT_COLOR;
+    private int COLOR_MASTERNAME_TEXT_COLOR;
 
 	public Adapter_Alerts(Context context, List<MuninServer> items,
 	                      ListItemSize listItemSize, ListItemPolicy listItemPolicy) {
@@ -51,7 +52,8 @@ public class Adapter_Alerts {
         this.COLOR_BG_WARNING = context.getResources().getColor(R.color.alerts_bg_color_warning);
         this.COLOR_BG_OK = context.getResources().getColor(R.color.alerts_bg_color_ok);
         this.COLOR_BG_UNDEFINED = context.getResources().getColor(R.color.alerts_bg_color_undefined);
-        this.COLOR_TEXT_COLOR = context.getResources().getColor(R.color.alerts_text_color);
+        this.COLOR_SERVERNAME_TEXT_COLOR = context.getResources().getColor(R.color.alerts_servername_text_color);
+        this.COLOR_MASTERNAME_TEXT_COLOR = context.getResources().getColor(R.color.alerts_mastername_text_color);
 	}
 
 	public View getView(int position, ViewGroup parent) {
@@ -209,10 +211,7 @@ public class Adapter_Alerts {
 					cardHeader.setBackgroundColor(Color.TRANSPARENT);
 
 					if (nbErrors > 0 || nbWarnings > 0) {
-						if (nbErrors > 0)
-							cardHeader.setBackgroundColor(COLOR_BG_CRITICAL);
-						else if (nbWarnings > 0)
-							cardHeader.setBackgroundColor(COLOR_BG_WARNING);
+						cardHeader.setBackgroundColor(nbErrors > 0 ? COLOR_BG_CRITICAL : COLOR_BG_WARNING);
 
 						serverName.setTextColor(Color.WHITE);
 						masterName.setTextColor(Color.WHITE);
@@ -241,7 +240,7 @@ public class Adapter_Alerts {
 			int nbWarnings = server.getWarnedPlugins().size();
 			boolean hasErrorsOrWarnings = nbErrors > 0 || nbWarnings > 0;
 
-			cardHeader.setClickable(!hasErrorsOrWarnings);
+			cardHeader.setClickable(hasErrorsOrWarnings);
 			arrow.setVisibility(hasErrorsOrWarnings ? View.VISIBLE : View.GONE);
 			part.setVisibility(hideNormal && !hasErrorsOrWarnings ? View.GONE : View.VISIBLE);
 		}
@@ -260,21 +259,20 @@ public class Adapter_Alerts {
 					int i_criticalsAmount = getIntFromTextView(criticalsAmount);
 					int i_warningsAmount = getIntFromTextView(warningsAmount);
 
-					serverName.setBackgroundColor(Color.TRANSPARENT);
+					cardHeader.setBackgroundColor(Color.TRANSPARENT);
 					if (i_criticalsAmount > 0 || i_warningsAmount > 0) {
-						if (i_criticalsAmount > 0)
-							serverName.setBackgroundColor(COLOR_BG_CRITICAL);
-						else if (i_warningsAmount > 0)
-							serverName.setBackgroundColor(COLOR_BG_WARNING);
+						cardHeader.setBackgroundColor(i_criticalsAmount > 0 ? COLOR_BG_CRITICAL : COLOR_BG_WARNING);
 
+						masterName.setTextColor(Color.WHITE);
 						serverName.setTextColor(Color.WHITE);
 					}
 					break;
 				case EXPANDED:
 					criticals.setVisibility(View.VISIBLE);
 					warnings.setVisibility(View.VISIBLE);
-					serverName.setTextColor(COLOR_TEXT_COLOR);
-					serverName.setBackgroundColor(Color.WHITE);
+					cardHeader.setBackgroundColor(Color.TRANSPARENT);
+					masterName.setTextColor(COLOR_MASTERNAME_TEXT_COLOR);
+					serverName.setTextColor(COLOR_SERVERNAME_TEXT_COLOR);
 					break;
 			}
 		}
