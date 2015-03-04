@@ -10,7 +10,6 @@ import com.chteuchteu.munin.obj.HTTPResponse;
 import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -99,17 +98,12 @@ public class NetHelper {
 
 			HttpGet request = new HttpGet(url);
 			request.setHeader("User-Agent", userAgent);
-			
+
+			// Apache Basic/Digest auth
 			if (master.isAuthNeeded()) {
-				if (master.getAuthType() == AuthType.BASIC)
-					request.setHeader("Authorization", "Basic " + Base64.encodeToString(
-							(master.getAuthLogin() + ":" + master.getAuthPassword()).getBytes(), Base64.NO_WRAP));
-				else if (master.getAuthType() == AuthType.DIGEST) {
-					// Digest foo:digestedPass, realm="munin", nonce="+RdhgM7qBAA=86e58ecf5cbd672ba8246c4f9eed4a389fe87fd6", algorithm=MD5, qop="auth"
-					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-					String header = DigestUtils.getDigestAuthHeader(master, url);
+				String header = getAuthenticationHeader(master, url);
+				if (header != null)
 					request.setHeader("Authorization", header);
-				}
 			}
 			
 			HttpParams httpParameters = new BasicHttpParams();
@@ -231,16 +225,12 @@ public class NetHelper {
 
 			HttpGet request = new HttpGet(url);
 			request.setHeader("User-Agent", userAgent);
-			
+
+			// Apache Basic/Digest auth
 			if (master.isAuthNeeded()) {
-				if (master.getAuthType() == AuthType.BASIC)
-					request.setHeader("Authorization", "Basic " + Base64.encodeToString(
-							(master.getAuthLogin() + ":" + master.getAuthPassword()).getBytes(), Base64.NO_WRAP));
-				else if (master.getAuthType() == AuthType.DIGEST) {
-					// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-					String header = DigestUtils.getDigestAuthHeader(master, url);
+				String header = getAuthenticationHeader(master, url);
+				if (header != null)
 					request.setHeader("Authorization", header);
-				}
 			}
 			
 			HttpParams httpParameters = new BasicHttpParams();
@@ -289,5 +279,20 @@ public class NetHelper {
 		}
 		
 		return respObj;
+	}
+
+	public static String getAuthenticationHeader(MuninMaster master, String url) {
+		if (!master.isAuthNeeded())
+			return null;
+
+		switch (master.getAuthType()) {
+			case BASIC:
+				return "Basic " + Base64.encodeToString((master.getAuthLogin() + ":" + master.getAuthPassword()).getBytes(), Base64.NO_WRAP);
+			case DIGEST:
+				// Digest foo:digestedPass, realm="munin", nonce="+RdhgM7qBAA=86e58ecf5cbd672ba8246c4f9eed4a389fe87fd6", algorithm=MD5, qop="auth"
+				// WWW-Authenticate   Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
+				return DigestUtils.getDigestAuthHeader(master, url);
+		}
+		return null;
 	}
 }

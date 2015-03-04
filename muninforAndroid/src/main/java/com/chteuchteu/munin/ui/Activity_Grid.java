@@ -2,6 +2,7 @@ package com.chteuchteu.munin.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -18,6 +19,7 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
+import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 
 import java.util.ArrayList;
@@ -136,6 +138,9 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		                return;
 
                     chromecastHelper.sendMessage_inflateGrid(fragment.getGrid(), Util.getDefaultPeriod(context));
+
+	                // When the server is protected with apache basic/digest auth,
+	                // bitmaps will be sent to Chromecast as soon as they are loaded on the phone
                 }
             });
         }
@@ -154,6 +159,18 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		for (Grid grid : grids)
 			list.add(grid.getName());
 		return list;
+	}
+
+	@Override
+	public void onGridItemGraphLoaded(GridItem item, Bitmap graph) {
+		if (item == null)
+			return;
+
+		if (ChromecastHelper.isConnected(chromecastHelper)) {
+			// If the server has Apache Basic/Digest auth, send a base64-encoded version of the bitmap
+			if (item.getPlugin().getInstalledOn().getParent().isAuthNeeded())
+				chromecastHelper.sendMessage_sendBitmap(item, graph);
+		}
 	}
 
 	@Override
@@ -181,7 +198,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		if (menu_open != null)		menu_open.setVisible(false);
 
 		if (ChromecastHelper.isConnected(chromecastHelper))
-			chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.CANCELPREVIEW);
+			chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.CANCEL_PREVIEW);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.chteuchteu.munin.hlpr;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.MediaRouteActionProvider;
@@ -292,9 +293,33 @@ public class ChromecastHelper {
 				msg_GridItem.put("graphUrl", item.getPlugin().getImgUrl("{period}"));
 				msg_GridItem.put("pluginName", item.getPlugin().getFancyName());
 				msg_GridItem.put("serverName", item.getPlugin().getInstalledOn().getName());
+				msg_GridItem.put("masterName", item.getPlugin().getInstalledOn().getParent().getName());
+				msg_GridItem.put("authType", item.getPlugin().getInstalledOn().getParent().getAuthType().name());
+
 				msg_gridItems.put(msg_GridItem);
 			}
 			msg.put("gridItems", msg_gridItems);
+
+			sendMessage(msg.toString());
+		} catch (JSONException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public void sendMessage_sendBitmap(GridItem gridItem, Bitmap bitmap) {
+		if (mApiClient == null || mHelloWorldChannel == null)
+			return;
+
+		if (!gridItem.getPlugin().getInstalledOn().getParent().isAuthNeeded())
+			MuninFoo.logW("ChromecastHelper",
+					"Warning - Trying to send base64 encoded image from a non-basic/digest-protected server - This is useless");
+
+		try {
+			JSONObject msg = new JSONObject();
+			msg.put("action", "send_graph");
+			msg.put("x", gridItem.getX());
+			msg.put("y", gridItem.getY());
+			msg.put("base64Image", Util.encodeTobase64(bitmap));
 
 			sendMessage(msg.toString());
 		} catch (JSONException ex) {
@@ -324,7 +349,7 @@ public class ChromecastHelper {
 
         try {
             JSONObject msg = new JSONObject();
-            msg.put("action", "changePeriod");
+            msg.put("action", "change_period");
             msg.put("period", period.name());
 
             sendMessage(msg.toString());
@@ -333,7 +358,7 @@ public class ChromecastHelper {
         }
     }
 
-	public enum SimpleChromecastAction { CANCELPREVIEW, REFRESH }
+	public enum SimpleChromecastAction { CANCEL_PREVIEW, REFRESH }
 	public void sendMessage(SimpleChromecastAction chromecastAction) {
         if (mApiClient == null || mHelloWorldChannel == null)
             return;
