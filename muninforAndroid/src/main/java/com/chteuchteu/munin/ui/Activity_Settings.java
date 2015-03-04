@@ -127,6 +127,7 @@ public class Activity_Settings extends MuninActivity {
 		list5.add(getString(R.string.grids_legend_none));
 		list5.add(getString(R.string.button_grid));
 		list5.add(getString(R.string.button_labels));
+		list5.add(getString(R.string.alertsTitle));
 		ArrayAdapter<String> dataAdapter5 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list5);
 		dataAdapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_defaultActivity.setAdapter(dataAdapter5);
@@ -261,6 +262,7 @@ public class Activity_Settings extends MuninActivity {
 			case "": spinner_defaultActivity.setSelection(0); break;
 			case "grid": spinner_defaultActivity.setSelection(1); break;
 			case "label": spinner_defaultActivity.setSelection(2); break;
+			case "alerts": spinner_defaultActivity.setSelection(3); break;
 		}
 
 		// Default activity_grid
@@ -380,6 +382,9 @@ public class Activity_Settings extends MuninActivity {
 				Util.setPref(this, Util.PrefKeys.DefaultActivity, "label");
 				Util.setPref(this, Util.PrefKeys.DefaultActivity_LabelId,
 						String.valueOf(muninFoo.labels.get(spinner_defaultActivity_label.getSelectedItemPosition()).getId()));
+				break;
+			case 3:
+				Util.setPref(this, Util.PrefKeys.DefaultActivity, "alerts");
 				break;
 		}
 

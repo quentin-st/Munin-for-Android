@@ -197,6 +197,9 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	@Override
 	public void onGridLoaded(Grid grid) { }
 
+	@Override
+	public void onManualLoad() { /* autoLoad=false only used in Activity_Main */ }
+
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();
 

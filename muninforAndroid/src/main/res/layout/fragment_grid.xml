@@ -52,17 +52,6 @@
 			android:src="@drawable/ic_action_new" />
 	</LinearLayout>
 
-	<ImageButton
-		android:id="@+id/overflow"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/ic_action_overflow"
-		android:layout_alignParentTop="true"
-		android:layout_alignParentRight="true"
-		android:visibility="gone"
-		android:background="#00ffffff"
-		android:padding="8dp"/>
-
 	<LinearLayout
 		android:id="@+id/fullscreen"
 		android:layout_width="match_parent"

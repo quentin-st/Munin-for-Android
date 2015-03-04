@@ -38,12 +38,6 @@ public class Activity_Alerts extends MuninActivity implements IAlertsActivity {
 	}
 
 	@Override
-	public boolean shouldCheckAgain() {
-		Intent thisIntent = getIntent();
-		return !(thisIntent.hasExtra("dontCheckAgain") && thisIntent.getExtras().getBoolean("dontCheckAgain"));
-	}
-
-	@Override
 	public void setLoading(boolean val) {
 		this.progressBar.setVisibility(val ? View.VISIBLE : View.GONE);
 	}

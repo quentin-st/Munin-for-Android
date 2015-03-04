@@ -13,5 +13,46 @@
 		android:icon="@drawable/ic_action_about"
 		app:showAsAction="ifRoom"
 		android:title="@string/aboutTitle"/>
+
+	<!-- FRAGMENTS -->
+	<item
+		android:id="@+id/menu_open"
+		app:showAsAction="never"
+		android:visible="false"
+		android:title="@string/text79" />
+
+	<!-- Grid -->
+	<item
+		android:id="@+id/menu_grid_refresh"
+		app:showAsAction="never"
+		android:visible="false"
+		android:title="@string/menu_graph_refresh"/>
+	<item
+		android:id="@+id/menu_grid_period"
+		app:showAsAction="ifRoom"
+		android:title="@string/text76"
+		android:visible="false">
+		<menu>
+			<item
+				android:id="@+id/period_day"
+				android:title="@string/text47.1"/>
+			<item
+				android:id="@+id/period_week"
+				android:title="@string/text47.2"/>
+			<item
+				android:id="@+id/period_month"
+				android:title="@string/text47.3"/>
+			<item
+				android:id="@+id/period_year"
+				android:title="@string/text47.4"/>
+		</menu>
+	</item>
+
+	<!-- Alerts -->
+	<item
+		android:id="@+id/menu_alerts_refresh"
+		app:showAsAction="never"
+		android:visible="false"
+		android:title="@string/menu_graph_refresh"/>
 	
 </menu>

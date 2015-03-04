@@ -63,10 +63,7 @@ public class Fragment_Alerts extends Fragment {
 		for (MuninServer server : muninFoo.getServers())
 			insertPoint.addView(adapter.getView(muninFoo.getServers().indexOf(server), insertPoint));
 
-		if (!activity.shouldCheckAgain())
-			refresh(false);
-		else
-			refresh(muninFoo.shouldUpdateAlerts());
+		refresh(muninFoo.shouldUpdateAlerts());
 
 		tv_hideNoAlerts.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -131,12 +128,15 @@ public class Fragment_Alerts extends Fragment {
 	 * @param fetch Use cached data or not
 	 */
 	public void refresh(boolean fetch) {
-		if (loading)
+		if (loading) {
+			MuninFoo.logW("Fragment_Alerts.refresh(" + fetch + ")", "Alerts is currently loading, return");
 			return;
+		}
 		loading = true;
 
 		if (fetch && !Util.isOnline(context)) {
 			Toast.makeText(context, getString(R.string.text30), Toast.LENGTH_LONG).show();
+			loading = false;
 			return;
 		}
 
@@ -161,8 +161,10 @@ public class Fragment_Alerts extends Fragment {
 				}
 			}
 			muninFoo.alerts_lastUpdated = Calendar.getInstance();
-		} else
+		} else {
 			adapter.updateViews();
+			loading = false;
+		}
 	}
 
 	/**

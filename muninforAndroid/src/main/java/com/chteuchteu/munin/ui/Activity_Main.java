@@ -10,12 +10,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
@@ -44,13 +46,16 @@ import java.util.Locale;
  * is very different from others (showing UI elements only when the app
  * is loaded)
  */
-public class Activity_Main extends ActionBarActivity implements IGridActivity, ILabelsActivity {
+public class Activity_Main extends ActionBarActivity implements IGridActivity, ILabelsActivity, IAlertsActivity {
 	private MuninFoo		muninFoo;
 	private MaterialMenuIconToolbar materialMenu;
 
 	private Toolbar        toolbar;
 	private Menu 			menu;
+	private MenuItem       menu_grid_refresh;
+	private MenuItem       menu_grid_changePeriod;
 	private boolean		doubleBackPressed;
+	private ProgressBar     progressBar;
 
 	private DrawerHelper dh;
 	private boolean isDrawerOpened;
@@ -60,6 +65,11 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 	private boolean optionsMenuLoaded;
 	private Context context;
 	private ProgressDialog myProgressDialog;
+
+	// Fragments
+	private enum MainFragment { NONE, GRID, LABEL, ALERTS }
+	private MainFragment mainFragment;
+	private Fragment fragment;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -120,6 +130,8 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 			@Override
 			public void onDrawerStateChanged(int i) { }
 		});
+
+		progressBar = Util.UI.prepareGmailStyleProgressBar(this, getSupportActionBar());
 		
 		Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.RobotoCondensed_Regular);
 		
@@ -146,9 +158,9 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 			.setTitle(getText(R.string.rate))
 			.setIcon(R.drawable.launcher_icon)
 			.setMessage(getText(R.string.rate_long))
-			.setPositiveButton(getText(R.string.yes), null) // Yes
-			.setNegativeButton(getText(R.string.no), null) // No
-			.setNeutralButton(getText(R.string.not_now), null); // Not now
+			.setPositiveButton(getText(R.string.yes), null)
+			.setNegativeButton(getText(R.string.no), null)
+			.setNeutralButton(getText(R.string.not_now), null);
 		new AppRate(this)
 			.setCustomDialog(builder)
 			.setMinDaysUntilPrompt(8)
@@ -164,11 +176,10 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 		displayI18nAlertIfNeeded();
 
 		// Load fragment if needed
-		boolean fragmentLoaded = false;
+		mainFragment = MainFragment.NONE;
 
 		switch (Util.getPref(context, Util.PrefKeys.DefaultActivity)) {
 			case "":
-				fragmentLoaded = false;
 				if (muninFoo.sqlite.dbHlpr.hasGrids() && muninFoo.premium || !muninFoo.labels.isEmpty()) {
 					findViewById(R.id.setDefaultActivity).setOnClickListener(new View.OnClickListener() {
 						@Override
@@ -184,41 +195,48 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 					findViewById(R.id.setDefaultActivity).setVisibility(View.GONE);
 				break;
 			case "grid": {
-				fragmentLoaded = true;
+				mainFragment = MainFragment.GRID;
 				findViewById(R.id.empty_layout).setVisibility(View.GONE);
 				findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
 
-				Fragment_Grid fragmentGrid = new Fragment_Grid();
+				fragment = new Fragment_Grid();
 				Bundle bundle = new Bundle();
 				long gridId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_GridId));
 				bundle.putLong(Fragment_Grid.ARG_GRIDID, gridId);
 				bundle.putBoolean(Fragment_Grid.ARG_AUTOLOAD, false);
-				bundle.putBoolean(Fragment_Grid.ARG_OVERFLOW_ACTIONS, true);
-				fragmentGrid.setArguments(bundle);
-				getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragmentGrid).commit();
+				fragment.setArguments(bundle);
+				getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
 				break;
 			}
 			case "label": {
-				fragmentLoaded = true;
+				mainFragment = MainFragment.LABEL;
 				findViewById(R.id.empty_layout).setVisibility(View.GONE);
 				findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
 
-				Fragment_LabelsItemsList fragmentLabels = new Fragment_LabelsItemsList();
+				fragment = new Fragment_LabelsItemsList();
 				Bundle bundle = new Bundle();
 				long labelId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_LabelId));
 				bundle.putLong("labelId", labelId);
-				fragmentLabels.setArguments(bundle);
-				getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragmentLabels).commit();
+				fragment.setArguments(bundle);
+				getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
 				Label label = muninFoo.getLabel(labelId);
 				if (label != null)
 					toolbar.setSubtitle(label.getName());
 				break;
 			}
+			case "alerts":
+				mainFragment = MainFragment.ALERTS;
+				findViewById(R.id.empty_layout).setVisibility(View.GONE);
+				findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
+
+				fragment = new Fragment_Alerts();
+				getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
+				break;
 		}
 
 		// Reset drawer
 		dh.reset();
-		if (!fragmentLoaded) {
+		if (mainFragment == MainFragment.NONE) {
 			dh.toggle();
 			materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
 		}
@@ -264,6 +282,54 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 				startActivity(new Intent(context, Activity_About.class));
 				Util.setTransition(context, Util.TransitionStyle.DEEPER);
 				return true;
+			/* Fragments */
+			case R.id.menu_open:
+				switch (mainFragment) {
+					case GRID: {
+						Intent intent = new Intent(context, Activity_Grid.class);
+						Grid grid = ((Fragment_Grid) fragment).getGrid();
+						intent.putExtra(Activity_Grid.ARG_GRIDID, grid.getId());
+						startActivity(intent);
+						Util.setTransition(context, Util.TransitionStyle.DEEPER);
+						break;
+					}
+					case LABEL: {
+						Intent intent = new Intent(context, Activity_Labels.class);
+						int labelId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_LabelId));
+						intent.putExtra("labelId", labelId);
+						startActivity(intent);
+						Util.setTransition(context, Util.TransitionStyle.SHALLOWER);
+						break;
+					}
+					case ALERTS:
+						startActivity(new Intent(this, Activity_Alerts.class));
+						break;
+				}
+				break;
+			/* Fragment - Grid */
+			case R.id.menu_grid_refresh:
+				((Fragment_Grid) fragment).refresh();
+				break;
+			case R.id.period_day:
+				((Fragment_Grid) fragment).setCurrentPeriod(MuninPlugin.Period.DAY);
+				((Fragment_Grid) fragment).refresh();
+				return true;
+			case R.id.period_week:
+				((Fragment_Grid) fragment).setCurrentPeriod(MuninPlugin.Period.WEEK);
+				((Fragment_Grid) fragment).refresh();
+				return true;
+			case R.id.period_month:
+				((Fragment_Grid) fragment).setCurrentPeriod(MuninPlugin.Period.MONTH);
+				((Fragment_Grid) fragment).refresh();
+				return true;
+			case R.id.period_year:
+				((Fragment_Grid) fragment).setCurrentPeriod(MuninPlugin.Period.YEAR);
+				((Fragment_Grid) fragment).refresh();
+				return true;
+			/* Fragment - Alerts */
+			case R.id.menu_alerts_refresh:
+				((Fragment_Alerts) fragment).refresh(true);
+				break;
 		}
 
 		return true;
@@ -285,6 +351,17 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 		optionsMenuLoaded = true;
 		menu.clear();
 		getMenuInflater().inflate(R.menu.main, menu);
+
+		// Fragments menu items
+		menu.findItem(R.id.menu_open).setVisible(mainFragment != MainFragment.NONE);
+
+		// Grid
+		// _refresh and _changePeriod are set visible when the user hits the "Load" button
+		menu_grid_refresh = menu.findItem(R.id.menu_grid_refresh);
+		menu_grid_changePeriod = menu.findItem(R.id.menu_grid_period);
+
+		// Alerts
+		menu.findItem(R.id.menu_alerts_refresh).setVisible(mainFragment == MainFragment.ALERTS);
 	}
 	
 	private void displayTwitterAlertIfNeeded() {
@@ -477,6 +554,11 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 	public void onGridLoaded(Grid grid) {
 		toolbar.setSubtitle(grid.getName());
 	}
+	@Override
+	public void onManualLoad() {
+		menu_grid_refresh.setVisible(true);
+		menu_grid_changePeriod.setVisible(true);
+	}
 
 	/* Label fragment */
 	@Override public void onLabelClick(Label label) { } // Not used here
@@ -494,6 +576,10 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 	public void onLabelsFragmentLoaded() { }
 	@Override
 	public void unselectLabel() { }
+
+	/* Alerts fragment */
+	@Override public void setLoading(boolean val) { this.progressBar.setVisibility(val ? View.VISIBLE : View.GONE); }
+	@Override public void setLoadingProgress(int val) { this.progressBar.setProgress(val); }
 
 	private class UpdateOperations extends AsyncTask<Void, Integer, Void> {
 		@Override
