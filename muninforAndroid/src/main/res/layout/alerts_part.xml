@@ -8,29 +8,60 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_margin="10dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="5dp"
+		android:layout_marginBottom="5dp"
 		android:background="@drawable/card"
 		android:orientation="vertical"
 		android:padding="2dp" >
 
-		<TextView
-			android:id="@+id/alerts_part_serverName"
+		<RelativeLayout
+			android:id="@+id/cardHeader"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@drawable/alerts_hover"
+			android:orientation="vertical"
 			android:clickable="true"
-			android:drawableRight="@drawable/arrow"
 			android:focusable="true"
-			android:gravity="center_vertical"
-			android:padding="10dp"
-			android:textColor="#333333"
-			android:textSize="22sp" />
+			android:background="@drawable/alerts_hover"
+			android:paddingTop="3dp"
+			android:paddingLeft="15dp"
+			android:paddingBottom="3dp">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+
+				<TextView
+					android:id="@+id/alerts_part_masterName"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="#888888"
+					android:textSize="14sp"/>
+
+				<TextView
+					android:id="@+id/alerts_part_serverName"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="#333333"
+					android:textSize="19sp"/>
+			</LinearLayout>
+
+			<ImageView
+				android:id="@+id/arrow"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:layout_centerVertical="true"
+				android:src="@drawable/arrow"/>
+		</RelativeLayout>
 
 		<LinearLayout
 			android:id="@+id/alerts_part_criticals"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="3dp"
+			android:layout_marginBottom="2dp"
 			android:background="#B2B2B2"
 			android:orientation="horizontal" >
 
@@ -40,22 +71,22 @@
 				android:layout_height="match_parent"
 				android:layout_gravity="center"
 				android:layout_marginBottom="1dp"
-				android:layout_marginLeft="15dp"
+				android:layout_marginLeft="13dp"
 				android:layout_marginTop="1dp"
 				android:gravity="center"
 				android:textColor="#ffffff"
-				android:textSize="23sp" />
+				android:textSize="21sp" />
 
 			<TextView
 				android:id="@+id/alerts_part_criticalsLabel"
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:layout_gravity="center"
-				android:layout_margin="5dp"
+				android:layout_margin="3dp"
 				android:layout_marginRight="15dp"
 				android:gravity="center"
 				android:textColor="#ffffff"
-				android:textSize="14sp" />
+				android:textSize="12sp" />
 
 			<HorizontalScrollView
 				android:layout_width="match_parent"
@@ -69,7 +100,7 @@
 					android:paddingLeft="10dp"
 					android:scrollHorizontally="true"
 					android:textColor="#ffffff"
-					android:textSize="14sp" />
+					android:textSize="12sp" />
 			</HorizontalScrollView>
 		</LinearLayout>
 
@@ -87,21 +118,21 @@
 				android:layout_height="match_parent"
 				android:layout_gravity="center"
 				android:layout_marginBottom="1dp"
-				android:layout_marginLeft="15dp"
+				android:layout_marginLeft="13dp"
 				android:layout_marginTop="1dp"
 				android:gravity="center"
 				android:textColor="#ffffff"
-				android:textSize="23sp" />
+				android:textSize="21sp" />
 
 			<TextView
 				android:id="@+id/alerts_part_warningsLabel"
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:layout_gravity="center"
-				android:layout_margin="5dp"
+				android:layout_margin="3dp"
 				android:gravity="center"
 				android:textColor="#ffffff"
-				android:textSize="14sp" />
+				android:textSize="12sp" />
 
 			<HorizontalScrollView
 				android:layout_width="match_parent"
@@ -115,7 +146,7 @@
 					android:paddingLeft="10dp"
 					android:scrollHorizontally="true"
 					android:textColor="#ffffff"
-					android:textSize="14sp" />
+					android:textSize="12sp" />
 			</HorizontalScrollView>
 		</LinearLayout>
 	</LinearLayout>

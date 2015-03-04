@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
@@ -107,7 +108,10 @@ public class Adapter_Alerts {
 		private boolean viewInflated;
 		private Adapter_Alerts adapter;
 		private MuninServer server;
+
 		private LinearLayout part;
+		private RelativeLayout cardHeader;
+		private TextView masterName;
 		private TextView serverName;
 		private LinearLayout criticals;
 		private TextView criticalsAmount;
@@ -117,6 +121,7 @@ public class Adapter_Alerts {
 		private TextView warningsAmount;
 		private TextView warningsLabel;
 		private TextView warningsPluginsList;
+		private View arrow;
 		private boolean everythingsOk;
 
 		public AlertPart(MuninServer server, Adapter_Alerts adapter) {
@@ -132,19 +137,23 @@ public class Adapter_Alerts {
 
 			viewInflated = true;
 			part 					= (LinearLayout) v.findViewById(R.id.alerts_part);
-			serverName 				= (TextView) v.findViewById(R.id.alerts_part_serverName);
+			cardHeader             = (RelativeLayout) v.findViewById(R.id.cardHeader);
+			masterName             = (TextView) v.findViewById(R.id.alerts_part_masterName);
+			serverName 			= (TextView) v.findViewById(R.id.alerts_part_serverName);
 			criticals 				= (LinearLayout) v.findViewById(R.id.alerts_part_criticals);
 			criticalsAmount 		= (TextView) v.findViewById(R.id.alerts_part_criticalsNumber);
-			criticalsLabel 			= (TextView) v.findViewById(R.id.alerts_part_criticalsLabel);
+			criticalsLabel 		= (TextView) v.findViewById(R.id.alerts_part_criticalsLabel);
 			criticalsPluginsList 	= (TextView) v.findViewById(R.id.alerts_part_criticalsPluginsList);
 			warnings 				= (LinearLayout) v.findViewById(R.id.alerts_part_warnings);
-			warningsAmount			= (TextView) v.findViewById(R.id.alerts_part_warningsNumber);
+			warningsAmount		= (TextView) v.findViewById(R.id.alerts_part_warningsNumber);
 			warningsLabel 			= (TextView) v.findViewById(R.id.alerts_part_warningsLabel);
 			warningsPluginsList 	= (TextView) v.findViewById(R.id.alerts_part_warningsPluginsList);
+			arrow                  = v.findViewById(R.id.arrow);
 
 			part.setVisibility(View.GONE);
 			serverName.setText(server.getName());
-			serverName.setOnClickListener(new View.OnClickListener() {
+			masterName.setText(server.getParent().getName());
+			cardHeader.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					MuninFoo.getInstance().setCurrentServer(server);
@@ -153,7 +162,9 @@ public class Adapter_Alerts {
 				}
 			});
 
-			Util.Fonts.setFont(context, (ViewGroup) v, Util.Fonts.CustomFont.RobotoCondensed_Regular);
+			Util.Fonts.setFont(context, cardHeader, Util.Fonts.CustomFont.Roboto_Regular);
+			Util.Fonts.setFont(context, criticals, Util.Fonts.CustomFont.RobotoCondensed_Regular);
+			Util.Fonts.setFont(context, warnings, Util.Fonts.CustomFont.RobotoCondensed_Regular);
 
 			return v;
 		}
@@ -195,15 +206,16 @@ public class Adapter_Alerts {
 				));
 
 				if (adapter.getListItemSize() == ListItemSize.REDUCED) {
-					serverName.setBackgroundColor(Color.TRANSPARENT);
+					cardHeader.setBackgroundColor(Color.TRANSPARENT);
 
 					if (nbErrors > 0 || nbWarnings > 0) {
 						if (nbErrors > 0)
-							serverName.setBackgroundColor(COLOR_BG_CRITICAL);
+							cardHeader.setBackgroundColor(COLOR_BG_CRITICAL);
 						else if (nbWarnings > 0)
-							serverName.setBackgroundColor(COLOR_BG_WARNING);
+							cardHeader.setBackgroundColor(COLOR_BG_WARNING);
 
 						serverName.setTextColor(Color.WHITE);
+						masterName.setTextColor(Color.WHITE);
 					}
 				}
 			}
@@ -223,25 +235,15 @@ public class Adapter_Alerts {
 		}
 
 		public void updateViewPartial() {
-			boolean hide = false;
 			boolean hideNormal = adapter.getListItemPolicy() == ListItemPolicy.HIDE_NORMAL;
 
 			int nbErrors = server.getErroredPlugins().size();
 			int nbWarnings = server.getWarnedPlugins().size();
+			boolean hasErrorsOrWarnings = nbErrors > 0 || nbWarnings > 0;
 
-			if (nbErrors == 0 && nbWarnings == 0) {
-				if (hideNormal)
-					hide = true;
-				serverName.setClickable(false);
-				serverName.setCompoundDrawables(null, null, null, null);
-			} else {
-				if (hideNormal)
-					hide = false;
-				serverName.setClickable(true);
-				serverName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow, 0);
-			}
-
-			part.setVisibility(hide ? View.GONE : View.VISIBLE);
+			cardHeader.setClickable(!hasErrorsOrWarnings);
+			arrow.setVisibility(hasErrorsOrWarnings ? View.VISIBLE : View.GONE);
+			part.setVisibility(hideNormal && !hasErrorsOrWarnings ? View.GONE : View.VISIBLE);
 		}
 
 		public void setGray() {
