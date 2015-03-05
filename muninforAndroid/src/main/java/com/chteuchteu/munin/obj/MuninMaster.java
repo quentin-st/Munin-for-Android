@@ -7,7 +7,6 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.NetHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-import com.chteuchteu.munin.obj.MuninServer.AuthType;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -65,6 +64,21 @@ public class MuninMaster {
 		}
 		public static DynazoomAvailability get(boolean val) {
             return val ? TRUE : FALSE;
+		}
+	}
+
+	public enum AuthType {
+		UNKNOWN(-2), NONE(-1), BASIC(1), DIGEST(2);
+		private int val = -2;
+
+		AuthType(int val) { this.val = val; }
+		public int getVal() { return this.val; }
+		public String toString() { return val + ""; }
+		public static AuthType get(int val) {
+			for (AuthType t : AuthType.values())
+				if (t.val == val)
+					return t;
+			return UNKNOWN;
 		}
 	}
 	

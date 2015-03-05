@@ -24,6 +24,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v7.app.ActionBar;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -51,6 +52,7 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -828,5 +830,12 @@ public final class Util {
 		}
 
 		return str;
+	}
+
+	public static String encodeTobase64(Bitmap image) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+		byte[] b = baos.toByteArray();
+		return Base64.encodeToString(b, Base64.DEFAULT);
 	}
 }

@@ -1,7 +1,7 @@
 package com.chteuchteu.munin.hlpr;
 
 import com.chteuchteu.munin.obj.MuninMaster;
-import com.chteuchteu.munin.obj.MuninServer.AuthType;
+import com.chteuchteu.munin.obj.MuninMaster.AuthType;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -86,9 +86,9 @@ public class DigestUtils {
 	
 	private static String toHexString(byte[] data) {
 		StringBuilder buffer = new StringBuilder();
-		for (int i = 0; i < data.length; i++) {
-			buffer.append(Integer.toHexString((data[i] & 0xf0) >>> 4));
-			buffer.append(Integer.toHexString(data[i] & 0x0f));
+		for (byte aData : data) {
+			buffer.append(Integer.toHexString((aData & 0xf0) >>> 4));
+			buffer.append(Integer.toHexString(aData & 0x0f));
 		}
 		return buffer.toString();
 	}

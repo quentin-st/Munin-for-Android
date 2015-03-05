@@ -2,6 +2,7 @@ package com.chteuchteu.munin.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -220,6 +221,12 @@ public class Fragment_Grid extends Fragment {
 	public boolean isEditing() { return this.editing; }
 	public boolean isPreviewing() { return grid.currentlyOpenedGridItem != null; }
 	public Grid getGrid() { return this.grid; }
+	/**
+	 * Called from GridDownloadHelper
+	 */
+	public void onGridItemGraphLoaded(GridItem item, Bitmap bitmap) {
+		activity.onGridItemGraphLoaded(item, bitmap);
+	}
 
 	public MuninPlugin.Period getCurrentPeriod() { return this.currentPeriod; }
 	public void setCurrentPeriod(MuninPlugin.Period period) { this.currentPeriod = period; }

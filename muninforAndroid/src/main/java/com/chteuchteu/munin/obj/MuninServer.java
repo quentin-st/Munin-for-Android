@@ -55,21 +55,6 @@ public class MuninServer {
 		this.position = -1;
 	}
 	
-	public enum AuthType {
-		UNKNOWN(-2), NONE(-1), BASIC(1), DIGEST(2);
-		private int val = -2;
-		
-		AuthType(int val) { this.val = val; }
-		public int getVal() { return this.val; }
-		public String toString() { return val + ""; }
-		public static AuthType get(int val) {
-			for (AuthType t : AuthType.values())
-				if (t.val == val)
-					return t;
-			return UNKNOWN;
-		}
-	}
-	
 	public void setId(long id) { this.id = id; }
 	public long getId() { return this.id; }
 	
