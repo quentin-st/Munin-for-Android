@@ -19,7 +19,7 @@ import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 
 
 @SuppressLint("InflateParams")
-public class Activity_AlertsPluginSelection extends MuninActivity {
+public class Activity_AlertsPlugins extends MuninActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,8 @@ public class Activity_AlertsPluginSelection extends MuninActivity {
 		super.onContentViewSet();
 		dh.setDrawerActivity(this);
 
-		actionBar.setTitle(muninFoo.getCurrentServer().getName());
+        actionBar.setTitle(getString(R.string.alertsTitle));
+		actionBar.setSubtitle(muninFoo.getCurrentServer().getName());
 		
 		for (MuninPlugin plugin : muninFoo.getCurrentServer().getPlugins()) {
 			if (plugin.getState() == AlertState.WARNING || plugin.getState() == AlertState.CRITICAL) {
@@ -54,7 +55,7 @@ public class Activity_AlertsPluginSelection extends MuninActivity {
 					public void onClick(View v) {
 						String pluginName = ((TextView)v.findViewById(R.id.line_b)).getText().toString();
 						
-						Intent i = new Intent(Activity_AlertsPluginSelection.this, Activity_GraphView.class);
+						Intent i = new Intent(Activity_AlertsPlugins.this, Activity_GraphView.class);
 						i.putExtra("plugin", pluginName);
 						i.putExtra("position", indexOfPlugin);
 						i.putExtra("server", muninFoo.getCurrentServer().getServerUrl());

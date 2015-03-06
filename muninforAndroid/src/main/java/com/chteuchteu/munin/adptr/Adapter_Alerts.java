@@ -14,7 +14,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.chteuchteu.munin.ui.Activity_AlertsPluginSelection;
+import com.chteuchteu.munin.ui.Activity_AlertsPlugins;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,7 +159,7 @@ public class Adapter_Alerts {
 				@Override
 				public void onClick(View v) {
 					MuninFoo.getInstance().setCurrentServer(server);
-					context.startActivity(new Intent(context, Activity_AlertsPluginSelection.class));
+					context.startActivity(new Intent(context, Activity_AlertsPlugins.class));
 					Util.setTransition(context, Util.TransitionStyle.DEEPER);
 				}
 			});

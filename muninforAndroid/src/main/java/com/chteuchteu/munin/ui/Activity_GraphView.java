@@ -469,7 +469,7 @@ public class Activity_GraphView extends MuninActivity {
 					if (thisIntent.getExtras().containsKey("server")) {
 						if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
 							muninFoo.setCurrentServer(muninFoo.getServer(thisIntent.getExtras().getString("server")));
-						Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPluginSelection.class);
+						Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPlugins.class);
 						startActivity(intent);
 						Util.setTransition(context, TransitionStyle.SHALLOWER);
 					}

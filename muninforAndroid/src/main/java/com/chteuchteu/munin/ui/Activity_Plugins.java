@@ -5,14 +5,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -56,7 +59,7 @@ public class Activity_Plugins extends MuninActivity {
 	private int mode;
 	private static final int MODE_GROUPED = 1;
 	private static final int MODE_FLAT = 2;
-	
+
 	@SuppressLint("InflateParams")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -102,11 +105,20 @@ public class Activity_Plugins extends MuninActivity {
 				listView.setDivider(null);
 				
 				view.addView(listView);
-				
-				final AlertDialog dialog = new AlertDialog.Builder(context)
-				.setView(view)
-				.show();
-				dialog.getWindow().setLayout(750, LayoutParams.WRAP_CONTENT);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context).setView(view);
+                final AlertDialog dialog = builder.create();
+                // Set AlertDialog position and width
+                Rect spinnerPos = Util.locateView(customActionBarView);
+				WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+                wmlp.gravity = Gravity.TOP | Gravity.START;
+                wmlp.x = spinnerPos.left;
+                wmlp.y = spinnerPos.top;
+                wmlp.width = 700;
+                wmlp.height = LayoutParams.WRAP_CONTENT;
+                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+
+                dialog.show();
 				
 				listView.setOnItemClickListener(new OnItemClickListener() {
 					public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {

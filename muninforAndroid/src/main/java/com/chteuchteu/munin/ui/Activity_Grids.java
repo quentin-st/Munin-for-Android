@@ -1,7 +1,6 @@
 package com.chteuchteu.munin.ui;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -171,14 +169,30 @@ public class Activity_Grids extends MuninActivity {
 		.setView(ll)
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				// Overridden by the CustomListener class
+                String value = input.getText().toString();
+                if (!value.equals("")) {
+                    List<String> existingNames = muninFoo.sqlite.dbHlpr.getGridsNames();
+                    boolean available = true;
+                    for (String s : existingNames) {
+                        if (s.equals(value))
+                            available = false;
+                    }
+                    if (available) {
+                        long id = muninFoo.sqlite.dbHlpr.insertGrid(value);
+                        dialog.dismiss();
+                        Intent i = new Intent(Activity_Grids.this, Activity_Grid.class);
+                        i.putExtra("gridId", id);
+                        startActivity(i);
+                        Util.setTransition(context, TransitionStyle.DEEPER);
+                    }
+                    else
+                        Toast.makeText(context, getString(R.string.text74), Toast.LENGTH_LONG).show();
+                }
 			}
 		})
 		.setNegativeButton(getText(R.string.text64), null);
 		AlertDialog d = b.create();
 		d.show();
-		Button okButton = d.getButton(DialogInterface.BUTTON_POSITIVE);
-		okButton.setOnClickListener(new CustomListener(input, d));
 	}
 
 
@@ -210,37 +224,5 @@ public class Activity_Grids extends MuninActivity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		Util.setTransition(context, TransitionStyle.SHALLOWER);
-	}
-	
-	private class CustomListener implements View.OnClickListener {
-		private final Dialog dialog;
-		private final EditText input;
-		private CustomListener(EditText input, Dialog dialog) {
-			this.dialog = dialog;
-			this.input = input;
-		}
-		
-		@Override
-		public void onClick(View v) {
-			String value = input.getText().toString();
-			if (!value.equals("")) {
-				List<String> existingNames = muninFoo.sqlite.dbHlpr.getGridsNames();
-				boolean available = true;
-				for (String s : existingNames) {
-					if (s.equals(value))
-						available = false;
-				}
-				if (available) {
-					long id = muninFoo.sqlite.dbHlpr.insertGrid(value);
-					dialog.dismiss();
-					Intent i = new Intent(Activity_Grids.this, Activity_Grid.class);
-					i.putExtra("gridId", id);
-					startActivity(i);
-					Util.setTransition(context, TransitionStyle.DEEPER);
-				}
-				else
-					Toast.makeText(context, getString(R.string.text74), Toast.LENGTH_LONG).show();
-			}
-		}
 	}
 }
