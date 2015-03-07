@@ -95,7 +95,6 @@ public class Activity_Plugins extends MuninActivity {
 					for (MuninServer s : l) {
 						elements.add(createItem(s.getName()));
 						masterName = s.getParent().getName();
-						masterName = Util.capitalize(masterName);
 					}
 					
 					adapter.addSection(masterName, new SimpleAdapter(context, elements, R.layout.plugins_serverlist_server,

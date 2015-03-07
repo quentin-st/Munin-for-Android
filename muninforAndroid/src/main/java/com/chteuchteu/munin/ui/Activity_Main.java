@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,7 +31,6 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.obj.Grid;
-import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -548,7 +546,6 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 	}
 
 	/* Grid fragment */
-	@Override public void updatePeriodMenuItem(MuninPlugin.Period newPeriod) { }
 	@Override public void onPreviewHide() { }
 	@Override public void onEditModeChange(boolean editing) { }
 	@Override public void onPreview() { }
@@ -561,7 +558,6 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 		menu_grid_refresh.setVisible(true);
 		menu_grid_changePeriod.setVisible(true);
 	}
-	@Override public void onGridItemGraphLoaded(GridItem gridItem, Bitmap bitmap) { }
 
 	/* Label fragment */
 	@Override public void onLabelClick(Label label) { } // Not used here

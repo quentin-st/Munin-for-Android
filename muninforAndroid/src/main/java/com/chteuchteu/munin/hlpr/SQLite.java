@@ -166,7 +166,6 @@ public class SQLite {
 	}
 	
     public void logMasters() {
-        MuninFoo.log("");
 	    MuninFoo.log("============================================================");
         for (MuninMaster m : this.muninFoo.masters) {
 	        MuninFoo.log("[" + m.getName() + "]");

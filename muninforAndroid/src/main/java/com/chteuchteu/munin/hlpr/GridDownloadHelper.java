@@ -109,8 +109,6 @@ public class GridDownloadHelper {
 					gridItem.applyPlaceholder(true);
 				gridItem.pb.setVisibility(View.GONE);
 			}
-
-			fragment.onGridItemGraphLoaded(gridItem, originalBitmap);
 		}
 	}
 }

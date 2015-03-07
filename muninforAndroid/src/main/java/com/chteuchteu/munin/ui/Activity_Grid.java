@@ -2,7 +2,6 @@ package com.chteuchteu.munin.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -19,7 +18,6 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
-import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 
 import java.util.ArrayList;
@@ -31,6 +29,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	private MenuItem menu_edit;
 	private MenuItem menu_period;
 	private MenuItem menu_open;
+	private Period currentPeriod;
 
 	/**
 	 * Temporary grid object used activity instantiation. Should not be used
@@ -57,6 +56,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 
 		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+		this.currentPeriod = Util.getDefaultPeriod(this);
 
 		// Init fragment
 		this.fragment = new Fragment_Grid();
@@ -102,8 +103,12 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 						fragment = new Fragment_Grid();
 						Bundle bundle = new Bundle();
 						bundle.putLong(Fragment_Grid.ARG_GRIDID, grids.get(itemPosition).getId());
+						bundle.putString(Fragment_Grid.ARG_PERIOD, currentPeriod.name());
 						fragment.setArguments(bundle);
 						getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
+						if (ChromecastHelper.isConnected(chromecastHelper))
+							chromecastHelper.sendMessage_inflateGrid(grids.get(itemPosition), currentPeriod);
 					}
 					return false;
 				}
@@ -137,7 +142,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	                if (fragment == null || fragment.getGrid() == null)
 		                return;
 
-                    chromecastHelper.sendMessage_inflateGrid(fragment.getGrid(), Util.getDefaultPeriod(context));
+                    chromecastHelper.sendMessage_inflateGrid(fragment.getGrid(), currentPeriod);
 
 	                // When the server is protected with apache basic/digest auth,
 	                // bitmaps will be sent to Chromecast as soon as they are loaded on the phone
@@ -159,24 +164,6 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		for (Grid grid : grids)
 			list.add(grid.getName());
 		return list;
-	}
-
-	@Override
-	public void onGridItemGraphLoaded(GridItem item, Bitmap graph) {
-		if (item == null)
-			return;
-
-		if (ChromecastHelper.isConnected(chromecastHelper)) {
-			// If the server has Apache Basic/Digest auth, send a base64-encoded version of the bitmap
-			if (item.getPlugin().getInstalledOn().getParent().isAuthNeeded())
-				chromecastHelper.sendMessage_sendBitmap(item, graph);
-		}
-	}
-
-	@Override
-	public void updatePeriodMenuItem(Period period) {
-		if (menu_period != null)
-			menu_period.setTitle(period.getLabel(this));
 	}
 
 	@Override
@@ -230,7 +217,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			menu_edit.setIcon(R.drawable.ic_action_navigation_check);
 		else
 			menu_edit.setIcon(R.drawable.ic_action_image_edit);
-		menu_period.setTitle(fragment.getCurrentPeriod().getLabel(this));
+		menu_period.setTitle(currentPeriod.getLabel(this));
 
 		chromecastHelper.createOptionsMenu(menu);
 	}
@@ -266,37 +253,30 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 				return true;
 			case R.id.menu_edit: fragment.edit(); return true;
 			case R.id.period_day:
-				fragment.setCurrentPeriod(Period.DAY);
-				menu_period.setTitle(Period.DAY.getLabel(context));
-				fragment.refresh();
-                if (ChromecastHelper.isConnected(chromecastHelper))
-                    chromecastHelper.sendMessage_changePeriod(Period.DAY);
+				onPeriodMenuItemChange(Period.DAY);
 				return true;
 			case R.id.period_week:
-				fragment.setCurrentPeriod(Period.WEEK);
-				menu_period.setTitle(Period.WEEK.getLabel(context));
-				fragment.refresh();
-                if (ChromecastHelper.isConnected(chromecastHelper))
-                    chromecastHelper.sendMessage_changePeriod(Period.WEEK);
+				onPeriodMenuItemChange(Period.WEEK);
 				return true;
 			case R.id.period_month:
-				fragment.setCurrentPeriod(Period.MONTH);
-				menu_period.setTitle(Period.MONTH.getLabel(context));
-				fragment.refresh();
-                if (ChromecastHelper.isConnected(chromecastHelper))
-                    chromecastHelper.sendMessage_changePeriod(Period.MONTH);
+				onPeriodMenuItemChange(Period.MONTH);
 				return true;
 			case R.id.period_year:
-				fragment.setCurrentPeriod(Period.YEAR);
-				menu_period.setTitle(Period.YEAR.getLabel(context));
-				fragment.refresh();
-                if (ChromecastHelper.isConnected(chromecastHelper))
-                    chromecastHelper.sendMessage_changePeriod(Period.YEAR);
+				onPeriodMenuItemChange(Period.YEAR);
 				return true;
 			case R.id.menu_open: openGraph(); return true;
 		}
 
 		return true;
+	}
+
+	private void onPeriodMenuItemChange(Period newPeriod) {
+		this.currentPeriod = newPeriod;
+		fragment.setCurrentPeriod(newPeriod);
+		menu_period.setTitle(newPeriod.getLabel(context));
+		fragment.refresh();
+		if (ChromecastHelper.isConnected(chromecastHelper))
+			chromecastHelper.sendMessage_changePeriod(newPeriod);
 	}
 	
 	@Override

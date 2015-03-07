@@ -2,7 +2,6 @@ package com.chteuchteu.munin.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,6 +26,7 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 public class Fragment_Grid extends Fragment {
 	public static final String ARG_GRIDID = "gridId";
 	public static final String ARG_AUTOLOAD = "autoLoad";
+	public static final String ARG_PERIOD = "period";
 
 	private Context context;
 	private IGridActivity activity;
@@ -51,13 +51,13 @@ public class Fragment_Grid extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		muninFoo = MuninFoo.getInstance();
 		currentPeriod = Util.getDefaultPeriod(context);
-		activity.updatePeriodMenuItem(currentPeriod);
 
 		// Load grid
 		Bundle args = getArguments();
 		long gridId = args.getLong(ARG_GRIDID);
 		boolean autoLoad = args.getBoolean(ARG_AUTOLOAD, true);
 		this.grid = muninFoo.sqlite.dbHlpr.getGrid(muninFoo, gridId);
+		this.currentPeriod = MuninPlugin.Period.get(args.getString(ARG_PERIOD, Util.getDefaultPeriod(context).name()));
 
 		if (this.grid == null)
 			return inflater.inflate(R.layout.empty_view, container, false);
@@ -221,14 +221,7 @@ public class Fragment_Grid extends Fragment {
 	public boolean isEditing() { return this.editing; }
 	public boolean isPreviewing() { return grid.currentlyOpenedGridItem != null; }
 	public Grid getGrid() { return this.grid; }
-	/**
-	 * Called from GridDownloadHelper
-	 */
-	public void onGridItemGraphLoaded(GridItem item, Bitmap bitmap) {
-		activity.onGridItemGraphLoaded(item, bitmap);
-	}
 
-	public MuninPlugin.Period getCurrentPeriod() { return this.currentPeriod; }
 	public void setCurrentPeriod(MuninPlugin.Period period) { this.currentPeriod = period; }
 
 	public void refresh() {

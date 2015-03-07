@@ -1,7 +1,6 @@
 package com.chteuchteu.munin.hlpr;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.MediaRouteActionProvider;
@@ -29,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * The aim of this class is to avoid flooding an activity with ChromeCast code.
@@ -257,7 +257,7 @@ public class ChromecastHelper {
 	/**
 	 * Send a text message to the receiver
 	 */
-	private void sendMessage(String message) {
+	private void sendMessage(final String message) {
 		if (mApiClient != null && mHelloWorldChannel != null) {
 			try {
 				log("Sending message [" + message + "]...");
@@ -265,8 +265,14 @@ public class ChromecastHelper {
 						.setResultCallback(new ResultCallback<Status>() {
 							@Override
 							public void onResult(Status result) {
-								if (!result.isSuccess())
-									log("Sending message failed");
+								if (!result.isSuccess()) {
+									log("Sending message failed - " + result.toString());
+									try {
+										log("The message may be too long (" + message.getBytes("UTF-8").length);
+									} catch (UnsupportedEncodingException e) {
+										e.printStackTrace();
+									}
+								}
 							}
 						});
 			} catch (Exception e) {
@@ -299,27 +305,6 @@ public class ChromecastHelper {
 				msg_gridItems.put(msg_GridItem);
 			}
 			msg.put("gridItems", msg_gridItems);
-
-			sendMessage(msg.toString());
-		} catch (JSONException ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	public void sendMessage_sendBitmap(GridItem gridItem, Bitmap bitmap) {
-		if (mApiClient == null || mHelloWorldChannel == null)
-			return;
-
-		if (!gridItem.getPlugin().getInstalledOn().getParent().isAuthNeeded())
-			MuninFoo.logW("ChromecastHelper",
-					"Warning - Trying to send base64 encoded image from a non-basic/digest-protected server - This is useless");
-
-		try {
-			JSONObject msg = new JSONObject();
-			msg.put("action", "send_graph");
-			msg.put("x", gridItem.getX());
-			msg.put("y", gridItem.getY());
-			msg.put("base64Image", Util.encodeTobase64(bitmap));
 
 			sendMessage(msg.toString());
 		} catch (JSONException ex) {
