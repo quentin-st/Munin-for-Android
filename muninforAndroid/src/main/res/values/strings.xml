@@ -290,5 +290,6 @@
 	<string name="selectALabel">Select a label</string>
 	<string name="emptyLabel">Empty label</string>
 	<string name="openGrid">Open grid</string>
+	<string name="chromecastAuthWarning">Warning - Chromecast feature does not work with Apache Basic/Digest auth</string>
 
 </resources>

@@ -8,6 +8,7 @@ import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -288,6 +289,10 @@ public class ChromecastHelper {
         if (mApiClient == null || mHelloWorldChannel == null)
             return;
 
+		// Show a warning toast about Chromecast feature not being available
+		// with apache digest/basic auth
+		boolean warningToast = false;
+
 		try {
 			JSONObject msg = new JSONObject();
 			msg.put("action", "inflate_grid");
@@ -297,6 +302,9 @@ public class ChromecastHelper {
 			for (GridItem item : grid.getItems()) {
 				MuninServer server = item.getPlugin().getInstalledOn();
 				MuninMaster master = server.getParent();
+				if (master.isAuthNeeded())
+					warningToast = true;
+
 				JSONObject msg_GridItem = new JSONObject();
 
 				msg_GridItem.put("x", item.getX());
@@ -314,6 +322,9 @@ public class ChromecastHelper {
 		} catch (JSONException ex) {
 			ex.printStackTrace();
 		}
+
+		if (warningToast)
+			Toast.makeText(context, R.string.chromecastAuthWarning, Toast.LENGTH_LONG).show();
 	}
 
 	public void sendMessage_preview(GridItem gridItem) {

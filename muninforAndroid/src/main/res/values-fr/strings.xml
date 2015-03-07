@@ -239,5 +239,6 @@
 	<string name="selectALabel">Sélectionnez un label</string>
 	<string name="emptyLabel">Label vide</string>
 	<string name="openGrid">Ouvrir</string>
+	<string name="chromecastAuthWarning">Attention - l\'application ne gère pas l\'Apache basic/digest auth</string>
 
 </resources>
