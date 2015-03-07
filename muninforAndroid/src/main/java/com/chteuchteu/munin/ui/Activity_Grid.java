@@ -43,8 +43,6 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 
 	private Fragment_Grid fragment;
 
-	private ChromecastHelper chromecastHelper;
-
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -107,8 +105,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 						fragment.setArguments(bundle);
 						getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
 
-						if (ChromecastHelper.isConnected(chromecastHelper))
-							chromecastHelper.sendMessage_inflateGrid(grids.get(itemPosition), currentPeriod);
+						if (ChromecastHelper.isConnected(muninFoo.chromecastHelper))
+							muninFoo.chromecastHelper.sendMessage_inflateGrid(grids.get(itemPosition), currentPeriod);
 					}
 					return false;
 				}
@@ -134,18 +132,16 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		}
 
 		// Chromecast
+		if (muninFoo.chromecastHelper == null)
+			muninFoo.chromecastHelper = ChromecastHelper.create(this);
         if (muninFoo.premium) {
-            chromecastHelper = ChromecastHelper.create(this);
-            chromecastHelper.onCreate(new Runnable() {
+	        muninFoo.chromecastHelper.onCreate(new Runnable() {
                 @Override
                 public void run() {
 	                if (fragment == null || fragment.getGrid() == null)
 		                return;
 
-                    chromecastHelper.sendMessage_inflateGrid(fragment.getGrid(), currentPeriod);
-
-	                // When the server is protected with apache basic/digest auth,
-	                // bitmaps will be sent to Chromecast as soon as they are loaded on the phone
+	                muninFoo.chromecastHelper.sendMessage_inflateGrid(fragment.getGrid(), currentPeriod);
                 }
             });
         }
@@ -173,8 +169,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		menu_refresh.setVisible(false);
 		menu_edit.setVisible(false);
 
-		if (ChromecastHelper.isConnected(chromecastHelper))
-			chromecastHelper.sendMessage_preview(fragment.getGrid().currentlyOpenedGridItem);
+		if (ChromecastHelper.isConnected(muninFoo.chromecastHelper))
+			muninFoo.chromecastHelper.sendMessage_preview(fragment.getGrid().currentlyOpenedGridItem);
 	}
 
 	@Override
@@ -184,8 +180,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		if (menu_period != null)	menu_period.setVisible(true);
 		if (menu_open != null)		menu_open.setVisible(false);
 
-		if (ChromecastHelper.isConnected(chromecastHelper))
-			chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.CANCEL_PREVIEW);
+		if (ChromecastHelper.isConnected(muninFoo.chromecastHelper))
+			muninFoo.chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.CANCEL_PREVIEW);
 	}
 
 	@Override
@@ -219,7 +215,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			menu_edit.setIcon(R.drawable.ic_action_image_edit);
 		menu_period.setTitle(currentPeriod.getLabel(this));
 
-		chromecastHelper.createOptionsMenu(menu);
+		muninFoo.chromecastHelper.createOptionsMenu(menu);
 	}
 
 	private void openGraph() {
@@ -248,8 +244,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			case R.id.menu_refresh:
 				fragment.refresh();
 
-				if (ChromecastHelper.isConnected(chromecastHelper))
-					chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.REFRESH);
+				if (ChromecastHelper.isConnected(muninFoo.chromecastHelper))
+					muninFoo.chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.REFRESH);
 				return true;
 			case R.id.menu_edit: fragment.edit(); return true;
 			case R.id.period_day:
@@ -275,8 +271,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		fragment.setCurrentPeriod(newPeriod);
 		menu_period.setTitle(newPeriod.getLabel(context));
 		fragment.refresh();
-		if (ChromecastHelper.isConnected(chromecastHelper))
-			chromecastHelper.sendMessage_changePeriod(newPeriod);
+		if (ChromecastHelper.isConnected(muninFoo.chromecastHelper))
+			muninFoo.chromecastHelper.sendMessage_changePeriod(newPeriod);
 	}
 	
 	@Override
@@ -298,25 +294,24 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		chromecastHelper.onResume();
+		muninFoo.chromecastHelper.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		if (isFinishing())
-			chromecastHelper.onPause();
+		muninFoo.chromecastHelper.onPause();
 		super.onPause();
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		chromecastHelper.onStart();
+		muninFoo.chromecastHelper.onStart();
 	}
 
 	@Override
 	public void onStop() {
-		chromecastHelper.onStop();
+		muninFoo.chromecastHelper.onStop();
 		super.onStop();
 
 		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))

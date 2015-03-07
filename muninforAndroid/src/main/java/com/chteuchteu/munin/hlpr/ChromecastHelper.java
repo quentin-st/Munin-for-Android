@@ -13,7 +13,9 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
+import com.chteuchteu.munin.obj.MuninServer;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
@@ -293,14 +295,16 @@ public class ChromecastHelper {
             msg.put("period", period.name());
 			JSONArray msg_gridItems = new JSONArray();
 			for (GridItem item : grid.getItems()) {
+				MuninServer server = item.getPlugin().getInstalledOn();
+				MuninMaster master = server.getParent();
 				JSONObject msg_GridItem = new JSONObject();
+
 				msg_GridItem.put("x", item.getX());
 				msg_GridItem.put("y", item.getY());
 				msg_GridItem.put("graphUrl", item.getPlugin().getImgUrl("{period}"));
 				msg_GridItem.put("pluginName", item.getPlugin().getFancyName());
-				msg_GridItem.put("serverName", item.getPlugin().getInstalledOn().getName());
-				msg_GridItem.put("masterName", item.getPlugin().getInstalledOn().getParent().getName());
-				msg_GridItem.put("authType", item.getPlugin().getInstalledOn().getParent().getAuthType().name());
+				msg_GridItem.put("serverName", server.getName());
+				msg_GridItem.put("masterName", master.getName());
 
 				msg_gridItems.put(msg_GridItem);
 			}

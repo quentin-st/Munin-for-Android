@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.chteuchteu.munin.exc.NullMuninFooException;
 import com.chteuchteu.munin.exc.TrialExpirationDateReached;
+import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.Label;
@@ -72,6 +73,8 @@ public class MuninFoo {
 	public static final String CHROMECAST_CHANNEL_NAMESPACE = "urn:x-cast:com.chteuchteu.munin";
 	
 	public Calendar alerts_lastUpdated;
+
+	public ChromecastHelper chromecastHelper;
 	
 	private MuninFoo(Context context) {
 		premium = false;
