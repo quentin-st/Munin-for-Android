@@ -113,7 +113,7 @@ public class Activity_Plugins extends MuninActivity {
                 wmlp.gravity = Gravity.TOP | Gravity.START;
                 wmlp.x = spinnerPos.left;
                 wmlp.y = spinnerPos.top;
-                wmlp.width = 700;
+                wmlp.width = LayoutParams.WRAP_CONTENT;
                 wmlp.height = LayoutParams.WRAP_CONTENT;
                 dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
