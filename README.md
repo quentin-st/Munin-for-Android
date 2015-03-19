@@ -8,6 +8,8 @@ Munin for Android is an Android application allowing munin users to display gene
 
 If you don't know where to start, there may be some [open issues](https://github.com/chteuchteu/Munin-for-Android/issues). Don't hesitate to open new ones if you found a bug!
 
+You can also join the app beta channel by joining the [Munin for Android Google+ Community](https://plus.google.com/communities/107388806854318205826), and [submitting the form on this page](https://play.google.com/apps/testing/com.chteuchteu.munin/join).
+
 Also, if the app isn't available or fully translated in your native language, you can either edit the localization files in the project by cloning it or [use this easy to use online tool](https://hosted.weblate.org/projects/munin-for-android/strings/)! Translation status: ![Translation status](https://hosted.weblate.org/widgets/munin-for-android/-/shields-badge.svg)
 
 Whenever you have any question, don't hesitate to send me an email at [support@munin-for-android.com](mailto:support@munin-for-android.com)!
