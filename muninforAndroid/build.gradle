@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 44
-        versionName "3.5"
+        versionName "3.5-beta1"
     }
 
     buildTypes {
