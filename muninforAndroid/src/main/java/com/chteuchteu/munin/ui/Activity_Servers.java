@@ -1,12 +1,11 @@
 package com.chteuchteu.munin.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
@@ -26,6 +25,8 @@ import android.widget.Toast;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_ExpandableListView;
+import com.chteuchteu.munin.async.MasterDeleter;
+import com.chteuchteu.munin.async.MasterScanner;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.ImportExportHelper;
 import com.chteuchteu.munin.hlpr.ImportExportHelper.Export.ExportRequestMaker;
@@ -35,9 +36,9 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninMaster.AuthType;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
-import com.chteuchteu.munin.obj.MuninMaster.AuthType;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -63,7 +64,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 		refreshList();
 	}
 	
-	private void refreshList() {
+	public void refreshList() {
 		findViewById(R.id.servers_noserver).setVisibility(View.GONE);
 		
 		Intent i = getIntent();
@@ -160,7 +161,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 	 * When deleting a server / master, we should reinit the drawer
 	 * if there's nothing to show
 	 */
-	private void updateDrawerIfNeeded() {
+	public void updateDrawerIfNeeded() {
 		if (muninFoo.getMasters().size() == 0)
 			dh.reset();
 	}
@@ -181,7 +182,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 
 				switch (menuItem.getItemId()) {
 					case R.id.menu_rescan:
-						new MasterScanner(master, context).execute();
+						new MasterScanner(Activity_Servers.this, master).execute();
 						return true;
 					case R.id.menu_renameMaster:
 						final EditText input = new EditText(context);
@@ -218,7 +219,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 								.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialog, int which) {
-										new DeleteMaster(master, context).execute();
+										new MasterDeleter(master, Activity_Servers.this).execute();
 									}
 								})
 								.setNegativeButton(R.string.no, null)
@@ -239,6 +240,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 
     private void displayCredentialsDialog(final MuninMaster master) {
         LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams")
         final View dialog_updatecredentials = vi.inflate(R.layout.dialog_updatecredentials, null);
 
         final Spinner sp_authType = (Spinner) dialog_updatecredentials.findViewById(R.id.spinner_auth_type);
@@ -308,6 +310,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 
 	private void displayHDGraphsDialog(final MuninMaster master) {
 		LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		@SuppressLint("InflateParams")
 		View dialog_checkbox = vi.inflate(R.layout.dialog_checkbox, null);
 
 		final CheckBox checkbox = (CheckBox) dialog_checkbox.findViewById(R.id.checkbox);
@@ -418,101 +421,6 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 			}
 		})
 		.show();
-	}
-	
-	private class MasterScanner extends AsyncTask<Void, Integer, Void> {
-		private ProgressDialog dialog;
-		private Context context;
-		private MuninMaster original;
-		private String report;
-		
-		private MasterScanner(MuninMaster master, Context context) {
-			this.original = master;
-			this.context = context;
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			
-			dialog = ProgressDialog.show(context, "", getString(R.string.loading), true);
-		}
-		
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			report = original.rescan(context, muninFoo);
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Void result) {
-			if (dialog != null && dialog.isShowing()) {
-				try {
-					dialog.dismiss();
-				} catch (Exception ex) { ex.printStackTrace(); }
-
-				new AlertDialog.Builder(activity)
-						.setTitle(R.string.sync_reporttitle)
-						.setMessage(report)
-						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								// if "No change" => don't reload servers list
-								if (!report.equals(context.getString(R.string.sync_nochange))) {
-									refreshList();
-									updateDrawerIfNeeded();
-								}
-							}
-						})
-						.show();
-			}
-		}
-	}
-	
-	private class DeleteMaster extends AsyncTask<Void, Integer, Void> {
-		private ProgressDialog dialog;
-		private Context context;
-		private MuninMaster toBeDeleted;
-		private Util.ProgressNotifier progressNotifier;
-
-		private DeleteMaster(MuninMaster master, Context context) {
-			this.toBeDeleted = master;
-			this.context = context;
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			
-			dialog = ProgressDialog.show(context, "", getString(R.string.loading), true);
-			this.progressNotifier = new Util.ProgressNotifier() {
-				@Override
-				public void notify(final int progress, final int total) {
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							dialog.setMessage(getString(R.string.loading) + " " + progress + "/" + total);
-						}
-					});
-				}
-			};
-		}
-		
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			muninFoo.deleteMuninMaster(toBeDeleted, progressNotifier);
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Void result) {
-			dialog.dismiss();
-			
-			refreshList();
-			updateDrawerIfNeeded();
-		}
 	}
 
 	@Override

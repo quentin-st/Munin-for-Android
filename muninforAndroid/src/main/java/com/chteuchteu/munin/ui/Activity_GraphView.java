@@ -1,9 +1,7 @@
 package com.chteuchteu.munin.ui;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -29,8 +26,6 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -49,6 +44,8 @@ import android.widget.Toast;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_GraphView;
 import com.chteuchteu.munin.adptr.Adapter_ServersList;
+import com.chteuchteu.munin.async.DynazoomDetector;
+import com.chteuchteu.munin.async.FieldsDescriptionFetcher;
 import com.chteuchteu.munin.hlpr.DocumentationHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper;
@@ -299,7 +296,7 @@ public class Activity_GraphView extends MuninActivity {
 		// HD Graphs
 		switch (muninFoo.getCurrentServer().getParent().isDynazoomAvailable()) {
 			case AUTO_DETECT:
-				new DynaZoomDetector(muninFoo.getCurrentServer()).execute();
+				new DynazoomDetector(this, muninFoo.getCurrentServer()).execute();
 				break;
 			case FALSE:
 				// Load as before
@@ -323,31 +320,6 @@ public class Activity_GraphView extends MuninActivity {
 					});
 				}
 				break;
-		}
-	}
-	
-	private class DynaZoomDetector extends AsyncTask<Void, Integer, Void> {
-		private MuninServer server;
-		private boolean dynazoomAvailable;
-		
-		private DynaZoomDetector (MuninServer server) {
-			super();
-			this.server = server;
-			this.dynazoomAvailable = false;
-		}
-		
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			dynazoomAvailable = server.getParent().isDynazoomAvailable(muninFoo.getUserAgent());
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Void result) {
-			server.getParent().setDynazoomAvailable(DynazoomAvailability.get(dynazoomAvailable));
-			muninFoo.sqlite.dbHlpr.updateMuninMaster(server.getParent());
-			loadGraphs = true;
-			actionRefresh();
 		}
 	}
 
@@ -673,82 +645,6 @@ public class Activity_GraphView extends MuninActivity {
 	
 	private void actionFieldsDescription() {
 		new FieldsDescriptionFetcher(currentPlugin, this).execute();
-	}
-	
-	private class FieldsDescriptionFetcher extends AsyncTask<Void, Integer, Void> {
-		private MuninPlugin plugin;
-		private Activity activity;
-		private String html;
-		private ProgressDialog dialog;
-		
-		public FieldsDescriptionFetcher (MuninPlugin plugin, Activity activity) {
-			super();
-			this.plugin = plugin;
-			this.activity = activity;
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-
-			this.dialog = ProgressDialog.show(context, "", getString(R.string.loading), true);
-		}
-		
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			this.html = plugin.getFieldsDescriptionHtml(muninFoo.getUserAgent());
-			
-			return null;
-		}
-		
-		@SuppressWarnings("deprecation")
-		@Override
-		protected void onPostExecute(Void result) {
-			this.dialog.dismiss();
-			
-			if (this.html != null) {
-				if (!this.html.equals("")) {
-					// Prepare HTML
-					String wrappedHtml = "<head><style>" +
-							"td { padding: 5px 10px; margin: 1px;border-bottom: 1px solid #d8d8d8; min-width: 30px; }" +
-							"td.lastrow { border-bottom-width: 0px; } th { border-bottom: 1px solid #999; }" +
-							"</style>" +
-							"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />" +
-							"</head>" +
-							"<body>" + html + "</body>";
-					
-					// Inflate and populate view
-					LayoutInflater inflater = getLayoutInflater();
-					View customView = inflater.inflate(R.layout.dialog_webview, null);
-					WebView webView = (WebView) customView.findViewById(R.id.webview);
-					webView.setVerticalScrollBarEnabled(true);
-					webView.getSettings().setDefaultTextEncodingName("utf-8");
-					webView.setBackgroundColor(0x00000000);
-					webView.loadDataWithBaseURL(null, wrappedHtml, "text/html", "utf-8", null);
-					webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-					webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-					webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-					
-					// Create alertdialog
-					AlertDialog dialog;
-					AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-					builder.setView(customView);
-					builder.setTitle(getText(R.string.fieldsDescription));
-					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int id) {
-							dialog.dismiss();
-						}
-					});
-					dialog = builder.create();
-					dialog.show();
-				} else {
-					Toast.makeText(context, getString(R.string.text81), Toast.LENGTH_SHORT).show();
-				}
-			} else {
-				Toast.makeText(context, getString(R.string.text09), Toast.LENGTH_SHORT).show();
-			}
-		}
 	}
 
 	public void addBitmap(Bitmap bitmap, int position) { bitmaps[position] = bitmap; }

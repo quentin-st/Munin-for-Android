@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -25,6 +24,7 @@ import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.async.AppUpdater;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.I18nHelper;
 import com.chteuchteu.munin.hlpr.Util;
@@ -64,7 +64,7 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 	private boolean preloading;
 	private boolean optionsMenuLoaded;
 	private Context context;
-	private ProgressDialog myProgressDialog;
+	public ProgressDialog progressDialog;
 
 	// Fragments
 	private enum MainFragment { NONE, GRID, LABEL, ALERTS }
@@ -146,7 +146,7 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 	 * 	- launching app, after the initialization
 	 * 	- going back to Activity_Main
 	 */
-	private void onLoadFinished() {
+    public void onLoadFinished() {
 		preloading = false;
 
 		// Inflate menu if not already done
@@ -473,15 +473,15 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 		
 		
 		if (updateOperations) {
-			if (myProgressDialog == null || !myProgressDialog.isShowing())
-				myProgressDialog = ProgressDialog.show(context, "", getString(R.string.text39), true);
+			if (progressDialog == null || !progressDialog.isShowing())
+				progressDialog = ProgressDialog.show(context, "", getString(R.string.text39), true);
 			// Please wait while the app does some update operations
-			new UpdateOperations().execute();
+			new AppUpdater(this).execute();
 		} else
 			onLoadFinished();
 	}
 	
-	private void updateActions() {
+	public void updateActions() {
 		if (Util.getPref(context, Util.PrefKeys.Lang).equals(""))
 			Util.setPref(context, Util.PrefKeys.Lang, Locale.getDefault().getLanguage());
 		
@@ -579,26 +579,6 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 	/* Alerts fragment */
 	@Override public void setLoading(boolean val) { this.progressBar.setVisibility(val ? View.VISIBLE : View.GONE); }
 	@Override public void setLoadingProgress(int val) { this.progressBar.setProgress(val); }
-
-	private class UpdateOperations extends AsyncTask<Void, Integer, Void> {
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			updateActions();
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Void result) {
-			// When rotating the device while updating : may crash
-			if (myProgressDialog != null && myProgressDialog.isShowing()) {
-				try {
-					myProgressDialog.dismiss();
-				} catch (Exception ex) { ex.printStackTrace(); }
-			}
-			
-			onLoadFinished();
-		}
-	}
 
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
