@@ -1,2 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='utf-8'?>
+<resources><string name="app_name">Munin for Android</string>
+	<string name="button_graphs">グラフ</string>
+	<string name="button_server">サーバー</string>
+	<string name="button_premium">プレミアムへ</string>
+	<string name="button_alerts">アラート</string>
+	<string name="button_labels">ラベル</string>
+	<string name="button_grid">グリッド</string>
+	<string name="button_notifications">通知</string>
+	<string name="settings_URL_label">Munin マスター URL</string>
+	<string name="settings_URL_label2">例: https://88.180.108.192:80/munin/</string>
+	<string name="settings_text">… またはサンプルサーバーを選択してください:</string>
+	<string name="settings_http_auth2">HTTP 認証が必要です</string>
+	<string name="settings_hdgraphs">HD グラフを有効にする</string>
+	<string name="settings_hdgraphs_text">DynaZoom を使用して高精度のグラフを取得します</string>
+	<string name="settings_auth_type">認証タイプ</string>
+	<string name="settings_login">ログイン</string>
+	<string name="settings_password">パスワード</string>
+	<string name="settings_default_scale">グラフ デフォルト スケール</string>
+	<string name="settings_graphview_orientation">グラフ画面の向き</string>
+	<string name="settings_screenalwayson_label">画面を常にオンにする</string>
+	<string name="settings_screenalwayson_checkbox">グラフ / アラートの表示中に画面がオフになるのを防止します</string>
+	<string name="settings_autorefresh_label">自動リフレッシュ</string>
+	<string name="settings_autorefresh_checkbox">グラフ / アラートの表示中、5 分毎に自動的にリフレッシュします</string>
+	<string name="settings_enablegraphszoom">グラフのズームを有効にする</string>
+	<string name="settings_titlelabel_app">アプリケーション設定</string>
+	<string name="settings_titlelabel_graphs">グラフ設定</string>
+	<string name="save_button">保存</string>
+	<string name="menu_graph_refresh">リフレッシュ</string>
+	<string name="menu_graph_save">グラフを SD カードに保存する</string>
+	<string name="menu_graph_switch">サーバーの切り替え</string>
+	<string name="menu_addserver_save">サーバーを保存</string>
+	<string name="menu_addserver_delete">サーバーを削除</string>
+	<string name="loading">ロード中…</string>
+	<string name="search">検索</string>
+	<string name="about_eraseData">アプリをリセット</string>
+	<string name="about_gplay">アプリを評価</string>
+	<string name="menu_serversedit_revert">サーバーを戻す</string>
+	<string name="servers_noservers_1">まだサーバーはありません</string>
+	<string name="servers_noservers_2">+ をタップしてご利用の、またはサンプルのサーバーを追加してください</string>
+	<string name="edit">編集</string>
+	<string name="yourerunning">実行しています</string>
+	<string name="openInBrowser">ブラウザーで開く</string>
+	<string name="fieldsDescription">フィールドの詳細</string>
+	<string name="follow">Twitter でフォローする</string>
+	<string name="notifs_vibrate">バイブレート</string>
+	<string name="about_firstPhrase">開発者に連絡しますか? アプリ改善のアイデアをお持ちですか? 致命的な問題を見つけませんでしたか? お気軽にメールをお送りください <b><u>support@munin-for-android.com</u></b>! ありがとうございます!</string>
+	<string name="about_independantApp">このアプリは独立して開発されています - 公式のアプリではありません。</string>
+	<string name="about_changelog">詳細な情報は <a href="http://munin-for-android.com/">munin-for-android.com</a> を参照してください。</string>
+	<string name="about_openSource">Munin for Android はオープンソースです! <a href="https://github.com/chteuchteu/Munin-for-Android">GitHub のプロジェクトに貢献してください</a>。 このアプリは GNU GPL バージョン 2 の下に配布されています。</string>
+	<string name="about_specialThanksTitle">スペシャルサンクス</string>
+	<string name="about_librariesTitle">ライブラリー</string>
+	<string name="goPremium_title">Munin for Android フィーチャーパック</string>
+	<string name="goPremium_features"> <li>グラフ グリッド</li> <li>SSL サポート</li> <li>グラフ ウィジェット</li> <li>ダイジェスト認証</li> <li>通知</li> <li>高優先サポート</li> <li>プレミアム機能の単体パック: 一度お支払い頂くだけで今後プレミアム機能をご利用になれます!</li> <li>さらにずっと! 最新のプレミアム機能を受け取るために、Google Play で自動更新を有効にするようにしてください</li> </string>
+	<string name="buy_now">今すぐ購入</string>
+	</resources>
