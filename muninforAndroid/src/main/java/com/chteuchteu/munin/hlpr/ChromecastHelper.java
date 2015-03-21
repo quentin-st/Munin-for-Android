@@ -310,6 +310,8 @@ public class ChromecastHelper {
 				msg_GridItem.put("x", item.getX());
 				msg_GridItem.put("y", item.getY());
 				msg_GridItem.put("graphUrl", item.getPlugin().getImgUrl("{period}"));
+				if (master.isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE)
+					msg_GridItem.put("hdGraphUrl", item.getPlugin().getHDImgUrlWithPlaceholders());
 				msg_GridItem.put("pluginName", item.getPlugin().getFancyName());
 				msg_GridItem.put("serverName", server.getName());
 				msg_GridItem.put("masterName", master.getName());

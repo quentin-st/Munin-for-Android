@@ -108,7 +108,7 @@ public class MuninPlugin {
 	public String getHDImgUrl(Period period) {
 		return getHDImgUrl(period, false, 0, 0);
 	}
-	
+
 	public String getHDImgUrl(Period period, boolean forceSize, int size_x, int size_y) {
 		// From
 		long pinPoint1 = DynazoomHelper.getFromPinPoint(period);
@@ -126,6 +126,14 @@ public class MuninPlugin {
 			url += "?size_x=" + size_x + "&size_y=" + size_y;
 
 		return url;
+	}
+
+	/**
+	 * Returns the HD graph URL usable on Chromecast
+	 * {pinpoint1}, {pinpoint2}, {size_x} and {size_y} will be replaced at runtime
+	 */
+	public String getHDImgUrlWithPlaceholders() {
+		return this.getInstalledOn().getHdGraphURL() + this.getName() + "-pinpoint={pinpoint1},{pinpoint2}.png?size_x={size_x}&size_y={size_y}";
 	}
 	
 	public Bitmap getGraph(String url, String userAgent) {
