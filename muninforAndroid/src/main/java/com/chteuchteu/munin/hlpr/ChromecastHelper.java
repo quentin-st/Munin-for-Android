@@ -237,7 +237,8 @@ public class ChromecastHelper {
 			if (mApplicationStarted) {
 				if (mApiClient.isConnected() || mApiClient.isConnecting()) {
 					try {
-						Cast.CastApi.stopApplication(mApiClient, mSessionId);
+						// Don't stop receiver app when the phone becomes idle
+						//Cast.CastApi.stopApplication(mApiClient, mSessionId);
 						if (mHelloWorldChannel != null) {
 							Cast.CastApi.removeMessageReceivedCallbacks(mApiClient, mHelloWorldChannel.getNamespace());
 							mHelloWorldChannel = null;
