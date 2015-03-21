@@ -266,6 +266,12 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		return true;
 	}
 
+	@Override
+	public void onGridSaved() {
+		if (ChromecastHelper.isConnected(muninFoo.chromecastHelper))
+			muninFoo.chromecastHelper.sendMessage_inflateGrid(fragment.getGrid(), currentPeriod);
+	}
+
 	private void onPeriodMenuItemChange(Period newPeriod) {
 		this.currentPeriod = newPeriod;
 		fragment.setCurrentPeriod(newPeriod);

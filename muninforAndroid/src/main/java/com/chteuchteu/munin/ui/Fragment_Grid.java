@@ -204,10 +204,11 @@ public class Fragment_Grid extends Fragment {
 	public void edit() {
 		activity.onEditModeChange(editing);
 
-		if (editing) { // Cancel edit
+		if (editing) { // Cancel edit (save)
 			grid.cancelEdit(context);
 			grid.toggleFootersVisibility(true);
 			muninFoo.sqlite.dbHlpr.saveGridItemsRelations(grid);
+			activity.onGridSaved();
 		} else { // Edit
 			grid.edit(view);
 			grid.toggleFootersVisibility(false);
