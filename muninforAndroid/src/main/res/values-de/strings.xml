@@ -227,4 +227,7 @@
 	<string name="openGrid">Gitter öffnen</string>
 
 <string name="load">Laden</string>
-	</resources>
+	<string name="lang_japanese">Japanisch</string>
+	<string name="chromecastAuthWarning">Achtung - Chromecast funktioniert nicht mit HTTP Basic-/Digest-Authentifizierung</string>
+
+</resources>
