@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -62,10 +63,6 @@ import com.crashlytics.android.Crashlytics;
 import com.edmodo.rangebar.RangeBar;
 import com.melnykov.fab.FloatingActionButton;
 
-import org.taptwo.android.widget.TitleFlowIndicator;
-import org.taptwo.android.widget.ViewFlow;
-import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +70,8 @@ import java.util.List;
 public class Activity_GraphView extends MuninActivity {
 	private MuninPlugin currentPlugin;
 	public Period load_period;
-	public ViewFlow viewFlow;
+	public ViewPager viewPager;
+	private Adapter_GraphView adapter;
 	private View ic_secure;
 	private View ic_insecure;
 
@@ -210,18 +208,24 @@ public class Activity_GraphView extends MuninActivity {
 			nbPlugins = muninFoo.getCurrentServer().getPlugins().size();
 		bitmaps = new Bitmap[nbPlugins];
 		photoViewAttached = new boolean[nbPlugins];
-		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
-		Adapter_GraphView adapter = new Adapter_GraphView(this, muninFoo, nbPlugins);
-		viewFlow.setAdapter(adapter, pos);
-		viewFlow.setAnimationEnabled(false);
-		TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
+
+		// Init ViewPager
+		viewPager = (ViewPager) findViewById(R.id.viewPager);
+		adapter = new Adapter_GraphView(getSupportFragmentManager(), this, muninFoo, nbPlugins);
+		viewPager.setAdapter(adapter);
+		/*TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
 		indicator.setTitleProvider(adapter);
-		viewFlow.setFlowIndicator(indicator);
+		indicator.setViewFlow(viewPager);*/
 
 		dh.initPluginsList();
-		
-		viewFlow.setOnViewSwitchListener(new ViewSwitchListener() {
-			public void onSwitched(View v, int position) {
+
+		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
+
+			@Override
+			public void onPageSelected(int position) {
 				Activity_GraphView.position = position;
 				cleanBitmaps(position);
 
@@ -260,7 +264,10 @@ public class Activity_GraphView extends MuninActivity {
 					isFabShown = true;
 					fab.show(true);
 				}
+			}
 
+			@Override
+			public void onPageScrollStateChanged(int state) {
 			}
 		});
 
@@ -306,12 +313,12 @@ public class Activity_GraphView extends MuninActivity {
 			case TRUE:
 				// Attach a ViewTreeObserver. This is needed since
 				// the ImageView dimensions aren't known right now.
-				ViewTreeObserver vtObserver = viewFlow.getViewTreeObserver();
+				ViewTreeObserver vtObserver = viewPager.getViewTreeObserver();
 				if (vtObserver.isAlive()) {
 					vtObserver.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 						@Override
 						public void onGlobalLayout() {
-							Util.removeOnGlobalLayoutListener(viewFlow, this);
+							Util.removeOnGlobalLayoutListener(viewPager, this);
 
 							// Now we have the dimensions.
 							loadGraphs = true;
@@ -371,8 +378,8 @@ public class Activity_GraphView extends MuninActivity {
 		
 		load_period = newPeriod;
 		
-		if (viewFlow != null) // Update Viewflow
-			viewFlow.setSelection(viewFlow.getSelectedItemPosition());
+		if (adapter != null)
+			adapter.refreshAll();
 
 		if (isDynazoomOpen()) {
 			dynazoom_from = DynazoomHelper.getFromPinPoint(load_period);
@@ -510,16 +517,16 @@ public class Activity_GraphView extends MuninActivity {
 					dynazoom_from, dynazoom_to).execute();
 		} else {
 			bitmaps = new Bitmap[muninFoo.getCurrentServer().getPlugins().size()];
-			if (viewFlow != null)
-				viewFlow.setSelection(viewFlow.getSelectedItemPosition());
+			if (adapter != null)
+				adapter.refreshAll();
 		}
 	}
 	private void actionSave() {
 		Bitmap image = null;
 		if (isDynazoomOpen() && ((ImageView) findViewById(R.id.dynazoom_imageview)).getDrawable() != null)
 			image = ((BitmapDrawable) ((ImageView) findViewById(R.id.dynazoom_imageview)).getDrawable()).getBitmap();
-		else if (viewFlow.getSelectedItemPosition() >= 0 && viewFlow.getSelectedItemPosition() < bitmaps.length)
-			image = bitmaps[viewFlow.getSelectedItemPosition()];
+		else if (viewPager.getCurrentItem() >= 0 && viewPager.getCurrentItem() < bitmaps.length)
+			image = bitmaps[viewPager.getCurrentItem()];
 
 		if (image == null)
 			return;
@@ -736,7 +743,7 @@ public class Activity_GraphView extends MuninActivity {
 
 			// Content filling
 			iv_documentation = (ImageView) findViewById(R.id.doc_imageview);
-			iv_documentation.setImageBitmap(bitmaps[viewFlow.getSelectedItemPosition()]);
+			iv_documentation.setImageBitmap(bitmaps[viewPager.getCurrentItem()]);
 			iv_documentation.setTag(currentPlugin.getName());
 
 			TextView line1 = (TextView) findViewById(R.id.doc_line1);

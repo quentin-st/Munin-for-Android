@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -54,8 +55,6 @@ import com.chteuchteu.munin.ui.Activity_Notifications;
 import com.chteuchteu.munin.ui.Activity_Plugins;
 import com.chteuchteu.munin.ui.Activity_Servers;
 import com.chteuchteu.munin.ui.MuninActivity;
-
-import org.taptwo.android.widget.ViewFlow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -443,11 +442,11 @@ public class DrawerHelper {
 		LayoutInflater vi = (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		final Activity_GraphView activityGraphView = (Activity_GraphView) activity;
-		final ViewFlow vf = activityGraphView.viewFlow;
+		final ViewPager viewPager = activityGraphView.viewPager;
 
 
-		int vfpos = vf.getSelectedItemPosition();
-		this.pluginsList_currentlySelectedItem = vfpos;
+		int viewPagerPos = viewPager.getCurrentItem();
+		this.pluginsList_currentlySelectedItem = viewPagerPos;
 		int pos = 0;
 		View insertPoint = activity.findViewById(R.id.drawer_containerPlugins);
 
@@ -456,7 +455,7 @@ public class DrawerHelper {
 			final TextView b = (TextView)v.findViewById(R.id.button);
 			b.setText(mp.getFancyName());
 			
-			if (vfpos == pos) {
+			if (viewPagerPos == pos) {
 				final int position = pos;
 				b.setBackgroundResource(R.drawable.drawer_selectedsubbutton);
 				b.setTextColor(0xffffffff);
@@ -487,7 +486,7 @@ public class DrawerHelper {
 							break;
 						}
 					}
-					vf.setSelection(p);
+					viewPager.setCurrentItem(p);
 					initPluginsList(activity.findViewById(R.id.drawer_scrollview).getScrollY());
 					if (activityGraphView.isDynazoomOpen())
 						activityGraphView.hideDynazoom();
@@ -514,9 +513,9 @@ public class DrawerHelper {
 
 		// Set background styling for current element
 		final Activity_GraphView activityGraphView = (Activity_GraphView) activity;
-		final ViewFlow vf = activityGraphView.viewFlow;
+		final ViewPager viewPager = activityGraphView.viewPager;
 
-		this.pluginsList_currentlySelectedItem = vf.getSelectedItemPosition();
+		this.pluginsList_currentlySelectedItem = viewPager.getCurrentItem();
 
 		View newSelectedItem = container.getChildAt(this.pluginsList_currentlySelectedItem);
 		final TextView tv2 = (TextView) newSelectedItem.findViewById(R.id.button);
