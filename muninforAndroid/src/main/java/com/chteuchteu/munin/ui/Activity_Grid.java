@@ -155,6 +155,14 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		return null;
 	}
 
+	/**
+	 * Return the fragment grid. Must be used only when we are sure
+	 * that the fragment has been initialized!
+	 */
+	public Grid getGrid() {
+		return fragment.getGrid();
+	}
+
 	private static List<String> getGridsNames(List<Grid> grids) {
 		List<String> list = new ArrayList<>();
 		for (Grid grid : grids)

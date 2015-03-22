@@ -32,7 +32,6 @@ public class Fragment_Grid extends Fragment {
 	private IGridActivity activity;
 	private boolean editing;
 	private Grid grid;
-	private LinearLayout container;
 	private MuninPlugin.Period currentPeriod;
 	private View view;
 
@@ -48,7 +47,7 @@ public class Fragment_Grid extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup parentContainer, Bundle savedInstanceState) {
 		muninFoo = MuninFoo.getInstance();
 		currentPeriod = Util.getDefaultPeriod(context);
 
@@ -60,22 +59,22 @@ public class Fragment_Grid extends Fragment {
 		this.currentPeriod = MuninPlugin.Period.get(args.getString(ARG_PERIOD, Util.getDefaultPeriod(context).name()));
 
 		if (this.grid == null)
-			return inflater.inflate(R.layout.empty_view, container, false);
+			return inflater.inflate(R.layout.empty_view, parentContainer, false);
 
 		this.grid.setActivityReferences(context, muninFoo, activity, this);
 		activity.onGridLoaded(grid);
 		this.editing = false;
 		this.updating = false;
 
-		this.view = inflater.inflate(R.layout.fragment_grid, container, false);
+		this.view = inflater.inflate(R.layout.fragment_grid, parentContainer, false);
 
-		this.container = (LinearLayout) view.findViewById(R.id.grid_root_container);
+		LinearLayout container = (LinearLayout) view.findViewById(R.id.grid_root_container);
 		this.currentPeriod = Util.getDefaultPeriod(context);
 
 		// Init grid
 		container.removeAllViews();
 		grid.setupLayout();
-		this.container.addView(grid.buildLayout(context));
+		container.addView(grid.buildLayout(context));
 		grid.updateLayoutSizes(context);
 
 		// Launch graphs downloader
