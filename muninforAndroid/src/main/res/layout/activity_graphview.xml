@@ -25,56 +25,50 @@
 				android:orientation="vertical"
 				android:background="@drawable/bottom_shadow">
 
-				<LinearLayout
+				<RelativeLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="@color/actionBarColor"
-					android:orientation="vertical" >
+					android:background="@color/actionBarColor">
 
-					<RelativeLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content">
+					<ImageView
+						android:id="@+id/connection_secure"
+						android:layout_width="24dp"
+						android:layout_height="24dp"
+						android:layout_marginLeft="10dp"
+						android:layout_alignParentLeft="true"
+						android:layout_centerVertical="true"
+						android:src="@drawable/ic_secure"
+						android:visibility="gone"/>
 
-						<ImageView
-							android:id="@+id/connection_secure"
-							android:layout_width="24dp"
-							android:layout_height="24dp"
-							android:layout_marginLeft="10dp"
-							android:layout_alignParentLeft="true"
-							android:layout_centerVertical="true"
-							android:src="@drawable/ic_secure"
-							android:visibility="gone"/>
+					<ImageView
+						android:id="@+id/connection_insecure"
+						android:layout_width="24dp"
+						android:layout_height="24dp"
+						android:layout_marginLeft="10dp"
+						android:layout_alignParentLeft="true"
+						android:layout_centerVertical="true"
+						android:src="@drawable/ic_insecure"
+						android:contentDescription="@string/certificate_error"
+						android:visibility="gone"/>
 
-						<ImageView
-							android:id="@+id/connection_insecure"
-							android:layout_width="24dp"
-							android:layout_height="24dp"
-							android:layout_marginLeft="10dp"
-							android:layout_alignParentLeft="true"
-							android:layout_centerVertical="true"
-							android:src="@drawable/ic_insecure"
-							android:contentDescription="@string/certificate_error"
-							android:visibility="gone"/>
+					<HorizontalScrollView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_centerInParent="true"
+						android:layout_marginLeft="10dp"
+						android:layout_marginRight="10dp"
+						android:overScrollMode="never">
 
-						<HorizontalScrollView
+						<TextView
+							android:id="@+id/serverName"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:layout_centerInParent="true"
-							android:layout_marginLeft="10dp"
-							android:layout_marginRight="10dp"
-							android:overScrollMode="never">
-
-							<TextView
-								android:id="@+id/serverName"
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:layout_marginBottom="6dp"
-								android:textSize="19sp"
-								android:textColor="#ffffff"
-								android:maxLines="1"/>
-						</HorizontalScrollView>
-					</RelativeLayout>
-				</LinearLayout>
+							android:layout_marginBottom="6dp"
+							android:textSize="19sp"
+							android:textColor="#ffffff"
+							android:maxLines="1"/>
+					</HorizontalScrollView>
+				</RelativeLayout>
 
 				<RelativeLayout
 					android:layout_width="match_parent"
