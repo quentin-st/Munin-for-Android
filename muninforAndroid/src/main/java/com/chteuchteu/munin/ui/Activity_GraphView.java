@@ -213,9 +213,6 @@ public class Activity_GraphView extends MuninActivity {
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		adapter = new Adapter_GraphView(getSupportFragmentManager(), this, muninFoo, nbPlugins);
 		viewPager.setAdapter(adapter);
-		/*TitleFlowIndicator indicator = (TitleFlowIndicator) findViewById(R.id.viewflowindic);
-		indicator.setTitleProvider(adapter);
-		indicator.setViewFlow(viewPager);*/
 
 		dh.initPluginsList();
 

@@ -8,11 +8,9 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 import com.chteuchteu.munin.ui.Fragment_Graph;
 
-import org.taptwo.android.widget.TitleProvider;
-
 import java.util.HashMap;
 
-public class Adapter_GraphView extends FragmentStatePagerAdapter implements TitleProvider {
+public class Adapter_GraphView extends FragmentStatePagerAdapter {
 	private MuninFoo muninFoo;
 	private HashMap<Integer, Fragment_Graph> fragments;
 	private Activity_GraphView activity;
@@ -42,7 +40,7 @@ public class Adapter_GraphView extends FragmentStatePagerAdapter implements Titl
 	}
 	
 	@Override
-	public String getTitle(int position) {
+	public CharSequence getPageTitle(int position) {
 		if (position < 0)
 			return "";
 
