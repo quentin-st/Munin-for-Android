@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+
+    dependencies {
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+    }
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'crashlytics'
+
+repositories {
+    maven { url 'http://download.crashlytics.com/maven' }
+}
 
 android {
     compileSdkVersion 21
@@ -22,7 +37,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-v4:21.0.3'
     compile files('libs/AppRate_1.1.jar')
-    compile files('libs/crashlytics.jar')
     compile files('libs/libGoogleAnalyticsServices.jar')
     compile 'org.jsoup:jsoup:1.8.1'
     compile 'com.balysv.materialmenu:material-menu-toolbar:1.4.0'
@@ -32,4 +46,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.android.support:mediarouter-v7:21.0.0'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
+    compile 'com.crashlytics.android:crashlytics:1.+'
 }
