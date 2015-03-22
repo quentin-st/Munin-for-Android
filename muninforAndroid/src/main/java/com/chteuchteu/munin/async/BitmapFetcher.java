@@ -101,13 +101,15 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 		if (!activity.isBitmapNull(position)) {
 			imageView.setImageBitmap(activity.getBitmap(position));
 
-			// PhotoViewAttacher
-			if (Util.getPref(context, Util.PrefKeys.GraphsZoom).equals("true")
-					&& !activity.photoViewAttached[position]) {
-				activity.photoViewAttached[position] = true;
-				PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
-				if (mAttacher.getMidScale() < 2f)
-					mAttacher.setMaxScale(2f);
+			// Update or create PhotoViewAttacher
+			if (Util.getPref(context, Util.PrefKeys.GraphsZoom).equals("true")) {
+				if (activity.photoViewAttachers.keySet().contains(position)) {
+					PhotoViewAttacher mAttacher = activity.photoViewAttachers.get(position);
+					mAttacher.update();
+				} else {
+					PhotoViewAttacher newAttacher = new PhotoViewAttacher(imageView);
+					activity.photoViewAttachers.put(position, newAttacher);
+				}
 			}
 
 			// If documentation shown && image just loaded: display it

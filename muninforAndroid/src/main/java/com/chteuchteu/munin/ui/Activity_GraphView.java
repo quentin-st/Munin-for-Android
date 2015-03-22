@@ -64,7 +64,10 @@ import com.edmodo.rangebar.RangeBar;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 @SuppressLint({ "DefaultLocale", "InflateParams" })
 public class Activity_GraphView extends MuninActivity {
@@ -81,10 +84,7 @@ public class Activity_GraphView extends MuninActivity {
 	public Label label;
 
 	private static int position;
-	/**
-	 * Avoid attaching zoom component at each refresh
-	 */
-	public boolean[]  photoViewAttached;
+	public HashMap<Integer, PhotoViewAttacher> photoViewAttachers;
 	private Bitmap[]	bitmaps;
 	public ImageView iv_documentation;
 	/**
@@ -207,7 +207,7 @@ public class Activity_GraphView extends MuninActivity {
 		else
 			nbPlugins = muninFoo.getCurrentServer().getPlugins().size();
 		bitmaps = new Bitmap[nbPlugins];
-		photoViewAttached = new boolean[nbPlugins];
+		photoViewAttachers = new HashMap<>();
 
 		// Init ViewPager
 		viewPager = (ViewPager) findViewById(R.id.viewPager);

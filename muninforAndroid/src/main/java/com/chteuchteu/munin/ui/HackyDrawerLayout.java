@@ -28,7 +28,7 @@ public class HackyDrawerLayout extends DrawerLayout {
 		try {
 			return super.onInterceptTouchEvent(ev);
 		} catch (Throwable t) {
-			t.printStackTrace();
+			//t.printStackTrace();
 			return false;
 		}
 	}

@@ -22,6 +22,11 @@ public class Fragment_Graph extends Fragment {
 	private Activity_GraphView activity;
 	private Context context;
 
+	private int position;
+	private View view;
+	private ImageView imageView;
+	private ProgressBar progressBar;
+
 	public static Fragment_Graph init(int position, MuninPlugin.Period period) {
 		Fragment_Graph newFragment = new Fragment_Graph();
 		Bundle arguments = new Bundle();
@@ -42,16 +47,16 @@ public class Fragment_Graph extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 
-		View view = inflater.inflate(R.layout.fragment_graph, container, false);
+		view = inflater.inflate(R.layout.fragment_graph, container, false);
 
 		Bundle args = getArguments();
-		int position = args.getInt(KEY_PLUGIN_POS, -1);
+		position = args.getInt(KEY_PLUGIN_POS, -1);
+
 		view.findViewById(R.id.error).setVisibility(View.GONE);
+		imageView = (ImageView) view.findViewById(R.id.tiv);
+		progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
 
 		if (activity.loadGraphs) {
-			ImageView imageView = (ImageView) view.findViewById(R.id.tiv);
-			ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
-
 			if (activity.isBitmapNull(position)) {
 				//                                                                                  Avoid serial execution
 				new BitmapFetcher(activity, imageView, progressBar, view, position, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -65,7 +70,16 @@ public class Fragment_Graph extends Fragment {
 		return view;
 	}
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		// Remove PhotoViewAttacher
+		if (activity.photoViewAttachers.keySet().contains(position))
+			activity.photoViewAttachers.remove(position);
+	}
+
 	public void refresh() {
-		// TODO
+		new BitmapFetcher(activity, imageView, progressBar, view, position, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 }
