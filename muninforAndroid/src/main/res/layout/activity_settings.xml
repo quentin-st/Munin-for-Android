@@ -40,7 +40,7 @@
 					<!-- APP SETTINGS -->
 
 					<TextView
-						android:id="@+id/title1"
+						android:tag="set_font"
 						style="@style/Material_SubTitle"
 						android:layout_marginLeft="15dp"
 						android:layout_marginRight="15dp"
@@ -49,7 +49,7 @@
 					<!-- Default server -->
 
 					<TextView
-						android:id="@+id/title13"
+						android:tag="set_font"
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_defaultserver" />
 
@@ -62,7 +62,7 @@
 					<!-- App language -->
 
 					<TextView
-						android:id="@+id/title3"
+						android:tag="set_font"
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_lang" />
 
@@ -75,7 +75,7 @@
 					<!-- User agent -->
 
 					<TextView
-						android:id="@+id/title4"
+						android:tag="set_font"
 						style="@style/Settings_SettingTitle"
 						android:text="@string/user_agent" />
 
@@ -94,7 +94,7 @@
 						android:orientation="vertical">
 
 						<TextView
-							android:id="@+id/title14"
+							android:tag="set_font"
 							style="@style/Settings_SettingTitle"
 							android:text="@string/defaultActivity" />
 
@@ -142,7 +142,7 @@
 					<!-- GRAPHS SETTINGS -->
 
 					<TextView
-						android:id="@+id/title2"
+						android:tag="set_font"
 						style="@style/Material_SubTitle"
 						android:layout_marginLeft="15dp"
 						android:layout_marginRight="15dp"
@@ -151,7 +151,7 @@
 					<!-- Screen always on -->
 
 					<TextView
-						android:id="@+id/title7"
+						android:tag="set_font"
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_screenalwayson_label" />
 
@@ -172,7 +172,7 @@
 					<!-- Auto refresh -->
 
 					<TextView
-						android:id="@+id/title8"
+						android:tag="set_font"
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_autorefresh_label" />
 
@@ -193,7 +193,7 @@
 					<!-- Graph zoom -->
 
 					<TextView
-						android:id="@+id/title9"
+						android:tag="set_font"
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_enablegraphszoom" />
 
@@ -214,7 +214,7 @@
 					<!-- HD Graphs -->
 
 					<TextView
-						android:id="@+id/title10"
+						android:tag="set_font"
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_hdgraphs" />
 
@@ -235,7 +235,7 @@
 					<!-- Graph default scale -->
 
 					<TextView
-						android:id="@+id/title11"
+						android:tag="set_font"
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_default_scale" />
 
@@ -248,7 +248,7 @@
 					<!-- Graphs screen orientation -->
 
 					<TextView
-						android:id="@+id/title12"
+						android:tag="set_font"
 						style="@style/Settings_SettingTitle"
 						android:text="@string/settings_graphview_orientation" />
 
@@ -261,7 +261,7 @@
 					<!-- GRIDS SETTINGS -->
 
 					<TextView
-						android:id="@+id/title5"
+						android:tag="set_font"
 						style="@style/Material_SubTitle"
 						android:layout_marginLeft="15dp"
 						android:layout_marginRight="15dp"
@@ -270,13 +270,85 @@
 					<!-- Graphs screen orientation -->
 
 					<TextView
-						android:id="@+id/title6"
+						android:tag="set_font"
 						style="@style/Settings_SettingTitle"
 						android:text="@string/grids_legend" />
 
 					<Spinner
 						android:id="@+id/spinner_gridsLegend"
 						style="@style/Settings_SettingSpinner" />
+
+					<View style="@style/Material_Divider" />
+
+
+					<!-- ADVANCED SETTINGS -->
+
+					<TextView
+						android:tag="set_font"
+						style="@style/Material_SubTitle"
+						android:layout_marginLeft="15dp"
+						android:layout_marginRight="15dp"
+						android:text="@string/advanced" />
+
+					<!-- Chromecast application Id -->
+
+					<TextView
+						android:tag="set_font"
+						style="@style/Settings_SettingTitle"
+						android:text="@string/chromecast_application_id" />
+
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+
+						<ImageButton
+							android:id="@+id/chromecastAppId_reset"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:background="@drawable/ic_action_reset"
+							android:contentDescription="@string/reset"
+							android:layout_alignParentRight="true"
+							android:layout_marginRight="10dp"
+							android:layout_marginLeft="10dp"/>
+
+						<EditText
+							android:id="@+id/edittext_chromecastAppid"
+							style="@style/Settings_SettingEditText"
+							android:layout_marginRight="0dp"
+							android:inputType="text"
+							android:layout_toLeftOf="@id/chromecastAppId_reset"/>
+					</RelativeLayout>
+
+					<View style="@style/Material_Divider" />
+
+					<!-- Import/Export url -->
+
+					<TextView
+						android:tag="set_font"
+						style="@style/Settings_SettingTitle"
+						android:text="@string/import_export_server" />
+
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+
+						<ImageButton
+							android:id="@+id/importExportServer_reset"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:background="@drawable/ic_action_reset"
+							android:contentDescription="@string/reset"
+							android:layout_alignParentRight="true"
+							android:layout_marginRight="10dp"
+							android:layout_marginLeft="10dp"/>
+
+						<EditText
+							android:id="@+id/edittext_importExportServer"
+							style="@style/Settings_SettingEditText"
+							android:layout_marginRight="0dp"
+							android:inputType="text"
+							android:layout_toLeftOf="@id/importExportServer_reset"/>
+					</RelativeLayout>
 				</LinearLayout>
 			</LinearLayout>
 		</ScrollView>

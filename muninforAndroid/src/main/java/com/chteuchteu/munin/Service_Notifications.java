@@ -206,7 +206,7 @@ public class Service_Notifications extends Service {
 					Util.setPref(Service_Notifications.this, Util.PrefKeys.Notifs_LastNotificationText, notifText);
 
 					if (Util.getPref(Service_Notifications.this, Util.PrefKeys.Notifs_Vibrate).equals("true"))
-						vibrate();
+						Util.vibrate(Service_Notifications.this, 500);
 					
 					notificationManager.notify(1234, notification);
 				}
@@ -220,12 +220,6 @@ public class Service_Notifications extends Service {
 			if (mWakeLock.isHeld())
 				mWakeLock.release();
 		}
-	}
-
-	private void vibrate() {
-		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		if (v.hasVibrator())
-			v.vibrate(500);
 	}
 	
 	/**

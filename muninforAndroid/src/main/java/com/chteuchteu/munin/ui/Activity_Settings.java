@@ -21,7 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.I18nHelper;
+import com.chteuchteu.munin.hlpr.ImportExportHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -47,6 +49,8 @@ public class Activity_Settings extends MuninActivity {
 	private CheckBox checkbox_graphsZoom;
 	private CheckBox checkbox_hdGraphs;
 	private EditText editText_userAgent;
+	private EditText editText_chromecastAppId;
+	private EditText editText_importExportServer;
 
 	private List<Grid> grids;
 	
@@ -74,6 +78,9 @@ public class Activity_Settings extends MuninActivity {
 		checkbox_hdGraphs = (CheckBox)findViewById(R.id.checkbox_hdgraphs);
 
 		editText_userAgent = (EditText)findViewById(R.id.edittext_useragent);
+
+		editText_chromecastAppId = (EditText)findViewById(R.id.edittext_chromecastAppid);
+		editText_importExportServer = (EditText)findViewById(R.id.edittext_importExportServer);
 		
 		
 		// Spinner default period
@@ -164,23 +171,11 @@ public class Activity_Settings extends MuninActivity {
 			findViewById(R.id.spinner_defaultActivity_label).setEnabled(false);
 		}
 
+
 		// Set fonts
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title1), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title2), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title3), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title4), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title5), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title6), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title7), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title8), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title9), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title10), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title11), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title12), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title13), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title14), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title15), CustomFont.Roboto_Medium);
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.title16), CustomFont.Roboto_Medium);
+		for (View view : Util.getViewsByTag((ViewGroup)findViewById(R.id.settingsContainer), "set_font"))
+			Util.Fonts.setFont(this, (TextView) view, CustomFont.Roboto_Medium);
+
 
 		// Apply current settings
 		// Graph default scale
@@ -310,6 +305,24 @@ public class Activity_Settings extends MuninActivity {
 			animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
 			findViewById(R.id.defaultActivityContainer).startAnimation(animation);
 		}
+
+		// Chromecast app id
+		editText_chromecastAppId.setText(ChromecastHelper.getChromecastApplicationId(this));
+		findViewById(R.id.chromecastAppId_reset).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				editText_chromecastAppId.setText(ChromecastHelper.CHROMECAST_APPLICATION_ID);
+			}
+		});
+
+		// Import/export server
+		editText_importExportServer.setText(ImportExportHelper.getImportExportServerUrl(this));
+		findViewById(R.id.importExportServer_reset).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				editText_importExportServer.setText(ImportExportHelper.IMPORT_EXPORT_URI);
+			}
+		});
 	}
 	
 	private void actionSave() {
@@ -387,6 +400,13 @@ public class Activity_Settings extends MuninActivity {
 				Util.setPref(this, Util.PrefKeys.DefaultActivity, "alerts");
 				break;
 		}
+
+		// Chromecast App Id
+		Util.setPref(this, Util.PrefKeys.ChromecastApplicationId, editText_chromecastAppId.getText().toString());
+
+		// Import/export server
+		Util.setPref(this, Util.PrefKeys.ImportExportServer, editText_importExportServer.getText().toString());
+
 
 		Toast.makeText(this, getString(R.string.text36), Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(Activity_Settings.this, Activity_Main.class);

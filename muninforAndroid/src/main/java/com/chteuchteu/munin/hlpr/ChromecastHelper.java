@@ -38,6 +38,9 @@ import java.io.UnsupportedEncodingException;
  * The activity corresponding methods will be manually called from activity.
  */
 public class ChromecastHelper {
+    public static final String CHROMECAST_APPLICATION_ID = "31C83628";
+    public static final String CHROMECAST_CHANNEL_NAMESPACE = "urn:x-cast:com.chteuchteu.munin";
+
 	private Context context;
 
 	private MediaRouter mMediaRouter;
@@ -59,7 +62,7 @@ public class ChromecastHelper {
 	public void onCreate(Runnable onConnectionSuccess) {
 		mMediaRouter = MediaRouter.getInstance(context);
 		mMediaRouteSelector = new MediaRouteSelector.Builder()
-				.addControlCategory(CastMediaControlIntent.categoryForCast(MuninFoo.CHROMECAST_APPLICATION_ID))
+				.addControlCategory(CastMediaControlIntent.categoryForCast(getChromecastApplicationId(context)))
 				.build();
 		mMediaRouterCallback = new CustomMediaRouterCallback();
 		this.onConnectionSuccess = onConnectionSuccess;
@@ -162,7 +165,7 @@ public class ChromecastHelper {
 				} else {
 					// Launch the receiver app
 					Cast.CastApi
-							.launchApplication(mApiClient, MuninFoo.CHROMECAST_APPLICATION_ID, false)
+							.launchApplication(mApiClient, getChromecastApplicationId(context), false)
 							.setResultCallback(
 									new ResultCallback<Cast.ApplicationConnectionResult>() {
 										@Override
@@ -380,7 +383,7 @@ public class ChromecastHelper {
 	 * Custom message channel
 	 */
 	class CustomMessageChannel implements Cast.MessageReceivedCallback {
-		public String getNamespace() { return MuninFoo.CHROMECAST_CHANNEL_NAMESPACE; }
+		public String getNamespace() { return CHROMECAST_CHANNEL_NAMESPACE; }
 
 		/*
 		 * Receive message from the receiver app
@@ -408,4 +411,8 @@ public class ChromecastHelper {
 	public void onStop() {
 		mMediaRouter.removeCallback(mMediaRouterCallback);
 	}
+
+    public static String getChromecastApplicationId(Context context) {
+        return Util.getPref(context, Util.PrefKeys.ChromecastApplicationId, CHROMECAST_APPLICATION_ID);
+    }
 }

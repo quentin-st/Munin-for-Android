@@ -292,5 +292,9 @@
 	<string name="emptyLabel">Empty label</string>
 	<string name="openGrid">Open grid</string>
 	<string name="chromecastAuthWarning">Warning - Chromecast feature does not work with Apache Basic/Digest auth</string>
+    <string name="chromecast_application_id">Chromecast Application ID</string>
+    <string name="import_export_server">Import/Export server</string>
+    <string name="reset">Reset</string>
+	<string name="advanced">Advanced</string>
 
 </resources>

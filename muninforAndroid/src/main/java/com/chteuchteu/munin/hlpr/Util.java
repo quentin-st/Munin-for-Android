@@ -24,6 +24,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.support.v7.app.ActionBar;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -310,6 +311,9 @@ public final class Util {
 		DefaultActivity_GridId("defaultActivity_gridId"),
 		DefaultActivity_LabelId("defaultActivity_labelId"),
 
+        ChromecastApplicationId("chromecastAppId"),
+        ImportExportServer("importExportServer"),
+
 		// Old prefs
 		Drawer("drawer"), Splash("splash"), ListViewMode("listViewMode"), Transitions("transitions");
 
@@ -322,6 +326,10 @@ public final class Util {
 	public static String getPref(Context context, PrefKeys key) {
 		return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key.getKey(), "");
 	}
+
+    public static String getPref(Context context, PrefKeys key, String defaultValue) {
+        return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key.getKey(), defaultValue);
+    }
 	
 	public static void setPref(Context context, PrefKeys key, String value) {
 		if (value.equals(""))
@@ -846,5 +854,11 @@ public final class Util {
         location.right = location.left + v.getWidth();
         location.bottom = location.top + v.getHeight();
         return location;
+    }
+
+    public static void vibrate(Context context, long milliseconds) {
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        if (v.hasVibrator())
+            v.vibrate(milliseconds);
     }
 }

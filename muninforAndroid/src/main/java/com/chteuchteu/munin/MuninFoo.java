@@ -45,15 +45,7 @@ public class MuninFoo {
     private static final Calendar TRIAL_EXPIRATION = new GregorianCalendar(2015, 1, 10);
 
     public boolean premium;
-	
-	// Import/Export webservice
-	public static final String IMPORT_EXPORT_URI = "http://www.munin-for-android.com/ws/importExport.php";
-	public static final int IMPORT_EXPORT_VERSION = 1;
 
-	// Chromecast
-	public static final String CHROMECAST_APPLICATION_ID = "31C83628";
-	public static final String CHROMECAST_CHANNEL_NAMESPACE = "urn:x-cast:com.chteuchteu.munin";
-	
 	public Calendar alerts_lastUpdated;
 
 	public ChromecastHelper chromecastHelper;

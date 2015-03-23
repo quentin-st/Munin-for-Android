@@ -241,5 +241,8 @@
 	<string name="emptyLabel">Label vide</string>
 	<string name="openGrid">Ouvrir</string>
 	<string name="chromecastAuthWarning">Attention - l\'application ne gère pas l\'Apache basic/digest auth</string>
+    <string name="chromecast_application_id">Chromecast Application ID</string>
+    <string name="import_export_server">Server d\'Import/Export</string>
+	<string name="advanced">Avancé</string>
 
 </resources>

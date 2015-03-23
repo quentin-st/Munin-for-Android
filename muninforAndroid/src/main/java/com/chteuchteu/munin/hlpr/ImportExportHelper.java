@@ -32,16 +32,19 @@ import java.util.List;
 
 public class ImportExportHelper {
 	public static final String ENCRYPTION_SEED = "786547E9431EE";
+
+    public static final String IMPORT_EXPORT_URI = "http://www.munin-for-android.com/ws/importExport.php";
+    public static final int IMPORT_EXPORT_VERSION = 1;
 	
 	public static class Export {
-		private static String sendExportRequest(String jsonString) {
+		private static String sendExportRequest(Context context, String jsonString) {
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(MuninFoo.IMPORT_EXPORT_URI + "?export");
+			HttpPost httpPost = new HttpPost(getImportExportServerUrl(context) + "?export");
 			
 			try {
 				List<NameValuePair> nameValuePairs = new ArrayList<>(2);
 				nameValuePairs.add(new BasicNameValuePair("dataString", jsonString));
-				nameValuePairs.add(new BasicNameValuePair("version", String.valueOf(MuninFoo.IMPORT_EXPORT_VERSION)));
+				nameValuePairs.add(new BasicNameValuePair("version", String.valueOf(IMPORT_EXPORT_VERSION)));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				
 				// Execute HTTP Post Request
@@ -101,7 +104,7 @@ public class ImportExportHelper {
 			
 			@Override
 			protected Void doInBackground(Void... arg0) {
-				pswd = sendExportRequest(jsonString);
+				pswd = sendExportRequest(context, jsonString);
 				result = pswd != null && !pswd.equals("");
 				
 				return null;
@@ -139,14 +142,14 @@ public class ImportExportHelper {
 			}
 		}
 		
-		private static JSONObject sendImportRequest(String code) {
+		private static JSONObject sendImportRequest(Context context, String code) {
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(MuninFoo.IMPORT_EXPORT_URI+"?import");
+			HttpPost httpPost = new HttpPost(getImportExportServerUrl(context)+"?import");
 
 			try {
 				List<NameValuePair> nameValuePairs = new ArrayList<>(2);
 				nameValuePairs.add(new BasicNameValuePair("pswd", code));
-				nameValuePairs.add(new BasicNameValuePair("version", String.valueOf(MuninFoo.IMPORT_EXPORT_VERSION)));
+				nameValuePairs.add(new BasicNameValuePair("version", String.valueOf(IMPORT_EXPORT_VERSION)));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				
 				// Execute HTTP Post Request
@@ -205,7 +208,7 @@ public class ImportExportHelper {
 			
 			@Override
 			protected Void doInBackground(Void... arg0) {
-				jsonObject = sendImportRequest(code);
+				jsonObject = sendImportRequest(context, code);
 				result = jsonObject != null;
 				
 				if (result)
@@ -240,4 +243,8 @@ public class ImportExportHelper {
 			}
 		}
 	}
+
+    public static String getImportExportServerUrl(Context context) {
+        return Util.getPref(context, Util.PrefKeys.ImportExportServer, IMPORT_EXPORT_URI);
+    }
 }
