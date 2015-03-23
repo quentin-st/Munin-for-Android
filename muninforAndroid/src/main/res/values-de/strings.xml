@@ -230,4 +230,9 @@
 	<string name="lang_japanese">Japanisch</string>
 	<string name="chromecastAuthWarning">Achtung - Chromecast funktioniert nicht mit HTTP Basic-/Digest-Authentifizierung</string>
 
+<string name="chromecast_application_id">Chromecast Application ID</string>
+    <string name="import_export_server">Webservice-URL für Import und Export</string>
+    <string name="reset">Auf Standard-Werte zurücksetzen</string>
+	<string name="advanced">Erweiterte Optionen</string>
+
 </resources>
