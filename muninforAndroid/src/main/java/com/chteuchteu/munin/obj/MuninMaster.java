@@ -137,10 +137,8 @@ public class MuninMaster {
 		if (server == null)
 			return false;
 		MuninPlugin plugin = server.getPlugin(0);
-		if (plugin == null)
-			return false;
-		
-		return isDynazoomAvailable(plugin, userAgent);
+		return plugin != null && isDynazoomAvailable(plugin, userAgent);
+
 	}
 
 	public boolean isDynazoomAvailable(MuninPlugin plugin, String userAgent) {

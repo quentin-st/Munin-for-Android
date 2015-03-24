@@ -747,8 +747,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 			w.setServers(getAlertsWidgetRelations(w.getId(), servers));
 
+			close(c, db);
 			return w;
 		}
+
+		close(c, db);
 		return null;
 	}
 
@@ -779,6 +782,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			} while (c.moveToNext());
 		}
 
+		close(c, db);
 		return widgetServers;
 	}
 	

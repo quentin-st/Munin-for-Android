@@ -27,8 +27,7 @@ public class EncryptionHelper {
 		sr.setSeed(seed);
 		kgen.init(128, sr); // 192 and 256 bits may not be available
 		SecretKey skey = kgen.generateKey();
-		byte[] raw = skey.getEncoded();
-		return raw;
+		return skey.getEncoded();
 	}
 
 
@@ -36,16 +35,14 @@ public class EncryptionHelper {
 		SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
 		Cipher cipher = Cipher.getInstance("AES");
 		cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-		byte[] encrypted = cipher.doFinal(clear);
-		return encrypted;
+		return cipher.doFinal(clear);
 	}
 
 	private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
 		SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
 		Cipher cipher = Cipher.getInstance("AES");
 		cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-		byte[] decrypted = cipher.doFinal(encrypted);
-		return decrypted;
+		return cipher.doFinal(encrypted);
 	}
 
 	private static byte[] toByte(String hexString) {
@@ -60,9 +57,9 @@ public class EncryptionHelper {
 		if (buf == null)
 			return "";
 		StringBuffer result = new StringBuffer(2*buf.length);
-		for (int i = 0; i < buf.length; i++) {
-			appendHex(result, buf[i]);
-		}
+		for (byte aBuf : buf)
+			appendHex(result, aBuf);
+
 		return result.toString();
 	}
 	private final static String HEX = "0123456789ABCDEF";
