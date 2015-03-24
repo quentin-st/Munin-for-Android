@@ -213,6 +213,7 @@ public class Activity_GraphView extends MuninActivity {
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		adapter = new Adapter_GraphView(getSupportFragmentManager(), this, muninFoo, nbPlugins);
 		viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(pos);
 
 		dh.initPluginsList();
 
