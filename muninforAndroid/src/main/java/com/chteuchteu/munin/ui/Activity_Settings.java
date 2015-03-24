@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.I18nHelper;
@@ -242,6 +243,12 @@ public class Activity_Settings extends MuninActivity {
 
 		// User Agent
 		editText_userAgent.setText(muninFoo.getUserAgent());
+		findViewById(R.id.userAgent_reset).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				editText_userAgent.setText(MuninFoo.generateUserAgent(context));
+			}
+		});
 
 		// Grids legend
 		switch (Util.getPref(this, Util.PrefKeys.GridsLegend)) {

@@ -79,9 +79,32 @@
 						style="@style/Settings_SettingTitle"
 						android:text="@string/user_agent" />
 
-					<EditText
-						android:id="@+id/edittext_useragent"
-						style="@style/Settings_SettingEditText" />
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical">
+
+						<ImageButton
+							android:id="@+id/userAgent_reset"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:background="@drawable/ic_action_reset"
+							android:contentDescription="@string/reset"
+							android:layout_alignParentRight="true"
+							android:layout_alignParentEnd="true"
+							android:layout_marginRight="10dp"
+							android:layout_marginLeft="5dp"/>
+
+						<EditText
+							android:id="@+id/edittext_useragent"
+							style="@style/Settings_SettingEditText"
+							android:layout_marginRight="0dp"
+							android:layout_marginEnd="0dp"
+							android:inputType="text"
+							android:layout_toLeftOf="@id/userAgent_reset"
+							android:layout_toStartOf="@id/userAgent_reset"
+							android:textSize="13sp"/>
+					</RelativeLayout>
 
 					<View style="@style/Material_Divider" />
 
@@ -299,7 +322,8 @@
 
 					<RelativeLayout
 						android:layout_width="match_parent"
-						android:layout_height="wrap_content">
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical">
 
 						<ImageButton
 							android:id="@+id/chromecastAppId_reset"
@@ -308,15 +332,18 @@
 							android:background="@drawable/ic_action_reset"
 							android:contentDescription="@string/reset"
 							android:layout_alignParentRight="true"
+							android:layout_alignParentEnd="true"
 							android:layout_marginRight="10dp"
-							android:layout_marginLeft="10dp"/>
+							android:layout_marginLeft="5dp"/>
 
 						<EditText
 							android:id="@+id/edittext_chromecastAppid"
 							style="@style/Settings_SettingEditText"
 							android:layout_marginRight="0dp"
+							android:layout_marginEnd="0dp"
 							android:inputType="text"
-							android:layout_toLeftOf="@id/chromecastAppId_reset"/>
+							android:layout_toLeftOf="@id/chromecastAppId_reset"
+							android:layout_toStartOf="@id/chromecastAppId_reset"/>
 					</RelativeLayout>
 
 					<View style="@style/Material_Divider" />
@@ -330,7 +357,8 @@
 
 					<RelativeLayout
 						android:layout_width="match_parent"
-						android:layout_height="wrap_content">
+						android:layout_height="wrap_content"
+						android:gravity="center_vertical">
 
 						<ImageButton
 							android:id="@+id/importExportServer_reset"
@@ -339,15 +367,19 @@
 							android:background="@drawable/ic_action_reset"
 							android:contentDescription="@string/reset"
 							android:layout_alignParentRight="true"
+							android:layout_alignParentEnd="true"
 							android:layout_marginRight="10dp"
-							android:layout_marginLeft="10dp"/>
+							android:layout_marginLeft="5dp"/>
 
 						<EditText
 							android:id="@+id/edittext_importExportServer"
 							style="@style/Settings_SettingEditText"
 							android:layout_marginRight="0dp"
+							android:layout_marginEnd="0dp"
 							android:inputType="text"
-							android:layout_toLeftOf="@id/importExportServer_reset"/>
+							android:layout_toLeftOf="@id/importExportServer_reset"
+							android:layout_toStartOf="@id/importExportServer_reset"
+							android:textSize="13sp"/>
 					</RelativeLayout>
 				</LinearLayout>
 			</LinearLayout>
