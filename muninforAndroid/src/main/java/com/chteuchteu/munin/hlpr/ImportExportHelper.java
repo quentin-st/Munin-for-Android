@@ -104,8 +104,13 @@ public class ImportExportHelper {
 			
 			@Override
 			protected Void doInBackground(Void... arg0) {
-				pswd = sendExportRequest(context, jsonString);
-				result = pswd != null && !pswd.equals("");
+                try {
+                    pswd = sendExportRequest(context, jsonString);
+                    result = pswd != null && !pswd.equals("");
+                } catch (IllegalStateException ex) {
+                    // Thrown when the URL isn't valid
+                    result = false;
+                }
 				
 				return null;
 			}
@@ -208,8 +213,13 @@ public class ImportExportHelper {
 			
 			@Override
 			protected Void doInBackground(Void... arg0) {
-				jsonObject = sendImportRequest(context, code);
-				result = jsonObject != null;
+                try {
+                    jsonObject = sendImportRequest(context, code);
+                    result = jsonObject != null;
+                } catch (IllegalStateException ex) {
+                    // Thrown when the URL isn't valid
+                    result = false;
+                }
 				
 				if (result)
 					applyImportation(context, jsonObject, ENCRYPTION_SEED);
