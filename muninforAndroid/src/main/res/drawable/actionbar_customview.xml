@@ -1,11 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<item android:drawable="@color/c33ffffff" android:state_pressed="true"/>
-	<item android:drawable="@color/c33ffffff" android:state_selected="true"/>
-	<item android:drawable="@color/c33ffffff" android:state_hovered="true"/>
-	<item android:drawable="@color/c33ffffff" android:state_focused="true"/>
-	<item android:drawable="@color/c33ffffff" android:state_enabled="false"/>
-	<item android:drawable="@color/c00ffffff"/>
-
+	<item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/c33ffffff" />
+            <corners android:radius="2dp"/>
+        </shape>
+	</item>
+	<item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/c33ffffff" />
+            <corners android:radius="2dp"/>
+        </shape>
+    </item>
+	<item android:state_hovered="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/c33ffffff" />
+            <corners android:radius="2dp"/>
+        </shape>
+    </item>
+	<item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/c33ffffff" />
+            <corners android:radius="2dp"/>
+        </shape>
+    </item>
+	<item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/c33ffffff" />
+            <corners android:radius="2dp"/>
+        </shape>
+    </item>
+	<item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/c00ffffff" />
+            <corners android:radius="2dp"/>
+        </shape>
+    </item>
 </selector>

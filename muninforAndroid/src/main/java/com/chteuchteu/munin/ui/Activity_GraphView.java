@@ -77,6 +77,7 @@ public class Activity_GraphView extends MuninActivity {
 	private View        ic_insecure;
     private TextView    toolbarPluginName;
     private PluginsListAlertDialog pluginsListAlertDialog;
+    private ServersListAlertDialog serversListAlertDialog;
 
 	public int          viewFlowMode;
 	public static final int VIEWFLOWMODE_GRAPHS = 1;
@@ -328,21 +329,26 @@ public class Activity_GraphView extends MuninActivity {
         serverSwitcher.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ServersListAlertDialog(context, serverSwitcher, new ServersListAlertDialog.ServersListAlertDialogClick() {
-                    @Override
-                    public void onItemClick(MuninServer server) {
-                        if (!server.equalsApprox(muninFoo.getCurrentServer())) {
-                            muninFoo.setCurrentServer(server);
-                            Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
-                            if (server.hasPlugin(currentPlugin))
-                                intent.putExtra("position", muninFoo.getCurrentServer().getPosition(currentPlugin));
-                            else
-                                intent.putExtra("position", 0);
-                            startActivity(intent);
-                            Util.setTransition(context, TransitionStyle.DEEPER);
-                        }
-                    }
-                }).show();
+                if (serversListAlertDialog == null) {
+                    serversListAlertDialog = new ServersListAlertDialog(context, serverSwitcher,
+                            new ServersListAlertDialog.ServersListAlertDialogClick() {
+                                @Override
+                                public void onItemClick(MuninServer server) {
+                                    if (!server.equalsApprox(muninFoo.getCurrentServer())) {
+                                        muninFoo.setCurrentServer(server);
+                                        Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
+                                        if (server.hasPlugin(currentPlugin))
+                                            intent.putExtra("position", muninFoo.getCurrentServer().getPosition(currentPlugin));
+                                        else
+                                            intent.putExtra("position", 0);
+                                        startActivity(intent);
+                                        Util.setTransition(context, TransitionStyle.DEEPER);
+                                    }
+                                }
+                            });
+                }
+
+                serversListAlertDialog.show();
             }
         });
 
@@ -354,19 +360,20 @@ public class Activity_GraphView extends MuninActivity {
         customToolbarView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pluginsListAlertDialog == null)
+                if (pluginsListAlertDialog == null) {
                     pluginsListAlertDialog = new PluginsListAlertDialog(context,
                             customToolbarView, muninFoo.getCurrentServer(),
                             new PluginsListAlertDialog.PluginsListAlertDialogClick() {
-                        @Override
-                        public void onItemClick(MuninPlugin plugin) {
-                            int index = muninFoo.getCurrentServer().getPlugins().indexOf(plugin);
-                            if (isDynazoomOpen())
-                                hideDynazoom();
+                                @Override
+                                public void onItemClick(MuninPlugin plugin) {
+                                    int index = muninFoo.getCurrentServer().getPlugins().indexOf(plugin);
+                                    if (isDynazoomOpen())
+                                        hideDynazoom();
 
-                            viewPager.setCurrentItem(index, true);
-                        }
-                    });
+                                    viewPager.setCurrentItem(index, true);
+                                }
+                            });
+                }
 
                 pluginsListAlertDialog.show();
             }
