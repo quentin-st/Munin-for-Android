@@ -2,7 +2,6 @@ package com.chteuchteu.munin.ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -42,6 +41,7 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_GraphView;
+import com.chteuchteu.munin.adptr.PluginsListAlertDialog;
 import com.chteuchteu.munin.adptr.ServersListAlertDialog;
 import com.chteuchteu.munin.async.DynazoomDetector;
 import com.chteuchteu.munin.async.FieldsDescriptionFetcher;
@@ -69,44 +69,46 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 @SuppressLint({ "DefaultLocale", "InflateParams" })
 public class Activity_GraphView extends MuninActivity {
-	private MuninPlugin currentPlugin;
-	public Period load_period;
-	public ViewPager viewPager;
+	private MuninPlugin     currentPlugin;
+	public Period       load_period;
+	public ViewPager    viewPager;
 	private Adapter_GraphView adapter;
-	private View ic_secure;
-	private View ic_insecure;
+	private View        ic_secure;
+	private View        ic_insecure;
+    private TextView    toolbarPluginName;
+    private PluginsListAlertDialog pluginsListAlertDialog;
 
-	public int viewFlowMode;
+	public int          viewFlowMode;
 	public static final int VIEWFLOWMODE_GRAPHS = 1;
 	public static final int VIEWFLOWMODE_LABELS = 2;
-	public Label label;
+	public Label        label;
 
-	private static int position;
+	private static int  position;
 	public HashMap<Integer, PhotoViewAttacher> photoViewAttachers;
 	private Bitmap[]	bitmaps;
-	public ImageView iv_documentation;
+	public ImageView    iv_documentation;
 	/**
 	 * How many bitmaps should be kept on left and right
 	 * of current list position
 	 */
 	private static final int BITMAPS_PADDING = 5;
 	public FloatingActionButton fab;
-	public boolean       isFabShown;
+	public boolean      isFabShown;
 
-	private MenuItem		item_period;
-	private MenuItem       item_documentation;
+	private MenuItem    item_period;
+	private MenuItem    item_documentation;
 	
-	private Handler		mHandler;
-	private Runnable		mHandlerTask;
+	private Handler	    mHandler;
+	private Runnable    mHandlerTask;
 	
 	// If the Adapter_GraphView:getView method should
 	// load the graphs
-	public boolean	loadGraphs = false;
+	public boolean	    loadGraphs = false;
 
 	// Dynazoom
 	private DynazoomFetcher dynazoomFetcher;
-	private long dynazoom_from;
-	private long dynazoom_to;
+	private long    dynazoom_from;
+	private long    dynazoom_to;
 
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -213,16 +215,13 @@ public class Activity_GraphView extends MuninActivity {
 		viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(pos);
 
-		dh.initPluginsList();
-
 		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override
-			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-			}
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
 			@Override
-			public void onPageSelected(int position) {
-				Activity_GraphView.position = position;
+			public void onPageSelected(int pos) {
+				position = pos;
 				cleanBitmaps(position);
 
 				if (viewFlowMode == VIEWFLOWMODE_GRAPHS)
@@ -233,7 +232,7 @@ public class Activity_GraphView extends MuninActivity {
 					muninFoo.setCurrentServer(currentPlugin.getInstalledOn());
 				}
 
-				dh.updatePluginsList();
+                toolbarPluginName.setText(currentPlugin.getFancyName());
 
 				// Documentation
 				if (item_documentation != null) {
@@ -263,8 +262,7 @@ public class Activity_GraphView extends MuninActivity {
 			}
 
 			@Override
-			public void onPageScrollStateChanged(int state) {
-			}
+			public void onPageScrollStateChanged(int state) { }
 		});
 
 		fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -345,6 +343,53 @@ public class Activity_GraphView extends MuninActivity {
                         }
                     }
                 }).show();
+            }
+        });
+
+        // Toolbar custom view
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View customToolbarView = inflater.inflate(R.layout.actionbar_dropdown, null);
+        customToolbarView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pluginsListAlertDialog == null)
+                    pluginsListAlertDialog = new PluginsListAlertDialog(context,
+                            customToolbarView, muninFoo.getCurrentServer(),
+                            new PluginsListAlertDialog.PluginsListAlertDialogClick() {
+                        @Override
+                        public void onItemClick(MuninPlugin plugin) {
+                            int index = muninFoo.getCurrentServer().getPlugins().indexOf(plugin);
+                            if (isDynazoomOpen())
+                                hideDynazoom();
+
+                            viewPager.setCurrentItem(index, true);
+                        }
+                    });
+
+                pluginsListAlertDialog.show();
+            }
+        });
+        toolbarPluginName = (TextView) customToolbarView.findViewById(R.id.text);
+        toolbarPluginName.setText(currentPlugin.getFancyName());
+        actionBar.setCustomView(customToolbarView);
+        super.setOnDrawerOpen(new Runnable() {
+            @Override
+            public void run() {
+                customToolbarView.setVisibility(View.GONE);
+                actionBar.setDisplayShowCustomEnabled(false);
+                actionBar.setDisplayShowTitleEnabled(true);
+                actionBar.setSubtitle(currentPlugin.getFancyName());
+            }
+        });
+        super.setOnDrawerClose(new Runnable() {
+            @Override
+            public void run() {
+                customToolbarView.setVisibility(View.VISIBLE);
+                actionBar.setDisplayShowCustomEnabled(true);
+                actionBar.setDisplayShowTitleEnabled(false);
+                actionBar.setSubtitle("");
             }
         });
 	}
@@ -559,8 +604,8 @@ public class Activity_GraphView extends MuninActivity {
 		final List<CheckBox> checkboxes = new ArrayList<>();
 		int i = 0;
 		for (Label l : muninFoo.labels) {
-			LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			final View v = vi.inflate(R.layout.labels_list_checkbox, null);
+			LayoutInflater inflater = LayoutInflater.from(context);
+			final View v = inflater.inflate(R.layout.labels_list_checkbox, checkboxesContainer, false);
 			checkboxes.add((CheckBox) v.findViewById(R.id.line_0));
 			v.findViewById(R.id.line).setOnClickListener(new OnClickListener() {
 				@Override

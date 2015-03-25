@@ -47,6 +47,7 @@ public class Activity_Plugins extends MuninActivity {
 	private MuninPlugin[] 		pluginsFilter;
 
 	private TextView			customActionBarView_textView;
+    private ServersListAlertDialog serversListAlertDialog;
 	
 	private LinearLayout	ll_filter;
 	private EditText		filter;
@@ -72,24 +73,27 @@ public class Activity_Plugins extends MuninActivity {
 		actionBar.setDisplayShowTitleEnabled(false);
 
 		// ActionBar custom view
-		final LayoutInflater inflator = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		final View customActionBarView = inflator.inflate(R.layout.actionbar_serverselection, null);
+		LayoutInflater inflater = LayoutInflater.from(context);
+		final View customActionBarView = inflater.inflate(R.layout.actionbar_dropdown, null);
 		customActionBarView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new ServersListAlertDialog(context, customActionBarView, new ServersListAlertDialog.ServersListAlertDialogClick() {
-                    @Override
-                    public void onItemClick(MuninServer server) {
-                        muninFoo.setCurrentServer(server);
-                        customActionBarView_textView.setText(server.getName());
-                        updateListView(mode);
-                    }
-                }).show();
+                if (serversListAlertDialog == null)
+				    serversListAlertDialog = new ServersListAlertDialog(context, customActionBarView,
+                            new ServersListAlertDialog.ServersListAlertDialogClick() {
+                        @Override
+                        public void onItemClick(MuninServer server) {
+                            muninFoo.setCurrentServer(server);
+                            customActionBarView_textView.setText(server.getName());
+                            updateListView(mode);
+                        }
+                    });
+
+                serversListAlertDialog.show();
 			}
 		});
-		TextView serverName = (TextView) customActionBarView.findViewById(R.id.text);
-		serverName.setText(muninFoo.getCurrentServer().getName());
-		customActionBarView_textView = serverName;
+        customActionBarView_textView = (TextView) customActionBarView.findViewById(R.id.text);
+        customActionBarView_textView.setText(muninFoo.getCurrentServer().getName());
 		
 		actionBar.setCustomView(customActionBarView);
 		super.setOnDrawerOpen(new Runnable() {

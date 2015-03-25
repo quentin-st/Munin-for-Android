@@ -12,10 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 
 import java.util.HashMap;
@@ -23,18 +22,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Open an AlertDialog with transparent background (similar to Spinner),
- *  with a grouped servers list
- */
-public class ServersListAlertDialog {
-    private MuninFoo muninFoo;
+public class PluginsListAlertDialog {
     private AlertDialog dialog;
 
-    public ServersListAlertDialog(Context context, View attachTo,
-                                  final ServersListAlertDialogClick onItemClick) {
-        this.muninFoo = MuninFoo.getInstance();
-
+    public PluginsListAlertDialog(Context context, View attachTo, MuninServer server,
+                                  final PluginsListAlertDialogClick onItemClick) {
         // Init
         LinearLayout view = new LinearLayout(context);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -42,19 +34,19 @@ public class ServersListAlertDialog {
         view.setOrientation(LinearLayout.VERTICAL);
 
         ListView listView = new ListView(context);
-        // Create servers list
-        List<List<MuninServer>> list = muninFoo.getGroupedServersList();
+        // Create plugins list
+        final List<List<MuninPlugin>> list = server.getPluginsListWithCategory();
 
         Adapter_SeparatedList adapter = new Adapter_SeparatedList(context, true);
-        for (List<MuninServer> l : list) {
+        for (List<MuninPlugin> l : list) {
             List<Map<String,?>> elements = new LinkedList<>();
-            String masterName = "";
-            for (MuninServer s : l) {
-                elements.add(createItem(s.getName()));
-                masterName = s.getParent().getName();
+            String categoryName = "";
+            for (MuninPlugin p : l) {
+                elements.add(createItem(p.getFancyName()));
+                categoryName = p.getCategory();
             }
 
-            adapter.addSection(masterName, new SimpleAdapter(context, elements, R.layout.plugins_serverlist_server,
+            adapter.addSection(categoryName, new SimpleAdapter(context, elements, R.layout.plugins_serverlist_server,
                     new String[] { "title" }, new int[] { R.id.server }));
         }
         listView.setAdapter(adapter);
@@ -76,15 +68,15 @@ public class ServersListAlertDialog {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-                // Master name lines are taken in account in the positions list.
-                // Let's find the server.
+                // Category name lines are taken in account in the positions list.
+                // Let's find the plugin
                 int i = 0;
-                for (MuninMaster master : muninFoo.masters) {
+                for (List<MuninPlugin> l : list) {
                     i++;
-                    for (MuninServer server : master.getChildren()) {
+                    for (MuninPlugin plugin : l) {
                         if (i == position) {
                             dialog.dismiss();
-                            onItemClick.onItemClick(server);
+                            onItemClick.onItemClick(plugin);
                         }
                         i++;
                     }
@@ -103,7 +95,7 @@ public class ServersListAlertDialog {
         return item;
     }
 
-    public interface ServersListAlertDialogClick {
-        public void onItemClick(MuninServer server);
+    public interface PluginsListAlertDialogClick {
+        public void onItemClick(MuninPlugin plugin);
     }
 }

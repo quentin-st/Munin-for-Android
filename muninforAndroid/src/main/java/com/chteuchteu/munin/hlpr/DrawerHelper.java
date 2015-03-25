@@ -2,15 +2,11 @@ package com.chteuchteu.munin.hlpr;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -23,21 +19,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_Search;
+import com.chteuchteu.munin.async.DonateAsync;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Label;
@@ -47,7 +42,6 @@ import com.chteuchteu.munin.obj.SearchResult;
 import com.chteuchteu.munin.obj.SearchResult.SearchResultType;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
-import com.chteuchteu.munin.ui.Activity_GraphView;
 import com.chteuchteu.munin.ui.Activity_Grid;
 import com.chteuchteu.munin.ui.Activity_Grids;
 import com.chteuchteu.munin.ui.Activity_Labels;
@@ -59,8 +53,6 @@ import com.chteuchteu.munin.ui.MuninActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-
-@SuppressLint("InflateParams")
 public class DrawerHelper {
 	private ActionBarActivity activity;
 	private Context context;
@@ -72,11 +64,9 @@ public class DrawerHelper {
 	
 	private EditText search;
 	private ListView search_results;
-	private SearchAdapter search_results_adapter;
+	private Adapter_Search search_results_adapter;
 	private List<SearchResult> search_results_array;
 	private List<String> search_cachedGridsList;
-
-	private int pluginsList_currentlySelectedItem;
 	
 	public DrawerHelper(ActionBarActivity activity, MuninFoo muninFoo) {
 		this.activity = activity;
@@ -258,7 +248,7 @@ public class DrawerHelper {
 					search_results_adapter.notifyDataSetChanged();
 				} else {
 					search_results_array = new ArrayList<>();
-					search_results_adapter = new SearchAdapter(activity, search_results_array);
+					search_results_adapter = new Adapter_Search(activity, search_results_array);
 					search_results.setAdapter(search_results_adapter);
 				}
 
@@ -334,7 +324,8 @@ public class DrawerHelper {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-						View view = inflater.inflate(R.layout.dialog_donate, null);
+						@SuppressLint("InflateParams")
+                        View view = inflater.inflate(R.layout.dialog_donate, null);
 
 						final Spinner spinnerAmount = (Spinner) view.findViewById(R.id.donate_amountSpinner);
 						List<String> list = new ArrayList<>();
@@ -428,164 +419,6 @@ public class DrawerHelper {
 			Util.Fonts.setFont(context, textView, CustomFont.Roboto_Medium);
 			ImageView icon = (ImageView) activity.findViewById(iconResId);
 			icon.setColorFilter(selectedDrawerItemColor, Mode.MULTIPLY);
-		}
-	}
-	
-	public void initPluginsList() {
-		initPluginsList(-1);
-	}
-
-	public void initPluginsList(final int scrollY) {
-		((LinearLayout)activity.findViewById(R.id.drawer_containerPlugins)).removeAllViews();
-		
-		activity.findViewById(R.id.drawer_containerPlugins).setVisibility(View.VISIBLE);
-		LayoutInflater vi = (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		final Activity_GraphView activityGraphView = (Activity_GraphView) activity;
-		final ViewPager viewPager = activityGraphView.viewPager;
-
-
-		int viewPagerPos = viewPager.getCurrentItem();
-		this.pluginsList_currentlySelectedItem = viewPagerPos;
-		int pos = 0;
-		View insertPoint = activity.findViewById(R.id.drawer_containerPlugins);
-
-		for (final MuninPlugin mp : muninFoo.getCurrentServer().getPlugins()) {
-			View v = vi.inflate(R.layout.drawer_subbutton, null);
-			final TextView b = (TextView)v.findViewById(R.id.button);
-			b.setText(mp.getFancyName());
-			
-			if (viewPagerPos == pos) {
-				final int position = pos;
-				b.setBackgroundResource(R.drawable.drawer_selectedsubbutton);
-				b.setTextColor(0xffffffff);
-				
-				// setScrollY
-				b.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() { // Else getHeight returns 0
-					@Override
-					public void onGlobalLayout() {
-						Util.removeOnGlobalLayoutListener(b, this);
-
-						int scroll;
-						if (scrollY != -1)
-							scroll = scrollY;
-						else
-							scroll = (b.getHeight() + 1) * position;
-						activity.findViewById(R.id.drawer_scrollview).setScrollY(scroll);
-					}
-				});
-			}
-			
-			b.setOnClickListener(new OnClickListener() {
-				public void onClick (View v) {
-					TextView b = (TextView) v;
-					int p = 0;
-					for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
-						if (muninFoo.getCurrentServer().getPlugin(i).getFancyName().equals(b.getText().toString())) {
-							p = i;
-							break;
-						}
-					}
-					viewPager.setCurrentItem(p);
-					initPluginsList(activity.findViewById(R.id.drawer_scrollview).getScrollY());
-					if (activityGraphView.isDynazoomOpen())
-						activityGraphView.hideDynazoom();
-					toggle();
-				}
-			});
-
-			((ViewGroup) insertPoint).addView(v);
-			pos++;
-		}
-	}
-
-	/**
-	 * Update selected item in plugins list
-	 */
-	public void updatePluginsList() {
-		// Remove background styling for previously selected element
-		ViewGroup container = (ViewGroup) activity.findViewById(R.id.drawer_containerPlugins);
-		View selectedItem = container.getChildAt(this.pluginsList_currentlySelectedItem);
-
-		TextView tv = (TextView) selectedItem.findViewById(R.id.button);
-		tv.setBackgroundColor(Color.TRANSPARENT);
-		tv.setTextColor(0xffbbbbbb);
-
-		// Set background styling for current element
-		final Activity_GraphView activityGraphView = (Activity_GraphView) activity;
-		final ViewPager viewPager = activityGraphView.viewPager;
-
-		this.pluginsList_currentlySelectedItem = viewPager.getCurrentItem();
-
-		View newSelectedItem = container.getChildAt(this.pluginsList_currentlySelectedItem);
-		final TextView tv2 = (TextView) newSelectedItem.findViewById(R.id.button);
-		tv2.setBackgroundResource(R.drawable.drawer_selectedsubbutton);
-		tv2.setTextColor(0xffffffff);
-
-		// setScrollY
-		int scroll = (newSelectedItem.getHeight() + 1) * pluginsList_currentlySelectedItem;
-		activity.findViewById(R.id.drawer_scrollview).setScrollY(scroll);
-	}
-	
-	private class SearchAdapter extends BaseAdapter {
-		private List<SearchResult> searchArrayList;
-		private Context context;
-		private LayoutInflater mInflater;
-		
-		private SearchAdapter(Context context, List<SearchResult> results) {
-			this.searchArrayList = results;
-			this.mInflater = LayoutInflater.from(context);
-			this.context = context;
-		}
-		
-		public int getCount() { return this.searchArrayList.size(); }
-		public Object getItem(int position) { return this.searchArrayList.get(position); }
-		public long getItemId(int position) { return position; }
-		
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null)
-				convertView = mInflater.inflate(R.layout.twolineslist, null);
-			
-			TextView ed_line_a = (TextView) convertView.findViewById(R.id.line_a);
-			ed_line_a.setText(searchArrayList.get(position).getLine1());
-			String line_b = searchArrayList.get(position).getLine2();
-			TextView ed_line_b = ((TextView) convertView.findViewById(R.id.line_b));
-			if (line_b != null && line_b.equals(""))
-				ed_line_b.setVisibility(View.GONE);
-			else
-				ed_line_b.setText(line_b);
-			
-			Util.Fonts.setFont(context, ed_line_a, CustomFont.RobotoCondensed_Regular);
-			Util.Fonts.setFont(context, ed_line_b, CustomFont.RobotoCondensed_Regular);
-			
-			return convertView;
-		}
-	}
-	
-	private class DonateAsync extends AsyncTask<Void, Integer, Void> {
-		private ProgressDialog dialog;
-		private Context context;
-		private String product;
-		
-		private DonateAsync(Context context, String product) {
-			this.product = product;
-			this.context = context;
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			
-			dialog = ProgressDialog.show(context, "", context.getString(R.string.loading), true);
-			dialog.setCancelable(true);
-		}
-		
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			BillingService.getInstanceAndPurchase(context, product, dialog);
-			// Dialog will be dismissed in the BillingService.
-			
-			return null;
 		}
 	}
 }
