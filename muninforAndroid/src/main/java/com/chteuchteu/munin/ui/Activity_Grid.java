@@ -132,19 +132,23 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		}
 
 		// Chromecast
-		if (muninFoo.chromecastHelper == null)
-			muninFoo.chromecastHelper = ChromecastHelper.create(this);
-        if (muninFoo.premium) {
-	        muninFoo.chromecastHelper.onCreate(new Runnable() {
-                @Override
-                public void run() {
-	                if (fragment == null || fragment.getGrid() == null)
-		                return;
+        // If null: not connected yet
+		if (muninFoo.chromecastHelper == null) {
+            muninFoo.chromecastHelper = ChromecastHelper.create(this);
+            if (muninFoo.premium) {
+                muninFoo.chromecastHelper.onCreate(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (fragment == null || fragment.getGrid() == null)
+                            return;
 
-	                muninFoo.chromecastHelper.sendMessage_inflateGrid(fragment.getGrid(), currentPeriod);
-                }
-            });
+                        muninFoo.chromecastHelper.sendMessage_inflateGrid(fragment.getGrid(), currentPeriod);
+                    }
+                });
+            }
         }
+        else if (muninFoo.chromecastHelper.isConnected())
+            muninFoo.chromecastHelper.sendMessage_inflateGrid(tmpGrid, currentPeriod);
 	}
 
 	private static Grid getGrid(List<Grid> grids, long gridId) {

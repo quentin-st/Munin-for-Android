@@ -70,10 +70,14 @@ public class ChromecastHelper {
 
 	private static void log(String msg) { MuninFoo.log("Chromecast", msg); }
 
+    public boolean isConnected() {
+        return mApiClient != null
+                && mHelloWorldChannel != null;
+    }
+
     public static boolean isConnected(ChromecastHelper chromecastHelperInstance) {
         return chromecastHelperInstance != null
-                && chromecastHelperInstance.mApiClient != null
-                && chromecastHelperInstance.mHelloWorldChannel != null;
+                && chromecastHelperInstance.isConnected();
     }
 
 	/**
