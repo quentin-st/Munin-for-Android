@@ -1,4 +1,4 @@
-package com.chteuchteu.munin;
+package com.chteuchteu.munin.hlpr;
 
 import android.net.SSLCertificateSocketFactory;
 import android.os.Build;

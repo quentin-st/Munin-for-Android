@@ -99,13 +99,13 @@
 				 android:permission="android.permission.BIND_REMOTEVIEWS" />
 
 		<!-- Notifications -->
-		<receiver android:name=".BootReceiver" >
+		<receiver android:name=".ntfs.BootReceiver" >
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
 		<service
-			android:name=".Service_Notifications"
+			android:name=".ntfs.Service_Notifications"
 			android:enabled="true" />
 
 		<!-- Crashlytics -->

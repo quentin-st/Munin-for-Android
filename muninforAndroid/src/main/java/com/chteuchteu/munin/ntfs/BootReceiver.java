@@ -1,4 +1,4 @@
-package com.chteuchteu.munin;
+package com.chteuchteu.munin.ntfs;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
