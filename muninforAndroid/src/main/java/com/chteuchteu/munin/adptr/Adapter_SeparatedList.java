@@ -99,6 +99,7 @@ public class Adapter_SeparatedList extends BaseAdapter {
 			
 			// check if position inside this section 
 			if (position == 0) {
+                // Header
 				View view = headers.getView(sectionnum, convertView, parent);
 				TextView textView = (TextView) view.findViewById(R.id.list_header_title);
 				Util.Fonts.setFont(context, textView, CustomFont.Roboto_Medium);
@@ -106,8 +107,8 @@ public class Adapter_SeparatedList extends BaseAdapter {
 					textView.setPadding(55, textView.getPaddingTop(), textView.getPaddingRight(), textView.getPaddingBottom());
 				return view;
 			}
-			if (position < size)
-				return adapter.getView(position - 1, convertView, parent);
+			if (position < size) // MuninServer line
+                return adapter.getView(position-1, convertView, parent);
 			
 			// otherwise jump into next section
 			position -= size;
@@ -120,5 +121,4 @@ public class Adapter_SeparatedList extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-	
 }

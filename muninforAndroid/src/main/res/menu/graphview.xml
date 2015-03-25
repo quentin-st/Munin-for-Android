@@ -42,10 +42,6 @@
 		app:showAsAction="withText"
 		android:title="@string/menu_graph_save"/>
 	<item
-		android:id="@+id/menu_switchServer"
-		app:showAsAction="withText"
-		android:title="@string/menu_graph_switch"/>
-	<item
 		android:id="@+id/menu_openinbrowser"
 		app:showAsAction="withText"
 		android:title="@string/openInBrowser"

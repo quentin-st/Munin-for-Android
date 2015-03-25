@@ -28,7 +28,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -36,7 +35,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,7 +42,7 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_GraphView;
-import com.chteuchteu.munin.adptr.Adapter_ServersList;
+import com.chteuchteu.munin.adptr.ServersListAlertDialog;
 import com.chteuchteu.munin.async.DynazoomDetector;
 import com.chteuchteu.munin.async.FieldsDescriptionFetcher;
 import com.chteuchteu.munin.hlpr.DocumentationHelper;
@@ -326,6 +324,29 @@ public class Activity_GraphView extends MuninActivity {
 				}
 				break;
 		}
+
+        // Server spinner
+        final View serverSwitcher = findViewById(R.id.serverSwitcher);
+        serverSwitcher.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ServersListAlertDialog(context, serverSwitcher, new ServersListAlertDialog.ServersListAlertDialogClick() {
+                    @Override
+                    public void onItemClick(MuninServer server) {
+                        if (!server.equalsApprox(muninFoo.getCurrentServer())) {
+                            muninFoo.setCurrentServer(server);
+                            Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
+                            if (server.hasPlugin(currentPlugin))
+                                intent.putExtra("position", muninFoo.getCurrentServer().getPosition(currentPlugin));
+                            else
+                                intent.putExtra("position", 0);
+                            startActivity(intent);
+                            Util.setTransition(context, TransitionStyle.DEEPER);
+                        }
+                    }
+                }).show();
+            }
+        });
 	}
 
 	public void onResume() {
@@ -400,7 +421,6 @@ public class Activity_GraphView extends MuninActivity {
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:	actionRefresh(); 		return true;
 			case R.id.menu_save:		actionSave();			return true;
-			case R.id.menu_switchServer:actionServerSwitch(); return true;
 			case R.id.menu_fieldsDescription: actionFieldsDescription(); return true;
 			case R.id.menu_labels:    actionLabels();         return true;
 			case R.id.period_day:     changePeriod(Period.DAY); return true;
@@ -475,37 +495,6 @@ public class Activity_GraphView extends MuninActivity {
 			startActivity(intent);
 			Util.setTransition(context, TransitionStyle.SHALLOWER);
 		}
-	}
-	
-	private void actionServerSwitch() {
-		if (isDynazoomOpen())
-			hideDynazoom();
-
-		ListView listView = new ListView(this);
-		List<MuninServer> list = muninFoo.getServersFromPlugin(currentPlugin);
-		final Adapter_ServersList serversList = new Adapter_ServersList(context, list);
-		listView.setAdapter(serversList);
-
-		listView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-				MuninServer s = serversList.getItem(position);
-
-				if (!s.equalsApprox(muninFoo.getCurrentServer())) {
-					muninFoo.setCurrentServer(s);
-					Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
-					intent.putExtra("contextServerUrl", s.getServerUrl());
-					intent.putExtra("position", muninFoo.getCurrentServer().getPosition(currentPlugin));
-					startActivity(intent);
-					Util.setTransition(context, TransitionStyle.DEEPER);
-				}
-			}
-		});
-
-		new AlertDialog.Builder(this)
-				.setTitle(R.string.menu_graph_switch)
-				.setView(listView)
-				.setNegativeButton(R.string.close, null)
-				.show();
 	}
 	
 	public void actionRefresh() {

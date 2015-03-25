@@ -5,17 +5,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -29,10 +25,10 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_SeparatedList;
+import com.chteuchteu.munin.adptr.ServersListAlertDialog;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
-import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninServer;
 
@@ -81,63 +77,14 @@ public class Activity_Plugins extends MuninActivity {
 		customActionBarView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				LinearLayout view = new LinearLayout(activity);
-				view.setOrientation(LinearLayout.VERTICAL);
-				
-				ListView listView = new ListView(activity);
-				// Create servers list
-				List<List<MuninServer>> list = muninFoo.getGroupedServersList();
-				
-				Adapter_SeparatedList adapter = new Adapter_SeparatedList(context, true);
-				for (List<MuninServer> l : list) {
-					List<Map<String,?>> elements = new LinkedList<>();
-					String masterName = "";
-					for (MuninServer s : l) {
-						elements.add(createItem(s.getName()));
-						masterName = s.getParent().getName();
-					}
-					
-					adapter.addSection(masterName, new SimpleAdapter(context, elements, R.layout.plugins_serverlist_server,
-							new String[] { "title" }, new int[] { R.id.server }));
-				}
-				listView.setAdapter(adapter);
-				listView.setDivider(null);
-				
-				view.addView(listView);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context).setView(view);
-                final AlertDialog dialog = builder.create();
-                // Set AlertDialog position and width
-                Rect spinnerPos = Util.locateView(customActionBarView);
-				WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
-                wmlp.gravity = Gravity.TOP | Gravity.START;
-                wmlp.x = spinnerPos.left;
-                wmlp.y = spinnerPos.top;
-                wmlp.width = LayoutParams.WRAP_CONTENT;
-                wmlp.height = LayoutParams.WRAP_CONTENT;
-                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-
-                dialog.show();
-				
-				listView.setOnItemClickListener(new OnItemClickListener() {
-					public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-						// Master name lines are taken in account in the positions list.
-						// Let's find the server.
-						int i = 0;
-						for (MuninMaster master : muninFoo.masters) {
-							i++;
-							for (MuninServer server : master.getChildren()) {
-								if (i == position) {
-									dialog.dismiss();
-									muninFoo.setCurrentServer(server);
-									customActionBarView_textView.setText(server.getName());
-									updateListView(mode);
-								}
-								i++;
-							}
-						}
-					}
-				});
+				new ServersListAlertDialog(context, customActionBarView, new ServersListAlertDialog.ServersListAlertDialogClick() {
+                    @Override
+                    public void onItemClick(MuninServer server) {
+                        muninFoo.setCurrentServer(server);
+                        customActionBarView_textView.setText(server.getName());
+                        updateListView(mode);
+                    }
+                }).show();
 			}
 		});
 		TextView serverName = (TextView) customActionBarView.findViewById(R.id.text);
@@ -279,16 +226,10 @@ public class Activity_Plugins extends MuninActivity {
 		});
 	}
 	
-	private Map<String,?> createItem(String title, String caption) {
+	private static Map<String,?> createItem(String title, String caption) {
 		Map<String,String> item = new HashMap<>();
 		item.put("title", title);
 		item.put("caption", caption);
-		return item;
-	}
-	
-	private Map<String,?> createItem(String title) {
-		Map<String,String> item = new HashMap<>();
-		item.put("title", title);
 		return item;
 	}
 

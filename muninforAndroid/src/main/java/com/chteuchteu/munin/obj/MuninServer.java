@@ -276,6 +276,14 @@ public class MuninServer {
 			}
 		}
 	}
+
+    public boolean hasPlugin(MuninPlugin plugin) {
+        for (MuninPlugin p : this.plugins) {
+            if (p.equalsApprox(plugin))
+                return true;
+        }
+        return false;
+    }
 	
 	public MuninPlugin getPlugin(int pos) {
 		if (pos < this.plugins.size() && pos >= 0)

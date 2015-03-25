@@ -16,5 +16,4 @@
 		android:textSize="17sp" />
 
 	<View style="@style/Material_Divider_ListViewItem" />
-
 </LinearLayout>

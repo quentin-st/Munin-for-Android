@@ -51,23 +51,32 @@
 						android:contentDescription="@string/certificate_error"
 						android:visibility="gone"/>
 
-					<HorizontalScrollView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_centerInParent="true"
-						android:layout_marginLeft="10dp"
-						android:layout_marginRight="10dp"
-						android:overScrollMode="never">
+                    <LinearLayout
+                        android:id="@+id/serverSwitcher"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/actionbar_customview"
+                        android:clickable="true"
+                        android:orientation="horizontal"
+                        android:layout_centerHorizontal="true"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="3dp">
 
-						<TextView
-							android:id="@+id/serverName"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_marginBottom="6dp"
-							android:textSize="19sp"
-							android:textColor="#ffffff"
-							android:maxLines="1"/>
-					</HorizontalScrollView>
+                        <TextView
+                            android:id="@+id/serverName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:textSize="16sp"
+                            android:textColor="#ffffff"
+                            android:maxLines="1" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_action_arrow" />
+                    </LinearLayout>
 				</RelativeLayout>
 
 				<RelativeLayout
