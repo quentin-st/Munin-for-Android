@@ -446,7 +446,7 @@ public class Activity_Settings extends MuninActivity {
 		// Settings will be reset. Are you sure?
 		builder.setMessage(getString(R.string.text01))
 		.setCancelable(false)
-		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+		.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				// Delete every preference
 				for (Util.PrefKeys prefKey : Util.PrefKeys.values())
@@ -470,7 +470,7 @@ public class Activity_Settings extends MuninActivity {
 				dh.reset();
 			}
 		})
-		.setNegativeButton("No", new DialogInterface.OnClickListener() {
+		.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
 			}
