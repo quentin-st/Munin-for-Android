@@ -76,7 +76,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 				float scale = (xScale <= yScale) ? xScale : yScale;
 
 				// Acceptable upscaling factor
-				if (scale > 2.5) {
+				if (scale > 2) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 					imgUrl = plugin.getHDImgUrl(activity.load_period, true, graphsDimensions[0], graphsDimensions[1]);
 				}
