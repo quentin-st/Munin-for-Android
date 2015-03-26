@@ -337,8 +337,12 @@ public class Activity_GraphView extends MuninActivity {
                                     if (!server.equalsApprox(muninFoo.getCurrentServer())) {
                                         muninFoo.setCurrentServer(server);
                                         Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
-                                        if (server.hasPlugin(currentPlugin))
+                                        if (server.hasPlugin(currentPlugin)) // Switch to the same plugin
                                             intent.putExtra("position", muninFoo.getCurrentServer().getPosition(currentPlugin));
+                                        else if (server.hasCategory(currentPlugin.getCategory())) // Switch to same category
+                                            intent.putExtra("position",
+                                                    muninFoo.getCurrentServer().getPosition(
+                                                            server.getFirstPluginFromCategory(currentPlugin.getCategory())));
                                         else
                                             intent.putExtra("position", 0);
                                         startActivity(intent);

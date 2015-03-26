@@ -284,6 +284,22 @@ public class MuninServer {
         }
         return false;
     }
+
+    public MuninPlugin getFirstPluginFromCategory(String categoryName) {
+        for (MuninPlugin p : this.plugins) {
+            if (p.getCategory().equals(categoryName))
+                return p;
+        }
+        return null;
+    }
+
+    public boolean hasCategory(String categoryName) {
+        for (MuninPlugin p : this.plugins) {
+            if (p.getCategory().equals(categoryName))
+                return true;
+        }
+        return false;
+    }
 	
 	public MuninPlugin getPlugin(int pos) {
 		if (pos < this.plugins.size() && pos >= 0)
