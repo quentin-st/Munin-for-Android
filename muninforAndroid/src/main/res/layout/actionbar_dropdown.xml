@@ -5,14 +5,17 @@
 	android:background="@drawable/actionbar_customview"
 	android:clickable="true"
     android:gravity="center_vertical"
-    android:paddingLeft="5dp">
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
 
     <ImageView
         android:id="@+id/overflowIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_action_arrow"
+        android:src="@drawable/ic_action_navigation_arrow_drop_down"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"/>

@@ -59,8 +59,10 @@
                         android:clickable="true"
                         android:orientation="horizontal"
                         android:layout_centerHorizontal="true"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="3dp">
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp">
 
                         <TextView
                             android:id="@+id/serverName"
@@ -72,10 +74,11 @@
                             android:maxLines="1" />
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_action_arrow" />
+                            android:src="@drawable/ic_action_navigation_arrow_drop_down" />
                     </LinearLayout>
 				</RelativeLayout>
 
