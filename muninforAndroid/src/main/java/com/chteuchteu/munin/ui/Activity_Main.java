@@ -267,7 +267,9 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
+		if (item.getItemId() != android.R.id.home
+				&& item.getItemId() != R.id.menu_settings
+				&& item.getItemId() != R.id.menu_about)
 			dh.closeDrawerIfOpened();
 
 		switch (item.getItemId()) {

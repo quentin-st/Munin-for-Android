@@ -76,9 +76,6 @@ public class MuninActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home)
-			dh.closeDrawerIfOpened();
-
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				dh.toggle();
@@ -91,9 +88,11 @@ public class MuninActivity extends ActionBarActivity {
 				startActivity(new Intent(context, Activity_About.class));
 				Util.setTransition(context, Util.TransitionStyle.DEEPER);
 				return true;
+			default:
+				// In any other case, close the drawer before executing action
+				dh.closeDrawerIfOpened();
+				return true;
 		}
-
-		return true;
 	}
 
 	protected void createOptionsMenu() { menu.clear(); }
