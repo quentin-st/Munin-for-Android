@@ -35,7 +35,9 @@
 						android:layout_width="24dp"
 						android:layout_height="24dp"
 						android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
 						android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
 						android:layout_centerVertical="true"
 						android:src="@drawable/ic_secure"
 						android:visibility="gone"/>
@@ -45,7 +47,9 @@
 						android:layout_width="24dp"
 						android:layout_height="24dp"
 						android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
 						android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
 						android:layout_centerVertical="true"
 						android:src="@drawable/ic_insecure"
 						android:contentDescription="@string/certificate_error"
@@ -77,6 +81,7 @@
                             android:layout_width="14dp"
                             android:layout_height="14dp"
                             android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/ic_action_navigation_arrow_drop_down" />
                     </LinearLayout>
@@ -218,6 +223,7 @@
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
 					android:paddingLeft="30dp"
+                    android:paddingStart="30dp"
 					android:paddingTop="10dp"
 					android:background="#ffffff">
 
@@ -235,8 +241,7 @@
 					<LinearLayout
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:orientation="horizontal"
-						android:gravity="center_vertical">
+						android:orientation="horizontal">
 
 						<TextView
 							android:text="@string/from"
@@ -254,12 +259,15 @@
 							android:maxLines="2"
 							android:textSize="16sp"
 							android:textColor="#bb000000" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
 						<TextView
 							android:text="@string/to"
-							style="@style/Material_FieldHint"
-							android:layout_marginLeft="20dp"
-							android:layout_marginStart="20dp" />
+							style="@style/Material_FieldHint" />
 						<TextView
 							android:id="@+id/dynazoom_to"
 							android:layout_width="match_parent"
@@ -281,7 +289,9 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginLeft="60px"
+                        android:layout_marginStart="60px"
 						android:layout_marginRight="60px"
+                        android:layout_marginEnd="60px"
 						android:layout_marginTop="10dp"
 						android:layout_marginBottom="5dp"
 						rangebar:barWeight="1dp"

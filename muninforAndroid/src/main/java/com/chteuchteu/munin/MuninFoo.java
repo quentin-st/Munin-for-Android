@@ -254,17 +254,6 @@ public class MuninFoo {
 		else
 			return null;
 	}
-	public List<MuninServer> getServersFromPlugin(MuninPlugin pl) {
-		List<MuninServer> l = new ArrayList<>();
-		for (MuninServer s : this.servers) {
-			for (MuninPlugin p : s.getPlugins()) {
-				if (p.equalsApprox(pl)) {
-					l.add(s); break;
-				}
-			}
-		}
-		return l;
-	}
 	public MuninServer getServer(String url) {
 		for (MuninServer s : servers) {
 			if (s.getServerUrl().equals(url))
