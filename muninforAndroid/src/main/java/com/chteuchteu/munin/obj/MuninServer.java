@@ -165,7 +165,9 @@ public class MuninServer {
 			}
 
 			// Find HDGraphURL (if not already done)
-			if ((this.hdGraphURL == null || this.hdGraphURL.equals("")) && this.master.isDynazoomAvailable() != MuninMaster.DynazoomAvailability.FALSE) {
+			if ((this.hdGraphURL == null || this.hdGraphURL.equals(""))
+                    && this.master.isDynazoomAvailable() != MuninMaster.DynazoomAvailability.FALSE
+                    && this.master.isDynazoomAvailable() != MuninMaster.DynazoomAvailability.TRUE) {
 				// To go to the dynazoom page, we have to "click" on the first graph.
 				// Then, on the second page, we have to "click" again on the first graph.
 				// Finally, the only image on this third page is the dynazoom graph.

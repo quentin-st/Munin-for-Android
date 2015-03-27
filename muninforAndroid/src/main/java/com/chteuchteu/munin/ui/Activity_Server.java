@@ -133,7 +133,9 @@ public class Activity_Server extends MuninActivity {
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-			case R.id.menu_save:	actionSave();		return true;
+			case R.id.menu_save:
+                actionSave();
+                return true;
 			case R.id.menu_clear_history:
 				Util.setPref(context, Util.PrefKeys.AddServer_History, "");
 				createOptionsMenu();
@@ -164,10 +166,7 @@ public class Activity_Server extends MuninActivity {
 	
 	private String[] getHistory() {
 		String his = Util.getPref(context, Util.PrefKeys.AddServer_History);
-		if (his.equals(""))
-			return new String[0];
-		else
-			return his.split(";");
+        return his.equals("") ? new String[0] : his.split(";");
 	}
 
 	@Override

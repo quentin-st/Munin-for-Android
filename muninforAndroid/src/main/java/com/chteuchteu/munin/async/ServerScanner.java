@@ -37,6 +37,9 @@ import com.chteuchteu.munin.ui.Activity_Servers;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Used in Activity_Server
+ */
 public class ServerScanner extends AsyncTask<Void, Integer, Void> {
     private Activity_Server activity;
     private Context context;
@@ -332,7 +335,7 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
         ReturnCode ret = ReturnCode.UNDEFINED;
 
         if (type.equals("munin/")) {
-				/*		CONTENT OF THE PAGE: SERVERS LIST	*/
+			/*		CONTENT OF THE PAGE: SERVERS LIST	*/
             int nbNewServers = activity.master.fetchChildren(muninFoo.getUserAgent());
 
             boolean fetchSuccess = nbNewServers > 0;
@@ -418,17 +421,15 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
                 // Success!
                 message_title = context.getString(R.string.text18);
 
-                String s = "";
-                if (nbNewServers > 1)	s = "s";
                 // X sub-server(s) added!
-                message_text = nbNewServers + " " + context.getString(R.string.text21_1) + s + " " + context.getString(R.string.text21_2);
+                message_text = nbNewServers + " " + context.getString(R.string.text21_1) + (nbNewServers > 1 ? "s" : "") + " " + context.getString(R.string.text21_2);
 
                 return ReturnCode.SERVERS_SUCCESS;
             }
-        }	// ending if (type.equals("munin/")) (servers)
-			/*else if (type.equals("munin/x/")) {
-				// TODO : get parent page
-			}*/
+        }
+        /*else if (type.equals("munin/x/")) {
+            // TODO : get parent page
+        }*/
         return ret;
     }
 
@@ -469,15 +470,12 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
                     @Override
                     public void onItemSelected(AdapterView<?> arg0, View arg1, int select, long arg3) {
                         if (!muninFoo.premium) {
-                            if (select == 1)
-                                activity.alertDialog.findViewById(R.id.popup_credentials_premium).setVisibility(View.VISIBLE);
-                            else
-                                activity.alertDialog.findViewById(R.id.popup_credentials_premium).setVisibility(View.GONE);
+                            activity.alertDialog.findViewById(R.id.popup_credentials_premium)
+                                    .setVisibility(select == 1 ? View.VISIBLE : View.GONE);
                         }
                     }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> arg0) { }
+                    @Override public void onNothingSelected(AdapterView<?> arg0) { }
                 });
             }
         });
@@ -547,7 +545,6 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
             alert_title1.setText("");
         if (alert_title2 != null)
             alert_title2.setText("");
-        //activity.master = null;
         activity.alertDialog.dismiss();
 	    activity.isAlertShown = false;
         scannerState = ScannerState.IDLE;
