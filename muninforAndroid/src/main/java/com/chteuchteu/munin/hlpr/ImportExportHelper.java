@@ -33,6 +33,9 @@ import java.util.List;
 public class ImportExportHelper {
 	public static final String ENCRYPTION_SEED = "786547E9431EE";
 
+    /**
+     * Default import/export target URI. Can be overriden by user.
+     */
     public static final String IMPORT_EXPORT_URI = "http://www.munin-for-android.com/ws/importExport.php";
     public static final int IMPORT_EXPORT_VERSION = 1;
 	
