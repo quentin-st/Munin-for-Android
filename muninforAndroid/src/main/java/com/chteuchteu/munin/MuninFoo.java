@@ -132,7 +132,7 @@ public class MuninFoo {
 	public static synchronized MuninFoo getInstance() {
 		if (instance == null)
 			Crashlytics.logException(
-					new NullMuninFooException("getInstante() called without Context for the first time"));
+					new NullMuninFooException("getInstance() called without Context for the first time"));
 		return instance;
 	}
 	

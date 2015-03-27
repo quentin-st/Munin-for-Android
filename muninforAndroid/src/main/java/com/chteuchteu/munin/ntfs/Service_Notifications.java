@@ -15,6 +15,7 @@ import android.os.PowerManager.WakeLock;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.async.PollTask;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninMaster;
@@ -32,7 +33,7 @@ import java.util.List;
  * on device boot using BootReceiver class
  */
 public class Service_Notifications extends Service {
-	private WakeLock mWakeLock;
+	public WakeLock mWakeLock;
 	
 	/**
 	 * Simply return null, since our Service will not be communicating with
@@ -61,165 +62,11 @@ public class Service_Notifications extends Service {
 		boolean wifiOnly = Util.getPref(Service_Notifications.this, Util.PrefKeys.Notifs_WifiOnly).equals("true");
 		
 		if (!wifiOnly || mWifi.isConnected())
-			new PollTask().execute();
+			new PollTask(this).execute();
 		else {
 			if (mWakeLock.isHeld())
 				mWakeLock.release();
 			stopSelf();
-		}
-	}
-	
-	private class PollTask extends AsyncTask<Void, Void, Void> {
-		private int nbCriticals;
-		private int nbWarnings;
-		private int nbServers;
-		private String criticalPlugins;
-		private String warningPlugins;
-		
-		@Override
-		protected Void doInBackground(Void... params) {
-			List<MuninServer> servers = new ArrayList<>();
-			String serversList = Util.getPref(Service_Notifications.this, Util.PrefKeys.Notifs_ServersList);
-			String[] serversToWatch = serversList.split(";");
-
-			DatabaseHelper dbHelper = new DatabaseHelper(Service_Notifications.this);
-			List<MuninMaster> masters = new ArrayList<>();
-			List<MuninServer> dbServers = dbHelper.getServers(masters);
-			
-			nbCriticals = 0;
-			nbWarnings = 0;
-			nbServers = 0;
-			criticalPlugins = "";
-			warningPlugins = "";
-			
-			for (MuninServer s: dbServers) {
-				for (String url : serversToWatch) {
-					if (s.equalsApprox(url))
-						servers.add(s);
-				}
-			}
-			
-			for (MuninServer s: servers)
-				s.fetchPluginsStates(MuninFoo.getUserAgent(Service_Notifications.this));
-			
-			
-			for (MuninServer s: servers) {
-				boolean throatingServer = false;
-				for (MuninPlugin p: s.getPlugins()) {
-					if (p != null) {
-						if (p.getState() == AlertState.CRITICAL || p.getState() == AlertState.WARNING)
-							throatingServer = true;
-						if (p.getState() == AlertState.CRITICAL) {
-							criticalPlugins = criticalPlugins + p.getFancyName() + ", ";
-							nbCriticals++;
-						}
-						else if (p.getState() == AlertState.WARNING) {
-							warningPlugins = warningPlugins + p.getFancyName() + ", ";
-							nbWarnings++;
-						}
-					}
-				}
-				if (throatingServer)
-					nbServers++;
-			}
-			
-			return null;
-		}
-		
-		@SuppressWarnings("deprecation")
-		@Override
-		protected void onPostExecute(Void result) {
-			//<string name="text58"> critical / criticals /&amp;amp; / warning / warnings /on / server/ servers</string>
-			String[] strings = getString(R.string.text58).split("/");
-			
-			String notifTitle = "";
-			if (nbCriticals > 0 && nbWarnings > 0) {
-				notifTitle = nbCriticals + "";
-				if (nbCriticals == 1)
-					notifTitle += " " + strings[0];
-				else
-					notifTitle += strings[1];
-				notifTitle += strings[2];
-				notifTitle += nbWarnings;
-				if (nbWarnings == 1)
-					notifTitle += strings[3];
-				else
-					notifTitle += strings[4];
-				notifTitle += strings[5];
-				notifTitle += nbServers;
-				if (nbServers == 1)
-					notifTitle += strings[6];
-				else
-					notifTitle += strings[7];
-				//String titreNotification = nbCriticals + " criticals & " + nbWarnings + " warnings on " + nbServers + " servers";
-			} else if (nbCriticals == 0 && nbWarnings > 0) {
-				notifTitle = nbWarnings + "";
-				if (nbWarnings == 1)
-					notifTitle += strings[3];
-				else
-					notifTitle += strings[4];
-				notifTitle += strings[5];
-				notifTitle += nbServers;
-				if (nbServers == 1)
-					notifTitle += strings[6];
-				else
-					notifTitle += strings[7];
-			} else if (nbCriticals > 0 && nbWarnings == 0) {
-				notifTitle = nbCriticals + "";
-				if (nbCriticals == 1)
-					notifTitle += " " + strings[0];
-				else
-					notifTitle += strings[1];
-				notifTitle += strings[5];
-				notifTitle += nbServers;
-				if (nbServers == 1)
-					notifTitle += strings[6];
-				else
-					notifTitle += strings[7];
-			}
-			
-			String notifText;
-			
-			if (criticalPlugins.length() > 2 && criticalPlugins.substring(criticalPlugins.length()-2).equals(", "))
-				criticalPlugins = criticalPlugins.substring(0, criticalPlugins.length()-2);
-			if (warningPlugins.length() > 2 && warningPlugins.substring(warningPlugins.length()-2).equals(", "))
-				warningPlugins = warningPlugins.substring(0, warningPlugins.length()-2);
-			
-			if (nbCriticals > 0 && nbWarnings > 0)
-				notifText = criticalPlugins + ", " + warningPlugins;
-			else if (nbCriticals > 0)
-				notifText = criticalPlugins;
-			else
-				notifText = warningPlugins;
-			
-			if (nbCriticals > 0 || nbWarnings > 0) {
-				if (!Util.getPref(Service_Notifications.this, Util.PrefKeys.Notifs_LastNotificationText).equals(notifText)) {
-					NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-					Notification notification = new Notification(R.drawable.launcher_icon_mono, getString(R.string.app_name), System.currentTimeMillis());
-					
-					PendingIntent pendingIntent = PendingIntent.getActivity(Service_Notifications.this, 0,
-							new Intent(Service_Notifications.this, Activity_Alerts.class), 0);
-					notification.setLatestEventInfo(Service_Notifications.this, notifTitle, notifText, pendingIntent);
-
-					// Dismiss notification on click
-					notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
-					
-					Util.setPref(Service_Notifications.this, Util.PrefKeys.Notifs_LastNotificationText, notifText);
-
-					if (Util.getPref(Service_Notifications.this, Util.PrefKeys.Notifs_Vibrate).equals("true"))
-						Util.vibrate(Service_Notifications.this, 500);
-					
-					notificationManager.notify(1234, notification);
-				}
-			} else {
-				NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-				mNotificationManager.cancel(1234);
-			}
-			
-			// Important : release wake lock in the end
-			stopSelf();
-			if (mWakeLock.isHeld())
-				mWakeLock.release();
 		}
 	}
 	
