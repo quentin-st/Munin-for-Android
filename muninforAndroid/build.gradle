@@ -29,7 +29,10 @@ android {
 
     buildTypes {
         debug { }
-        release { }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-muninforandroid.txt'
+        }
     }
 }
 
