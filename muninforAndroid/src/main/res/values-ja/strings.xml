@@ -224,4 +224,9 @@
 	<string name="openGrid">グリッドを開く</string>
 	<string name="chromecastAuthWarning">警告 - Chromecast の機能は、Apache のベーシック/ダイジェスト認証では動作しません</string>
 
+<string name="chromecast_application_id">Chromecast アプリケーション ID</string>
+    <string name="import_export_server">サーバーのインポート/エクスポート</string>
+    <string name="reset">リセット</string>
+	<string name="advanced">詳細</string>
+
 </resources>
