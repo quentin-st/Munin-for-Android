@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +28,8 @@ import com.chteuchteu.munin.adptr.Adapter_IconList;
 import com.chteuchteu.munin.adptr.Adapter_ServersList;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
+import com.chteuchteu.munin.ui.Activity_Grid;
+import com.chteuchteu.munin.ui.DialogFragment_AddGridItem;
 import com.chteuchteu.munin.ui.Fragment_Grid;
 import com.chteuchteu.munin.ui.IGridActivity;
 
@@ -244,10 +247,12 @@ public class GridItem {
 	@SuppressWarnings("deprecation")
 	private static void add_serversListDialog(final Context c, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
 	                                          final int X, final int Y) {
-		/*if (!(activity instanceof Activity_Grid))
+		if (!(activity instanceof Activity_Grid))
 			return;
 		FragmentManager fragmentManager = ((Activity_Grid) activity).getSupportFragmentManager();
-		DialogFragment_AddGridItem.init(g, X, Y).show(fragmentManager, "");*/
+		DialogFragment_AddGridItem.init(g, X, Y).show(fragmentManager, "");
+
+        /*
 		AlertDialog.Builder builder = new AlertDialog.Builder(c);
 		builder.setTitle(c.getText(R.string.text71));
 		ListView modeList = new ListView(c);
@@ -263,7 +268,7 @@ public class GridItem {
 				add_pluginsListDialog(c, serversAdapter.getItem(pos), f, g, activity, fragment, X, Y);
 			}
 		});
-		dialog.show();
+		dialog.show();*/
 	}
 	
 	private static void add_pluginsListDialog(final Context c, final MuninServer server, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
