@@ -1,31 +1,15 @@
 package com.chteuchteu.munin.ntfs;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 
-import com.chteuchteu.munin.MuninFoo;
-import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.async.PollTask;
-import com.chteuchteu.munin.hlpr.DatabaseHelper;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.obj.MuninMaster;
-import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
-import com.chteuchteu.munin.obj.MuninServer;
-import com.chteuchteu.munin.ui.Activity_Alerts;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Notifications Service
@@ -48,7 +32,7 @@ public class Service_Notifications extends Service {
 	private void handleIntent(Intent intent) {
 		// obtain the wake lock
 		PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-		mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "com.chteuchteu.munin");
+		mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getPackageName());
 		mWakeLock.acquire();
 		
 		// check the global background data setting
