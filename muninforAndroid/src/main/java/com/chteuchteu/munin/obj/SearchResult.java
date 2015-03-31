@@ -43,7 +43,7 @@ public class SearchResult {
 			case SERVER:
 				MuninServer server = (MuninServer) object;
 				line_1 = server.getName();
-				line_2 = server.getServerUrl();
+				line_2 = server.getUrl();
 				break;
 			default:
 				break;

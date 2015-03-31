@@ -255,7 +255,7 @@ public class DrawerHelper {
 				// Search in plugins and servers
 				for (MuninServer server : MuninFoo.getInstance(context).getServers()) {
 					String serverName = server.getName().toLowerCase();
-					String serverUrl = server.getServerUrl().toLowerCase();
+					String serverUrl = server.getUrl().toLowerCase();
 
 					if (serverName.contains(string) || serverUrl.contains(string))
 						search_results_array.add(new SearchResult(SearchResultType.SERVER, server, context));

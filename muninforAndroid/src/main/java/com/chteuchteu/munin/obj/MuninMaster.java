@@ -191,7 +191,7 @@ public class MuninMaster {
 	
 	private MuninServer getServer(String serverUrl) {
 		for (MuninServer server : this.children) {
-			if (server.getServerUrl().equals(serverUrl))
+			if (server.getUrl().equals(serverUrl))
 				return server;
 		}
 		return null;
@@ -376,7 +376,7 @@ public class MuninMaster {
 				for (GraphWidget graphWidget : graphWidgets) {
 					if (graphWidget.getPlugin().equals(plugin)) {
 						// Reattach
-						MuninPlugin newPlugin = this.getServer(server.getServerUrl()).getPlugin(graphWidget.getPlugin().getName());
+						MuninPlugin newPlugin = this.getServer(server.getUrl()).getPlugin(graphWidget.getPlugin().getName());
 						graphWidget.setPlugin(newPlugin);
 						toBeUpdated_graphWidgets.add(graphWidget);
 					}
@@ -409,7 +409,7 @@ public class MuninMaster {
 					for (MuninPlugin labelPlugin : label.plugins) {
 						if (labelPlugin.equals(plugin)) {
 							// Reattach
-							MuninPlugin newPlugin = this.getServer(server.getServerUrl()).getPlugin(labelPlugin.getName());
+							MuninPlugin newPlugin = this.getServer(server.getUrl()).getPlugin(labelPlugin.getName());
 							toBeRemoved.add(labelPlugin);
 							toBeAdded.add(newPlugin);
 							if (!toBeUpdated_labels.contains(label))
@@ -445,7 +445,7 @@ public class MuninMaster {
 					for (GridItem item : grid.getItems()) {
 						if (item.getPlugin().equals(plugin)) {
 							// Reattach
-							item.setPlugin(this.getServer(server.getServerUrl()).getPlugin(item.getPlugin().getName()));
+							item.setPlugin(this.getServer(server.getUrl()).getPlugin(item.getPlugin().getName()));
 							toBeUpdated_grids.add(item);
 						}
 					}
@@ -529,9 +529,9 @@ public class MuninMaster {
 							}
 
 							// Server URL (http => https)
-							if (!server.getServerUrl().equals(onlineServer.getServerUrl()) && !onlineServer.getServerUrl().equals("")) {
+							if (!server.getUrl().equals(onlineServer.getUrl()) && !onlineServer.getUrl().equals("")) {
 								MuninFoo.logV("rescan", "server url has changed");
-								server.setServerUrl(onlineServer.getServerUrl());
+								server.setUrl(onlineServer.getUrl());
 								if (!toBeUpdated.contains(server))
 									toBeUpdated.add(server);
 							}

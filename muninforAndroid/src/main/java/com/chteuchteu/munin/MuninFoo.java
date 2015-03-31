@@ -256,7 +256,7 @@ public class MuninFoo {
 	}
 	public MuninServer getServer(String url) {
 		for (MuninServer s : servers) {
-			if (s.getServerUrl().equals(url))
+			if (s.getUrl().equals(url))
 				return s;
 		}
 		return null;

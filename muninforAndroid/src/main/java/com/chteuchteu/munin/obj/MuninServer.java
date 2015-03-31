@@ -17,7 +17,7 @@ import java.util.List;
 public class MuninServer {
 	private long id;
 	private String name;
-	private String serverUrl;
+	private String url;
 	private List<MuninPlugin> plugins;
 	private String graphURL;
 	private String hdGraphURL;
@@ -34,7 +34,7 @@ public class MuninServer {
 	
 	public MuninServer() {
 		this.name = "";
-		this.serverUrl = "";
+		this.url = "";
 		this.plugins = new ArrayList<>();
 		this.graphURL = "";
 		this.hdGraphURL = "";
@@ -43,9 +43,9 @@ public class MuninServer {
 		this.reachable = SpecialBool.UNKNOWN;
 		this.position = -1;
 	}
-	public MuninServer (String name, String serverUrl) {
+	public MuninServer (String name, String url) {
 		this.name = name;
-		this.serverUrl = serverUrl;
+		this.url = url;
 		this.plugins = new ArrayList<>();
 		this.graphURL = "";
 		this.hdGraphURL = "";
@@ -58,8 +58,8 @@ public class MuninServer {
 	public void setId(long id) { this.id = id; }
 	public long getId() { return this.id; }
 	
-	public void setServerUrl(String u) { this.serverUrl = u; }
-	public String getServerUrl() { return this.serverUrl; }
+	public void setUrl(String u) { this.url = u; }
+	public String getUrl() { return this.url; }
 	
 	public void setName(String n) { this.name = n; }
 	public String getName() { return this.name; }
@@ -94,13 +94,13 @@ public class MuninServer {
 	
 	public List<MuninPlugin> getPluginsList(String userAgent) {
 		List<MuninPlugin> mp = new ArrayList<>();
-		String html = this.master.grabUrl(this.getServerUrl(), userAgent).html;
+		String html = this.master.grabUrl(this.getUrl(), userAgent).html;
 		
 		if (html.equals(""))
 			return null;
 		
 		//						   code  base_uri
-		Document doc = Jsoup.parse(html, this.getServerUrl());
+		Document doc = Jsoup.parse(html, this.getUrl());
 		Elements images = doc.select("img[src$=-day.png]");
 
 		if (images.size() == 0)
@@ -198,7 +198,7 @@ public class MuninServer {
 							// Remove plugin name from pluginNameUrl
 							pluginNameUrl = pluginNameUrl.substring(0, pluginNameUrl.lastIndexOf('/') + 1);
 
-							this.hdGraphURL = "http://" + Util.URLManipulation.getHostFromUrl(this.getServerUrl()) + cgiUrl + "/" + pluginNameUrl;
+							this.hdGraphURL = "http://" + Util.URLManipulation.getHostFromUrl(this.getUrl()) + cgiUrl + "/" + pluginNameUrl;
 
 							// Now that we have the HD Graph URL, let's try to reach it to see if it is available
 							if (this.master.isDynazoomAvailable(currentPl, userAgent))
@@ -240,14 +240,14 @@ public class MuninServer {
 		for (MuninPlugin plugin : this.plugins)
 			plugin.setState(AlertState.UNDEFINED);
 		
-		HTTPResponse response = master.grabUrl(this.getServerUrl(), userAgent);
+		HTTPResponse response = master.grabUrl(this.getUrl(), userAgent);
 		
 		if (response.timeout || response.responseCode != 200 || response.html.equals(""))
 			this.reachable = SpecialBool.FALSE;
 		else {
 			this.reachable = SpecialBool.TRUE;
 			
-			Document doc = Jsoup.parse(response.html, this.getServerUrl());
+			Document doc = Jsoup.parse(response.html, this.getUrl());
 			Elements images = doc.select("img[src$=-day.png]");
 
 			if (images.size() == 0)
@@ -363,8 +363,8 @@ public class MuninServer {
 	}
 	
 	public boolean equalsApprox (MuninServer server2) {
-		String address1 = this.getServerUrl();
-		String address2 = server2.getServerUrl();
+		String address1 = this.getUrl();
+		String address2 = server2.getUrl();
 		
 		// transformations
 		if (address1.length() > 11) {
@@ -383,7 +383,7 @@ public class MuninServer {
 	}
 	
 	public boolean equalsApprox (String server2) {
-		String address1 = this.getServerUrl();
+		String address1 = this.getUrl();
 		String address2 = server2;
 		
 		// transformations

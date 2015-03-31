@@ -231,7 +231,7 @@ public class Activity_Settings extends MuninActivity {
 			int pos = -1;
 			int i = 0;
 			for (MuninServer server : muninFoo.getServers()) {
-				if (server.getServerUrl().equals(defaultServerUrl)) {
+				if (server.getUrl().equals(defaultServerUrl)) {
 					pos = i;
 					break;
 				}
@@ -367,7 +367,7 @@ public class Activity_Settings extends MuninActivity {
 			Util.removePref(this, Util.PrefKeys.DefaultServer);
 		else {
 			MuninServer defaultServer = muninFoo.getServers().get(defaultServerPosition);
-			Util.setPref(this, Util.PrefKeys.DefaultServer, defaultServer.getServerUrl());
+			Util.setPref(this, Util.PrefKeys.DefaultServer, defaultServer.getUrl());
 		}
 
 		// User Agent

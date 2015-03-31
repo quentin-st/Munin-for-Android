@@ -150,8 +150,8 @@ public class NetHelper {
 					master.setUrl(Util.URLManipulation.setHttps(url));
 				else {
 					for (MuninServer server : master.getChildren()) {
-						if (server.getServerUrl().equals(url)) {
-							server.setServerUrl(Util.URLManipulation.setHttps(url));
+						if (server.getUrl().equals(url)) {
+							server.setUrl(Util.URLManipulation.setHttps(url));
 							break;
 						}
 					}

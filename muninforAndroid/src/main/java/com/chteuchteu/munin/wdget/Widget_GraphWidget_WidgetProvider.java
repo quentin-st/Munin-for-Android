@@ -136,7 +136,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 							graphWidget = sqlite.dbHlpr.getGraphWidget(widgetId);
 							Intent intent2 = new Intent(context, Activity_GraphView.class);
 							intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							intent2.putExtra("server", graphWidget.getPlugin().getInstalledOn().getServerUrl());
+							intent2.putExtra("server", graphWidget.getPlugin().getInstalledOn().getUrl());
 							intent2.putExtra("plugin", graphWidget.getPlugin().getName());
 							intent2.putExtra("period", graphWidget.getPeriod());
 							context.startActivity(intent2);

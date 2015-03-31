@@ -77,7 +77,7 @@ public class SQLite {
 			
 			for (MuninServer server : defaultMaster.getChildren()) {
 				// Check if there already is a master for this server in newMasters
-				String masterUrl = Util.URLManipulation.ascendDirectory(2, server.getServerUrl());
+				String masterUrl = Util.URLManipulation.ascendDirectory(2, server.getUrl());
 				
 				MuninMaster parent = null;
 				boolean contains = false;
@@ -91,7 +91,7 @@ public class SQLite {
 				
 				// Doesn't contains => add
 				if (!contains) {
-					String masterName = Util.URLManipulation.getHostFromUrl(server.getServerUrl());
+					String masterName = Util.URLManipulation.getHostFromUrl(server.getUrl());
 					
 					parent = new MuninMaster();
 					parent.setName(masterName);

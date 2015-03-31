@@ -58,7 +58,7 @@ public class Activity_AlertsPlugins extends MuninActivity {
 						Intent i = new Intent(Activity_AlertsPlugins.this, Activity_GraphView.class);
 						i.putExtra("plugin", pluginName);
 						i.putExtra("position", indexOfPlugin);
-						i.putExtra("server", muninFoo.getCurrentServer().getServerUrl());
+						i.putExtra("server", muninFoo.getCurrentServer().getUrl());
 						i.putExtra("from", "alerts");
 						startActivity(i);
 						Util.setTransition(context, TransitionStyle.DEEPER);

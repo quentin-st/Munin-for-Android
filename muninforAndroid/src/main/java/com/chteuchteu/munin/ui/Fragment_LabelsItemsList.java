@@ -77,7 +77,7 @@ public class Fragment_LabelsItemsList extends Fragment {
 				if (serverName.equals(""))
 					serverName = p.getInstalledOn().getName();
 				correspondance.add(p);
-				correspondanceServers.add(p.getInstalledOn().getServerUrl());
+				correspondanceServers.add(p.getInstalledOn().getUrl());
 			}
 
 			adapter.addSection(serverName, new SimpleAdapter(context, elements, R.layout.plugins_list,

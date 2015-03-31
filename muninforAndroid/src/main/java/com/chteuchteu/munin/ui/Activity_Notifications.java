@@ -145,7 +145,7 @@ public class Activity_Notifications extends MuninActivity {
 					int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
 					checkboxes[i].setButtonDrawable(id);
 					
-					if (watchedServers.contains(server.getServerUrl()))
+					if (watchedServers.contains(server.getUrl()))
 						checkboxes[i].setChecked(true);
 					
 					v.findViewById(R.id.ll_container).setOnClickListener(new OnClickListener() {
@@ -238,9 +238,9 @@ public class Activity_Notifications extends MuninActivity {
 		for (CheckBox checkbox: checkboxes) {
 			if (checkbox.isChecked()) {
 				if (i != checkboxes.length - 1)
-					servers = servers + muninFoo.getServers().get(i).getServerUrl() + ";";
+					servers = servers + muninFoo.getServers().get(i).getUrl() + ";";
 				else
-					servers = servers + muninFoo.getServers().get(i).getServerUrl();
+					servers = servers + muninFoo.getServers().get(i).getUrl();
 			}
 			i++;
 		}

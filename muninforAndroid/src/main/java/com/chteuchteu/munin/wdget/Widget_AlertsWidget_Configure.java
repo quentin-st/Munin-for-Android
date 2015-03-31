@@ -86,7 +86,7 @@ public class Widget_AlertsWidget_Configure extends Activity {
 				});
 
 				((TextView)v.findViewById(R.id.line_a)).setText(muninFoo.getServers().get(i).getName());
-				((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.getServers().get(i).getServerUrl());
+				((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.getServers().get(i).getUrl());
 
 				checkboxesView.addView(v);
 			}

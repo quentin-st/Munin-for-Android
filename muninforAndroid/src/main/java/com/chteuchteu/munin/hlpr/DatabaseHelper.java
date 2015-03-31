@@ -248,7 +248,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_MUNINSERVERS_SERVERURL, s.getServerUrl());
+		values.put(KEY_MUNINSERVERS_SERVERURL, s.getUrl());
 		values.put(KEY_MUNINSERVERS_NAME, s.getName());
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
 		values.put(KEY_MUNINSERVERS_HDGRAPHURL, s.getHdGraphURL());
@@ -461,7 +461,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_MUNINSERVERS_SERVERURL, s.getServerUrl());
+		values.put(KEY_MUNINSERVERS_SERVERURL, s.getUrl());
 		values.put(KEY_MUNINSERVERS_NAME, s.getName());
 		values.put(KEY_MUNINSERVERS_GRAPHURL, s.getGraphURL());
 		values.put(KEY_MUNINSERVERS_HDGRAPHURL, s.getHdGraphURL());
@@ -606,7 +606,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				do {
 					MuninServer s = new MuninServer();
 					s.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-					s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
+					s.setUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
 					s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 					s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
 					s.setHdGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHURL)));
@@ -681,7 +681,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		if (c != null && c.moveToFirst()) {
 			MuninServer s = new MuninServer();
 			s.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-			s.setServerUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
+			s.setUrl(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_SERVERURL)));
 			s.setName(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_NAME)));
 			s.setGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_GRAPHURL)));
 			s.setHdGraphURL(c.getString(c.getColumnIndex(KEY_MUNINSERVERS_HDGRAPHURL)));
