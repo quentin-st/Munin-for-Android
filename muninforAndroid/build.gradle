@@ -29,6 +29,8 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-DEBUG'
         }
         release {
             minifyEnabled true
@@ -38,16 +40,16 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:support-v4:22.0.0'
     compile files('libs/AppRate_1.1.jar')
     compile files('libs/libGoogleAnalyticsServices.jar')
     compile 'org.jsoup:jsoup:1.8.1'
-    compile 'com.balysv.materialmenu:material-menu-toolbar:1.4.0'
+    compile 'com.balysv.materialmenu:material-menu-toolbar:1.5.1'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.4'
-    compile 'com.melnykov:floatingactionbutton:1.0.6'
+    compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.edmodo:rangebar:1.0.0'
-    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'com.google.android.gms:play-services:7.0.0'
     compile 'com.android.support:mediarouter-v7:21.0.0'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'com.crashlytics.android:crashlytics:1.+'
