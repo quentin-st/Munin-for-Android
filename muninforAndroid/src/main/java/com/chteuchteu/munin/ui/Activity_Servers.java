@@ -342,23 +342,23 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 
 		final View dialogView = View.inflate(this, R.layout.dialog_import, null);
 		new AlertDialog.Builder(this)
-		.setTitle(R.string.import_title)
-		.setView(dialogView)
-		.setCancelable(true)
-		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				String code = ((EditText) dialogView.findViewById(R.id.import_code)).getText().toString();
-				code = code.toLowerCase();
-				new ImportRequestMaker(code, context).execute();
-				dialog.dismiss();
-			}
-		})
-		.setNegativeButton(R.string.text64, null)
-		.show();
+			.setTitle(R.string.import_title)
+			.setView(dialogView)
+			.setCancelable(true)
+			.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String code = ((EditText) dialogView.findViewById(R.id.import_code)).getText().toString();
+					code = code.toLowerCase();
+					new ImportRequestMaker(code, Activity_Servers.this).execute();
+					dialog.dismiss();
+				}
+			})
+			.setNegativeButton(R.string.text64, null)
+			.show();
 	}
 	
-	public static void onExportSuccess(String pswd) {
+	public void onExportSuccess(String pswd) {
 		final View dialogView = View.inflate(context, R.layout.dialog_export_success, null);
 		TextView code = (TextView) dialogView.findViewById(R.id.export_succes_code);
 		Util.Fonts.setFont(context, code, CustomFont.RobotoCondensed_Bold);
@@ -372,11 +372,11 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 		.show();
 	}
 	
-	public static void onExportError() {
+	public void onExportError() {
 		Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
 	}
 	
-	public static void onImportSuccess() {
+	public void onImportSuccess() {
 		new AlertDialog.Builder(context)
 		.setTitle(R.string.import_success_title)
 		.setMessage(R.string.import_success_txt1)
@@ -390,7 +390,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 		.show();
 	}
 	
-	public static void onImportError() {
+	public void onImportError() {
 		Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
 	}
 	
@@ -401,26 +401,26 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 		}
 
 		new AlertDialog.Builder(context)
-		.setTitle(R.string.export_servers)
-		.setMessage(R.string.export_explanation)
-		.setCancelable(true)
-		.setPositiveButton(R.string.ok, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance(context).getMasters(), ImportExportHelper.ENCRYPTION_SEED);
-				if (json.equals(""))
-					Toast.makeText(context, R.string.export_failed, Toast.LENGTH_SHORT).show();
-				else
-					new ExportRequestMaker(json, context).execute();
-			}
-		})
-		.setNegativeButton(R.string.text64, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		})
-		.show();
+			.setTitle(R.string.export_servers)
+			.setMessage(R.string.export_explanation)
+			.setCancelable(true)
+			.setPositiveButton(R.string.ok, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance(context).getMasters(), ImportExportHelper.ENCRYPTION_SEED);
+					if (json.equals(""))
+						Toast.makeText(context, R.string.export_failed, Toast.LENGTH_SHORT).show();
+					else
+						new ExportRequestMaker(json, Activity_Servers.this).execute();
+				}
+			})
+			.setNegativeButton(R.string.text64, new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			})
+			.show();
 	}
 
 	@Override

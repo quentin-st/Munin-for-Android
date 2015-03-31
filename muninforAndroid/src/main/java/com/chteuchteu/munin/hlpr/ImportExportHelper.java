@@ -89,13 +89,15 @@ public class ImportExportHelper {
 			private boolean result;
 			private String pswd;
 			private ProgressDialog progressDialog;
+			private Activity_Servers activity_servers;
 			private Context context;
 			
-			public ExportRequestMaker (String jsonString, Context context) {
+			public ExportRequestMaker (String jsonString, Activity_Servers activity) {
 				super();
 				this.jsonString = jsonString;
 				this.result = false;
-				this.context = context;
+				this.activity_servers = activity;
+				this.context = activity;
 			}
 			
 			@Override
@@ -123,9 +125,9 @@ public class ImportExportHelper {
 				this.progressDialog.dismiss();
 				
 				if (result)
-					Activity_Servers.onExportSuccess(pswd);
+					activity_servers.onExportSuccess(pswd);
 				else
-					Activity_Servers.onExportError();
+					activity_servers.onExportError();
 			}
 		}
 	}
@@ -197,14 +199,16 @@ public class ImportExportHelper {
 			private JSONObject jsonObject;
 			private String code;
 			private boolean result;
+			private Activity_Servers activity_servers;
 			private Context context;
 			private ProgressDialog progressDialog;
 			
-			public ImportRequestMaker (String code, Context context) {
+			public ImportRequestMaker (String code, Activity_Servers activity) {
 				super();
 				this.code = code;
 				this.result = false;
-				this.context = context;
+				this.activity_servers = activity;
+				this.context = activity;
 			}
 			
 			@Override
@@ -235,9 +239,9 @@ public class ImportExportHelper {
 				this.progressDialog.dismiss();
 				
 				if (result)
-					Activity_Servers.onImportSuccess();
+					activity_servers.onImportSuccess();
 				else
-					Activity_Servers.onImportError();
+					activity_servers.onImportError();
 			}
 		}
 	}
