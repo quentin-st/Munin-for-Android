@@ -13,8 +13,8 @@ import com.chteuchteu.munin.hlpr.DatabaseHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.ntfs.Service_Notifications;
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
     private Service_Notifications service;
     private int nbCriticals;
     private int nbWarnings;
-    private int nbServers;
+    private int nbNodes;
     private String criticalPlugins;
     private String warningPlugins;
     
@@ -36,37 +36,37 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        List<MuninServer> servers = new ArrayList<>();
-        String serversList = Util.getPref(context, Util.PrefKeys.Notifs_ServersList);
-        String[] serversToWatch = serversList.split(";");
+        List<MuninNode> nodes = new ArrayList<>();
+        String nodesList = Util.getPref(context, Util.PrefKeys.Notifs_NodesList);
+        String[] nodesToWatch = nodesList.split(";");
 
         DatabaseHelper dbHelper = new DatabaseHelper(context);
         List<MuninMaster> masters = new ArrayList<>();
-        List<MuninServer> dbServers = dbHelper.getServers(masters);
+        List<MuninNode> dbNodes = dbHelper.getNodes(masters);
 
         nbCriticals = 0;
         nbWarnings = 0;
-        nbServers = 0;
+        nbNodes = 0;
         criticalPlugins = "";
         warningPlugins = "";
 
-        for (MuninServer s: dbServers) {
-            for (String url : serversToWatch) {
+        for (MuninNode s: dbNodes) {
+            for (String url : nodesToWatch) {
                 if (s.equalsApprox(url))
-                    servers.add(s);
+                    nodes.add(s);
             }
         }
 
-        for (MuninServer s: servers)
+        for (MuninNode s: nodes)
             s.fetchPluginsStates(MuninFoo.getUserAgent(context));
 
 
-        for (MuninServer s: servers) {
-            boolean throatingServer = false;
+        for (MuninNode s: nodes) {
+            boolean criticalNode = false;
             for (MuninPlugin p: s.getPlugins()) {
                 if (p != null) {
                     if (p.getState() == MuninPlugin.AlertState.CRITICAL || p.getState() == MuninPlugin.AlertState.WARNING)
-                        throatingServer = true;
+                        criticalNode = true;
                     if (p.getState() == MuninPlugin.AlertState.CRITICAL) {
                         criticalPlugins = criticalPlugins + p.getFancyName() + ", ";
                         nbCriticals++;
@@ -77,8 +77,8 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
                     }
                 }
             }
-            if (throatingServer)
-                nbServers++;
+            if (criticalNode)
+                nbNodes++;
         }
 
         return null;
@@ -87,7 +87,7 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
     @SuppressWarnings("deprecation")
     @Override
     protected void onPostExecute(Void result) {
-        //<string name="text58"> critical / criticals /&amp;amp; / warning / warnings /on / server/ servers</string>
+        //<string name="text58"> critical / criticals /&amp;amp; / warning / warnings /on / node/ nodes</string>
         String[] strings = context.getString(R.string.text58).split("/");
 
         String notifTitle = "";
@@ -104,12 +104,12 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
             else
                 notifTitle += strings[4];
             notifTitle += strings[5];
-            notifTitle += nbServers;
-            if (nbServers == 1)
+            notifTitle += nbNodes;
+            if (nbNodes == 1)
                 notifTitle += strings[6];
             else
                 notifTitle += strings[7];
-            //String titreNotification = nbCriticals + " criticals & " + nbWarnings + " warnings on " + nbServers + " servers";
+            //String titreNotification = nbCriticals + " criticals & " + nbWarnings + " warnings on " + nbNodes + " nodes";
         } else if (nbCriticals == 0 && nbWarnings > 0) {
             notifTitle = nbWarnings + "";
             if (nbWarnings == 1)
@@ -117,8 +117,8 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
             else
                 notifTitle += strings[4];
             notifTitle += strings[5];
-            notifTitle += nbServers;
-            if (nbServers == 1)
+            notifTitle += nbNodes;
+            if (nbNodes == 1)
                 notifTitle += strings[6];
             else
                 notifTitle += strings[7];
@@ -129,8 +129,8 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
             else
                 notifTitle += strings[1];
             notifTitle += strings[5];
-            notifTitle += nbServers;
-            if (nbServers == 1)
+            notifTitle += nbNodes;
+            if (nbNodes == 1)
                 notifTitle += strings[6];
             else
                 notifTitle += strings[7];

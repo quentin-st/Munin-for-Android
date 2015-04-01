@@ -17,7 +17,7 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_Alerts;
 import com.chteuchteu.munin.async.AlertsScanner;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 
 import java.util.Calendar;
 
@@ -36,7 +36,7 @@ public class Fragment_Alerts extends Fragment {
 	private int 			 currentLoadingProgress;
 	private boolean        loading;
 
-	private static final int SERVERS_BY_THREAD = 3;
+	private static final int NODES_BY_THREAD = 3;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -54,14 +54,14 @@ public class Fragment_Alerts extends Fragment {
 		tv_hideNoAlerts = (TextView) view.findViewById(R.id.hideNoAlerts);
 		loading = false;
 
-		adapter = new Adapter_Alerts(context, muninFoo.getServers(),
+		adapter = new Adapter_Alerts(context, muninFoo.getNodes(),
 				Adapter_Alerts.ListItemSize.EXPANDED, Adapter_Alerts.ListItemPolicy.HIDE_NORMAL);
 
 		// Build layout
 		ViewGroup insertPoint = (ViewGroup) view.findViewById(R.id.alerts_insertPoint);
 
-		for (MuninServer server : muninFoo.getServers())
-			insertPoint.addView(adapter.getView(muninFoo.getServers().indexOf(server), insertPoint));
+		for (MuninNode node : muninFoo.getNodes())
+			insertPoint.addView(adapter.getView(muninFoo.getNodes().indexOf(node), insertPoint));
 
 		refresh(muninFoo.shouldUpdateAlerts());
 
@@ -113,13 +113,13 @@ public class Fragment_Alerts extends Fragment {
 
 	public void onScanProgress() {
 		currentLoadingProgress++;
-		activity.setLoadingProgress(currentLoadingProgress * 100 / muninFoo.getServers().size());
+		activity.setLoadingProgress(currentLoadingProgress * 100 / muninFoo.getNodes().size());
 	}
 
 	public void onGroupScanFinished(int fromIndex, int toIndex) {
 		adapter.updateViews(fromIndex, toIndex);
 
-		if (currentLoadingProgress == muninFoo.getServers().size())
+		if (currentLoadingProgress == muninFoo.getNodes().size())
 			onLoadingFinished();
 	}
 
@@ -142,18 +142,18 @@ public class Fragment_Alerts extends Fragment {
 
 		adapter.setAllGray();
 
-		int nbServers = muninFoo.getServers().size();
+		int nbNodes = muninFoo.getNodes().size();
 		if (fetch) {
 			activity.setLoading(true);
 			activity.setLoadingProgress(0);
 			everythingsOk.setVisibility(View.GONE);
 			currentLoadingProgress = 0;
 
-			for (int i=0; i<nbServers; i++) {
-				if (i%SERVERS_BY_THREAD == 0) {
+			for (int i=0; i<nbNodes; i++) {
+				if (i%NODES_BY_THREAD == 0) {
 					int to = i + 2;
-					if (to >= nbServers)
-						to = nbServers-1;
+					if (to >= nbNodes)
+						to = nbNodes-1;
 
 					AlertsScanner scanner = new AlertsScanner(i, to, this);
 					//      Avoid serial execution

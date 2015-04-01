@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.ui.Activity_AlertsPlugins;
 
 import java.util.ArrayList;
@@ -34,25 +34,25 @@ public class Adapter_Alerts {
     private int COLOR_BG_WARNING;
     private int COLOR_BG_OK;
     private int COLOR_BG_UNDEFINED;
-    private int COLOR_SERVERNAME_TEXT_COLOR;
+    private int COLOR_NODENAME_TEXT_COLOR;
     private int COLOR_MASTERNAME_TEXT_COLOR;
 
-	public Adapter_Alerts(Context context, List<MuninServer> items,
+	public Adapter_Alerts(Context context, List<MuninNode> items,
 	                      ListItemSize listItemSize, ListItemPolicy listItemPolicy) {
 		this.context = context;
 		this.listItemSize = listItemSize;
 		this.listItemPolicy = listItemPolicy;
 		this.parts = new ArrayList<>();
 
-		for (MuninServer server : items)
-			this.parts.add(new AlertPart(server, this));
+		for (MuninNode node : items)
+			this.parts.add(new AlertPart(node, this));
 
         // Resolve colors from resources
         this.COLOR_BG_CRITICAL = context.getResources().getColor(R.color.alerts_bg_color_critical);
         this.COLOR_BG_WARNING = context.getResources().getColor(R.color.alerts_bg_color_warning);
         this.COLOR_BG_OK = context.getResources().getColor(R.color.alerts_bg_color_ok);
         this.COLOR_BG_UNDEFINED = context.getResources().getColor(R.color.alerts_bg_color_undefined);
-        this.COLOR_SERVERNAME_TEXT_COLOR = context.getResources().getColor(R.color.alerts_servername_text_color);
+        this.COLOR_NODENAME_TEXT_COLOR = context.getResources().getColor(R.color.alerts_servername_text_color);
         this.COLOR_MASTERNAME_TEXT_COLOR = context.getResources().getColor(R.color.alerts_mastername_text_color);
 	}
 
@@ -109,12 +109,12 @@ public class Adapter_Alerts {
 	public class AlertPart {
 		private boolean viewInflated;
 		private Adapter_Alerts adapter;
-		private MuninServer server;
+		private MuninNode node;
 
 		private LinearLayout part;
 		private RelativeLayout cardHeader;
 		private TextView masterName;
-		private TextView serverName;
+		private TextView nodeName;
 		private LinearLayout criticals;
 		private TextView criticalsAmount;
 		private TextView criticalsLabel;
@@ -126,8 +126,8 @@ public class Adapter_Alerts {
 		private View arrow;
 		private boolean everythingsOk;
 
-		public AlertPart(MuninServer server, Adapter_Alerts adapter) {
-			this.server = server;
+		public AlertPart(MuninNode node, Adapter_Alerts adapter) {
+			this.node = node;
 			this.adapter = adapter;
 			this.everythingsOk = true;
 			this.viewInflated = false;
@@ -141,7 +141,7 @@ public class Adapter_Alerts {
 			part 					= (LinearLayout) v.findViewById(R.id.alerts_part);
 			cardHeader             = (RelativeLayout) v.findViewById(R.id.cardHeader);
 			masterName             = (TextView) v.findViewById(R.id.alerts_part_masterName);
-			serverName 			= (TextView) v.findViewById(R.id.alerts_part_serverName);
+			nodeName 			= (TextView) v.findViewById(R.id.alerts_part_serverName);
 			criticals 				= (LinearLayout) v.findViewById(R.id.alerts_part_criticals);
 			criticalsAmount 		= (TextView) v.findViewById(R.id.alerts_part_criticalsNumber);
 			criticalsLabel 		= (TextView) v.findViewById(R.id.alerts_part_criticalsLabel);
@@ -153,12 +153,12 @@ public class Adapter_Alerts {
 			arrow                  = v.findViewById(R.id.arrow);
 
 			part.setVisibility(View.GONE);
-			serverName.setText(server.getName());
-			masterName.setText(server.getParent().getName());
+			nodeName.setText(node.getName());
+			masterName.setText(node.getParent().getName());
 			cardHeader.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					MuninFoo.getInstance().setCurrentServer(server);
+					MuninFoo.getInstance().setCurrentNode(node);
 					context.startActivity(new Intent(context, Activity_AlertsPlugins.class));
 					Util.setTransition(context, Util.TransitionStyle.DEEPER);
 				}
@@ -172,25 +172,25 @@ public class Adapter_Alerts {
 		}
 
 		public void updateView() {
-			int nbErrors = server.getErroredPlugins().size();
-			int nbWarnings = server.getWarnedPlugins().size();
+			int nbErrors = node.getErroredPlugins().size();
+			int nbWarnings = node.getWarnedPlugins().size();
 
 			// We set view states for both ListItemSize.REDUCED _and_ EXPANDED
 			// when possible, to make switching from one to another easier
 
-			if (server.reachable == Util.SpecialBool.TRUE) {
+			if (node.reachable == Util.SpecialBool.TRUE) {
 				everythingsOk = nbErrors == 0 && nbWarnings == 0;
 
 				if (nbErrors > 0) {
 					criticals.setBackgroundColor(COLOR_BG_CRITICAL);
-					criticalsPluginsList.setText(Util.pluginsListAsString(server.getErroredPlugins()));
+					criticalsPluginsList.setText(Util.pluginsListAsString(node.getErroredPlugins()));
 				}
 				else
 					criticals.setBackgroundColor(COLOR_BG_OK);
 
 				if (nbWarnings > 0) {
 					warnings.setBackgroundColor(COLOR_BG_WARNING);
-					warningsPluginsList.setText(Util.pluginsListAsString(server.getWarnedPlugins()));
+					warningsPluginsList.setText(Util.pluginsListAsString(node.getWarnedPlugins()));
 				}
 				else
 					warnings.setBackgroundColor(COLOR_BG_OK);
@@ -213,12 +213,12 @@ public class Adapter_Alerts {
 					if (nbErrors > 0 || nbWarnings > 0) {
 						cardHeader.setBackgroundColor(nbErrors > 0 ? COLOR_BG_CRITICAL : COLOR_BG_WARNING);
 
-						serverName.setTextColor(Color.WHITE);
+						nodeName.setTextColor(Color.WHITE);
 						masterName.setTextColor(Color.WHITE);
 					}
 				}
 			}
-			else if (server.reachable == Util.SpecialBool.FALSE) {
+			else if (node.reachable == Util.SpecialBool.FALSE) {
 				everythingsOk = true;
 				criticalsPluginsList.setText("");
 				warningsPluginsList.setText("");
@@ -236,8 +236,8 @@ public class Adapter_Alerts {
 		public void updateViewPartial() {
 			boolean hideNormal = adapter.getListItemPolicy() == ListItemPolicy.HIDE_NORMAL;
 
-			int nbErrors = server.getErroredPlugins().size();
-			int nbWarnings = server.getWarnedPlugins().size();
+			int nbErrors = node.getErroredPlugins().size();
+			int nbWarnings = node.getWarnedPlugins().size();
 			boolean hasErrorsOrWarnings = nbErrors > 0 || nbWarnings > 0;
 
 			cardHeader.setClickable(hasErrorsOrWarnings);
@@ -264,7 +264,7 @@ public class Adapter_Alerts {
 						cardHeader.setBackgroundColor(i_criticalsAmount > 0 ? COLOR_BG_CRITICAL : COLOR_BG_WARNING);
 
 						masterName.setTextColor(Color.WHITE);
-						serverName.setTextColor(Color.WHITE);
+						nodeName.setTextColor(Color.WHITE);
 					}
 					break;
 				case EXPANDED:
@@ -272,7 +272,7 @@ public class Adapter_Alerts {
 					warnings.setVisibility(View.VISIBLE);
 					cardHeader.setBackgroundColor(Color.TRANSPARENT);
 					masterName.setTextColor(COLOR_MASTERNAME_TEXT_COLOR);
-					serverName.setTextColor(COLOR_SERVERNAME_TEXT_COLOR);
+					nodeName.setTextColor(COLOR_NODENAME_TEXT_COLOR);
 					break;
 			}
 		}

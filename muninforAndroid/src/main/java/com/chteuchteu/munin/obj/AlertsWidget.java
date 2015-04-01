@@ -7,13 +7,13 @@ import java.util.List;
 public class AlertsWidget {
 	private long id;
 	private boolean wifiOnly;
-	private List<MuninServer> servers;
+	private List<MuninNode> nodes;
 	private int widgetId;
 
 	public AlertsWidget() {
 		this.id = -1;
 		this.wifiOnly = false;
-		this.servers = new ArrayList<>();
+		this.nodes = new ArrayList<>();
 		this.widgetId = -1;
 	}
 
@@ -23,8 +23,8 @@ public class AlertsWidget {
 	public boolean isWifiOnly() { return wifiOnly; }
 	public void setWifiOnly(int b) { this.wifiOnly = b == 1; }
 
-	public List<MuninServer> getServers() { return servers; }
-	public void setServers(List<MuninServer> servers) { this.servers = servers; }
+	public List<MuninNode> getNodes() { return nodes; }
+	public void setNodes(List<MuninNode> nodes) { this.nodes = nodes; }
 
 	public int getWidgetId() { return widgetId; }
 	public void setWidgetId(int widgetId) { this.widgetId = widgetId; }

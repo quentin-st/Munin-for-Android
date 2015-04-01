@@ -30,7 +30,7 @@ import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.Label;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ import java.util.Locale;
 
 public class Activity_Settings extends MuninActivity {
 	private Spinner	spinner_scale;
-	private Spinner	spinner_defaultServer;
+	private Spinner	spinner_defaultNode;
 	private Spinner	spinner_lang;
 	private Spinner	spinner_orientation;
 	private Spinner    spinner_gridsLegend;
@@ -65,7 +65,7 @@ public class Activity_Settings extends MuninActivity {
 		actionBar.setTitle(getString(R.string.settingsTitle));
 		
 		spinner_scale = (Spinner)findViewById(R.id.spinner_scale);
-		spinner_defaultServer = (Spinner)findViewById(R.id.spinner_defaultserver);
+		spinner_defaultNode = (Spinner)findViewById(R.id.spinner_defaultnode);
 		spinner_lang = (Spinner)findViewById(R.id.spinner_lang);
 		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);
 		spinner_gridsLegend = (Spinner)findViewById(R.id.spinner_gridsLegend);
@@ -93,14 +93,14 @@ public class Activity_Settings extends MuninActivity {
 		spinner_scale.setAdapter(dataAdapter);
 		
 		
-		// Default server spinner
-		List<String> serversList = new ArrayList<>();
-		serversList.add(getString(R.string.text48_3));
-		for (MuninServer server : muninFoo.getServers())
-			serversList.add(server.getName());
-		ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, serversList);
+		// Default node spinner
+		List<String> nodesList = new ArrayList<>();
+		nodesList.add(getString(R.string.text48_3));
+		for (MuninNode node : muninFoo.getNodes())
+			nodesList.add(node.getName());
+		ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nodesList);
 		dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner_defaultServer.setAdapter(dataAdapter1);
+		spinner_defaultNode.setAdapter(dataAdapter1);
 		
 		// Language spinner
 		List<String> list2 = new ArrayList<>();
@@ -123,7 +123,7 @@ public class Activity_Settings extends MuninActivity {
 		List<String> list4 = new ArrayList<>();
 		list4.add(getString(R.string.grids_legend_none));
 		list4.add(getString(R.string.grids_legend_pluginName));
-		list4.add(getString(R.string.grids_legend_serverName));
+		list4.add(getString(R.string.grids_legend_nodeName));
 		list4.add(getString(R.string.grids_legend_both));
 		ArrayAdapter<String> dataAdapter4 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list4);
 		dataAdapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -225,20 +225,20 @@ public class Activity_Settings extends MuninActivity {
 		else
 			checkbox_hdGraphs.setChecked(true);
 		
-		// Default server
-		String defaultServerUrl = Util.getPref(this, Util.PrefKeys.DefaultServer);
-		if (!defaultServerUrl.equals("")) {
+		// Default node
+		String defaultNodeUrl = Util.getPref(this, Util.PrefKeys.DefaultNode);
+		if (!defaultNodeUrl.equals("")) {
 			int pos = -1;
 			int i = 0;
-			for (MuninServer server : muninFoo.getServers()) {
-				if (server.getUrl().equals(defaultServerUrl)) {
+			for (MuninNode node : muninFoo.getNodes()) {
+				if (node.getUrl().equals(defaultNodeUrl)) {
 					pos = i;
 					break;
 				}
 				i++;
 			}
 			if (pos != -1)
-				spinner_defaultServer.setSelection(pos+1);
+				spinner_defaultNode.setSelection(pos+1);
 		}
 
 		// User Agent
@@ -361,13 +361,13 @@ public class Activity_Settings extends MuninActivity {
 		Util.setPref(context, Util.PrefKeys.GraphsZoom, String.valueOf(checkbox_graphsZoom.isChecked()));
 		Util.setPref(context, Util.PrefKeys.HDGraphs, String.valueOf(checkbox_hdGraphs.isChecked()));
 		
-		// Default server
-		int defaultServerPosition = spinner_defaultServer.getSelectedItemPosition()-1;
-		if (defaultServerPosition == -1)
-			Util.removePref(this, Util.PrefKeys.DefaultServer);
+		// Default node
+		int defaultNodePosition = spinner_defaultNode.getSelectedItemPosition()-1;
+		if (defaultNodePosition == -1)
+			Util.removePref(this, Util.PrefKeys.DefaultNode);
 		else {
-			MuninServer defaultServer = muninFoo.getServers().get(defaultServerPosition);
-			Util.setPref(this, Util.PrefKeys.DefaultServer, defaultServer.getUrl());
+			MuninNode defaultNode = muninFoo.getNodes().get(defaultNodePosition);
+			Util.setPref(this, Util.PrefKeys.DefaultNode, defaultNode.getUrl());
 		}
 
 		// User Agent
@@ -457,7 +457,7 @@ public class Activity_Settings extends MuninActivity {
 				muninFoo.sqlite.dbHlpr.deleteLabels();
 				muninFoo.sqlite.dbHlpr.deleteLabelsRelations();
 				muninFoo.sqlite.dbHlpr.deleteMuninPlugins();
-				muninFoo.sqlite.dbHlpr.deleteMuninServers();
+				muninFoo.sqlite.dbHlpr.deleteMuninNodes();
 				muninFoo.sqlite.dbHlpr.deleteGrids();
 				muninFoo.sqlite.dbHlpr.deleteGridItemRelations();
 				muninFoo.sqlite.dbHlpr.deleteMuninMasters();

@@ -294,14 +294,14 @@ public final class Util {
 	public enum PrefKeys {
 		GraphviewOrientation("graphview_orientation"),  Notifications("notifications"),
 		ScreenAlwaysOn("screenAlwaysOn"),                 Notifs_RefreshRate("notifs_refreshRate"),
-		DefaultScale("defaultScale"),                      Notifs_ServersList("notifs_serversList"),
+		DefaultScale("defaultScale"),                      Notifs_NodesList("notifs_serversList"),
 		LastMFAVersion("lastMFAVersion"),				  Notifs_WifiOnly("notifs_wifiOnly"),
 											                  Notifs_Vibrate("notifs_vibrate"),
 															  Notifs_LastNotificationText("lastNotificationText"),
 
 		AutoRefresh("autoRefresh"),                        UserAgent("userAgent"), UserAgentChanged("userAgentChanged"),
 		HDGraphs("hdGraphs"),                               Lang("lang"),
-		GraphsZoom("graphsZoom"),                          DefaultServer("defaultServer"),
+		GraphsZoom("graphsZoom"),                          DefaultNode("defaultServer"),
 		GridsLegend("gridsLegend"),
 
 		Twitter_NbLaunches("twitter_nbLaunches"),        AddServer_History("addserver_history"),

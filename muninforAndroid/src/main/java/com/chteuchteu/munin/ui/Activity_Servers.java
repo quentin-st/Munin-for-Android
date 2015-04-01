@@ -38,7 +38,7 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.AuthType;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -73,29 +73,29 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 			fromServersEdit = muninFoo.getMasterById((int) i.getExtras().getLong("fromMaster"));
 		
 		List<MuninMaster> masters = muninFoo.masters;
-        Map<MuninMaster, List<String>> serversCollection = getServersCollection();
-		final Adapter_ExpandableListView expListAdapter = new Adapter_ExpandableListView(this, this, masters, serversCollection);
+        Map<MuninMaster, List<String>> nodesCollection = getNodesCollection();
+		final Adapter_ExpandableListView expListAdapter = new Adapter_ExpandableListView(this, this, masters, nodesCollection);
 		expListView.setAdapter(expListAdapter);
 		
 		if (fromServersEdit != null)
 			expListView.expandGroup(muninFoo.getMasterPosition(fromServersEdit));
 		
-		if (muninFoo.getServers().isEmpty())
+		if (muninFoo.getNodes().isEmpty())
 			findViewById(R.id.servers_noserver).setVisibility(View.VISIBLE);
 	}
 	
-	private Map<MuninMaster, List<String>> getServersCollection() {
+	private Map<MuninMaster, List<String>> getNodesCollection() {
 		// Create collection
-		LinkedHashMap<MuninMaster, List<String>> serversCollection = new LinkedHashMap<>();
+		LinkedHashMap<MuninMaster, List<String>> nodesCollection = new LinkedHashMap<>();
 		
 		for (MuninMaster master : muninFoo.masters) {
 			List<String> childList = new ArrayList<>();
-			for (MuninServer server : master.getChildren())
-				childList.add(server.getName());
-			serversCollection.put(master, childList);
+			for (MuninNode node : master.getChildren())
+				childList.add(node.getName());
+			nodesCollection.put(master, childList);
 		}
 		
-		return serversCollection;
+		return nodesCollection;
 	}
 
 	/* IServersActivity */
@@ -112,7 +112,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 	 */
 	@Override
 	public boolean onChildLongClick(int groupPosition, int childPosition) {
-		final MuninServer server = muninFoo.masters.get(groupPosition).getChildren().get(childPosition);
+		final MuninNode node = muninFoo.masters.get(groupPosition).getChildren().get(childPosition);
 		
 		// Display actions list
 		AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
@@ -124,22 +124,22 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
-					case 0: // Delete server
+					case 0: // Delete node
 						new AlertDialog.Builder(context)
 						.setTitle(R.string.delete)
 						.setMessage(R.string.text83)
 						.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								muninFoo.sqlite.dbHlpr.deleteServer(server);
-								muninFoo.deleteServer(server);
+								muninFoo.sqlite.dbHlpr.deleteNode(node);
+								muninFoo.deleteNode(node);
 								
 								// Delete labels relations stored in MuninFoo.labels for the current session
-								for (MuninPlugin plugin : server.getPlugins())
+								for (MuninPlugin plugin : node.getPlugins())
 										muninFoo.removeLabelRelation(plugin);
 								
-								if (muninFoo.getCurrentServer().equalsApprox(server))
-									muninFoo.updateCurrentServer(context);
+								if (muninFoo.getCurrentNode().equalsApprox(node))
+									muninFoo.updateCurrentNode(context);
 
 								refreshList();
 								updateDrawerIfNeeded();
@@ -151,14 +151,14 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 				}
 			}
 		});
-		builderSingle.setTitle(server.getName());
+		builderSingle.setTitle(node.getName());
 		builderSingle.show();
 		
 		return true;
 	}
 
 	/**
-	 * When deleting a server / master, we should reinit the drawer
+	 * When deleting a node / master, we should reinit the drawer
 	 * if there's nothing to show
 	 */
 	public void updateDrawerIfNeeded() {
@@ -431,7 +431,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 
 		getMenuInflater().inflate(R.menu.servers, menu);
 		MenuItem exportMenuItem = menu.findItem(R.id.menu_export);
-		if (muninFoo.getServers().isEmpty())
+		if (muninFoo.getNodes().isEmpty())
 			exportMenuItem.setVisible(false);
 	}
 	
@@ -439,12 +439,9 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
 
-		Intent intent;
 		switch (item.getItemId()) {
 			case R.id.menu_add:
-				intent = new Intent(this, Activity_Server.class);
-				intent.putExtra("contextServerUrl", "");
-				startActivity(intent);
+				startActivity(new Intent(this, Activity_Server.class));
 				Util.setTransition(context, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_import:

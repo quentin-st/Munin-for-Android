@@ -54,7 +54,7 @@ public class MasterScanner extends AsyncTask<Void, Integer, Void> {
 					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							// if "No change" => don't reload servers list
+							// if "No change" => don't reload nodes list
 							if (!report.equals(context.getString(R.string.sync_nochange))) {
 								activity.refreshList();
 								activity.updateDrawerIfNeeded();

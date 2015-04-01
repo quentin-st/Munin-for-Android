@@ -20,7 +20,7 @@ public class MuninMaster {
 	private long id;
 	private String name;
 	private String url;
-	private List<MuninServer> children;
+	private List<MuninNode> children;
 	private DynazoomAvailability dynazoomAvailability;
 	
 	private Boolean ssl;
@@ -133,10 +133,10 @@ public class MuninMaster {
 		if (this.defaultMaster || this.isEmpty())
 			return false;
 		
-		MuninServer server = getChildren().get(0);
-		if (server == null)
+		MuninNode node = getChildren().get(0);
+		if (node == null)
 			return false;
-		MuninPlugin plugin = server.getPlugin(0);
+		MuninPlugin plugin = node.getPlugin(0);
 		return plugin != null && isDynazoomAvailable(plugin, userAgent);
 
 	}
@@ -150,7 +150,7 @@ public class MuninMaster {
 	
 	public void rebuildChildren(MuninFoo f) {
 		this.children = new ArrayList<>();
-		for (MuninServer s : f.getServers()) {
+		for (MuninNode s : f.getNodes()) {
 			if (s.getParent().getId() == this.id)
 				this.children.add(s);
 		}
@@ -159,7 +159,7 @@ public class MuninMaster {
 	}
 
 	private void deleteSelf(MuninFoo f) {
-		// If there's no more server under this, delete self.
+		// If there's no more node under this, delete self.
 		f.deleteMuninMaster(this);
 	}
 	
@@ -175,8 +175,8 @@ public class MuninMaster {
 	public void setDynazoomAvailable(DynazoomAvailability val) { this.dynazoomAvailability = val; }
 	public DynazoomAvailability isDynazoomAvailable() { return this.dynazoomAvailability; }
 
-	public List<MuninServer> getChildren() { return this.children; }
-	public void addChild(MuninServer s) {
+	public List<MuninNode> getChildren() { return this.children; }
+	public void addChild(MuninNode s) {
 		if (!this.children.contains(s)) {
 			this.children.add(s);
 			s.setParent(this);
@@ -189,10 +189,10 @@ public class MuninMaster {
 		return p != null && this.url.equals(p.url);
 	}
 	
-	private MuninServer getServer(String serverUrl) {
-		for (MuninServer server : this.children) {
-			if (server.getUrl().equals(serverUrl))
-				return server;
+	private MuninNode getNode(String nodeUrl) {
+		for (MuninNode node : this.children) {
+			if (node.getUrl().equals(nodeUrl))
+				return node;
 		}
 		return null;
 	}
@@ -207,7 +207,7 @@ public class MuninMaster {
 	
 	/**
 	 * Get the type of the given page:
-	 * 	- munin/		: list of servers
+	 * 	- munin/		: list of nodes
 	 * 	- munin/x/		: list of plugins (not used)
 	 * 	- err_code		: if error -> error code
 	 * @return String : pageType
@@ -260,10 +260,10 @@ public class MuninMaster {
 	
 	/**
 	 * Fetches the children of this MuninMaster
-	 * @return How many servers have been found
+	 * @return How many nodes have been found
 	 */
 	public int fetchChildren(String userAgent) {
-		int nbServers = 0;
+		int nbNodes = 0;
 		
 		// Grab HTML content
 		String html = grabUrl(this.url, userAgent).html;
@@ -317,11 +317,11 @@ public class MuninMaster {
 						Elements hosts = domain.parent().select("ul>li");
 						for (Element host : hosts) {
 							Element infos = host.select("a.link-host").get(0);
-							MuninServer serv = new MuninServer(infos.text(), infos.attr("abs:href"));
+							MuninNode serv = new MuninNode(infos.text(), infos.attr("abs:href"));
 							serv.setParent(this);
 							previousPosition++;
 							serv.setPosition(previousPosition);
-							nbServers++;
+							nbNodes++;
 						}
 					}
 				}
@@ -343,18 +343,18 @@ public class MuninMaster {
 						// Get every host for that domain
 						Elements hosts = domain.parent().select("span.host");
 						for (Element host : hosts) {
-							MuninServer serv = new MuninServer(host.child(0).text(), host.child(0).attr("abs:href"));
+							MuninNode serv = new MuninNode(host.child(0).text(), host.child(0).attr("abs:href"));
 							serv.setParent(this);
 							previousPosition++;
 							serv.setPosition(previousPosition);
-							nbServers++;
+							nbNodes++;
 						}
 					}
 				}
 			}
 		}
 		
-		return nbServers;
+		return nbNodes;
 	}
 	
 	/**
@@ -370,13 +370,13 @@ public class MuninMaster {
 		if (graphWidgets.isEmpty())
 			return toBeUpdated_graphWidgets;
 		
-		for (MuninServer server : oldMaster.getChildren()) {
-			for (MuninPlugin plugin : server.getPlugins()) {
+		for (MuninNode node : oldMaster.getChildren()) {
+			for (MuninPlugin plugin : node.getPlugins()) {
 				// Check graphWidgets
 				for (GraphWidget graphWidget : graphWidgets) {
 					if (graphWidget.getPlugin().equals(plugin)) {
 						// Reattach
-						MuninPlugin newPlugin = this.getServer(server.getUrl()).getPlugin(graphWidget.getPlugin().getName());
+						MuninPlugin newPlugin = this.getNode(node.getUrl()).getPlugin(graphWidget.getPlugin().getName());
 						graphWidget.setPlugin(newPlugin);
 						toBeUpdated_graphWidgets.add(graphWidget);
 					}
@@ -399,8 +399,8 @@ public class MuninMaster {
 		if (labels.isEmpty())
 			return toBeUpdated_labels;
 		
-		for (MuninServer server : oldMaster.getChildren()) {
-			for (MuninPlugin plugin : server.getPlugins()) {
+		for (MuninNode node : oldMaster.getChildren()) {
+			for (MuninPlugin plugin : node.getPlugins()) {
 				// Check labels
 				for (Label label : labels) {
 					ArrayList<MuninPlugin> toBeRemoved = new ArrayList<>();
@@ -409,7 +409,7 @@ public class MuninMaster {
 					for (MuninPlugin labelPlugin : label.plugins) {
 						if (labelPlugin.equals(plugin)) {
 							// Reattach
-							MuninPlugin newPlugin = this.getServer(server.getUrl()).getPlugin(labelPlugin.getName());
+							MuninPlugin newPlugin = this.getNode(node.getUrl()).getPlugin(labelPlugin.getName());
 							toBeRemoved.add(labelPlugin);
 							toBeAdded.add(newPlugin);
 							if (!toBeUpdated_labels.contains(label))
@@ -438,14 +438,14 @@ public class MuninMaster {
 		if (grids.isEmpty())
 			return toBeUpdated_grids;
 		
-		for (MuninServer server : oldMaster.getChildren()) {
-			for (MuninPlugin plugin : server.getPlugins()) {
+		for (MuninNode node : oldMaster.getChildren()) {
+			for (MuninPlugin plugin : node.getPlugins()) {
 				// Check grids
 				for (Grid grid : grids) {
 					for (GridItem item : grid.getItems()) {
 						if (item.getPlugin().equals(plugin)) {
 							// Reattach
-							item.setPlugin(this.getServer(server.getUrl()).getPlugin(item.getPlugin().getName()));
+							item.setPlugin(this.getNode(node.getUrl()).getPlugin(item.getPlugin().getName()));
 							toBeUpdated_grids.add(item);
 						}
 					}
@@ -457,16 +457,16 @@ public class MuninMaster {
 	}
 	
 	/**
-	 * Contacts the URL to check if there are some other servers / plugins for each server
+	 * Contacts the URL to check if there are some other nodes / plugins for each node
 	 */
 	public String rescan(Context context, MuninFoo muninFoo) {
 		if (isEmpty())
 			return null;
 		
 		String report = "";
-		int nbAddedServers = 0;
-		int nbUpdatedServers = 0;
-		int nbDeletedServers = 0;
+		int nbAddedNodes = 0;
+		int nbUpdatedNodes = 0;
+		int nbDeletedNodes = 0;
 		int nbAddedPlugins = 0;
 		int nbUpdatedPlugins = 0;
 		int nbDeletedPlugins = 0;
@@ -498,117 +498,117 @@ public class MuninMaster {
 			onlineMaster.fetchChildren(muninFoo.getUserAgent());
 			
 			if (!onlineMaster.isEmpty()) {
-				// SERVERS DIFF
-				// Add new servers if needed
-				ArrayList<MuninServer> toBeAdded = new ArrayList<>();
-				ArrayList<MuninServer> toBeUpdated = new ArrayList<>();
-				// Add / update servers
-				for (MuninServer onlineServer : onlineMaster.getChildren()) {
+				// NODES DIFF
+				// Add new nodes if needed
+				ArrayList<MuninNode> toBeAdded = new ArrayList<>();
+				ArrayList<MuninNode> toBeUpdated = new ArrayList<>();
+				// Add / update nodes
+				for (MuninNode onlineNode : onlineMaster.getChildren()) {
 					// Check if it is in original
 					boolean alreadyThere = false;
-					for (MuninServer server : this.children) {
-						if (server.equalsApprox(onlineServer)) {
+					for (MuninNode node : this.children) {
+						if (node.equalsApprox(onlineNode)) {
 							alreadyThere = true;
 
 							// Check if we can grab some attributes
                             // DynazoomAvailability
-                            if (server.getParent().isDynazoomAvailable() != onlineServer.getParent().isDynazoomAvailable()
-		                            && onlineServer.getParent().isDynazoomAvailable() != DynazoomAvailability.AUTO_DETECT) {
+                            if (node.getParent().isDynazoomAvailable() != onlineNode.getParent().isDynazoomAvailable()
+		                            && onlineNode.getParent().isDynazoomAvailable() != DynazoomAvailability.AUTO_DETECT) {
 	                            MuninFoo.logV("rescan", "Dynazoom availability has changed");
-                                server.getParent().setDynazoomAvailable(onlineServer.getParent().isDynazoomAvailable());
-	                            if (!toBeUpdated.contains(server))
-	                                toBeUpdated.add(server);
+                                node.getParent().setDynazoomAvailable(onlineNode.getParent().isDynazoomAvailable());
+	                            if (!toBeUpdated.contains(node))
+	                                toBeUpdated.add(node);
                             }
 
 							// HDGraphURL
-							if (!server.getHdGraphURL().equals(onlineServer.getHdGraphURL()) && !onlineServer.getHdGraphURL().equals("")) {
+							if (!node.getHdGraphURL().equals(onlineNode.getHdGraphURL()) && !onlineNode.getHdGraphURL().equals("")) {
 								MuninFoo.logV("rescan", "HDGraphUrl has changed");
-								server.setHdGraphURL(onlineServer.getHdGraphURL());
-								if (!toBeUpdated.contains(server))
-									toBeUpdated.add(server);
+								node.setHdGraphURL(onlineNode.getHdGraphURL());
+								if (!toBeUpdated.contains(node))
+									toBeUpdated.add(node);
 							}
 
-							// Server URL (http => https)
-							if (!server.getUrl().equals(onlineServer.getUrl()) && !onlineServer.getUrl().equals("")) {
-								MuninFoo.logV("rescan", "server url has changed");
-								server.setUrl(onlineServer.getUrl());
-								if (!toBeUpdated.contains(server))
-									toBeUpdated.add(server);
+							// Node URL (http => https)
+							if (!node.getUrl().equals(onlineNode.getUrl()) && !onlineNode.getUrl().equals("")) {
+								MuninFoo.logV("rescan", "node url has changed");
+								node.setUrl(onlineNode.getUrl());
+								if (!toBeUpdated.contains(node))
+									toBeUpdated.add(node);
 							}
 
-							// Server position
-							if (server.getPosition() != onlineServer.getPosition() && onlineServer.getPosition() != -1) {
-								MuninFoo.logV("rescan", "server position has changed");
-								server.setPosition(onlineServer.getPosition());
-								if (!toBeUpdated.contains(server))
-									toBeUpdated.add(server);
+							// Node position
+							if (node.getPosition() != onlineNode.getPosition() && onlineNode.getPosition() != -1) {
+								MuninFoo.logV("rescan", "node position has changed");
+								node.setPosition(onlineNode.getPosition());
+								if (!toBeUpdated.contains(node))
+									toBeUpdated.add(node);
 							}
 							
 							break;
 						}
 					}
 					
-					// There server isn't already there
+					// There node isn't already there
 					if (!alreadyThere)
-						toBeAdded.add(onlineServer);
+						toBeAdded.add(onlineNode);
 				}
 
 				// Save MuninMaster
 				muninFoo.sqlite.dbHlpr.updateMuninMaster(this);
 
-				// Save servers changes
-				for (MuninServer server : toBeAdded) {
-					addChild(server);
-					muninFoo.addServer(server);
-					muninFoo.sqlite.dbHlpr.insertMuninServer(server);
-					nbAddedServers++;
+				// Save nodes changes
+				for (MuninNode node : toBeAdded) {
+					addChild(node);
+					muninFoo.addNode(node);
+					muninFoo.sqlite.dbHlpr.insertMuninNode(node);
+					nbAddedNodes++;
 				}
 				toBeAdded.clear();
 
-				for (MuninServer server : toBeUpdated) {
-					muninFoo.sqlite.dbHlpr.updateMuninServer(server);
-					nbUpdatedServers++;
+				for (MuninNode node : toBeUpdated) {
+					muninFoo.sqlite.dbHlpr.updateMuninNode(node);
+					nbUpdatedNodes++;
 				}
 				toBeUpdated.clear();
 				
-				// Remove offline servers if needed
-				ArrayList<MuninServer> toBeRemoved = new ArrayList<>();
-				for (MuninServer oldServer : this.children) {
+				// Remove offline nodes if needed
+				ArrayList<MuninNode> toBeRemoved = new ArrayList<>();
+				for (MuninNode oldNode : this.children) {
 					// Check if it is still there
 					boolean stillThere = false;
-					for (MuninServer server : onlineMaster.getChildren()) {
-						if (server.equalsApprox(oldServer)) {
+					for (MuninNode node : onlineMaster.getChildren()) {
+						if (node.equalsApprox(oldNode)) {
 							stillThere = true;
 							break;
 						}
 					}
 					
-					// The server has been deleted in meantime
+					// The node has been deleted in meantime
 					if (!stillThere)
-						toBeRemoved.add(oldServer);
+						toBeRemoved.add(oldNode);
 				}
 				
-				for (MuninServer server : toBeRemoved) {
-					this.children.remove(server);
-					muninFoo.getServers().remove(server);
-					muninFoo.sqlite.dbHlpr.deleteServer(server);
-					nbDeletedServers++;
+				for (MuninNode node : toBeRemoved) {
+					this.children.remove(node);
+					muninFoo.getNodes().remove(node);
+					muninFoo.sqlite.dbHlpr.deleteNode(node);
+					nbDeletedNodes++;
 				}
 				toBeRemoved.clear();
 				
-				// Servers are now synced.
+				// Nodes are now synced.
 				// PLUGINS DIFF
-				for (MuninServer server : this.children) {
+				for (MuninNode node : this.children) {
                     // Force HD graph URL rescan
-                    server.setHdGraphURL(null);
+                    node.setHdGraphURL(null);
 
 					boolean graphUrlChanged = false;
-					String oldGraphUrl = server.getGraphURL();
+					String oldGraphUrl = node.getGraphURL();
 
-					List<MuninPlugin> onlinePlugins = server.getPluginsList(muninFoo.getUserAgent());
+					List<MuninPlugin> onlinePlugins = node.getPluginsList(muninFoo.getUserAgent());
 
 					// Detect graphUrl change
-					String newGraphUrl = server.getGraphURL();
+					String newGraphUrl = node.getGraphURL();
 					if (!oldGraphUrl.equals(newGraphUrl))
 						graphUrlChanged = true;
 
@@ -619,7 +619,7 @@ public class MuninMaster {
 						ArrayList<MuninPlugin> pluginsToBeUpdated = new ArrayList<>();
 						for (MuninPlugin onlinePlugin : onlinePlugins) {
 							boolean alreadyThere = false;
-							for (MuninPlugin oldPlugin : server.getPlugins()) {
+							for (MuninPlugin oldPlugin : node.getPlugins()) {
 								if (oldPlugin.equalsApprox(onlinePlugin)) {
 									alreadyThere = true;
 									
@@ -639,7 +639,7 @@ public class MuninMaster {
 						}
 						for (MuninPlugin plugin : pluginsToBeAdded) {
 							// Update "installedOn" and insert:
-							server.addPlugin(plugin);
+							node.addPlugin(plugin);
 							muninFoo.sqlite.dbHlpr.insertMuninPlugin(plugin);
 							nbAddedPlugins++;
 						}
@@ -651,7 +651,7 @@ public class MuninMaster {
 						
 						// Remove deleted plugins
 						ArrayList<MuninPlugin> pluginsToBeRemoved = new ArrayList<>();
-						for (MuninPlugin oldPlugin : server.getPlugins()) {
+						for (MuninPlugin oldPlugin : node.getPlugins()) {
 							boolean stillThere = false;
 							for (MuninPlugin onlinePlugin : onlinePlugins) {
 								if (oldPlugin.equalsApprox(onlinePlugin)) {
@@ -666,30 +666,30 @@ public class MuninMaster {
 							}
 						}
 						for (MuninPlugin plugin : pluginsToBeRemoved) {
-							server.getPlugins().remove(plugin);
+							node.getPlugins().remove(plugin);
 							muninFoo.sqlite.dbHlpr.deletePlugin(plugin);
 							nbDeletedPlugins++;
 						}
 
 						if (graphUrlChanged)
-							muninFoo.sqlite.dbHlpr.updateMuninServer(server);
+							muninFoo.sqlite.dbHlpr.updateMuninNode(node);
 					}
 				}
 			}
 		}
 		
 		// Generate report
-		if (nbAddedServers + nbUpdatedServers + nbDeletedServers
+		if (nbAddedNodes + nbUpdatedNodes + nbDeletedNodes
 				+ nbAddedPlugins + nbUpdatedPlugins + nbDeletedPlugins == 0)
 			report = context.getString(R.string.sync_nochange);
 		else {
-			// Servers
-			if (nbAddedServers > 0)
-				report += context.getString(R.string.sync_serversadded).replace("XXX", String.valueOf(nbAddedServers));
-			if (nbUpdatedServers > 0)
-				report += context.getString(R.string.sync_serversupdated).replace("XXX", String.valueOf(nbUpdatedServers));
-			if (nbDeletedServers > 0)
-				report += context.getString(R.string.sync_serversdeleted).replace("XXX", String.valueOf(nbDeletedServers));
+			// Nodes
+			if (nbAddedNodes > 0)
+				report += context.getString(R.string.sync_serversadded).replace("XXX", String.valueOf(nbAddedNodes));
+			if (nbUpdatedNodes > 0)
+				report += context.getString(R.string.sync_serversupdated).replace("XXX", String.valueOf(nbUpdatedNodes));
+			if (nbDeletedNodes > 0)
+				report += context.getString(R.string.sync_serversdeleted).replace("XXX", String.valueOf(nbDeletedNodes));
 			
 			// Plugins
 			if (nbAddedPlugins > 0)

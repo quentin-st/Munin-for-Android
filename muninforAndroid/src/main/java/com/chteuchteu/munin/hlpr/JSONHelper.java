@@ -2,8 +2,8 @@ package com.chteuchteu.munin.hlpr;
 
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninMaster.AuthType;
 
 import org.json.JSONArray;
@@ -18,7 +18,7 @@ import java.util.List;
  *
  * JSON keys are "obfuscated" to reduce message length.
  *  This is not an issue since output json string isn't made to be human-readable
- *  Separate JSON keys of the same group ("MASTER", "SERVER", "PLUGIN") must be unique.
+ *  Separate JSON keys of the same group ("MASTER", "NODE", "PLUGIN") must be unique.
  */
 public class JSONHelper {
     private static final String MASTER_ID = "i";
@@ -31,12 +31,12 @@ public class JSONHelper {
     private static final String MASTER_AUTHPASSWORD = "aP";
     private static final String MASTER_AUTHSTRING = "aS";
 
-    private static final String SERVER_ID = "i";
-    private static final String SERVER_NAME = "n";
-    private static final String SERVER_SERVERURL = "s";
-    private static final String SERVER_GRAPHURL = "g";
-    private static final String SERVER_HDGRAPHURL = "hdG";
-    private static final String SERVER_POSITION = "p";
+    private static final String NODE_ID = "i";
+    private static final String NODE_NAME = "n";
+    private static final String NODE_NODEURL = "s";
+    private static final String NODE_GRAPHURL = "g";
+    private static final String NODE_HDGRAPHURL = "hdG";
+    private static final String NODE_POSITION = "p";
 
     private static final String PLUGIN_ID = "i";
     private static final String PLUGIN_NAME = "n";
@@ -45,7 +45,7 @@ public class JSONHelper {
     private static final String PLUGIN_PLUGINPAGEURL = "p";
 
     private static final String PLUGINS = "ps";
-    private static final String SERVERS = "srvss";
+    private static final String NODES = "srvss";
     private static final String MASTERS = "ms";
 
     /**
@@ -89,19 +89,19 @@ public class JSONHelper {
 							break;
 					}
 					
-					JSONArray jsonServers = new JSONArray();
-					for (MuninServer server : master.getChildren()) {
-						JSONObject jsonServer = new JSONObject();
+					JSONArray jsonNodes = new JSONArray();
+					for (MuninNode node : master.getChildren()) {
+						JSONObject jsonNode = new JSONObject();
 						
-						jsonServer.put(SERVER_ID, server.getId());
-						jsonServer.put(SERVER_NAME, server.getName());
-						jsonServer.put(SERVER_SERVERURL, server.getUrl());
-						jsonServer.put(SERVER_GRAPHURL, server.getGraphURL());
-						jsonServer.put(SERVER_HDGRAPHURL, server.getHdGraphURL());
-						jsonServer.put(SERVER_POSITION, server.getPosition());
+						jsonNode.put(NODE_ID, node.getId());
+						jsonNode.put(NODE_NAME, node.getName());
+						jsonNode.put(NODE_NODEURL, node.getUrl());
+						jsonNode.put(NODE_GRAPHURL, node.getGraphURL());
+						jsonNode.put(NODE_HDGRAPHURL, node.getHdGraphURL());
+						jsonNode.put(NODE_POSITION, node.getPosition());
 
 						JSONArray jsonPlugins = new JSONArray();
-						for (MuninPlugin plugin : server.getPlugins()) {
+						for (MuninPlugin plugin : node.getPlugins()) {
 							JSONObject jsonPlugin = new JSONObject();
 							
 							jsonPlugin.put(PLUGIN_ID, plugin.getId());
@@ -112,11 +112,11 @@ public class JSONHelper {
 							
 							jsonPlugins.put(jsonPlugin);
 						}
-						jsonServer.put(PLUGINS, jsonPlugins);
+						jsonNode.put(PLUGINS, jsonPlugins);
 						
-						jsonServers.put(jsonServer);
+						jsonNodes.put(jsonNode);
 					}
-					jsonMaster.put(SERVERS, jsonServers);
+					jsonMaster.put(NODES, jsonNodes);
 					
 					jsonMasters.put(jsonMaster);
 				}
@@ -166,32 +166,32 @@ public class JSONHelper {
 					}
 				}
 				
-				JSONArray jsonServers = jsonMaster.getJSONArray(SERVERS);
-				for (int y=0; y<jsonServers.length(); y++) {
-					JSONObject jsonServer = jsonServers.getJSONObject(y);
-					MuninServer server = new MuninServer();
+				JSONArray jsonNodes = jsonMaster.getJSONArray(NODES);
+				for (int y=0; y<jsonNodes.length(); y++) {
+					JSONObject jsonNode = jsonNodes.getJSONObject(y);
+					MuninNode node = new MuninNode();
 					
-					server.setId(jsonServer.getLong(SERVER_ID));
-					server.setName(jsonServer.getString(SERVER_NAME));
-					server.setUrl(jsonServer.getString(SERVER_SERVERURL));
-					server.setGraphURL(jsonServer.getString(SERVER_GRAPHURL));
-					server.setHdGraphURL(jsonServer.getString(SERVER_HDGRAPHURL));
-					server.setPosition(jsonServer.getInt(SERVER_POSITION));
+					node.setId(jsonNode.getLong(NODE_ID));
+					node.setName(jsonNode.getString(NODE_NAME));
+					node.setUrl(jsonNode.getString(NODE_NODEURL));
+					node.setGraphURL(jsonNode.getString(NODE_GRAPHURL));
+					node.setHdGraphURL(jsonNode.getString(NODE_HDGRAPHURL));
+					node.setPosition(jsonNode.getInt(NODE_POSITION));
 
-					JSONArray jsonPlugins = jsonServer.getJSONArray(PLUGINS);
+					JSONArray jsonPlugins = jsonNode.getJSONArray(PLUGINS);
 					for (int z=0; z<jsonPlugins.length(); z++) {
 						JSONObject jsonPlugin = jsonPlugins.getJSONObject(z);
 						MuninPlugin plugin = new MuninPlugin();
-						plugin.setInstalledOn(server);
+						plugin.setInstalledOn(node);
 						plugin.setId(jsonPlugin.getLong(PLUGIN_ID));
 						plugin.setName(jsonPlugin.getString(PLUGIN_NAME));
 						plugin.setFancyName(jsonPlugin.getString(PLUGIN_FANCYNAME));
 						plugin.setCategory(jsonPlugin.getString(PLUGIN_CATEGORY));
 						plugin.setPluginPageUrl(jsonPlugin.getString(PLUGIN_PLUGINPAGEURL));
-						server.getPlugins().add(plugin);
+						node.getPlugins().add(plugin);
 					}
 					
-					server.setParent(master);
+					node.setParent(master);
 				}
 				
 				muninMasters.add(master);

@@ -76,7 +76,7 @@
 	<string name="widget_configuration1">Riuscito! Il widget è stato aggiunto alla tua schermata home. Suggerimento: puoi aggiornare il grafico premendo sulla barra grigia alla base del widget!</string>
 	<string name="widget_configuration2">Aggiornamento automatico del grafico solo con Wifi (1 aggiornamento all\'ora)</string>
 	<string name="widget_configuration3">Nascondi il nome del server</string>
-	<string name="settings_defaultserver">Server predefinito</string>
+	<string name="settings_defaultnode">Server predefinito</string>
 	<string name="settings_lang">Lingua app</string>
 	<string name="lang_english">Inglese</string>
 	<string name="lang_french">Francese</string>
@@ -206,7 +206,7 @@
 	<string name="grids_legend">Legenda griglie</string>
 	<string name="grids_legend_none">Nessuno</string>
 	<string name="grids_legend_pluginName">Nome plugin</string>
-	<string name="grids_legend_serverName">Nome server</string>
+	<string name="grids_legend_nodeName">Nome server</string>
 	<string name="grids_legend_both">Entrambi</string>
 	<string name="redetectHdGraphsUrl">Rileva nuovamente URL grafici HD</string>
 	<string name="disableHDGraphs">Disabilita grafici HD</string>

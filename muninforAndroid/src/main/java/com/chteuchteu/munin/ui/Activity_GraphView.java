@@ -42,7 +42,7 @@ import android.widget.Toast;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_GraphView;
 import com.chteuchteu.munin.adptr.PluginsListAlertDialog;
-import com.chteuchteu.munin.adptr.ServersListAlertDialog;
+import com.chteuchteu.munin.adptr.NodesListAlertDialog;
 import com.chteuchteu.munin.async.DynazoomDetector;
 import com.chteuchteu.munin.async.FieldsDescriptionFetcher;
 import com.chteuchteu.munin.hlpr.DocumentationHelper;
@@ -56,7 +56,7 @@ import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.crashlytics.android.Crashlytics;
 import com.edmodo.rangebar.RangeBar;
 import com.melnykov.fab.FloatingActionButton;
@@ -77,7 +77,7 @@ public class Activity_GraphView extends MuninActivity {
 	private View        ic_insecure;
     private TextView    toolbarPluginName;
     private PluginsListAlertDialog pluginsListAlertDialog;
-    private ServersListAlertDialog serversListAlertDialog;
+    private NodesListAlertDialog nodesListAlertDialog;
 
 	public int          viewFlowMode;
 	public static final int VIEWFLOWMODE_GRAPHS = 1;
@@ -127,11 +127,11 @@ public class Activity_GraphView extends MuninActivity {
 		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		TextView serverName = (TextView) findViewById(R.id.serverName);
-		if (muninFoo.getCurrentServer().getName().equals("localhost.localdomain"))
-			serverName.setText(muninFoo.getCurrentServer().getParent().getName() + " - " + muninFoo.getCurrentServer().getName());
+		TextView nodeName = (TextView) findViewById(R.id.serverName);
+		if (muninFoo.getCurrentNode().getName().equals("localhost.localdomain"))
+			nodeName.setText(muninFoo.getCurrentNode().getParent().getName() + " - " + muninFoo.getCurrentNode().getName());
 		else
-			serverName.setText(muninFoo.getCurrentServer().getName());
+			nodeName.setText(muninFoo.getCurrentNode().getName());
 
 		actionBar.setTitle("");
 		ic_secure = findViewById(R.id.connection_secure);
@@ -148,17 +148,17 @@ public class Activity_GraphView extends MuninActivity {
 		// Coming from widget
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null
-				&& thisIntent.getExtras().containsKey("server")
+				&& thisIntent.getExtras().containsKey("node")
 				&& thisIntent.getExtras().containsKey("plugin")
 				&& thisIntent.getExtras().containsKey("period")) {
-			String server = thisIntent.getExtras().getString("server");
+			String node = thisIntent.getExtras().getString("node");
 			String plugin = thisIntent.getExtras().getString("plugin");
-			// Setting currentServer
-			muninFoo.setCurrentServer(muninFoo.getServer(server));
+			// Setting currentNode
+			muninFoo.setCurrentNode(muninFoo.getNode(node));
 			
 			// Giving position of plugin in list to GraphView
-			for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
-				if (muninFoo.getCurrentServer().getPlugins().get(i).getName().equals(plugin))
+			for (int i=0; i<muninFoo.getCurrentNode().getPlugins().size(); i++) {
+				if (muninFoo.getCurrentNode().getPlugins().get(i).getName().equals(plugin))
 					thisIntent.putExtra("position", i);
 			}
 		}
@@ -168,7 +168,7 @@ public class Activity_GraphView extends MuninActivity {
 		// Coming from Grid
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("plugin")) {
 			int i = 0;
-			for (MuninPlugin p : muninFoo.getCurrentServer().getPlugins()) {
+			for (MuninPlugin p : muninFoo.getCurrentNode().getPlugins()) {
 				if (p.getName().equals(thisIntent.getExtras().getString("plugin"))) {
 					pos = i; break;
 				}
@@ -192,7 +192,7 @@ public class Activity_GraphView extends MuninActivity {
 			this.currentPlugin = this.label.getPlugins().get(pos);
 		} else {
 			viewFlowMode = VIEWFLOWMODE_GRAPHS;
-			this.currentPlugin = muninFoo.getCurrentServer().getPlugin(pos);
+			this.currentPlugin = muninFoo.getCurrentNode().getPlugin(pos);
 		}
 
 		if (this.currentPlugin == null) {
@@ -206,7 +206,7 @@ public class Activity_GraphView extends MuninActivity {
 		if (viewFlowMode == VIEWFLOWMODE_LABELS)
 			nbPlugins = this.label.getPlugins().size();
 		else
-			nbPlugins = muninFoo.getCurrentServer().getPlugins().size();
+			nbPlugins = muninFoo.getCurrentNode().getPlugins().size();
 		bitmaps = new Bitmap[nbPlugins];
 		photoViewAttachers = new HashMap<>();
 
@@ -226,11 +226,11 @@ public class Activity_GraphView extends MuninActivity {
 				cleanBitmaps(position);
 
 				if (viewFlowMode == VIEWFLOWMODE_GRAPHS)
-					currentPlugin = muninFoo.getCurrentServer().getPlugin(position);
+					currentPlugin = muninFoo.getCurrentNode().getPlugin(position);
 				else {
 					currentPlugin = label.getPlugins().get(position);
 					((TextView) findViewById(R.id.serverName)).setText(currentPlugin.getInstalledOn().getName());
-					muninFoo.setCurrentServer(currentPlugin.getInstalledOn());
+					muninFoo.setCurrentNode(currentPlugin.getInstalledOn());
 				}
 
                 toolbarPluginName.setText(currentPlugin.getFancyName());
@@ -296,9 +296,9 @@ public class Activity_GraphView extends MuninActivity {
 		}
 
 		// HD Graphs
-		switch (muninFoo.getCurrentServer().getParent().isDynazoomAvailable()) {
+		switch (muninFoo.getCurrentNode().getParent().isDynazoomAvailable()) {
 			case AUTO_DETECT:
-				new DynazoomDetector(this, muninFoo.getCurrentServer()).execute();
+				new DynazoomDetector(this, muninFoo.getCurrentNode()).execute();
 				break;
 			case FALSE:
 				// Load as before
@@ -324,25 +324,25 @@ public class Activity_GraphView extends MuninActivity {
 				break;
 		}
 
-        // Server spinner
-        final View serverSwitcher = findViewById(R.id.serverSwitcher);
-        serverSwitcher.setOnClickListener(new OnClickListener() {
+        // Node spinner
+        final View nodeSwitcher = findViewById(R.id.serverSwitcher);
+        nodeSwitcher.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (serversListAlertDialog == null) {
-                    serversListAlertDialog = new ServersListAlertDialog(context, serverSwitcher,
-                            new ServersListAlertDialog.ServersListAlertDialogClick() {
+                if (nodesListAlertDialog == null) {
+                    nodesListAlertDialog = new NodesListAlertDialog(context, nodeSwitcher,
+                            new NodesListAlertDialog.NodesListAlertDialogClick() {
                                 @Override
-                                public void onItemClick(MuninServer server) {
-                                    if (!server.equalsApprox(muninFoo.getCurrentServer())) {
-                                        muninFoo.setCurrentServer(server);
+                                public void onItemClick(MuninNode node) {
+                                    if (!node.equalsApprox(muninFoo.getCurrentNode())) {
+                                        muninFoo.setCurrentNode(node);
                                         Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
-                                        if (server.hasPlugin(currentPlugin)) // Switch to the same plugin
-                                            intent.putExtra("position", muninFoo.getCurrentServer().getPosition(currentPlugin));
-                                        else if (server.hasCategory(currentPlugin.getCategory())) // Switch to same category
+                                        if (node.hasPlugin(currentPlugin)) // Switch to the same plugin
+                                            intent.putExtra("position", muninFoo.getCurrentNode().getPosition(currentPlugin));
+                                        else if (node.hasCategory(currentPlugin.getCategory())) // Switch to same category
                                             intent.putExtra("position",
-                                                    muninFoo.getCurrentServer().getPosition(
-                                                            server.getFirstPluginFromCategory(currentPlugin.getCategory())));
+                                                    muninFoo.getCurrentNode().getPosition(
+                                                            node.getFirstPluginFromCategory(currentPlugin.getCategory())));
                                         else
                                             intent.putExtra("position", 0);
                                         startActivity(intent);
@@ -352,7 +352,7 @@ public class Activity_GraphView extends MuninActivity {
                             });
                 }
 
-                serversListAlertDialog.show();
+                nodesListAlertDialog.show();
             }
         });
 
@@ -366,11 +366,11 @@ public class Activity_GraphView extends MuninActivity {
             public void onClick(View v) {
                 if (pluginsListAlertDialog == null) {
                     pluginsListAlertDialog = new PluginsListAlertDialog(context,
-                            customToolbarView, muninFoo.getCurrentServer(),
+                            customToolbarView, muninFoo.getCurrentNode(),
                             new PluginsListAlertDialog.PluginsListAlertDialogClick() {
                                 @Override
                                 public void onItemClick(MuninPlugin plugin) {
-                                    int index = muninFoo.getCurrentServer().getPlugins().indexOf(plugin);
+                                    int index = muninFoo.getCurrentNode().getPlugins().indexOf(plugin);
                                     if (isDynazoomOpen())
                                         hideDynazoom();
 
@@ -440,7 +440,7 @@ public class Activity_GraphView extends MuninActivity {
 		MenuItem item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
         MenuItem item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
 		
-		if (muninFoo.getCurrentServer().getPlugin(0).hasPluginPageUrl()) {
+		if (muninFoo.getCurrentNode().getPlugin(0).hasPluginPageUrl()) {
 			item_openInBrowser.setVisible(true);
 			item_fieldsDescription.setVisible(true);
 		}
@@ -449,7 +449,7 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	
 	private void changePeriod(Period newPeriod) {
-		bitmaps = new Bitmap[muninFoo.getCurrentServer().getPlugins().size()];
+		bitmaps = new Bitmap[muninFoo.getCurrentNode().getPlugins().size()];
 		
 		load_period = newPeriod;
 		
@@ -519,9 +519,9 @@ public class Activity_GraphView extends MuninActivity {
 					break;
 				}
 				case "alerts":
-					if (thisIntent.getExtras().containsKey("server")) {
-						if (muninFoo.getServer(thisIntent.getExtras().getString("server")) != null)
-							muninFoo.setCurrentServer(muninFoo.getServer(thisIntent.getExtras().getString("server")));
+					if (thisIntent.getExtras().containsKey("node")) {
+						if (muninFoo.getNode(thisIntent.getExtras().getString("node")) != null)
+							muninFoo.setCurrentNode(muninFoo.getNode(thisIntent.getExtras().getString("node")));
 						Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPlugins.class);
 						startActivity(intent);
 						Util.setTransition(context, TransitionStyle.SHALLOWER);
@@ -559,7 +559,7 @@ public class Activity_GraphView extends MuninActivity {
 					(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
 					dynazoom_from, dynazoom_to).execute();
 		} else {
-			bitmaps = new Bitmap[muninFoo.getCurrentServer().getPlugins().size()];
+			bitmaps = new Bitmap[muninFoo.getCurrentNode().getPlugins().size()];
 			if (adapter != null)
 				adapter.refreshAll();
 		}

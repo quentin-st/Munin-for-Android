@@ -25,12 +25,12 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_SeparatedList;
-import com.chteuchteu.munin.adptr.ServersListAlertDialog;
+import com.chteuchteu.munin.adptr.NodesListAlertDialog;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public class Activity_Plugins extends MuninActivity {
 	private MuninPlugin[] 		pluginsFilter;
 
 	private TextView			customActionBarView_textView;
-    private ServersListAlertDialog serversListAlertDialog;
+    private NodesListAlertDialog nodesListAlertDialog;
 	
 	private LinearLayout	ll_filter;
 	private EditText		filter;
@@ -78,22 +78,22 @@ public class Activity_Plugins extends MuninActivity {
 		customActionBarView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-                if (serversListAlertDialog == null)
-				    serversListAlertDialog = new ServersListAlertDialog(context, customActionBarView,
-                            new ServersListAlertDialog.ServersListAlertDialogClick() {
+                if (nodesListAlertDialog == null)
+				    nodesListAlertDialog = new NodesListAlertDialog(context, customActionBarView,
+                            new NodesListAlertDialog.NodesListAlertDialogClick() {
                         @Override
-                        public void onItemClick(MuninServer server) {
-                            muninFoo.setCurrentServer(server);
-                            customActionBarView_textView.setText(server.getName());
+                        public void onItemClick(MuninNode node) {
+                            muninFoo.setCurrentNode(node);
+                            customActionBarView_textView.setText(node.getName());
                             updateListView(mode);
                         }
                     });
 
-                serversListAlertDialog.show();
+                nodesListAlertDialog.show();
 			}
 		});
         customActionBarView_textView = (TextView) customActionBarView.findViewById(R.id.text);
-        customActionBarView_textView.setText(muninFoo.getCurrentServer().getName());
+        customActionBarView_textView.setText(muninFoo.getCurrentNode().getName());
 		
 		actionBar.setCustomView(customActionBarView);
 		super.setOnDrawerOpen(new Runnable() {
@@ -102,7 +102,7 @@ public class Activity_Plugins extends MuninActivity {
 				customActionBarView.setVisibility(View.GONE);
 				actionBar.setDisplayShowCustomEnabled(false);
 				actionBar.setDisplayShowTitleEnabled(true);
-				actionBar.setSubtitle(muninFoo.getCurrentServer().getName());
+				actionBar.setSubtitle(muninFoo.getCurrentNode().getName());
 			}
 		});
 		super.setOnDrawerClose(new Runnable() {
@@ -125,9 +125,9 @@ public class Activity_Plugins extends MuninActivity {
 		
 		if (mode == MODE_FLAT) {
 			pluginsList = new ArrayList<>();
-			for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
-				if (muninFoo.getCurrentServer().getPlugins().get(i) != null)
-					pluginsList.add(muninFoo.getCurrentServer().getPlugins().get(i));
+			for (int i=0; i<muninFoo.getCurrentNode().getPlugins().size(); i++) {
+				if (muninFoo.getCurrentNode().getPlugins().get(i) != null)
+					pluginsList.add(muninFoo.getCurrentNode().getPlugins().get(i));
 			}
 			
 			list.clear();
@@ -142,12 +142,12 @@ public class Activity_Plugins extends MuninActivity {
 			listview.setAdapter(sa);
 		} else {
 			// Create plugins list
-			List<List<MuninPlugin>> pluginsListCat = muninFoo.getCurrentServer().getPluginsListWithCategory();
+			List<List<MuninPlugin>> pluginsListCat = muninFoo.getCurrentNode().getPluginsListWithCategory();
 			
 			pluginsList = new ArrayList<>();
-			for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
-				if (muninFoo.getCurrentServer().getPlugins().get(i) != null)
-					pluginsList.add(muninFoo.getCurrentServer().getPlugins().get(i));
+			for (int i=0; i<muninFoo.getCurrentNode().getPlugins().size(); i++) {
+				if (muninFoo.getCurrentNode().getPlugins().get(i) != null)
+					pluginsList.add(muninFoo.getCurrentNode().getPlugins().get(i));
 			}
 			
 			Adapter_SeparatedList adapter = new Adapter_SeparatedList(this, false);
@@ -171,8 +171,8 @@ public class Activity_Plugins extends MuninActivity {
 				TextView plu = (TextView) view.findViewById(R.id.line_b);
 				Intent intent = new Intent(Activity_Plugins.this, Activity_GraphView.class);
 				int p = 0;
-				for (int i = 0; i < muninFoo.getCurrentServer().getPlugins().size(); i++) {
-					if (muninFoo.getCurrentServer().getPlugin(i).getName().equals(plu.getText().toString())) {
+				for (int i = 0; i < muninFoo.getCurrentNode().getPlugins().size(); i++) {
+					if (muninFoo.getCurrentNode().getPlugin(i).getName().equals(plu.getText().toString())) {
 						p = i;
 						break;
 					}
@@ -199,10 +199,10 @@ public class Activity_Plugins extends MuninActivity {
 						switch (which) {
 							case 0:
 								TextView plu = (TextView) view.findViewById(R.id.line_b);
-								for (int i=0; i<muninFoo.getCurrentServer().getPlugins().size(); i++) {
-									MuninPlugin plugin = muninFoo.getCurrentServer().getPlugin(i);
+								for (int i=0; i<muninFoo.getCurrentNode().getPlugins().size(); i++) {
+									MuninPlugin plugin = muninFoo.getCurrentNode().getPlugin(i);
 									if (plugin != null && plugin.getName().equals(plu.getText().toString())) {
-										muninFoo.getCurrentServer().getPlugins().remove(plugin);
+										muninFoo.getCurrentNode().getPlugins().remove(plugin);
 										muninFoo.sqlite.dbHlpr.deleteMuninPlugin(plugin, true);
 										// Remove from labels if necessary
 										muninFoo.removeLabelRelation(plugin);

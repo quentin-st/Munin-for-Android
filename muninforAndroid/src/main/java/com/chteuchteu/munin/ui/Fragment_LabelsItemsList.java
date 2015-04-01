@@ -63,24 +63,24 @@ public class Fragment_LabelsItemsList extends Fragment {
 		view.findViewById(R.id.selectALabel).setVisibility(View.GONE);
 		view.findViewById(R.id.emptyLabel).setVisibility(label.getPlugins().isEmpty() ? View.VISIBLE : View.GONE);
 
-		List<List<MuninPlugin>> labelsListCat = label.getPluginsSortedByServer(muninFoo);
+		List<List<MuninPlugin>> labelsListCat = label.getPluginsSortedByNode(muninFoo);
 		final List<MuninPlugin> correspondance = new ArrayList<>();
-		final List<String> correspondanceServers = new ArrayList<>();
+		final List<String> correspondanceNodes = new ArrayList<>();
 		Adapter_SeparatedList adapter = new Adapter_SeparatedList(context, false);
 		for (List<MuninPlugin> l : labelsListCat) {
-			correspondanceServers.add("");
+			correspondanceNodes.add("");
 			correspondance.add(new MuninPlugin());
 			List<Map<String,?>> elements = new LinkedList<>();
-			String serverName = "";
+			String nodeName = "";
 			for (MuninPlugin p : l) {
 				elements.add(createItem(p.getFancyName(), p.getName()));
-				if (serverName.equals(""))
-					serverName = p.getInstalledOn().getName();
+				if (nodeName.equals(""))
+					nodeName = p.getInstalledOn().getName();
 				correspondance.add(p);
-				correspondanceServers.add(p.getInstalledOn().getUrl());
+				correspondanceNodes.add(p.getInstalledOn().getUrl());
 			}
 
-			adapter.addSection(serverName, new SimpleAdapter(context, elements, R.layout.plugins_list,
+			adapter.addSection(nodeName, new SimpleAdapter(context, elements, R.layout.plugins_list,
 					new String[] { "title", "caption" }, new int[] { R.id.line_a, R.id.line_b }));
 		}
 
@@ -88,8 +88,8 @@ public class Fragment_LabelsItemsList extends Fragment {
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 				MuninPlugin plugin = correspondance.get(position);
-				String serverUrl = correspondanceServers.get(position);
-				muninFoo.setCurrentServer(muninFoo.getServer(serverUrl));
+				String nodeUrl = correspondanceNodes.get(position);
+				muninFoo.setCurrentNode(muninFoo.getNode(nodeUrl));
 				int pos = label.getPlugins().indexOf(plugin);
 				activity.onLabelItemClick(pos, label.getName(), label.getId());
 			}

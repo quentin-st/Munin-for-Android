@@ -27,8 +27,8 @@ import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
 import com.chteuchteu.munin.ui.Activity_Plugins;
 import com.chteuchteu.munin.ui.Activity_Server;
@@ -335,23 +335,23 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
         ReturnCode ret = ReturnCode.UNDEFINED;
 
         if (type.equals("munin/")) {
-			/*		CONTENT OF THE PAGE: SERVERS LIST	*/
-            int nbNewServers = activity.master.fetchChildren(muninFoo.getUserAgent());
+			/*		CONTENT OF THE PAGE: NODES LIST	*/
+            int nbNewNodes = activity.master.fetchChildren(muninFoo.getUserAgent());
 
-            boolean fetchSuccess = nbNewServers > 0;
+            boolean fetchSuccess = nbNewNodes > 0;
 
             if (fetchSuccess) {
                 int popupstate = 30;
                 setPopupState(popupstate);
 
-                // Plugins lookup for each server
-                for (MuninServer server : activity.master.getChildren()) {
-                    setPopupText("", context.getString(R.string.text46) + " " + (activity.master.getChildren().indexOf(server)+1) + "/" + nbNewServers);
+                // Plugins lookup for each node
+                for (MuninNode node : activity.master.getChildren()) {
+                    setPopupText("", context.getString(R.string.text46) + " " + (activity.master.getChildren().indexOf(node)+1) + "/" + nbNewNodes);
 
-                    server.fetchPluginsList(muninFoo.getUserAgent());
+                    node.fetchPluginsList(muninFoo.getUserAgent());
 
                     if (popupstate < 80) {
-                        popupstate += Math.round(50/nbNewServers);
+                        popupstate += Math.round(50/nbNewNodes);
                         setPopupState(popupstate);
                     }
                 }
@@ -389,12 +389,12 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
                 // Delete old duplicate
                 if (alreadyThereMaster != null) {
                     muninFoo.sqlite.dbHlpr.deleteMaster(alreadyThereMaster, true);
-                    muninFoo.getServers().removeAll(alreadyThereMaster.getChildren());
+                    muninFoo.getNodes().removeAll(alreadyThereMaster.getChildren());
                     muninFoo.getMasters().remove(alreadyThereMaster);
                 }
 
                 muninFoo.getMasters().add(activity.master);
-                muninFoo.getServers().addAll(activity.master.getChildren());
+                muninFoo.getNodes().addAll(activity.master.getChildren());
                 // Insert activity.master
                 muninFoo.sqlite.insertMuninMaster(activity.master);
 
@@ -421,8 +421,8 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
                 // Success!
                 message_title = context.getString(R.string.text18);
 
-                // X sub-server(s) added!
-                message_text = nbNewServers + " " + context.getString(R.string.text21_1) + (nbNewServers > 1 ? "s" : "") + " " + context.getString(R.string.text21_2);
+                // X node(s) added!
+                message_text = nbNewNodes + " " + context.getString(R.string.text21_1) + (nbNewNodes > 1 ? "s" : "") + " " + context.getString(R.string.text21_2);
 
                 return ReturnCode.SERVERS_SUCCESS;
             }
@@ -594,7 +594,7 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        muninFoo.updateCurrentServer(context);
+        muninFoo.updateCurrentNode(context);
 
         cancelButton.setVisibility(View.GONE);
         scannerState = ScannerState.IDLE;
@@ -627,7 +627,7 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
 				        @Override
 				        public void onClick(View v) {
 					        activity.alertDialog.dismiss();
-					        muninFoo.setCurrentServer(activity.master.getChildren().get(0));
+					        muninFoo.setCurrentNode(activity.master.getChildren().get(0));
 					        Intent intent = new Intent(context, Activity_Plugins.class);
 					        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					        activity.startActivity(intent);

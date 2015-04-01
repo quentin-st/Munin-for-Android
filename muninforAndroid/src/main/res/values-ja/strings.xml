@@ -67,7 +67,7 @@
 	<string name="widget_configuration1">正常にホーム画面にウィジェットを追加しました。 Tip: ウィジェット下部にあるグレーのバーをタップしてグラフを更新できます!</string>
 	<string name="widget_configuration2">WiFi 時のみグラフを自動で更新する (1 時間毎に更新)</string>
 	<string name="widget_configuration3">サーバー名を非表示にする</string>
-	<string name="settings_defaultserver">デフォルト サーバー</string>
+	<string name="settings_defaultnode">デフォルト サーバー</string>
 	<string name="settings_lang">アプリの言語</string>
 	<string name="lang_english">英語</string>
 	<string name="lang_french">フランス語</string>
@@ -201,7 +201,7 @@
 	<string name="grids_legend">グリッドの凡例</string>
 	<string name="grids_legend_none">なし</string>
 	<string name="grids_legend_pluginName">プラグイン名</string>
-	<string name="grids_legend_serverName">サーバー名</string>
+	<string name="grids_legend_nodeName">サーバー名</string>
 	<string name="grids_legend_both">両方</string>
 	<string name="redetectHdGraphsUrl">HD グラフ URL を再検出</string>
 	<string name="disableHDGraphs">HD グラフを無効にする</string>

@@ -234,7 +234,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		if (fragment.getGrid().currentlyOpenedGridItem == null)
 			return;
 
-		fragment.getGrid().f.setCurrentServer(fragment.getGrid().currentlyOpenedGridItem.getPlugin().getInstalledOn());
+		fragment.getGrid().f.setCurrentNode(fragment.getGrid().currentlyOpenedGridItem.getPlugin().getInstalledOn());
 		Intent i = new Intent(context, Activity_GraphView.class);
 		i.putExtra("plugin", fragment.getGrid().currentlyOpenedGridItem.getPlugin().getName());
 		i.putExtra("from", "grid");

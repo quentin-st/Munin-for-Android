@@ -82,10 +82,6 @@ public class Adapter_SeparatedList extends BaseAdapter {
 		return -1;
 	}
 	
-	public boolean areAllItemsSelectable() {
-		return false;
-	}
-	
 	public boolean isEnabled(int position) {
 		return getItemViewType(position) != TYPE_SECTION_HEADER;
 	}
@@ -107,7 +103,7 @@ public class Adapter_SeparatedList extends BaseAdapter {
 					textView.setPadding(55, textView.getPaddingTop(), textView.getPaddingRight(), textView.getPaddingBottom());
 				return view;
 			}
-			if (position < size) // MuninServer line
+			if (position < size) // MuninNode line
                 return adapter.getView(position-1, convertView, parent);
 			
 			// otherwise jump into next section

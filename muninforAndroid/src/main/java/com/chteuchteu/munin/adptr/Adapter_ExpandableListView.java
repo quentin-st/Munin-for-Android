@@ -23,19 +23,19 @@ import java.util.Map;
 public class Adapter_ExpandableListView extends BaseExpandableListAdapter {
 	private IServersActivity activity;
 	private Context context;
-	private Map<MuninMaster, List<String>> serversCollection;
-	private List<MuninMaster> servers;
+	private Map<MuninMaster, List<String>> nodesCollection;
+	private List<MuninMaster> nodes;
 	
-	public Adapter_ExpandableListView(IServersActivity activity, Context context, List<MuninMaster> servers,
-			Map<MuninMaster, List<String>> serversCollection) {
+	public Adapter_ExpandableListView(IServersActivity activity, Context context, List<MuninMaster> nodes,
+			Map<MuninMaster, List<String>> nodesCollection) {
 		this.activity = activity;
 		this.context = context;
-		this.serversCollection = serversCollection;
-		this.servers = servers;
+		this.nodesCollection = nodesCollection;
+		this.nodes = nodes;
 	}
 	
 	public Object getChild(int groupPosition, int childPosition) {
-		return serversCollection.get(servers.get(groupPosition)).get(childPosition);
+		return nodesCollection.get(nodes.get(groupPosition)).get(childPosition);
 	}
 	
 	public long getChildId(int groupPosition, int childPosition) {
@@ -45,14 +45,14 @@ public class Adapter_ExpandableListView extends BaseExpandableListAdapter {
 	@SuppressLint("InflateParams")
 	public View getChildView(final int groupPosition, final int childPosition,
 	                         boolean isLastChild, View convertView, ViewGroup parent) {
-		final String server = (String) getChild(groupPosition, childPosition);
+		final String node = (String) getChild(groupPosition, childPosition);
 		LayoutInflater inflater = LayoutInflater.from(context);
 		
 		if (convertView == null)
 			convertView = inflater.inflate(R.layout.expandable_server, null);
 		
 		TextView item = (TextView) convertView.findViewById(R.id.server);
-		item.setText(server);
+		item.setText(node);
 		
 		// Click action
 		convertView.setOnClickListener(new OnClickListener() {
@@ -104,15 +104,15 @@ public class Adapter_ExpandableListView extends BaseExpandableListAdapter {
 	}
 	
 	public int getChildrenCount(int groupPosition) {
-		return serversCollection.get(servers.get(groupPosition)).size();
+		return nodesCollection.get(nodes.get(groupPosition)).size();
 	}
 	
 	public Object getGroup(int groupPosition) {
-		return servers.get(groupPosition);
+		return nodes.get(groupPosition);
 	}
 	
 	public int getGroupCount() {
-		return servers.size();
+		return nodes.size();
 	}
 	
 	public long getGroupId(int groupPosition) {

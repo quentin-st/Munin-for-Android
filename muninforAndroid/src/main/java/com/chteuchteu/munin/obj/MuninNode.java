@@ -14,7 +14,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MuninServer {
+public class MuninNode {
 	private long id;
 	private String name;
 	private String url;
@@ -25,14 +25,14 @@ public class MuninServer {
 	private int position;
 	public boolean isPersistant = false;
 	/**
-	 * Used for Alerts (display if server is unreachable)
+	 * Used for Alerts (display if node is unreachable)
 	 */
 	public SpecialBool reachable;
 	
 	private List<MuninPlugin> erroredPlugins;
 	private List<MuninPlugin> warnedPlugins;
 	
-	public MuninServer() {
+	public MuninNode() {
 		this.name = "";
 		this.url = "";
 		this.plugins = new ArrayList<>();
@@ -43,7 +43,7 @@ public class MuninServer {
 		this.reachable = SpecialBool.UNKNOWN;
 		this.position = -1;
 	}
-	public MuninServer (String name, String url) {
+	public MuninNode(String name, String url) {
 		this.name = name;
 		this.url = url;
 		this.plugins = new ArrayList<>();
@@ -229,7 +229,7 @@ public class MuninServer {
 
 	/**
 	 * Get plugin state (OK / WARNING / CRITICAL) for each plugin
-	 * in this server. Used on Activity_Alerts
+	 * in this senodeUsed on Activity_Alerts
 	 * @param userAgent String
 	 */
 	public void fetchPluginsStates(String userAgent) {
@@ -362,9 +362,9 @@ public class MuninServer {
 		return l;
 	}
 	
-	public boolean equalsApprox (MuninServer server2) {
+	public boolean equalsApprox (MuninNode node2) {
 		String address1 = this.getUrl();
-		String address2 = server2.getUrl();
+		String address2 = node2.getUrl();
 		
 		// transformations
 		if (address1.length() > 11) {
@@ -382,9 +382,9 @@ public class MuninServer {
 		return address1.equals(address2);
 	}
 	
-	public boolean equalsApprox (String server2) {
+	public boolean equalsApprox (String node2) {
 		String address1 = this.getUrl();
-		String address2 = server2;
+		String address2 = node2;
 		
 		// transformations
 		if (address1.length() > 11) {

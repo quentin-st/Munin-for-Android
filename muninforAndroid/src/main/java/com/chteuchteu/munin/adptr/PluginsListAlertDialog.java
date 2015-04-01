@@ -14,8 +14,8 @@ import android.widget.SimpleAdapter;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class PluginsListAlertDialog {
     private AlertDialog dialog;
 
-    public PluginsListAlertDialog(Context context, View attachTo, MuninServer server,
+    public PluginsListAlertDialog(Context context, View attachTo, MuninNode node,
                                   final PluginsListAlertDialogClick onItemClick) {
         // Init
         LinearLayout view = new LinearLayout(context);
@@ -35,7 +35,7 @@ public class PluginsListAlertDialog {
 
         ListView listView = new ListView(context);
         // Create plugins list
-        final List<List<MuninPlugin>> list = server.getPluginsListWithCategory();
+        final List<List<MuninPlugin>> list = node.getPluginsListWithCategory();
 
         Adapter_SeparatedList adapter = new Adapter_SeparatedList(context, true);
         for (List<MuninPlugin> l : list) {

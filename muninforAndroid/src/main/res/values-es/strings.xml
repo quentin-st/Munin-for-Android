@@ -75,7 +75,7 @@
 	<string name="widget_configuration1">Éxito! El widget ha sido agregado a su ventana principal. Consejo: puede actualizar el gráfico tocando la barra gris en la parte inferior del widget!</string>
 	<string name="widget_configuration2">Actualizar los gráficos automáticamente solo con Wifi (1 actualización por hora)</string>
 	<string name="widget_configuration3">Ocultar el nombre del servidor</string>
-	<string name="settings_defaultserver">Servidor por defecto</string>
+	<string name="settings_defaultnode">Servidor por defecto</string>
 	<string name="settings_lang">Lenguaje de la aplicación</string>
 	<string name="lang_english">Inglés</string>
 	<string name="lang_french">Francés</string>
@@ -207,7 +207,7 @@
 	<string name="grids_legend">Leyenda de las grillas</string>
 	<string name="grids_legend_none">Ningún</string>
 	<string name="grids_legend_pluginName">Nombre del plugin</string>
-	<string name="grids_legend_serverName">Nombre del servidor</string>
+	<string name="grids_legend_nodeName">Nombre del servidor</string>
 	<string name="grids_legend_both">Ambos</string>
 	<string name="redetectHdGraphsUrl">Detectar nuevamente el URL de los gráficos HD</string>
 	<string name="disableHDGraphs">Deshabilitar gráficos HD</string>

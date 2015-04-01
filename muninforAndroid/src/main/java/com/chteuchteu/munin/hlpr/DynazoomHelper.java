@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
 import com.edmodo.rangebar.RangeBar;
 
 import java.util.Calendar;
@@ -108,7 +108,7 @@ public final class DynazoomHelper {
 	}
 
 	public static class DynazoomFetcher extends AsyncTask<Void, Integer, Void> {
-		private MuninServer server;
+		private MuninNode node;
 		private MuninPlugin plugin;
 		private long pinPoint1;
 		private long pinPoint2;
@@ -124,7 +124,7 @@ public final class DynazoomHelper {
 		public DynazoomFetcher (MuninPlugin plugin, ImageView iv, ProgressBar progressBar, Context context, String userAgent,
 		                        long pinPoint1, long pinPoint2) {
 			super();
-			this.server = plugin.getInstalledOn();
+			this.node = plugin.getInstalledOn();
 			this.plugin = plugin;
 			this.pinPoint1 = pinPoint1;
 			this.pinPoint2 = pinPoint2;
@@ -151,7 +151,7 @@ public final class DynazoomHelper {
 
 			String imgUrl = plugin.getHDImgUrl(pinPoint1, pinPoint2, true, graphsDimensions[0], graphsDimensions[1]);
 
-			bitmap = Util.removeBitmapBorder(server.getParent().grabBitmap(imgUrl, userAgent).getBitmap());
+			bitmap = Util.removeBitmapBorder(node.getParent().grabBitmap(imgUrl, userAgent).getBitmap());
 			bitmap = Util.dropShadow(bitmap);
 
 			return null;

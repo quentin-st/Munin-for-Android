@@ -23,15 +23,15 @@ public class Label {
 	public long getId() { return this.id; }
 	
 	
-	// Returns a List of List of MuninPlugin, sorted by server.
+	// Returns a List of List of MuninPlugin, sorted by node.
 	// To be displayed in Activity_Label
-	// The loop is made from MuninFoo's servers list (more easy than previous way)
-	//		, and made according to servers sorting positions
-	public List<List<MuninPlugin>> getPluginsSortedByServer(MuninFoo f) {
+	// The loop is made from MuninFoo's nodes list (more easy than previous way)
+	//		, and made according to nodes sorting positions
+	public List<List<MuninPlugin>> getPluginsSortedByNode(MuninFoo f) {
 		List<List<MuninPlugin>> l = new ArrayList<>();
 		
 		List<MuninPlugin> curList;
-		for (MuninServer s : f.getServers()) {
+		for (MuninNode s : f.getNodes()) {
 			curList = new ArrayList<>();
 			
 			for (MuninPlugin p : plugins) {

@@ -8,18 +8,18 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 
 import java.util.List;
 
-public class Adapter_ServersList extends ArrayAdapter<MuninServer> {
+public class Adapter_NodesList extends ArrayAdapter<MuninNode> {
 	private Context context;
-	private List<MuninServer> servers;
+	private List<MuninNode> nodes;
 
-	public Adapter_ServersList(Context context, List<MuninServer> servers) {
-		super(context, R.layout.servers_list, servers);
+	public Adapter_NodesList(Context context, List<MuninNode> nodes) {
+		super(context, R.layout.nodes_list, nodes);
 		this.context = context;
-		this.servers = servers;
+		this.nodes = nodes;
 	}
 
 	@Override
@@ -28,19 +28,19 @@ public class Adapter_ServersList extends ArrayAdapter<MuninServer> {
 		if (convertView != null)
 			view = convertView;
 		else
-			view = LayoutInflater.from(context).inflate(R.layout.servers_list, parent, false);
+			view = LayoutInflater.from(context).inflate(R.layout.nodes_list, parent, false);
 
 		TextView textView1 = (TextView) view.findViewById(R.id.line_a);
 		TextView textView2 = (TextView) view.findViewById(R.id.line_b);
 
-		MuninServer server = servers.get(position);
-		textView1.setText(server.getName());
-		textView2.setText(server.getParent().getName());
+		MuninNode node = nodes.get(position);
+		textView1.setText(node.getName());
+		textView2.setText(node.getParent().getName());
 
 		return view;
 	}
 
-	public MuninServer getItem(int position) {
-		return this.servers.get(position);
+	public MuninNode getItem(int position) {
+		return this.nodes.get(position);
 	}
 }

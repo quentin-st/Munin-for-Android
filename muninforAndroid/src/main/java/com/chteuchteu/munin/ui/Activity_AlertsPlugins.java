@@ -30,9 +30,9 @@ public class Activity_AlertsPlugins extends MuninActivity {
 		dh.setDrawerActivity(this);
 
         actionBar.setTitle(getString(R.string.alertsTitle));
-		actionBar.setSubtitle(muninFoo.getCurrentServer().getName());
+		actionBar.setSubtitle(muninFoo.getCurrentNode().getName());
 		
-		for (MuninPlugin plugin : muninFoo.getCurrentServer().getPlugins()) {
+		for (MuninPlugin plugin : muninFoo.getCurrentNode().getPlugins()) {
 			if (plugin.getState() == AlertState.WARNING || plugin.getState() == AlertState.CRITICAL) {
 				LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				View v = vi.inflate(R.layout.plugins_list_dark, null);
@@ -49,7 +49,7 @@ public class Activity_AlertsPlugins extends MuninActivity {
 				else if (plugin.getState() == AlertState.CRITICAL)
 					part.setBackgroundColor(context.getResources().getColor(R.color.alerts_bg_color_critical));
 				
-				final int indexOfPlugin = muninFoo.getCurrentServer().getPlugins().indexOf(plugin);
+				final int indexOfPlugin = muninFoo.getCurrentNode().getPlugins().indexOf(plugin);
 				
 				part.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
@@ -58,7 +58,7 @@ public class Activity_AlertsPlugins extends MuninActivity {
 						Intent i = new Intent(Activity_AlertsPlugins.this, Activity_GraphView.class);
 						i.putExtra("plugin", pluginName);
 						i.putExtra("position", indexOfPlugin);
-						i.putExtra("server", muninFoo.getCurrentServer().getUrl());
+						i.putExtra("node", muninFoo.getCurrentNode().getUrl());
 						i.putExtra("from", "alerts");
 						startActivity(i);
 						Util.setTransition(context, TransitionStyle.DEEPER);

@@ -24,7 +24,7 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_IconList;
-import com.chteuchteu.munin.adptr.Adapter_ServersList;
+import com.chteuchteu.munin.adptr.Adapter_NodesList;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.ui.Fragment_Grid;
@@ -86,18 +86,18 @@ public class GridItem {
 		// Footer
 		footer = view.findViewById(R.id.gridItemFooter);
 		TextView pluginName = (TextView) view.findViewById(R.id.pluginName);
-		TextView serverName = (TextView) view.findViewById(R.id.serverName);
+		TextView nodeName = (TextView) view.findViewById(R.id.serverName);
 		Util.Fonts.setFont(context, pluginName, Util.Fonts.CustomFont.Roboto_Regular);
-		Util.Fonts.setFont(context, serverName, Util.Fonts.CustomFont.Roboto_Regular);
+		Util.Fonts.setFont(context, nodeName, Util.Fonts.CustomFont.Roboto_Regular);
 		pluginName.setText(plugin.getFancyName());
-		serverName.setText(plugin.getInstalledOn().getName());
+		nodeName.setText(plugin.getInstalledOn().getName());
 		if (fragment.isEditing())
 			footer.setVisibility(View.GONE);
 
 		switch (Util.getPref(context, Util.PrefKeys.GridsLegend)) {
 			case "none": footer.setVisibility(View.GONE); break;
 			case "serverName": case "": pluginName.setVisibility(View.GONE); break;
-			case "pluginName": serverName.setVisibility(View.GONE); break;
+			case "pluginName": nodeName.setVisibility(View.GONE); break;
 		}
 
 		// Preview
@@ -238,11 +238,11 @@ public class GridItem {
 		for (GridItem item : g.getItems())
 			item.cancelEdit();
 
-		add_serversListDialog(c, f, g, activity, fragment, X, Y);
+		add_nodesListDialog(c, f, g, activity, fragment, X, Y);
 	}
 	
 	@SuppressWarnings("deprecation")
-	private static void add_serversListDialog(final Context c, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
+	private static void add_nodesListDialog(final Context c, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
 	                                          final int X, final int Y) {
 		/*if (!(activity instanceof Activity_Grid))
 			return;
@@ -252,23 +252,23 @@ public class GridItem {
 		builder.setTitle(c.getText(R.string.text71));
 		ListView modeList = new ListView(c);
 
-		final Adapter_ServersList serversAdapter = new Adapter_ServersList(c, f.getServers());
+		final Adapter_NodesList nodesAdapter = new Adapter_NodesList(c, f.getNodes());
 		builder.setView(modeList);
 		final Dialog dialog = builder.create();
-		modeList.setAdapter(serversAdapter);
+		modeList.setAdapter(nodesAdapter);
 		modeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
 				dialog.dismiss();
-				add_pluginsListDialog(c, serversAdapter.getItem(pos), f, g, activity, fragment, X, Y);
+				add_pluginsListDialog(c, nodesAdapter.getItem(pos), f, g, activity, fragment, X, Y);
 			}
 		});
 		dialog.show();
 	}
 	
-	private static void add_pluginsListDialog(final Context c, final MuninServer server, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
+	private static void add_pluginsListDialog(final Context c, final MuninNode node, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
 	                                          final int X, final int Y) {
-		List<MuninPlugin> l = server.getPlugins();
+		List<MuninPlugin> l = node.getPlugins();
 		
 		final CharSequence[] items = new CharSequence[l.size()];
 		for (int i=0; i<l.size(); i++)
@@ -301,7 +301,7 @@ public class GridItem {
 				int maxWidth = g.getNbColumns();
 				List<GridItem> addedItems = new ArrayList<>();
 				for (Integer i : selectedItems) {
-					MuninPlugin p = server.getPlugin(i);
+					MuninPlugin p = node.getPlugin(i);
 					if (!alreadyAdded(g, p)) {
 						GridItem item = new GridItem(g, p);
 						item.setActivityReferences(c, activity, fragment);

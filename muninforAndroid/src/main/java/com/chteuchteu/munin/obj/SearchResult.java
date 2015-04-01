@@ -20,7 +20,7 @@ public class SearchResult {
 	private SearchResultType searchResultType;
 	private Object object;
 	
-	public enum SearchResultType { PLUGIN, SERVER, GRID, LABEL }
+	public enum SearchResultType { PLUGIN, NODE, GRID, LABEL }
 	
 	public SearchResult(SearchResultType resultType, Object object, Context context) {
 		this.searchResultType = resultType;
@@ -40,10 +40,10 @@ public class SearchResult {
 				line_1 = plugin.getFancyName();
 				line_2 = plugin.getInstalledOn().getName();
 				break;
-			case SERVER:
-				MuninServer server = (MuninServer) object;
-				line_1 = server.getName();
-				line_2 = server.getUrl();
+			case NODE:
+				MuninNode node = (MuninNode) object;
+				line_1 = node.getName();
+				line_2 = node.getUrl();
 				break;
 			default:
 				break;
@@ -77,7 +77,7 @@ public class SearchResult {
 				break;
 			case PLUGIN:
 				MuninPlugin plugin = (MuninPlugin) object;
-				MuninFoo.getInstance().setCurrentServer(plugin.getInstalledOn());
+				MuninFoo.getInstance().setCurrentNode(plugin.getInstalledOn());
 				
 				intent = new Intent(activity, Activity_GraphView.class);
 				intent.putExtra("position", plugin.getIndex());
@@ -85,8 +85,8 @@ public class SearchResult {
 				Util.setTransition(activity, TransitionStyle.DEEPER);
 				
 				break;
-			case SERVER:
-				MuninFoo.getInstance().setCurrentServer((MuninServer) object);
+			case NODE:
+				MuninFoo.getInstance().setCurrentNode((MuninNode) object);
 				
 				activity.startActivity(new Intent(activity, Activity_Plugins.class));
 				Util.setTransition(activity, TransitionStyle.DEEPER);

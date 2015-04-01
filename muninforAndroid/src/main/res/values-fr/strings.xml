@@ -30,7 +30,7 @@
 	<string name="save_button">Sauvegarder</string>
 	<string name="menu_graph_refresh">Actualiser</string>
 	<string name="menu_graph_save">Sauvegarder le graph sur la carte SD</string>
-	<string name="menu_graph_switch">Changer de serveur</string>
+	<string name="menu_graph_switch">Changer de noeud</string>
 	<string name="menu_addserver_save">Sauvegarder le serveur</string>
 	<string name="menu_addserver_delete">Supprimer le serveur</string>
 	<string name="loading">Chargement…</string>
@@ -54,14 +54,14 @@
 	<string name="edit">Editer</string>
 	<string name="widget_configuration1">Félicitations ! Le widget a été ajouté avec succès à votre écran d\'accueil. Conseil : vous pouvez actualiser le graph en tapant sur la barre horizontale grise en-dessous de celui-ci !</string>
 	<string name="widget_configuration2">Rafraîchissement auto du graph par Wifi uniquement (1 par heure)</string>
-	<string name="widget_configuration3">Masquer le nom du serveur</string>
+	<string name="widget_configuration3">Masquer le nom du noeud</string>
 	<string name="text01">Les paramètres et la configuration des serveurs vont être remis à zéro. Etes-vous sûr(e) ?</string>
 	<string name="text02">Remise à zéro effectuée.</string>
 	<string name="text09">Erreur !</string>
 	<string name="text11">L\'application Google Play ne semble pas être installée sur votre appareil.</string>
 	<string name="text16">L\'URL semble être incorrecte. Veuillez la vérifier.</string>
 	<string name="text18">Félicitations !</string>
-	<string name="text21.1"> serveur</string>
+	<string name="text21.1"> noeud</string>
 	<string name="text21.2"> ajouté(s) !</string>
 	<string name="text24">Succès !</string>
 	<string name="text27"> plugins trouvés !</string>
@@ -79,7 +79,7 @@
 	<string name="text43">Veuillez patienter…</string>
 	<string name="text44">Récupération de l\'URL…</string>
 	<string name="text45">Enregistrement !</string>
-	<string name="text46">Connexion au serveur </string>
+	<string name="text46">Connexion au noeud </string>
 	<string name="text47.1">jour</string>
 	<string name="text47.2">semaine</string>
 	<string name="text47.3">mois</string>
@@ -87,8 +87,8 @@
 	<string name="text48.1">Horizontal</string>
 	<string name="text48.2">Vertical</string>
 	<string name="text48.3">Auto</string>
-	<string name="text49.1">Masquer les serveurs d\'état normal</string>
-	<string name="text49.2">Afficher les serveurs d\'état normal</string>
+	<string name="text49.1">Masquer les noeud d\'état normal</string>
+	<string name="text49.2">Afficher les noeud d\'état normal</string>
 	<string name="text50.1">critique</string>
 	<string name="text50.2">critiques</string>
 	<string name="text51.1">avertissement</string>
@@ -97,9 +97,9 @@
 	<string name="text53">Mettre à jour par Wifi uniquement</string>
 	<string name="text54">Consommation de data estimée: ?? /jour</string>
 	<string name="text55">Taux de rafraîchissement</string>
-	<string name="text56">Serveurs à surveiller</string>
+	<string name="text56">Noeuds à surveiller</string>
 	<string name="text57">10 minutes/30 minutes/1 heure/2 heures/5 heures/10 heures/24 heures</string>
-	<string name="text58"> critique / critiques /&amp; / warning / warnings /sur / serveur/ serveurs</string>
+	<string name="text58"> critique / critiques /&amp; / warning / warnings /sur / noeud/ noeuds</string>
 	<string name="text60">Continuer</string>
 	<string name="text61">Ajouter</string>
 	<string name="text62">Aucun label</string>
@@ -126,7 +126,7 @@
 	<string name="text80">Cette grille va être supprimée. Êtes-vous sûr(e) ?</string>
 	<string name="text81">Aucun contenu disponible pour ce plugin</string>
 	<string name="text82">Ce label va être supprimé. Êtes-vous sûr(e) ?</string>
-	<string name="text83">Ce serveur va être supprimé. Êtes-vous sûr(e) ?</string>
+	<string name="text83">Ce noeud va être supprimé. Êtes-vous sûr(e) ?</string>
 	<string name="text84">Ce master va être supprimé. Êtes-vous sûr(e) ?</string>
 	<string name="import_servers">Importer</string>
 	<string name="export_servers">Exporter</string>
@@ -135,7 +135,7 @@
 	<string name="export_subject">Export Munin for Android</string>
 	<string name="import_title">Importation</string>
 	<string name="import_sentence">Veuillez entrer le code généré sur le premier appareil</string>
-	<string name="settings_defaultserver">Default server</string>
+	<string name="settings_defaultnode">Default server</string>
 	<string name="settings_lang">Langue de l\'application</string>
 	<string name="lang_french">Français</string>
 	<string name="lang_german">Allemand</string>
@@ -168,7 +168,7 @@
 	<string name="delete_plugin">Supprimer le plugin</string>
 	<string name="rename_label">Renommer ce label</string>
 	<string name="delete_label">Supprimer ce label</string>
-	<string name="delete_master">Supprimer le master et les sous-serveurs</string>
+	<string name="delete_master">Supprimer le maître et les noeuds</string>
 	<string name="alerts_ok">Bonne nouvelle - tout va bien</string>
 	<string name="update_credentials">Mettre à jour les infos de connexion</string>
 	<string name="long_click">Appui long pour éditer</string>
@@ -180,9 +180,9 @@
 	    pourriez-vous considérer une donation s\'il vous plaît ? Merci ! Si vous le faites, envoyez-moi un mail afin que je puisse
 	    vous remercier en personne !</string>
 	<string name="donate_amount">Veuillez sélectionner le montant du don. (33% de cette somme est prélevée par Google)</string>
-	<string name="sync_serversadded">XXX serveur(s) ajouté(s)\n</string>
-	<string name="sync_serversupdated">XXX serveur(s) mis à jour\n</string>
-	<string name="sync_serversdeleted">XXX serveur(s) supprimé(s)\n</string>
+	<string name="sync_serversadded">XXX noeud(s) ajouté(s)\n</string>
+	<string name="sync_serversupdated">XXX noeud(s) mis à jour\n</string>
+	<string name="sync_serversdeleted">XXX noeud(s) supprimé(s)\n</string>
 	<string name="sync_pluginsadded">XXX plugin(s) ajouté(s)\n</string>
 	<string name="sync_pluginsupdated">XXX plugin(s) mis à jour\n</string>
 	<string name="sync_pluginsdeleted">XXX plugin(s) supprimé(s)\n</string>
@@ -216,7 +216,7 @@
 	<string name="grids_legend">Légende des grilles</string>
 	<string name="grids_legend_none">Aucune</string>
 	<string name="grids_legend_pluginName">Nom du plugin</string>
-	<string name="grids_legend_serverName">Nom du serveur</string>
+	<string name="grids_legend_nodeName">Nom du noeud</string>
 	<string name="grids_legend_both">Les deux</string>
 	<string name="user_agent">User Agent</string>
 	<string name="redetectHdGraphsUrl">Détection de l\'URL des graphs HD</string>

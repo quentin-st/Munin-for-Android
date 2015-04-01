@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.adptr.Adapter_ServersList;
+import com.chteuchteu.munin.adptr.Adapter_NodesList;
 import com.chteuchteu.munin.obj.Grid;
 
 public class DialogFragment_AddGridItem extends DialogFragment {
@@ -48,18 +48,18 @@ public class DialogFragment_AddGridItem extends DialogFragment {
 		int gridItemX = args.getInt(KEY_X);
 		int gridItemY = args.getInt(KEY_Y);
 
-		// Servers list
+		// Nodes list
 		dialog.setTitle(R.string.text71);
-		ListView serversList = new ListView(context);
-		Adapter_ServersList serversAdapter = new Adapter_ServersList(context, muninFoo.getServers());
-		serversList.setAdapter(serversAdapter);
-		serversList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		ListView nodesList = new ListView(context);
+		Adapter_NodesList nodesAdapter = new Adapter_NodesList(context, muninFoo.getNodes());
+		nodesList.setAdapter(nodesAdapter);
+		nodesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO
 			}
 		});
 
-		return serversList;
+		return nodesList;
 	}
 }

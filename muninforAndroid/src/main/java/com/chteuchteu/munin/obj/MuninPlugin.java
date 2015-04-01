@@ -17,7 +17,7 @@ public class MuninPlugin {
 	private long 		id;
 	private String 		name;
 	private String 		fancyName;
-	private MuninServer installedOn;
+	private MuninNode installedOn;
 	private String 		category;
 	private AlertState 	state;
 	private String 		pluginPageUrl;
@@ -30,9 +30,9 @@ public class MuninPlugin {
 		this.pluginPageUrl = "";
 		this.isDocumentationAvailable = Util.SpecialBool.UNKNOWN;
 	}
-	public MuninPlugin (String name, MuninServer server) {
+	public MuninPlugin (String name, MuninNode node) {
 		this.name = name;
-		this.installedOn = server;
+		this.installedOn = node;
 		this.state = AlertState.UNDEFINED;
 		this.category = "";
 		this.pluginPageUrl = "";
@@ -81,8 +81,8 @@ public class MuninPlugin {
 	public void setFancyName(String fName) { this.fancyName = fName; }
 	public String getFancyName() { return this.fancyName; }
 	
-	public void setInstalledOn(MuninServer s) { this.installedOn = s; }
-	public MuninServer getInstalledOn() { return this.installedOn; }
+	public void setInstalledOn(MuninNode s) { this.installedOn = s; }
+	public MuninNode getInstalledOn() { return this.installedOn; }
 	
 	public boolean hasPluginPageUrl() {
 		return this.pluginPageUrl != null && !this.pluginPageUrl.equals("");
@@ -188,8 +188,8 @@ public class MuninPlugin {
 
 	public static MuninPlugin findFromMastersList(long pluginId, List<MuninMaster> masters) {
 		for (MuninMaster master : masters) {
-			for (MuninServer server : master.getChildren()) {
-				for (MuninPlugin plugin : server.getPlugins()) {
+			for (MuninNode node : master.getChildren()) {
+				for (MuninPlugin plugin : node.getPlugins()) {
 					if (plugin.getId() == pluginId)
 						return plugin;
 				}

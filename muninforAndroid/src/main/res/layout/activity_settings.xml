@@ -51,10 +51,10 @@
 					<TextView
 						android:tag="set_font"
 						style="@style/Settings_SettingTitle"
-						android:text="@string/settings_defaultserver" />
+						android:text="@string/settings_defaultnode" />
 
 					<Spinner
-						android:id="@+id/spinner_defaultserver"
+						android:id="@+id/spinner_defaultnode"
 						style="@style/Settings_SettingSpinner" />
 
 					<View style="@style/Material_Divider" />

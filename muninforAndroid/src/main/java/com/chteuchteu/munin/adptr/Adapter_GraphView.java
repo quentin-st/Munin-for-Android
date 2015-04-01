@@ -45,10 +45,10 @@ public class Adapter_GraphView extends FragmentStatePagerAdapter {
 			return "";
 
 		if (activity.viewFlowMode == Activity_GraphView.VIEWFLOWMODE_GRAPHS) {
-			if (position > muninFoo.getCurrentServer().getPlugins().size())
+			if (position > muninFoo.getCurrentNode().getPlugins().size())
 				return "";
 
-			return muninFoo.getCurrentServer().getPlugin(position).getFancyName();
+			return muninFoo.getCurrentNode().getPlugin(position).getFancyName();
 		} else {
 			if (position > activity.label.getPlugins().size())
 				return "";

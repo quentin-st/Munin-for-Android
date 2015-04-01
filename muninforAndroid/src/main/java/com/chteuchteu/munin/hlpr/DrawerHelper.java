@@ -37,7 +37,7 @@ import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.SearchResult;
 import com.chteuchteu.munin.obj.SearchResult.SearchResultType;
 import com.chteuchteu.munin.ui.Activity_Alerts;
@@ -182,7 +182,7 @@ public class DrawerHelper {
 			activity.findViewById(R.id.drawer_grids_txt).setAlpha(0.5f);
 			activity.findViewById(R.id.drawer_premium_btn).setVisibility(View.VISIBLE);
 		}
-		if (muninFoo.getServers().size() == 0) {
+		if (muninFoo.getNodes().size() == 0) {
 			activity.findViewById(R.id.drawer_graphs_btn).setEnabled(false);
 			activity.findViewById(R.id.drawer_grid_btn).setEnabled(false);
 			activity.findViewById(R.id.drawer_alerts_btn).setEnabled(false);
@@ -252,16 +252,16 @@ public class DrawerHelper {
 					search_results.setAdapter(search_results_adapter);
 				}
 
-				// Search in plugins and servers
-				for (MuninServer server : MuninFoo.getInstance(context).getServers()) {
-					String serverName = server.getName().toLowerCase();
-					String serverUrl = server.getUrl().toLowerCase();
+				// Search in plugins and nodes
+				for (MuninNode node : MuninFoo.getInstance(context).getNodes()) {
+					String nodeName = node.getName().toLowerCase();
+					String nodeUrl = node.getUrl().toLowerCase();
 
-					if (serverName.contains(string) || serverUrl.contains(string))
-						search_results_array.add(new SearchResult(SearchResultType.SERVER, server, context));
+					if (nodeName.contains(string) || nodeUrl.contains(string))
+						search_results_array.add(new SearchResult(SearchResultType.NODE, node, context));
 
 
-					for (MuninPlugin plugin : server.getPlugins()) {
+					for (MuninPlugin plugin : node.getPlugins()) {
 						if (plugin.getName().toLowerCase().contains(string)
 								|| plugin.getFancyName().toLowerCase().contains(string))
 							search_results_array.add(new SearchResult(SearchResultType.PLUGIN, plugin, context));

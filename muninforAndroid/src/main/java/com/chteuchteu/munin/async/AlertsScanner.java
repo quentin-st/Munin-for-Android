@@ -21,7 +21,7 @@ public class AlertsScanner extends AsyncTask<Void, Integer, Void> {
 		MuninFoo muninFoo = MuninFoo.getInstance();
 
 		for (int i=fromIndex; i<=toIndex; i++) {
-			muninFoo.getServer(i).fetchPluginsStates(muninFoo.getUserAgent());
+			muninFoo.getNode(i).fetchPluginsStates(muninFoo.getUserAgent());
 			fragment.onScanProgress();
 		}
 

@@ -13,8 +13,8 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_GraphView;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -32,7 +32,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 	private View view;
 
 	private MuninPlugin plugin;
-	private MuninServer server;
+	private MuninNode node;
 
 	private HTTPResponse_Bitmap response;
 
@@ -47,11 +47,11 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 
 		// ViewFlowMode : graphs / labels
 		if (activity.viewFlowMode == Activity_GraphView.VIEWFLOWMODE_GRAPHS) {
-			this.plugin = muninFoo.getCurrentServer().getPlugin(position);
-			this.server = muninFoo.getCurrentServer();
+			this.plugin = muninFoo.getCurrentNode().getPlugin(position);
+			this.node = muninFoo.getCurrentNode();
 		} else { // VIEWFLOWMODE_LABELS
 			this.plugin = activity.label.getPlugins().get(position);
-			this.server = this.plugin.getInstalledOn();
+			this.node = this.plugin.getInstalledOn();
 		}
 	}
 
@@ -68,7 +68,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 		if (activity.isBitmapNull(position)) {
 			String imgUrl;
 
-			if (server.getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE
+			if (node.getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE
 					&& !Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")) { // Dynazoom (HD graph)
 				// Check if HD graph is really needed : if the standard-res bitmap isn't upscaled, it's OK
 				float xScale = ((float) imageView.getWidth()) / AVERAGE_GRAPH_DIMENSIONS[0];
@@ -85,7 +85,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 			} else // Standard graph
 				imgUrl = plugin.getImgUrl(activity.load_period);
 
-			this.response = server.getParent().grabBitmap(imgUrl, muninFoo.getUserAgent());
+			this.response = node.getParent().grabBitmap(imgUrl, muninFoo.getUserAgent());
 
 			if (response.hasSucceeded())
 				activity.addBitmap(Util.removeBitmapBorder(response.getBitmap()), position);
@@ -140,7 +140,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 
 			// Allow user to disable HD Graphs / rescan HD Graphs URL
 			if (!Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")
-					&& this.server.getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE
+					&& this.node.getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE
 					&& Util.isOnline(context)) {
 				Button rescanHdGraphsUrl = (Button) view.findViewById(R.id.error_rescanHdGraphsUrl);
 				Button disableHdGraphs = (Button) view.findViewById(R.id.error_disableHdGraphs);
@@ -153,8 +153,8 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 				disableHdGraphs.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						server.getParent().setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
-						MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(server.getParent());
+						node.getParent().setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
+						MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(node.getParent());
 						activity.fab.hide(true);
 						activity.isFabShown = false;
 						activity.actionRefresh();
@@ -164,7 +164,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 				rescanHdGraphsUrl.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						new DynazoomUrlScanner(activity, server.getParent(), context).execute();
+						new DynazoomUrlScanner(activity, node.getParent(), context).execute();
 					}
 				});
 			} else {

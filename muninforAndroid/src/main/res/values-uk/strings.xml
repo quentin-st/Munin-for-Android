@@ -64,7 +64,7 @@
 	<string name="alertsTitle">Сповіщення</string>
 	<string name="notificationsTitle">Повідомлення</string>
 	<string name="widget_configuration3">Приховати ім\'я сервера</string>
-	<string name="settings_defaultserver">Базовий сервер</string>
+	<string name="settings_defaultnode">Базовий сервер</string>
 	<string name="settings_lang">Мова програми</string>
 	<string name="lang_english">Англійська</string>
 	<string name="lang_french">Французська</string>

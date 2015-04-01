@@ -31,7 +31,7 @@
 	<string name="save_button">Save</string>
 	<string name="menu_graph_refresh">Refresh</string>
 	<string name="menu_graph_save">Save graph to SD card</string>
-	<string name="menu_graph_switch">Switch server</string>
+	<string name="menu_graph_switch">Switch node</string>
 	<string name="menu_addserver_save">Save server</string>
 	<string name="menu_addserver_delete">Delete server</string>
 	<string name="loading">Loading…</string>
@@ -134,8 +134,8 @@
 	<string name="notificationsTitle">Notifications</string>
 	<string name="widget_configuration1">Success! The widget has been added to your home screen. Tip: you can update the graph by taping on the grey bar at the bottom of the widget!</string>
 	<string name="widget_configuration2">Auto-update the graph only by Wifi (1 update per hour)</string>
-	<string name="widget_configuration3">Hide server name</string>
-	<string name="settings_defaultserver">Default server</string>
+	<string name="widget_configuration3">Hide node name</string>
+	<string name="settings_defaultnode">Default node</string>
 	<string name="settings_lang">App language</string>
 	<string name="lang_english">English</string>
 	<string name="lang_french">French</string>
@@ -152,7 +152,7 @@
 	<string name="text11">Google Play app seems to be missing on your phone.</string>
 	<string name="text16">The URL doesn\'t seem to be good. Please check it again.</string>
 	<string name="text18">Success!</string>
-	<string name="text21.1"> server</string>
+	<string name="text21.1"> node</string>
 	<string name="text21.2"> added!\n</string>
 	<string name="text24">Success</string>
 	<string name="text27"> plugins found!</string>
@@ -170,7 +170,7 @@
 	<string name="text43">Please wait…</string>
 	<string name="text44">Fetching URL…</string>
 	<string name="text45">Saving!</string>
-	<string name="text46">Reaching server </string>
+	<string name="text46">Reaching node </string>
 	<string name="text47.1">day</string>
 	<string name="text47.2">week</string>
 	<string name="text47.3">month</string>
@@ -178,8 +178,8 @@
 	<string name="text48.1">Force horizontal</string>
 	<string name="text48.2">Force vertical</string>
 	<string name="text48.3">Auto</string>
-	<string name="text49.1">Hide normal state servers</string>
-	<string name="text49.2">Show normal state servers</string>
+	<string name="text49.1">Hide normal state nodes</string>
+	<string name="text49.2">Show normal state nodes</string>
 	<string name="text50.1">critical</string>
 	<string name="text50.2">criticals</string>
 	<string name="text51.1">warning</string>
@@ -188,9 +188,9 @@
 	<string name="text53">Update by Wifi only</string>
 	<string name="text54">Estimated data consumption: ?? /day</string>
 	<string name="text55">Refresh rate</string>
-	<string name="text56">Select servers to watch</string>
+	<string name="text56">Select nodes to watch</string>
 	<string name="text57">10 minutes/30 minutes/1 hour/2 hours/5 hours/10 hours/24 hours</string>
-	<string name="text58"> critical / criticals /&amp; / warning / warnings /on / server/ servers</string>
+	<string name="text58"> critical / criticals /&amp; / warning / warnings /on / node/ nodes</string>
 	<string name="text60">Continue</string>
 	<string name="text61">Add</string>
 	<string name="text62">There\'s no label yet</string>
@@ -217,7 +217,7 @@
 	<string name="text80">This grid will be deleted. Are you sure?</string>
 	<string name="text81">No data available for this plugin</string>
 	<string name="text82">This label will be deleted. Are you sure?</string>
-	<string name="text83">This server will be deleted. Are you sure?</string>
+	<string name="text83">This node will be deleted. Are you sure?</string>
 	<string name="text84">This master will be deleted. Are you sure?</string>
 	<string name="import_servers">Import</string>
 	<string name="export_servers">Export</string>
@@ -245,7 +245,7 @@
 	<string name="delete_plugin">Delete plugin</string>
 	<string name="delete_label">Delete label</string>
 	<string name="rename_label">Rename label</string>
-	<string name="delete_master">Delete master and sub-servers</string>
+	<string name="delete_master">Delete master and nodes</string>
 	<string name="alerts_ok">Good news - everything is OK</string>
 	<string name="update_credentials">Edit connection credentials</string>
 	<string name="long_click">Long click to edit</string>
@@ -256,9 +256,9 @@
 	<string name="donate_text">Developing such a big application requires a huge amount of time and involvement. If the app is useful
 	    in your everyday life, could you consider donating? Thank you! If you do, please send me an email so I can thank you in person!</string>
 	<string name="donate_amount">Please select the amount of the donation (33% of this amount will be taken by Google)</string>
-	<string name="sync_serversadded">XXX server(s) added\n</string>
-	<string name="sync_serversupdated">XXX server(s) updated\n</string>
-	<string name="sync_serversdeleted">XXX server(s) deleted\n</string>
+	<string name="sync_serversadded">XXX node(s) added\n</string>
+	<string name="sync_serversupdated">XXX node(s) updated\n</string>
+	<string name="sync_serversdeleted">XXX node(s) deleted\n</string>
 	<string name="sync_pluginsadded">XXX plugin(s) added\n</string>
 	<string name="sync_pluginsupdated">XXX plugin(s) updated\n</string>
 	<string name="sync_pluginsdeleted">XXX plugin(s) deleted\n</string>
@@ -273,7 +273,7 @@
 	<string name="grids_legend">Grids legend</string>
 	<string name="grids_legend_none">None</string>
 	<string name="grids_legend_pluginName">Plugin name</string>
-	<string name="grids_legend_serverName">Server name</string>
+	<string name="grids_legend_nodeName">Node name</string>
 	<string name="grids_legend_both">Both</string>
 	<string name="redetectHdGraphsUrl">Redetect HD Graphs URL</string>
 	<string name="disableHDGraphs">Disable HD Graphs</string>

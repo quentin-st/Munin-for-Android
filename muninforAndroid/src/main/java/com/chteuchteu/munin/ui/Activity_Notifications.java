@@ -33,7 +33,7 @@ import com.chteuchteu.munin.ntfs.Service_Notifications;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -125,18 +125,18 @@ public class Activity_Notifications extends MuninActivity {
 			@Override public void onNothingSelected(AdapterView<?> arg0) { }
 		});
 		
-		checkboxes = new CheckBox[muninFoo.getServers().size()];
+		checkboxes = new CheckBox[muninFoo.getNodes().size()];
 		
 		findViewById(R.id.btn_selectServersToWatch).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				String watchedServers = Util.getPref(context, Util.PrefKeys.Notifs_ServersList);
+				String watchedNodes = Util.getPref(context, Util.PrefKeys.Notifs_NodesList);
 				
 				ScrollView scrollView = new ScrollView(activity);
 				checkboxesView = new LinearLayout(activity);
 				checkboxesView.setOrientation(LinearLayout.VERTICAL);
-				for (int i=0; i<muninFoo.getServers().size(); i++) {
-                    MuninServer server = muninFoo.getServers().get(i);
+				for (int i=0; i<muninFoo.getNodes().size(); i++) {
+                    MuninNode node = muninFoo.getNodes().get(i);
 
 					LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 					View v = vi.inflate(R.layout.servers_list_checkbox, null);
@@ -145,7 +145,7 @@ public class Activity_Notifications extends MuninActivity {
 					int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
 					checkboxes[i].setButtonDrawable(id);
 					
-					if (watchedServers.contains(server.getUrl()))
+					if (watchedNodes.contains(node.getUrl()))
 						checkboxes[i].setChecked(true);
 					
 					v.findViewById(R.id.ll_container).setOnClickListener(new OnClickListener() {
@@ -156,8 +156,8 @@ public class Activity_Notifications extends MuninActivity {
 						}
 					});
 					
-					((TextView)v.findViewById(R.id.line_a)).setText(server.getName());
-					((TextView)v.findViewById(R.id.line_b)).setText(server.getParent().getName());
+					((TextView)v.findViewById(R.id.line_a)).setText(node.getName());
+					((TextView)v.findViewById(R.id.line_b)).setText(node.getParent().getName());
 					
 					checkboxesView.addView(v);
 				}
@@ -169,7 +169,7 @@ public class Activity_Notifications extends MuninActivity {
 				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						saveServersListSettings();
+						saveNodesListSettings();
 						computeEstimatedConsumption();
 						dialog.dismiss();
 					}
@@ -232,19 +232,19 @@ public class Activity_Notifications extends MuninActivity {
 		am.cancel(pi);
 	}
 	
-	private void saveServersListSettings() {
-		String servers = "";
+	private void saveNodesListSettings() {
+		String nodes = "";
 		int i=0;
 		for (CheckBox checkbox: checkboxes) {
 			if (checkbox.isChecked()) {
 				if (i != checkboxes.length - 1)
-					servers = servers + muninFoo.getServers().get(i).getUrl() + ";";
+					nodes = nodes + muninFoo.getNodes().get(i).getUrl() + ";";
 				else
-					servers = servers + muninFoo.getServers().get(i).getUrl();
+					nodes = nodes + muninFoo.getNodes().get(i).getUrl();
 			}
 			i++;
 		}
-		Util.setPref(context, Util.PrefKeys.Notifs_ServersList, servers);
+		Util.setPref(context, Util.PrefKeys.Notifs_NodesList, nodes);
 	}
 	
 	@Override
@@ -258,10 +258,10 @@ public class Activity_Notifications extends MuninActivity {
 	private void computeEstimatedConsumption() {
 		int refreshRate = Integer.parseInt(currentRefreshRate);
 		
-		String watchedServers = Util.getPref(context, Util.PrefKeys.Notifs_ServersList);
-		int nbServers = watchedServers.equals("") ? 0 : watchedServers.split(";").length;
+		String watchedNodes = Util.getPref(context, Util.PrefKeys.Notifs_NodesList);
+		int nbNodes = watchedNodes.equals("") ? 0 : watchedNodes.split(";").length;
 		
-		double result = (1440/refreshRate) * nbServers * PAGE_WEIGHT;
+		double result = (1440/refreshRate) * nbNodes * PAGE_WEIGHT;
 		String unit = "ko";
 		if (result > 1024) {
 			result = result / 1024;
@@ -277,7 +277,7 @@ public class Activity_Notifications extends MuninActivity {
 	
 	private void actionSave() {
 		if (muninFoo.premium) {
-			// At least one server selected
+			// At least one node selected
 			boolean ok = false;
 
 			// If notifications disabled : ok = true
@@ -285,7 +285,7 @@ public class Activity_Notifications extends MuninActivity {
 				ok = true;
 			else {
 				if (checkboxes.length > 0 && checkboxes[0] != null) {
-					// Opened at least once servers list
+					// Opened at least once nodes list
 					for (CheckBox checkBox : checkboxes) {
 						if (checkBox.isChecked()) {
 							ok = true;
@@ -294,7 +294,7 @@ public class Activity_Notifications extends MuninActivity {
 					}
 				} else {
 					// Check from pref string
-					int length = Util.getPref(context, Util.PrefKeys.Notifs_ServersList).length();
+					int length = Util.getPref(context, Util.PrefKeys.Notifs_NodesList).length();
 					if (length > 2) // != "" && != ";"
 						ok = true;
 				}

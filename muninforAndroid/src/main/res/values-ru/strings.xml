@@ -140,7 +140,7 @@
 	<string name="fieldsDescription">"Описание полей"</string>
 	<string name="renameMaster">"Переименовать мастер"</string>
 	<string name="widget_configuration3">"Скрыть имя сервера"</string>
-	<string name="settings_defaultserver">"Сервер по умолчанию"</string>
+	<string name="settings_defaultnode">"Сервер по умолчанию"</string>
 	<string name="rename_grid">"Переименовать сетку"</string>
 	<string name="text80">"Сетка будет удалена. Вы уверены?"</string>
 	<string name="text81">"Нет данных для этого плагина "</string>

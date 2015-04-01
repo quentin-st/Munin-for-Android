@@ -14,13 +14,13 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.AlertsWidget;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-	private List<MuninServer> servers;
+	private List<MuninNode> nodes;
 	private Context context;
 	private boolean pluginsStatesFetched;
 	private int widgetId;
@@ -29,14 +29,14 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 		this.context = context;
 		this.widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 				AppWidgetManager.INVALID_APPWIDGET_ID);
-		this.servers = new ArrayList<>();
+		this.nodes = new ArrayList<>();
 		this.pluginsStatesFetched = false;
 
 		refresh();
 	}
 
 	private void refresh() {
-		this.servers.clear();
+		this.nodes.clear();
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		Util.setPref(context, Util.PrefKeys.Widget2_ForceUpdate, "false");
 		new PluginsStatesFetcher(appWidgetManager, widgetId).execute();
@@ -56,21 +56,21 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 			DatabaseHelper dbHelper = new DatabaseHelper(context);
 			AlertsWidget alertsWidget = dbHelper.getAlertsWidget(appWidgetId, null);
 
-			// Remove servers duplicates (duplicated in db for no reason)
-			List<MuninServer> newServersList = new ArrayList<>();
-			for (MuninServer server : alertsWidget.getServers()) {
-				if (!newServersList.contains(server))
-					newServersList.add(server);
+			// Remove nodes duplicates (duplicated in db for no reason)
+			List<MuninNode> newNodesList = new ArrayList<>();
+			for (MuninNode node : alertsWidget.getNodes()) {
+				if (!newNodesList.contains(node))
+					newNodesList.add(node);
 			}
 
-			for (MuninServer server : newServersList)
-				server.fetchPluginsStates(MuninFoo.getUserAgent(context));
+			for (MuninNode node : newNodesList)
+				node.fetchPluginsStates(MuninFoo.getUserAgent(context));
 
-			// Update servers list according to those results
-			servers.clear();
-			for (MuninServer server : newServersList) {
-				if (server.reachable != Util.SpecialBool.TRUE || server.getErroredPlugins().size() > 0 || server.getWarnedPlugins().size() > 0)
-					servers.add(server);
+			// Update nodes list according to those results
+			nodes.clear();
+			for (MuninNode node : newNodesList) {
+				if (node.reachable != Util.SpecialBool.TRUE || node.getErroredPlugins().size() > 0 || node.getWarnedPlugins().size() > 0)
+					nodes.add(node);
 			}
 
 			return null;
@@ -94,10 +94,10 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 	public int getCount() {
 		if (!pluginsStatesFetched)
 			return 1; // Fake view
-		else if (this.servers.isEmpty())
+		else if (this.nodes.isEmpty())
 			return 1; // Everything's ok
 		else
-			return servers.size();
+			return nodes.size();
 	}
 
 	@Override
@@ -106,19 +106,19 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 
 		if (!pluginsStatesFetched && position == 0) // Loading
 			row.setTextViewText(R.id.item, context.getString(R.string.loading));
-		else if (servers.isEmpty()) // Everything's ok
+		else if (nodes.isEmpty()) // Everything's ok
 			row.setTextViewText(R.id.item, context.getString(R.string.alerts_ok));
 		else { // Loading finished : display data
-			MuninServer server = servers.get(position);
-			int nbWarnings = server.getWarnedPlugins().size();
-			int nbCriticals = server.getErroredPlugins().size();
+			MuninNode node = nodes.get(position);
+			int nbWarnings = node.getWarnedPlugins().size();
+			int nbCriticals = node.getErroredPlugins().size();
 
-			row.setTextViewText(R.id.item, server.getName());
+			row.setTextViewText(R.id.item, node.getName());
 
 			String[] strings = context.getString(R.string.text58).split("/");
 
 			// Check reason
-			if (server.reachable != Util.SpecialBool.TRUE) {
+			if (node.reachable != Util.SpecialBool.TRUE) {
 				row.setViewVisibility(R.id.icon_unreachable, View.VISIBLE);
 				row.setViewVisibility(R.id.item2, View.GONE);
 			} else if (nbCriticals > 0 && nbWarnings > 0) {
@@ -165,8 +165,8 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 
 		// Hide separator if needed
 		if (!pluginsStatesFetched && position == 0
-				|| servers.isEmpty()
-				|| position == servers.size()-1)
+				|| nodes.isEmpty()
+				|| position == nodes.size()-1)
 			row.setViewVisibility(R.id.separator, View.GONE);
 		else // Recycling view...
 			row.setViewVisibility(R.id.separator, View.VISIBLE);

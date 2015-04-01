@@ -52,7 +52,7 @@ public class Widget_AlertsWidget_Configure extends Activity {
 			Toast.makeText(this, "Munin for Android features pack needed", Toast.LENGTH_SHORT).show();
 			finish();
 		}
-		if (muninFoo.getServers().size() == 0) {
+		if (muninFoo.getNodes().size() == 0) {
 			Toast.makeText(this, R.string.text37, Toast.LENGTH_SHORT).show();
 			finish();
 		}
@@ -67,9 +67,9 @@ public class Widget_AlertsWidget_Configure extends Activity {
 			LinearLayout checkboxesView = new LinearLayout(context);
 			checkboxesView.setOrientation(LinearLayout.VERTICAL);
 
-			final CheckBox[] checkboxes = new CheckBox[muninFoo.getServers().size()];
+			final CheckBox[] checkboxes = new CheckBox[muninFoo.getNodes().size()];
 
-			for (int i=0; i<muninFoo.getServers().size(); i++) {
+			for (int i=0; i<muninFoo.getNodes().size(); i++) {
 				LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				View v = vi.inflate(R.layout.servers_list_checkbox, null);
 
@@ -85,8 +85,8 @@ public class Widget_AlertsWidget_Configure extends Activity {
 					}
 				});
 
-				((TextView)v.findViewById(R.id.line_a)).setText(muninFoo.getServers().get(i).getName());
-				((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.getServers().get(i).getUrl());
+				((TextView)v.findViewById(R.id.line_a)).setText(muninFoo.getNodes().get(i).getName());
+				((TextView)v.findViewById(R.id.line_b)).setText(muninFoo.getNodes().get(i).getUrl());
 
 				checkboxesView.addView(v);
 			}
@@ -102,7 +102,7 @@ public class Widget_AlertsWidget_Configure extends Activity {
 							int i = 0;
 							for (CheckBox checkbox : checkboxes) {
 								if (checkbox.isChecked())
-									alertsWidget.getServers().add(muninFoo.getServers().get(i));
+									alertsWidget.getNodes().add(muninFoo.getNodes().get(i));
 
 								i++;
 							}

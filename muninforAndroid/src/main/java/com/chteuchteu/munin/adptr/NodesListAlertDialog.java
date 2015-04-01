@@ -16,7 +16,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninMaster;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -25,14 +25,14 @@ import java.util.Map;
 
 /**
  * Open an AlertDialog with transparent background (similar to Spinner),
- *  with a grouped servers list
+ *  with a grouped nodes list
  */
-public class ServersListAlertDialog {
+public class NodesListAlertDialog {
     private MuninFoo muninFoo;
     private AlertDialog dialog;
 
-    public ServersListAlertDialog(Context context, View attachTo,
-                                  final ServersListAlertDialogClick onItemClick) {
+    public NodesListAlertDialog(Context context, View attachTo,
+                                final NodesListAlertDialogClick onItemClick) {
         this.muninFoo = MuninFoo.getInstance();
 
         // Init
@@ -42,14 +42,14 @@ public class ServersListAlertDialog {
         view.setOrientation(LinearLayout.VERTICAL);
 
         ListView listView = new ListView(context);
-        // Create servers list
-        List<List<MuninServer>> list = muninFoo.getGroupedServersList();
+        // Create nodes list
+        List<List<MuninNode>> list = muninFoo.getGroupedNodesList();
 
         Adapter_SeparatedList adapter = new Adapter_SeparatedList(context, true);
-        for (List<MuninServer> l : list) {
+        for (List<MuninNode> l : list) {
             List<Map<String,?>> elements = new LinkedList<>();
             String masterName = "";
-            for (MuninServer s : l) {
+            for (MuninNode s : l) {
                 elements.add(createItem(s.getName()));
                 masterName = s.getParent().getName();
             }
@@ -77,14 +77,14 @@ public class ServersListAlertDialog {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
                 // Master name lines are taken in account in the positions list.
-                // Let's find the server.
+                // Let's find the node.
                 int i = 0;
                 for (MuninMaster master : muninFoo.masters) {
                     i++;
-                    for (MuninServer server : master.getChildren()) {
+                    for (MuninNode node : master.getChildren()) {
                         if (i == position) {
                             dialog.dismiss();
-                            onItemClick.onItemClick(server);
+                            onItemClick.onItemClick(node);
                         }
                         i++;
                     }
@@ -103,7 +103,7 @@ public class ServersListAlertDialog {
         return item;
     }
 
-    public interface ServersListAlertDialogClick {
-        public void onItemClick(MuninServer server);
+    public interface NodesListAlertDialogClick {
+        public void onItemClick(MuninNode node);
     }
 }

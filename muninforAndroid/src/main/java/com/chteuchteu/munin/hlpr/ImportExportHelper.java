@@ -8,8 +8,8 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.exc.ImportExportWebserviceException;
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.ui.Activity_Servers;
 import com.crashlytics.android.Crashlytics;
 
@@ -144,8 +144,8 @@ public class ImportExportHelper {
 				// Check if master already added
 				if (!muninFooRef.contains(newMaster)) {
 					muninFooRef.getMasters().add(newMaster);
-					for (MuninServer server : newMaster.getChildren())
-						muninFooRef.addServer(server);
+					for (MuninNode node : newMaster.getChildren())
+						muninFooRef.addNode(node);
 
 					muninFooRef.sqlite.insertMuninMaster(newMaster);
 				}
@@ -252,10 +252,10 @@ public class ImportExportHelper {
 	private static void removeIds(List<MuninMaster> masters) {
 		for (MuninMaster master : masters) {
 			master.setId(-1);
-			for (MuninServer server : master.getChildren()) {
-				server.setId(-1);
-				server.isPersistant = false;
-				for (MuninPlugin plugin : server.getPlugins())
+			for (MuninNode node : master.getChildren()) {
+				node.setId(-1);
+				node.isPersistant = false;
+				for (MuninPlugin plugin : node.getPlugins())
 					plugin.setId(-1);
 			}
 		}

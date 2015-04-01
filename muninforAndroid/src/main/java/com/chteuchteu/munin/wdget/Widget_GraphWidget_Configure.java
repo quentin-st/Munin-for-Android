@@ -21,10 +21,10 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.adptr.Adapter_ServersList;
+import com.chteuchteu.munin.adptr.Adapter_NodesList;
 import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,11 +68,11 @@ public class Widget_GraphWidget_Configure extends Activity {
 					.setView(dialogView)
 					.show();
 
-				final ListView lv1 = (ListView) dialogView.findViewById(R.id.listview1); // servers
+				final ListView lv1 = (ListView) dialogView.findViewById(R.id.listview1); // nodes
 				final ListView lv2 = (ListView) dialogView.findViewById(R.id.listview2); // plugins
 				final ListView lv3 = (ListView) dialogView.findViewById(R.id.listview3); // period
 				
-				if (muninFoo.getServers().size() == 0) {
+				if (muninFoo.getNodes().size() == 0) {
 					Toast.makeText(this, R.string.text37, Toast.LENGTH_SHORT).show();
 					dialog.dismiss();
 					finish();
@@ -83,14 +83,14 @@ public class Widget_GraphWidget_Configure extends Activity {
 					finish();
 				}
 				
-				final Adapter_ServersList serversListAdapter = new Adapter_ServersList(context, muninFoo.getServers());
-				lv1.setAdapter(serversListAdapter);
+				final Adapter_NodesList nodesListAdapter = new Adapter_NodesList(context, muninFoo.getNodes());
+				lv1.setAdapter(nodesListAdapter);
 				lv1.setOnItemClickListener(new OnItemClickListener() {
 					public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-						final MuninServer server = serversListAdapter.getItem(position);
+						final MuninNode node = nodesListAdapter.getItem(position);
 
 						// Populate lv2
-						List<MuninPlugin> plugins = server.getPlugins();
+						List<MuninPlugin> plugins = node.getPlugins();
 						
 						ArrayList<HashMap<String,String>> list2 = new ArrayList<>();
 						list2.clear();
@@ -109,7 +109,7 @@ public class Widget_GraphWidget_Configure extends Activity {
 							public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 								String pluginName = ((TextView) view.findViewById(R.id.line_b)).getText().toString();
 
-								for (MuninPlugin p : server.getPlugins()) {
+								for (MuninPlugin p : node.getPlugins()) {
 									if (p.getName().equals(pluginName))
 										graphWidget.setPlugin(p);
 								}
@@ -145,7 +145,7 @@ public class Widget_GraphWidget_Configure extends Activity {
 											public void onClick(View v) {
 												// Save & close
 												graphWidget.setWifiOnly(cb.isChecked());
-												graphWidget.setHideServerName(cb2.isChecked());
+												graphWidget.setHideNodeName(cb2.isChecked());
 												
 												muninFoo.sqlite.dbHlpr.insertGraphWidget(graphWidget);
 

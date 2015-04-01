@@ -34,7 +34,7 @@ import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.tjeannin.apprate.AppRate;
@@ -508,7 +508,7 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 		if (!Util.hasPref(context, Util.PrefKeys.GraphsZoom))
 			Util.setPref(context, Util.PrefKeys.GraphsZoom, "true");
 		
-		// MfA 3.0 : moved auth attributes from MuninServer to MuninMaster : migrate those if possible
+		// MfA 3.0 : moved auth attributes from MuninNode to MuninMaster : migrate those if possible
 		String strFromVersion = Util.getPref(context, Util.PrefKeys.LastMFAVersion);
 		double fromVersion = 0;
 		if (!strFromVersion.equals(""))
@@ -534,12 +534,12 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 			Util.setPref(this, Util.PrefKeys.UserAgent, newUserAgent);
 		}
 
-		// Munin for Android 3.5 : added MuninServer.hdGraphUrl
+		// Munin for Android 3.5 : added MuninNode.hdGraphUrl
 		// Migrate information if there are
-		for (MuninServer server : muninFoo.getServers()) {
-			if (server.getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE) {
-				server.setHdGraphURL(server.getGraphURL());
-				muninFoo.sqlite.dbHlpr.updateMuninServer(server);
+		for (MuninNode node : muninFoo.getNodes()) {
+			if (node.getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE) {
+				node.setHdGraphURL(node.getGraphURL());
+				muninFoo.sqlite.dbHlpr.updateMuninNode(node);
 			}
 		}
 

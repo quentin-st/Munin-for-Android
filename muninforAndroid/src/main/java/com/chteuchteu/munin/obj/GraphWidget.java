@@ -5,14 +5,14 @@ public class GraphWidget {
 	private long id;
 	private String period;
 	private boolean wifiOnly;
-	private boolean hideServerName;
+	private boolean hideNodeName;
 	private MuninPlugin plugin;
 	private int widgetId;
 	
 	public GraphWidget() {
 		this.period = "day";
 		this.wifiOnly = false;
-		this.hideServerName = false;
+		this.hideNodeName = false;
 	}
 
 	public void setId(long id) { this.id = id; }
@@ -24,9 +24,9 @@ public class GraphWidget {
 	public void setWifiOnly(int b) { this.wifiOnly = b == 1; }
 	public void setWifiOnly(boolean wifiOnly) { this.wifiOnly = wifiOnly; }
 	
-	public boolean getHideServerName() { return this.hideServerName; }
-	public void setHideServerName(int b) { this.hideServerName = b == 1; }
-	public void setHideServerName(boolean val) { this.hideServerName = val; }
+	public boolean getHideNodeName() { return this.hideNodeName; }
+	public void setHideNodeName(int b) { this.hideNodeName = b == 1; }
+	public void setHideNodeName(boolean val) { this.hideNodeName = val; }
 	
 	public MuninPlugin getPlugin() { return plugin; }
 	public void setPlugin(MuninPlugin plugin) { this.plugin = plugin; }

@@ -10,8 +10,8 @@ import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
@@ -28,12 +28,12 @@ public class MuninFoo {
 	private static MuninFoo instance;
 	public boolean languageLoaded = false;
 	
-	private List<MuninServer> servers;
+	private List<MuninNode> nodes;
 	public List<Label> labels;
 	public List<MuninMaster> masters;
 	
 	public SQLite sqlite;
-	private MuninServer currentServer;
+	private MuninNode currentNode;
 
 	private String userAgent;
 
@@ -52,7 +52,7 @@ public class MuninFoo {
 	
 	private MuninFoo(Context context) {
 		premium = false;
-		servers = new ArrayList<>();
+		nodes = new ArrayList<>();
 		labels = new ArrayList<>();
 		masters = new ArrayList<>();
 		sqlite = new SQLite(context, this);
@@ -72,58 +72,58 @@ public class MuninFoo {
 	
 	private void loadInstance(Context context) {
 		this.masters = sqlite.dbHlpr.getMasters();
-		this.servers = sqlite.dbHlpr.getServers(this.masters);
+		this.nodes = sqlite.dbHlpr.getNodes(this.masters);
 		this.labels = sqlite.dbHlpr.getLabels(this.masters);
 
-		attachOrphanServers();
+		attachOrphanNodes();
 
 		if (BuildConfig.DEBUG)
 			this.sqlite.logMasters();
 
 		if (context != null) {
-			// Set default server
-			this.currentServer = getCurrentServer(context);
+			// Set default node
+			this.currentNode = getCurrentNode(context);
 			
 			this.premium = isPremium(context);
 		}
 	}
 
-	public MuninServer getCurrentServer() { return getCurrentServer(null); }
-	public MuninServer getCurrentServer(Context context) {
-		updateCurrentServer(context);
-		return this.currentServer;
+	public MuninNode getCurrentNode() { return getCurrentNode(null); }
+	public MuninNode getCurrentNode(Context context) {
+		updateCurrentNode(context);
+		return this.currentNode;
 	}
-	public void updateCurrentServer(Context context) {
-		if (this.currentServer != null)
+	public void updateCurrentNode(Context context) {
+		if (this.currentNode != null)
 			return;
 
-		if (this.servers.isEmpty())
+		if (this.nodes.isEmpty())
 			return;
 
 		if (context != null) {
-			String defaultServerUrl = Util.getPref(context, Util.PrefKeys.DefaultServer);
+			String defaultNodeUrl = Util.getPref(context, Util.PrefKeys.DefaultNode);
 
-			if (!defaultServerUrl.equals("")) {
-				MuninServer defaultServer = getServer(defaultServerUrl);
-				if (defaultServer != null) {
-					this.currentServer = defaultServer;
+			if (!defaultNodeUrl.equals("")) {
+				MuninNode defaultNode = getNode(defaultNodeUrl);
+				if (defaultNode != null) {
+					this.currentNode = defaultNode;
 					return;
 				}
 			}
 		}
 
-		// Failed to find the defaultServer
-		if (this.servers.isEmpty()) {
-			this.currentServer = null;
+		// Failed to find the defaultNode
+		if (this.nodes.isEmpty()) {
+			this.currentNode = null;
 			return;
 		}
 
-		this.currentServer = this.servers.get(0);
+		this.currentNode = this.nodes.get(0);
 	}
-	public void setCurrentServer(MuninServer server) { this.currentServer = server; }
+	public void setCurrentNode(MuninNode node) { this.currentNode = node; }
 	
 	public void resetInstance(Context context) {
-		servers = new ArrayList<>();
+		nodes = new ArrayList<>();
 		labels = new ArrayList<>();
 		sqlite = new SQLite(context, this);
 		loadInstance(context);
@@ -143,16 +143,16 @@ public class MuninFoo {
 	}
 	
 	/**
-	 * Set a common parent to the servers which does not
+	 * Set a common parent to the nodes which does not
 	 * have one after getting them
 	 */
-	private void attachOrphanServers() {
+	private void attachOrphanNodes() {
 		int n = 0;
 		MuninMaster defMaster = new MuninMaster();
 		defMaster.setName("Default");
 		defMaster.defaultMaster = true;
 		
-		for (MuninServer s : this.servers) {
+		for (MuninNode s : this.nodes) {
 			if (s.getParent() == null) {
 				s.setParent(defMaster);
 				n++;
@@ -163,30 +163,30 @@ public class MuninFoo {
 			this.masters.add(defMaster);
 	}
 	
-	public void addServer(MuninServer server) {
+	public void addNode(MuninNode node) {
 		boolean contains = false;
 		int pos = -1;
-		for (int i=0; i<servers.size(); i++) {
-			if (servers.get(i) != null && servers.get(i).equalsApprox(server)) {
+		for (int i=0; i<nodes.size(); i++) {
+			if (nodes.get(i) != null && nodes.get(i).equalsApprox(node)) {
 				contains = true; pos = i; break;
 			}
 		}
 		if (contains) // Replacement
-			servers.set(pos, server);
+			nodes.set(pos, node);
 		else
-			servers.add(server);
+			nodes.add(node);
 	}
-	public void deleteServer(MuninServer s) {
+	public void deleteNode(MuninNode s) {
 		s.getParent().rebuildChildren(this);
 		
-		// Delete from servers list
-		this.servers.remove(s);
+		// Delete from nodes list
+		this.nodes.remove(s);
 		
 		s.getParent().rebuildChildren(this);
 		
-		// Update current server
-		if (this.currentServer.equals(s) && this.servers.size() > 0)
-			this.currentServer = this.servers.get(0);
+		// Update current node
+		if (this.currentNode.equals(s) && this.nodes.size() > 0)
+			this.currentNode = this.nodes.get(0);
 	}
 	public void deleteMuninMaster(MuninMaster master) { deleteMuninMaster(master, null); }
 	public void deleteMuninMaster(MuninMaster master, Util.ProgressNotifier progressNotifier) {
@@ -194,12 +194,12 @@ public class MuninFoo {
 			sqlite.dbHlpr.deleteMaster(master, true, progressNotifier);
 			
 			// Remove labels relations for the current session
-			for (MuninServer server : master.getChildren()) {
-				for (MuninPlugin plugin : server.getPlugins())
+			for (MuninNode node : master.getChildren()) {
+				for (MuninPlugin plugin : node.getPlugins())
 					removeLabelRelation(plugin);
 			}
 			
-			this.servers.removeAll(master.getChildren());
+			this.nodes.removeAll(master.getChildren());
 		}
 	}
 	public boolean addLabel(Label l) {
@@ -245,25 +245,25 @@ public class MuninFoo {
 		}
 	}
 
-	public List<MuninServer> getServers() {
-		return this.servers;
+	public List<MuninNode> getNodes() {
+		return this.nodes;
 	}
-	public MuninServer getServer(int pos) {
-		if (pos >= 0 && pos < servers.size())
-			return servers.get(pos);
+	public MuninNode getNode(int pos) {
+		if (pos >= 0 && pos < nodes.size())
+			return nodes.get(pos);
 		else
 			return null;
 	}
-	public MuninServer getServer(String url) {
-		for (MuninServer s : servers) {
+	public MuninNode getNode(String url) {
+		for (MuninNode s : nodes) {
 			if (s.getUrl().equals(url))
 				return s;
 		}
 		return null;
 	}
 	public MuninPlugin getPlugin(int id) {
-		for (MuninServer server : servers) {
-			for (MuninPlugin plugin : server.getPlugins()) {
+		for (MuninNode node : nodes) {
+			for (MuninPlugin plugin : node.getPlugins()) {
 				if (plugin.getId() == id)
 					return plugin;
 			}
@@ -315,18 +315,18 @@ public class MuninFoo {
 		return false;
 	}
 	
-	public List<List<MuninServer>> getGroupedServersList() {
-		List<List<MuninServer>> l = new ArrayList<>();
+	public List<List<MuninNode>> getGroupedNodesList() {
+		List<List<MuninNode>> l = new ArrayList<>();
 		for (MuninMaster master : masters) {
-			List<MuninServer> serversList = new ArrayList<>();
-			serversList.addAll(master.getChildren());
-			l.add(serversList);
+			List<MuninNode> nodesList = new ArrayList<>();
+			nodesList.addAll(master.getChildren());
+			l.add(nodesList);
 		}
 		return l;
 	}
 	
 	/**
-	 * Returns true if we should retrieve servers information
+	 * Returns true if we should retrieve nodes information
 	 *  We consider alerts information as outdated after 10 minutes.
 	 *  Note : hitting refresh on alerts screen forces data refresh.
 	 * @return bool

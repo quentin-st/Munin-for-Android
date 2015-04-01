@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninServer;
 import com.chteuchteu.munin.obj.MuninMaster.AuthType;
 
 import java.util.ArrayList;
@@ -25,10 +25,10 @@ public class SQLite {
 	public void insertMuninMaster(MuninMaster master) {
 		// Insert master
 		dbHlpr.insertMuninMaster(master);
-		// Insert servers
-		for (MuninServer server : master.getChildren()) {
-			dbHlpr.insertMuninServer(server);
-			for (MuninPlugin plugin : server.getPlugins())
+		// Insert nodes
+		for (MuninNode node : master.getChildren()) {
+			dbHlpr.insertMuninNode(node);
+			for (MuninPlugin plugin : node.getPlugins())
 				dbHlpr.insertMuninPlugin(plugin);
 		}
 	}
@@ -51,11 +51,11 @@ public class SQLite {
 		// whose attributes needs to be filled
 		
 		for (MuninMaster master : muninFoo.getMasters()) {
-			// DefaultMaster groups several heterogeneous servers.
+			// DefaultMaster groups several heterogeneous nodes.
 			// We can't easily group credentials here
 			if (!master.defaultMaster && !master.isEmpty()) {
-				// Get the first server
-				MuninServer model = master.getChildren().get(0);
+				// Get the first node
+				MuninNode model = master.getChildren().get(0);
 				
 				getOldAuthInformation(model.getId(), master, true);
 			}
@@ -75,9 +75,9 @@ public class SQLite {
 		if (defaultMaster != null) {
 			ArrayList<MuninMaster> newMasters = new ArrayList<>();
 			
-			for (MuninServer server : defaultMaster.getChildren()) {
-				// Check if there already is a master for this server in newMasters
-				String masterUrl = Util.URLManipulation.ascendDirectory(2, server.getUrl());
+			for (MuninNode node : defaultMaster.getChildren()) {
+				// Check if there already is a master for this node in newMasters
+				String masterUrl = Util.URLManipulation.ascendDirectory(2, node.getUrl());
 				
 				MuninMaster parent = null;
 				boolean contains = false;
@@ -91,7 +91,7 @@ public class SQLite {
 				
 				// Doesn't contains => add
 				if (!contains) {
-					String masterName = Util.URLManipulation.getHostFromUrl(server.getUrl());
+					String masterName = Util.URLManipulation.getHostFromUrl(node.getUrl());
 					
 					parent = new MuninMaster();
 					parent.setName(masterName);
@@ -99,21 +99,21 @@ public class SQLite {
 					newMasters.add(parent);
 				}
 				
-				// Attach server to parent
-				parent.addChild(server);
+				// Attach node to parent
+				parent.addChild(node);
 				
 				if (!contains) {
 					// Get auth ids if needed. Only needed to be done the first time
-					// (since all the servers should have the same auth ids)
-					getOldAuthInformation(server.getId(), parent, false);
+					// (since all the nodes should have the same auth ids)
+					getOldAuthInformation(node.getId(), parent, false);
 				}
 			}
 			
 			// Insert masters and update children
 			for (MuninMaster master : newMasters) {
 				dbHlpr.insertMuninMaster(master);
-				for (MuninServer server : master.getChildren())
-					dbHlpr.updateMuninServer(server);
+				for (MuninNode node : master.getChildren())
+					dbHlpr.updateMuninNode(node);
 			}
 			
 			// Delete default master
@@ -122,40 +122,40 @@ public class SQLite {
 	}
 	
 	/**
-	 * Before Munin for Android 3.0, auth ids were attached to MuninServer.
+	 * Before Munin for Android 3.0, auth ids were attached to MuninNode.
 	 * Those auth information weren't deleting during update so they can
 	 * be fetched back for migration purposes.
-	 * @param muninServerId Information source (MuninServer id)
+	 * @param muninNodeId Information source (MuninNode id)
 	 * @param attachTo Information destination
 	 * @param saveChanges boolean
 	 */
-	private void getOldAuthInformation(long muninServerId, MuninMaster attachTo, boolean saveChanges) {
-		String KEY_MUNINSERVERS_AUTHLOGIN = "authLogin";
-		String KEY_MUNINSERVERS_AUTHPASSWORD = "authPassword";
-		String KEY_MUNINSERVERS_SSL = "SSL";
-		String KEY_MUNINSERVERS_AUTHTYPE = "authType";
-		String KEY_MUNINSERVERS_AUTHSTRING = "authString";
+	private void getOldAuthInformation(long muninNodeId, MuninMaster attachTo, boolean saveChanges) {
+		String KEY_MUNINNODES_AUTHLOGIN = "authLogin";
+		String KEY_MUNINNODES_AUTHPASSWORD = "authPassword";
+		String KEY_MUNINNODES_SSL = "SSL";
+		String KEY_MUNINNODES_AUTHTYPE = "authType";
+		String KEY_MUNINNODES_AUTHSTRING = "authString";
 		
-		String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_MUNINSERVERS
-				+ " WHERE " + DatabaseHelper.KEY_ID + " = " + muninServerId;
+		String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_MUNINNODES
+				+ " WHERE " + DatabaseHelper.KEY_ID + " = " + muninNodeId;
 		
 		SQLiteDatabase db = dbHlpr.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
-		if (c != null && c.moveToFirst()) { // The server has been found (which should always be the case)
-			AuthType authType = AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_AUTHTYPE)));
+		if (c != null && c.moveToFirst()) { // The node has been found (which should always be the case)
+			AuthType authType = AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINNODES_AUTHTYPE)));
 			
 			attachTo.setAuthType(authType);
 			if (authType == AuthType.BASIC || authType == AuthType.DIGEST) {
-				String authLogin = c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHLOGIN));
-				String authPassword = c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHPASSWORD));
-				String authString = c.getString(c.getColumnIndex(KEY_MUNINSERVERS_AUTHSTRING));
+				String authLogin = c.getString(c.getColumnIndex(KEY_MUNINNODES_AUTHLOGIN));
+				String authPassword = c.getString(c.getColumnIndex(KEY_MUNINNODES_AUTHPASSWORD));
+				String authString = c.getString(c.getColumnIndex(KEY_MUNINNODES_AUTHSTRING));
 				
 				attachTo.setAuthIds(authLogin, authPassword);
 				attachTo.setAuthString(authString);
 			}
 			
-			boolean ssl = c.getInt(c.getColumnIndex(KEY_MUNINSERVERS_SSL)) == 1;
+			boolean ssl = c.getInt(c.getColumnIndex(KEY_MUNINNODES_SSL)) == 1;
 			attachTo.setSSL(ssl);
 			
 			DatabaseHelper.close(c, db);
@@ -169,7 +169,7 @@ public class SQLite {
 	    MuninFoo.log("============================================================");
         for (MuninMaster m : this.muninFoo.masters) {
 	        MuninFoo.log("[" + m.getName() + "]");
-            for (MuninServer s : m.getChildren())
+            for (MuninNode s : m.getChildren())
 	            MuninFoo.log(" - (" + s.getPosition() + ") " + s.getName());
         }
 	    MuninFoo.log("============================================================");

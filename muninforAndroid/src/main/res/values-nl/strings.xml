@@ -67,7 +67,7 @@
 	<string name="widget_configuration1">De widget is aan je homescreen toegevoegd. Tip: je kunt de grafiek bijwerken, door op de grijze balk aan de onderkant van de widget te tikken!</string>
 	<string name="widget_configuration2">Grafiek alleen automatisch bijwerken met Wifi verbinding (1 update per uur)</string>
 	<string name="widget_configuration3">Verberg servernaam</string>
-	<string name="settings_defaultserver">Standaardserver</string>
+	<string name="settings_defaultnode">Standaardserver</string>
 	<string name="settings_lang">App taal</string>
 	<string name="lang_english">Engels</string>
 	<string name="lang_french">Frans</string>
@@ -199,7 +199,7 @@
 	<string name="grids_legend">Raster legenda</string>
 	<string name="grids_legend_none">Geen</string>
 	<string name="grids_legend_pluginName">Plug-in naam</string>
-	<string name="grids_legend_serverName">Server naam</string>
+	<string name="grids_legend_nodeName">Server naam</string>
 	<string name="grids_legend_both">Beide</string>
 	<string name="redetectHdGraphsUrl">HD grafiek URL herdefiniëren</string>
 	<string name="disableHDGraphs">HD grafieken de-activeren</string>

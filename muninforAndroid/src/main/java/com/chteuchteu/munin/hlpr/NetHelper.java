@@ -8,7 +8,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.HTTPResponse;
 import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
 import com.chteuchteu.munin.obj.MuninMaster;
-import com.chteuchteu.munin.obj.MuninServer;
+import com.chteuchteu.munin.obj.MuninNode;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -145,13 +145,13 @@ public class NetHelper {
 		catch (SSLException e) { // SSLPeerUnverifiedException
 			if (!master.getSSL()) {
 				master.setSSL(true);
-				// Update the URL of master / child server if needed
+				// Update the URL of master / child node if needed
 				if (master.getUrl().equals(url))
 					master.setUrl(Util.URLManipulation.setHttps(url));
 				else {
-					for (MuninServer server : master.getChildren()) {
-						if (server.getUrl().equals(url)) {
-							server.setUrl(Util.URLManipulation.setHttps(url));
+					for (MuninNode node : master.getChildren()) {
+						if (node.getUrl().equals(url)) {
+							node.setUrl(Util.URLManipulation.setHttps(url));
 							break;
 						}
 					}

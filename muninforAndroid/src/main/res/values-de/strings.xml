@@ -149,7 +149,7 @@
 	<string name="fieldsDescription">"Feld-Beschreibung"</string>
 	<string name="renameMaster">"Master umbenennen"</string>
 	<string name="widget_configuration3">Servername verstecken</string>
-	<string name="settings_defaultserver">"Standardserver"</string>
+	<string name="settings_defaultnode">"Standardserver"</string>
 	<string name="rename_grid">"Gitter umbenennen"</string>
 	<string name="text80">"Dieses Gitter wird gelöscht. Sicher?"</string>
 	<string name="text81">"Keine Daten für dieses Plugin vorhanden"</string>
@@ -200,7 +200,7 @@
 	<string name="grids_legend">Gitter-Legende</string>
 	<string name="grids_legend_none">Keine</string>
 	<string name="grids_legend_pluginName">Plugin-Name</string>
-	<string name="grids_legend_serverName">Server-Name</string>
+	<string name="grids_legend_nodeName">Server-Name</string>
 	<string name="grids_legend_both">Beides</string>
 	<string name="redetectHdGraphsUrl">HD-Graph URL neu bestimmen</string>
 	<string name="disableHDGraphs">HD-Graphen deaktivieren</string>

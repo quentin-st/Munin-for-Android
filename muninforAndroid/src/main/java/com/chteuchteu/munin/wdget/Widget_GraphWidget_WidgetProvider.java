@@ -70,7 +70,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 			if (graphWidget != null && graphWidget.getPlugin() != null
 					&& graphWidget.getPlugin().getInstalledOn() != null
 					&& graphWidget.getPlugin().getInstalledOn().getParent() != null) {
-				if (!graphWidget.getHideServerName())
+				if (!graphWidget.getHideNodeName())
 					views.setTextViewText(R.id.widget_servername, graphWidget.getPlugin().getInstalledOn().getName());
 				else {
 					views.setViewVisibility(R.id.widget_legend, View.GONE);
@@ -136,7 +136,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 							graphWidget = sqlite.dbHlpr.getGraphWidget(widgetId);
 							Intent intent2 = new Intent(context, Activity_GraphView.class);
 							intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							intent2.putExtra("server", graphWidget.getPlugin().getInstalledOn().getUrl());
+							intent2.putExtra("node", graphWidget.getPlugin().getInstalledOn().getUrl());
 							intent2.putExtra("plugin", graphWidget.getPlugin().getName());
 							intent2.putExtra("period", graphWidget.getPeriod());
 							context.startActivity(intent2);
@@ -193,7 +193,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 		protected Void doInBackground(Void... arg0) {
 			bm = graphWidget.getPlugin().getGraph(url, MuninFoo.getUserAgent(context));
 			bm = Util.removeBitmapBorder(bm);
-			if (graphWidget.getHideServerName())
+			if (graphWidget.getHideNodeName())
 				bm = Util.dropShadow(bm);
 			return null;
 		}
