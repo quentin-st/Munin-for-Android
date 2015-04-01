@@ -84,6 +84,8 @@ public class Activity_GraphView extends MuninActivity {
 	public static final int VIEWFLOWMODE_LABELS = 2;
 	public Label        label;
 
+    public int[]        imageViewDimensions;
+
 	private static int  position;
 	public HashMap<Integer, PhotoViewAttacher> photoViewAttachers;
 	private Bitmap[]	bitmaps;
@@ -265,6 +267,18 @@ public class Activity_GraphView extends MuninActivity {
 			@Override
 			public void onPageScrollStateChanged(int state) { }
 		});
+
+        // ImageView dimensions
+        viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                imageViewDimensions = new int[] {
+                        viewPager.getWidth(),
+                        viewPager.getHeight()
+                };
+                Util.removeOnGlobalLayoutListener(viewPager, this);
+            }
+        });
 
 		fab = (FloatingActionButton) findViewById(R.id.fab);
 		if (currentPlugin.getInstalledOn().getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE) {

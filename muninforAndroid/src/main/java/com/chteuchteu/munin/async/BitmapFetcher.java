@@ -71,12 +71,12 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 			if (node.getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE
 					&& !Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")) { // Dynazoom (HD graph)
 				// Check if HD graph is really needed : if the standard-res bitmap isn't upscaled, it's OK
-				float xScale = ((float) imageView.getWidth()) / AVERAGE_GRAPH_DIMENSIONS[0];
-				float yScale = ((float) imageView.getHeight()) / AVERAGE_GRAPH_DIMENSIONS[1];
+				float xScale = ((float) activity.imageViewDimensions[0]) / AVERAGE_GRAPH_DIMENSIONS[0];
+				float yScale = ((float) activity.imageViewDimensions[1]) / AVERAGE_GRAPH_DIMENSIONS[1];
 				float scale = (xScale <= yScale) ? xScale : yScale;
 
 				// Acceptable upscaling factor
-				if (scale > 2) {
+				if (scale > 2.4) {
 					int[] graphsDimensions = Util.HDGraphs.getBestImageDimensions(imageView, context);
 					imgUrl = plugin.getHDImgUrl(activity.load_period, true, graphsDimensions[0], graphsDimensions[1]);
 				}
