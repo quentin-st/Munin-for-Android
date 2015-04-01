@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.wdget;
 
-
 import android.content.Intent;
 import android.widget.RemoteViewsService;
 

@@ -49,7 +49,7 @@ public class Widget_AlertsWidget_Configure extends Activity {
 			finish();
 		}
 		if (!muninFoo.premium) {
-			Toast.makeText(this, "Munin for Android features pack needed", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.featuresPackNeeded, Toast.LENGTH_SHORT).show();
 			finish();
 		}
 		if (muninFoo.getNodes().size() == 0) {
@@ -71,7 +71,7 @@ public class Widget_AlertsWidget_Configure extends Activity {
 
 			for (int i=0; i<muninFoo.getNodes().size(); i++) {
 				LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				View v = vi.inflate(R.layout.servers_list_checkbox, null);
+				View v = vi.inflate(R.layout.servers_list_checkbox, checkboxesView, false);
 
 				checkboxes[i] = (CheckBox) v.findViewById(R.id.line_0);
 				int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");

@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -50,8 +51,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 		// Updating graphWidget
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_graphwidget_layout);
 		if (!premium){
-			views.setTextViewText(R.id.widget_servername, "Munin for Android Features Pack needed");
-			//views.setBitmap(R.id.widget_graph, "setImageBitmap", BitmapFactory.decodeResource(context.getResources(), R.drawable.widget_featurespack));
+			views.setTextViewText(R.id.widget_servername, context.getString(R.string.featuresPackNeeded));
 			
 			// Action open Munin for Android
 			Intent intent2 = new Intent(context, Widget_GraphWidget_WidgetProvider.class);
@@ -108,7 +108,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 	}
 	
 	@Override
-	public void onReceive(Context context, Intent intent) {
+	public void onReceive(@NonNull Context context, @NonNull Intent intent) {
 		super.onReceive(context, intent);
 		
 		if (sqlite == null)

@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -55,7 +56,7 @@ public class Widget_AlertsWidget_WidgetProvider extends AppWidgetProvider {
 	}
 
 	@Override
-	public void onReceive(Context context, Intent intent) {
+	public void onReceive(@NonNull Context context, @NonNull Intent intent) {
 		super.onReceive(context, intent);
 
 		if (intent.getAction() != null) {
