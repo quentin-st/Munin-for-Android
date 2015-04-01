@@ -148,6 +148,9 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 	
 	@Override
 	public void onBackPressed() {
+        if (dh.closeDrawerIfOpen())
+            return;
+
 		if (activityState == ActivityState.SELECTING_PLUGIN) {
 			labelsItemsListFragment.unselectLabel();
 

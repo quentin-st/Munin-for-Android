@@ -73,7 +73,10 @@ public class Activity_AlertsPlugins extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-		Intent intent = new Intent(this, Activity_Alerts.class);
+        if (dh.closeDrawerIfOpen())
+            return;
+
+        Intent intent = new Intent(this, Activity_Alerts.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		Util.setTransition(context, TransitionStyle.SHALLOWER);

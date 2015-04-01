@@ -246,7 +246,10 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 	
 	@Override
 	public void onBackPressed() {
-		if (doubleBackPressed) {
+        if (dh.closeDrawerIfOpen())
+            return;
+
+        if (doubleBackPressed) {
 			// Close the app when tapping twice on it.
 			// Useful when going in GraphView from widgets
 			Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -270,7 +273,7 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 		if (item.getItemId() != android.R.id.home
 				&& item.getItemId() != R.id.menu_settings
 				&& item.getItemId() != R.id.menu_about)
-			dh.closeDrawerIfOpened();
+			dh.closeDrawerIfOpen();
 
 		switch (item.getItemId()) {
 			case android.R.id.home:

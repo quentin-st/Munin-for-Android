@@ -65,6 +65,9 @@ public class Activity_About extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
+        if (dh.closeDrawerIfOpen())
+            return;
+
 		Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);

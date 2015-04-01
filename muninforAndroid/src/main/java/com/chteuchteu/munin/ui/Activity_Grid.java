@@ -295,7 +295,10 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	
 	@Override
 	public void onBackPressed() {
-		if (findViewById(R.id.fullscreen).getVisibility() == View.VISIBLE)
+        if (dh.closeDrawerIfOpen())
+            return;
+
+        if (findViewById(R.id.fullscreen).getVisibility() == View.VISIBLE)
 			fragment.hidePreview();
 		else {
 			if (fragment.isEditing())

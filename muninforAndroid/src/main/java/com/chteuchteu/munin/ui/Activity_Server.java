@@ -97,7 +97,10 @@ public class Activity_Server extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-		// Hitting "back" within the AlertDialog will call its own onBackPressed
+        if (dh.closeDrawerIfOpen())
+            return;
+
+        // Hitting "back" within the AlertDialog will call its own onBackPressed
 		// (which can't be overriden BTW).
 		if (!isAlertShown) {
 			Intent intent = new Intent(this, Activity_Servers.class);

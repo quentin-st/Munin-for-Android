@@ -491,7 +491,10 @@ public class Activity_GraphView extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-		if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE) {
+        if (dh.closeDrawerIfOpen())
+            return;
+
+        if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE) {
 			hideDocumentation();
 			return;
 		}

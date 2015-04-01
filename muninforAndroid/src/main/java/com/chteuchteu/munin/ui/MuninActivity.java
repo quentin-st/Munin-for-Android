@@ -90,7 +90,7 @@ public class MuninActivity extends ActionBarActivity {
 				return true;
 			default:
 				// In any other case, close the drawer before executing action
-				dh.closeDrawerIfOpened();
+				dh.closeDrawerIfOpen();
 				return true;
 		}
 	}

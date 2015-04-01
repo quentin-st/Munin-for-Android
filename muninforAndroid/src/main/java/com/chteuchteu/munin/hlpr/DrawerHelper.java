@@ -197,7 +197,7 @@ public class DrawerHelper {
 
 	private void startActivity(Class<?> targetActivity) {
 		if (((Object) activity).getClass() == targetActivity)
-			closeDrawerIfOpened();
+			closeDrawerIfOpen();
 		else {
 			Intent intent = new Intent(activity, targetActivity);
 			intent.addFlags(getIntentFlag());
@@ -363,9 +363,16 @@ public class DrawerHelper {
 				.show();
 	}
 
-	public void closeDrawerIfOpened() {
-		if (drawerLayout.isDrawerOpen(Gravity.START))
-			drawerLayout.closeDrawer(Gravity.START);
+    /**
+     * Close drawer if it is open
+     * @return boolean true if drawer has been closed
+     */
+	public boolean closeDrawerIfOpen() {
+		if (drawerLayout.isDrawerOpen(Gravity.START)) {
+            drawerLayout.closeDrawer(Gravity.START);
+            return true;
+        }
+        return false;
 	}
 	
 	private void setSelectedMenuItem(DrawerMenuItem menuItemName) {

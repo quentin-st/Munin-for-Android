@@ -310,7 +310,10 @@ public class Activity_Plugins extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-		if (ll_filter != null && ll_filter.getVisibility() == View.VISIBLE) {
+        if (dh.closeDrawerIfOpen())
+            return;
+
+        if (ll_filter != null && ll_filter.getVisibility() == View.VISIBLE) {
 			filter.setText("");
 			ll_filter.setVisibility(View.GONE);
 			filter.setFocusable(false);

@@ -41,10 +41,10 @@ public class Activity_Settings extends MuninActivity {
 	private Spinner	spinner_defaultNode;
 	private Spinner	spinner_lang;
 	private Spinner	spinner_orientation;
-	private Spinner    spinner_gridsLegend;
-	private Spinner    spinner_defaultActivity;
-	private Spinner    spinner_defaultActivity_grid;
-	private Spinner    spinner_defaultActivity_label;
+	private Spinner spinner_gridsLegend;
+	private Spinner spinner_defaultActivity;
+	private Spinner spinner_defaultActivity_grid;
+	private Spinner spinner_defaultActivity_label;
 	private CheckBox checkbox_alwaysOn;
 	private CheckBox checkbox_autoRefresh;
 	private CheckBox checkbox_graphsZoom;
@@ -510,7 +510,10 @@ public class Activity_Settings extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-		Intent intent = new Intent(this, Activity_Main.class);
+        if (dh.closeDrawerIfOpen())
+            return;
+
+        Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		Util.setTransition(this, TransitionStyle.SHALLOWER);
