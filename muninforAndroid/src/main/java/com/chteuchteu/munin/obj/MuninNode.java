@@ -164,10 +164,9 @@ public class MuninNode {
 				this.graphURL = srcAttr.substring(0, srcAttr.lastIndexOf('/') + 1);
 			}
 
-			// Find HDGraphURL (if not already done)
+			// Find HDGraphURL (if not already done) and DynazoomAvailability
 			if ((this.hdGraphURL == null || this.hdGraphURL.equals(""))
-                    && this.master.isDynazoomAvailable() != MuninMaster.DynazoomAvailability.FALSE
-                    && this.master.isDynazoomAvailable() != MuninMaster.DynazoomAvailability.TRUE) {
+                    && this.master.isDynazoomAvailable() != MuninMaster.DynazoomAvailability.FALSE) {
 				// To go to the dynazoom page, we have to "click" on the first graph.
 				// Then, on the second page, we have to "click" again on the first graph.
 				// Finally, the only image on this third page is the dynazoom graph.
@@ -185,6 +184,20 @@ public class MuninNode {
 					if (imageParent.tagName().equals("a")) {
 						String srcAttr2 = imageParent.attr("abs:href");
 						String thirdPageHtml = this.master.grabUrl(srcAttr2, userAgent).html;
+
+                        // If the plugin has one more details level, we have to go to a fourth page!
+                        if (!thirdPageHtml.contains("Zooming is very easy")) {
+                            Document thirdPage = Jsoup.parse(thirdPageHtml, srcAttr2);
+                            Elements images3 = thirdPage.select("img[src$=-day.png]");
+                            if (images3.size() == 0)
+                                images3 = doc.select("img[src$=-day.svg]");
+
+                            String link2 = images3.get(0).parent().attr("abs:href");
+
+                            thirdPageHtml = this.master.grabUrl(link2, userAgent).html;
+                            srcAttr2 = link2;
+                        }
+
 						if (thirdPageHtml.equals(""))
 							this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
 						else {

@@ -164,6 +164,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 				rescanHdGraphsUrl.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
+                        node.getParent().setDynazoomAvailable(MuninMaster.DynazoomAvailability.AUTO_DETECT);
 						new DynazoomUrlScanner(activity, node.getParent(), context).execute();
 					}
 				});
