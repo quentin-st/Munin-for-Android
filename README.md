@@ -14,6 +14,8 @@ Also, if the app isn't available or fully translated in your native language, yo
 
 Whenever you have any question, don't hesitate to send me an email at [support@munin-for-android.com](mailto:support@munin-for-android.com)!
 
+When cloning the project and running it (in Android Studio) on your device, Munin for Android will be installed alongside with your current version of the app. You'll then be able to compare both versions, but also keep your settings and servers while testing the cutting-edge development version!
+
 ## Links ##
 * [Munin for Android on Google Play](https://play.google.com/store/apps/details?id=com.chteuchteu.munin)
 * [Munin for Android website](http://www.munin-for-android.com)
