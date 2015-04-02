@@ -360,7 +360,7 @@ public class Activity_GraphView extends MuninActivity {
                                         else
                                             intent.putExtra("position", 0);
                                         startActivity(intent);
-                                        Util.setTransition(context, TransitionStyle.DEEPER);
+                                        Util.setTransition(activity, TransitionStyle.DEEPER);
                                     }
                                 }
                             });
@@ -527,12 +527,12 @@ public class Activity_GraphView extends MuninActivity {
 						Intent intent = new Intent(Activity_GraphView.this, Activity_Labels.class);
 						intent.putExtra("labelId", thisIntent.getExtras().getLong("labelId"));
 						startActivity(intent);
-						Util.setTransition(context, TransitionStyle.SHALLOWER);
+						Util.setTransition(this, TransitionStyle.SHALLOWER);
 					}
 					break;
 				case "main_labels": {
 					startActivity(new Intent(Activity_GraphView.this, Activity_Main.class));
-					Util.setTransition(context, TransitionStyle.SHALLOWER);
+					Util.setTransition(this, TransitionStyle.SHALLOWER);
 					break;
 				}
 				case "alerts":
@@ -541,7 +541,7 @@ public class Activity_GraphView extends MuninActivity {
 							muninFoo.setCurrentNode(muninFoo.getNode(thisIntent.getExtras().getString("node")));
 						Intent intent = new Intent(Activity_GraphView.this, Activity_AlertsPlugins.class);
 						startActivity(intent);
-						Util.setTransition(context, TransitionStyle.SHALLOWER);
+						Util.setTransition(this, TransitionStyle.SHALLOWER);
 					}
 					break;
 				case "grid":
@@ -549,24 +549,24 @@ public class Activity_GraphView extends MuninActivity {
 						Intent intent = new Intent(Activity_GraphView.this, Activity_Grid.class);
 						intent.putExtra("gridName", thisIntent.getExtras().getString("fromGrid"));
 						startActivity(intent);
-						Util.setTransition(context, TransitionStyle.SHALLOWER);
+						Util.setTransition(this, TransitionStyle.SHALLOWER);
 					} else {
 						startActivity(new Intent(Activity_GraphView.this, Activity_Grids.class));
-						Util.setTransition(context, TransitionStyle.SHALLOWER);
+						Util.setTransition(this, TransitionStyle.SHALLOWER);
 					}
 					break;
 				case "plugins":
 					Intent intent = new Intent(this, Activity_Plugins.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
-					Util.setTransition(context, TransitionStyle.SHALLOWER);
+					Util.setTransition(this, TransitionStyle.SHALLOWER);
 					break;
 			}
 		} else {
 			Intent intent = new Intent(this, Activity_Plugins.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			Util.setTransition(context, TransitionStyle.SHALLOWER);
+			Util.setTransition(this, TransitionStyle.SHALLOWER);
 		}
 	}
 	

@@ -193,15 +193,25 @@ public final class Util {
 	}
 	
 	public enum TransitionStyle { DEEPER, SHALLOWER }
-	public static void setTransition(Context context, TransitionStyle transitionStyle) {
-		switch (transitionStyle) {
-			case DEEPER:
-				((Activity) context).overridePendingTransition(R.anim.deeper_in, R.anim.deeper_out);
-				break;
-			case SHALLOWER:
-				((Activity) context).overridePendingTransition(R.anim.shallower_in, R.anim.shallower_out);
-				break;
-		}
+	public static void setTransition(Activity activity, TransitionStyle transitionStyle) {
+        int enterAnim = -1;
+        int exitAnim = -1;
+
+        switch (transitionStyle) {
+            case DEEPER:
+                enterAnim = R.anim.deeper_in;
+                exitAnim = R.anim.deeper_out;
+                break;
+            case SHALLOWER:
+                enterAnim = R.anim.shallower_in;
+                exitAnim = R.anim.shallower_out;
+                //enterAnim = android.R.anim.slide_in_left;
+                //exitAnim = android.R.anim.slide_out_right;
+                break;
+
+        }
+
+        activity.overridePendingTransition(enterAnim, exitAnim);
 	}
 	
 	public static int getStatusBarHeight(Context c) {

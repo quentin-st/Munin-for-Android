@@ -61,7 +61,7 @@ public class Activity_AlertsPlugins extends MuninActivity {
 						i.putExtra("node", muninFoo.getCurrentNode().getUrl());
 						i.putExtra("from", "alerts");
 						startActivity(i);
-						Util.setTransition(context, TransitionStyle.DEEPER);
+						Util.setTransition(activity, TransitionStyle.DEEPER);
 					}
 				});
 				
@@ -79,6 +79,6 @@ public class Activity_AlertsPlugins extends MuninActivity {
         Intent intent = new Intent(this, Activity_Alerts.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		Util.setTransition(context, TransitionStyle.SHALLOWER);
+		Util.setTransition(this, TransitionStyle.SHALLOWER);
 	}
 }

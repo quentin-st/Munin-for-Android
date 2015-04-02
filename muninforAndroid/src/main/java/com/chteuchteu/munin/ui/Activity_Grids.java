@@ -83,7 +83,7 @@ public class Activity_Grids extends MuninActivity {
 					Intent intent = new Intent(Activity_Grids.this, Activity_Grid.class);
 					intent.putExtra(Activity_Grid.ARG_GRIDID, getGridFromName(gridName.getText().toString()).getId());
 					startActivity(intent);
-					Util.setTransition(context, TransitionStyle.DEEPER);
+					Util.setTransition(activity, TransitionStyle.DEEPER);
 				}
 			});
 			
@@ -183,7 +183,7 @@ public class Activity_Grids extends MuninActivity {
                         Intent i = new Intent(Activity_Grids.this, Activity_Grid.class);
                         i.putExtra("gridId", id);
                         startActivity(i);
-                        Util.setTransition(context, TransitionStyle.DEEPER);
+                        Util.setTransition(activity, TransitionStyle.DEEPER);
                     }
                     else
                         Toast.makeText(context, getString(R.string.text74), Toast.LENGTH_LONG).show();
@@ -226,6 +226,6 @@ public class Activity_Grids extends MuninActivity {
         Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		Util.setTransition(context, TransitionStyle.SHALLOWER);
+		Util.setTransition(this, TransitionStyle.SHALLOWER);
 	}
 }

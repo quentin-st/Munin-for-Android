@@ -614,7 +614,7 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
 					        Intent intent = new Intent(context, Activity_Servers.class);
 					        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					        activity.startActivity(intent);
-					        Util.setTransition(context, Util.TransitionStyle.SHALLOWER);
+					        Util.setTransition(activity, Util.TransitionStyle.SHALLOWER);
 					        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 				        }
 			        });
@@ -631,7 +631,7 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
 					        Intent intent = new Intent(context, Activity_Plugins.class);
 					        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					        activity.startActivity(intent);
-					        Util.setTransition(context, Util.TransitionStyle.SHALLOWER);
+					        Util.setTransition(activity, Util.TransitionStyle.SHALLOWER);
 					        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 				        }
 			        });

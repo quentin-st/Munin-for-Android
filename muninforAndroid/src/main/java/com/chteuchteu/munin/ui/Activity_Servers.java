@@ -442,7 +442,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 		switch (item.getItemId()) {
 			case R.id.menu_add:
 				startActivity(new Intent(this, Activity_Server.class));
-				Util.setTransition(context, TransitionStyle.DEEPER);
+				Util.setTransition(this, TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_import:
 				displayImportDialog();
@@ -463,6 +463,6 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
         Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		Util.setTransition(context, TransitionStyle.SHALLOWER);
+		Util.setTransition(this, TransitionStyle.SHALLOWER);
 	}
 }

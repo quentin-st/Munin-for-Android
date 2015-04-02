@@ -106,7 +106,7 @@ public class Activity_Server extends MuninActivity {
 			Intent intent = new Intent(this, Activity_Servers.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			Util.setTransition(context, TransitionStyle.SHALLOWER);
+			Util.setTransition(this, TransitionStyle.SHALLOWER);
 		}
 	}
 

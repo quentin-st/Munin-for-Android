@@ -1,5 +1,6 @@
 package com.chteuchteu.munin.adptr;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -160,7 +161,7 @@ public class Adapter_Alerts {
 				public void onClick(View v) {
 					MuninFoo.getInstance().setCurrentNode(node);
 					context.startActivity(new Intent(context, Activity_AlertsPlugins.class));
-					Util.setTransition(context, Util.TransitionStyle.DEEPER);
+					Util.setTransition((Activity) context, Util.TransitionStyle.DEEPER);
 				}
 			});
 

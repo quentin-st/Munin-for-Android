@@ -180,7 +180,7 @@ public class Activity_Plugins extends MuninActivity {
 				intent.putExtra("position", p);
 				intent.putExtra("from", "plugins");
 				startActivity(intent);
-				Util.setTransition(context, TransitionStyle.DEEPER);
+				Util.setTransition(activity, TransitionStyle.DEEPER);
 			}
 		});
 		
@@ -326,7 +326,7 @@ public class Activity_Plugins extends MuninActivity {
 			Intent intent = new Intent(this, Activity_Main.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			Util.setTransition(context, TransitionStyle.SHALLOWER);
+			Util.setTransition(this, TransitionStyle.SHALLOWER);
 		}
 	}
 }

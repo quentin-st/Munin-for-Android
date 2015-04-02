@@ -242,7 +242,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("gridName"))
 			i.putExtra("fromGrid", gridIntent.getExtras().getString("gridName"));
 		context.startActivity(i);
-		Util.setTransition(context, TransitionStyle.DEEPER);
+		Util.setTransition(this, TransitionStyle.DEEPER);
 	}
 
 	@Override
@@ -307,7 +307,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 				Intent intent = new Intent(this, Activity_Grids.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				Util.setTransition(context, TransitionStyle.SHALLOWER);
+				Util.setTransition(this, TransitionStyle.SHALLOWER);
 			}
 		}
 	}

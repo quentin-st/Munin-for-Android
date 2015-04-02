@@ -81,12 +81,12 @@ public class MuninActivity extends ActionBarActivity {
 				dh.toggle();
 				return true;
 			case R.id.menu_settings:
-				startActivity(new Intent(context, Activity_Settings.class));
-				Util.setTransition(context, Util.TransitionStyle.DEEPER);
+				startActivity(new Intent(this, Activity_Settings.class));
+				Util.setTransition(this, Util.TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
-				startActivity(new Intent(context, Activity_About.class));
-				Util.setTransition(context, Util.TransitionStyle.DEEPER);
+				startActivity(new Intent(this, Activity_About.class));
+				Util.setTransition(this, Util.TransitionStyle.DEEPER);
 				return true;
 			default:
 				// In any other case, close the drawer before executing action

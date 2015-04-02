@@ -255,7 +255,7 @@ public class Activity_Notifications extends MuninActivity {
         Intent intent = new Intent(this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		Util.setTransition(context, TransitionStyle.SHALLOWER);
+		Util.setTransition(this, TransitionStyle.SHALLOWER);
 	}
 	
 	private void computeEstimatedConsumption() {

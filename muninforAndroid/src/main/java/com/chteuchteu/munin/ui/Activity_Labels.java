@@ -106,7 +106,7 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 		intent.putExtra("label", labelName);
 		intent.putExtra("labelId", labelId);
 		startActivity(intent);
-		Util.setTransition(context, Util.TransitionStyle.DEEPER);
+		Util.setTransition(this, Util.TransitionStyle.DEEPER);
 	}
 
 	@Override
@@ -164,7 +164,7 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 			Intent intent = new Intent(this, Activity_Main.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			Util.setTransition(context, TransitionStyle.SHALLOWER);
+			Util.setTransition(this, TransitionStyle.SHALLOWER);
 		}
 	}
 

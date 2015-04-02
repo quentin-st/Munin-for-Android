@@ -281,11 +281,11 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(context, Activity_Settings.class));
-				Util.setTransition(context, Util.TransitionStyle.DEEPER);
+				Util.setTransition(this, Util.TransitionStyle.DEEPER);
 				return true;
 			case R.id.menu_about:
 				startActivity(new Intent(context, Activity_About.class));
-				Util.setTransition(context, Util.TransitionStyle.DEEPER);
+				Util.setTransition(this, Util.TransitionStyle.DEEPER);
 				return true;
 			/* Fragments */
 			case R.id.menu_open:
@@ -295,7 +295,7 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 						Grid grid = ((Fragment_Grid) fragment).getGrid();
 						intent.putExtra(Activity_Grid.ARG_GRIDID, grid.getId());
 						startActivity(intent);
-						Util.setTransition(context, Util.TransitionStyle.DEEPER);
+						Util.setTransition(this, Util.TransitionStyle.DEEPER);
 						break;
 					}
 					case LABEL: {
@@ -303,7 +303,7 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 						int labelId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_LabelId));
 						intent.putExtra("labelId", labelId);
 						startActivity(intent);
-						Util.setTransition(context, Util.TransitionStyle.SHALLOWER);
+						Util.setTransition(this, Util.TransitionStyle.SHALLOWER);
 						break;
 					}
 					case ALERTS:
@@ -574,7 +574,7 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 		intent.putExtra("label", labelName);
 		intent.putExtra("labelId", labelId);
 		startActivity(intent);
-		Util.setTransition(context, Util.TransitionStyle.DEEPER);
+		Util.setTransition(this, Util.TransitionStyle.DEEPER);
 	}
 	@Override public void onLabelsItemsListFragmentLoaded() { }
 	@Override
