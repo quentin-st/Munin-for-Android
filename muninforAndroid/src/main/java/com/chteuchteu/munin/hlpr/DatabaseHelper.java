@@ -878,7 +878,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				Grid g = new Grid(c.getString(c.getColumnIndex(KEY_GRIDS_NAME)));
 				g.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 				// Get all GridItems
-				g.setItems(getGridItems(f, g));
+                if (f != null)
+				    g.setItems(getGridItems(f, g));
 				l.add(g);
 			} while (c.moveToNext());
 		}

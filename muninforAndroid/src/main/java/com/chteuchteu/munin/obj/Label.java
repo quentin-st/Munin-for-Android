@@ -1,11 +1,13 @@
 package com.chteuchteu.munin.obj;
 
+import android.content.Context;
+
 import com.chteuchteu.munin.MuninFoo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Label {
+public class Label implements ISearchable {
 	private long id;
 	private String name;
 	public List<MuninPlugin> plugins;
@@ -86,4 +88,20 @@ public class Label {
 	public String getName() {
 		return this.name;
 	}
+
+    /* ISearchable */
+    @Override
+    public boolean matches(String expr) {
+        return this.getName().contains(expr);
+    }
+
+    @Override
+    public String[] getSearchResult() {
+        return new String[] { this.getName() };
+    }
+
+    @Override
+    public SearchResult.SearchResultType getSearchResultType() {
+        return SearchResult.SearchResultType.LABEL;
+    }
 }

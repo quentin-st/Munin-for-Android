@@ -1,11 +1,9 @@
 package com.chteuchteu.munin.obj;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 import com.chteuchteu.munin.MuninFoo;
-import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.ui.Activity_GraphView;
@@ -13,42 +11,22 @@ import com.chteuchteu.munin.ui.Activity_Grid;
 import com.chteuchteu.munin.ui.Activity_Labels;
 import com.chteuchteu.munin.ui.Activity_Plugins;
 
-
 public class SearchResult {
 	private String line_1;
 	private String line_2;
 	private SearchResultType searchResultType;
-	private Object object;
+	private ISearchable object;
 	
 	public enum SearchResultType { PLUGIN, NODE, GRID, LABEL }
 	
-	public SearchResult(SearchResultType resultType, Object object, Context context) {
-		this.searchResultType = resultType;
+	public SearchResult(ISearchable object) {
+		this.searchResultType = object.getSearchResultType();
 		this.object = object;
-		
-		switch (searchResultType) {
-			case GRID:
-				String grid = (String) object;
-				line_1 = context.getText(R.string.text75) + " " + grid;
-				break;
-			case LABEL:
-				Label label = (Label) object;
-				line_1 = label.getName();
-				break;
-			case PLUGIN:
-				MuninPlugin plugin = (MuninPlugin) object;
-				line_1 = plugin.getFancyName();
-				line_2 = plugin.getInstalledOn().getName();
-				break;
-			case NODE:
-				MuninNode node = (MuninNode) object;
-				line_1 = node.getName();
-				line_2 = node.getUrl();
-				break;
-			default:
-				break;
-			
-		}
+        String[] searchResult = object.getSearchResult();
+        if (searchResult.length >= 1)
+            this.line_1 = searchResult[0];
+        if (searchResult.length >= 2)
+            this.line_2 = searchResult[1];
 	}
 	
 	public String getLine1() { return this.line_1; }
@@ -58,10 +36,10 @@ public class SearchResult {
 		Intent intent;
 		switch (searchResultType) {
 			case GRID:
-				String grid = (String) object;
+				Grid grid = (Grid) object;
 				
 				intent = new Intent(activity, Activity_Grid.class);
-				intent.putExtra("gridName", grid);
+				intent.putExtra("gridName", grid.getName());
 				activity.startActivity(intent);
 				Util.setTransition(activity, TransitionStyle.DEEPER);
 				

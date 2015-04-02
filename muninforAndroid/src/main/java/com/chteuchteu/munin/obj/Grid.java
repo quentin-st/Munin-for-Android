@@ -17,7 +17,7 @@ import com.chteuchteu.munin.ui.IGridActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grid {
+public class Grid implements ISearchable {
 	private long id;
 	private String name;
 	private int nbColumns;
@@ -472,4 +472,20 @@ public class Grid {
 
 	public List<GridItem> getItems() { return items; }
 	public void setItems(List<GridItem> items) { this.items = items; }
+
+    /* ISearchable */
+    @Override
+    public boolean matches(String expr) {
+        return this.getName().contains(expr);
+    }
+
+    @Override
+    public String[] getSearchResult() {
+        return new String[] { this.getName() };
+    }
+
+    @Override
+    public SearchResult.SearchResultType getSearchResultType() {
+        return SearchResult.SearchResultType.GRID;
+    }
 }

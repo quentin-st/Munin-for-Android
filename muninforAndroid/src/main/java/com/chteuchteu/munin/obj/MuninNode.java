@@ -14,7 +14,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MuninNode {
+public class MuninNode implements ISearchable {
 	private long id;
 	private String name;
 	private String url;
@@ -414,4 +414,24 @@ public class MuninNode {
 		}
 		return address1.equals(address2);
 	}
+
+    /* ISearchable */
+    @Override
+    public boolean matches(String expr) {
+        return this.getName().toLowerCase().contains(expr)
+                || this.getUrl().toLowerCase().contains(expr);
+    }
+
+    @Override
+    public String[] getSearchResult() {
+        return new String[] {
+                this.getName(),
+                this.getUrl()
+        };
+    }
+
+    @Override
+    public SearchResult.SearchResultType getSearchResultType() {
+        return SearchResult.SearchResultType.NODE;
+    }
 }

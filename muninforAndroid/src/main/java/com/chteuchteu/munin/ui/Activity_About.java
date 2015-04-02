@@ -68,7 +68,9 @@ public class Activity_About extends MuninActivity {
         if (dh.closeDrawerIfOpen())
             return;
 
-		super.onBackPressed();
+        Intent intent = new Intent(this, Activity_Main.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         Util.setTransition(this, TransitionStyle.SHALLOWER);
-	}
+    }
 }

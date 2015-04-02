@@ -61,12 +61,8 @@ public class DrawerHelper {
 	private DrawerLayout drawerLayout;
 
 	public enum DrawerMenuItem { None, Servers, Alerts, Graphs, Notifications, Labels, Premium, Grid }
-	
-	private EditText search;
-	private ListView search_results;
-	private Adapter_Search search_results_adapter;
-	private List<SearchResult> search_results_array;
-	private List<String> search_cachedGridsList;
+
+    private SearchHelper searchHelper;
 	
 	public DrawerHelper(ActionBarActivity activity, MuninFoo muninFoo) {
 		this.activity = activity;
@@ -192,7 +188,9 @@ public class DrawerHelper {
 		
 		Util.Fonts.setFont(context, (ViewGroup) activity.findViewById(R.id.drawer_scrollview), CustomFont.Roboto_Regular);
 
-		initSearch();
+		if (this.searchHelper == null)
+            this.searchHelper = new SearchHelper(activity);
+        this.searchHelper.initSearch();
 	}
 
 	private void startActivity(Class<?> targetActivity) {
@@ -204,116 +202,6 @@ public class DrawerHelper {
 			activity.startActivity(intent);
 			Util.setTransition(activity, TransitionStyle.DEEPER);
 		}
-	}
-
-	private void initSearch() {
-		search = (EditText) activity.findViewById(R.id.drawer_search);
-		search_results = (ListView) activity.findViewById(R.id.drawer_search_results);
-		search_results.setVisibility(View.VISIBLE);
-
-
-		// Cancel button
-		//final int DRAWABLE_LEFT = 0;
-		//final int DRAWABLE_TOP = 1;
-		final int DRAWABLE_RIGHT = 2;
-		//final int DRAWABLE_BOTTOM = 3;
-		search.getCompoundDrawables()[DRAWABLE_RIGHT].setAlpha(0);
-
-		search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				return actionId == EditorInfo.IME_ACTION_SEARCH;
-			}
-		});
-
-		search.addTextChangedListener(new TextWatcher() {
-			@SuppressLint("DefaultLocale")
-			@Override
-			public void afterTextChanged(Editable s) {
-				String string = s.toString().toLowerCase();
-
-				if (string.length() == 0) {
-					activity.findViewById(R.id.drawer_scrollview).setVisibility(View.VISIBLE);
-					activity.findViewById(R.id.drawer_search_results).setVisibility(View.GONE);
-					search.getCompoundDrawables()[DRAWABLE_RIGHT].setAlpha(0);
-					return;
-				} else {
-					activity.findViewById(R.id.drawer_scrollview).setVisibility(View.GONE);
-					activity.findViewById(R.id.drawer_search_results).setVisibility(View.VISIBLE);
-					search.getCompoundDrawables()[DRAWABLE_RIGHT].setAlpha(255);
-				}
-
-				if (search_results_adapter != null) {
-					search_results_array.clear();
-					search_results_adapter.notifyDataSetChanged();
-				} else {
-					search_results_array = new ArrayList<>();
-					search_results_adapter = new Adapter_Search(activity, search_results_array);
-					search_results.setAdapter(search_results_adapter);
-				}
-
-				// Search in plugins and nodes
-				for (MuninNode node : MuninFoo.getInstance(context).getNodes()) {
-					String nodeName = node.getName().toLowerCase();
-					String nodeUrl = node.getUrl().toLowerCase();
-
-					if (nodeName.contains(string) || nodeUrl.contains(string))
-						search_results_array.add(new SearchResult(SearchResultType.NODE, node, context));
-
-
-					for (MuninPlugin plugin : node.getPlugins()) {
-						if (plugin.getName().toLowerCase().contains(string)
-								|| plugin.getFancyName().toLowerCase().contains(string))
-							search_results_array.add(new SearchResult(SearchResultType.PLUGIN, plugin, context));
-					}
-				}
-
-				// Search in grids
-				if (search_cachedGridsList == null)
-					search_cachedGridsList = MuninFoo.getInstance(context).sqlite.dbHlpr.getGridsNames();
-
-				for (String grid : search_cachedGridsList) {
-					if (grid.toLowerCase().contains(string))
-						search_results_array.add(new SearchResult(SearchResultType.GRID, grid, context));
-				}
-
-				// Search in labels
-				for (Label label : MuninFoo.getInstance(context).labels) {
-					if (label.getName().toLowerCase().contains(string))
-						search_results_array.add(new SearchResult(SearchResultType.LABEL, label, context));
-				}
-
-				search_results_adapter.notifyDataSetChanged();
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) { }
-		});
-
-		search_results.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
-				SearchResult searchResult = search_results_array.get(position);
-				searchResult.onClick(activity);
-			}
-		});
-
-		// Cancel button listener
-		search.setOnTouchListener(new OnTouchListener() {
-			@SuppressLint("ClickableViewAccessibility") @Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_UP) {
-					if (event.getX() >= (search.getRight() - search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-						search.setText("");
-						Util.hideKeyboard(activity, search);
-					}
-				}
-
-				return false;
-			}
-		});
 	}
 
 	private void donate() {
@@ -379,7 +267,6 @@ public class DrawerHelper {
 		int textViewResId = -1;
 		int iconResId = -1;
 
-
 		switch (menuItemName) {
 			case Graphs: {
 				textViewResId = R.id.drawer_graphs_txt;
@@ -428,4 +315,6 @@ public class DrawerHelper {
 			icon.setColorFilter(selectedDrawerItemColor, Mode.MULTIPLY);
 		}
 	}
+
+    public SearchHelper getSearchHelper() { return this.searchHelper; }
 }
