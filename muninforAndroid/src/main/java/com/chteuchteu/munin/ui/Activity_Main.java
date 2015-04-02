@@ -133,7 +133,7 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 
 		progressBar = Util.UI.prepareGmailStyleProgressBar(this, getSupportActionBar());
 		
-		Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.RobotoCondensed_Regular);
+		Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.Roboto_Regular);
 		
 		if (loaded)
 			onLoadFinished();

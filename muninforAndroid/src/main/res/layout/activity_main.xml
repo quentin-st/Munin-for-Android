@@ -37,15 +37,11 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:gravity="center_horizontal"
-					android:layout_marginBottom="10dp"
-					android:contentDescription="@string/splashDesc"
-					android:shadowColor="#888888"
-					android:shadowDx="0"
-					android:shadowDy="1"
-					android:shadowRadius="2"
+					android:layout_marginBottom="15dp"
 					android:text="@string/app_name"
-					android:textColor="#ffffff"
-					android:textSize="47sp" />
+					android:textColor="#87000000"
+					android:textSize="38sp"
+                    android:shadowColor="#ffffff" />
 
 				<Button
 					android:id="@+id/setDefaultActivity"
