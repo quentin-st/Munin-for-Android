@@ -130,16 +130,25 @@ public class MuninNode implements ISearchable {
 			} else {
 				// Munin 2.X
 				boolean is2 = true;
-				Element table = image.parent().parent().parent().parent().parent();
-				
-				if (table != null) {
-					Element h3 = table.previousElementSibling();
+
+				if (html.contains("<table")) {
+					Element table = image.parent().parent().parent().parent().parent();
+
+					if (table != null) {
+						Element h3 = table.previousElementSibling();
+						if (h3 != null)
+							group = h3.html();
+						else
+							is2 = false;
+					} else
+						is2 = false;
+				} else {
+					// chteuchteu's munin redesign: removed tables
+					Element h3 = image.parent().parent().previousElementSibling();
 					if (h3 != null)
 						group = h3.html();
-					else
-						is2 = false;
-				} else
-					is2 = false;
+					else is2 = false;
+				}
 				
 				// Munin 1.4
 				if (!is2) {
@@ -189,6 +198,7 @@ public class MuninNode implements ISearchable {
                         if (!thirdPageHtml.contains("Zooming is very easy")) {
                             Document thirdPage = Jsoup.parse(thirdPageHtml, srcAttr2);
                             Elements images3 = thirdPage.select("img[src$=-day.png]");
+
                             if (images3.size() == 0)
                                 images3 = doc.select("img[src$=-day.svg]");
 
