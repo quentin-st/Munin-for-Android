@@ -143,7 +143,7 @@ public final class Util {
 			Roboto_Regular("Roboto-Regular.ttf");
 			
 			final String file;
-			private CustomFont(String fileName) { this.file = fileName; }
+			CustomFont(String fileName) { this.file = fileName; }
 			public String getValue() { return this.file; }
 		}
 		
@@ -483,7 +483,7 @@ public final class Util {
 	 * Extended boolean, especially useful when we don't know something's state at first
 	 * For example: documentation availability: UNKNOWN => (TRUE/FALSE)
 	 */
-	public static enum SpecialBool { UNKNOWN, TRUE, FALSE }
+	public enum SpecialBool { UNKNOWN, TRUE, FALSE }
 
 	public static String readFromAssets(Context context, String file) {
 		try {
@@ -761,7 +761,7 @@ public final class Util {
 		}
 	}
 
-	public interface ProgressNotifier { public void notify(int progress, int total); }
+	public interface ProgressNotifier { void notify(int progress, int total); }
 
 	@SuppressWarnings("deprecation")
 	public static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener){
@@ -871,4 +871,8 @@ public final class Util {
         if (v.hasVibrator())
             v.vibrate(milliseconds);
     }
+
+	public static boolean nullOrEmpty(String str) {
+		return str == null || str.equals("");
+	}
 }

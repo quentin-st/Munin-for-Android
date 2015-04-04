@@ -80,6 +80,13 @@ public class MuninPlugin implements ISearchable {
 	
 	public void setFancyName(String fName) { this.fancyName = fName; }
 	public String getFancyName() { return this.fancyName; }
+
+	/**
+	 * Returns name if fancyName is null or empty
+	 */
+	public String getFancyNameOrDefault() {
+		return Util.nullOrEmpty(this.fancyName) ? this.name : this.fancyName;
+	}
 	
 	public void setInstalledOn(MuninNode s) { this.installedOn = s; }
 	public MuninNode getInstalledOn() { return this.installedOn; }

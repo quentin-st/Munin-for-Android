@@ -48,12 +48,12 @@ public class Adapter_GraphView extends FragmentStatePagerAdapter {
 			if (position > muninFoo.getCurrentNode().getPlugins().size())
 				return "";
 
-			return muninFoo.getCurrentNode().getPlugin(position).getFancyName();
+			return muninFoo.getCurrentNode().getPlugin(position).getFancyNameOrDefault();
 		} else {
 			if (position > activity.label.getPlugins().size())
 				return "";
 
-			return activity.label.getPlugins().get(position).getFancyName();
+			return activity.label.getPlugins().get(position).getFancyNameOrDefault();
 		}
 	}
 

@@ -235,7 +235,7 @@ public class Activity_GraphView extends MuninActivity {
 					muninFoo.setCurrentNode(currentPlugin.getInstalledOn());
 				}
 
-                toolbarPluginName.setText(currentPlugin.getFancyName());
+                toolbarPluginName.setText(currentPlugin.getFancyNameOrDefault());
 
 				// Documentation
 				if (item_documentation != null) {
@@ -370,7 +370,7 @@ public class Activity_GraphView extends MuninActivity {
             }
         });
 
-        // Toolbar custom view
+        // Toolbar custom view (plugins spinner)
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -397,7 +397,7 @@ public class Activity_GraphView extends MuninActivity {
             }
         });
         toolbarPluginName = (TextView) customToolbarView.findViewById(R.id.text);
-        toolbarPluginName.setText(currentPlugin.getFancyName());
+        toolbarPluginName.setText(currentPlugin.getFancyNameOrDefault());
         actionBar.setCustomView(customToolbarView);
         super.setOnDrawerOpen(new Runnable() {
             @Override
