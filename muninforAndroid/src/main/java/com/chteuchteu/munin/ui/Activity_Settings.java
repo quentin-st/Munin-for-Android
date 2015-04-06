@@ -393,16 +393,28 @@ public class Activity_Settings extends MuninActivity {
 				Util.removePref(this, Util.PrefKeys.DefaultActivity_GridId);
 				Util.removePref(this, Util.PrefKeys.DefaultActivity_LabelId);
 				break;
-			case 1:
-				Util.setPref(this, Util.PrefKeys.DefaultActivity, "grid");
-				Util.setPref(this, Util.PrefKeys.DefaultActivity_GridId,
-						String.valueOf(grids.get(spinner_defaultActivity_grid.getSelectedItemPosition()).getId()));
+			case 1: {
+				int selectedItemPos = spinner_defaultActivity_grid.getSelectedItemPosition();
+
+				// When there's no grid, the grids spinner is empty
+				if (selectedItemPos != Spinner.INVALID_POSITION) {
+					Util.setPref(this, Util.PrefKeys.DefaultActivity, "grid");
+					Util.setPref(this, Util.PrefKeys.DefaultActivity_GridId,
+							String.valueOf(grids.get(selectedItemPos).getId()));
+				}
 				break;
-			case 2:
-				Util.setPref(this, Util.PrefKeys.DefaultActivity, "label");
-				Util.setPref(this, Util.PrefKeys.DefaultActivity_LabelId,
-						String.valueOf(muninFoo.labels.get(spinner_defaultActivity_label.getSelectedItemPosition()).getId()));
+			}
+			case 2: {
+				int selectedItemPos = spinner_defaultActivity_label.getSelectedItemPosition();
+
+				// When there's no label, the labels spinner is empty
+				if (selectedItemPos != Spinner.INVALID_POSITION) {
+					Util.setPref(this, Util.PrefKeys.DefaultActivity, "label");
+					Util.setPref(this, Util.PrefKeys.DefaultActivity_LabelId,
+							String.valueOf(muninFoo.labels.get(selectedItemPos).getId()));
+				}
 				break;
+			}
 			case 3:
 				Util.setPref(this, Util.PrefKeys.DefaultActivity, "alerts");
 				break;
