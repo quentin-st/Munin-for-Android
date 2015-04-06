@@ -201,7 +201,8 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 
 				fragment = new Fragment_Grid();
 				Bundle bundle = new Bundle();
-				long gridId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_GridId));
+				String sgridId = Util.getPref(context, Util.PrefKeys.DefaultActivity_GridId);
+				long gridId = sgridId.equals("") ? 0 : Integer.parseInt(sgridId);
 				bundle.putLong(Fragment_Grid.ARG_GRIDID, gridId);
 				bundle.putBoolean(Fragment_Grid.ARG_AUTOLOAD, false);
 				fragment.setArguments(bundle);
