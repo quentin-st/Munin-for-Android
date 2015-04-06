@@ -28,7 +28,7 @@
 	<string name="save_button">保存</string>
 	<string name="menu_graph_refresh">リフレッシュ</string>
 	<string name="menu_graph_save">グラフを SD カードに保存する</string>
-	<string name="menu_graph_switch">サーバーの切り替え</string>
+	<string name="menu_graph_switch">ノードの切り替え</string>
 	<string name="menu_addserver_save">サーバーを保存</string>
 	<string name="menu_addserver_delete">サーバーを削除</string>
 	<string name="loading">ロード中…</string>
@@ -66,7 +66,7 @@
 	<string name="notificationsTitle">通知</string>
 	<string name="widget_configuration1">正常にホーム画面にウィジェットを追加しました。 Tip: ウィジェット下部にあるグレーのバーをタップしてグラフを更新できます!</string>
 	<string name="widget_configuration2">WiFi 時のみグラフを自動で更新する (1 時間毎に更新)</string>
-	<string name="widget_configuration3">サーバー名を非表示にする</string>
+	<string name="widget_configuration3">ノード名を非表示にする</string>
 	<string name="settings_defaultnode">デフォルト サーバー</string>
 	<string name="settings_lang">アプリの言語</string>
 	<string name="lang_english">英語</string>
@@ -83,7 +83,7 @@
 	<string name="text11">お使いの電話に Google Play アプリが見つからないようです。</string>
 	<string name="text16">URL が正しくないようです。もう一度ご確認ください。</string>
 	<string name="text18">成功しました!</string>
-	<string name="text21.1">" サーバー"</string>
+	<string name="text21.1">" ノード"</string>
 	<string name="text21.2">" 追加しました!\n"</string>
 	<string name="text24">成功しました</string>
 	<string name="text27">" プラグインが見つかりました!"</string>
@@ -101,7 +101,7 @@
 	<string name="text43">しばらくお待ちください…</string>
 	<string name="text44">URL の取得中…</string>
 	<string name="text45">保存しています!</string>
-	<string name="text46">"サーバー接続中 "</string>
+	<string name="text46">"ノードに接続中 "</string>
 	<string name="text47.1">日</string>
 	<string name="text47.2">週</string>
 	<string name="text47.3">月</string>
@@ -109,8 +109,8 @@
 	<string name="text48.1">強制的に横</string>
 	<string name="text48.2">強制的に縦</string>
 	<string name="text48.3">自動</string>
-	<string name="text49.1">通常の状態のサーバーを非表示にする</string>
-	<string name="text49.2">通常の状態のサーバーを表示する</string>
+	<string name="text49.1">通常の状態のノードを非表示にする</string>
+	<string name="text49.2">通常の状態のノードを表示する</string>
 	<string name="text50.1">致命的</string>
 	<string name="text50.2">致命的</string>
 	<string name="text51.1">警告</string>
@@ -120,9 +120,9 @@
 	<string name="lang_japanese">日本語</string>
 	<string name="text54">見積のデータ消費量: ?? /日</string>
 	<string name="text55">リフレッシュレート</string>
-	<string name="text56">ウォッチするサーバーを選択</string>
+	<string name="text56">ウォッチするノードを選択</string>
 	<string name="text57">10 分/30 分/1 時間/2 時間/5 時間/10 時間/24 時間</string>
-	<string name="text58">" 致命的 / 致命的 /&amp; / 警告 / 警告 /毎 / サーバー/ サーバー"</string>
+	<string name="text58">" 致命的 / 致命的 /&amp; / 警告 / 警告 /毎 / ノード/ ノード"</string>
 	<string name="text60">続行</string>
 	<string name="text61">追加</string>
 	<string name="text62">まだラベルはありません</string>
@@ -149,7 +149,7 @@
 	<string name="text80">グリッドを削除します。よろしいですか?</string>
 	<string name="text81">このプラグインで利用可能なデータはありません</string>
 	<string name="text82">ラベルを削除します。よろしいですか?</string>
-	<string name="text83">サーバーを削除します。よろしいですか?</string>
+	<string name="text83">ノードを削除します。よろしいですか?</string>
 	<string name="text84">マスターを削除します。よろしいですか?</string>
 	<string name="import_servers">インポート</string>
 	<string name="export_servers">エクスポート</string>
@@ -174,7 +174,7 @@
 	<string name="delete_plugin">プラグインを削除</string>
 	<string name="delete_label">ラベルを削除</string>
 	<string name="rename_label">ラベルの名前を変更</string>
-	<string name="delete_master">マスターとサブサーバーを削除</string>
+	<string name="delete_master">マスターとサブノードを削除</string>
 	<string name="alerts_ok">良いニュース - すべて OK です</string>
 	<string name="update_credentials">接続の資格情報を編集</string>
 	<string name="long_click">長押しして編集</string>
@@ -184,9 +184,9 @@
 	<string name="donate">寄付</string>
 	<string name="donate_text">このような大規模のアプリケーションを開発するには、膨大な時間と関与が必要です。アプリが、あなたの日常生活に役立つ場合は、寄付をご検討いただけませんでしょうか? ありがとうございます! その場合、個人的に私があなたに感謝を伝えられるように、私にメールをお送りください!</string>
 	<string name="donate_amount">寄付の金額を選択してください (この金額の 33% は Google に支払われます)</string>
-	<string name="sync_serversadded">XXX サーバーを追加しました\n</string>
-	<string name="sync_serversupdated">XXX サーバーを更新しました\n</string>
-	<string name="sync_serversdeleted">XXX サーバーを削除しました\n</string>
+	<string name="sync_serversadded">XXX ノードを追加しました\n</string>
+	<string name="sync_serversupdated">XXX ノードを更新しました\n</string>
+	<string name="sync_serversdeleted">XXX ノードを削除しました\n</string>
 	<string name="sync_pluginsadded">XXX プラグインを追加しました\n</string>
 	<string name="sync_pluginsupdated">XXX プラグインを更新しました\n</string>
 	<string name="sync_pluginsdeleted">XXX プラグインを削除しました\n</string>
