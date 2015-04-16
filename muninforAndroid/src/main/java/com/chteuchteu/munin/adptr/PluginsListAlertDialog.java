@@ -42,7 +42,7 @@ public class PluginsListAlertDialog {
             List<Map<String,?>> elements = new LinkedList<>();
             String categoryName = "";
             for (MuninPlugin p : l) {
-                elements.add(createItem(p.getFancyName()));
+                elements.add(createItem(p.getFancyNameOrDefault()));
                 categoryName = p.getCategory();
             }
 
