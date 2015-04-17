@@ -191,6 +191,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 		}
 
 		// Connection type
-		activity.updateConnectionType(response.getConnectionType());
+		if (response != null)
+            activity.updateConnectionType(response.getConnectionType());
 	}
 }
