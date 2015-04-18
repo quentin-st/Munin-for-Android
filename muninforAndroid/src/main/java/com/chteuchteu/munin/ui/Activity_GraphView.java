@@ -57,7 +57,6 @@ import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.obj.MuninNode;
-import com.crashlytics.android.Crashlytics;
 import com.edmodo.rangebar.RangeBar;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -88,7 +87,7 @@ public class Activity_GraphView extends MuninActivity {
 
 	private static int  position;
 	public HashMap<Integer, PhotoViewAttacher> photoViewAttachers;
-	private Bitmap[]	bitmaps;
+	private HashMap<Integer, Bitmap> bitmaps;
 	public ImageView    iv_documentation;
 	/**
 	 * How many bitmaps should be kept on left and right
@@ -209,7 +208,7 @@ public class Activity_GraphView extends MuninActivity {
 			nbPlugins = this.label.getPlugins().size();
 		else
 			nbPlugins = muninFoo.getCurrentNode().getPlugins().size();
-		bitmaps = new Bitmap[nbPlugins];
+		bitmaps = new HashMap<>();
 		photoViewAttachers = new HashMap<>();
 
 		// Init ViewPager
@@ -463,7 +462,7 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	
 	private void changePeriod(Period newPeriod) {
-		bitmaps = new Bitmap[muninFoo.getCurrentNode().getPlugins().size()];
+		bitmaps.clear();
 		
 		load_period = newPeriod;
 		
@@ -576,7 +575,7 @@ public class Activity_GraphView extends MuninActivity {
 					(ProgressBar) findViewById(R.id.dynazoom_progressbar), context, muninFoo.getUserAgent(),
 					dynazoom_from, dynazoom_to).execute();
 		} else {
-			bitmaps = new Bitmap[muninFoo.getCurrentNode().getPlugins().size()];
+			bitmaps.clear();
 			if (adapter != null)
 				adapter.refreshAll();
 		}
@@ -585,8 +584,8 @@ public class Activity_GraphView extends MuninActivity {
 		Bitmap image = null;
 		if (isDynazoomOpen() && ((ImageView) findViewById(R.id.dynazoom_imageview)).getDrawable() != null)
 			image = ((BitmapDrawable) ((ImageView) findViewById(R.id.dynazoom_imageview)).getDrawable()).getBitmap();
-		else if (viewPager.getCurrentItem() >= 0 && viewPager.getCurrentItem() < bitmaps.length)
-			image = bitmaps[viewPager.getCurrentItem()];
+		else if (bitmaps.keySet().contains(viewPager.getCurrentItem()))
+			image = bitmaps.get(viewPager.getCurrentItem());
 
 		if (image == null)
 			return;
@@ -714,34 +713,27 @@ public class Activity_GraphView extends MuninActivity {
 		new FieldsDescriptionFetcher(currentPlugin, this).execute();
 	}
 
-	public void addBitmap(Bitmap bitmap, int position) { bitmaps[position] = bitmap; }
+	public void addBitmap(Bitmap bitmap, int position) {
+		bitmaps.put(position, bitmap);
+	}
 	public boolean isBitmapNull(int position) {
-		if (position > bitmaps.length-1) {
-			String from = "unknown";
-			Intent thisIntent = getIntent();
-			if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("from"))
-				from = thisIntent.getExtras().getString("from");
-
-			Crashlytics.log("Crash : from " + from);
-		}
-		return bitmaps[position] == null;
+		return !bitmaps.containsKey(position) || bitmaps.get(position) == null;
 	}
 
 	/**
 	 * Deleted every bitmap that is out of the BITMAPS_PADDING range from position
 	 */
 	private void cleanBitmaps(int position) {
-		for (int i=0; i<bitmaps.length; i++) {
+		for (Integer i : bitmaps.keySet()) {
 			if (i >= position-BITMAPS_PADDING
 					&& i <= position+BITMAPS_PADDING)
 				continue;
 
-			if (bitmaps[i] != null)
-				bitmaps[i] = null;
+			bitmaps.remove(position);
 		}
 	}
 	public Bitmap getBitmap(int position) {
-		return (position >= 0 && position < bitmaps.length) ? bitmaps[position] : null;
+		return bitmaps.containsKey(position) ? bitmaps.get(position) : null;
 	}
 
 
@@ -803,7 +795,7 @@ public class Activity_GraphView extends MuninActivity {
 
 			// Content filling
 			iv_documentation = (ImageView) findViewById(R.id.doc_imageview);
-			iv_documentation.setImageBitmap(bitmaps[viewPager.getCurrentItem()]);
+			iv_documentation.setImageBitmap(getBitmap(viewPager.getCurrentItem()));
 			iv_documentation.setTag(currentPlugin.getName());
 
 			TextView line1 = (TextView) findViewById(R.id.doc_line1);
