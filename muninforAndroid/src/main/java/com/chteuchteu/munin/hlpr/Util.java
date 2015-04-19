@@ -236,7 +236,7 @@ public final class Util {
 		if (original != null && original.getPixel(0, 0) == 0xFFCFCFCF) {
 			try {
 				return Bitmap.createBitmap(original, 2, 2, original.getWidth()-4, original.getHeight()-4);
-			} catch (Exception ignored) {
+			} catch (OutOfMemoryError | Exception ignored) {
 				return original;
 			}
 		}
