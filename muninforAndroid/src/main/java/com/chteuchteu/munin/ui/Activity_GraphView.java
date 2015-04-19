@@ -299,7 +299,7 @@ public class Activity_GraphView extends MuninActivity {
 			mHandler = new Handler();
 			final int INTERVAL = 1000 * 60 * 5;
 			mHandlerTask = new Runnable() {
-				@Override 
+				@Override
 				public void run() {
 					actionRefresh();
 					mHandler.postDelayed(mHandlerTask, INTERVAL);
@@ -466,8 +466,7 @@ public class Activity_GraphView extends MuninActivity {
 		
 		load_period = newPeriod;
 		
-		if (adapter != null)
-			adapter.refreshAll();
+		adapter.refreshAll();
 
 		if (isDynazoomOpen()) {
 			dynazoom_from = DynazoomHelper.getFromPinPoint(load_period);
@@ -576,8 +575,7 @@ public class Activity_GraphView extends MuninActivity {
 					dynazoom_from, dynazoom_to).execute();
 		} else {
 			bitmaps.clear();
-			if (adapter != null)
-				adapter.refreshAll();
+			adapter.refreshAll();
 		}
 	}
 	private void actionSave() {
@@ -724,13 +722,19 @@ public class Activity_GraphView extends MuninActivity {
 	 * Deleted every bitmap that is out of the BITMAPS_PADDING range from position
 	 */
 	private void cleanBitmaps(int position) {
+		// Can't remove items from a list we're browsing
+		List<Integer> toRemove = new ArrayList<>();
 		for (Integer i : bitmaps.keySet()) {
 			if (i >= position-BITMAPS_PADDING
 					&& i <= position+BITMAPS_PADDING)
 				continue;
 
-			bitmaps.remove(position);
+			toRemove.add(position);
 		}
+
+		// Remove items
+		for (Integer i : toRemove)
+			bitmaps.remove(i);
 	}
 	public Bitmap getBitmap(int position) {
 		return bitmaps.containsKey(position) ? bitmaps.get(position) : null;
