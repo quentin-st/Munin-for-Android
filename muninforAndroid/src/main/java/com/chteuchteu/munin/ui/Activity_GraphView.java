@@ -729,7 +729,7 @@ public class Activity_GraphView extends MuninActivity {
 					&& i <= position+BITMAPS_PADDING)
 				continue;
 
-			toRemove.add(position);
+			toRemove.add(i);
 		}
 
 		// Remove items
