@@ -71,8 +71,8 @@ public class Fragment_Graph extends Fragment {
 	}
 
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
+	public void onDestroyView() {
+		super.onDestroyView();
 
 		// Remove PhotoViewAttacher
 		if (activity.photoViewAttachers.keySet().contains(position))
