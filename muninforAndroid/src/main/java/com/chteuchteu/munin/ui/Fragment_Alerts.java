@@ -53,6 +53,7 @@ public class Fragment_Alerts extends Fragment {
 		everythingsOk = view.findViewById(R.id.alerts_ok);
 		tv_hideNoAlerts = (TextView) view.findViewById(R.id.hideNoAlerts);
 		loading = false;
+		muninFoo = MuninFoo.getInstance();
 
 		adapter = new Adapter_Alerts(context, muninFoo.getNodes(),
 				Adapter_Alerts.ListItemSize.EXPANDED, Adapter_Alerts.ListItemPolicy.HIDE_NORMAL);
