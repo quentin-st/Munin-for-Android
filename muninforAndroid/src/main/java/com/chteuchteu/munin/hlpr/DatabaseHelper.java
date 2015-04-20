@@ -530,7 +530,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			
 			close(c, db);
 		} catch (Exception ex) {
-			Crashlytics.logException(ex);
+			ex.printStackTrace();
 		}
 		return l;
 	}
@@ -568,7 +568,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			close(c, db);
 			return m;
 		}
-			
+
 		return null;
 	}
 
@@ -620,7 +620,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			
 			close(c, db);
 		} catch (Exception ex) {
-			Crashlytics.logException(ex);
+			ex.printStackTrace();
 		}
 		return l;
 	}
@@ -826,13 +826,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					Label l = new Label();
 					l.setId(c.getInt(c.getColumnIndex(KEY_ID)));
 					l.setName(c.getString(c.getColumnIndex(KEY_LABELS_NAME)));
-					l.setPlugins(getPlugins(l, masters));
+					l.setPlugins(getPlugins(l, masters, false));
 					list.add(l);
 				} while (c.moveToNext());
 			}
 			close(c, db);
 		} catch (Exception ex) {
-			Crashlytics.logException(ex);
+			ex.printStackTrace();
 		}
 		return list;
 	}
@@ -841,9 +841,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * Get all plugins linked to a label
 	 * @param label Label
 	 * @param masters masters
+	 * @param closeDb We shouldn't close db if it is reused by method calling getPlugins
 	 * @return List<MuninPlugin>
 	 */
-	public List<MuninPlugin> getPlugins(Label label, List<MuninMaster> masters) {
+	public List<MuninPlugin> getPlugins(Label label, List<MuninMaster> masters, boolean closeDb) {
 		List<MuninPlugin> list = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + TABLE_LABELSRELATIONS
 				+ " WHERE " + KEY_LABELSRELATIONS_LABEL + " = " + label.getId();
@@ -862,7 +863,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				list.add(plugin);
 			} while (c.moveToNext());
 		}
-		close(c, db);
+
+		if (closeDb)
+			close(c, db);
+
 		return list;
 	}
 	
