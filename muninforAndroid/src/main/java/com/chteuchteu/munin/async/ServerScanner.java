@@ -124,8 +124,9 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
                 serverUrl = "http://" + serverUrl;
             if (serverUrl.contains("https://"))
                 ssl = true;
-            if (serverUrl.length() > 10 && !serverUrl.substring(serverUrl.length()-1).equals("/") && !serverUrl.contains("/index.html"))
-                serverUrl = serverUrl + "/index.html";
+            // Add trailing slash
+            if (!serverUrl.endsWith("/"))
+                serverUrl += "/";
 
             if (ssl && !muninFoo.premium)
                 return ReturnCode.NOT_PREMIUM;
