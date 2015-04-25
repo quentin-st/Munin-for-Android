@@ -93,7 +93,7 @@ public class MuninNode implements ISearchable {
 	
 	
 	public List<MuninPlugin> getPluginsList(String userAgent) {
-		List<MuninPlugin> mp = new ArrayList<>();
+		List<MuninPlugin> plugins = new ArrayList<>();
 		String html = this.master.grabUrl(this.getUrl(), userAgent).html;
 		
 		if (html.equals(""))
@@ -144,9 +144,9 @@ public class MuninNode implements ISearchable {
 						is2 = false;
 				} else {
 					// chteuchteu's munin redesign: removed tables
-					Element h3 = image.parent().parent().previousElementSibling();
-					if (h3 != null)
-						group = h3.html();
+					Element h3 = image.parent().parent();
+					if (h3 != null && h3.hasAttr("data-category"))
+						group = h3.attr("data-category");
 					else is2 = false;
 				}
 				
@@ -165,7 +165,7 @@ public class MuninNode implements ISearchable {
 			currentPl.setCategory(group);
 			currentPl.setPluginPageUrl(pluginPageUrl);
 			
-			mp.add(currentPl);
+			plugins.add(currentPl);
 
 			// Find GraphURL
 			if (this.graphURL.equals("")) {
@@ -242,7 +242,7 @@ public class MuninNode implements ISearchable {
 				}
 			}
 		}
-		return mp;
+		return plugins;
 	}
 	
 	public boolean fetchPluginsList(String userAgent) {
