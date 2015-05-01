@@ -129,7 +129,7 @@ public class Activity_GraphView extends MuninActivity {
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		TextView nodeName = (TextView) findViewById(R.id.serverName);
-		if (muninFoo.getCurrentNode().getName().equals("localhost.localdomain"))
+		if (muninFoo.getCurrentNode().getName().equals(MuninNode.DEFAULT_NODE_NAME))
 			nodeName.setText(muninFoo.getCurrentNode().getParent().getName() + " - " + muninFoo.getCurrentNode().getName());
 		else
 			nodeName.setText(muninFoo.getCurrentNode().getName());
@@ -347,7 +347,7 @@ public class Activity_GraphView extends MuninActivity {
                             new NodesListAlertDialog.NodesListAlertDialogClick() {
                                 @Override
                                 public void onItemClick(MuninNode node) {
-                                    if (!node.equalsApprox(muninFoo.getCurrentNode())) {
+                                    if (node != muninFoo.getCurrentNode()) {
                                         muninFoo.setCurrentNode(node);
                                         Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
                                         if (node.hasPlugin(currentPlugin)) // Switch to the same plugin

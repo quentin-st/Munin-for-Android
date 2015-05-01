@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MuninNode implements ISearchable {
+	public static final String DEFAULT_NODE_NAME = "localhost.localdomain";
+
 	private long id;
 	private String name;
 	private String url;

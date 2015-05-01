@@ -104,6 +104,6 @@ public class NodesListAlertDialog {
     }
 
     public interface NodesListAlertDialogClick {
-        public void onItemClick(MuninNode node);
+        void onItemClick(MuninNode node);
     }
 }

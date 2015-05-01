@@ -83,9 +83,11 @@ public class Activity_Plugins extends MuninActivity {
                             new NodesListAlertDialog.NodesListAlertDialogClick() {
                         @Override
                         public void onItemClick(MuninNode node) {
-                            muninFoo.setCurrentNode(node);
-                            customActionBarView_textView.setText(node.getName());
-                            updateListView(mode);
+							if (muninFoo.getCurrentNode() != node) {
+								muninFoo.setCurrentNode(node);
+								customActionBarView_textView.setText(node.getName());
+								updateListView(mode);
+							}
                         }
                     });
 
