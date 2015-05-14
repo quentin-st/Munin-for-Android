@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -291,7 +292,7 @@ public class Activity_Settings extends MuninActivity {
 				@Override
 				public void onClick(View view) {
 					ViewGroup row = (ViewGroup) view;
-					CheckBox checkBox = (CheckBox) Util.getChild(row, android.support.v7.internal.widget.TintCheckBox.class);
+					CheckBox checkBox = (CheckBox) Util.getChild(row, AppCompatCheckBox.class);
 					if (checkBox != null)
 						checkBox.setChecked(!checkBox.isChecked());
 				}

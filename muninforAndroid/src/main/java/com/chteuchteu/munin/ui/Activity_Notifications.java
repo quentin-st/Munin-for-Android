@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -197,7 +198,7 @@ public class Activity_Notifications extends MuninActivity {
 				@Override
 				public void onClick(View view) {
 					ViewGroup row = (ViewGroup) view;
-					CheckBox checkBox = (CheckBox) Util.getChild(row, android.support.v7.internal.widget.TintCheckBox.class);
+					CheckBox checkBox = (CheckBox) Util.getChild(row, AppCompatCheckBox.class);
 					if (checkBox != null)
 						checkBox.setChecked(!checkBox.isChecked());
 				}

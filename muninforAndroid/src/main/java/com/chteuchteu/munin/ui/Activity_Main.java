@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,21 +33,22 @@ import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
-import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninNode;
+import com.chteuchteu.munin.obj.MuninPlugin;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.tjeannin.apprate.AppRate;
 
-import io.fabric.sdk.android.Fabric;
 import java.util.Locale;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * We are not extending MuninActivity from here since the activity cycle
  * is very different from others (showing UI elements only when the app
  * is loaded)
  */
-public class Activity_Main extends ActionBarActivity implements IGridActivity, ILabelsActivity, IAlertsActivity {
+public class Activity_Main extends AppCompatActivity implements IGridActivity, ILabelsActivity, IAlertsActivity {
 	private MuninFoo		muninFoo;
 	private MaterialMenuIconToolbar materialMenu;
 

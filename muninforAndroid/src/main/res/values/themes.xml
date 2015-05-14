@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<style name="MyAppTheme" parent="Theme.AppCompat.Light">
+	<style name="MyAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 		<item name="textAppearance">@style/TextAppearance</item>
 		<item name="android:windowNoTitle">true</item>
 		<item name="windowActionBar">false</item>

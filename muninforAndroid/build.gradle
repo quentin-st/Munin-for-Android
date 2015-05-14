@@ -40,8 +40,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.android.support:support-v4:22.1.1'
     compile files('libs/AppRate_1.1.jar')
     compile files('libs/libGoogleAnalyticsServices.jar')
     compile 'org.jsoup:jsoup:1.8.1'

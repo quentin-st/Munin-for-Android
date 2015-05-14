@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,7 +33,7 @@ import io.fabric.sdk.android.Fabric;
  *  way of working (loading app before displaying anything)
  */
 @SuppressLint("Registered")
-public class MuninActivity extends ActionBarActivity {
+public class MuninActivity extends AppCompatActivity {
 	protected MuninFoo      muninFoo;
 	protected DrawerHelper  dh;
 	protected Context       context;

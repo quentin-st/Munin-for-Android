@@ -8,38 +8,22 @@ import android.content.Intent;
 import android.graphics.PorterDuff.Mode;
 import android.net.Uri;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.adptr.Adapter_Search;
 import com.chteuchteu.munin.async.DonateAsync;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
-import com.chteuchteu.munin.obj.Label;
-import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.obj.MuninNode;
-import com.chteuchteu.munin.obj.SearchResult;
-import com.chteuchteu.munin.obj.SearchResult.SearchResultType;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
 import com.chteuchteu.munin.ui.Activity_Grid;
@@ -54,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DrawerHelper {
-	private ActionBarActivity activity;
+	private AppCompatActivity activity;
 	private Context context;
 	private MuninFoo muninFoo;
 	private MuninActivity currentActivity;
@@ -64,7 +48,7 @@ public class DrawerHelper {
 
     private SearchHelper searchHelper;
 	
-	public DrawerHelper(ActionBarActivity activity, MuninFoo muninFoo) {
+	public DrawerHelper(AppCompatActivity activity, MuninFoo muninFoo) {
 		this.activity = activity;
 		this.muninFoo = muninFoo;
 		this.context = activity;
