@@ -39,6 +39,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.tjeannin.apprate.AppRate;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.Locale;
 
 /**
@@ -75,7 +76,7 @@ public class Activity_Main extends ActionBarActivity implements IGridActivity, I
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		Crashlytics.start(this);
+		Fabric.with(this, new Crashlytics());
 		preloading = true;
 		boolean loaded = MuninFoo.isLoaded();
 		muninFoo = MuninFoo.getInstance(this);

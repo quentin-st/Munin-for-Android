@@ -24,6 +24,8 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
 
+import io.fabric.sdk.android.Fabric;
+
 /**
  * One class to rule them all
  * Every Activity_* extends this one to avoid code redundancy
@@ -49,7 +51,7 @@ public class MuninActivity extends ActionBarActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		Crashlytics.start(this);
+		Fabric.with(this, new Crashlytics());
 
 		this.context = this;
 		this.activity = this;
