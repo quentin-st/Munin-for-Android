@@ -1,2 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='utf-8'?>
+<resources><string name="button_server">伺服器</string>
+	<string name="button_notifications">通知</string>
+	</resources>
