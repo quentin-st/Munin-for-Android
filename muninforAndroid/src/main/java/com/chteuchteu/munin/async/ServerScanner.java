@@ -117,19 +117,13 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
             type = "";
             serverUrl = activity.tv_serverUrl.getText().toString().trim();
 
-            boolean ssl = false;
-
             // URL modifications
-            if (!serverUrl.contains("http://") && !serverUrl.contains("https://"))
+            if (!serverUrl.startsWith("http://") && !serverUrl.startsWith("https://"))
                 serverUrl = "http://" + serverUrl;
-            if (serverUrl.contains("https://"))
-                ssl = true;
+
             // Add trailing slash
             if (!serverUrl.endsWith("/"))
                 serverUrl += "/";
-
-            if (ssl && !muninFoo.premium)
-                return ReturnCode.NOT_PREMIUM;
 
             return ReturnCode.OK;
         } else
@@ -187,30 +181,26 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
                 final String url = et_url.getText().toString();
                 serverUrl = url;
 
-                if (!muninFoo.premium && url.contains("https://")) {
-                    cancelFetch(ReturnCode.NOT_PREMIUM);
-                } else {
-                    activity.master.setUrl(url);
-                    //InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    //imm.hideSoftInputFromWindow(tv_serverUrl.getWindowToken(), 0);
-                    //imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);
-                    scannerState = ScannerState.WAITING_FOR_URL;
+                activity.master.setUrl(url);
+                //InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                //imm.hideSoftInputFromWindow(tv_serverUrl.getWindowToken(), 0);
+                //imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);
+                scannerState = ScannerState.WAITING_FOR_URL;
 
-                    activity.runOnUiThread(new Runnable() {
-                        public void run() {
-                            activity.tv_serverUrl.setText(url);
-                            alert_title1.setVisibility(View.VISIBLE);
-                            alert_title2.setVisibility(View.VISIBLE);
-                            progressBar.setVisibility(View.VISIBLE);
-                            activity.alertDialog.findViewById(R.id.popup_url).setVisibility(View.GONE);
-                            progressBar.setIndeterminate(true);
-                        }
-                    });
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        activity.tv_serverUrl.setText(url);
+                        alert_title1.setVisibility(View.VISIBLE);
+                        alert_title2.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.VISIBLE);
+                        activity.alertDialog.findViewById(R.id.popup_url).setVisibility(View.GONE);
+                        progressBar.setIndeterminate(true);
+                    }
+                });
 
-	                stop();
-                    activity.task = new ServerScanner(activity);
-                    activity.task.execute();
-                }
+                stop();
+                activity.task = new ServerScanner(activity);
+                activity.task.execute();
             }
         });
         this.cancel(true);
@@ -237,8 +227,6 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
 			    message_title = "";
 			    if (s.equals("digest"))
 				    message_text = activity.getString(R.string.text65_1);
-			    else // ssl
-				    message_text = activity.getString(R.string.text41);
 
 			    activity.runOnUiThread(new Runnable() {
 				    public void run() {
@@ -316,12 +304,6 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
         }
         type = activity.master.detectPageType(muninFoo.getUserAgent());
 
-        // The first connection to the server has been done : settingsServer.ssl has been set to true if necessary.
-        // If not premium :
-        // If ssl was true : we're not supposed to be there.
-        // If ssl was false and is now true : display error msg.
-        if (!muninFoo.premium && activity.master.getSSL())
-            type = "RES_NOT_PREMIUM";
 
         activity.runOnUiThread(new Runnable() {
             public void run() {

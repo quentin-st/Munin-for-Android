@@ -111,7 +111,6 @@
 	<string name="goPremium_title">Munin for Android Features Pack</string>
 	<string name="goPremium_features"><![CDATA[
 		<li>Graphs grids</li>
-	    <li>SSL Support</li>
 	    <li>Graph Widgets</li>
 	    <li>Digest auth</li>
 	    <li>Notifications</li>
@@ -165,7 +164,6 @@
 	<string name="text36">Settings saved successfully!</string>
 	<string name="text37">No server set. Please set one in the settings.</string>
 	<string name="text39">Please wait while the app does some update operations…</string>
-	<string name="text41">SSL Support is available with the Munin for Android Features Pack ($1.49). Do you want to purchase it on Google Play?</string>
 	<string name="text42">Loading…</string>
 	<string name="text43">Please wait…</string>
 	<string name="text44">Fetching URL…</string>

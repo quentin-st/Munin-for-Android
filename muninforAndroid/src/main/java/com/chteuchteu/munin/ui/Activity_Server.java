@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +26,6 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressLint("CommitPrefEdits")
 public class Activity_Server extends MuninActivity {
 	private Spinner  	spinner;
 	public AutoCompleteTextView tv_serverUrl;

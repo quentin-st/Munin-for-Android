@@ -52,7 +52,6 @@
 	<string name="goPremium_title">Paquete de funcionalidades de Munin para Android</string>
 	<string name="goPremium_features"><![CDATA[
 		<li>Grilla de gráficos</li>
-		<li>Soporte SSL</li>
 		<li>Herramientas de gráficos</li>
 		<li>Autenticación Digest</li>
 		<li>Notificaciones</li>
@@ -102,7 +101,6 @@
 	<string name="text36">Los ajustes se guardaron correctamente!</string>
 	<string name="text37">No hay un servidor aún. Por favor establezca uno en los ajustes.</string>
 	<string name="text39">Por favor aguarde mientras la aplicación realiza algunas operaciones de actualización…</string>
-	<string name="text41">El soporte SSL está disponible con el paquete de funcionalidades de Munin para Android ($1.49). Desea comprarlo en Google Play?</string>
 	<string name="text42">Cargando…</string>
 	<string name="text43">Por favor aguarde…</string>
 	<string name="text44">Trayendo URL…</string>
