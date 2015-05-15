@@ -74,7 +74,6 @@
 	<string name="text36">Paramètres enregistrés avec succès !</string>
 	<string name="text37">Aucun serveur paramétré… Veuillez en configurer un dans \'Serveurs\'.</string>
 	<string name="text39">Veuillez patienter pendant la réalisation d\'opérations de mise à jour…</string>
-	<string name="text41">Le support SSL est disponible avec le pack de fonctionnalités (1,49€). Voulez-vous l\'acheter sur Google Play ?</string>
 	<string name="text42">Chargement…</string>
 	<string name="text43">Veuillez patienter…</string>
 	<string name="text44">Récupération de l\'URL…</string>
@@ -203,7 +202,6 @@
 	<string name="goPremium_title">Munin for Android Features Pack</string>
 	<string name="goPremium_features"><![CDATA[
 		<li>Grilles de graphs</li>
-		<li>Support SSL</li>
 		<li>Widgets</li>
 		<li>Authentification digest</li>
 		<li>Notifications</li>

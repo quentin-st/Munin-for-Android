@@ -51,7 +51,7 @@
 	<string name="about_specialThanksTitle">Speciale dank aan</string>
 	<string name="about_librariesTitle">Bibliotheken</string>
 	<string name="goPremium_title">Munin voor Android Premium pakket</string>
-	<string name="goPremium_features"> <li>Grafieken in rasters</li> <li>SSL ondersteuning</li> <li>Grafiek widgets</li> <li>Samenvattingsverificatie</li> <li>Notificaties</li> <li>Support met hoge prioriteit</li> <li>Eén pakket voor alles: betaal één keer voor huidige en toekomstige mogelijkheden!</li> <li>Zorg dat automatische updates in Google Play aanstaat om alle nieuwe premium mogelijkheden te ontvangen</li> </string>
+	<string name="goPremium_features"> <li>Grafieken in rasters</li> <li>Grafiek widgets</li> <li>Samenvattingsverificatie</li> <li>Notificaties</li> <li>Support met hoge prioriteit</li> <li>Eén pakket voor alles: betaal één keer voor huidige en toekomstige mogelijkheden!</li> <li>Zorg dat automatische updates in Google Play aanstaat om alle nieuwe premium mogelijkheden te ontvangen</li> </string>
 	<string name="buy_now">NU KOPEN</string>
 	<string name="splashDesc">Aan het laden</string>
 	<string name="graphView_ImageViewDescription">Grafiek</string>
@@ -95,7 +95,6 @@
 	<string name="text36">Instellingen opgeslagen!</string>
 	<string name="text37">Er is geen server ingesteld. Voeg een server toe in de instellingen.</string>
 	<string name="text39">Even geduld, de app wordt bijgewerkt…</string>
-	<string name="text41">SSL ondersteuning is aanwezig met de Munin voor Android Features Pack (€1,49). Wil je deze aanschaffen op Google Play?</string>
 	<string name="text42">Laden…</string>
 	<string name="text43">Een moment geduld alsjeblieft…</string>
 	<string name="text44">URL aan het ophalen…</string>

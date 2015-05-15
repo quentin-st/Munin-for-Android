@@ -53,10 +53,9 @@
 	<string name="lang_italian">Italienisch</string>
 	<string name="button_premium">Munin Premium</string>
 	<string name="goPremium_title">Munin für Android Premiumfunktionen</string>
-	<string name="goPremium_features"> <li>Graphen-Gitter</li> <li>SSL Support</li> <li>Graph Widgets</li> <li>Digest-Authentifikation</li> <li>Benachrichtigungen</li> <li>Bevorzugter Support</li> <li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li> <li>Aktiviere die automatischen Update in Google Play um neue Premiumfunktionen automatisch zu erhalten.</li> </string>
+	<string name="goPremium_features"> <li>Graphen-Gitter</li> <li>Graph Widgets</li> <li>Digest-Authentifikation</li> <li>Benachrichtigungen</li> <li>Bevorzugter Support</li> <li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li> <li>Aktiviere die automatischen Update in Google Play um neue Premiumfunktionen automatisch zu erhalten.</li> </string>
 	<string name="buy_now">"JETZT KAUFEN"</string>
 	<string name="goPremiumTitle">Munin Premium</string>
-	<string name="text41">SSL-Support ist über das Munin für Android Features Pack verfügbar ($1,49). Auf Google Play kaufen?</string>
 	<string name="text42">Laden …</string>
 	<string name="text43">Bitte warten …</string>
 	<string name="text44">Lade URL…</string>

@@ -51,7 +51,7 @@
 	<string name="about_specialThanksTitle">スペシャルサンクス</string>
 	<string name="about_librariesTitle">ライブラリー</string>
 	<string name="goPremium_title">Munin for Android フィーチャーパック</string>
-	<string name="goPremium_features"> <li>グラフ グリッド</li> <li>SSL サポート</li> <li>グラフ ウィジェット</li> <li>ダイジェスト認証</li> <li>通知</li> <li>高優先サポート</li> <li>プレミアム機能の単体パック: 一度お支払い頂くだけで今後プレミアム機能をご利用になれます!</li> <li>さらにずっと! 最新のプレミアム機能を受け取るために、Google Play で自動更新を有効にするようにしてください</li> </string>
+	<string name="goPremium_features"> <li>グラフ グリッド</li> <li>グラフ ウィジェット</li> <li>ダイジェスト認証</li> <li>通知</li> <li>高優先サポート</li> <li>プレミアム機能の単体パック: 一度お支払い頂くだけで今後プレミアム機能をご利用になれます!</li> <li>さらにずっと! 最新のプレミアム機能を受け取るために、Google Play で自動更新を有効にするようにしてください</li> </string>
 	<string name="buy_now">今すぐ購入</string>
 	<string name="splashDesc">ロード中</string>
 	<string name="graphView_ImageViewDescription">グラフ</string>
@@ -96,7 +96,6 @@
 	<string name="text36">設定が正常に保存されました!</string>
 	<string name="text37">サーバーが設定されていません。設定してください。</string>
 	<string name="text39">アプリが更新を行う間、しばらくお待ちください…</string>
-	<string name="text41">Munin for Android フィーチャーパック ($1.49) で SSL サポートがご利用になれます。 Google Play で購入しますか?</string>
 	<string name="text42">ロード中…</string>
 	<string name="text43">しばらくお待ちください…</string>
 	<string name="text44">URL の取得中…</string>
