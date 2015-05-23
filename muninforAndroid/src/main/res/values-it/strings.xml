@@ -223,7 +223,7 @@
 	<string name="lang_ukrainian">Ucraino</string>
 	<string name="lang_dutch">Olandese</string>
 	<string name="defaultActivity">Attività predefinita</string>
-	<string name="setDefaultActivity">Imposta attività predefinita</string>
+	<string name="setDefaultActivity">Imposta attività di default</string>
 	<string name="load">Carica</string>
 	<string name="label">Etichetta</string>
 	<string name="selectALabel">Seleziona un\'etichetta</string>
