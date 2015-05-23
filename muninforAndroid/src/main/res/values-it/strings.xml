@@ -28,7 +28,7 @@
 	<string name="save_button">Salva</string>
 	<string name="menu_graph_refresh">Aggiorna</string>
 	<string name="menu_graph_save">Salva grafico su scheda SD</string>
-	<string name="menu_graph_switch">Cambia server</string>
+	<string name="menu_graph_switch">Cambia nodo</string>
 	<string name="menu_addserver_save">Salva server</string>
 	<string name="menu_addserver_delete">Cancella server</string>
 	<string name="loading">Caricamento…</string>
@@ -74,7 +74,7 @@
 	<string name="notificationsTitle">Notifiche</string>
 	<string name="widget_configuration1">Riuscito! Il widget è stato aggiunto alla tua schermata home. Suggerimento: puoi aggiornare il grafico premendo sulla barra grigia alla base del widget!</string>
 	<string name="widget_configuration2">Aggiornamento automatico del grafico solo con Wifi (1 aggiornamento all\'ora)</string>
-	<string name="widget_configuration3">Nascondi il nome del server</string>
+	<string name="widget_configuration3">Nascondi il nome del nodo</string>
 	<string name="settings_defaultnode">Server predefinito</string>
 	<string name="settings_lang">Lingua app</string>
 	<string name="lang_english">Inglese</string>
@@ -89,7 +89,7 @@
 	<string name="text11">L\'app Google Play sembra mancare sul tuo dispositivo.</string>
 	<string name="text16">La URL sembra non corretta. Controlla di nuovo per favore.</string>
 	<string name="text18">Riuscito!</string>
-	<string name="text21.1">" server"</string>
+	<string name="text21.1">" nodo"</string>
 	<string name="text21.2">" aggiunto!\n"</string>
 	<string name="text24">Riuscito</string>
 	<string name="text27">" plugin trovati!"</string>
@@ -106,7 +106,7 @@
 	<string name="text43">Attendere prego…</string>
 	<string name="text44">Recupero URL…</string>
 	<string name="text45">Salvataggio!</string>
-	<string name="text46">"Contatto il server "</string>
+	<string name="text46">"Contatto il nodo "</string>
 	<string name="text47.1">giorno</string>
 	<string name="text47.2">settimana</string>
 	<string name="text47.3">mese</string>
@@ -114,8 +114,8 @@
 	<string name="text48.1">Forza orizzontale</string>
 	<string name="text48.2">Forza verticale</string>
 	<string name="text48.3">Automatico</string>
-	<string name="text49.1">Nascondi i server in stato normale</string>
-	<string name="text49.2">Mostra i server in stato normale</string>
+	<string name="text49.1">Nascondi i nodi in stato normale</string>
+	<string name="text49.2">Mostra i nodi in stato normale</string>
 	<string name="text50.1">critico</string>
 	<string name="text50.2">critici</string>
 	<string name="text51.1">avviso</string>
@@ -123,9 +123,9 @@
 	<string name="text52">Abilita notifiche</string>
 	<string name="text54">Consumo dati stimato: ?? /giorno</string>
 	<string name="text55">Intervallo di aggiornamento</string>
-	<string name="text56">Seleziona i server da monitorare</string>
+	<string name="text56">Seleziona i nodi da monitorare</string>
 	<string name="text57">10 minuti/30 minuti/1 ora/2 ore/5 ore/10 ore/24 ore</string>
-	<string name="text58">" critico / critici /&amp; / avviso / avvisi /su / server/ server"</string>
+	<string name="text58">" critico / critici /&amp; / avviso / avvisi /su / nodo/ nodi"</string>
 	<string name="text60">Continua</string>
 	<string name="text61">Aggiungi</string>
 	<string name="text62">Non c\'è ancora un\'etichetta</string>
@@ -152,7 +152,7 @@
 	<string name="text80">Questa griglia verrà cancellata. Sei sicuro?</string>
 	<string name="text81">Nessun dato disponibile per questo plugin</string>
 	<string name="text82">Questa etichetta verrà cancellata. Sei sicuro?</string>
-	<string name="text83">Questo server verrà cancellato. Sei sicuro?</string>
+	<string name="text83">Questo nodo verrà cancellato. Sei sicuro?</string>
 	<string name="text84">Questo nodo master verrà cancellato. Sei sicuro?</string>
 	<string name="import_servers">Importa</string>
 	<string name="export_servers">Esporta</string>
@@ -177,19 +177,19 @@
 	<string name="delete_plugin">Cancella plugin</string>
 	<string name="delete_label">Cancella etichetta</string>
 	<string name="rename_label">Rinomina etichetta</string>
-	<string name="delete_master">Cancella nodo master e server dipendenti</string>
+	<string name="delete_master">Cancella nodo master e i dipendenti</string>
 	<string name="alerts_ok">Buone notizie - tutto OK</string>
 	<string name="update_credentials">Modifica credenziali d\'accesso</string>
 	<string name="long_click">Premi a lungo per modificare</string>
 	<string name="rescan">Scansiona di nuovo</string>
-	<string name="support">Supporto</string>
+	<string name="support">Supporto / suggerimenti</string>
 	<string name="choose_email_client">Scegli la tua app per l\'email</string>
 	<string name="donate">Dona</string>
 	<string name="donate_text">Sviluppare un\'applicazione così grossa richiede molto tempo e impegno. Se l\'app ti è utile nella vita di tutti i giorni, potresti fare una donazione? Grazie! Se lo fai, inviami un\'email in modo che possa ringraziarti di persona!</string>
 	<string name="donate_amount">Scegli l\'ammontare della donazione (il 33% di questa somma verrà trattenuta da Google)</string>
-	<string name="sync_serversadded">XXX server aggiunti↵\n</string>
-	<string name="sync_serversupdated">XXX server aggiornati\n</string>
-	<string name="sync_serversdeleted">XXX server(s) cancellati\n</string>
+	<string name="sync_serversadded">XXX nodi aggiunti↵\n</string>
+	<string name="sync_serversupdated">XXX nodi aggiornati\n</string>
+	<string name="sync_serversdeleted">XXX nodi cancellati\n</string>
 	<string name="sync_pluginsadded">XXX plugin aggiunti\n</string>
 	<string name="sync_pluginsupdated">XXX plugin aggiornati\n</string>
 	<string name="sync_pluginsdeleted">XXX plugin cancellati\n</string>
@@ -228,5 +228,13 @@
 	<string name="label">Etichetta</string>
 	<string name="selectALabel">Seleziona un\'etichetta</string>
 	<string name="emptyLabel">Etichetta vuota</string>
+
+<string name="lang_japanese">Giapponese</string>
+	<string name="openGrid">Apri griglia</string>
+	<string name="chromecastAuthWarning">Avviso - La funzionalità Chromcast non funziona con autorizzazione Apache Basic/Digest</string>
+    <string name="chromecast_application_id">ID Applicazione Chromecast</string>
+    <string name="import_export_server">Imposta/Esporta server</string>
+    <string name="reset">Ripristino</string>
+	<string name="advanced">Avanzate</string>
 
 </resources>
