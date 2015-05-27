@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
 
-	<string name="app_name">Munin for Android</string>
+	<string name="app_name">Munin Pour Android</string>
 	<string name="button_graphs">Graphiques</string>
 	<string name="button_server">Serveurs</string>
 	<string name="button_premium">Premium</string>
 	<string name="button_alerts">Alertes</string>
-	<string name="button_labels">Labels</string>
+	<string name="button_labels">Libellés</string>
 	<string name="button_grid">Grilles</string>
 	<string name="button_notifications">Notifications</string>
-	<string name="settings_URL_label">URL du master</string>
+	<string name="settings_URL_label">URL du serveur Munin maître</string>
 	<string name="settings_URL_label2">ex: https://88.180.108.192:80/munin/</string>
 	<string name="settings_text">… ou choisissez un serveur d\'exemple :</string>
 	<string name="settings_http_auth2">Authentification HTTP requise</string>
@@ -199,7 +199,7 @@
 		Cette application est distribuée sous la licence GNU GPL version 2.]]></string>
 	<string name="about_specialThanksTitle">Remerciements</string>
 	<string name="about_librariesTitle">Bibliothèques</string>
-	<string name="goPremium_title">Munin for Android Features Pack</string>
+	<string name="goPremium_title">Ensemble de fonctionnalités additionnelles de Munin pour Android</string>
 	<string name="goPremium_features"><![CDATA[
 		<li>Grilles de graphs</li>
 		<li>Widgets</li>
@@ -229,7 +229,7 @@
 
 <string name="grids_settings">Paramètres des grilles</string>
 
-<string name="alert_i18n">Il semble que l\'application n\'est pas disponible dans votre langue. Pourriez-vous nous aider à la rendre disponible dans cette langue s\'il-vous plaît ?</string>
+<string name="alert_i18n">Il semble que l\'application ne soit pas disponible dans votre langue. Pourriez-vous nous aider à la rendre disponible dans cette langue s\'il-vous plaît ?</string>
 	<string name="alert_i18n_yes">Merci beaucoup! Nous utilisons un outil en ligne facile à utilise pour gérer les traductions. Utilisez cette adresse pour y accéder : www.munin-for-android.com/i18n.php</string>
 	<string name="defaultActivity">Activité par défaut</string>
 	<string name="setDefaultActivity">Définir l\'activité par défaut</string>
@@ -239,7 +239,7 @@
 	<string name="emptyLabel">Label vide</string>
 	<string name="openGrid">Ouvrir</string>
 	<string name="chromecastAuthWarning">Attention - l\'application ne gère pas l\'Apache basic/digest auth</string>
-    <string name="chromecast_application_id">Chromecast Application ID</string>
+    <string name="chromecast_application_id">Identifiant Application Chromecast</string>
     <string name="import_export_server">Server d\'Import/Export</string>
 	<string name="advanced">Avancé</string>
 
