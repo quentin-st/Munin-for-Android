@@ -105,8 +105,9 @@ public class Activity_Settings extends MuninActivity {
 		
 		// Language spinner
 		List<String> list2 = new ArrayList<>();
-		for (I18nHelper.AppLanguage lang : I18nHelper.AppLanguage.values())
-			list2.add(getString(lang.localeNameRes));
+		for (I18nHelper.AppLanguage lang : I18nHelper.AppLanguage.values()) {
+			list2.add(getString(lang.localeNameRes) + " (" + lang.langCode + ")");
+		}
 		ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list2);
 		dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_lang.setAdapter(dataAdapter2);
