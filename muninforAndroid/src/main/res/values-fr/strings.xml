@@ -226,10 +226,8 @@
 	<string name="close">Fermer</string>
 	<string name="documentation">Documentation</string>
 	<string name="ok">OK</string>
-
-<string name="grids_settings">Paramètres des grilles</string>
-
-<string name="alert_i18n">Il semble que l\'application ne soit pas disponible dans votre langue. Pourriez-vous nous aider à la rendre disponible dans cette langue s\'il-vous plaît ?</string>
+	<string name="grids_settings">Paramètres des grilles</string>
+	<string name="alert_i18n">Il semble que l\'application ne soit pas disponible dans votre langue. Pourriez-vous nous aider à la rendre disponible dans cette langue s\'il-vous plaît ?</string>
 	<string name="alert_i18n_yes">Merci beaucoup! Nous utilisons un outil en ligne facile à utilise pour gérer les traductions. Utilisez cette adresse pour y accéder : www.munin-for-android.com/i18n.php</string>
 	<string name="defaultActivity">Activité par défaut</string>
 	<string name="setDefaultActivity">Définir l\'activité par défaut</string>
@@ -242,6 +240,7 @@
     <string name="chromecast_application_id">Identifiant Application Chromecast</string>
     <string name="import_export_server">Server d\'Import/Export</string>
 	<string name="advanced">Avancé</string>
-
-<string name="reset">Réinitialisation</string>
-	</resources>
+	<string name="reset">Réinitialisation</string>
+	<string name="lang_hungarian">Hongrois</string>
+	<string name="lang_chinese_taiwan">Chinois (Taiwan)</string>
+</resources>

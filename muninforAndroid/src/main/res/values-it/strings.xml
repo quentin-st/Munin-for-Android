@@ -218,8 +218,7 @@
 	<string name="grids_settings">Impostazioni griglie</string>
 	<string name="alert_i18n">Sembra che l\'app non sia disponibile nella tua lingua. Puoi aiutarci rendendola disponibile nella tua lingua, per favore?</string>
 	<string name="alert_i18n_yes">Grazie molte! Usiamo un tool online semplice da usare per gestire le traduzioni. Usa questo link per raggiungerlo: www.munin-for-android.com/i18n.php</string>
-
-<string name="text53">Aggiorna solo con Wifi</string>
+	<string name="text53">Aggiorna solo con Wifi</string>
 	<string name="lang_ukrainian">Ucraino</string>
 	<string name="lang_dutch">Olandese</string>
 	<string name="defaultActivity">Attività predefinita</string>
@@ -228,13 +227,13 @@
 	<string name="label">Etichetta</string>
 	<string name="selectALabel">Seleziona un\'etichetta</string>
 	<string name="emptyLabel">Etichetta vuota</string>
-
-<string name="lang_japanese">Giapponese</string>
+	<string name="lang_japanese">Giapponese</string>
 	<string name="openGrid">Apri griglia</string>
 	<string name="chromecastAuthWarning">Avviso - La funzionalità Chromcast non funziona con autorizzazione Apache Basic/Digest</string>
     <string name="chromecast_application_id">ID Applicazione Chromecast</string>
     <string name="import_export_server">Imposta/Esporta server</string>
     <string name="reset">Ripristino</string>
 	<string name="advanced">Avanzate</string>
-
+	<string name="lang_hungarian">Ungherese</string>
+	<string name="lang_chinese_taiwan">Cinese (Taiwan)</string>
 </resources>

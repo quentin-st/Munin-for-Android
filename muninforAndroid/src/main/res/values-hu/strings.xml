@@ -142,4 +142,6 @@
 	<string name="downloadError">Letöltési hiba</string>
 	<string name="documentation">Dokumentáció</string>
 	<string name="ok">OK</string>
-	</resources>
+	<string name="lang_hungarian">Magyar</string>
+	<string name="lang_chinese_taiwan">Chinese (Taiwan)</string>
+</resources>

@@ -213,8 +213,7 @@
 	<string name="grids_settings">Gitter-Einstellungen</string>
 	<string name="alert_i18n">Ist die Übersetzung unvollständig oder fehlerhaft? Wenn ja, hilf uns sie zu verbessern!</string>
 	<string name="alert_i18n_yes">Vielen Dank! Wir benutzen ein einfaches Online-Tool zum Übersetzen. Du kannst es unter http://www.munin-for-android.com/i18n.php erreichen</string>
-
-<string name="lang_spanish">Spanisch</string>
+	<string name="lang_spanish">Spanisch</string>
 	<string name="about_openSource">Munin für Android ist Open Source! <a href="https://github.com/chteuchteu/Munin-for-Android">Du kannst uns auf GitHub unterstützen</a>. Die App wird unter der GNU GPL version 2 entwickelt.</string>
 	<string name="lang_ukrainian">Ukrainisch</string>
 	<string name="defaultActivity">Startansicht</string>
@@ -224,14 +223,14 @@
 	<string name="selectALabel">Label auswählen</string>
 	<string name="emptyLabel">Label leeren</string>
 	<string name="openGrid">Gitter öffnen</string>
-
-<string name="load">Laden</string>
+	<string name="load">Laden</string>
 	<string name="lang_japanese">Japanisch</string>
 	<string name="chromecastAuthWarning">Achtung - Chromecast funktioniert nicht mit HTTP Basic-/Digest-Authentifizierung</string>
-
-<string name="chromecast_application_id">Chromecast Application ID</string>
+	<string name="chromecast_application_id">Chromecast Application ID</string>
     <string name="import_export_server">Webservice-URL für Import und Export</string>
     <string name="reset">Auf Standard-Werte zurücksetzen</string>
 	<string name="advanced">Erweiterte Optionen</string>
+	<string name="lang_hungarian">Ungarisch</string>
+	<string name="lang_chinese_taiwan">Chinesisch (Taiwan)</string>
 
 </resources>

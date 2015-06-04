@@ -12,10 +12,23 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public final class I18nHelper {
+	/**
+	 * AppLanguage enum
+	 * Once most strings are supplied for a language,
+	 * 	we make it available in the settings using this enum.
+	 */
 	public enum AppLanguage {
-		EN("en", R.string.lang_english), FR("fr", R.string.lang_french), DE("de", R.string.lang_german), RU("ru", R.string.lang_russian),
-		ES("es", R.string.lang_spanish), IT("it", R.string.lang_italian), UK("uk", R.string.lang_ukrainian), NL("nl", R.string.lang_dutch),
-		JA("ja", R.string.lang_japanese);
+		DE("de", R.string.lang_german),
+		EN("en", R.string.lang_english),
+		ES("es", R.string.lang_spanish),
+		FR("fr", R.string.lang_french),
+		HU("hu", R.string.lang_hungarian),
+		IT("it", R.string.lang_italian),
+		JA("ja", R.string.lang_japanese),
+		NL("nl", R.string.lang_dutch),
+		RU("ru", R.string.lang_russian),
+		UK("uk", R.string.lang_ukrainian),
+		ZH_TW("zh_TW", R.string.lang_chinese_taiwan);
 
 		public String langCode;
 		public int localeNameRes;
