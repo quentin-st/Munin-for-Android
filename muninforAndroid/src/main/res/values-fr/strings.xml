@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
 
-	<string name="app_name">Munin Pour Android</string>
+	<string name="app_name">Munin for Android</string>
 	<string name="button_graphs">Graphiques</string>
 	<string name="button_server">Serveurs</string>
 	<string name="button_premium">Premium</string>
