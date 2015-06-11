@@ -48,4 +48,5 @@
 	<string name="graphView_ImageViewDescription">圖形</string>
 
 	<string name="addServerTitle">增加伺服器</string>
+	<string name="button_premium">去 premium 版</string>
 	</resources>
