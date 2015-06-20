@@ -412,16 +412,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 */
 	public long insertGridItemRelation(GridItem i) {
 		SQLiteDatabase db = this.getWritableDatabase();
-
-		if (i.isDetached())
-			MuninFoo.logE("We should insert the GridItem_Detached RIGHT NOW!");
 		
 		ContentValues values = new ContentValues();
 		try {
 			values.put(KEY_GRIDITEMRELATIONS_GRID, i.getGrid().getId());
-			values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.getPlugin().getId());
 			values.put(KEY_GRIDITEMRELATIONS_X, i.getX());
 			values.put(KEY_GRIDITEMRELATIONS_Y, i.getY());
+
+			if (i.isDetached()) {
+				// Insert GridItem_Detached
+				insertGridItem_Detached(i.getDetached());
+				values.put(KEY_GRIDITEMRELATIONS_PLUGIN, -1);
+				values.put(KEY_GRIDITEMRELATIONS_DETACHED, 1);
+			}
+			else
+				values.put(KEY_GRIDITEMRELATIONS_PLUGIN, i.getPlugin().getId());
 		} catch (NullPointerException ex) {
 			ex.printStackTrace();
 			return -1;
@@ -457,9 +462,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		close(null, db);
 	}
+
+	public void insertGridItem_Detached(GridItem_Detached detached) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_GRIDITEMS_DETACHED_GRIDITEMRELATION, detached.getGridItem().getId());
+		values.put(KEY_GRIDITEMS_DETACHED_PLUGINNAME, detached.getGridItem().getPlugin().getName());
+		values.put(KEY_GRIDITEMS_DETACHED_PLUGINPAGEURL, detached.getGridItem().getPlugin().getPluginPageUrl());
+		values.put(KEY_GRIDITEMS_DETACHED_NODEURL, detached.getGridItem().getPlugin().getInstalledOn().getUrl());
+		values.put(KEY_GRIDITEMS_DETACHED_MASTERURL, detached.getGridItem().getPlugin().getInstalledOn().getParent().getUrl());
+
+		long id = db.insert(TABLE_GRIDITEMS_DETACHED, null, values);
+		detached.setId(id);
+
+		close(null, db);
+	}
 	
 	public void saveGridItemsRelations(Grid g) {
 		deleteGridItemRelations(g);
+		deleteGridItem_Detached(g);
 		for (GridItem i : g.getItems())
 			insertGridItemRelation(i);
 	}
@@ -1033,7 +1055,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void deleteMaster(MuninMaster m, boolean deleteChildren) { deleteMaster(m, deleteChildren, null); }
 	public void deleteMaster(MuninMaster m, boolean deleteChildren, Util.ProgressNotifier progressNotifier) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_MUNINMASTERS, KEY_ID + " = ?", new String[] { String.valueOf(m.getId()) });
+		db.delete(TABLE_MUNINMASTERS, KEY_ID + " = ?", new String[]{String.valueOf(m.getId())});
 		close(null, db);
 		
 		if (deleteChildren) {
@@ -1054,7 +1076,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public void deletePlugin(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_MUNINPLUGINS, KEY_ID + " = ?", new String[] { String.valueOf(p.getId()) });
+		db.delete(TABLE_MUNINPLUGINS, KEY_ID + " = ?", new String[]{String.valueOf(p.getId())});
 	}
 	
 	public void deletePlugins(MuninNode s) {
@@ -1083,13 +1105,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public void deleteAlertsWidget(int appWidgetId) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_WIDGET_ALERTSWIDGETS, KEY_WIDGET_ALERTSWIDGETS_WIDGETID + " = ?", new String[] { String.valueOf(appWidgetId) });
+		db.delete(TABLE_WIDGET_ALERTSWIDGETS, KEY_WIDGET_ALERTSWIDGETS_WIDGETID + " = ?", new String[]{String.valueOf(appWidgetId)});
 		close(null, db);
 	}
 	
 	public void deleteLabelsRelations(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });
+		db.delete(TABLE_LABELSRELATIONS, KEY_LABELSRELATIONS_PLUGIN + " = ?", new String[]{String.valueOf(p.getId())});
 		close(null, db);
 	}
 	
@@ -1102,7 +1124,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public void deleteGridItemRelations(Grid g) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_GRID + " = ?", new String[] { String.valueOf(g.getId()) });
+		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_GRID + " = ?", new String[]{String.valueOf(g.getId())});
+		close(null, db);
+	}
+
+	public void deleteGridItem_Detached(Grid g) {
+		// Build IN string
+		String in = "";
+		for (GridItem item : g.getItems()) {
+			if (item.isDetached())
+				in += item.getId() + ",";
+		}
+
+		if (in.equals(""))
+			return;
+
+		// Remove trailing ","
+		in = in.substring(0, in.length());
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_GRIDITEMS_DETACHED, KEY_GRIDITEMS_DETACHED_GRIDITEMRELATION + " IN ?", new String[] { in });
 		close(null, db);
 	}
 	
@@ -1114,7 +1155,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public void deleteGridItemRelations(MuninPlugin p) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });
+		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_PLUGIN + " = ?", new String[]{String.valueOf(p.getId())});
 		close(null, db);
 	}
 	
