@@ -40,6 +40,8 @@ public class GridItem {
 	private MuninPlugin 	plugin;
 	private Grid 			grid;
 
+	private GridItem_Detached detached;
+
 	private Context 		context;
 	private IGridActivity activity;
 	private Fragment_Grid   fragment;
@@ -480,4 +482,8 @@ public class GridItem {
 	public void setPlugin(MuninPlugin plugin) { this.plugin = plugin; }
 
 	public Grid getGrid() { return grid; }
+
+	public boolean isDetached() { return this.detached != null; }
+	public GridItem_Detached getDetached() { return this.detached; }
+	public void setDetached(GridItem_Detached val) { this.detached = val; }
 }

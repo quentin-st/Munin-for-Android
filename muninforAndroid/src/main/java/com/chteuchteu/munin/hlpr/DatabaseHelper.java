@@ -12,20 +12,20 @@ import com.chteuchteu.munin.obj.AlertsWidget;
 import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
+import com.chteuchteu.munin.obj.GridItem_Detached;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninMaster.AuthType;
-import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 6;
+	private static final int DATABASE_VERSION = 7;
 	private static final String DATABASE_NAME = "muninForAndroid2.db";
 	
 	// Table names
@@ -39,6 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String TABLE_WIDGET_ALERTSWIDGETSRELATIONS = "alertsWidgetsRelations";
 	public static final String TABLE_GRIDS = "grids";
 	public static final String TABLE_GRIDITEMRELATIONS = "gridItemsRelations";
+	public static final String TABLE_GRIDITEMS_DETACHED = "gridItems_detached";
 	
 	// Fields
 	public static final String KEY_ID = "id";
@@ -98,6 +99,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_GRIDITEMRELATIONS_X = "x";
 	private static final String KEY_GRIDITEMRELATIONS_Y = "y";
 	private static final String KEY_GRIDITEMRELATIONS_PLUGIN = "plugin";
+	private static final String KEY_GRIDITEMRELATIONS_DETACHED = "detached";
+
+	// GridItems_Detached
+	private static final String KEY_GRIDITEMS_DETACHED_GRIDITEMRELATION = "gridItemRelation";
+	private static final String KEY_GRIDITEMS_DETACHED_PLUGINNAME = "pluginName";
+	private static final String KEY_GRIDITEMS_DETACHED_PLUGINPAGEURL = "pluginPageUrl";
+	private static final String KEY_GRIDITEMS_DETACHED_NODEURL = "nodeUrl";
+	private static final String KEY_GRIDITEMS_DETACHED_MASTERURL = "masterUrl";
 	
 	
 	private static final String CREATE_TABLE_MUNINMASTERS = "CREATE TABLE " + TABLE_MUNINMASTERS + " ("
@@ -164,7 +173,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_GRIDITEMRELATIONS_GRID + " INTEGER,"
 			+ KEY_GRIDITEMRELATIONS_PLUGIN + " INTEGER,"
 			+ KEY_GRIDITEMRELATIONS_X + " INTEGER,"
-			+ KEY_GRIDITEMRELATIONS_Y + ")";
+			+ KEY_GRIDITEMRELATIONS_Y + "INTEGER"
+			+ KEY_GRIDITEMRELATIONS_DETACHED + "INTEGER)";
+
+	private static final String CREATE_TABLE_GRIDITEMS_DETACHED = "CREATE TABLE " + TABLE_GRIDITEMS_DETACHED + " ("
+			+ KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_GRIDITEMS_DETACHED_GRIDITEMRELATION + " INTEGER,"
+			+ KEY_GRIDITEMS_DETACHED_PLUGINNAME + " TEXT,"
+			+ KEY_GRIDITEMS_DETACHED_PLUGINPAGEURL + " TEXT,"
+			+ KEY_GRIDITEMS_DETACHED_NODEURL + " TEXT,"
+			+ KEY_GRIDITEMS_DETACHED_MASTERURL + "TEXT)";
 	
 	public DatabaseHelper(Context c) {
 		super(c, DATABASE_NAME, null, DATABASE_VERSION);
@@ -182,6 +200,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_ALERTSWIDGETSRELATIONS);
 		db.execSQL(CREATE_TABLE_GRIDS);
 		db.execSQL(CREATE_TABLE_GRIDITEMRELATIONS);
+		db.execSQL(CREATE_TABLE_GRIDITEMS_DETACHED);
 	}
 	
 	@Override
@@ -214,6 +233,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 		if (oldVersion < 6) // From 5 to 6
 			db.execSQL("ALTER TABLE " + TABLE_MUNINNODES + " ADD COLUMN " + KEY_MUNINNODES_HDGRAPHURL + " TEXT");
+		if (oldVersion < 7) { // From 6 to 7
+			db.execSQL(CREATE_TABLE_GRIDITEMS_DETACHED);
+			db.execSQL("ALTER TABLE " + TABLE_GRIDITEMRELATIONS + " ADD COLUMN " + KEY_GRIDITEMRELATIONS_DETACHED + " INTEGER DEFAULT 0");
+		}
 	}
 	
 	public static void close(Cursor c, SQLiteDatabase db) {
@@ -281,7 +304,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public void deleteMuninPlugin(MuninPlugin p, boolean onCascade) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_MUNINPLUGINS, KEY_ID + " = ?", new String[] { String.valueOf(p.getId()) });
+		db.delete(TABLE_MUNINPLUGINS, KEY_ID + " = ?", new String[]{String.valueOf(p.getId())});
 		close(null, db);
 		
 		if (onCascade) {
@@ -380,9 +403,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(null, db);
 		return id;
 	}
-	
+
+	/**
+	 * Inserts a GridItem.
+	 * We consider that it is not detached.
+	 * @param i GridItem
+	 * @return GridItem id
+	 */
 	public long insertGridItemRelation(GridItem i) {
 		SQLiteDatabase db = this.getWritableDatabase();
+
+		if (i.isDetached())
+			MuninFoo.logE("We should insert the GridItem_Detached RIGHT NOW!");
 		
 		ContentValues values = new ContentValues();
 		try {
@@ -951,17 +983,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		if (c != null && c.moveToFirst()) {
 			do {
-				int pluginId = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_PLUGIN));
-				MuninPlugin plugin = muninFoo.getPlugin(pluginId);
-				GridItem i = new GridItem(grid, plugin);
-				i.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-				i.setX(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X)));
-				i.setY(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_Y)));
-				l.add(i);
+				GridItem gridItem = new GridItem(grid, null);
+				gridItem.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+
+				// Check if detached
+				int detached = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_DETACHED));
+				if (detached == 1) {
+					// We don't have the plugin attribute.
+					gridItem.setDetached(getGridItem_Detached(gridItem));
+				} else {
+					// Just as usual
+					int pluginId = c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_PLUGIN));
+					MuninPlugin plugin = muninFoo.getPlugin(pluginId);
+					gridItem.setPlugin(plugin);
+				}
+
+				gridItem.setX(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_X)));
+				gridItem.setY(c.getInt(c.getColumnIndex(KEY_GRIDITEMRELATIONS_Y)));
+
+				l.add(gridItem);
 			} while (c.moveToNext());
 		}
 		close(c, db);
 		return l;
+	}
+
+	private GridItem_Detached getGridItem_Detached(GridItem gridItem) {
+		String selectQuery = "SELECT * FROM " + TABLE_GRIDITEMS_DETACHED
+				+ " WHERE " + KEY_GRIDITEMS_DETACHED_GRIDITEMRELATION + " = " + gridItem.getId();
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		GridItem_Detached gridItemDetached = null;
+		if (c != null && c.moveToFirst()) {
+			gridItemDetached = new GridItem_Detached();
+			gridItemDetached.setGridItem(gridItem);
+			gridItemDetached.setPluginName(c.getString(c.getColumnIndex(KEY_GRIDITEMS_DETACHED_PLUGINNAME)));
+			gridItemDetached.setPluginPageUrl(c.getString(c.getColumnIndex(KEY_GRIDITEMS_DETACHED_PLUGINPAGEURL)));
+			gridItemDetached.setNodeUrl(c.getString(c.getColumnIndex(KEY_GRIDITEMS_DETACHED_NODEURL)));
+			gridItemDetached.setMasterUrl(c.getString(c.getColumnIndex(KEY_GRIDITEMS_DETACHED_MASTERURL)));
+		}
+
+		close(c, db);
+
+		return gridItemDetached;
 	}
 
 	public void deleteMaster(MuninMaster m, boolean deleteChildren) { deleteMaster(m, deleteChildren, null); }
