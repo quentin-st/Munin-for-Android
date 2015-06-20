@@ -55,4 +55,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.2.4@aar') {
         transitive = true;
     }
+    debugCompile 'im.dino:dbinspector:3.1.0@aar'
 }
