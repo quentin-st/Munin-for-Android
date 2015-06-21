@@ -292,6 +292,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(null, db);
 		
 		if (onCascade) {
+			setGridItemsAsDetached(p);
 			deleteLabelsRelations(p);
 			deleteGraphWidgets(p);
 		}
@@ -983,6 +984,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return l;
 	}
 
+	public void setGridItemsAsDetached(MuninPlugin plugin) {
+		SQLiteDatabase db = getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_GRIDITEMRELATIONS_PLUGIN, -1);
+
+		db.update(TABLE_GRIDITEMRELATIONS, values, KEY_GRIDITEMRELATIONS_PLUGIN + " = ?", new String[]{String.valueOf(plugin.getId())});
+
+		close(null, db);
+	}
+
 	public void deleteMaster(MuninMaster m, boolean deleteChildren) { deleteMaster(m, deleteChildren, null); }
 	public void deleteMaster(MuninMaster m, boolean deleteChildren, Util.ProgressNotifier progressNotifier) {
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -1013,6 +1025,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void deletePlugins(MuninNode s) {
 		List<MuninPlugin> l = getPlugins(s);
 		for (MuninPlugin p : l) {
+			setGridItemsAsDetached(p);
 			deleteGraphWidgets(p);
 			deleteLabelsRelations(p);
 		}
