@@ -292,7 +292,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(null, db);
 		
 		if (onCascade) {
-			deleteGridItemRelations(p);
 			deleteLabelsRelations(p);
 			deleteGraphWidgets(p);
 		}
@@ -1016,7 +1015,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		for (MuninPlugin p : l) {
 			deleteGraphWidgets(p);
 			deleteLabelsRelations(p);
-			deleteGridItemRelations(p);
 		}
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_MUNINPLUGINS, KEY_MUNINPLUGINS_NODE + " = ?", new String[] { String.valueOf(s.getId()) });
@@ -1063,17 +1061,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void deleteGridItemRelation(GridItem i) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_GRIDITEMRELATIONS, KEY_ID + " = ?", new String[] { String.valueOf(i.getId()) });
-		close(null, db);
-	}
-	
-	public void deleteGridItemRelations(MuninPlugin p) {
-		if (p.getId() == -1) {
-			MuninFoo.logW("Cancelling deletion, this would delete detached GridItems.");
-			return;
-		}
-
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_GRIDITEMRELATIONS, KEY_GRIDITEMRELATIONS_PLUGIN + " = ?", new String[] { String.valueOf(p.getId()) });
 		close(null, db);
 	}
 	
