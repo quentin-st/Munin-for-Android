@@ -75,6 +75,8 @@ public class GridItem {
 		this.plugin = plugin;
 		if (this.plugin != null)
 			this.pluginPageUrl = plugin.getPluginPageUrl();
+		else
+			this.pluginPageUrl = "";
 		this.grid = grid;
 		this.hdGraphDownloader = null;
 	}

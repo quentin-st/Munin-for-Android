@@ -191,7 +191,7 @@ public class SQLite {
 					Cursor c2 = db.rawQuery(pluginpageUrlQuery, null);
 
 					if (c2.moveToFirst()) {
-						String pluginpageUrl = c2.getString(c.getColumnIndex(DatabaseHelper.KEY_MUNINPLUGINS_PLUGINPAGEURL));
+						String pluginpageUrl = c2.getString(c2.getColumnIndex(DatabaseHelper.KEY_MUNINPLUGINS_PLUGINPAGEURL));
 
 						ContentValues values = new ContentValues();
 						values.put(DatabaseHelper.KEY_GRIDITEMRELATIONS_PLUGINPAGEURL, pluginpageUrl);
