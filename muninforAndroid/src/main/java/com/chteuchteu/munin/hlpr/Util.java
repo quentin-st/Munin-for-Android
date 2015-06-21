@@ -312,7 +312,7 @@ public final class Util {
 		AutoRefresh("autoRefresh"),                        UserAgent("userAgent"), UserAgentChanged("userAgentChanged"),
 		HDGraphs("hdGraphs"),                               Lang("lang"),
 		GraphsZoom("graphsZoom"),                          DefaultNode("defaultServer"),
-		GridsLegend("gridsLegend"),
+		GridsLegend("gridsLegend"),						 DisableChromecast("disableChromecast"),
 
 		Twitter_NbLaunches("twitter_nbLaunches"),        AddServer_History("addserver_history"),
 		Widget2_ForceUpdate("widget2_forceUpdate"),      OpenSourceDialogShown("openSourceDialogShown"),

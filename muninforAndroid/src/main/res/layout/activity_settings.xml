@@ -162,6 +162,27 @@
 
 					<View style="@style/Material_Divider" />
 
+					<!-- Disable Chromecast feature -->
+
+					<TextView
+						android:tag="set_font"
+						style="@style/Settings_SettingTitle"
+						android:text="@string/disable_chromecast" />
+
+					<RelativeLayout
+						style="@style/Settings_Checkbox_Container"
+						android:tag="checkable">
+
+						<TextView
+							style="@style/Settings_Checkbox_Label"
+							android:text="@string/disable_chromecast_text"/>
+						<CheckBox
+							android:id="@+id/checkbox_disable_chromecast"
+							style="@style/Settings_Checkbox" />
+					</RelativeLayout>
+
+					<View style="@style/Material_Divider" />
+
 					<!-- GRAPHS SETTINGS -->
 
 					<TextView

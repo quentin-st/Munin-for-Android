@@ -50,6 +50,7 @@ public class Activity_Settings extends MuninActivity {
 	private CheckBox checkbox_autoRefresh;
 	private CheckBox checkbox_graphsZoom;
 	private CheckBox checkbox_hdGraphs;
+	private CheckBox checkbox_disableChromecast;
 	private EditText editText_userAgent;
 	private EditText editText_chromecastAppId;
 	private EditText editText_importExportServer;
@@ -78,6 +79,7 @@ public class Activity_Settings extends MuninActivity {
 		checkbox_autoRefresh = (CheckBox)findViewById(R.id.checkbox_autorefresh);
 		checkbox_graphsZoom = (CheckBox)findViewById(R.id.checkbox_enablegraphszoom);
 		checkbox_hdGraphs = (CheckBox)findViewById(R.id.checkbox_hdgraphs);
+		checkbox_disableChromecast = (CheckBox)findViewById(R.id.checkbox_disable_chromecast);
 
 		editText_userAgent = (EditText)findViewById(R.id.edittext_useragent);
 
@@ -222,10 +224,12 @@ public class Activity_Settings extends MuninActivity {
 					Util.getPref(context, Util.PrefKeys.GraphsZoom).equals("true"));
 		
 		// HD Graphs
-		if (Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false"))
-			checkbox_hdGraphs.setChecked(false);
-		else
-			checkbox_hdGraphs.setChecked(true);
+		checkbox_hdGraphs.setChecked(
+				!Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false"));
+
+		// Disable Chromecast
+		checkbox_disableChromecast.setChecked(
+				Util.getPref(context, Util.PrefKeys.DisableChromecast).equals("true"));
 		
 		// Default node
 		String defaultNodeUrl = Util.getPref(this, Util.PrefKeys.DefaultNode);
@@ -284,6 +288,24 @@ public class Activity_Settings extends MuninActivity {
 			spinner_defaultActivity_label.setSelection(muninFoo.labels.indexOf(muninFoo.getLabel(labelId)));
 		}
 
+		// Chromecast app id
+		editText_chromecastAppId.setText(ChromecastHelper.getChromecastApplicationId(this));
+		findViewById(R.id.chromecastAppId_reset).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				editText_chromecastAppId.setText(ChromecastHelper.CHROMECAST_APPLICATION_ID);
+			}
+		});
+
+		// Import/export server
+		editText_importExportServer.setText(ImportExportHelper.getImportExportServerUrl(this));
+		findViewById(R.id.importExportServer_reset).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				editText_importExportServer.setText(ImportExportHelper.IMPORT_EXPORT_URI);
+			}
+		});
+
 
 		// Since we manually defined the checkbox and text
 		// (so the checkbox can be at the right and still have the view tinting introduced
@@ -314,24 +336,6 @@ public class Activity_Settings extends MuninActivity {
 			animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
 			findViewById(R.id.defaultActivityContainer).startAnimation(animation);
 		}
-
-		// Chromecast app id
-		editText_chromecastAppId.setText(ChromecastHelper.getChromecastApplicationId(this));
-		findViewById(R.id.chromecastAppId_reset).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				editText_chromecastAppId.setText(ChromecastHelper.CHROMECAST_APPLICATION_ID);
-			}
-		});
-
-		// Import/export server
-		editText_importExportServer.setText(ImportExportHelper.getImportExportServerUrl(this));
-		findViewById(R.id.importExportServer_reset).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				editText_importExportServer.setText(ImportExportHelper.IMPORT_EXPORT_URI);
-			}
-		});
 	}
 	
 	private void actionSave() {
@@ -421,6 +425,9 @@ public class Activity_Settings extends MuninActivity {
 				Util.setPref(this, Util.PrefKeys.DefaultActivity, "alerts");
 				break;
 		}
+
+		// Disable Chromecast
+		Util.setPref(this, Util.PrefKeys.DisableChromecast, String.valueOf(checkbox_disableChromecast.isChecked()));
 
 		// Chromecast App Id
 		Util.setPref(this, Util.PrefKeys.ChromecastApplicationId, editText_chromecastAppId.getText().toString());
