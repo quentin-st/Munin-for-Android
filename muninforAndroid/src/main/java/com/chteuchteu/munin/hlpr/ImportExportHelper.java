@@ -36,7 +36,7 @@ public class ImportExportHelper {
     /**
      * Default import/export target URI. Can be overriden by user.
      */
-    public static final String IMPORT_EXPORT_URI = "http://www.munin-for-android.com/ws/importExport.php";
+    public static final String IMPORT_EXPORT_URI = "http://ws.munin-for-android.com/importExport.php";
     public static final int IMPORT_EXPORT_VERSION = 1;
 	
 	public static class Export {
