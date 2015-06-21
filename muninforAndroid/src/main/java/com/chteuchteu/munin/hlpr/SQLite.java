@@ -1,5 +1,6 @@
 package com.chteuchteu.munin.hlpr;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -142,7 +143,7 @@ public class SQLite {
 		SQLiteDatabase db = dbHlpr.getReadableDatabase();
 		Cursor c = db.rawQuery(selectQuery, null);
 		
-		if (c != null && c.moveToFirst()) { // The node has been found (which should always be the case)
+		if (c.moveToFirst()) { // The node has been found (which should always be the case)
 			AuthType authType = AuthType.get(c.getInt(c.getColumnIndex(KEY_MUNINNODES_AUTHTYPE)));
 			
 			attachTo.setAuthType(authType);
@@ -163,6 +164,49 @@ public class SQLite {
 			if (saveChanges)
 				dbHlpr.saveMuninMaster(attachTo);
 		}
+	}
+
+	/**
+	 * From db version 7, we began to store plugin page URL in order to
+	 * 	retrieve it whenever the plugin gets deleted. Here, we save this
+	 * 	information since we don't have it in dbs v6.
+	 */
+	public static void migrateFrom6To7(SQLiteDatabase db) {
+		String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_GRIDITEMRELATIONS;
+
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		// For each GridItem
+		if (c.moveToFirst()) {
+			do {
+				try {
+					int gridItemid = c.getInt(c.getColumnIndex(DatabaseHelper.KEY_ID));
+					int pluginId = c.getInt(c.getColumnIndex(DatabaseHelper.KEY_GRIDITEMRELATIONS_PLUGIN));
+
+					// Find plugin name
+					String pluginpageUrlQuery = "SELECT " + DatabaseHelper.KEY_MUNINPLUGINS_PLUGINPAGEURL
+							+ " FROM " + DatabaseHelper.TABLE_MUNINPLUGINS
+							+ " WHERE " + DatabaseHelper.KEY_ID + " = " + pluginId;
+
+					Cursor c2 = db.rawQuery(pluginpageUrlQuery, null);
+
+					if (c2.moveToFirst()) {
+						String pluginpageUrl = c2.getString(c.getColumnIndex(DatabaseHelper.KEY_MUNINPLUGINS_PLUGINPAGEURL));
+
+						ContentValues values = new ContentValues();
+						values.put(DatabaseHelper.KEY_GRIDITEMRELATIONS_PLUGINPAGEURL, pluginpageUrl);
+
+						db.update(DatabaseHelper.TABLE_GRIDITEMRELATIONS, values, DatabaseHelper.KEY_ID + " = ?", new String[]{String.valueOf(gridItemid)});
+					}
+
+					c2.close();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			} while (c.moveToNext());
+		}
+
+		c.close();
 	}
 	
     public void logMasters() {

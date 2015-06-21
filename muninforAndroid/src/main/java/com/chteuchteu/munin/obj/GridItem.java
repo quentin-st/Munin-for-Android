@@ -38,7 +38,17 @@ public class GridItem {
 	private int 			X;
 	private int 			Y;
 	private MuninPlugin 	plugin;
+	/**
+	 * Keep the plugin page URL so we can find the gridItem back
+	 * 	if the plugin gets deleted
+	 */
+	private String			pluginPageUrl;
 	private Grid 			grid;
+	/**
+	 * When the GridItem isn't attached to an existing plugin anymore.
+	 * 	Use pluginPageUrl to find it back if possible
+	 */
+	private boolean			detached;
 
 	private Context 		context;
 	private IGridActivity activity;
@@ -63,6 +73,8 @@ public class GridItem {
 		this.X = 0;
 		this.Y = 0;
 		this.plugin = plugin;
+		if (this.plugin != null)
+			this.pluginPageUrl = plugin.getPluginPageUrl();
 		this.grid = grid;
 		this.hdGraphDownloader = null;
 	}
@@ -477,7 +489,17 @@ public class GridItem {
 	public void setY(int y) { this.Y = y; }
 
 	public MuninPlugin getPlugin() { return plugin; }
-	public void setPlugin(MuninPlugin plugin) { this.plugin = plugin; }
+	public void setPlugin(MuninPlugin plugin) {
+		this.plugin = plugin;
+		if (plugin != null)
+			this.pluginPageUrl = plugin.getPluginPageUrl();
+	}
 
 	public Grid getGrid() { return grid; }
+
+	public String getPluginPageUrl() { return pluginPageUrl; }
+	public void setPluginPageUrl(String pluginPageUrl) { this.pluginPageUrl = pluginPageUrl; }
+
+	public boolean isDetached() { return detached; }
+	public void setDetached(boolean detached) { this.detached = detached; }
 }
