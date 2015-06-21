@@ -55,7 +55,7 @@ public class GridItem {
 	private Fragment_Grid   fragment;
 	public ImageView 		iv;
 	public ProgressBar 		pb;
-	public View             footer;
+	public LinearLayout     footer;
 	public RelativeLayout   container;
 
 	public boolean 		 editing = false;
@@ -96,20 +96,28 @@ public class GridItem {
 		pb = (ProgressBar) view.findViewById(R.id.pb);
 
 		// Footer
-		footer = view.findViewById(R.id.gridItemFooter);
+		footer = (LinearLayout) view.findViewById(R.id.gridItemFooter);
 		TextView pluginName = (TextView) view.findViewById(R.id.pluginName);
 		TextView nodeName = (TextView) view.findViewById(R.id.serverName);
 		Util.Fonts.setFont(context, pluginName, Util.Fonts.CustomFont.Roboto_Regular);
 		Util.Fonts.setFont(context, nodeName, Util.Fonts.CustomFont.Roboto_Regular);
-		pluginName.setText(plugin.getFancyName());
-		nodeName.setText(plugin.getInstalledOn().getName());
-		if (fragment.isEditing())
-			footer.setVisibility(View.GONE);
 
-		switch (Util.getPref(context, Util.PrefKeys.GridsLegend)) {
-			case "none": footer.setVisibility(View.GONE); break;
-			case "serverName": case "": pluginName.setVisibility(View.GONE); break;
-			case "pluginName": nodeName.setVisibility(View.GONE); break;
+		if (this.isDetached()) {
+			footer.setVisibility(View.GONE);
+			this.applyPlaceholder(true);
+		} else {
+			pluginName.setText(plugin.getFancyName());
+			nodeName.setText(plugin.getInstalledOn().getName());
+			if (fragment.isEditing())
+				footer.setVisibility(View.GONE);
+
+			switch (Util.getPref(context, Util.PrefKeys.GridsLegend)) {
+				case "none": footer.setVisibility(View.GONE); break;
+				case "serverName": case "": pluginName.setVisibility(View.GONE); break;
+				case "pluginName": nodeName.setVisibility(View.GONE); break;
+			}
+
+			this.applyPlaceholder(false);
 		}
 
 		// Preview
@@ -163,9 +171,23 @@ public class GridItem {
 			}
 		});
 
-		this.applyPlaceholder(false);
-
 		return outerContainer;
+	}
+
+	public void toggleFooterVisibility(boolean visible) {
+		if (visible) {
+			// Check if there is some text in the footer
+			// (there is none if it is detached for example)
+			TextView serverName = (TextView) footer.getChildAt(0);
+			TextView nodeName = (TextView) footer.getChildAt(1);
+			if (serverName.getText().equals("")
+					&& nodeName.getText().equals(""))
+				return;
+
+			footer.setVisibility(View.VISIBLE);
+		}
+		else
+			footer.setVisibility(View.GONE);
 	}
 	
 	private void preview() {

@@ -270,6 +270,15 @@ public class MuninFoo {
 		}
 		return null;
 	}
+	public MuninPlugin getPlugin(String pluginPageUrl) {
+		for (MuninNode node : nodes) {
+			for (MuninPlugin plugin : node.getPlugins()) {
+				if (plugin.getPluginPageUrl().equals(pluginPageUrl))
+					return plugin;
+			}
+		}
+		return null;
+	}
 	
 	public List<MuninMaster> getMasters() { return this.masters; }
 

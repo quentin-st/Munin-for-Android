@@ -172,7 +172,7 @@ public class Grid implements ISearchable {
 
 	public void toggleFootersVisibility(boolean visible) {
 		for (GridItem i : items)
-			i.footer.setVisibility(visible ? View.VISIBLE : View.GONE);
+			i.toggleFooterVisibility(visible);
 	}
 	
 	private void removeEmptyColumns(Context c) {
@@ -472,6 +472,38 @@ public class Grid implements ISearchable {
 
 	public List<GridItem> getItems() { return items; }
 	public void setItems(List<GridItem> items) { this.items = items; }
+
+	public boolean hasDetachedItems() {
+		for (GridItem item : this.items) {
+			if (item.isDetached())
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Try to find the original plugin for each detached gridItem
+	 * @param muninFoo MuninFoo reference
+	 * @return true if repared gridItems
+	 */
+	public boolean reattachGridItems(MuninFoo muninFoo) {
+		boolean reparedSome = false;
+
+		for (GridItem item : this.items) {
+			if (item.isDetached() && !item.getPluginPageUrl().equals("")) {
+				MuninPlugin plugin = muninFoo.getPlugin(item.getPluginPageUrl());
+
+				if (plugin != null) {
+					item.setDetached(false);
+					item.setPlugin(plugin);
+
+					reparedSome = true;
+				}
+			}
+		}
+
+		return reparedSome;
+	}
 
     /* ISearchable */
     @Override

@@ -61,6 +61,14 @@ public class Fragment_Grid extends Fragment {
 		if (this.grid == null)
 			return inflater.inflate(R.layout.empty_view, parentContainer, false);
 
+		// Try to reattach detached GridItems
+		if (grid.hasDetachedItems()) {
+			if (grid.reattachGridItems(muninFoo)) {
+				// Save
+				muninFoo.sqlite.dbHlpr.saveGridItemsRelations(grid);
+			}
+		}
+
 		this.grid.setActivityReferences(context, muninFoo, activity, this);
 		activity.onGridLoaded(grid);
 		this.editing = false;
@@ -123,7 +131,7 @@ public class Fragment_Grid extends Fragment {
 	}
 
 	public void preview(final GridItem item) {
-		if (item == null || item.originalGraph == null)
+		if (item == null || item.originalGraph == null || item.isDetached())
 			return;
 
 		grid.currentlyOpenedGridItem = item;
