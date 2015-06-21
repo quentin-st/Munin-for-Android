@@ -59,6 +59,8 @@ public class ImportExportHelper {
 				    builder.append(line).append("\n");
 				
 				String body = builder.toString();
+
+				MuninFoo.log(body);
 				
 				JSONObject jsonResult = new JSONObject(body);
 
@@ -262,6 +264,9 @@ public class ImportExportHelper {
 	}
 
     public static String getImportExportServerUrl(Context context) {
-        return Util.getPref(context, Util.PrefKeys.ImportExportServer, IMPORT_EXPORT_URI);
+		String oldUrl = "http://www.munin-for-android.com/ws/importExport.php";
+        String url = Util.getPref(context, Util.PrefKeys.ImportExportServer, IMPORT_EXPORT_URI);
+
+		return url.equals(oldUrl) ? IMPORT_EXPORT_URI : url;
     }
 }
