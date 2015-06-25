@@ -228,4 +228,9 @@
     <string name="reset">リセット</string>
 	<string name="advanced">詳細</string>
 
+<string name="lang_hungarian">ハンガリー語</string>
+	<string name="lang_chinese_taiwan">中国語 (台湾)</string>
+	<string name="disable_chromecast">Chromecast 機能を無効にする</string>
+	<string name="disable_chromecast_text">Chromecast を所有していない場合は、アプリでの使用を無効にすることができます</string>
+
 </resources>
