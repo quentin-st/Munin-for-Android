@@ -83,7 +83,7 @@
 	<string name="text11">お使いの電話に Google Play アプリが見つからないようです。</string>
 	<string name="text16">URL が正しくないようです。もう一度ご確認ください。</string>
 	<string name="text18">成功しました!</string>
-	<string name="text21.1">" ノード"</string>
+	<string name="text21.1">ノード</string>
 	<string name="text21.2">" 追加しました!\n"</string>
 	<string name="text24">成功しました</string>
 	<string name="text27">" プラグインが見つかりました!"</string>
@@ -173,7 +173,7 @@
 	<string name="delete_plugin">プラグインを削除</string>
 	<string name="delete_label">ラベルを削除</string>
 	<string name="rename_label">ラベルの名前を変更</string>
-	<string name="delete_master">マスターとサブノードを削除</string>
+	<string name="delete_master">マスターとノードを削除</string>
 	<string name="alerts_ok">良いニュース - すべて OK です</string>
 	<string name="update_credentials">接続の資格情報を編集</string>
 	<string name="long_click">長押しして編集</string>
