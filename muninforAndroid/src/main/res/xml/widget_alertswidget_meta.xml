@@ -6,8 +6,7 @@
     android:minWidth="@dimen/appwidget_min_width"
 	android:previewImage="@drawable/alertswidget_preview"
     android:resizeMode="horizontal|vertical"
-    android:updatePeriodMillis="3600000"
+    android:updatePeriodMillis="1800000"
     android:widgetCategory="keyguard|home_screen"
 	android:autoAdvanceViewId="@+id/servers">
-
 </appwidget-provider>
