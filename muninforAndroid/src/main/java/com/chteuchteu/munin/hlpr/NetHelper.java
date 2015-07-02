@@ -130,6 +130,11 @@ public class NetHelper {
 			resp.setResponseCode(response.getStatusLine().getStatusCode());
 			if (response.getHeaders("WWW-Authenticate").length > 0)
 				resp.setAuthenticateHeader(response.getHeaders("WWW-Authenticate")[0].getValue());
+			if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried
+					&& response.getHeaders("WWW-Authenticate").length > 0) {
+				master.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
+				return NetHelper.grabUrl(master, url, userAgent, true);
+			}
 
 			resp.end();
 
