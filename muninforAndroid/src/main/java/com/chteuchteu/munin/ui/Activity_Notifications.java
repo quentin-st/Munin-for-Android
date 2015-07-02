@@ -266,16 +266,12 @@ public class Activity_Notifications extends MuninActivity {
 		int nbNodes = watchedNodes.equals("") ? 0 : watchedNodes.split(";").length;
 		
 		double result = (1440/refreshRate) * nbNodes * PAGE_WEIGHT;
-		String unit = "ko";
+		String unit = "kb";
 		if (result > 1024) {
 			result = result / 1024;
-			unit = "Mo";
+			unit = "Mb";
 		}
-		DecimalFormat df;
-		if (unit.equals("ko"))
-			df = new DecimalFormat("###");
-		else
-			df = new DecimalFormat("###");
+		DecimalFormat df = new DecimalFormat("###");
 		((TextView)findViewById(R.id.estimated_data_consumption)).setText(getString(R.string.text54).replace("??", df.format(result) + " " + unit));
 	}
 	
