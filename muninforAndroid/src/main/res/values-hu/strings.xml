@@ -144,4 +144,5 @@
 	<string name="ok">OK</string>
 	<string name="lang_hungarian">Magyar</string>
 	<string name="lang_chinese_taiwan">Chinese (Taiwan)</string>
-</resources>
+<string name="app_name">Munin Androidhoz</string>
+	</resources>
