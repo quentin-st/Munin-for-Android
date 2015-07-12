@@ -343,11 +343,15 @@ public class MuninMaster {
 						// Get every host for that domain
 						Elements hosts = domain.parent().select("span.host");
 						for (Element host : hosts) {
-							MuninNode serv = new MuninNode(host.child(0).text(), host.child(0).attr("abs:href"));
-							serv.setParent(this);
-							previousPosition++;
-							serv.setPosition(previousPosition);
-							nbNodes++;
+							String nodeUrl = host.child(0).attr("abs:href");
+							// Avoid duplicates for weird DOM analysis: check if it has already been added
+							if (!this.has(nodeUrl)) {
+								MuninNode serv = new MuninNode(host.child(0).text(), nodeUrl);
+								serv.setParent(this);
+								previousPosition++;
+								serv.setPosition(previousPosition);
+								nbNodes++;
+							}
 						}
 					}
 				}
@@ -701,5 +705,18 @@ public class MuninMaster {
 		}
 		
 		return report;
+	}
+
+	/**
+	 * Checks if this master contains a node, based on its URL
+	 * @param nodeUrl
+	 * @return
+	 */
+	public boolean has(String nodeUrl) {
+		for (MuninNode node : this.children) {
+			if (node.getUrl().equals(nodeUrl))
+				return true;
+		}
+		return false;
 	}
 }
