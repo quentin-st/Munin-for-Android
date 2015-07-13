@@ -28,3 +28,4 @@
 -keep interface android.support.v7.internal.** { *; }
 -keep class android.support.v7.** { *; }
 -keep interface android.support.v7.** { *; }
+-keepclassmembers class android.support.v7.** { *; }
