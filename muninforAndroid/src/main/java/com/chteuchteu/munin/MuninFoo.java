@@ -37,7 +37,7 @@ public class MuninFoo {
 
 	private String userAgent;
 
-	public static final double VERSION = 6.4;
+	public static final double VERSION = 6.5;
 	private static final boolean FORCE_NOT_PREMIUM = false;
 
     // Allows an user to test the app until the TRIAL_EXPIRATION date is reached
