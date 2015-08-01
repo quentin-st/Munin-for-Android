@@ -366,6 +366,36 @@ public final class Util {
 			url = Util.URLManipulation.setPort(url, 443);
 			return url;
 		}
+
+		/**
+		 * Returns https:// from https://test.com
+		 * @param url https://test.com
+		 * @return https://
+		 */
+		public static String getScheme(String url) {
+			try {
+				URL u = new URL(url);
+				return u.getProtocol() + "://";
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+				return "http://";
+			}
+		}
+
+		/**
+		 * Returns 4948 from http://test.fr:4948/
+		 * @param url http://test.fr
+		 * @return 80
+		 */
+		public static int getPort(String url) {
+			try {
+				URL u = new URL(url);
+				return u.getPort();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+				return 80;
+			}
+		}
 		
 		private static String setPort(String url, int port) {
 			URL _url;
@@ -374,8 +404,6 @@ public final class Util {
 			} catch (MalformedURLException e) {
 				return url;
 			}
-			if (url == null)
-				return null;
 			if (_url.getPort() == port)
 				return url;
 			return _url.getProtocol() + "://" + _url.getHost() + ":" + port + _url.getFile();

@@ -198,7 +198,7 @@ public class MuninNode implements ISearchable {
 							String thirdPageHtml = this.master.grabUrl(srcAttr2, userAgent).html;
 
 							// If the plugin has one more details level, we have to go to a fourth page!
-							if (!thirdPageHtml.contains("Zooming is very easy")) {
+							if (!thirdPageHtml.contains("Zooming is")) {
 								Document thirdPage = Jsoup.parse(thirdPageHtml, srcAttr2);
 								Elements images3 = thirdPage.select("img[src$=-day.png]");
 
@@ -218,13 +218,21 @@ public class MuninNode implements ISearchable {
 								Uri uri = Uri.parse(srcAttr2);
 								String cgiUrl = uri.getQueryParameterNames().contains("cgiurl_graph") ? uri.getQueryParameter("cgiurl_graph")
 										: "/munin-cgi/munin-cgi-graph";
+								if (!cgiUrl.endsWith("/"))
+									cgiUrl += "/";
+
 								// localdomain/localhost.localdomain/if_eth0
 								String pluginNameUrl = uri.getQueryParameterNames().contains("plugin_name") ? uri.getQueryParameter("plugin_name")
 										: "localdomain/localhost.localdomain/pluginName";
+
 								// Remove plugin name from pluginNameUrl
 								pluginNameUrl = pluginNameUrl.substring(0, pluginNameUrl.lastIndexOf('/') + 1);
 
-								this.hdGraphURL = "http://" + Util.URLManipulation.getHostFromUrl(this.getUrl()) + cgiUrl + "/" + pluginNameUrl;
+
+								this.hdGraphURL = Util.URLManipulation.getScheme(this.getUrl())
+										+ Util.URLManipulation.getHostFromUrl(this.getUrl())
+										+ ":" + Util.URLManipulation.getPort(this.getUrl())
+										+ cgiUrl + pluginNameUrl;
 
 								// Now that we have the HD Graph URL, let's try to reach it to see if it is available
 								if (this.master.isDynazoomAvailable(currentPl, userAgent))
