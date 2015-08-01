@@ -50,7 +50,7 @@ dependencies {
     compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.edmodo:rangebar:1.0.0'
     compile 'com.google.android.gms:play-services:7.0.0'
-    compile 'com.android.support:mediarouter-v7:21.0.0'
+    compile 'com.android.support:mediarouter-v7:22.1.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile('com.crashlytics.sdk.android:crashlytics:2.2.4@aar') {
         transitive = true;
