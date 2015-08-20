@@ -3,30 +3,21 @@ package com.chteuchteu.munin.hlpr;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Pair;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.exc.ImportExportWebserviceException;
+import com.chteuchteu.munin.obj.HTTPResponse.HTMLResponse;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.ui.Activity_Servers;
 import com.crashlytics.android.Crashlytics;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,28 +32,16 @@ public class ImportExportHelper {
 	
 	public static class Export {
 		private static String sendExportRequest(Context context, String jsonString) {
-			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(getImportExportServerUrl(context) + "?export");
+			List<Pair<String, String>> params = new ArrayList<>();
+			params.add(new Pair<>("dataString", jsonString));
+			params.add(new Pair<>("version", String.valueOf(IMPORT_EXPORT_VERSION)));
+
+			String url = getImportExportServerUrl(context) + "?export";
+			String userAgent = MuninFoo.getInstance().getUserAgent();
 			
 			try {
-				List<NameValuePair> nameValuePairs = new ArrayList<>(2);
-				nameValuePairs.add(new BasicNameValuePair("dataString", jsonString));
-				nameValuePairs.add(new BasicNameValuePair("version", String.valueOf(IMPORT_EXPORT_VERSION)));
-				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-				
-				// Execute HTTP Post Request
-				HttpResponse response = httpClient.execute(httpPost);
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				StringBuilder builder = new StringBuilder();
-				for (String line; (line = reader.readLine()) != null;)
-				    builder.append(line).append("\n");
-				
-				String body = builder.toString();
-
-				MuninFoo.log(body);
-				
-				JSONObject jsonResult = new JSONObject(body);
+				HTMLResponse response = NetHelper.simplePost(url, params, userAgent);
+				JSONObject jsonResult = new JSONObject(response.getHtml());
 
 				boolean success = jsonResult.getBoolean("success");
 
@@ -73,12 +52,6 @@ public class ImportExportHelper {
 					Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
 				}
 				
-				return null;
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-				return null;
-			} catch (IOException e) {
-				e.printStackTrace();
 				return null;
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -155,24 +128,16 @@ public class ImportExportHelper {
 		}
 		
 		private static JSONObject sendImportRequest(Context context, String code) {
-			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(getImportExportServerUrl(context)+"?import");
+			List<Pair<String, String>> params = new ArrayList<>();
+			params.add(new Pair<>("pswd", code));
+			params.add(new Pair<>("version", String.valueOf(IMPORT_EXPORT_VERSION)));
+
+			String url = getImportExportServerUrl(context) + "?import";
+			String userAgent = MuninFoo.getInstance().getUserAgent();
 
 			try {
-				List<NameValuePair> nameValuePairs = new ArrayList<>(2);
-				nameValuePairs.add(new BasicNameValuePair("pswd", code));
-				nameValuePairs.add(new BasicNameValuePair("version", String.valueOf(IMPORT_EXPORT_VERSION)));
-				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-				
-				// Execute HTTP Post Request
-				HttpResponse response = httpClient.execute(httpPost);
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-				StringBuilder builder = new StringBuilder();
-				for (String line; (line = reader.readLine()) != null;)
-				    builder.append(line).append("\n");
-				
-				JSONObject jsonResult = new JSONObject(builder.toString());
+				HTMLResponse response = NetHelper.simplePost(url, params, userAgent);
+				JSONObject jsonResult = new JSONObject(response.getHtml());
 				
 				boolean success = jsonResult.getBoolean("success");
 				
@@ -184,12 +149,6 @@ public class ImportExportHelper {
 						Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
 				}
 				
-				return null;
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-				return null;
-			} catch (IOException e) {
-				e.printStackTrace();
 				return null;
 			} catch (JSONException e) {
 				e.printStackTrace();
