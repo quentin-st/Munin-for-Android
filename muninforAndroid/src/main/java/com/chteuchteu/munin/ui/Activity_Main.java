@@ -75,9 +75,9 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
 		setTheme(MuninFoo.getThemeId(this));
+
+		super.onCreate(savedInstanceState);
 
 		Fabric.with(this, new Crashlytics());
 		preloading = true;

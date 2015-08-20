@@ -41,6 +41,7 @@ public class Activity_Settings extends MuninActivity {
 	private Spinner	spinner_scale;
 	private Spinner	spinner_defaultNode;
 	private Spinner	spinner_lang;
+	private Spinner spinner_theme;
 	private Spinner	spinner_orientation;
 	private Spinner spinner_gridsLegend;
 	private Spinner spinner_defaultActivity;
@@ -69,6 +70,7 @@ public class Activity_Settings extends MuninActivity {
 		spinner_scale = (Spinner)findViewById(R.id.spinner_scale);
 		spinner_defaultNode = (Spinner)findViewById(R.id.spinner_defaultnode);
 		spinner_lang = (Spinner)findViewById(R.id.spinner_lang);
+		spinner_theme = (Spinner)findViewById(R.id.spinner_theme);
 		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);
 		spinner_gridsLegend = (Spinner)findViewById(R.id.spinner_gridsLegend);
 		spinner_defaultActivity = (Spinner)findViewById(R.id.spinner_defaultActivity);
@@ -113,6 +115,14 @@ public class Activity_Settings extends MuninActivity {
 		ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list2);
 		dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_lang.setAdapter(dataAdapter2);
+
+		// Theme spinner
+		List<String> listThemes = new ArrayList<>();
+		listThemes.add(getString(R.string.theme_light));
+		listThemes.add(getString(R.string.theme_dark));
+		ArrayAdapter<String> dataAdapterThemes = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listThemes);
+		dataAdapterThemes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner_theme.setAdapter(dataAdapterThemes);
 
 		// Orientation spinner
 		List<String> list3 = new ArrayList<>();
@@ -201,6 +211,9 @@ public class Activity_Settings extends MuninActivity {
 			else
 				appLanguage = I18nHelper.AppLanguage.defaultLang();
 		}
+
+		// App theme
+		spinner_theme.setSelection(Integer.valueOf(Util.getPref(this, Util.PrefKeys.ThemeId, "0")));
 
 		spinner_lang.setSelection(appLanguage.getIndex());
 		
@@ -354,6 +367,15 @@ public class Activity_Settings extends MuninActivity {
 
 		if (currentLang != newLang)
 			I18nHelper.loadLanguage(context, muninFoo, true);
+
+		// App theme
+		int currentTheme = MuninFoo.getThemeId(this);
+		int newTheme = spinner_theme.getSelectedItemPosition();
+
+		if (currentTheme != newTheme) {
+			Util.setPref(this, Util.PrefKeys.ThemeId, String.valueOf(newTheme));
+			// TODO ask to restart app
+		}
 		
 		// Orientation
 		switch (spinner_orientation.getSelectedItemPosition()) {

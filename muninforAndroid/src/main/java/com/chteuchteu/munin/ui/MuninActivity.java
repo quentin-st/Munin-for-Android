@@ -49,9 +49,9 @@ public class MuninActivity extends AppCompatActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
 		setTheme(MuninFoo.getThemeId(this));
+
+		super.onCreate(savedInstanceState);
 
 		Fabric.with(this, new Crashlytics());
 

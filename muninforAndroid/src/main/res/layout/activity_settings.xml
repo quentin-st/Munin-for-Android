@@ -72,6 +72,19 @@
 
 					<View style="@style/Material_Divider" />
 
+					<!-- App theme -->
+
+					<TextView
+						android:tag="set_font"
+						style="@style/Settings_SettingTitle"
+						android:text="@string/theme" />
+
+					<Spinner
+						android:id="@+id/spinner_theme"
+						style="@style/Settings_SettingSpinner" />
+
+					<View style="@style/Material_Divider" />
+
 					<!-- User agent -->
 
 					<TextView
