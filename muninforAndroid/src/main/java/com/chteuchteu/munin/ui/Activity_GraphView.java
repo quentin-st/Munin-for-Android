@@ -217,7 +217,7 @@ public class Activity_GraphView extends MuninActivity {
 		viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(pos);
 
-		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+		viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
