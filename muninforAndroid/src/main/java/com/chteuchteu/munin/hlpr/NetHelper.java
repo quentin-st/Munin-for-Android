@@ -10,43 +10,22 @@ import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninNode;
 
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.ExecutionContext;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.net.UnknownHostException;
-import java.security.KeyStore;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 
 public class NetHelper {
 	private static final int CONNECTION_TIMEOUT = 6000; // Default = 6000
-	private static final int SOCKET_TIMEOUT = 7000; // Default = 6000
+	private static final int READ_TIMEOUT = 7000; // Default = 6000
 
 	public static HTTPResponse grabUrl(MuninMaster master, String url, String userAgent) {
 		return grabUrl(master, url, userAgent, false);
@@ -55,118 +34,114 @@ public class NetHelper {
 	/**
 	 * Downloads body response of a HTTP(s) request using master auth information
 	 * @param master Needed for SSL/Apache basic/digest auth
-	 * @param url URL to be downloaded
+	 * @param strUrl URL to be downloaded
 	 * @return HTTPResponse
 	 */
-	private static HTTPResponse grabUrl(MuninMaster master, String url, String userAgent, boolean retried) {
+	private static HTTPResponse grabUrl(MuninMaster master, String strUrl, String userAgent, boolean retried) {
 		HTTPResponse resp = new HTTPResponse();
-		resp.setRequestUrl(url);
+		resp.setRequestUrl(strUrl);
 		
-		MuninFoo.logV("grabUrl:url", url);
-		
+		MuninFoo.logV("grabUrl:url", strUrl);
+
+		HttpURLConnection connection = null;
+
 		try {
-			HttpClient client;
+			URL url = new URL(strUrl);
+
 			if (master.getSSL()) {
 				try {
-					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-					trustStore.load(null, null);
+					/*KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+					trustStore.load(null, null);*/
 					
-					CustomSSLFactory sslFactory = new CustomSSLFactory(trustStore, resp);
-					sslFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-					
-					HttpParams params = new BasicHttpParams();
-					HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-					HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-					HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
-					HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
-					
-					SchemeRegistry registry = new SchemeRegistry();
+					/*CustomSSLFactory sslFactory = new CustomSSLFactory(trustStore, resp);
+					sslFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);*/
+
+					/*SchemeRegistry registry = new SchemeRegistry();
 					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-					registry.register(new Scheme("https", sslFactory, 443));
+					registry.register(new Scheme("https", sslFactory, 443));*/
 					
-					ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
+					//ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
+
+					SSLContext sslContext = SSLContext.getInstance("SSL");
+
+					sslContext.init(null, new javax.net.ssl.TrustManager[] { new TrustAllTrustManagers() }, new java.security.SecureRandom());
 					
-					client = new DefaultHttpClient(ccm, params);
+					connection = (HttpsURLConnection) url.openConnection();
+					((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
 				} catch (Exception e) {
 					e.printStackTrace();
-					client = new DefaultHttpClient();
+					connection = (HttpURLConnection) url.openConnection();
 					master.setSSL(false);
 				}
 			} else
-				client = new DefaultHttpClient();
+				connection = (HttpURLConnection) url.openConnection();
 
-			HttpGet request = new HttpGet(url);
-			request.setHeader("User-Agent", userAgent);
+			connection.setConnectTimeout(CONNECTION_TIMEOUT);
+			connection.setReadTimeout(READ_TIMEOUT);
+			connection.setRequestProperty("User-Agent", userAgent);
 
 			// Apache Basic/Digest auth
 			if (master.isAuthNeeded()) {
-				String header = getAuthenticationHeader(master, url);
+				String header = getAuthenticationHeader(master, strUrl);
 				if (header != null)
-					request.setHeader("Authorization", header);
+					connection.setRequestProperty("Authorization", header);
 			}
-			
-			HttpParams httpParameters = new BasicHttpParams();
-			// Set the timeout in milliseconds until a connection is established.
-			HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIMEOUT);
-			// Set the default socket timeout (SO_TIMEOUT) in milliseconds which is the timeout for waiting for data.
-			HttpConnectionParams.setSoTimeout(httpParameters, SOCKET_TIMEOUT);
-			((DefaultHttpClient) client).setParams(httpParameters);
 
 			resp.begin();
+			connection.connect();
 
-			HttpContext context = new BasicHttpContext();
-			HttpResponse response = client.execute(request, context);
-			InputStream in = response.getEntity().getContent();
+			// Get data
+			InputStream in = url.openStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			StringBuilder str = new StringBuilder();
+			StringBuilder html = new StringBuilder();
 			String line;
-			while((line = reader.readLine()) != null) {
-				str.append(line);
-			}
+			while ((line = reader.readLine()) != null)
+				html.append(line);
+
 			in.close();
+			reader.close();
 			
-			resp.setHtml(str.toString());
-			resp.setResponsePhrase(response.getStatusLine().getReasonPhrase());
-			resp.setResponseCode(response.getStatusLine().getStatusCode());
-			if (response.getHeaders("WWW-Authenticate").length > 0)
-				resp.setAuthenticateHeader(response.getHeaders("WWW-Authenticate")[0].getValue());
-			if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried
-					&& response.getHeaders("WWW-Authenticate").length > 0) {
-				master.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
-				return NetHelper.grabUrl(master, url, userAgent, true);
+			resp.setHtml(html.toString());
+
+			// Read response headers
+			resp.setResponsePhrase(connection.getResponseMessage());
+			resp.setResponseCode(connection.getResponseCode());
+			if (connection.getHeaderFields().containsKey("WWW-Authenticate"))
+				resp.setAuthenticateHeader(connection.getHeaderField("WWW-Authenticate"));
+			if (connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried
+					&& connection.getHeaderFields().containsKey("WWW-Authenticate")) {
+				master.setAuthString(connection.getHeaderField("WWW-Authenticate"));
+				return NetHelper.grabUrl(master, strUrl, userAgent, true);
 			}
 
 			resp.end();
 
 			// Get current URL (detect redirection)
-			HttpUriRequest currentReq = (HttpUriRequest) context.getAttribute(ExecutionContext.HTTP_REQUEST);
-			HttpHost currentHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
-			String currentUrl = currentReq.getURI().isAbsolute() ? currentReq.getURI().toString() : (currentHost.toURI() + currentReq.getURI());
-			resp.setLastUrl(currentUrl);
+			resp.setLastUrl(connection.getURL().toString());
 
-			MuninFoo.logV("grabUrl", "Downloaded " + (response.getEntity().getContentLength()/1024) + "kb in " + resp.getExecutionTime() + "ms");
+			MuninFoo.logV("grabUrl", "Downloaded " + (connection.getContentLength()/1024) + "kb in " + resp.getExecutionTime() + "ms");
 		}
-		catch (SocketTimeoutException | ConnectTimeoutException e) { resp.setTimeout(true); }
+		catch (SocketTimeoutException | ConnectException e) { resp.setTimeout(true); }
 		catch (SSLException e) { // SSLPeerUnverifiedException
 			if (!master.getSSL()) {
 				master.setSSL(true);
 				// Update the URL of master / child node if needed
-				if (master.getUrl().equals(url))
-					master.setUrl(Util.URLManipulation.setHttps(url));
+				if (master.getUrl().equals(strUrl))
+					master.setUrl(Util.URLManipulation.setHttps(strUrl));
 				else {
 					for (MuninNode node : master.getChildren()) {
-						if (node.getUrl().equals(url)) {
-							node.setUrl(Util.URLManipulation.setHttps(url));
+						if (node.getUrl().equals(strUrl)) {
+							node.setUrl(Util.URLManipulation.setHttps(strUrl));
 							break;
 						}
 					}
 				}
 
-				url = Util.URLManipulation.setHttps(url);
+				strUrl = Util.URLManipulation.setHttps(strUrl);
 			}
 
 			if (!retried)
-				return NetHelper.grabUrl(master, url, userAgent, true);
+				return NetHelper.grabUrl(master, strUrl, userAgent, true);
 		}
 		catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -174,6 +149,10 @@ public class NetHelper {
 			resp.setResponsePhrase(e.getMessage());
 		}
 		catch (Exception e) { e.printStackTrace(); }
+		finally {
+			if (connection != null)
+				connection.disconnect();
+		}
 		return resp;
 	}
 	
@@ -185,80 +164,75 @@ public class NetHelper {
 	 * Get a bitmap representation of the image targeted by url parameter,
 	 *  using master auth information
 	 * @param master Needed for SSL/Apache basic/digest auth
-	 * @param url URL of the image
+	 * @param strUrl URL of the image
 	 * @param retried Retry after getting digest auth information
 	 *                (recursive call)
 	 * @return Bitmap
 	 */
-	private static HTTPResponse_Bitmap grabBitmap(MuninMaster master, String url, String userAgent, boolean retried) {
+	private static HTTPResponse_Bitmap grabBitmap(MuninMaster master, String strUrl, String userAgent, boolean retried) {
 		HTTPResponse_Bitmap respObj = new HTTPResponse_Bitmap();
-		respObj.setRequestUrl(url);
+		respObj.setRequestUrl(strUrl);
 
-		MuninFoo.logV("grabImage:url", url);
+		MuninFoo.logV("grabImage:url", strUrl);
+
+		HttpURLConnection connection = null;
 
 		try {
-			HttpClient client;
+			URL url = new URL(strUrl);
+
 			if (master.getSSL()) {
 				try {
-					KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-					trustStore.load(null, null);
+					/*KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+					trustStore.load(null, null);*/
 
-					CustomSSLFactory sslFactory = new CustomSSLFactory(trustStore, respObj);
-					sslFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-					
-					HttpParams params = new BasicHttpParams();
-					HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-					HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-					HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
-					HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
-					
-					SchemeRegistry registry = new SchemeRegistry();
+					/*CustomSSLFactory sslFactory = new CustomSSLFactory(trustStore, resp);
+					sslFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);*/
+
+					/*SchemeRegistry registry = new SchemeRegistry();
 					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-					registry.register(new Scheme("https", sslFactory, 443));
-					
-					ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-					
-					client = new DefaultHttpClient(ccm, params);
+					registry.register(new Scheme("https", sslFactory, 443));*/
+
+					//ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
+
+					SSLContext sslContext = SSLContext.getInstance("SSL");
+
+					sslContext.init(null, new javax.net.ssl.TrustManager[]{new TrustAllTrustManagers()}, new java.security.SecureRandom());
+
+					connection = (HttpsURLConnection) url.openConnection();
+					((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
 				} catch (Exception e) {
 					e.printStackTrace();
-					client = new DefaultHttpClient();
+					connection = (HttpURLConnection) url.openConnection();
 					master.setSSL(false);
 				}
 			} else
-				client = new DefaultHttpClient();
+				connection = (HttpURLConnection) url.openConnection();
 
-			HttpGet request = new HttpGet(url);
-			request.setHeader("User-Agent", userAgent);
+			connection.setConnectTimeout(CONNECTION_TIMEOUT);
+			connection.setReadTimeout(READ_TIMEOUT);
+			connection.setRequestProperty("User-Agent", userAgent);
 
 			// Apache Basic/Digest auth
 			if (master.isAuthNeeded()) {
-				String header = getAuthenticationHeader(master, url);
+				String header = getAuthenticationHeader(master, strUrl);
 				if (header != null)
-					request.setHeader("Authorization", header);
+					connection.setRequestProperty("Authorization", header);
 			}
-			
-			HttpParams httpParameters = new BasicHttpParams();
-			// Set the timeout in milliseconds until a connection is established.
-			HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-			// Set the default socket timeout (SO_TIMEOUT) in milliseconds which is the timeout for waiting for data.
-			HttpConnectionParams.setSoTimeout(httpParameters, 7000);
-			((DefaultHttpClient) client).setParams(httpParameters);
 
 			respObj.begin();
-			
-			HttpResponse response = client.execute(request);
-			StatusLine statusLine = response.getStatusLine();
+			connection.connect();
 
-            respObj.setResponseCode(statusLine.getStatusCode());
-            respObj.setResponsePhrase(statusLine.getReasonPhrase());
+			// Read response headers
+			respObj.setResponsePhrase(connection.getResponseMessage());
+			respObj.setResponseCode(connection.getResponseCode());
 			if (respObj.requestSucceeded()) {
-				Bitmap bitmap = BitmapFactory.decodeStream(response.getEntity().getContent());
+				Bitmap bitmap = BitmapFactory.decodeStream(connection.getInputStream());
 				respObj.setBitmap(bitmap);
 			} else {
-				if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried
-						&& response.getHeaders("WWW-Authenticate").length > 0) {
-					master.setAuthString(response.getHeaders("WWW-Authenticate")[0].getValue());
-					return grabBitmap(master, url, userAgent, true);
+				if (connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried
+						&& connection.getHeaderFields().containsKey("WWW-Authenticate")) {
+					master.setAuthString(connection.getHeaderField("WWW-Authenticate"));
+					return grabBitmap(master, strUrl, userAgent, true);
 				} else
 					respObj.setBitmap(null);
 			}
@@ -266,7 +240,7 @@ public class NetHelper {
 			respObj.end();
 			MuninFoo.logV("grabImage", "Downloaded bitmap in " + respObj.getExecutionTime() + "ms");
 		}
-		catch (SocketTimeoutException | ConnectTimeoutException e) {
+		catch (SocketTimeoutException | ConnectException e) {
 			e.printStackTrace();
 			respObj.setResponseCode(HttpURLConnection.HTTP_CLIENT_TIMEOUT);
 			respObj.setResponsePhrase("Timeout");
@@ -280,6 +254,10 @@ public class NetHelper {
 			e.printStackTrace();
 			respObj.setResponseCode(HTTPResponse.UnknownError);
 			respObj.setResponsePhrase("Unknown error");
+		}
+		finally {
+			if (connection != null)
+				connection.disconnect();
 		}
 		
 		return respObj;
