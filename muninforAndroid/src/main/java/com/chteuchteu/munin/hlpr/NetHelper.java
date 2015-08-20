@@ -3,6 +3,7 @@ package com.chteuchteu.munin.hlpr;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Pair;
 
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
@@ -13,14 +14,20 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninNode;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -107,7 +114,7 @@ public class NetHelper {
 			connection.setConnectTimeout(CONNECTION_TIMEOUT);
 			connection.setReadTimeout(READ_TIMEOUT);
 			connection.setRequestProperty("User-Agent", userAgent);
-			connection.setRequestProperty("Accept","*/*");
+			connection.setRequestProperty("Accept", "*/*");
 
 			// Apache Basic/Digest auth
 			if (master.isAuthNeeded()) {
@@ -231,5 +238,109 @@ public class NetHelper {
 				return DigestUtils.getDigestAuthHeader(master, url);
 		}
 		return null;
+	}
+
+	public static HTMLResponse simplePost(String strUrl, List<Pair<String, String>> params, String userAgent) {
+		HTMLResponse resp = new HTMLResponse(strUrl);
+
+		MuninFoo.logV("grabUrl:url", strUrl);
+
+		HttpURLConnection connection = null;
+
+		try {
+			URL url = new URL(strUrl);
+
+			connection = (HttpURLConnection) url.openConnection();
+
+			// Set connection timeout & user agent
+			connection.setConnectTimeout(CONNECTION_TIMEOUT);
+			connection.setReadTimeout(READ_TIMEOUT);
+			connection.setRequestProperty("User-Agent", userAgent);
+			connection.setRequestProperty("Accept", "*/*");
+			connection.setRequestMethod("POST");
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
+
+			// Write POST
+			OutputStream os = connection.getOutputStream();
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+			writer.write(getQuery(params));
+			writer.flush();
+			writer.close();
+
+			resp.begin();
+			connection.connect();
+
+			// Read response headers
+			int responseCode = connection.getResponseCode();
+			String responseMessage = connection.getResponseMessage();
+
+			resp.setResponseCode(responseCode);
+			resp.setResponseMessage(responseMessage);
+
+			if (BuildConfig.DEBUG)
+				MuninFoo.log(responseCode + " - " + responseMessage);
+
+
+			// Read response
+			InputStream in = responseCode == 200 ? connection.getInputStream() : connection.getErrorStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			StringBuilder html = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null)
+				html.append(line);
+
+			in.close();
+			reader.close();
+
+			resp.setHtml(html.toString());
+			resp.end();
+
+			// Get current URL (detect redirection)
+			resp.setLastUrl(connection.getURL().toString());
+
+			MuninFoo.logV("grabUrl", "Downloaded " + (connection.getContentLength()/1024) + "kb in " + resp.getExecutionTime() + "ms");
+		}
+		catch (SocketTimeoutException | ConnectException e) {
+			if (BuildConfig.DEBUG)
+				e.printStackTrace();
+			resp.setTimeout(true);
+		}
+		catch (UnknownHostException e) {
+			if (BuildConfig.DEBUG)
+				e.printStackTrace();
+			resp.setResponseCode(BaseResponse.UnknownHostExceptionError);
+			resp.setResponseMessage(e.getMessage());
+		}
+		catch (Exception e) {
+			if (BuildConfig.DEBUG)
+				e.printStackTrace();
+			resp.setResponseCode(BaseResponse.UnknownError);
+			resp.setResponseMessage("Unknown error");
+		}
+		finally {
+			if (connection != null)
+				connection.disconnect();
+		}
+
+		return resp;
+	}
+
+	private static String getQuery(List<Pair<String, String>> params) throws UnsupportedEncodingException {
+		StringBuilder builder = new StringBuilder();
+		boolean first = true;
+
+		for (Pair<String, String> param : params) {
+			if (first)
+				first = false;
+			else
+				builder.append("&");
+
+			builder.append(URLEncoder.encode(param.first, "UTF-8"));
+			builder.append("=");
+			builder.append(URLEncoder.encode(param.second, "UTF-8"));
+		}
+
+		return builder.toString();
 	}
 }
