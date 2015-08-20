@@ -5,8 +5,9 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import com.chteuchteu.munin.MuninFoo;
-import com.chteuchteu.munin.obj.HTTPResponse;
-import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
+import com.chteuchteu.munin.obj.HTTPResponse.BaseResponse;
+import com.chteuchteu.munin.obj.HTTPResponse.BitmapResponse;
+import com.chteuchteu.munin.obj.HTTPResponse.HTMLResponse;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninNode;
 
@@ -27,20 +28,35 @@ public class NetHelper {
 	private static final int CONNECTION_TIMEOUT = 6000; // Default = 6000
 	private static final int READ_TIMEOUT = 7000; // Default = 6000
 
-	public static HTTPResponse grabUrl(MuninMaster master, String url, String userAgent) {
-		return grabUrl(master, url, userAgent, false);
+	private enum DownloadType { HTML, BITMAP }
+
+	public static HTMLResponse downloadUrl(MuninMaster master, String url, String userAgent) {
+		return (HTMLResponse) download(DownloadType.HTML, master, url, userAgent, false);
+	}
+
+	public static BitmapResponse downloadBitmap(MuninMaster master, String url, String userAgent) {
+		return (BitmapResponse) download(DownloadType.BITMAP, master, url, userAgent, false);
 	}
 
 	/**
-	 * Downloads body response of a HTTP(s) request using master auth information
-	 * @param master Needed for SSL/Apache basic/digest auth
-	 * @param strUrl URL to be downloaded
-	 * @return HTTPResponse
+	 * Downloads:
+	 * 		* the bitmap representation of the image
+	 * 		* the HTML content
+	 * 	of the target page (strUrl), depending on the downloadType.
+	 * @param downloadType HTML/Bitmap
+	 * @param master MuninMaster
+	 * @param strUrl Target URL
+	 * @param userAgent UserAgent to be sent to the server
+	 * @param retried Retry after getting digest auth information / SSL fail (recursive call)
+	 * @return BaseResponse
 	 */
-	private static HTTPResponse grabUrl(MuninMaster master, String strUrl, String userAgent, boolean retried) {
-		HTTPResponse resp = new HTTPResponse();
-		resp.setRequestUrl(strUrl);
-		
+	private static BaseResponse download(DownloadType downloadType, MuninMaster master, String strUrl, String userAgent, boolean retried) {
+		BaseResponse resp;
+		if (downloadType == DownloadType.HTML)
+			resp = new HTMLResponse(strUrl);
+		else
+			resp = new BitmapResponse(strUrl);
+
 		MuninFoo.logV("grabUrl:url", strUrl);
 
 		HttpURLConnection connection = null;
@@ -52,20 +68,20 @@ public class NetHelper {
 				try {
 					/*KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 					trustStore.load(null, null);*/
-					
+
 					/*CustomSSLFactory sslFactory = new CustomSSLFactory(trustStore, resp);
 					sslFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);*/
 
 					/*SchemeRegistry registry = new SchemeRegistry();
 					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
 					registry.register(new Scheme("https", sslFactory, 443));*/
-					
+
 					//ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
 
 					SSLContext sslContext = SSLContext.getInstance("SSL");
 
 					sslContext.init(null, new javax.net.ssl.TrustManager[] { new TrustAllTrustManagers() }, new java.security.SecureRandom());
-					
+
 					connection = (HttpsURLConnection) url.openConnection();
 					((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
 				} catch (Exception e) {
@@ -90,28 +106,38 @@ public class NetHelper {
 			resp.begin();
 			connection.connect();
 
-			// Get data
-			InputStream in = url.openStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			StringBuilder html = new StringBuilder();
-			String line;
-			while ((line = reader.readLine()) != null)
-				html.append(line);
-
-			in.close();
-			reader.close();
-			
-			resp.setHtml(html.toString());
-
 			// Read response headers
-			resp.setResponsePhrase(connection.getResponseMessage());
-			resp.setResponseCode(connection.getResponseCode());
+			int responseCode = connection.getResponseCode();
+			resp.setResponseCode(responseCode);
+			String responseMessage = connection.getResponseMessage();
+			resp.setResponseMessage(responseMessage);
+
 			if (connection.getHeaderFields().containsKey("WWW-Authenticate"))
 				resp.setAuthenticateHeader(connection.getHeaderField("WWW-Authenticate"));
-			if (connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried
-					&& connection.getHeaderFields().containsKey("WWW-Authenticate")) {
-				master.setAuthString(connection.getHeaderField("WWW-Authenticate"));
-				return NetHelper.grabUrl(master, strUrl, userAgent, true);
+
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+				if (downloadType == DownloadType.HTML) {
+					InputStream in = url.openStream();
+					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+					StringBuilder html = new StringBuilder();
+					String line;
+					while ((line = reader.readLine()) != null)
+						html.append(line);
+
+					in.close();
+					reader.close();
+
+					((HTMLResponse) resp).setHtml(html.toString());
+				} else {
+					Bitmap bitmap = BitmapFactory.decodeStream(connection.getInputStream());
+					((BitmapResponse) resp).setBitmap(bitmap);
+				}
+			} else {
+				if (connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried
+						&& connection.getHeaderFields().containsKey("WWW-Authenticate")) {
+					master.setAuthString(connection.getHeaderField("WWW-Authenticate"));
+					return download(downloadType, master, strUrl, userAgent, true);
+				}
 			}
 
 			resp.end();
@@ -141,126 +167,23 @@ public class NetHelper {
 			}
 
 			if (!retried)
-				return NetHelper.grabUrl(master, strUrl, userAgent, true);
+				return download(downloadType, master, strUrl, userAgent, true);
 		}
 		catch (UnknownHostException e) {
 			e.printStackTrace();
-			resp.setResponseCode(HTTPResponse.UnknownHostExceptionError);
-			resp.setResponsePhrase(e.getMessage());
+			resp.setResponseCode(BaseResponse.UnknownHostExceptionError);
+			resp.setResponseMessage(e.getMessage());
 		}
-		catch (Exception e) { e.printStackTrace(); }
+		catch (OutOfMemoryError | Exception e) {
+			e.printStackTrace();
+			resp.setResponseCode(BaseResponse.UnknownError);
+			resp.setResponseMessage("Unknown error");
+		}
 		finally {
 			if (connection != null)
 				connection.disconnect();
 		}
 		return resp;
-	}
-	
-	public static HTTPResponse_Bitmap grabBitmap(MuninMaster master, String url, String userAgent) {
-		return grabBitmap(master, url, userAgent, false);
-	}
-
-	/**
-	 * Get a bitmap representation of the image targeted by url parameter,
-	 *  using master auth information
-	 * @param master Needed for SSL/Apache basic/digest auth
-	 * @param strUrl URL of the image
-	 * @param retried Retry after getting digest auth information
-	 *                (recursive call)
-	 * @return Bitmap
-	 */
-	private static HTTPResponse_Bitmap grabBitmap(MuninMaster master, String strUrl, String userAgent, boolean retried) {
-		HTTPResponse_Bitmap respObj = new HTTPResponse_Bitmap();
-		respObj.setRequestUrl(strUrl);
-
-		MuninFoo.logV("grabImage:url", strUrl);
-
-		HttpURLConnection connection = null;
-
-		try {
-			URL url = new URL(strUrl);
-
-			if (master.getSSL()) {
-				try {
-					/*KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-					trustStore.load(null, null);*/
-
-					/*CustomSSLFactory sslFactory = new CustomSSLFactory(trustStore, resp);
-					sslFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);*/
-
-					/*SchemeRegistry registry = new SchemeRegistry();
-					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-					registry.register(new Scheme("https", sslFactory, 443));*/
-
-					//ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-
-					SSLContext sslContext = SSLContext.getInstance("SSL");
-
-					sslContext.init(null, new javax.net.ssl.TrustManager[]{new TrustAllTrustManagers()}, new java.security.SecureRandom());
-
-					connection = (HttpsURLConnection) url.openConnection();
-					((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
-				} catch (Exception e) {
-					e.printStackTrace();
-					connection = (HttpURLConnection) url.openConnection();
-					master.setSSL(false);
-				}
-			} else
-				connection = (HttpURLConnection) url.openConnection();
-
-			connection.setConnectTimeout(CONNECTION_TIMEOUT);
-			connection.setReadTimeout(READ_TIMEOUT);
-			connection.setRequestProperty("User-Agent", userAgent);
-
-			// Apache Basic/Digest auth
-			if (master.isAuthNeeded()) {
-				String header = getAuthenticationHeader(master, strUrl);
-				if (header != null)
-					connection.setRequestProperty("Authorization", header);
-			}
-
-			respObj.begin();
-			connection.connect();
-
-			// Read response headers
-			respObj.setResponsePhrase(connection.getResponseMessage());
-			respObj.setResponseCode(connection.getResponseCode());
-			if (respObj.requestSucceeded()) {
-				Bitmap bitmap = BitmapFactory.decodeStream(connection.getInputStream());
-				respObj.setBitmap(bitmap);
-			} else {
-				if (connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried
-						&& connection.getHeaderFields().containsKey("WWW-Authenticate")) {
-					master.setAuthString(connection.getHeaderField("WWW-Authenticate"));
-					return grabBitmap(master, strUrl, userAgent, true);
-				} else
-					respObj.setBitmap(null);
-			}
-
-			respObj.end();
-			MuninFoo.logV("grabImage", "Downloaded bitmap in " + respObj.getExecutionTime() + "ms");
-		}
-		catch (SocketTimeoutException | ConnectException e) {
-			e.printStackTrace();
-			respObj.setResponseCode(HttpURLConnection.HTTP_CLIENT_TIMEOUT);
-			respObj.setResponsePhrase("Timeout");
-		}
-		catch (UnknownHostException e) {
-			e.printStackTrace();
-			respObj.setResponseCode(HTTPResponse.UnknownHostExceptionError);
-			respObj.setResponsePhrase(e.getMessage());
-		}
-		catch (OutOfMemoryError | Exception e) {
-			e.printStackTrace();
-			respObj.setResponseCode(HTTPResponse.UnknownError);
-			respObj.setResponsePhrase("Unknown error");
-		}
-		finally {
-			if (connection != null)
-				connection.disconnect();
-		}
-		
-		return respObj;
 	}
 
 	public static String getAuthenticationHeader(MuninMaster master, String url) {
