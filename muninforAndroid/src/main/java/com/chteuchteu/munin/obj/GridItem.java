@@ -227,7 +227,7 @@ public class GridItem {
 			int[] dim = Util.HDGraphs.getBestImageDimensions(imageView, context);
 			String graphUrl = plugin.getHDImgUrl(period, true, dim[0], dim[1]);
 			bitmap = Util.dropShadow(
-					Util.removeBitmapBorder(plugin.getInstalledOn().getParent().grabBitmap(
+					Util.removeBitmapBorder(plugin.getInstalledOn().getParent().downloadBitmap(
 							graphUrl, MuninFoo.getInstance().getUserAgent()).getBitmap()));
 			
 			return null;

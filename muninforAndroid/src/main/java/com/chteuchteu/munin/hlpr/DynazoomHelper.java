@@ -151,7 +151,7 @@ public final class DynazoomHelper {
 
 			String imgUrl = plugin.getHDImgUrl(pinPoint1, pinPoint2, true, graphsDimensions[0], graphsDimensions[1]);
 
-			bitmap = Util.removeBitmapBorder(node.getParent().grabBitmap(imgUrl, userAgent).getBitmap());
+			bitmap = Util.removeBitmapBorder(node.getParent().downloadBitmap(imgUrl, userAgent).getBitmap());
 			bitmap = Util.dropShadow(bitmap);
 
 			return null;

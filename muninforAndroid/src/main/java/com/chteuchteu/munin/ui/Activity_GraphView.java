@@ -51,7 +51,7 @@ import com.chteuchteu.munin.hlpr.DynazoomHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper.DynazoomFetcher;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
-import com.chteuchteu.munin.obj.HTTPResponse;
+import com.chteuchteu.munin.obj.HTTPResponse.BaseResponse;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -977,7 +977,7 @@ public class Activity_GraphView extends MuninActivity {
 		((TextView) findViewById(R.id.dynazoom_to)).setText(Util.prettyDate(to));
 	}
 
-	public void updateConnectionType(HTTPResponse.ConnectionType connectionType) {
+	public void updateConnectionType(BaseResponse.ConnectionType connectionType) {
 		ic_secure.setVisibility(View.GONE);
 		ic_insecure.setVisibility(View.GONE);
 

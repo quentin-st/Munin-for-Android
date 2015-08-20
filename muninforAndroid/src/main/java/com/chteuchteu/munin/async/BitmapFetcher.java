@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.obj.HTTPResponse_Bitmap;
+import com.chteuchteu.munin.obj.HTTPResponse.BitmapResponse;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -34,7 +34,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 	private MuninPlugin plugin;
 	private MuninNode node;
 
-	private HTTPResponse_Bitmap response;
+	private BitmapResponse response;
 
 	public BitmapFetcher (Activity_GraphView activity, ImageView iv, ProgressBar progressBar, View view, int position, Context context) {
 		this.muninFoo = MuninFoo.getInstance();
@@ -85,7 +85,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 			} else // Standard graph
 				imgUrl = plugin.getImgUrl(activity.load_period);
 
-			this.response = node.getParent().grabBitmap(imgUrl, muninFoo.getUserAgent());
+			this.response = node.getParent().downloadBitmap(imgUrl, muninFoo.getUserAgent());
 
 			if (response.hasSucceeded())
 				activity.addBitmap(Util.removeBitmapBorder(response.getBitmap()), position);
@@ -129,14 +129,14 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 			Util.Fonts.setFont(context, ((TextView) view.findViewById(R.id.error_title)), Util.Fonts.CustomFont.Roboto_Regular);
 
 			if (response.getResponseCode() < 0) { // Not HTTP error
-				if (response.getResponseCode() == HTTPResponse_Bitmap.UnknownHostExceptionError
+				if (response.getResponseCode() == BitmapResponse.UnknownHostExceptionError
 						&& !Util.isOnline(context))
-					errorText.setText(context.getString(R.string.text30) + "\n" + response.getResponsePhrase());
+					errorText.setText(context.getString(R.string.text30) + "\n" + response.getResponseMessage());
 				else
-					errorText.setText(response.getResponsePhrase());
+					errorText.setText(response.getResponseMessage());
 			}
 			else
-				errorText.setText(response.getResponseCode() + " - " + response.getResponsePhrase());
+				errorText.setText(response.getResponseCode() + " - " + response.getResponseMessage());
 
 			// Allow user to disable HD Graphs / rescan HD Graphs URL
 			if (!Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")

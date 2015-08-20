@@ -144,7 +144,7 @@ public class MuninPlugin implements ISearchable {
 	}
 	
 	public Bitmap getGraph(String url, String userAgent) {
-		return this.installedOn.getParent().grabBitmap(url, userAgent).getBitmap();
+		return this.installedOn.getParent().downloadBitmap(url, userAgent).getBitmap();
 	}
 	
 	
@@ -152,7 +152,7 @@ public class MuninPlugin implements ISearchable {
 		if (this.pluginPageUrl.equals(""))
 			return null;
 		
-		String html = this.installedOn.getParent().grabUrl(this.pluginPageUrl, userAgent).html;
+		String html = this.installedOn.getParent().downloadUrl(this.pluginPageUrl, userAgent).getHtml();
 		if (html.equals(""))
 			return null;
 		

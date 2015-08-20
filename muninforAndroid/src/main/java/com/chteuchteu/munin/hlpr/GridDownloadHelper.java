@@ -83,7 +83,7 @@ public class GridDownloadHelper {
 						&& gridItem.getPlugin().getInstalledOn().getParent() != null) {
 					String graphUrl = gridItem.getPlugin().getImgUrl(period);
 
-					Bitmap downloadedBitmap = Util.removeBitmapBorder(gridItem.getPlugin().getInstalledOn().getParent().grabBitmap(graphUrl,
+					Bitmap downloadedBitmap = Util.removeBitmapBorder(gridItem.getPlugin().getInstalledOn().getParent().downloadBitmap(graphUrl,
 							MuninFoo.getInstance().getUserAgent()).getBitmap());
 
 					originalBitmap = Util.dropShadow(downloadedBitmap);

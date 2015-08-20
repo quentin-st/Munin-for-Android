@@ -53,6 +53,7 @@ public abstract class BaseResponse {
     public boolean getTimeout() { return this.timeout; }
     public ConnectionType getConnectionType() { return this.connectionType; }
     public String getLastUrl() { return this.lastUrl; }
+    public String getAuthenticateHeader() { return this.header_wwwauthenticate; }
 
     public boolean hasSucceeded() {
         return !this.timeout && this.responseCode == HttpURLConnection.HTTP_OK;

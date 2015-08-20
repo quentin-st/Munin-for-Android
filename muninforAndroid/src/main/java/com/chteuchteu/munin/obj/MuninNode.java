@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.SpecialBool;
+import com.chteuchteu.munin.obj.HTTPResponse.HTMLResponse;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
 
 import org.jsoup.Jsoup;
@@ -96,7 +97,7 @@ public class MuninNode implements ISearchable {
 	
 	public List<MuninPlugin> getPluginsList(String userAgent) {
 		List<MuninPlugin> plugins = new ArrayList<>();
-		String html = this.master.grabUrl(this.getUrl(), userAgent).html;
+		String html = this.master.downloadUrl(this.getUrl(), userAgent).getHtml();
 		
 		if (html.equals(""))
 			return null;
@@ -184,7 +185,7 @@ public class MuninNode implements ISearchable {
 					// Finally, the only image on this third page is the dynazoom graph.
 					String srcAttr = image.parent().attr("abs:href");
 
-					String secondPageHtml = this.master.grabUrl(srcAttr, userAgent).html;
+					String secondPageHtml = this.master.downloadUrl(srcAttr, userAgent).getHtml();
 					Document secondPage = Jsoup.parse(secondPageHtml, srcAttr);
 
 					Elements images2 = secondPage.select("img[src$=-day.png]");
@@ -195,7 +196,7 @@ public class MuninNode implements ISearchable {
 						Element imageParent = images2.get(0).parent();
 						if (imageParent.tagName().equals("a")) {
 							String srcAttr2 = imageParent.attr("abs:href");
-							String thirdPageHtml = this.master.grabUrl(srcAttr2, userAgent).html;
+							String thirdPageHtml = this.master.downloadUrl(srcAttr2, userAgent).getHtml();
 
 							// If the plugin has one more details level, we have to go to a fourth page!
 							if (!thirdPageHtml.contains("Zooming is")) {
@@ -207,7 +208,7 @@ public class MuninNode implements ISearchable {
 
 								String link2 = images3.get(0).parent().attr("abs:href");
 
-								thirdPageHtml = this.master.grabUrl(link2, userAgent).html;
+								thirdPageHtml = this.master.downloadUrl(link2, userAgent).getHtml();
 								srcAttr2 = link2;
 							}
 
@@ -278,14 +279,14 @@ public class MuninNode implements ISearchable {
 		for (MuninPlugin plugin : this.plugins)
 			plugin.setState(AlertState.UNDEFINED);
 		
-		HTTPResponse response = master.grabUrl(this.getUrl(), userAgent);
+		HTMLResponse response = master.downloadUrl(this.getUrl(), userAgent);
 		
-		if (response.timeout || response.responseCode != 200 || response.html.equals(""))
+		if (response.hasSucceeded())
 			this.reachable = SpecialBool.FALSE;
 		else {
 			this.reachable = SpecialBool.TRUE;
 			
-			Document doc = Jsoup.parse(response.html, this.getUrl());
+			Document doc = Jsoup.parse(response.getHtml(), this.getUrl());
 			Elements images = doc.select("img[src$=-day.png]");
 
 			if (images.size() == 0)

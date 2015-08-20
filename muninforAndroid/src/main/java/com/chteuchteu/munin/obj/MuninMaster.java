@@ -6,6 +6,8 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.NetHelper;
 import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.obj.HTTPResponse.BitmapResponse;
+import com.chteuchteu.munin.obj.HTTPResponse.HTMLResponse;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 
 import org.jsoup.Jsoup;
@@ -143,7 +145,7 @@ public class MuninMaster {
 
 	public boolean isDynazoomAvailable(MuninPlugin plugin, String userAgent) {
 		String hdGraphUrl = plugin.getHDImgUrl(Period.DAY);
-		HTTPResponse_Bitmap res = grabBitmap(hdGraphUrl, userAgent);
+		BitmapResponse res = downloadBitmap(hdGraphUrl, userAgent);
 
 		return res.hasSucceeded();
 	}
@@ -197,12 +199,12 @@ public class MuninMaster {
 		return null;
 	}
 	
-	public HTTPResponse_Bitmap grabBitmap(String url, String userAgent) {
-		return NetHelper.grabBitmap(this, url, userAgent);
+	public BitmapResponse downloadBitmap(String url, String userAgent) {
+		return NetHelper.downloadBitmap(this, url, userAgent);
 	}
 	
-	public HTTPResponse grabUrl(String url, String userAgent) {
-		return NetHelper.grabUrl(this, url, userAgent);
+	public HTMLResponse downloadUrl(String url, String userAgent) {
+		return NetHelper.downloadUrl(this, url, userAgent);
 	}
 	
 	/**
@@ -213,14 +215,14 @@ public class MuninMaster {
 	 * @return String : pageType
 	 */
 	public String detectPageType(String userAgent) {
-		HTTPResponse res = grabUrl(this.url, userAgent);
-		String page = res.html;
-		if (!res.header_wwwauthenticate.equals("")) {
+		HTMLResponse res = downloadUrl(this.url, userAgent);
+		String page = res.getHtml();
+		if (!res.getAuthenticateHeader().equals("")) {
 			// Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-			this.authString = res.header_wwwauthenticate;
-			if (res.header_wwwauthenticate.contains("Digest"))
+			this.authString = res.getAuthenticateHeader();
+			if (res.getAuthenticateHeader().contains("Digest"))
 				this.authType = AuthType.DIGEST;
-			else if (res.header_wwwauthenticate.contains("Basic"))
+			else if (res.getAuthenticateHeader().contains("Basic"))
 				this.authType = AuthType.BASIC;
 		}
 		
@@ -250,12 +252,12 @@ public class MuninMaster {
 				if (muninHosts.size() > 0 || munstrapHosts.size() > 0)
 					return "munin/";
 				else
-					return res.getResponseCode() + " - " + res.getResponsePhrase();
+					return res.getResponseCode() + " - " + res.getResponseMessage();
 			}
 		} else if (res.getTimeout())
 			return "timeout";
 		else
-			return res.getResponseCode() + " - " + res.getResponsePhrase();
+			return res.getResponseCode() + " - " + res.getResponseMessage();
 	}
 	
 	/**
@@ -266,7 +268,7 @@ public class MuninMaster {
 		int nbNodes = 0;
 		
 		// Grab HTML content
-		String html = grabUrl(this.url, userAgent).html;
+		String html = downloadUrl(this.url, userAgent).getHtml();
 		
 		if (!html.equals("")) {
 			Document doc = Jsoup.parse(html, this.url);
@@ -290,7 +292,7 @@ public class MuninMaster {
 				
 				if (!parentUrl.equals(this.url)) {
 					this.url = parentUrl;
-					String htmlBis = grabUrl(parentUrl, userAgent).html;
+					String htmlBis = downloadUrl(parentUrl, userAgent).getHtml();
 					if (!html.equals("")) {
 						html = htmlBis;
 						doc = Jsoup.parse(html, this.url);
@@ -709,8 +711,8 @@ public class MuninMaster {
 
 	/**
 	 * Checks if this master contains a node, based on its URL
-	 * @param nodeUrl
-	 * @return
+	 * @param nodeUrl Node URL
+	 * @return boolean
 	 */
 	public boolean has(String nodeUrl) {
 		for (MuninNode node : this.children) {
