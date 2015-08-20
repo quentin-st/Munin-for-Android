@@ -60,4 +60,5 @@ dependencies {
         transitive = true;
     }
     debugCompile 'im.dino:dbinspector:3.1.0@aar'
+    compile 'net.steamcrafted:materialiconlib:1.0.3'
 }
