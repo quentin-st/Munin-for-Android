@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.obj.HTTPResponse.BaseResponse;
 import com.chteuchteu.munin.obj.HTTPResponse.BitmapResponse;
@@ -19,13 +20,18 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.security.cert.X509Certificate;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class NetHelper {
-	private static final int CONNECTION_TIMEOUT = 6000; // Default = 6000
+	private static final int CONNECTION_TIMEOUT = 8000; // Default = 6000
 	private static final int READ_TIMEOUT = 7000; // Default = 6000
 
 	private enum DownloadType { HTML, BITMAP }
@@ -66,24 +72,29 @@ public class NetHelper {
 
 			if (master.getSSL()) {
 				try {
-					/*KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-					trustStore.load(null, null);*/
+					// Trust all certificates and hosts
+					// Create a trust manager that does not validate certificate chains
+					TrustManager[] trustAllCerts = new TrustManager[] {
+							new X509TrustManager() {
+								public java.security.cert.X509Certificate[] getAcceptedIssuers() { return null; }
+								public void checkClientTrusted(X509Certificate[] certs, String authType) { }
+								public void checkServerTrusted(X509Certificate[] certs, String authType) { }
+							}
+					};
 
-					/*CustomSSLFactory sslFactory = new CustomSSLFactory(trustStore, resp);
-					sslFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);*/
-
-					/*SchemeRegistry registry = new SchemeRegistry();
-					registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-					registry.register(new Scheme("https", sslFactory, 443));*/
-
-					//ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-
+					// Install the all-trusting trust manager
 					SSLContext sslContext = SSLContext.getInstance("SSL");
+					sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
 
-					sslContext.init(null, new javax.net.ssl.TrustManager[] { new TrustAllTrustManagers() }, new java.security.SecureRandom());
+					// Create all-trusting host name verifier
+					HostnameVerifier allHostsValid = new HostnameVerifier() {
+						public boolean verify(String hostname, SSLSession session) { return true; }
+					};
 
 					connection = (HttpsURLConnection) url.openConnection();
+					((HttpsURLConnection) connection).setHostnameVerifier(allHostsValid);
 					((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
+					MuninFoo.log("SSL things all set");
 				} catch (Exception e) {
 					e.printStackTrace();
 					connection = (HttpURLConnection) url.openConnection();
@@ -92,9 +103,11 @@ public class NetHelper {
 			} else
 				connection = (HttpURLConnection) url.openConnection();
 
+			// Set connection timeout & user agent
 			connection.setConnectTimeout(CONNECTION_TIMEOUT);
 			connection.setReadTimeout(READ_TIMEOUT);
 			connection.setRequestProperty("User-Agent", userAgent);
+			connection.setRequestProperty("Accept","*/*");
 
 			// Apache Basic/Digest auth
 			if (master.isAuthNeeded()) {
@@ -108,16 +121,20 @@ public class NetHelper {
 
 			// Read response headers
 			int responseCode = connection.getResponseCode();
-			resp.setResponseCode(responseCode);
 			String responseMessage = connection.getResponseMessage();
+
+			resp.setResponseCode(responseCode);
 			resp.setResponseMessage(responseMessage);
 
 			if (connection.getHeaderFields().containsKey("WWW-Authenticate"))
 				resp.setAuthenticateHeader(connection.getHeaderField("WWW-Authenticate"));
 
-			if (responseCode == HttpURLConnection.HTTP_OK) {
+			if (BuildConfig.DEBUG)
+				MuninFoo.log(responseCode + " - " + responseMessage);
+
+			if (responseCode != HttpURLConnection.HTTP_UNAUTHORIZED) {
 				if (downloadType == DownloadType.HTML) {
-					InputStream in = url.openStream();
+					InputStream in = responseCode == 200 ? connection.getInputStream() : connection.getErrorStream();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 					StringBuilder html = new StringBuilder();
 					String line;
@@ -129,15 +146,21 @@ public class NetHelper {
 
 					((HTMLResponse) resp).setHtml(html.toString());
 				} else {
-					Bitmap bitmap = BitmapFactory.decodeStream(connection.getInputStream());
+					InputStream in = responseCode == 200 ? connection.getInputStream() : connection.getErrorStream();
+
+					Bitmap bitmap = BitmapFactory.decodeStream(in);
 					((BitmapResponse) resp).setBitmap(bitmap);
+
+					in.close();
 				}
 			} else {
-				if (connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED && !retried
-						&& connection.getHeaderFields().containsKey("WWW-Authenticate")) {
+				if (connection.getHeaderFields().containsKey("WWW-Authenticate"))
 					master.setAuthString(connection.getHeaderField("WWW-Authenticate"));
+
+				if (master.isAuthNeeded() && !retried)
 					return download(downloadType, master, strUrl, userAgent, true);
-				}
+				else if (!master.isAuthNeeded()) // Unauthorized & no auth information: abort
+					return resp;
 			}
 
 			resp.end();
@@ -147,8 +170,14 @@ public class NetHelper {
 
 			MuninFoo.logV("grabUrl", "Downloaded " + (connection.getContentLength()/1024) + "kb in " + resp.getExecutionTime() + "ms");
 		}
-		catch (SocketTimeoutException | ConnectException e) { resp.setTimeout(true); }
+		catch (SocketTimeoutException | ConnectException e) {
+			if (BuildConfig.DEBUG)
+				e.printStackTrace();
+			resp.setTimeout(true);
+		}
 		catch (SSLException e) { // SSLPeerUnverifiedException
+			if (BuildConfig.DEBUG)
+				e.printStackTrace();
 			if (!master.getSSL()) {
 				master.setSSL(true);
 				// Update the URL of master / child node if needed
@@ -170,12 +199,14 @@ public class NetHelper {
 				return download(downloadType, master, strUrl, userAgent, true);
 		}
 		catch (UnknownHostException e) {
-			e.printStackTrace();
+			if (BuildConfig.DEBUG)
+				e.printStackTrace();
 			resp.setResponseCode(BaseResponse.UnknownHostExceptionError);
 			resp.setResponseMessage(e.getMessage());
 		}
 		catch (OutOfMemoryError | Exception e) {
-			e.printStackTrace();
+			if (BuildConfig.DEBUG)
+				e.printStackTrace();
 			resp.setResponseCode(BaseResponse.UnknownError);
 			resp.setResponseMessage("Unknown error");
 		}
@@ -183,10 +214,11 @@ public class NetHelper {
 			if (connection != null)
 				connection.disconnect();
 		}
+
 		return resp;
 	}
 
-	public static String getAuthenticationHeader(MuninMaster master, String url) {
+	private static String getAuthenticationHeader(MuninMaster master, String url) {
 		if (!master.isAuthNeeded())
 			return null;
 
