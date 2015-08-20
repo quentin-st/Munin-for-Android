@@ -24,7 +24,7 @@
 		android:configChanges="locale|layoutDirection"
 		android:icon="@drawable/launcher_icon"
 		android:label="@string/app_name"
-		android:theme="@style/MyAppTheme" >
+		android:theme="@style/Theme.Light" >
 
 		<activity android:name="com.chteuchteu.munin.ui.Activity_About" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Alerts"
@@ -38,7 +38,7 @@
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Main"
 				  android:icon="@drawable/launcher_icon"
 				  android:label="@string/app_name"
-				  android:theme="@style/MyAppTheme" >
+				  android:theme="@style/Theme.Light" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
