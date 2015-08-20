@@ -27,6 +27,8 @@ import java.util.List;
 public class MuninFoo {
 	private static MuninFoo instance;
 	public boolean languageLoaded = false;
+
+	private static int themeId = -1;
 	
 	private List<MuninNode> nodes;
 	public List<Label> labels;
@@ -423,4 +425,16 @@ public class MuninFoo {
 		return userAgentPref.equals("") ? generateUserAgent(context) : userAgentPref;
 	}
 	public void setUserAgent(String val) { this.userAgent = val; }
+
+	public static int getThemeId(Context context) {
+		if (themeId == -1) {
+			String theme = Util.getPref(context, Util.PrefKeys.ThemeId, "0");
+			if (theme.equals("0"))
+				themeId = R.style.Theme_Light;
+			else
+				themeId = R.style.Theme_Dark;
+		}
+
+		return themeId;
+	}
 }

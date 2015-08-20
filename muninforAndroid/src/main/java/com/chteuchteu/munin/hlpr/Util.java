@@ -324,6 +324,8 @@ public final class Util {
         ChromecastApplicationId("chromecastAppId"),
         ImportExportServer("importExportServer"),
 
+		ThemeId("themeId"),
+
 		// Old prefs
 		Drawer("drawer"), Splash("splash"), ListViewMode("listViewMode"), Transitions("transitions");
 
