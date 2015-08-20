@@ -427,14 +427,16 @@ public class MuninFoo {
 	public void setUserAgent(String val) { this.userAgent = val; }
 
 	public static int getThemeId(Context context) {
-		if (themeId == -1) {
-			String theme = Util.getPref(context, Util.PrefKeys.ThemeId, "0");
-			if (theme.equals("0"))
-				themeId = R.style.Theme_Light;
-			else
-				themeId = R.style.Theme_Dark;
-		}
+		if (themeId == -1)
+			updateThemeId(context);
 
 		return themeId;
+	}
+	public static void updateThemeId(Context context) {
+		String theme = Util.getPref(context, Util.PrefKeys.ThemeId, "0");
+		if (theme.equals("0"))
+			themeId = R.style.Theme_Light;
+		else
+			themeId = R.style.Theme_Dark;
 	}
 }

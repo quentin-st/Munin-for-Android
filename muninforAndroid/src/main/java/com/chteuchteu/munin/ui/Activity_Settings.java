@@ -374,7 +374,7 @@ public class Activity_Settings extends MuninActivity {
 
 		if (currentTheme != newTheme) {
 			Util.setPref(this, Util.PrefKeys.ThemeId, String.valueOf(newTheme));
-			// TODO ask to restart app
+			MuninFoo.updateThemeId(this);
 		}
 		
 		// Orientation
