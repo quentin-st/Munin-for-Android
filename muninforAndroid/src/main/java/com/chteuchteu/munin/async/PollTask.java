@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.NotificationCompat;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -84,7 +85,6 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected void onPostExecute(Void result) {
         //<string name="text58"> critical / criticals /&amp;amp; / warning / warnings /on / node/ nodes</string>
@@ -153,21 +153,25 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
         if (nbCriticals > 0 || nbWarnings > 0) {
             if (!Util.getPref(context, Util.PrefKeys.Notifs_LastNotificationText).equals(notifText)) {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                Notification notification = new Notification(R.drawable.launcher_icon_mono, context.getString(R.string.app_name), System.currentTimeMillis());
 
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                        new Intent(context, Activity_Alerts.class), 0);
-                notification.setLatestEventInfo(context, notifTitle, notifText, pendingIntent);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+                builder.setSmallIcon(R.drawable.launcher_icon_mono)
+                        .setTicker(context.getString(R.string.app_name))
+                        .setContentTitle(notifTitle)
+                        .setContentText(notifText);
 
-                // Dismiss notification on click
-                notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+                builder.setContentIntent(PendingIntent.getActivity(context, 0,
+                        new Intent(context, Activity_Alerts.class), PendingIntent.FLAG_UPDATE_CURRENT));
+
+                // Dismiss notification on click, set lights
+                builder.setDefaults(Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL);
 
                 Util.setPref(context, Util.PrefKeys.Notifs_LastNotificationText, notifText);
 
                 if (Util.getPref(context, Util.PrefKeys.Notifs_Vibrate).equals("true"))
                     Util.vibrate(context, 500);
 
-                notificationManager.notify(1234, notification);
+                notificationManager.notify(1234, builder.build());
             }
         } else {
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
