@@ -281,7 +281,7 @@ public class MuninNode implements ISearchable {
 		
 		HTMLResponse response = master.downloadUrl(this.getUrl(), userAgent);
 		
-		if (response.hasSucceeded())
+		if (!response.hasSucceeded())
 			this.reachable = SpecialBool.FALSE;
 		else {
 			this.reachable = SpecialBool.TRUE;
