@@ -78,11 +78,13 @@
 					android:id="@+id/drawer_graphs_btn"
 					style="@style/Drawer_Item">
 
-					<ImageView
+					<net.steamcrafted.materialiconlib.MaterialIconView
+						xmlns:app="http://schemas.android.com/apk/res-auto"
 						android:id="@+id/drawer_graphs_icon"
-						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_graphs"
-						android:src="@drawable/dr_graphs" />
+						style="@style/Drawer_Item_Icon"
+						app:materialIcon="pulse"
+						app:materialIconColor="#ffffff" />
 
 					<TextView
 						android:id="@+id/drawer_graphs_txt"
@@ -94,11 +96,13 @@
 					android:id="@+id/drawer_grid_btn"
 					style="@style/Drawer_Item" >
 
-					<ImageView
+					<net.steamcrafted.materialiconlib.MaterialIconView
+						xmlns:app="http://schemas.android.com/apk/res-auto"
 						android:id="@+id/drawer_grids_icon"
-						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_grid"
-						android:src="@drawable/dr_grids" />
+						style="@style/Drawer_Item_Icon"
+						app:materialIcon="grid"
+						app:materialIconColor="#ffffff" />
 
 					<TextView
 						android:id="@+id/drawer_grids_txt"
@@ -110,11 +114,13 @@
 					android:id="@+id/drawer_alerts_btn"
 					style="@style/Drawer_Item" >
 
-					<ImageView
+					<net.steamcrafted.materialiconlib.MaterialIconView
+						xmlns:app="http://schemas.android.com/apk/res-auto"
 						android:id="@+id/drawer_alerts_icon"
-						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_alerts"
-						android:src="@drawable/dr_alerts" />
+						style="@style/Drawer_Item_Icon"
+						app:materialIcon="alert_box"
+						app:materialIconColor="#ffffff" />
 
 					<TextView
 						android:id="@+id/drawer_alerts_txt"
@@ -126,11 +132,13 @@
 					android:id="@+id/drawer_labels_btn"
 					style="@style/Drawer_Item" >
 
-					<ImageView
+					<net.steamcrafted.materialiconlib.MaterialIconView
+						xmlns:app="http://schemas.android.com/apk/res-auto"
 						android:id="@+id/drawer_labels_icon"
-						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_labels"
-						android:src="@drawable/dr_labels" />
+						style="@style/Drawer_Item_Icon"
+						app:materialIcon="label"
+						app:materialIconColor="#ffffff" />
 
 					<TextView
 						android:id="@+id/drawer_labels_txt"
@@ -142,11 +150,13 @@
 					android:id="@+id/drawer_servers_btn"
 					style="@style/Drawer_Item" >
 
-					<ImageView
+					<net.steamcrafted.materialiconlib.MaterialIconView
+						xmlns:app="http://schemas.android.com/apk/res-auto"
 						android:id="@+id/drawer_servers_icon"
-						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_server"
-						android:src="@drawable/dr_servers" />
+						style="@style/Drawer_Item_Icon"
+						app:materialIcon="view_list"
+						app:materialIconColor="#ffffff" />
 
 					<TextView
 						android:id="@+id/drawer_servers_txt"
@@ -158,11 +168,13 @@
 					android:id="@+id/drawer_notifications_btn"
 					style="@style/Drawer_Item" >
 
-					<ImageView
+					<net.steamcrafted.materialiconlib.MaterialIconView
+						xmlns:app="http://schemas.android.com/apk/res-auto"
 						android:id="@+id/drawer_notifications_icon"
-						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_notifications"
-						android:src="@drawable/dr_notifications" />
+						style="@style/Drawer_Item_Icon"
+						app:materialIcon="bell"
+						app:materialIconColor="#ffffff" />
 
 					<TextView
 						android:id="@+id/drawer_notifications_txt"
@@ -175,11 +187,13 @@
 					style="@style/Drawer_Item"
 					android:visibility="gone" >
 
-					<ImageView
+					<net.steamcrafted.materialiconlib.MaterialIconView
+						xmlns:app="http://schemas.android.com/apk/res-auto"
 						android:id="@+id/drawer_premium_icon"
-						style="@style/Drawer_Item_Icon"
 						android:contentDescription="@string/button_premium"
-						android:src="@drawable/dr_premium" />
+						style="@style/Drawer_Item_Icon"
+						app:materialIcon="lock_open"
+						app:materialIconColor="#ffffff" />
 
 					<TextView
 						android:id="@+id/drawer_premium_txt"
@@ -191,10 +205,12 @@
 					android:id="@+id/drawer_support_btn"
 					style="@style/Drawer_SmallItem">
 
-					<ImageView
-						style="@style/Drawer_SmallItem_Icon"
+					<net.steamcrafted.materialiconlib.MaterialIconView
+						xmlns:app="http://schemas.android.com/apk/res-auto"
 						android:contentDescription="@string/support"
-						android:src="@drawable/ic_action_help_trimmed" />
+						style="@style/Drawer_SmallItem_Icon"
+						app:materialIcon="help"
+						app:materialIconColor="#ffffff" />
 
 					<TextView
 						android:id="@+id/drawer_support_txt"
@@ -206,10 +222,12 @@
 					android:id="@+id/drawer_donate_btn"
 					style="@style/Drawer_SmallItem" >
 
-					<ImageView
-						style="@style/Drawer_SmallItem_Icon"
+					<net.steamcrafted.materialiconlib.MaterialIconView
+						xmlns:app="http://schemas.android.com/apk/res-auto"
 						android:contentDescription="@string/donate"
-						android:src="@drawable/ic_action_favorite" />
+						style="@style/Drawer_SmallItem_Icon"
+						app:materialIcon="gift"
+						app:materialIconColor="#ffffff" />
 
 					<TextView
 						android:id="@+id/drawer_donate_txt"
