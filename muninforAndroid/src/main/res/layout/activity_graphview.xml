@@ -103,8 +103,7 @@
 							android:layout_height="wrap_content"
 							android:layout_gravity="top"
 							android:background="?attr/colorPrimary"
-							android:textColor="#fff"
-							android:paddingBottom="5dp" />
+							android:textColor="#fff" />
 					</com.chteuchteu.munin.ui.HackyViewPager>
 				</RelativeLayout>
 			</LinearLayout>

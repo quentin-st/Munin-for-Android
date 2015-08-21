@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -66,7 +65,6 @@ import java.util.List;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-@SuppressLint({ "DefaultLocale", "InflateParams" })
 public class Activity_GraphView extends MuninActivity {
 	private MuninPlugin     currentPlugin;
 	public Period       load_period;
@@ -112,7 +110,6 @@ public class Activity_GraphView extends MuninActivity {
 	private long    dynazoom_from;
 	private long    dynazoom_to;
 
-	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -219,7 +216,8 @@ public class Activity_GraphView extends MuninActivity {
 
 		viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override
-			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
 
 			@Override
 			public void onPageSelected(int pos) {
@@ -234,7 +232,7 @@ public class Activity_GraphView extends MuninActivity {
 					muninFoo.setCurrentNode(currentPlugin.getInstalledOn());
 				}
 
-                toolbarPluginName.setText(currentPlugin.getFancyNameOrDefault());
+				toolbarPluginName.setText(currentPlugin.getFancyNameOrDefault());
 
 				// Documentation
 				if (item_documentation != null) {
@@ -264,7 +262,8 @@ public class Activity_GraphView extends MuninActivity {
 			}
 
 			@Override
-			public void onPageScrollStateChanged(int state) { }
+			public void onPageScrollStateChanged(int state) {
+			}
 		});
 
         // ImageView dimensions
@@ -399,23 +398,23 @@ public class Activity_GraphView extends MuninActivity {
         toolbarPluginName.setText(currentPlugin.getFancyNameOrDefault());
         actionBar.setCustomView(customToolbarView);
         super.setOnDrawerOpen(new Runnable() {
-            @Override
-            public void run() {
-                customToolbarView.setVisibility(View.GONE);
-                actionBar.setDisplayShowCustomEnabled(false);
-                actionBar.setDisplayShowTitleEnabled(true);
-                actionBar.setSubtitle(currentPlugin.getFancyName());
-            }
-        });
+			@Override
+			public void run() {
+				customToolbarView.setVisibility(View.GONE);
+				actionBar.setDisplayShowCustomEnabled(false);
+				actionBar.setDisplayShowTitleEnabled(true);
+				actionBar.setSubtitle(currentPlugin.getFancyName());
+			}
+		});
         super.setOnDrawerClose(new Runnable() {
-            @Override
-            public void run() {
-                customToolbarView.setVisibility(View.VISIBLE);
-                actionBar.setDisplayShowCustomEnabled(true);
-                actionBar.setDisplayShowTitleEnabled(false);
-                actionBar.setSubtitle("");
-            }
-        });
+			@Override
+			public void run() {
+				customToolbarView.setVisibility(View.VISIBLE);
+				actionBar.setDisplayShowCustomEnabled(true);
+				actionBar.setDisplayShowTitleEnabled(false);
+				actionBar.setSubtitle("");
+			}
+		});
 	}
 
 	public void onResume() {
