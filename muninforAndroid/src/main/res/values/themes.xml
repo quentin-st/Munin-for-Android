@@ -12,7 +12,14 @@
 		<item name="colorAccent">@color/actionBarColor</item>
 
 		<!-- Theme-specific attributes -->
-		<item name="grayTextColor">#4E5258</item>
+		<item name="grayTextColor">#000000</item>
+		<item name="grayTextColorOpacity">0.54</item>
+		<item name="cardBackground">@drawable/card</item>
+		<item name="subtitleColor">#1565C0</item>
+		<item name="dividerColor">#DCDCDC</item>
+		<item name="title2TextColor">#000000</item>
+		<item name="title2TextOpacity">0.87</item>
+		<item name="alerts_mastername_text_color">#888888</item>
 	</style>
 
 	<style name="Theme.Dark" parent="ThemeOverlay.AppCompat.Dark">
@@ -26,7 +33,14 @@
 		<item name="colorAccent">@color/actionBarColor</item>
 
 		<!-- Theme-specific attributes -->
-		<item name="grayTextColor">#b5bac1</item>
+		<item name="grayTextColor">#ffffff</item>
+		<item name="grayTextColorOpacity">0.70</item>
+		<item name="cardBackground">@drawable/card_dark</item>
+		<item name="subtitleColor">#1580dc</item>
+		<item name="dividerColor">#757575</item>
+		<item name="title2TextColor">#ffffff</item>
+		<item name="title2TextOpacity">0.70</item>
+		<item name="alerts_mastername_text_color">#c0c0c0</item>
 	</style>
 
 </resources>

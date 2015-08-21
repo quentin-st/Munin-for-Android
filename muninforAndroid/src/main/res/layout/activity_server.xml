@@ -28,14 +28,9 @@
 				<!-- Munin URL -->
 
 				<LinearLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="10dp"
-					android:layout_marginRight="10dp"
-					android:layout_marginTop="15dp"
-					android:background="@drawable/card"
+					style="@style/Card"
 					android:orientation="vertical"
-					android:padding="20dp" >
+					android:padding="20dp">
 
 					<TextView
 						android:id="@+id/muninMasterUrlLabel"

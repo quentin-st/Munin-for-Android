@@ -24,6 +24,6 @@
     <color name="alerts_bg_color_warning">#FFAE5B</color>
     <color name="alerts_bg_color_critical">#FF7B68</color>
     <color name="alerts_servername_text_color">#333333</color>
-    <color name="alerts_mastername_text_color">#888888</color>
+    <color name="alerts_mastername_text_color">?alerts_mastername_text_color</color>
 
 </resources>

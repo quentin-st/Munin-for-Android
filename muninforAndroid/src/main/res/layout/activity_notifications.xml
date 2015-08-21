@@ -22,15 +22,8 @@
 
 			<LinearLayout
 				android:id="@+id/container"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
-				android:layout_marginTop="15dp"
-				android:background="@drawable/card"
-				android:orientation="vertical"
-				android:paddingBottom="20dp"
-				android:paddingTop="20dp" >
+				style="@style/Card"
+				android:orientation="vertical">
 
 				<RelativeLayout
 					style="@style/Settings_Checkbox_Container"

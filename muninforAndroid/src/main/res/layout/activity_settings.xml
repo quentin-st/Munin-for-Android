@@ -27,15 +27,12 @@
 
 				<LinearLayout
 					android:id="@+id/settingsContainer"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="15dp"
-					android:layout_marginLeft="10dp"
-					android:layout_marginRight="10dp"
-					android:layout_marginTop="15dp"
-					android:background="@drawable/card"
+					style="@style/Card"
 					android:orientation="vertical"
-					android:paddingBottom="10dp" >
+					android:paddingTop="0dp"
+					android:paddingLeft="0dp"
+					android:paddingRight="0dp"
+					android:paddingBottom="10dp">
 
 					<!-- APP SETTINGS -->
 

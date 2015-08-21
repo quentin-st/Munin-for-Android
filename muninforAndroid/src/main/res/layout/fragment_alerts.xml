@@ -28,7 +28,7 @@
 			style="@style/BigText"
 			android:layout_centerInParent="true"
 			android:text="@string/alerts_ok"
-			android:textSize="30sp"
+			android:textSize="26sp"
 			android:visibility="gone"/>
 
 		<ScrollView

@@ -47,4 +47,11 @@
     </declare-styleable>
 
     <attr name="grayTextColor" format="reference|color" />
+    <attr name="grayTextColorOpacity" format="float" />
+    <attr name="cardBackground" format="reference" />
+    <attr name="subtitleColor" format="reference|color" />
+    <attr name="dividerColor" format="reference|color" />
+    <attr name="title2TextColor" format="reference|color" />
+    <attr name="title2TextOpacity" format="float" />
+    <attr name="alerts_mastername_text_color" format="reference|color" />
 </resources>

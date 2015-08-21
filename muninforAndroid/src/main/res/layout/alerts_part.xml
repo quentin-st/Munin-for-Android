@@ -6,13 +6,9 @@
 	android:orientation="vertical" >
 
 	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="10dp"
-		android:layout_marginRight="10dp"
+		style="@style/Card"
 		android:layout_marginTop="5dp"
 		android:layout_marginBottom="5dp"
-		android:background="@drawable/card"
 		android:orientation="vertical"
 		android:padding="2dp" >
 
@@ -23,7 +19,7 @@
 			android:orientation="vertical"
 			android:clickable="true"
 			android:focusable="true"
-			android:background="@drawable/alerts_hover"
+			android:drawSelectorOnTop="true"
 			android:paddingTop="3dp"
 			android:paddingLeft="15dp"
 			android:paddingBottom="3dp">
