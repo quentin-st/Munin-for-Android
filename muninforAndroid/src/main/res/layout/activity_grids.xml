@@ -34,16 +34,8 @@
 				android:visibility="gone" >
 
 				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
-					android:gravity="center"
-					android:shadowColor="#ffffff"
-					android:shadowDx="0"
-					android:shadowDy="2"
-					android:shadowRadius="1"
+					style="@style/BigText"
 					android:text="@string/text77"
-					android:textColor="#4E5258"
 					android:textSize="40sp" />
 			</LinearLayout>
 		</RelativeLayout>

@@ -30,7 +30,7 @@
 			<flag name="stroke" value="0" />
 			<flag name="fill" value="1" />
 		</attr>
-    </declare-styleable>    
+    </declare-styleable>
     <declare-styleable name="TitleFlowIndicator">
         <attr name="titlePadding" format="dimension" />
         <!-- Left/right padding of not active view titles. -->
@@ -44,5 +44,7 @@
         <attr name="footerColor" format="color" />
         <attr name="footerTriangleHeight" format="dimension" />
         <attr name="customTypeface" format="string" />
-    </declare-styleable>    
+    </declare-styleable>
+
+    <attr name="grayTextColor" format="reference|color" />
 </resources>

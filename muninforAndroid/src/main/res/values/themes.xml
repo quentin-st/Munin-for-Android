@@ -10,6 +10,9 @@
 		<item name="colorPrimary">@color/actionBarColor</item>
 		<item name="colorPrimaryDark">@color/statusBarColor</item>
 		<item name="colorAccent">@color/actionBarColor</item>
+
+		<!-- Theme-specific attributes -->
+		<item name="grayTextColor">#4E5258</item>
 	</style>
 
 	<style name="Theme.Dark" parent="ThemeOverlay.AppCompat.Dark">
@@ -21,6 +24,9 @@
 		<item name="colorPrimary">@color/actionBarColor</item>
 		<item name="colorPrimaryDark">@color/statusBarColor</item>
 		<item name="colorAccent">@color/actionBarColor</item>
+
+		<!-- Theme-specific attributes -->
+		<item name="grayTextColor">#b5bac1</item>
 	</style>
 
 </resources>
