@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <attr name="textAppearance" format="reference" />
   	<declare-styleable name="TextAppearanceSwitch" >
-      	<attr name="textColor" format="color" /> 
+      	<attr name="textColor" format="color" />
         <attr name="textSize" format="dimension"/>
         <attr name="textStyle" format="reference"/>
         <attr name="typeface" format="reference"/>
@@ -12,37 +13,4 @@
         <attr name="textColorLink" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="ViewFlow">
-        <attr name="sidebuffer" format="integer" />
-    </declare-styleable>
-    <declare-styleable name="CircleFlowIndicator">
-        <attr name="activeColor" format="color" />
-        <attr name="inactiveColor" format="color" />
-        <attr name="radius" format="dimension" />
-        <attr name="spacing" format="dimension" />
-		<attr name="centered" format="boolean" />
-		<attr name="fadeOut" format="integer" />
-		<attr name="inactiveType">
-			<flag name="stroke" value="0" />
-			<flag name="fill" value="1" />
-		</attr>
-		<attr name="activeType">
-			<flag name="stroke" value="0" />
-			<flag name="fill" value="1" />
-		</attr>
-    </declare-styleable>    
-    <declare-styleable name="TitleFlowIndicator">
-        <attr name="titlePadding" format="dimension" />
-        <!-- Left/right padding of not active view titles. -->
-        <attr name="clipPadding" format="dimension" />
-        <attr name="selectedColor" format="color" />
-        <attr name="selectedBold" format="boolean" />
-        <attr name="selectedSize" format="dimension" />
-        <attr name="textColor2" format="color" />
-        <attr name="textSize2" format="dimension" />
-        <attr name="footerLineHeight" format="dimension" />
-        <attr name="footerColor" format="color" />
-        <attr name="footerTriangleHeight" format="dimension" />
-        <attr name="customTypeface" format="string" />
-    </declare-styleable>    
 </resources>
