@@ -54,6 +54,11 @@ public class Adapter_Alerts {
         this.COLOR_BG_OK = context.getResources().getColor(R.color.alerts_bg_color_ok);
         this.COLOR_BG_UNDEFINED = context.getResources().getColor(R.color.alerts_bg_color_undefined);
         this.COLOR_NODENAME_TEXT_COLOR = context.getResources().getColor(R.color.alerts_servername_text_color);
+		/**
+		 * TODO: warning: this triggers RuntimeException (android.content.res.Resources$NotFoundException: Resource ID #... type #0x2 is not valid)
+		 * It seems that the system cannot resolve the color (there is one for Theme.Light and another for Theme.Dark)
+		 * Also, getColor is deprecated...
+		 */
         this.COLOR_MASTERNAME_TEXT_COLOR = context.getResources().getColor(R.color.alerts_mastername_text_color);
 	}
 
