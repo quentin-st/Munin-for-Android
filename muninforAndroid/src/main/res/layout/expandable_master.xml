@@ -23,20 +23,20 @@
 		android:layout_centerVertical="true"
 		android:gravity="center_vertical">
 
-		<ImageButton
+		<net.steamcrafted.materialiconlib.MaterialIconView
+			xmlns:app="http://schemas.android.com/apk/res-auto"
 			android:id="@+id/credentials"
-			android:layout_width="20dp"
-			android:layout_height="20dp"
-			android:layout_marginRight="7dp"
-			android:adjustViewBounds="true"
-			android:background="@drawable/ic_action_accounts"
-			android:visibility="gone"/>
+			style="@style/Icon"
+			app:materialIcon="key_variant"
+			app:materialIconColor="#000000"
+			app:materialIconSize="20dp" />
 
-		<ImageButton
+		<net.steamcrafted.materialiconlib.MaterialIconView
+			xmlns:app="http://schemas.android.com/apk/res-auto"
 			android:id="@+id/edit"
-			android:layout_width="40dp"
-			android:layout_height="40dp"
-			android:src="@drawable/ic_action_overflow"
-			android:background="@null"/>
+			style="@style/Icon"
+			app:materialIcon="dots_vertical"
+			app:materialIconColor="#000000"
+			app:materialIconSize="24dp"/>
 	</LinearLayout>
 </RelativeLayout>

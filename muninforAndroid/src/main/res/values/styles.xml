@@ -266,4 +266,11 @@
 		<item name="android:textSize">32sp</item>
 	</style>
 
+	<style name="Icon">
+		<item name="android:layout_width">40dp</item>
+		<item name="android:layout_height">40dp</item>
+		<item name="android:layout_gravity">center_vertical</item>
+		<item name="android:scaleType">center</item>
+	</style>
+
 </resources>
