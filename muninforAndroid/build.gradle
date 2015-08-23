@@ -23,8 +23,8 @@ android {
         applicationId "com.chteuchteu.munin"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 57
-        versionName "3.6.5-beta1"
+        versionCode 58
+        versionName "3.6.5-beta2"
     }
 
     buildTypes {
@@ -60,4 +60,5 @@ dependencies {
         transitive = true;
     }
     debugCompile 'im.dino:dbinspector:3.1.0@aar'
+    compile 'com.android.support:support-v4:23.0.0'
 }
