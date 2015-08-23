@@ -390,7 +390,8 @@ public final class Util {
 		public static int getPort(String url) {
 			try {
 				URL u = new URL(url);
-				return u.getPort();
+				int port = u.getPort();
+				return port != -1 ? port : 80;
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 				return 80;
