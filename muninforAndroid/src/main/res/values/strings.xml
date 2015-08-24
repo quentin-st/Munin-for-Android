@@ -60,8 +60,6 @@
 	    <p>{firstPhrase}</p> <p>{independantApp}</p> <p></p> <p>{changelog}</p> <p></p> <p>{openSource}</p>
 	    <h2>{specialThanksTitle}</h2>
 	    <ul>{specialThanks}</ul>
-	    <h2>{librariesTitle}</h2>
-	    <ul>{libraries}</ul>
 	    <br />
 	    </body>]]>
 	</string>
@@ -82,16 +80,6 @@
 	    <li>Project contributors on GitHub</li>
 	]]></string>
 	<string name="about_librariesTitle">Libraries</string>
-	<string name="about_libraries" translatable="false"><![CDATA[
-		<li><a href="http://jsoup.org/">jsoup</a></li>
-	    <li><a href="https://crashlytics.com">Crashlytics</a></li>
-	    <li><a href="https://github.com/TimotheeJeannin/AppRate">AppRate</a></li>
-	    <li><a href="https://github.com/jgilfelt/SystemBarTint">SystemBarTint</a></li>
-	    <li><a href="https://github.com/balysv/material-menu">MaterialMenuToolbar</a></li>
-	    <li><a href="https://github.com/makovkastar/FloatingActionButton">Floating Action Button</a></li>
-	    <li><a href="https://github.com/edmodo/range-bar">Range Bar</a></li>
-	    <li><a href="https://github.com/chrisbanes/PhotoView">PhotoView</a></li>
-	]]></string>
 	<string name="goPremiumHTMLStructure" translatable="false">
 		<![CDATA[
 	    <head>

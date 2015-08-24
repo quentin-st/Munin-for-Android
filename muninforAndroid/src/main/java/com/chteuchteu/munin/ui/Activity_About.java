@@ -1,8 +1,12 @@
 package com.chteuchteu.munin.ui;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -14,10 +18,12 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 
+import java.util.HashMap;
+
 
 public class Activity_About extends MuninActivity {
-	
-	@SuppressWarnings("deprecation")
+	private HashMap<String, String> libraries;
+
 	@SuppressLint("DefaultLocale")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,8 +42,6 @@ public class Activity_About extends MuninActivity {
 				.with("openSource", R.string.about_openSource)
 				.with("specialThanksTitle", R.string.about_specialThanksTitle) // Special thanks
 				.with("specialThanks", R.string.about_specialThanks) // Special thanks
-				.with("librariesTitle", R.string.about_librariesTitle) // Libraries
-				.with("libraries", R.string.about_libraries) // Libraries
 				.format();
 
 		WebView wv = (WebView)findViewById(R.id.webView1);
@@ -49,7 +53,7 @@ public class Activity_About extends MuninActivity {
 		wv.loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
 		wv.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 		wv.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-		wv.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+		//wv.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
 		
 		TextView tv1 = (TextView) findViewById(R.id.about_txt1);
 		TextView tv2 = (TextView) findViewById(R.id.about_txt2);
@@ -61,6 +65,61 @@ public class Activity_About extends MuninActivity {
 		Util.Fonts.setFont(this, userAgent_label, CustomFont.Roboto_Medium);
 		tv2.setText(getString(R.string.app_name) + " " + versionName);
 		userAgent.setText(muninFoo.getUserAgent());
+	}
+
+	protected void createOptionsMenu() {
+		super.createOptionsMenu();
+
+		getMenuInflater().inflate(R.menu.about, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+
+		switch (item.getItemId()) {
+			case R.id.menu_libraries:
+				showLibrariesDialog();
+				return true;
+		}
+
+		return true;
+	}
+
+	private void buildLibrariesList() {
+		if (this.libraries != null)
+			return;
+
+		this.libraries = new HashMap<>();
+		this.libraries.put("jsoup", "http://jsoup.org/");
+		this.libraries.put("Crashlytics", "https://crashlytics.com");
+		this.libraries.put("AppRate", "https://github.com/TimotheeJeannin/AppRate");
+		this.libraries.put("SystemBarTint", "https://github.com/jgilfelt/SystemBarTint");
+		this.libraries.put("MaterialMenuToolbar", "https://github.com/balysv/material-menu");
+		this.libraries.put("Floating Action Button", "https://github.com/makovkastar/FloatingActionButton");
+		this.libraries.put("Range Bar", "https://github.com/edmodo/range-bar");
+		this.libraries.put("PhotoView", "https://github.com/chrisbanes/PhotoView");
+	}
+
+	private void showLibrariesDialog() {
+		buildLibrariesList();
+
+		CharSequence[] libs = Util.stringArrayToCharSequenceArray(libraries.keySet().toArray());
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.about_librariesTitle)
+				.setNeutralButton(R.string.close, null)
+				.setItems(libs, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						String libraryName = (String) libraries.keySet().toArray()[i];
+						String target = libraries.get(libraryName);
+
+						Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(target));
+						startActivity(browserIntent);
+					}
+				})
+				.show();
 	}
 	
 	@Override

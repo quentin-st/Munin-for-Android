@@ -904,4 +904,13 @@ public final class Util {
 	public static boolean nullOrEmpty(String str) {
 		return str == null || str.equals("");
 	}
+
+	public static CharSequence[] stringArrayToCharSequenceArray(Object[] stringArray) {
+		CharSequence[] charSequenceArray = new CharSequence[stringArray.length];
+
+		for (int i=0; i<stringArray.length; i++)
+			charSequenceArray[i] = (String) stringArray[i];
+
+		return charSequenceArray;
+	}
 }
