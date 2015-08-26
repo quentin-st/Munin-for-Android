@@ -6,13 +6,11 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -23,21 +21,18 @@ import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.AlertsWidget;
 import com.chteuchteu.munin.obj.MuninNode;
-import com.chteuchteu.munin.obj.SimpleAlertsWidget;
+import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
-import com.chteuchteu.munin.ui.Activity_GraphView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider {
-    private static final String ACTION_UPDATE_GRAPH = "com.chteuchteu.munin.widget.ALERTS_REFRESH";
+    private static final String ACTION_UPDATE = "com.chteuchteu.munin.widget.ALERTS_REFRESH";
     private static final String ACTION_START_ACTIVITY = "com.chteuchteu.munin.widget.START_ACTIVITY";
     private static final String ACTION_START_PREMIUM = "com.chteuchteu.munin.widget.START_PREMIUM";
 
-    private SQLite sqlite;
-    private Context context;
-    private SimpleAlertsWidget widget;
+    private static SQLite sqlite;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -52,7 +47,7 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
             updateAppWidget(context, appWidgetManager, i, false);
     }
 
-    public void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int widgetId, boolean forceUpdate) {
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int widgetId, boolean forceUpdate) {
         boolean premium = MuninFoo.isPremium(context);
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_simplealertswidget_layout);
@@ -63,13 +58,13 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
         } else {
             if (sqlite == null)
                 sqlite = new SQLite(context, MuninFoo.getInstance(context));
-            widget = (SimpleAlertsWidget) sqlite.dbHlpr.getAlertsWidget(widgetId, null);
+            AlertsWidget widget = sqlite.dbHlpr.getAlertsWidget(widgetId, null);
 
             if (widget != null && widget.getNodes().size() > 0) {
                 // Update action
                 Intent intent = new Intent(context, Widget_GraphWidget_WidgetProvider.class);
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-                intent.setAction(ACTION_UPDATE_GRAPH);
+                intent.setAction(ACTION_UPDATE);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 views.setOnClickPendingIntent(R.id.widget_legend, pendingIntent);
 
@@ -82,7 +77,7 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
 
                 if (!widget.isWifiOnly() || forceUpdate) {
                     // Launching Asyntask
-                    PluginsStatesFetcher task = new PluginsStatesFetcher(appWidgetManager, widgetId);
+                    PluginsStatesFetcher task = new PluginsStatesFetcher(appWidgetManager, views, context, widgetId);
                     task.execute();
                 } else {
                     // Automatic update -> let's check if on wifi or data
@@ -105,7 +100,7 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
 
         if (intent.getAction() != null) {
             switch (intent.getAction()) {
-                case ACTION_UPDATE_GRAPH:
+                case ACTION_UPDATE:
                     // Check if connection is available
                     if (Util.isOnline(context)) {
                         Bundle extras = intent.getExtras();
@@ -121,13 +116,8 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
                     Bundle extras = intent.getExtras();
                     if (extras != null) {
                         try {
-                            int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-                            widget = (SimpleAlertsWidget) sqlite.dbHlpr.getAlertsWidget(widgetId, null);
-                            Intent intent2 = new Intent(context, Activity_GraphView.class);
+                            Intent intent2 = new Intent(context, Activity_Alerts.class);
                             intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent2.putExtra("node", graphWidget.getPlugin().getInstalledOn().getUrl());
-                            intent2.putExtra("plugin", graphWidget.getPlugin().getName());
-                            intent2.putExtra("period", graphWidget.getPeriod());
                             context.startActivity(intent2);
                         }
                         catch (NullPointerException ex) {
@@ -135,7 +125,6 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
                         }
                     }
                     break;
-
                 case ACTION_START_PREMIUM:
                     Intent intent2 = new Intent(context, Activity_GoPremium.class);
                     intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -149,12 +138,21 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
             super.onReceive(context, intent);
     }
 
-    private class PluginsStatesFetcher extends AsyncTask<Void, Void, Void> {
-        private AppWidgetManager appWidgetManager;
+    private static class PluginsStatesFetcher extends AsyncTask<Void, Void, Void> {
+        private AppWidgetManager manager;
+        private RemoteViews views;
         private int appWidgetId;
+        private Context context;
 
-        public PluginsStatesFetcher(AppWidgetManager appWidgetManager, int appWidgetId) {
-            this.appWidgetManager = appWidgetManager;
+        private int nodes_ok;
+        private int nodes_total;
+        private int plugins_warning;
+        private int plugins_error;
+
+        public PluginsStatesFetcher(AppWidgetManager manager, RemoteViews views, Context context, int appWidgetId) {
+            this.manager = manager;
+            this.views = views;
+            this.context = context;
             this.appWidgetId = appWidgetId;
         }
 
@@ -170,14 +168,21 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
                     newNodesList.add(node);
             }
 
+            String userAgent = MuninFoo.getUserAgent(context);
+
             for (MuninNode node : newNodesList)
-                node.fetchPluginsStates(MuninFoo.getUserAgent(context));
+                node.fetchPluginsStates(userAgent);
 
             // Update nodes list according to those results
-            nodes.clear();
+            nodes_total = nodes_ok = plugins_error = plugins_warning = 0;
             for (MuninNode node : newNodesList) {
-                if (node.reachable != Util.SpecialBool.TRUE || node.getErroredPlugins().size() > 0 || node.getWarnedPlugins().size() > 0)
-                    nodes.add(node);
+                nodes_total++;
+                if (node.getErroredPlugins().isEmpty() && node.getWarnedPlugins().isEmpty())
+                    nodes_ok++;
+                else {
+                    plugins_error += node.getErroredPlugins().size();
+                    plugins_warning += node.getWarnedPlugins().size();
+                }
             }
 
             return null;
@@ -185,9 +190,14 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
 
         @Override
         protected void onPostExecute(Void result) {
-            pluginsStatesFetched = true;
+            this.views.setTextViewText(R.id.alerts_ok, this.nodes_ok + "/" + this.nodes_total);
+            this.views.setTextViewText(R.id.alerts_ok_label, context.getString(this.nodes_ok == 1 ? R.string.node : R.string.nodes));
+            this.views.setTextViewText(R.id.alerts_warning, String.valueOf(this.plugins_warning));
+            this.views.setTextViewText(R.id.alerts_warning_label, context.getString(this.plugins_warning == 1 ? R.string.plugin : R.string.plugins));
+            this.views.setTextViewText(R.id.alerts_error, String.valueOf(this.plugins_error));
+            this.views.setTextViewText(R.id.alerts_error_label, context.getString(this.plugins_error == 1 ? R.string.plugin : R.string.plugins));
 
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.servers);
+            this.manager.updateAppWidget(new ComponentName(context, Widget_SimpleAlertsWidget_WidgetProvider.class), this.views);
         }
     }
 
