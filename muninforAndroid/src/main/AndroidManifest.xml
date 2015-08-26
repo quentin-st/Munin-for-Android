@@ -98,6 +98,28 @@
 		<service android:name=".wdget.Widget_AlertsWidget_WidgetService"
 				 android:permission="android.permission.BIND_REMOTEVIEWS" />
 
+		<!-- SimpleAlertsWidget -->
+		<receiver android:name=".wdget.Widget_SimpleAlertsWidget_WidgetProvider"
+			android:label="@string/simplealertswidgetname">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+				<action android:name="android.appwidget.action.APPWIDGET_DELETED" />
+				<action android:name="com.chteuchteu.munin.widget.ALERTS_REFRESH" />
+				<action android:name="com.chteuchteu.munin.widget.START_ACTIVITY" />
+				<action android:name="com.chteuchteu.munin.widget.START_PREMIUM" />
+			</intent-filter>
+
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/widget_simplealertswidget_meta" />
+		</receiver>
+		<activity android:name=".wdget.Widget_SimpleAlertsWidget_Configure"
+			android:theme="@android:style/Theme.Dialog" >
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+			</intent-filter>
+		</activity>
+
 		<!-- Notifications -->
 		<receiver android:name=".ntfs.BootReceiver" >
 			<intent-filter>
