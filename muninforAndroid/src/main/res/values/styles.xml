@@ -45,6 +45,14 @@
 		<item name="android:layout_marginBottom">10dp</item>
 	</style>
 
+	<style name="Material_VerticalDivider">
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_width">1dp</item>
+		<item name="android:background">#DCDCDC</item>
+		<item name="android:layout_marginLeft">10dp</item>
+		<item name="android:layout_marginRight">10dp</item>
+	</style>
+
 	<style name="Material_Divider_ListViewItem">
 		<item name="android:layout_height">1dp</item>
 		<item name="android:layout_width">match_parent</item>

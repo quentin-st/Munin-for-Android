@@ -1,44 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:layout_margin="4dp"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
+    android:gravity="center_vertical"
     android:background="@drawable/card">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:src="@drawable/ic_action_alert_ok" />
 
-        <TextView
-            android:id="@+id/alerts_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/alerts_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="13/13"/>
 
-        <TextView
-            android:id="@+id/alerts_warning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="@string/nodes"/>
 
-        <TextView
-            android:id="@+id/alerts_critical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <View style="@style/Material_VerticalDivider" />
 
-    </LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_alert_warning" />
+
+    <TextView
+        android:id="@+id/alerts_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="0"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="@string/plugin"/>
+
+    <View style="@style/Material_VerticalDivider" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_alert_error" />
+
+    <TextView
+        android:id="@+id/alerts_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="0"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="@string/plugin"/>
 
     <ImageView
         android:id="@+id/refresh"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginRight="3dp"
-        android:layout_marginBottom="3dp"
         android:src="@drawable/ic_action_refresh"
-        android:layout_gravity="right|bottom"
         android:background="#55ffffff"
         android:clickable="true"
         android:focusable="true"/>
 
-</FrameLayout>
+</LinearLayout>
