@@ -105,7 +105,7 @@
 	<string name="text43">Por favor aguarde…</string>
 	<string name="text44">Trayendo URL…</string>
 	<string name="text45">Guardando!</string>
-	<string name="text46">"Alcanzando servidor "</string>
+	<string name="text46">"Alcanzando nodo "</string>
 	<string name="text47.1">día</string>
 	<string name="text47.2">semana</string>
 	<string name="text47.3">mes</string>
@@ -113,7 +113,7 @@
 	<string name="text48.1">Forzar horizontal</string>
 	<string name="text48.2">Forzar vertical</string>
 	<string name="text48.3">Auto</string>
-	<string name="text49.1">Ocultar servidores en estado normal</string>
+	<string name="text49.1">Ocultar nodos en estado normal</string>
 	<string name="text50.1">crítico</string>
 	<string name="text50.2">críticos</string>
 	<string name="text51.1">alerta</string>
@@ -170,7 +170,7 @@
 	<string name="not_now">No ahora</string>
 	<string name="export_explanation">Se subirá su configuración para que pueda ser obtenida en su dispositivo secundario. Si incluye contraseñas, éstas serán encriptadas. Al finalizar la exportación, un código generado en forma aleatoria le permitirá descargar la configuración en otro dispositivo. La configuración será eliminada del servidor de Munin para Android inmediatamente luego de que Ud la descargue, o luego de 24hs en caso que no lo haga.</string>
 	<string name="yourerunning">Esta ejecutando</string>
-	<string name="text49.2">Mostrar servidores sin alertas</string>
+	<string name="text49.2">Mostrar nodos sin alertas</string>
 	<string name="export_success_title">Los datos se exportaron correctamente</string>
 	<string name="export_success_txt1">La configuración de los servidores fue enviada correctamente. Por favor utilice el siguiente código en su dispositivo secundario para importarla.</string>
 	<string name="import_success_title">Los datos se importaron correctamente</string>
@@ -223,4 +223,5 @@
 	<string name="lang_dutch">Holandés</string>
 	<string name="lang_hungarian">Húngaro</string>
 	<string name="lang_chinese_taiwan">Chino (Taiwan)</string>
+	<string name="lang_japanese">Japonés</string>
 	</resources>
