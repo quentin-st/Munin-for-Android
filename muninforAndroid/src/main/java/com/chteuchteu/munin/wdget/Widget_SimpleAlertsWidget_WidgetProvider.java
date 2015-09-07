@@ -157,6 +157,21 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            nodes_total = nodes_ok = plugins_error = plugins_warning = 0;
+            this.views.setTextViewText(R.id.alerts_ok, "?/" + this.nodes_total);
+            this.views.setTextViewText(R.id.alerts_ok_label, context.getString(R.string.nodes));
+            this.views.setTextViewText(R.id.alerts_warning, "?");
+            this.views.setTextViewText(R.id.alerts_warning_label, context.getString(R.string.plugins));
+            this.views.setTextViewText(R.id.alerts_error, "?");
+            this.views.setTextViewText(R.id.alerts_error_label, context.getString(R.string.plugins));
+
+            this.manager.updateAppWidget(new ComponentName(context, Widget_SimpleAlertsWidget_WidgetProvider.class), this.views);
+        }
+
+        @Override
         protected Void doInBackground(Void... params) {
             DatabaseHelper dbHelper = new DatabaseHelper(context);
             AlertsWidget alertsWidget = dbHelper.getAlertsWidget(appWidgetId, null);
@@ -174,7 +189,6 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
                 node.fetchPluginsStates(userAgent);
 
             // Update nodes list according to those results
-            nodes_total = nodes_ok = plugins_error = plugins_warning = 0;
             for (MuninNode node : newNodesList) {
                 nodes_total++;
                 if (node.getErroredPlugins().isEmpty() && node.getWarnedPlugins().isEmpty())
@@ -190,6 +204,7 @@ public class Widget_SimpleAlertsWidget_WidgetProvider extends AppWidgetProvider 
 
         @Override
         protected void onPostExecute(Void result) {
+            //this.views.setTextViewText(R.id.textview, "New text");
             this.views.setTextViewText(R.id.alerts_ok, this.nodes_ok + "/" + this.nodes_total);
             this.views.setTextViewText(R.id.alerts_ok_label, context.getString(this.nodes_ok == 1 ? R.string.node : R.string.nodes));
             this.views.setTextViewText(R.id.alerts_warning, String.valueOf(this.plugins_warning));
