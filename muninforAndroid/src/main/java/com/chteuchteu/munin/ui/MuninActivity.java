@@ -73,7 +73,6 @@ public class MuninActivity extends AppCompatActivity {
 				return R.id.toolbar;
 			}
 		};
-		this.materialMenu.setNeverDrawTouch(true);
 	}
 
 	@Override
