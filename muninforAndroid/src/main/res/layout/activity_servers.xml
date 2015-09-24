@@ -2,73 +2,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:fitsSystemWindows="true" >
+	android:orientation="vertical">
 
 	<include layout="@layout/incl_actionbar" />
 
-	<android.support.v4.widget.DrawerLayout
-		android:id="@+id/drawerLayout"
+	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:background="@drawable/bottom_shadow" >
 
-		<RelativeLayout
+		<ExpandableListView
+			android:id="@+id/servers_list"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:orientation="vertical"
-			android:background="@drawable/bottom_shadow" >
-
-			<ExpandableListView
-				android:id="@+id/servers_list"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:paddingLeft="@dimen/listview_horizontal_margin"
-				android:paddingRight="@dimen/listview_horizontal_margin"/>
-
-			<LinearLayout
-				android:id="@+id/servers_noserver"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:gravity="center_vertical"
-				android:orientation="vertical"
-				android:visibility="gone" >
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
-					android:gravity="center"
-					android:shadowColor="#ffffff"
-					android:shadowDx="0"
-					android:shadowDy="2"
-					android:shadowRadius="1"
-					android:text="@string/servers_noservers_1"
-					android:textColor="#4E5258"
-					android:textSize="40sp" />
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
-					android:layout_marginTop="20dp"
-					android:gravity="center"
-					android:shadowColor="#ffffff"
-					android:shadowDx="0"
-					android:shadowDy="2"
-					android:shadowRadius="1"
-					android:text="@string/servers_noservers_2"
-					android:textColor="#7C828C"
-					android:textSize="25sp" />
-			</LinearLayout>
-		</RelativeLayout>
+			android:paddingLeft="@dimen/listview_horizontal_margin"
+			android:paddingRight="@dimen/listview_horizontal_margin"/>
 
 		<LinearLayout
-			android:layout_width="@dimen/drawer_width"
+			android:id="@+id/servers_noserver"
+			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_gravity="start">
-			<include layout="@layout/incl_drawer" />
+			android:gravity="center_vertical"
+			android:orientation="vertical"
+			android:visibility="gone" >
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:gravity="center"
+				android:shadowColor="#ffffff"
+				android:shadowDx="0"
+				android:shadowDy="2"
+				android:shadowRadius="1"
+				android:text="@string/servers_noservers_1"
+				android:textColor="#4E5258"
+				android:textSize="40sp" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginTop="20dp"
+				android:gravity="center"
+				android:shadowColor="#ffffff"
+				android:shadowDx="0"
+				android:shadowDy="2"
+				android:shadowRadius="1"
+				android:text="@string/servers_noservers_2"
+				android:textColor="#7C828C"
+				android:textSize="25sp" />
 		</LinearLayout>
-
-	</android.support.v4.widget.DrawerLayout>
-
+	</RelativeLayout>
 </LinearLayout>

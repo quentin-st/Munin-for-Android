@@ -2,32 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:fitsSystemWindows="true" >
+	android:orientation="vertical">
 
 	<include layout="@layout/incl_actionbar" />
 
-	<android.support.v4.widget.DrawerLayout
-		android:id="@+id/drawerLayout"
+	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:background="@drawable/bottom_shadow">
 
-		<RelativeLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="@drawable/bottom_shadow">
+		<include layout="@layout/incl_labels_layout" />
 
-			<include layout="@layout/incl_labels_layout" />
-
-		</RelativeLayout>
-
-		<LinearLayout
-			android:layout_width="@dimen/drawer_width"
-			android:layout_height="match_parent"
-			android:layout_gravity="start">
-			<include layout="@layout/incl_drawer" />
-		</LinearLayout>
-
-	</android.support.v4.widget.DrawerLayout>
-
+	</RelativeLayout>
 </LinearLayout>

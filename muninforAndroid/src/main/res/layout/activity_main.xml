@@ -2,70 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:fitsSystemWindows="true" >
+	android:orientation="vertical">
 
 	<include layout="@layout/incl_actionbar" />
 
-	<android.support.v4.widget.DrawerLayout
-		android:id="@+id/drawerLayout"
+	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:background="@drawable/bottom_shadow">
 
 		<LinearLayout
+			android:id="@+id/empty_layout"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:orientation="vertical"
-			android:background="@drawable/bottom_shadow">
+			android:gravity="center_vertical">
 
-			<LinearLayout
-				android:id="@+id/empty_layout"
+			<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginBottom="30dp"
+				android:src="@drawable/splash_overlay_logo" />
+
+			<TextView
+				android:id="@+id/main_clear_appname"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:orientation="vertical"
-				android:gravity="center_vertical">
+				android:layout_height="wrap_content"
+				android:gravity="center_horizontal"
+				android:layout_marginBottom="15dp"
+				android:text="@string/app_name"
+				android:textColor="#87000000"
+				android:textSize="38sp"
+				android:shadowColor="#ffffff" />
 
-				<ImageView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
-					android:layout_marginBottom="30dp"
-					android:src="@drawable/splash_overlay_logo" />
-
-				<TextView
-					android:id="@+id/main_clear_appname"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:gravity="center_horizontal"
-					android:layout_marginBottom="15dp"
-					android:text="@string/app_name"
-					android:textColor="#87000000"
-					android:textSize="38sp"
-                    android:shadowColor="#ffffff" />
-
-				<Button
-					android:id="@+id/setDefaultActivity"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center_horizontal"
-					android:layout_marginTop="15dp"
-					android:text="@string/setDefaultActivity"
-					style="@style/Material_ButtonText"/>
-			</LinearLayout>
-
-			<FrameLayout
-				android:id="@+id/fragment_container"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:visibility="gone"/>
+			<Button
+				android:id="@+id/setDefaultActivity"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginTop="15dp"
+				android:text="@string/setDefaultActivity"
+				style="@style/Material_ButtonText"/>
 		</LinearLayout>
-		<LinearLayout
-			android:layout_width="@dimen/drawer_width"
+
+		<FrameLayout
+			android:id="@+id/fragment_container"
+			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_gravity="start">
-			<include layout="@layout/incl_drawer" />
-		</LinearLayout>
-
-	</android.support.v4.widget.DrawerLayout>
-	
+			android:visibility="gone"/>
+	</LinearLayout>
 </LinearLayout>

@@ -2,356 +2,340 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:fitsSystemWindows="true" >
+	android:orientation="vertical">
 
 	<include layout="@layout/incl_actionbar" />
 
-	<com.chteuchteu.munin.ui.HackyDrawerLayout
-		android:id="@+id/drawerLayout"
+	<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:fab="http://schemas.android.com/apk/res-auto"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-
-		<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			xmlns:fab="http://schemas.android.com/apk/res-auto"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="vertical" >
-
-			<LinearLayout
-				android:id="@+id/mainContainer"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:orientation="vertical"
-				android:background="@drawable/bottom_shadow">
-
-				<RelativeLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@color/actionBarColor">
-
-					<ImageView
-						android:id="@+id/connection_secure"
-						android:layout_width="24dp"
-						android:layout_height="24dp"
-						android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-						android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-						android:layout_centerVertical="true"
-						android:src="@drawable/ic_secure"
-						android:visibility="gone"/>
-
-					<ImageView
-						android:id="@+id/connection_insecure"
-						android:layout_width="24dp"
-						android:layout_height="24dp"
-						android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-						android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-						android:layout_centerVertical="true"
-						android:src="@drawable/ic_insecure"
-						android:contentDescription="@string/certificate_error"
-						android:visibility="gone"/>
-
-                    <LinearLayout
-                        android:id="@+id/serverSwitcher"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/actionbar_customview"
-                        android:clickable="true"
-                        android:orientation="horizontal"
-                        android:layout_centerHorizontal="true"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp">
-
-                        <TextView
-                            android:id="@+id/serverName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:textSize="16sp"
-                            android:textColor="#ffffff"
-                            android:maxLines="1" />
-
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_action_navigation_arrow_drop_down" />
-                    </LinearLayout>
-				</RelativeLayout>
-
-				<RelativeLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:orientation="vertical" >
-
-					<com.chteuchteu.munin.ui.HackyViewPager
-						android:id="@+id/viewPager"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent">
-
-						<android.support.v4.view.PagerTabStrip
-							android:id="@+id/pagerTabStrip"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:layout_gravity="top"
-							android:background="?attr/colorPrimary"
-							android:textColor="#fff" />
-					</com.chteuchteu.munin.ui.HackyViewPager>
-				</RelativeLayout>
-			</LinearLayout>
-
-			<com.melnykov.fab.FloatingActionButton
-				android:id="@+id/fab"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="bottom|right"
-				android:layout_margin="16dp"
-				android:src="@drawable/ic_action_dynazoom"
-				fab:fab_type="mini"
-				fab:fab_colorNormal="@color/primary"
-				fab:fab_colorPressed="@color/primary_pressed"
-				fab:fab_colorRipple="@color/ripple"
-				android:visibility="gone"/>
-
-			<LinearLayout
-				android:id="@+id/documentation"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:visibility="gone"
-				android:orientation="vertical">
-
-				<FrameLayout
-					android:id="@+id/imageAndText"
-					android:layout_width="match_parent"
-					android:layout_height="0dp"
-					android:layout_weight="3"
-					android:background="#000000"><!-- Background is set to darken the ImageView -->
-
-					<ImageView
-						android:id="@+id/doc_imageview"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:layout_gravity="center"
-						android:contentDescription="@string/graphView_ImageViewDescription"
-						android:scaleType="centerCrop"
-						android:alpha="0.9"/>
-
-					<LinearLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:background="@drawable/material_blackgradient"
-						android:layout_gravity="bottom"
-						android:orientation="vertical"
-						android:paddingLeft="30dp"
-						android:paddingRight="30dp"
-						android:paddingTop="20dp"
-						android:paddingBottom="5dp">
-
-						<TextView
-							android:id="@+id/doc_line1"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							style="@style/Material_Title1_Light"/>
-
-						<TextView
-							android:id="@+id/doc_line2"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							style="@style/Material_Title2_Light"/>
-
-					</LinearLayout>
-				</FrameLayout>
-				<LinearLayout
-					android:layout_width="match_parent"
-					android:layout_height="0dp"
-					android:layout_weight="7"
-					android:orientation="vertical"
-					android:background="#ffffff">
-
-					<Spinner
-						android:id="@+id/doc_spinner"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:layout_marginLeft="10dp"
-						android:layout_marginRight="10dp"
-						android:layout_marginTop="5dp"
-						android:visibility="gone"/>
-
-					<View
-						android:id="@+id/doc_divider"
-						style="@style/Material_Divider"
-						android:visibility="gone"
-						android:layout_marginBottom="0dp"/>
-
-					<ScrollView
-						android:id="@+id/doc_scrollview"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent">
-
-						<TextView
-							android:id="@+id/doc"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:paddingLeft="30dp"
-							android:paddingRight="30dp"
-							android:paddingTop="15dp"
-							android:paddingBottom="10dp"/>
-
-					</ScrollView>
-				</LinearLayout>
-			</LinearLayout>
-
-			<LinearLayout
-				android:id="@+id/dynazoom"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:orientation="vertical"
-				android:visibility="gone">
-
-				<LinearLayout
-					android:id="@+id/dynazoom_params"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:orientation="vertical"
-					android:paddingLeft="30dp"
-                    android:paddingStart="30dp"
-					android:paddingTop="10dp"
-					android:background="#ffffff">
-
-					<TextView
-						android:id="@+id/dynazoom_pluginName"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:layout_marginRight="10dp"
-						android:layout_marginEnd="10dp"
-						android:layout_marginBottom="4dp"
-						android:maxLines="2"
-						android:textSize="19sp"
-						android:textColor="#bb000000" />
-
-					<LinearLayout
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:orientation="horizontal">
-
-						<TextView
-							android:text="@string/from"
-							style="@style/Material_FieldHint" />
-						<TextView
-							android:id="@+id/dynazoom_from"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:layout_marginLeft="10dp"
-							android:layout_marginStart="10dp"
-							android:layout_marginRight="10dp"
-							android:layout_marginEnd="10dp"
-							android:layout_marginTop="4dp"
-							android:layout_marginBottom="2dp"
-							android:maxLines="2"
-							android:textSize="16sp"
-							android:textColor="#bb000000" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-						<TextView
-							android:text="@string/to"
-							style="@style/Material_FieldHint" />
-						<TextView
-							android:id="@+id/dynazoom_to"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:layout_marginLeft="10dp"
-							android:layout_marginStart="10dp"
-							android:layout_marginRight="10dp"
-							android:layout_marginEnd="10dp"
-							android:layout_marginTop="4dp"
-							android:layout_marginBottom="2dp"
-							android:maxLines="2"
-							android:textSize="16sp"
-							android:textColor="#bb000000" />
-					</LinearLayout>
-					
-					<com.edmodo.rangebar.RangeBar
-						xmlns:rangebar="http://schemas.android.com/apk/res-auto"
-						android:id="@+id/dynazoom_rangebar"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:layout_marginLeft="60px"
-                        android:layout_marginStart="60px"
-						android:layout_marginRight="60px"
-                        android:layout_marginEnd="60px"
-						android:layout_marginTop="10dp"
-						android:layout_marginBottom="5dp"
-						rangebar:barWeight="1dp"
-						rangebar:connectingLineWeight="1dp"
-						rangebar:connectingLineColor="#3F51B5"
-						rangebar:thumbRadius="3dp"
-						rangebar:barColor="#d3d3d3"
-						rangebar:thumbColorNormal="#3F51B5"
-						rangebar:thumbColorPressed="#4c5eff"
-						rangebar:tickHeight="3dp"
-						android:layout_gravity="bottom" />
-				</LinearLayout>
-
-				<View
-					android:layout_width="match_parent"
-					android:layout_height="3dp"
-					android:background="@drawable/shadow_gradient"/>
-
-				<FrameLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:background="@drawable/gray_gradient"
-					android:padding="10dp">
-					<ImageView
-						android:id="@+id/dynazoom_imageview"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:adjustViewBounds="true"
-						android:contentDescription="@string/graphView_ImageViewDescription"
-						android:gravity="center"
-						android:scaleType="fitCenter"/>
-					<ProgressBar
-						android:id="@+id/dynazoom_progressbar"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_gravity="center_horizontal|center_vertical"/>
-					<View
-						android:id="@+id/dynazoom_highlight1"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:background="#55000000"
-						android:gravity="center_vertical"
-						android:layout_gravity="top|start"/>
-					<View
-						android:id="@+id/dynazoom_highlight2"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:background="#55000000"
-						android:gravity="center_vertical"
-						android:layout_gravity="top|start"/>
-				</FrameLayout>
-			</LinearLayout>
-		</FrameLayout>
+		android:layout_height="match_parent"
+		android:orientation="vertical" >
 
 		<LinearLayout
-			android:layout_width="@dimen/drawer_width"
+			android:id="@+id/mainContainer"
+			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_gravity="start">
-			<include layout="@layout/incl_drawer" />
+			android:orientation="vertical"
+			android:background="@drawable/bottom_shadow">
+
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@color/actionBarColor">
+
+				<ImageView
+					android:id="@+id/connection_secure"
+					android:layout_width="24dp"
+					android:layout_height="24dp"
+					android:layout_marginLeft="10dp"
+					android:layout_marginStart="10dp"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentStart="true"
+					android:layout_centerVertical="true"
+					android:src="@drawable/ic_secure"
+					android:visibility="gone"/>
+
+				<ImageView
+					android:id="@+id/connection_insecure"
+					android:layout_width="24dp"
+					android:layout_height="24dp"
+					android:layout_marginLeft="10dp"
+					android:layout_marginStart="10dp"
+					android:layout_alignParentLeft="true"
+					android:layout_alignParentStart="true"
+					android:layout_centerVertical="true"
+					android:src="@drawable/ic_insecure"
+					android:contentDescription="@string/certificate_error"
+					android:visibility="gone"/>
+
+				<LinearLayout
+					android:id="@+id/serverSwitcher"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@drawable/actionbar_customview"
+					android:clickable="true"
+					android:orientation="horizontal"
+					android:layout_centerHorizontal="true"
+					android:paddingLeft="10dp"
+					android:paddingRight="10dp"
+					android:paddingTop="4dp"
+					android:paddingBottom="4dp">
+
+					<TextView
+						android:id="@+id/serverName"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center_vertical"
+						android:textSize="16sp"
+						android:textColor="#ffffff"
+						android:maxLines="1" />
+
+					<ImageView
+						android:layout_width="14dp"
+						android:layout_height="14dp"
+						android:layout_marginLeft="10dp"
+						android:layout_marginStart="10dp"
+						android:layout_gravity="center_vertical"
+						android:src="@drawable/ic_action_navigation_arrow_drop_down" />
+				</LinearLayout>
+			</RelativeLayout>
+
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical" >
+
+				<com.chteuchteu.munin.ui.HackyViewPager
+					android:id="@+id/viewPager"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent">
+
+					<android.support.v4.view.PagerTabStrip
+						android:id="@+id/pagerTabStrip"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_gravity="top"
+						android:background="?attr/colorPrimary"
+						android:textColor="#fff" />
+				</com.chteuchteu.munin.ui.HackyViewPager>
+			</RelativeLayout>
 		</LinearLayout>
 
-	</com.chteuchteu.munin.ui.HackyDrawerLayout>
+		<com.melnykov.fab.FloatingActionButton
+			android:id="@+id/fab"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|right"
+			android:layout_margin="16dp"
+			android:src="@drawable/ic_action_dynazoom"
+			fab:fab_type="mini"
+			fab:fab_colorNormal="@color/primary"
+			fab:fab_colorPressed="@color/primary_pressed"
+			fab:fab_colorRipple="@color/ripple"
+			android:visibility="gone"/>
 
+		<LinearLayout
+			android:id="@+id/documentation"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:visibility="gone"
+			android:orientation="vertical">
+
+			<FrameLayout
+				android:id="@+id/imageAndText"
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:layout_weight="3"
+				android:background="#000000"><!-- Background is set to darken the ImageView -->
+
+				<ImageView
+					android:id="@+id/doc_imageview"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:contentDescription="@string/graphView_ImageViewDescription"
+					android:scaleType="centerCrop"
+					android:alpha="0.9"/>
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="@drawable/material_blackgradient"
+					android:layout_gravity="bottom"
+					android:orientation="vertical"
+					android:paddingLeft="30dp"
+					android:paddingRight="30dp"
+					android:paddingTop="20dp"
+					android:paddingBottom="5dp">
+
+					<TextView
+						android:id="@+id/doc_line1"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						style="@style/Material_Title1_Light"/>
+
+					<TextView
+						android:id="@+id/doc_line2"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						style="@style/Material_Title2_Light"/>
+
+				</LinearLayout>
+			</FrameLayout>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:layout_weight="7"
+				android:orientation="vertical"
+				android:background="#ffffff">
+
+				<Spinner
+					android:id="@+id/doc_spinner"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="10dp"
+					android:layout_marginRight="10dp"
+					android:layout_marginTop="5dp"
+					android:visibility="gone"/>
+
+				<View
+					android:id="@+id/doc_divider"
+					style="@style/Material_Divider"
+					android:visibility="gone"
+					android:layout_marginBottom="0dp"/>
+
+				<ScrollView
+					android:id="@+id/doc_scrollview"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent">
+
+					<TextView
+						android:id="@+id/doc"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:paddingLeft="30dp"
+						android:paddingRight="30dp"
+						android:paddingTop="15dp"
+						android:paddingBottom="10dp"/>
+
+				</ScrollView>
+			</LinearLayout>
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/dynazoom"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			android:visibility="gone">
+
+			<LinearLayout
+				android:id="@+id/dynazoom_params"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:paddingLeft="30dp"
+				android:paddingStart="30dp"
+				android:paddingTop="10dp"
+				android:background="#ffffff">
+
+				<TextView
+					android:id="@+id/dynazoom_pluginName"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="10dp"
+					android:layout_marginEnd="10dp"
+					android:layout_marginBottom="4dp"
+					android:maxLines="2"
+					android:textSize="19sp"
+					android:textColor="#bb000000" />
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+
+					<TextView
+						android:text="@string/from"
+						style="@style/Material_FieldHint" />
+					<TextView
+						android:id="@+id/dynazoom_from"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="10dp"
+						android:layout_marginStart="10dp"
+						android:layout_marginRight="10dp"
+						android:layout_marginEnd="10dp"
+						android:layout_marginTop="4dp"
+						android:layout_marginBottom="2dp"
+						android:maxLines="2"
+						android:textSize="16sp"
+						android:textColor="#bb000000" />
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+
+					<TextView
+						android:text="@string/to"
+						style="@style/Material_FieldHint" />
+					<TextView
+						android:id="@+id/dynazoom_to"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="10dp"
+						android:layout_marginStart="10dp"
+						android:layout_marginRight="10dp"
+						android:layout_marginEnd="10dp"
+						android:layout_marginTop="4dp"
+						android:layout_marginBottom="2dp"
+						android:maxLines="2"
+						android:textSize="16sp"
+						android:textColor="#bb000000" />
+				</LinearLayout>
+
+				<com.edmodo.rangebar.RangeBar
+					xmlns:rangebar="http://schemas.android.com/apk/res-auto"
+					android:id="@+id/dynazoom_rangebar"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="60px"
+					android:layout_marginStart="60px"
+					android:layout_marginRight="60px"
+					android:layout_marginEnd="60px"
+					android:layout_marginTop="10dp"
+					android:layout_marginBottom="5dp"
+					rangebar:barWeight="1dp"
+					rangebar:connectingLineWeight="1dp"
+					rangebar:connectingLineColor="#3F51B5"
+					rangebar:thumbRadius="3dp"
+					rangebar:barColor="#d3d3d3"
+					rangebar:thumbColorNormal="#3F51B5"
+					rangebar:thumbColorPressed="#4c5eff"
+					rangebar:tickHeight="3dp"
+					android:layout_gravity="bottom" />
+			</LinearLayout>
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="3dp"
+				android:background="@drawable/shadow_gradient"/>
+
+			<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@drawable/gray_gradient"
+				android:padding="10dp">
+				<ImageView
+					android:id="@+id/dynazoom_imageview"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:adjustViewBounds="true"
+					android:contentDescription="@string/graphView_ImageViewDescription"
+					android:gravity="center"
+					android:scaleType="fitCenter"/>
+				<ProgressBar
+					android:id="@+id/dynazoom_progressbar"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center_horizontal|center_vertical"/>
+				<View
+					android:id="@+id/dynazoom_highlight1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="#55000000"
+					android:gravity="center_vertical"
+					android:layout_gravity="top|start"/>
+				<View
+					android:id="@+id/dynazoom_highlight2"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="#55000000"
+					android:gravity="center_vertical"
+					android:layout_gravity="top|start"/>
+			</FrameLayout>
+		</LinearLayout>
+	</FrameLayout>
 </LinearLayout>

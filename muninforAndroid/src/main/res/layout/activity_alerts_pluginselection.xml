@@ -2,44 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:fitsSystemWindows="true">
+	android:orientation="vertical">
 
 	<include layout="@layout/incl_actionbar" />
 
-	<android.support.v4.widget.DrawerLayout
-		android:id="@+id/drawerLayout"
+	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:background="@drawable/bottom_shadow">
 
-		<LinearLayout
+		<ScrollView
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="vertical"
-			android:background="@drawable/bottom_shadow">
+			android:layout_height="match_parent" >
 
-			<ScrollView
+			<LinearLayout
+				android:id="@+id/alerts_pluginselection_inserthere"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent" >
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:paddingLeft="@dimen/listview_horizontal_margin"
+				android:paddingRight="@dimen/listview_horizontal_margin" />
+		</ScrollView>
 
-				<LinearLayout
-					android:id="@+id/alerts_pluginselection_inserthere"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:orientation="vertical"
-					android:paddingLeft="@dimen/listview_horizontal_margin"
-					android:paddingRight="@dimen/listview_horizontal_margin" />
-			</ScrollView>
-
-		</LinearLayout>
-
-		<LinearLayout
-			android:layout_width="@dimen/drawer_width"
-			android:layout_height="match_parent"
-			android:layout_gravity="start">
-			<include layout="@layout/incl_drawer" />
-		</LinearLayout>
-
-	</android.support.v4.widget.DrawerLayout>
-
+	</LinearLayout>
 </LinearLayout>

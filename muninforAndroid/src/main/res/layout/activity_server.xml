@@ -2,94 +2,78 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:fitsSystemWindows="true" >
+	android:orientation="vertical">
 
 	<include layout="@layout/incl_actionbar" />
 
-	<android.support.v4.widget.DrawerLayout
-		android:id="@+id/drawerLayout"
+	<ScrollView
+		android:id="@+id/scrollView1"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:background="@drawable/bottom_shadow" >
 
-		<ScrollView
-			android:id="@+id/scrollView1"
+		<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="@drawable/bottom_shadow" >
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:paddingLeft="@dimen/listview_horizontal_margin"
+			android:paddingRight="@dimen/listview_horizontal_margin" >
+
+			<!-- Munin URL -->
 
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginTop="15dp"
+				android:background="@drawable/card"
 				android:orientation="vertical"
-				android:paddingLeft="@dimen/listview_horizontal_margin"
-				android:paddingRight="@dimen/listview_horizontal_margin" >
+				android:padding="20dp" >
 
-				<!-- Munin URL -->
-
-				<LinearLayout
+				<TextView
+					android:id="@+id/muninMasterUrlLabel"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="10dp"
-					android:layout_marginRight="10dp"
-					android:layout_marginTop="15dp"
-					android:background="@drawable/card"
-					android:orientation="vertical"
-					android:padding="20dp" >
+					android:text="@string/settings_URL_label"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:textSize="24sp" />
+
+				<AutoCompleteTextView
+					android:id="@+id/textbox_serverUrl"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:ems="10"
+					android:hint="@string/settings_URL_label2"
+					android:inputType="textUri"
+					android:nextFocusLeft="@id/textbox_serverUrl"
+					android:nextFocusUp="@id/textbox_serverUrl" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- ... or select a sample server -->
+
+				<LinearLayout
+					android:id="@+id/ll_sampleServer"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical" >
 
 					<TextView
-						android:id="@+id/muninMasterUrlLabel"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:text="@string/settings_URL_label"
-						android:textAppearance="?android:attr/textAppearanceMedium"
-						android:textSize="24sp" />
+						android:text="@string/settings_text"
+						android:textAppearance="?android:attr/textAppearanceMedium" />
 
-					<AutoCompleteTextView
-						android:id="@+id/textbox_serverUrl"
-						android:layout_width="match_parent"
+					<Spinner
+						android:id="@+id/spinner"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginTop="8dp"
-						android:ems="10"
-						android:hint="@string/settings_URL_label2"
-						android:inputType="textUri"
-						android:nextFocusLeft="@id/textbox_serverUrl"
-						android:nextFocusUp="@id/textbox_serverUrl" />
-
-					<View style="@style/Material_Divider" />
-
-					<!-- ... or select a sample server -->
-
-					<LinearLayout
-						android:id="@+id/ll_sampleServer"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical" >
-
-						<TextView
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/settings_text"
-							android:textAppearance="?android:attr/textAppearanceMedium" />
-
-						<Spinner
-							android:id="@+id/spinner"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_marginLeft="13dp"
-							android:layout_marginTop="8dp" />
-					</LinearLayout>
+						android:layout_marginLeft="13dp"
+						android:layout_marginTop="8dp" />
 				</LinearLayout>
 			</LinearLayout>
-		</ScrollView>
-
-		<LinearLayout
-			android:layout_width="@dimen/drawer_width"
-			android:layout_height="match_parent"
-			android:layout_gravity="start">
-			<include layout="@layout/incl_drawer" />
 		</LinearLayout>
-
-	</android.support.v4.widget.DrawerLayout>
-
+	</ScrollView>
 </LinearLayout>

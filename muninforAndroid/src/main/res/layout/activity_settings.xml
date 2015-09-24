@@ -2,417 +2,401 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:fitsSystemWindows="true" >
+	android:orientation="vertical">
 
 	<include layout="@layout/incl_actionbar" />
 
-	<android.support.v4.widget.DrawerLayout
-		android:id="@+id/drawerLayout"
+	<ScrollView
+		android:id="@+id/scrollView1"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-
-		<ScrollView
-			android:id="@+id/scrollView1"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="@drawable/bottom_shadow" >
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="@dimen/listview_horizontal_margin"
-				android:layout_marginRight="@dimen/listview_horizontal_margin"
-				android:orientation="vertical" >
-
-				<LinearLayout
-					android:id="@+id/settingsContainer"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="15dp"
-					android:layout_marginLeft="10dp"
-					android:layout_marginRight="10dp"
-					android:layout_marginTop="15dp"
-					android:background="@drawable/card"
-					android:orientation="vertical"
-					android:paddingBottom="10dp" >
-
-					<!-- APP SETTINGS -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Material_SubTitle"
-						android:layout_marginLeft="15dp"
-						android:layout_marginRight="15dp"
-						android:text="@string/settings_titlelabel_app" />
-
-					<!-- Default server -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/settings_defaultnode" />
-
-					<Spinner
-						android:id="@+id/spinner_defaultnode"
-						style="@style/Settings_SettingSpinner" />
-
-					<View style="@style/Material_Divider" />
-
-					<!-- App language -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/settings_lang" />
-
-					<Spinner
-						android:id="@+id/spinner_lang"
-						style="@style/Settings_SettingSpinner" />
-
-					<View style="@style/Material_Divider" />
-
-					<!-- User agent -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/user_agent" />
-
-					<RelativeLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:gravity="center_vertical">
-
-						<ImageButton
-							android:id="@+id/userAgent_reset"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:background="@drawable/ic_action_reset"
-							android:contentDescription="@string/reset"
-							android:layout_alignParentRight="true"
-							android:layout_alignParentEnd="true"
-							android:layout_marginRight="10dp"
-							android:layout_marginLeft="5dp"/>
-
-						<EditText
-							android:id="@+id/edittext_useragent"
-							style="@style/Settings_SettingEditText"
-							android:layout_marginRight="0dp"
-							android:layout_marginEnd="0dp"
-							android:inputType="text"
-							android:layout_toLeftOf="@id/userAgent_reset"
-							android:layout_toStartOf="@id/userAgent_reset"
-							android:textSize="13sp"/>
-					</RelativeLayout>
-
-					<View style="@style/Material_Divider" />
-
-					<!-- Default activity -->
-
-					<LinearLayout
-						android:id="@+id/defaultActivityContainer"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical">
-
-						<TextView
-							android:tag="set_font"
-							style="@style/Settings_SettingTitle"
-							android:text="@string/defaultActivity" />
-
-						<Spinner
-							android:id="@+id/spinner_defaultActivity"
-							style="@style/Settings_SettingSpinner"/>
-					</LinearLayout>
-
-					<!-- Default activity - label -->
-					<LinearLayout
-						android:id="@+id/defaultActivity_label_container"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical">
-
-						<TextView
-							android:id="@+id/title15"
-							style="@style/Settings_SettingTitle"
-							android:text="@string/label" />
-
-						<Spinner
-							android:id="@+id/spinner_defaultActivity_label"
-							style="@style/Settings_SettingSpinner"/>
-					</LinearLayout>
-
-					<!-- Default activity - grid -->
-					<LinearLayout
-						android:id="@+id/defaultActivity_grid_container"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical">
-
-						<TextView
-							android:id="@+id/title16"
-							style="@style/Settings_SettingTitle"
-							android:text="@string/text75" />
-
-						<Spinner
-							android:id="@+id/spinner_defaultActivity_grid"
-							style="@style/Settings_SettingSpinner"/>
-					</LinearLayout>
-
-					<View style="@style/Material_Divider" />
-
-					<!-- Disable Chromecast feature -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/disable_chromecast" />
-
-					<RelativeLayout
-						style="@style/Settings_Checkbox_Container"
-						android:tag="checkable">
-
-						<TextView
-							style="@style/Settings_Checkbox_Label"
-							android:text="@string/disable_chromecast_text"/>
-						<CheckBox
-							android:id="@+id/checkbox_disable_chromecast"
-							style="@style/Settings_Checkbox" />
-					</RelativeLayout>
-
-					<View style="@style/Material_Divider" />
-
-					<!-- GRAPHS SETTINGS -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Material_SubTitle"
-						android:layout_marginLeft="15dp"
-						android:layout_marginRight="15dp"
-						android:text="@string/settings_titlelabel_graphs" />
-
-					<!-- Screen always on -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/settings_screenalwayson_label" />
-
-					<RelativeLayout
-						style="@style/Settings_Checkbox_Container"
-						android:tag="checkable">
-
-						<TextView
-							style="@style/Settings_Checkbox_Label"
-							android:text="@string/settings_screenalwayson_checkbox"/>
-						<CheckBox
-							android:id="@+id/checkbox_screenalwayson"
-							style="@style/Settings_Checkbox" />
-					</RelativeLayout>
-
-					<View style="@style/Material_Divider" />
-
-					<!-- Auto refresh -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/settings_autorefresh_label" />
-
-					<RelativeLayout
-						style="@style/Settings_Checkbox_Container"
-						android:tag="checkable">
-
-						<TextView
-							style="@style/Settings_Checkbox_Label"
-							android:text="@string/settings_autorefresh_checkbox"/>
-						<CheckBox
-							android:id="@+id/checkbox_autorefresh"
-							style="@style/Settings_Checkbox" />
-					</RelativeLayout>
-
-					<View style="@style/Material_Divider" />
-
-					<!-- Graph zoom -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/settings_enablegraphszoom" />
-
-					<RelativeLayout
-						style="@style/Settings_Checkbox_Container"
-						android:tag="checkable">
-
-						<TextView
-							style="@style/Settings_Checkbox_Label"
-							android:text="@string/settings_enablegraphszoom"/>
-						<CheckBox
-							android:id="@+id/checkbox_enablegraphszoom"
-							style="@style/Settings_Checkbox" />
-					</RelativeLayout>
-
-					<View style="@style/Material_Divider" />
-
-					<!-- HD Graphs -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/settings_hdgraphs" />
-
-					<RelativeLayout
-						style="@style/Settings_Checkbox_Container"
-						android:tag="checkable">
-
-						<TextView
-							style="@style/Settings_Checkbox_Label"
-							android:text="@string/settings_hdgraphs_text"/>
-						<CheckBox
-							android:id="@+id/checkbox_hdgraphs"
-							style="@style/Settings_Checkbox" />
-					</RelativeLayout>
-
-					<View style="@style/Material_Divider" />
-
-					<!-- Graph default scale -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/settings_default_scale" />
-
-					<Spinner
-						android:id="@+id/spinner_scale"
-						style="@style/Settings_SettingSpinner" />
-
-					<View style="@style/Material_Divider" />
-
-					<!-- Graphs screen orientation -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/settings_graphview_orientation" />
-
-					<Spinner
-						android:id="@+id/spinner_orientation"
-						style="@style/Settings_SettingSpinner" />
-
-					<View style="@style/Material_Divider" />
-
-					<!-- GRIDS SETTINGS -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Material_SubTitle"
-						android:layout_marginLeft="15dp"
-						android:layout_marginRight="15dp"
-						android:text="@string/grids_settings" />
-
-					<!-- Graphs screen orientation -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/grids_legend" />
-
-					<Spinner
-						android:id="@+id/spinner_gridsLegend"
-						style="@style/Settings_SettingSpinner" />
-
-					<View style="@style/Material_Divider" />
-
-
-					<!-- ADVANCED SETTINGS -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Material_SubTitle"
-						android:layout_marginLeft="15dp"
-						android:layout_marginRight="15dp"
-						android:text="@string/advanced" />
-
-					<!-- Chromecast application Id -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/chromecast_application_id" />
-
-					<RelativeLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:gravity="center_vertical">
-
-						<ImageButton
-							android:id="@+id/chromecastAppId_reset"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:background="@drawable/ic_action_reset"
-							android:contentDescription="@string/reset"
-							android:layout_alignParentRight="true"
-							android:layout_alignParentEnd="true"
-							android:layout_marginRight="10dp"
-							android:layout_marginLeft="5dp"/>
-
-						<EditText
-							android:id="@+id/edittext_chromecastAppid"
-							style="@style/Settings_SettingEditText"
-							android:layout_marginRight="0dp"
-							android:layout_marginEnd="0dp"
-							android:inputType="text"
-							android:layout_toLeftOf="@id/chromecastAppId_reset"
-							android:layout_toStartOf="@id/chromecastAppId_reset"/>
-					</RelativeLayout>
-
-					<View style="@style/Material_Divider" />
-
-					<!-- Import/Export url -->
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/import_export_server" />
-
-					<RelativeLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:gravity="center_vertical">
-
-						<ImageButton
-							android:id="@+id/importExportServer_reset"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:background="@drawable/ic_action_reset"
-							android:contentDescription="@string/reset"
-							android:layout_alignParentRight="true"
-							android:layout_alignParentEnd="true"
-							android:layout_marginRight="10dp"
-							android:layout_marginLeft="5dp"/>
-
-						<EditText
-							android:id="@+id/edittext_importExportServer"
-							style="@style/Settings_SettingEditText"
-							android:layout_marginRight="0dp"
-							android:layout_marginEnd="0dp"
-							android:inputType="text"
-							android:layout_toLeftOf="@id/importExportServer_reset"
-							android:layout_toStartOf="@id/importExportServer_reset"
-							android:textSize="13sp"/>
-					</RelativeLayout>
-				</LinearLayout>
-			</LinearLayout>
-		</ScrollView>
+		android:layout_height="match_parent"
+		android:background="@drawable/bottom_shadow" >
 
 		<LinearLayout
-			android:layout_width="@dimen/drawer_width"
-			android:layout_height="match_parent"
-			android:layout_gravity="start">
-			<include layout="@layout/incl_drawer" />
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="@dimen/listview_horizontal_margin"
+			android:layout_marginRight="@dimen/listview_horizontal_margin"
+			android:orientation="vertical" >
+
+			<LinearLayout
+				android:id="@+id/settingsContainer"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="15dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginTop="15dp"
+				android:background="@drawable/card"
+				android:orientation="vertical"
+				android:paddingBottom="10dp" >
+
+				<!-- APP SETTINGS -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Material_SubTitle"
+					android:layout_marginLeft="15dp"
+					android:layout_marginRight="15dp"
+					android:text="@string/settings_titlelabel_app" />
+
+				<!-- Default server -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_defaultnode" />
+
+				<Spinner
+					android:id="@+id/spinner_defaultnode"
+					style="@style/Settings_SettingSpinner" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- App language -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_lang" />
+
+				<Spinner
+					android:id="@+id/spinner_lang"
+					style="@style/Settings_SettingSpinner" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- User agent -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/user_agent" />
+
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center_vertical">
+
+					<ImageButton
+						android:id="@+id/userAgent_reset"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:background="@drawable/ic_action_reset"
+						android:contentDescription="@string/reset"
+						android:layout_alignParentRight="true"
+						android:layout_alignParentEnd="true"
+						android:layout_marginRight="10dp"
+						android:layout_marginLeft="5dp"/>
+
+					<EditText
+						android:id="@+id/edittext_useragent"
+						style="@style/Settings_SettingEditText"
+						android:layout_marginRight="0dp"
+						android:layout_marginEnd="0dp"
+						android:inputType="text"
+						android:layout_toLeftOf="@id/userAgent_reset"
+						android:layout_toStartOf="@id/userAgent_reset"
+						android:textSize="13sp"/>
+				</RelativeLayout>
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Default activity -->
+
+				<LinearLayout
+					android:id="@+id/defaultActivityContainer"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+
+					<TextView
+						android:tag="set_font"
+						style="@style/Settings_SettingTitle"
+						android:text="@string/defaultActivity" />
+
+					<Spinner
+						android:id="@+id/spinner_defaultActivity"
+						style="@style/Settings_SettingSpinner"/>
+				</LinearLayout>
+
+				<!-- Default activity - label -->
+				<LinearLayout
+					android:id="@+id/defaultActivity_label_container"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+
+					<TextView
+						android:id="@+id/title15"
+						style="@style/Settings_SettingTitle"
+						android:text="@string/label" />
+
+					<Spinner
+						android:id="@+id/spinner_defaultActivity_label"
+						style="@style/Settings_SettingSpinner"/>
+				</LinearLayout>
+
+				<!-- Default activity - grid -->
+				<LinearLayout
+					android:id="@+id/defaultActivity_grid_container"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+
+					<TextView
+						android:id="@+id/title16"
+						style="@style/Settings_SettingTitle"
+						android:text="@string/text75" />
+
+					<Spinner
+						android:id="@+id/spinner_defaultActivity_grid"
+						style="@style/Settings_SettingSpinner"/>
+				</LinearLayout>
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Disable Chromecast feature -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/disable_chromecast" />
+
+				<RelativeLayout
+					style="@style/Settings_Checkbox_Container"
+					android:tag="checkable">
+
+					<TextView
+						style="@style/Settings_Checkbox_Label"
+						android:text="@string/disable_chromecast_text"/>
+					<CheckBox
+						android:id="@+id/checkbox_disable_chromecast"
+						style="@style/Settings_Checkbox" />
+				</RelativeLayout>
+
+				<View style="@style/Material_Divider" />
+
+				<!-- GRAPHS SETTINGS -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Material_SubTitle"
+					android:layout_marginLeft="15dp"
+					android:layout_marginRight="15dp"
+					android:text="@string/settings_titlelabel_graphs" />
+
+				<!-- Screen always on -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_screenalwayson_label" />
+
+				<RelativeLayout
+					style="@style/Settings_Checkbox_Container"
+					android:tag="checkable">
+
+					<TextView
+						style="@style/Settings_Checkbox_Label"
+						android:text="@string/settings_screenalwayson_checkbox"/>
+					<CheckBox
+						android:id="@+id/checkbox_screenalwayson"
+						style="@style/Settings_Checkbox" />
+				</RelativeLayout>
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Auto refresh -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_autorefresh_label" />
+
+				<RelativeLayout
+					style="@style/Settings_Checkbox_Container"
+					android:tag="checkable">
+
+					<TextView
+						style="@style/Settings_Checkbox_Label"
+						android:text="@string/settings_autorefresh_checkbox"/>
+					<CheckBox
+						android:id="@+id/checkbox_autorefresh"
+						style="@style/Settings_Checkbox" />
+				</RelativeLayout>
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Graph zoom -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_enablegraphszoom" />
+
+				<RelativeLayout
+					style="@style/Settings_Checkbox_Container"
+					android:tag="checkable">
+
+					<TextView
+						style="@style/Settings_Checkbox_Label"
+						android:text="@string/settings_enablegraphszoom"/>
+					<CheckBox
+						android:id="@+id/checkbox_enablegraphszoom"
+						style="@style/Settings_Checkbox" />
+				</RelativeLayout>
+
+				<View style="@style/Material_Divider" />
+
+				<!-- HD Graphs -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_hdgraphs" />
+
+				<RelativeLayout
+					style="@style/Settings_Checkbox_Container"
+					android:tag="checkable">
+
+					<TextView
+						style="@style/Settings_Checkbox_Label"
+						android:text="@string/settings_hdgraphs_text"/>
+					<CheckBox
+						android:id="@+id/checkbox_hdgraphs"
+						style="@style/Settings_Checkbox" />
+				</RelativeLayout>
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Graph default scale -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_default_scale" />
+
+				<Spinner
+					android:id="@+id/spinner_scale"
+					style="@style/Settings_SettingSpinner" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Graphs screen orientation -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/settings_graphview_orientation" />
+
+				<Spinner
+					android:id="@+id/spinner_orientation"
+					style="@style/Settings_SettingSpinner" />
+
+				<View style="@style/Material_Divider" />
+
+				<!-- GRIDS SETTINGS -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Material_SubTitle"
+					android:layout_marginLeft="15dp"
+					android:layout_marginRight="15dp"
+					android:text="@string/grids_settings" />
+
+				<!-- Graphs screen orientation -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/grids_legend" />
+
+				<Spinner
+					android:id="@+id/spinner_gridsLegend"
+					style="@style/Settings_SettingSpinner" />
+
+				<View style="@style/Material_Divider" />
+
+
+				<!-- ADVANCED SETTINGS -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Material_SubTitle"
+					android:layout_marginLeft="15dp"
+					android:layout_marginRight="15dp"
+					android:text="@string/advanced" />
+
+				<!-- Chromecast application Id -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/chromecast_application_id" />
+
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center_vertical">
+
+					<ImageButton
+						android:id="@+id/chromecastAppId_reset"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:background="@drawable/ic_action_reset"
+						android:contentDescription="@string/reset"
+						android:layout_alignParentRight="true"
+						android:layout_alignParentEnd="true"
+						android:layout_marginRight="10dp"
+						android:layout_marginLeft="5dp"/>
+
+					<EditText
+						android:id="@+id/edittext_chromecastAppid"
+						style="@style/Settings_SettingEditText"
+						android:layout_marginRight="0dp"
+						android:layout_marginEnd="0dp"
+						android:inputType="text"
+						android:layout_toLeftOf="@id/chromecastAppId_reset"
+						android:layout_toStartOf="@id/chromecastAppId_reset"/>
+				</RelativeLayout>
+
+				<View style="@style/Material_Divider" />
+
+				<!-- Import/Export url -->
+
+				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/import_export_server" />
+
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center_vertical">
+
+					<ImageButton
+						android:id="@+id/importExportServer_reset"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:background="@drawable/ic_action_reset"
+						android:contentDescription="@string/reset"
+						android:layout_alignParentRight="true"
+						android:layout_alignParentEnd="true"
+						android:layout_marginRight="10dp"
+						android:layout_marginLeft="5dp"/>
+
+					<EditText
+						android:id="@+id/edittext_importExportServer"
+						style="@style/Settings_SettingEditText"
+						android:layout_marginRight="0dp"
+						android:layout_marginEnd="0dp"
+						android:inputType="text"
+						android:layout_toLeftOf="@id/importExportServer_reset"
+						android:layout_toStartOf="@id/importExportServer_reset"
+						android:textSize="13sp"/>
+				</RelativeLayout>
+			</LinearLayout>
 		</LinearLayout>
-
-	</android.support.v4.widget.DrawerLayout>
-
+	</ScrollView>
 </LinearLayout>

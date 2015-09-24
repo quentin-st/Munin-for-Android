@@ -45,6 +45,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -78,6 +79,11 @@ public final class Util {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 				int id = activity.getResources().getIdentifier("config_enableTranslucentDecor", "bool", "android");
 				if (id != 0 && activity.getResources().getBoolean(id)) { // Translucent available
+					//View statusBarBackground = activity.findViewById(R.id.statusBarBackground);
+					//LinearLayout.LayoutParams statusBarParams = (LinearLayout.LayoutParams) statusBarBackground.getLayoutParams();
+					//statusBarParams.height = Util.getStatusBarHeight(activity);
+					//statusBarBackground.setLayoutParams(statusBarParams);
+
 					Window w = activity.getWindow();
 					//w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 					w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
