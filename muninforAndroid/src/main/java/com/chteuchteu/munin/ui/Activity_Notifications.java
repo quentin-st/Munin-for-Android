@@ -61,7 +61,6 @@ public class Activity_Notifications extends MuninActivity {
 
 		setContentView(R.layout.activity_notifications);
 		super.onContentViewSet();
-		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.notificationsTitle));
 		

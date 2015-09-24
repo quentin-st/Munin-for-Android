@@ -235,9 +235,6 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 			dh.closeDrawerIfOpen();
 
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.toggle();
-				return true;
 			case R.id.menu_settings:
 				startActivity(new Intent(context, Activity_Settings.class));
 				Util.setTransition(this, Util.TransitionStyle.DEEPER);

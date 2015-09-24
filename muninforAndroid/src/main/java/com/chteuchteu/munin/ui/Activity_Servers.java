@@ -55,7 +55,6 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 
 		setContentView(R.layout.activity_servers);
 		super.onContentViewSet();
-		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.serversTitle));
 		

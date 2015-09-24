@@ -26,7 +26,6 @@ public class Activity_Alerts extends MuninActivity implements IAlertsActivity {
 
 		setContentView(R.layout.activity_alerts);
 		super.onContentViewSet();
-		dh.setDrawerActivity(this);
 		actionBar.setTitle(getString(R.string.alertsTitle));
 		progressBar = Util.UI.prepareGmailStyleProgressBar(this, actionBar);
 

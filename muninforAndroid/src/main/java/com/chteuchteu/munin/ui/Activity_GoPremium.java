@@ -31,7 +31,6 @@ public class Activity_GoPremium extends MuninActivity {
 
 		setContentView(R.layout.activity_go_premium);
 		super.onContentViewSet();
-		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.goPremiumTitle));
 		

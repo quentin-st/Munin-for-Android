@@ -40,7 +40,6 @@ public class Activity_Grids extends MuninActivity {
 
 		setContentView(R.layout.activity_grids);
 		super.onContentViewSet();
-		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.button_grid));
 

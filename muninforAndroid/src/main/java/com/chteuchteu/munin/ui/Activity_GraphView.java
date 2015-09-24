@@ -120,7 +120,6 @@ public class Activity_GraphView extends MuninActivity {
 
 		setContentView(R.layout.activity_graphview);
 		super.onContentViewSet();
-		dh.setDrawerActivity(this);
 
 		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

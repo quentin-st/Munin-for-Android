@@ -55,29 +55,7 @@ public class MuninActivity extends AppCompatActivity {
 		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		this.actionBar = getSupportActionBar();
-		this.actionBar.setDisplayShowHomeEnabled(false);
 		this.dh = new DrawerHelper(this, muninFoo, this.toolbar);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				dh.toggle();
-				return true;
-			case R.id.menu_settings:
-				startActivity(new Intent(this, Activity_Settings.class));
-				Util.setTransition(this, Util.TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(this, Activity_About.class));
-				Util.setTransition(this, Util.TransitionStyle.DEEPER);
-				return true;
-			default:
-				// In any other case, close the drawer before executing action
-				dh.closeDrawerIfOpen();
-				return true;
-		}
 	}
 
 	protected void createOptionsMenu() { menu.clear(); }

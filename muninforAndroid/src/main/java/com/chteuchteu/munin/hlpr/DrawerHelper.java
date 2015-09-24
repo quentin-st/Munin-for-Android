@@ -1,6 +1,7 @@
 package com.chteuchteu.munin.hlpr;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DrawerHelper {
-	private AppCompatActivity activity;
+	private Activity activity;
 	private Context context;
 	private MuninFoo muninFoo;
 	private MuninActivity currentActivity;
@@ -48,19 +49,30 @@ public class DrawerHelper {
 	private Toolbar toolbar;
 
 	public enum DrawerMenuItem {
-		None,
-		Graphs,
-		Grids,
-		Alerts,
-		Labels,
-		Servers,
-		Notifications,
-		Premium,
-		Support,
-		Donate
+		None(-1),
+		Graphs(1),
+		Grids(2),
+		Alerts(3),
+		Labels(4),
+		Servers(5),
+		Notifications(6),
+		Premium(7),
+		Support(8),
+		Donate(9);
+
+		private int identifier;
+		public int getIdentifier() { return this.identifier; }
+		DrawerMenuItem(int identifier) { this.identifier = identifier; }
+		public static DrawerMenuItem from(int identifier) {
+			for (DrawerMenuItem item : DrawerMenuItem.values()) {
+				if (item.getIdentifier() == identifier)
+					return item;
+			}
+			return None;
+		}
 	}
 	
-	public DrawerHelper(AppCompatActivity activity, MuninFoo muninFoo, Toolbar toolbar) {
+	public DrawerHelper(Activity activity, MuninFoo muninFoo, Toolbar toolbar) {
 		this.drawerItems = new HashMap<>();
 		this.activity = activity;
 		this.muninFoo = muninFoo;
@@ -71,15 +83,6 @@ public class DrawerHelper {
 	
 	public void reset() {
 		initDrawer();
-		setDrawerActivity(currentActivity);
-	}
-	
-	public void setDrawerActivity(MuninActivity activity) {
-		this.currentActivity = activity;
-		DrawerMenuItem item = activity == null ? DrawerMenuItem.None : activity.getDrawerMenuItem();
-
-		if (this.drawerItems.containsKey(item))
-			this.drawer.setSelection(this.drawerItems.get(item));
 	}
 
 	public void toggle() {
@@ -95,12 +98,11 @@ public class DrawerHelper {
 	}
 
 	private void initDrawer() {
-		activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
 		// Graphs
 		this.drawerItems.put(DrawerMenuItem.Graphs,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_graphs)
+						.withIdentifier(DrawerMenuItem.Graphs.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_pulse)
 						.withEnabled(muninFoo.getNodes().size() > 0)
 		);
@@ -109,6 +111,7 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Grids,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_grid)
+						.withIdentifier(DrawerMenuItem.Grids.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_grid)
 						.withEnabled(muninFoo.premium && muninFoo.getNodes().size() > 0)
 		);
@@ -117,6 +120,7 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Alerts,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_alerts)
+						.withIdentifier(DrawerMenuItem.Alerts.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_alert_box)
 						.withEnabled(muninFoo.getNodes().size() > 0)
 		);
@@ -125,6 +129,7 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Labels,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_labels)
+						.withIdentifier(DrawerMenuItem.Labels.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_label)
 						.withEnabled(muninFoo.getNodes().size() > 0)
 		);
@@ -133,6 +138,7 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Servers,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_server)
+						.withIdentifier(DrawerMenuItem.Servers.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_view_list)
 		);
 
@@ -140,6 +146,7 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Notifications,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_notifications)
+						.withIdentifier(DrawerMenuItem.Notifications.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_bell)
 						.withEnabled(muninFoo.premium && muninFoo.getNodes().size() > 0)
 		);
@@ -148,6 +155,7 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Premium,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_premium)
+						.withIdentifier(DrawerMenuItem.Premium.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_lock_open)
 		);
 
@@ -155,6 +163,7 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Support,
 				new SecondaryDrawerItem()
 						.withName(R.string.support)
+						.withIdentifier(DrawerMenuItem.Support.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_help)
 		);
 
@@ -162,13 +171,14 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Donate,
 				new SecondaryDrawerItem()
 						.withName(R.string.donate)
+						.withIdentifier(DrawerMenuItem.Donate.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_gift)
 		);
 
+
 		DrawerBuilder builder = new DrawerBuilder()
 				.withActivity(this.activity)
-				.withToolbar(this.toolbar)
-				.withSelectedItem(-1);
+				.withToolbar(this.toolbar);
 
 		// Add items
 		builder.addDrawerItems(
@@ -190,30 +200,31 @@ public class DrawerHelper {
 		builder.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 			@Override
 			public boolean onItemClick(View view, int index, IDrawerItem iDrawerItem) {
-				switch (index) {
-					case 0: // Graphs
+				DrawerMenuItem item = DrawerMenuItem.from(iDrawerItem.getIdentifier());
+
+				switch (item) {
+					case Graphs:
 						startActivity(Activity_Plugins.class);
 						return true;
-					case 1: // Grids
+					case Grids:
 						startActivity(Activity_Grids.class);
 						return true;
-					case 2: // Alerts
+					case Alerts:
 						startActivity(Activity_Alerts.class);
 						return true;
-					case 3: // Labels
+					case Labels:
 						startActivity(Activity_Labels.class);
 						return true;
-					case 4: // Servers
+					case Servers:
 						startActivity(Activity_Servers.class);
 						return true;
-					case 5: // Notifications
+					case Notifications:
 						startActivity(Activity_Notifications.class);
 						return true;
-					case 6: // Premium
-						// TODO
+					case Premium:
 						startActivity(Activity_GoPremium.class);
 						return true;
-					case 7: // Support
+					case Support:
 						Intent send = new Intent(Intent.ACTION_SENDTO);
 						String uriText = "mailto:" + Uri.encode("support@munin-for-android.com") +
 								"?subject=" + Uri.encode("Support request");
@@ -222,7 +233,7 @@ public class DrawerHelper {
 						send.setData(uri);
 						activity.startActivity(Intent.createChooser(send, context.getString(R.string.choose_email_client)));
 						return true;
-					case 8: // Donate
+					case Donate:
 						donate();
 						return true;
 					default:
@@ -230,6 +241,16 @@ public class DrawerHelper {
 				}
 			}
 		});
+
+		// Selected item
+		if (this.activity instanceof MuninActivity) {
+			DrawerMenuItem item = activity == null ? DrawerMenuItem.None : ((MuninActivity) activity).getDrawerMenuItem();
+
+			if (item != null && this.drawerItems.containsKey(item))
+				builder.withSelectedItem(item.getIdentifier());
+		}
+		else
+			builder.withSelectedItem(-1);
 
 		this.drawer = builder.build();
 	}

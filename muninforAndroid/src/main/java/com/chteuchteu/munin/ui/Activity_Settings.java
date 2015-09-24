@@ -62,7 +62,6 @@ public class Activity_Settings extends MuninActivity {
 
 		setContentView(R.layout.activity_settings);
 		super.onContentViewSet();
-		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.settingsTitle));
 		

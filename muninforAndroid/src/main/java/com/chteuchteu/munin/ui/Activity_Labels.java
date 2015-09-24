@@ -32,7 +32,6 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 		
 		setContentView(R.layout.activity_labels);
 		super.onContentViewSet();
-		dh.setDrawerActivity(this);
 		actionBar.setTitle(getString(R.string.button_labels));
 
 		activityState = ActivityState.SELECTING_LABEL;

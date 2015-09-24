@@ -64,7 +64,6 @@ public class Activity_Plugins extends MuninActivity {
 
 		setContentView(R.layout.activity_plugins);
 		super.onContentViewSet();
-		dh.setDrawerActivity(this);
 
 		this.listview = (ListView) findViewById(R.id.listview);
 		list = new ArrayList<>();

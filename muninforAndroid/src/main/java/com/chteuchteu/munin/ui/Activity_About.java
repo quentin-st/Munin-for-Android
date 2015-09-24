@@ -30,7 +30,6 @@ public class Activity_About extends MuninActivity {
 
 		setContentView(R.layout.activity_about);
 		super.onContentViewSet();
-		dh.setDrawerActivity(this);
 
 		actionBar.setTitle(getString(R.string.aboutTitle));
 

@@ -27,7 +27,6 @@ public class Activity_AlertsPlugins extends MuninActivity {
 		
 		setContentView(R.layout.activity_alerts_pluginselection);
 		super.onContentViewSet();
-		dh.setDrawerActivity(this);
 
         actionBar.setTitle(getString(R.string.alertsTitle));
 		actionBar.setSubtitle(muninFoo.getCurrentNode().getName());
