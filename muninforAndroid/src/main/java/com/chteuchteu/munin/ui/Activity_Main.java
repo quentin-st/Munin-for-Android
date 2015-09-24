@@ -19,8 +19,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.balysv.materialmenu.MaterialMenuDrawable;
-import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -50,7 +48,6 @@ import io.fabric.sdk.android.Fabric;
  */
 public class Activity_Main extends AppCompatActivity implements IGridActivity, ILabelsActivity, IAlertsActivity {
 	private MuninFoo		muninFoo;
-	private MaterialMenuIconToolbar materialMenu;
 
 	private Toolbar        toolbar;
 	private Menu 			menu;
@@ -60,7 +57,6 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	private ProgressBar     progressBar;
 
 	private DrawerHelper dh;
-	private boolean isDrawerOpened;
 	
 	// Preloading
 	private boolean preloading;
@@ -100,38 +96,6 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		dh = new DrawerHelper(this, muninFoo, this.toolbar);
 
 		Util.UI.applySwag(this);
-
-		this.isDrawerOpened = false;
-		this.materialMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
-			@Override public int getToolbarViewId() {
-				return R.id.toolbar;
-			}
-		};
-		this.materialMenu.setNeverDrawTouch(true);
-		dh.getDrawerLayout().setDrawerListener(new DrawerLayout.DrawerListener() {
-			@Override
-			public void onDrawerSlide(View view, float slideOffset) {
-				materialMenu.setTransformationOffset(
-						MaterialMenuDrawable.AnimationState.BURGER_ARROW,
-						isDrawerOpened ? 2 - slideOffset : slideOffset
-				);
-			}
-
-			@Override
-			public void onDrawerOpened(View view) {
-				isDrawerOpened = true;
-				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
-			}
-
-			@Override
-			public void onDrawerClosed(View view) {
-				isDrawerOpened = false;
-				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
-			}
-
-			@Override
-			public void onDrawerStateChanged(int i) { }
-		});
 
 		progressBar = Util.UI.prepareGmailStyleProgressBar(this, getSupportActionBar());
 		
@@ -239,12 +203,8 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 
 		// Reset drawer
 		dh.reset();
-		if (mainFragment == MainFragment.NONE) {
+		if (mainFragment == MainFragment.NONE)
 			dh.toggle();
-			materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
-		}
-		else
-			materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
 	}
 	
 	@Override
@@ -588,14 +548,4 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	/* Alerts fragment */
 	@Override public void setLoading(boolean val) { this.progressBar.setVisibility(val ? View.VISIBLE : View.GONE); }
 	@Override public void setLoadingProgress(int val) { this.progressBar.setProgress(val); }
-
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		materialMenu.syncState(savedInstanceState);
-	}
-
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		materialMenu.onSaveInstanceState(outState);
-	}
 }

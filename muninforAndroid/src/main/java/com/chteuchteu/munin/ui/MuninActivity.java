@@ -13,8 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.balysv.materialmenu.MaterialMenuDrawable;
-import com.balysv.materialmenu.extras.toolbar.MaterialMenuIconToolbar;
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -40,7 +38,6 @@ public class MuninActivity extends AppCompatActivity {
 	protected Activity      activity;
 	protected android.support.v7.app.ActionBar actionBar;
 	protected Toolbar       toolbar;
-	private MaterialMenuIconToolbar materialMenu;
 	private boolean         isDrawerOpen;
 	protected Menu          menu;
 
@@ -68,11 +65,6 @@ public class MuninActivity extends AppCompatActivity {
 		this.actionBar = getSupportActionBar();
 		this.actionBar.setDisplayShowHomeEnabled(false);
 		this.dh = new DrawerHelper(this, muninFoo, this.toolbar);
-		this.materialMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
-			@Override public int getToolbarViewId() {
-				return R.id.toolbar;
-			}
-		};
 	}
 
 	@Override
@@ -168,16 +160,6 @@ public class MuninActivity extends AppCompatActivity {
 
 		if (!BuildConfig.DEBUG)
 			EasyTracker.getInstance(this).activityStop(this);
-	}
-
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		materialMenu.syncState(savedInstanceState);
-	}
-
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		materialMenu.onSaveInstanceState(outState);
 	}
 
 	protected void log(String s) { MuninFoo.log(((Object) this).getClass().getName(), s); }
