@@ -3,14 +3,14 @@ package com.chteuchteu.munin.ui;
 import com.chteuchteu.munin.obj.Grid;
 
 public interface IGridActivity {
-	public void onPreviewHide();
-	public void onEditModeChange(boolean editing);
-	public void onPreview();
-	public void onGridLoaded(Grid grid);
-	public void onGridSaved();
+	void onPreviewHide();
+	void onEditModeChange(boolean editing);
+	void onPreview();
+	void onGridLoaded(Grid grid);
+	void onGridSaved();
 
 	/**
 	 * Triggered when the user hits the "Load" button when autoLoad=false
 	 */
-	public void onManualLoad();
+	void onManualLoad();
 }

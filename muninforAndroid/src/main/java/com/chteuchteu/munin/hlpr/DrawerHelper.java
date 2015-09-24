@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -88,10 +87,6 @@ public class DrawerHelper {
 			this.drawer.closeDrawer();
 		else
 			this.drawer.openDrawer();
-	}
-
-	public DrawerLayout getDrawerLayout() {
-		return this.drawer.getDrawerLayout();
 	}
 
 	private int getIntentFlag() {

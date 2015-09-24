@@ -13,7 +13,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.List;
 
-public class MuninPlugin implements ISearchable {
+public class MuninPlugin {
 	private long 		id;
 	private String 		name;
 	private String 		fancyName;
@@ -207,24 +207,4 @@ public class MuninPlugin implements ISearchable {
 
 	public Util.SpecialBool isDocumentationAvailable() { return this.isDocumentationAvailable; }
 	public void setDocumentationAvailability(boolean val) { this.isDocumentationAvailable = val ? Util.SpecialBool.TRUE : Util.SpecialBool.FALSE; }
-
-    /* ISearchable */
-    @Override
-    public boolean matches(String expr) {
-        return this.getName().toLowerCase().contains(expr)
-                || this.getFancyName().toLowerCase().contains(expr);
-    }
-
-    @Override
-    public String[] getSearchResult() {
-        return new String[] {
-                this.getFancyName(),
-                this.getInstalledOn().getName()
-        };
-    }
-
-    @Override
-    public SearchResult.SearchResultType getSearchResultType() {
-        return SearchResult.SearchResultType.PLUGIN;
-    }
 }

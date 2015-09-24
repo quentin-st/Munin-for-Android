@@ -5,11 +5,9 @@
 	<dimen name="activity_vertical_margin">16dp</dimen>
 
 	<!-- Left menu -->
-	<dimen name="item_padding">16dp</dimen>
 	<dimen name="listview_horizontal_margin">0dp</dimen>
 	<dimen name="listview_inner_horizontal_margin">0dp</dimen>
 	<dimen name="drawer_font_size">18sp</dimen>
-	<dimen name="drawer_font_size_small">18sp</dimen>
 
 	<!-- AddServer popup -->
 	<dimen name="addserver_popup_margin_horiz">10dp</dimen>
@@ -21,9 +19,5 @@
 	<!-- Widget min size. size = (70 x n) - 30 -->
 	<dimen name="appwidget_min_width">110dp</dimen>
 	<dimen name="appwidget_min_height">110dp</dimen>
-
-	<dimen name="drawer_width">300dp</dimen>
-	<dimen name="drawer_width_minusshadow">290dp</dimen>
-	<dimen name="drawer_shadow_width">10dp</dimen>
 
 </resources>

@@ -68,7 +68,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class Activity_GraphView extends MuninActivity {
 	private MuninPlugin     currentPlugin;
 	public Period       load_period;
-	public ViewPager    viewPager;
+	private ViewPager    viewPager;
 	private Adapter_GraphView adapter;
 	private View        ic_secure;
 	private View        ic_insecure;
@@ -937,7 +937,7 @@ public class Activity_GraphView extends MuninActivity {
 			}
 		});
 	}
-	public void hideDynazoom() {
+	private void hideDynazoom() {
 		final View dynazoom = findViewById(R.id.dynazoom);
 
 		View mainContainer = findViewById(R.id.mainContainer);
@@ -948,7 +948,7 @@ public class Activity_GraphView extends MuninActivity {
 
 		fab.show();
 	}
-	public boolean isDynazoomOpen() { return findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE; }
+	private boolean isDynazoomOpen() { return findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE; }
 	private void dynazoom_updateFromTo() {
 		((TextView) findViewById(R.id.dynazoom_from)).setText(Util.prettyDate(dynazoom_from));
 		((TextView) findViewById(R.id.dynazoom_to)).setText(Util.prettyDate(dynazoom_to));

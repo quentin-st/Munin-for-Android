@@ -96,6 +96,6 @@ public class PluginsListAlertDialog {
     }
 
     public interface PluginsListAlertDialogClick {
-        public void onItemClick(MuninPlugin plugin);
+        void onItemClick(MuninPlugin plugin);
     }
 }
