@@ -97,7 +97,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 			}
 		});
 
-		dh = new DrawerHelper(this, muninFoo);
+		dh = new DrawerHelper(this, muninFoo, this.toolbar);
 
 		Util.UI.applySwag(this);
 

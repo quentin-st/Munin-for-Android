@@ -62,12 +62,12 @@ public class MuninActivity extends AppCompatActivity {
 	}
 
 	public void onContentViewSet() {
-		Util.UI.applySwag(this);
 		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Util.UI.applySwag(this);
 		setSupportActionBar(toolbar);
 		this.actionBar = getSupportActionBar();
 		this.actionBar.setDisplayShowHomeEnabled(false);
-		this.dh = new DrawerHelper(this, muninFoo);
+		this.dh = new DrawerHelper(this, muninFoo, this.toolbar);
 		this.materialMenu = new MaterialMenuIconToolbar(this, Color.WHITE, MaterialMenuDrawable.Stroke.THIN) {
 			@Override public int getToolbarViewId() {
 				return R.id.toolbar;
@@ -101,7 +101,7 @@ public class MuninActivity extends AppCompatActivity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		dh.getDrawerLayout().setDrawerListener(new DrawerLayout.DrawerListener() {
+		/*dh.getDrawerLayout().setDrawerListener(new DrawerLayout.DrawerListener() {
 			@Override
 			public void onDrawerSlide(View view, float slideOffset) {
 				materialMenu.setTransformationOffset(
@@ -143,7 +143,7 @@ public class MuninActivity extends AppCompatActivity {
 
 			@Override
 			public void onDrawerStateChanged(int i) { }
-		});
+		});*/
 
 		createOptionsMenu();
 

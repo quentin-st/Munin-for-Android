@@ -197,7 +197,7 @@ public class Activity_Grids extends MuninActivity {
 
 
 	@Override
-	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Grid; }
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Grids; }
 
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();

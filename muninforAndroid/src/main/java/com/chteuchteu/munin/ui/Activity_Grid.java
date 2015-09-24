@@ -252,7 +252,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	}
 
 	@Override
-	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Grid; }
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Grids; }
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

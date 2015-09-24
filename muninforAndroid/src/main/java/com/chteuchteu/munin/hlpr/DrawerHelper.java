@@ -5,24 +5,18 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff.Mode;
 import android.net.Uri;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.async.DonateAsync;
-import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
@@ -33,8 +27,15 @@ import com.chteuchteu.munin.ui.Activity_Notifications;
 import com.chteuchteu.munin.ui.Activity_Plugins;
 import com.chteuchteu.munin.ui.Activity_Servers;
 import com.chteuchteu.munin.ui.MuninActivity;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DrawerHelper {
@@ -42,16 +43,29 @@ public class DrawerHelper {
 	private Context context;
 	private MuninFoo muninFoo;
 	private MuninActivity currentActivity;
-	private DrawerLayout drawerLayout;
+	private Drawer drawer;
+	private HashMap<DrawerMenuItem, IDrawerItem> drawerItems;
+	private Toolbar toolbar;
 
-	public enum DrawerMenuItem { None, Servers, Alerts, Graphs, Notifications, Labels, Premium, Grid }
-
-    private SearchHelper searchHelper;
+	public enum DrawerMenuItem {
+		None,
+		Graphs,
+		Grids,
+		Alerts,
+		Labels,
+		Servers,
+		Notifications,
+		Premium,
+		Support,
+		Donate
+	}
 	
-	public DrawerHelper(AppCompatActivity activity, MuninFoo muninFoo) {
+	public DrawerHelper(AppCompatActivity activity, MuninFoo muninFoo, Toolbar toolbar) {
+		this.drawerItems = new HashMap<>();
 		this.activity = activity;
 		this.muninFoo = muninFoo;
 		this.context = activity;
+		this.toolbar = toolbar;
 		initDrawer();
 	}
 	
@@ -62,17 +76,22 @@ public class DrawerHelper {
 	
 	public void setDrawerActivity(MuninActivity activity) {
 		this.currentActivity = activity;
-		setSelectedMenuItem(activity == null ? DrawerMenuItem.None : activity.getDrawerMenuItem());
+		DrawerMenuItem item = activity == null ? DrawerMenuItem.None : activity.getDrawerMenuItem();
+
+		if (this.drawerItems.containsKey(item))
+			this.drawer.setSelection(this.drawerItems.get(item));
 	}
 
 	public void toggle() {
-		if (drawerLayout.isDrawerVisible(Gravity.START))
-			drawerLayout.closeDrawer(Gravity.START);
+		if (this.drawer.isDrawerOpen())
+			this.drawer.closeDrawer();
 		else
-			drawerLayout.openDrawer(Gravity.START);
+			this.drawer.openDrawer();
 	}
 
-	public DrawerLayout getDrawerLayout() { return this.drawerLayout; }
+	public DrawerLayout getDrawerLayout() {
+		return this.drawer.getDrawerLayout();
+	}
 
 	private int getIntentFlag() {
 		return this.currentActivity instanceof Activity_Grid ? Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -80,101 +99,143 @@ public class DrawerHelper {
 	}
 
 	private void initDrawer() {
-		drawerLayout = (DrawerLayout) activity.findViewById(R.id.drawerLayout);
-
 		activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
 		// Graphs
-		activity.findViewById(R.id.drawer_graphs_btn).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(Activity_Plugins.class);
-			}
-		});
-		activity.findViewById(R.id.drawer_grid_btn).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(Activity_Grids.class);
-			}
-		});
-		// Alerts
-		activity.findViewById(R.id.drawer_alerts_btn).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(Activity_Alerts.class);
-			}
-		});
-		// Labels
-		activity.findViewById(R.id.drawer_labels_btn).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(Activity_Labels.class);
-			}
-		});
-		// Servers
-		activity.findViewById(R.id.drawer_servers_btn).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(Activity_Servers.class);
-			}
-		});
-		// Notifications
-		activity.findViewById(R.id.drawer_notifications_btn).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(Activity_Notifications.class);
-			}
-		});
-		// Premium
-		activity.findViewById(R.id.drawer_premium_btn).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(Activity_GoPremium.class);
-			}
-		});
-		// Support
-		activity.findViewById(R.id.drawer_support_btn).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent send = new Intent(Intent.ACTION_SENDTO);
-				String uriText = "mailto:" + Uri.encode("support@munin-for-android.com") + 
-						"?subject=" + Uri.encode("Support request");
-				Uri uri = Uri.parse(uriText);
-				
-				send.setData(uri);
-				activity.startActivity(Intent.createChooser(send, context.getString(R.string.choose_email_client)));
-			}
-		});
-		// Donate
-		activity.findViewById(R.id.drawer_donate_btn).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				donate();
-			}
-		});
-		
-		if (!muninFoo.premium) {
-			activity.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
-			activity.findViewById(R.id.drawer_grid_btn).setEnabled(false);
-			activity.findViewById(R.id.drawer_notifications_icon).setAlpha(0.5f);
-			activity.findViewById(R.id.drawer_notifications_txt).setAlpha(0.5f);
-			activity.findViewById(R.id.drawer_grids_icon).setAlpha(0.5f);
-			activity.findViewById(R.id.drawer_grids_txt).setAlpha(0.5f);
-			activity.findViewById(R.id.drawer_premium_btn).setVisibility(View.VISIBLE);
-		}
-		if (muninFoo.getNodes().size() == 0) {
-			activity.findViewById(R.id.drawer_graphs_btn).setEnabled(false);
-			activity.findViewById(R.id.drawer_grid_btn).setEnabled(false);
-			activity.findViewById(R.id.drawer_alerts_btn).setEnabled(false);
-			activity.findViewById(R.id.drawer_notifications_btn).setEnabled(false);
-			activity.findViewById(R.id.drawer_labels_btn).setEnabled(false);
-		}
-		
-		Util.Fonts.setFont(context, (ViewGroup) activity.findViewById(R.id.drawer_scrollview), CustomFont.Roboto_Regular);
+		this.drawerItems.put(DrawerMenuItem.Graphs,
+				new PrimaryDrawerItem()
+						.withName(R.string.button_graphs)
+						.withIcon(R.drawable.dr_graphs)
+						.withEnabled(muninFoo.getNodes().size() > 0)
+		);
 
-		if (this.searchHelper == null)
-            this.searchHelper = new SearchHelper(activity);
-        this.searchHelper.initSearch();
+		// Grids
+		this.drawerItems.put(DrawerMenuItem.Grids,
+				new PrimaryDrawerItem()
+						.withName(R.string.button_grid)
+						.withIcon(R.drawable.dr_grids)
+						.withEnabled(muninFoo.premium && muninFoo.getNodes().size() > 0)
+		);
+
+		// Alerts
+		this.drawerItems.put(DrawerMenuItem.Alerts,
+				new PrimaryDrawerItem()
+						.withName(R.string.button_alerts)
+						.withIcon(R.drawable.dr_alerts)
+						.withEnabled(muninFoo.getNodes().size() > 0)
+		);
+
+		// Labels
+		this.drawerItems.put(DrawerMenuItem.Labels,
+				new PrimaryDrawerItem()
+						.withName(R.string.button_labels)
+						.withIcon(R.drawable.dr_labels)
+						.withEnabled(muninFoo.getNodes().size() > 0)
+		);
+
+		// Servers
+		this.drawerItems.put(DrawerMenuItem.Servers,
+				new PrimaryDrawerItem()
+						.withName(R.string.button_server)
+						.withIcon(R.drawable.dr_servers)
+		);
+
+		// Notifications
+		this.drawerItems.put(DrawerMenuItem.Notifications,
+				new PrimaryDrawerItem()
+						.withName(R.string.button_notifications)
+						.withIcon(R.drawable.dr_notifications)
+						.withEnabled(muninFoo.premium && muninFoo.getNodes().size() > 0)
+		);
+
+		// Premium
+		this.drawerItems.put(DrawerMenuItem.Premium,
+				new PrimaryDrawerItem()
+						.withName(R.string.button_premium)
+						.withIcon(R.drawable.dr_premium)
+		);
+
+		// Support
+		this.drawerItems.put(DrawerMenuItem.Support,
+				new SecondaryDrawerItem()
+						.withName(R.string.support)
+						.withIcon(R.drawable.ic_action_help_trimmed)
+		);
+
+		// Donate
+		this.drawerItems.put(DrawerMenuItem.Donate,
+				new SecondaryDrawerItem()
+						.withName(R.string.donate)
+						.withIcon(R.drawable.ic_action_favorite)
+		);
+
+		DrawerBuilder builder = new DrawerBuilder()
+				.withActivity(this.activity)
+				.withToolbar(this.toolbar)
+				.withSelectedItem(-1);
+
+		// Add items
+		builder.addDrawerItems(
+				this.drawerItems.get(DrawerMenuItem.Graphs),
+				this.drawerItems.get(DrawerMenuItem.Grids),
+				this.drawerItems.get(DrawerMenuItem.Alerts),
+				this.drawerItems.get(DrawerMenuItem.Labels),
+				this.drawerItems.get(DrawerMenuItem.Servers),
+				this.drawerItems.get(DrawerMenuItem.Notifications));
+
+		if (!muninFoo.premium)
+			builder.addDrawerItems(this.drawerItems.get(DrawerMenuItem.Premium));
+
+		builder.addDrawerItems(
+				new DividerDrawerItem(),
+				this.drawerItems.get(DrawerMenuItem.Support),
+				this.drawerItems.get(DrawerMenuItem.Donate));
+
+		builder.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+			@Override
+			public boolean onItemClick(View view, int index, IDrawerItem iDrawerItem) {
+				switch (index) {
+					case 0: // Graphs
+						startActivity(Activity_Plugins.class);
+						return true;
+					case 1: // Grids
+						startActivity(Activity_Grids.class);
+						return true;
+					case 2: // Alerts
+						startActivity(Activity_Alerts.class);
+						return true;
+					case 3: // Labels
+						startActivity(Activity_Labels.class);
+						return true;
+					case 4: // Servers
+						startActivity(Activity_Servers.class);
+						return true;
+					case 5: // Notifications
+						startActivity(Activity_Notifications.class);
+						return true;
+					case 6: // Premium
+						// TODO
+						startActivity(Activity_GoPremium.class);
+						return true;
+					case 7: // Support
+						Intent send = new Intent(Intent.ACTION_SENDTO);
+						String uriText = "mailto:" + Uri.encode("support@munin-for-android.com") +
+								"?subject=" + Uri.encode("Support request");
+						Uri uri = Uri.parse(uriText);
+
+						send.setData(uri);
+						activity.startActivity(Intent.createChooser(send, context.getString(R.string.choose_email_client)));
+						return true;
+					case 8: // Donate
+						donate();
+						return true;
+					default:
+						return false;
+				}
+			}
+		});
+
+		this.drawer = builder.build();
 	}
 
 	private void startActivity(Class<?> targetActivity) {
@@ -240,65 +301,10 @@ public class DrawerHelper {
      * @return boolean true if drawer has been closed
      */
 	public boolean closeDrawerIfOpen() {
-		if (drawerLayout.isDrawerOpen(Gravity.START)) {
-            drawerLayout.closeDrawer(Gravity.START);
-            return true;
-        }
-        return false;
-	}
-	
-	private void setSelectedMenuItem(DrawerMenuItem menuItemName) {
-		int textViewResId = -1;
-		int iconResId = -1;
-
-		switch (menuItemName) {
-			case Graphs: {
-				textViewResId = R.id.drawer_graphs_txt;
-				iconResId = R.id.drawer_graphs_icon;
-				break;
-			}
-			case Grid: {
-				textViewResId = R.id.drawer_grids_txt;
-				iconResId = R.id.drawer_grids_icon;
-				break;
-			}
-			case Alerts: {
-				textViewResId = R.id.drawer_alerts_txt;
-				iconResId = R.id.drawer_alerts_icon;
-				break;
-			}
-			case Labels: {
-				textViewResId = R.id.drawer_labels_txt;
-				iconResId = R.id.drawer_labels_icon;
-				break;
-			}
-			case Servers: {
-				textViewResId = R.id.drawer_servers_txt;
-				iconResId = R.id.drawer_servers_icon;
-				break;
-			}
-			case Notifications: {
-				textViewResId = R.id.drawer_notifications_txt;
-				iconResId = R.id.drawer_notifications_icon;
-				break;
-			}
-			case Premium: {
-				textViewResId = R.id.drawer_premium_txt;
-				iconResId = R.id.drawer_premium_icon;
-				break;
-			}
-			case None: break;
+		if (this.drawer.isDrawerOpen()) {
+			this.drawer.closeDrawer();
+			return true;
 		}
-
-		if (textViewResId != -1) {
-			int selectedDrawerItemColor = context.getResources().getColor(R.color.selectedDrawerItem);
-			TextView textView = (TextView) activity.findViewById(textViewResId);
-			textView.setTextColor(selectedDrawerItemColor);
-			Util.Fonts.setFont(context, textView, CustomFont.Roboto_Medium);
-			ImageView icon = (ImageView) activity.findViewById(iconResId);
-			icon.setColorFilter(selectedDrawerItemColor, Mode.MULTIPLY);
-		}
+		return false;
 	}
-
-    public SearchHelper getSearchHelper() { return this.searchHelper; }
 }
