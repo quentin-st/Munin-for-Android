@@ -27,6 +27,7 @@ import com.chteuchteu.munin.ui.Activity_Notifications;
 import com.chteuchteu.munin.ui.Activity_Plugins;
 import com.chteuchteu.munin.ui.Activity_Servers;
 import com.chteuchteu.munin.ui.MuninActivity;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -105,7 +106,7 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Graphs,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_graphs)
-						.withIcon(R.drawable.dr_graphs)
+						.withIcon(CommunityMaterial.Icon.cmd_pulse)
 						.withEnabled(muninFoo.getNodes().size() > 0)
 		);
 
@@ -113,7 +114,7 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Grids,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_grid)
-						.withIcon(R.drawable.dr_grids)
+						.withIcon(CommunityMaterial.Icon.cmd_grid)
 						.withEnabled(muninFoo.premium && muninFoo.getNodes().size() > 0)
 		);
 
@@ -121,7 +122,7 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Alerts,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_alerts)
-						.withIcon(R.drawable.dr_alerts)
+						.withIcon(CommunityMaterial.Icon.cmd_alert_box)
 						.withEnabled(muninFoo.getNodes().size() > 0)
 		);
 
@@ -129,7 +130,7 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Labels,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_labels)
-						.withIcon(R.drawable.dr_labels)
+						.withIcon(CommunityMaterial.Icon.cmd_label)
 						.withEnabled(muninFoo.getNodes().size() > 0)
 		);
 
@@ -137,14 +138,14 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Servers,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_server)
-						.withIcon(R.drawable.dr_servers)
+						.withIcon(CommunityMaterial.Icon.cmd_view_list)
 		);
 
 		// Notifications
 		this.drawerItems.put(DrawerMenuItem.Notifications,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_notifications)
-						.withIcon(R.drawable.dr_notifications)
+						.withIcon(CommunityMaterial.Icon.cmd_bell)
 						.withEnabled(muninFoo.premium && muninFoo.getNodes().size() > 0)
 		);
 
@@ -152,21 +153,21 @@ public class DrawerHelper {
 		this.drawerItems.put(DrawerMenuItem.Premium,
 				new PrimaryDrawerItem()
 						.withName(R.string.button_premium)
-						.withIcon(R.drawable.dr_premium)
+						.withIcon(CommunityMaterial.Icon.cmd_lock_open)
 		);
 
 		// Support
 		this.drawerItems.put(DrawerMenuItem.Support,
 				new SecondaryDrawerItem()
 						.withName(R.string.support)
-						.withIcon(R.drawable.ic_action_help_trimmed)
+						.withIcon(CommunityMaterial.Icon.cmd_help)
 		);
 
 		// Donate
 		this.drawerItems.put(DrawerMenuItem.Donate,
 				new SecondaryDrawerItem()
 						.withName(R.string.donate)
-						.withIcon(R.drawable.ic_action_favorite)
+						.withIcon(CommunityMaterial.Icon.cmd_gift)
 		);
 
 		DrawerBuilder builder = new DrawerBuilder()

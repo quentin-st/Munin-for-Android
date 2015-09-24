@@ -62,4 +62,5 @@ dependencies {
     compile('com.mikepenz:materialdrawer:4.3.0@aar') {
         transitive = true
     }
+    compile 'com.mikepenz:community-material-typeface:1.2.64.1@aar'
 }
