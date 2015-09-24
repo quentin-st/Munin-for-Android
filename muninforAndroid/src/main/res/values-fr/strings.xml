@@ -134,7 +134,7 @@
 	<string name="export_subject">Export Munin for Android</string>
 	<string name="import_title">Importation</string>
 	<string name="import_sentence">Veuillez entrer le code généré sur le premier appareil</string>
-	<string name="settings_defaultnode">Default server</string>
+	<string name="settings_defaultnode">Noeud par défaut</string>
 	<string name="settings_lang">Langue de l\'application</string>
 	<string name="lang_french">Français</string>
 	<string name="lang_german">Allemand</string>
@@ -172,7 +172,7 @@
 	<string name="update_credentials">Mettre à jour les infos de connexion</string>
 	<string name="long_click">Appui long pour éditer</string>
 	<string name="rescan">Re-scanner</string>
-	<string name="support">Support / suggestions</string>
+	<string name="support">Support</string>
 	<string name="choose_email_client">Veuillez sélectionner votre application mail</string>
 	<string name="donate">Donation</string>
 	<string name="donate_text">Développer une telle application nécessite beaucoup de temps et de dévotion. Si Munin for Android vous est utile,
