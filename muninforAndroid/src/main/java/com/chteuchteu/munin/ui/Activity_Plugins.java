@@ -1,25 +1,29 @@
 package com.chteuchteu.munin.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -39,7 +43,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-
 public class Activity_Plugins extends MuninActivity {
 	private SimpleAdapter 		sa;
 	private List<HashMap<String,String>> list;
@@ -48,8 +51,9 @@ public class Activity_Plugins extends MuninActivity {
 
 	private TextView			customActionBarView_textView;
     private NodesListAlertDialog nodesListAlertDialog;
-	
-	private LinearLayout	ll_filter;
+
+	private View 			customActionBarView;
+
 	private EditText		filter;
 	private ListView       listview;
 	
@@ -57,7 +61,6 @@ public class Activity_Plugins extends MuninActivity {
 	private static final int MODE_GROUPED = 1;
 	private static final int MODE_FLAT = 2;
 
-	@SuppressLint("InflateParams")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,7 +76,7 @@ public class Activity_Plugins extends MuninActivity {
 
 		// ActionBar custom view
 		LayoutInflater inflater = LayoutInflater.from(context);
-		final View customActionBarView = inflater.inflate(R.layout.actionbar_dropdown, null);
+		customActionBarView = inflater.inflate(R.layout.actionbar_dropdown, null);
 		customActionBarView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -175,39 +178,39 @@ public class Activity_Plugins extends MuninActivity {
 				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
 						context, android.R.layout.simple_list_item_1);
 				arrayAdapter.add(context.getString(R.string.delete_plugin));
-				
+
 				builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 							case 0:
 								TextView plu = (TextView) view.findViewById(R.id.line_b);
-								for (int i=0; i<muninFoo.getCurrentNode().getPlugins().size(); i++) {
+								for (int i = 0; i < muninFoo.getCurrentNode().getPlugins().size(); i++) {
 									MuninPlugin plugin = muninFoo.getCurrentNode().getPlugin(i);
 									if (plugin != null && plugin.getName().equals(plu.getText().toString())) {
 										muninFoo.getCurrentNode().getPlugins().remove(plugin);
 										muninFoo.sqlite.dbHlpr.deleteMuninPlugin(plugin, true);
 										// Remove from labels if necessary
 										muninFoo.removeLabelRelation(plugin);
-										
+
 										// Save scroll state
 										int index = listview.getFirstVisiblePosition();
 										View v = listview.getChildAt(0);
 										int top = (v == null) ? 0 : v.getTop();
-										
+
 										updateListView(mode);
-										
+
 										listview.setSelectionFromTop(index, top);
 										break;
 									}
 								}
-								
+
 								break;
 						}
 					}
 				});
 				builderSingle.show();
-				
+
 				return true;
 			}
 		});
@@ -224,26 +227,29 @@ public class Activity_Plugins extends MuninActivity {
 		super.createOptionsMenu();
 
 		getMenuInflater().inflate(R.menu.plugins, menu);
-		
-		ll_filter = (LinearLayout) this.findViewById(R.id.ll_filter);
-		filter = (EditText) this.findViewById(R.id.filter);
+
+		// Create filter field
+		filter = new EditText(this);
+		// This EditText must not have the default accent color or it won't be visible
+		filter.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+		filter.setTextColor(Color.WHITE);
+		filter.setTag("hidden");
 		
 		filter.addTextChangedListener(new TextWatcher() {
-			@SuppressLint("DefaultLocale")
 			@Override
 			public void afterTextChanged(Editable s) {
 				if (pluginsList != null && !pluginsList.isEmpty() && s != null) {
 					list.clear();
 					String search = s.toString();
-					
+
 					pluginsFilter = new MuninPlugin[pluginsList.size()];
-					for (int i=0; i<pluginsList.size(); i++) {
+					for (int i = 0; i < pluginsList.size(); i++) {
 						if (pluginsList.get(i).getFancyName().toLowerCase(Locale.ENGLISH).contains(search.toLowerCase(Locale.ENGLISH))
 								|| pluginsList.get(i).getName().toLowerCase(Locale.ENGLISH).contains(search.toLowerCase(Locale.ENGLISH)))
 							pluginsFilter[i] = pluginsList.get(i);
 					}
-					
-					HashMap<String,String> item;
+
+					HashMap<String, String> item;
 					for (MuninPlugin p : pluginsFilter) {
 						if (p != null) {
 							item = new HashMap<>();
@@ -252,15 +258,18 @@ public class Activity_Plugins extends MuninActivity {
 							list.add(item);
 						}
 					}
-					sa = new SimpleAdapter(Activity_Plugins.this, list, R.layout.plugins_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+					sa = new SimpleAdapter(Activity_Plugins.this, list, R.layout.plugins_list, new String[]{"line1", "line2"}, new int[]{R.id.line_a, R.id.line_b});
 					listview.setAdapter(sa);
 				}
 			}
-			
+
 			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+			}
+
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) { }
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
 		});
 	}
 
@@ -273,22 +282,38 @@ public class Activity_Plugins extends MuninActivity {
 
 		switch (item.getItemId()) {
 			case R.id.menu_filter:
-				if (ll_filter.getVisibility() == View.GONE) {
-					filter.setFocusable(true);
-					filter.setFocusableInTouchMode(true);
-					ll_filter.setVisibility(View.VISIBLE);
-				} else {
-					ll_filter.setVisibility(View.GONE);
-					filter.setFocusable(false);
-					filter.setFocusableInTouchMode(false);
-					filter.clearFocus();
-					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(filter.getWindowToken(), 0);
-				}
+				toggleFilterField(filter.getTag().equals("hidden"));
 				return true;
 		}
 
 		return true;
+	}
+
+	private void toggleFilterField(boolean show) {
+		if (show) {
+			filter.setTag("shown");
+			filter.setFocusable(true);
+			filter.setFocusableInTouchMode(true);
+
+			actionBar.setCustomView(filter);
+
+			filter.setLayoutParams(new Toolbar.LayoutParams(
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT,
+					Gravity.TOP | Gravity.RIGHT));
+		} else {
+			filter.setTag("hidden");
+			filter.setFocusable(false);
+			filter.setFocusableInTouchMode(false);
+			filter.setText("");
+
+			// Hide keyboard
+			filter.clearFocus();
+			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(filter.getWindowToken(), 0);
+
+			actionBar.setCustomView(customActionBarView);
+		}
 	}
 	
 	@Override
@@ -296,14 +321,8 @@ public class Activity_Plugins extends MuninActivity {
         if (dh.closeDrawerIfOpen())
             return;
 
-        if (ll_filter != null && ll_filter.getVisibility() == View.VISIBLE) {
-			filter.setText("");
-			ll_filter.setVisibility(View.GONE);
-			filter.setFocusable(false);
-			filter.setFocusableInTouchMode(false);
-			filter.clearFocus();
-			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(filter.getWindowToken(), 0);
+        if (filter.getTag().equals("shown")) {
+			toggleFilterField(false);
 			updateListView(MODE_GROUPED);
 		} else {
 			Intent intent = new Intent(this, Activity_Main.class);

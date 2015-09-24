@@ -12,30 +12,6 @@
 		android:orientation="vertical"
 		android:background="@drawable/bottom_shadow">
 
-		<!-- Filter -->
-
-		<LinearLayout
-			android:id="@+id/ll_filter"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@color/actionBarColor"
-			android:orientation="vertical"
-			android:visibility="gone" >
-
-			<EditText
-				android:id="@+id/filter"
-				style="@style/LightEditText"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginBottom="4dp"
-				android:layout_marginLeft="8dp"
-				android:layout_marginRight="8dp"
-				android:layout_marginTop="4dp"
-				android:ems="10"
-				android:inputType="text"
-				android:textColor="#fff" />
-		</LinearLayout>
-
 		<ListView
 			android:id="@+id/listview"
 			android:layout_width="match_parent"
