@@ -98,24 +98,6 @@ public class Activity_Plugins extends MuninActivity {
         customActionBarView_textView.setText(muninFoo.getCurrentNode().getName());
 		
 		actionBar.setCustomView(customActionBarView);
-		super.setOnDrawerOpen(new Runnable() {
-			@Override
-			public void run() {
-				customActionBarView.setVisibility(View.GONE);
-				actionBar.setDisplayShowCustomEnabled(false);
-				actionBar.setDisplayShowTitleEnabled(true);
-				actionBar.setSubtitle(muninFoo.getCurrentNode().getName());
-			}
-		});
-		super.setOnDrawerClose(new Runnable() {
-			@Override
-			public void run() {
-				customActionBarView.setVisibility(View.VISIBLE);
-				actionBar.setDisplayShowCustomEnabled(true);
-				actionBar.setDisplayShowTitleEnabled(false);
-				actionBar.setSubtitle("");
-			}
-		});
 
 		mode = MODE_GROUPED;
 

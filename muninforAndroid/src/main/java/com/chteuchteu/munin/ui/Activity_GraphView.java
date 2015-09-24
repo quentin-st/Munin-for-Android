@@ -397,24 +397,6 @@ public class Activity_GraphView extends MuninActivity {
         toolbarPluginName = (TextView) customToolbarView.findViewById(R.id.text);
         toolbarPluginName.setText(currentPlugin.getFancyNameOrDefault());
         actionBar.setCustomView(customToolbarView);
-        super.setOnDrawerOpen(new Runnable() {
-			@Override
-			public void run() {
-				customToolbarView.setVisibility(View.GONE);
-				actionBar.setDisplayShowCustomEnabled(false);
-				actionBar.setDisplayShowTitleEnabled(true);
-				actionBar.setSubtitle(currentPlugin.getFancyName());
-			}
-		});
-        super.setOnDrawerClose(new Runnable() {
-			@Override
-			public void run() {
-				customToolbarView.setVisibility(View.VISIBLE);
-				actionBar.setDisplayShowCustomEnabled(true);
-				actionBar.setDisplayShowTitleEnabled(false);
-				actionBar.setSubtitle("");
-			}
-		});
 	}
 
 	public void onResume() {

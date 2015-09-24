@@ -4,14 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
@@ -38,11 +35,7 @@ public class MuninActivity extends AppCompatActivity {
 	protected Activity      activity;
 	protected android.support.v7.app.ActionBar actionBar;
 	protected Toolbar       toolbar;
-	private boolean         isDrawerOpen;
 	protected Menu          menu;
-
-	private Runnable    onDrawerOpen;
-	private Runnable    onDrawerClose;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +53,6 @@ public class MuninActivity extends AppCompatActivity {
 
 	public void onContentViewSet() {
 		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
-		Util.UI.applySwag(this);
 		setSupportActionBar(toolbar);
 		this.actionBar = getSupportActionBar();
 		this.actionBar.setDisplayShowHomeEnabled(false);
@@ -93,49 +85,6 @@ public class MuninActivity extends AppCompatActivity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
-		/*dh.getDrawerLayout().setDrawerListener(new DrawerLayout.DrawerListener() {
-			@Override
-			public void onDrawerSlide(View view, float slideOffset) {
-				materialMenu.setTransformationOffset(
-						MaterialMenuDrawable.AnimationState.BURGER_ARROW,
-						isDrawerOpen ? 2 - slideOffset : slideOffset
-				);
-			}
-
-			@Override
-			public void onDrawerOpened(View view) {
-				isDrawerOpen = true;
-				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.ARROW);
-
-				actionBar.setSubtitle(actionBar.getTitle());
-				actionBar.setTitle(getString(R.string.app_name));
-
-				// Runnable set in Activity
-				if (onDrawerOpen != null)
-					onDrawerOpen.run();
-
-				menu.clear();
-				getMenuInflater().inflate(R.menu.main, menu);
-			}
-
-			@Override
-			public void onDrawerClosed(View view) {
-				isDrawerOpen = false;
-				materialMenu.animatePressedState(MaterialMenuDrawable.IconState.BURGER);
-
-				actionBar.setTitle(actionBar.getSubtitle());
-				actionBar.setSubtitle(null);
-
-				// Runnable set in Activity
-				if (onDrawerClose != null)
-					onDrawerClose.run();
-
-				createOptionsMenu();
-			}
-
-			@Override
-			public void onDrawerStateChanged(int i) { }
-		});*/
 
 		createOptionsMenu();
 
@@ -143,8 +92,6 @@ public class MuninActivity extends AppCompatActivity {
 	}
 
 	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.None; }
-	protected void setOnDrawerOpen(Runnable val) { this.onDrawerOpen = val; }
-	protected void setOnDrawerClose(Runnable val) { this.onDrawerClose = val; }
 
 	@Override
 	protected void onStart() {
