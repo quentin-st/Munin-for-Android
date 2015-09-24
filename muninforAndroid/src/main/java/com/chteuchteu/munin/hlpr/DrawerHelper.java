@@ -165,6 +165,7 @@ public class DrawerHelper {
 						.withName(R.string.support)
 						.withIdentifier(DrawerMenuItem.Support.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_help)
+						.withSelectable(false)
 		);
 
 		// Donate
@@ -173,6 +174,7 @@ public class DrawerHelper {
 						.withName(R.string.donate)
 						.withIdentifier(DrawerMenuItem.Donate.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_gift)
+						.withSelectable(false)
 		);
 
 
