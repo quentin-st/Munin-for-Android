@@ -45,14 +45,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,34 +67,6 @@ import java.util.List;
 
 public final class Util {
 	public static final class UI {
-		/**
-		 * Applies the following UI tweaks :
-		 * 		- Colors the status bar background (KitKat+)
-		 * @param activity Activity
-		 */
-		@SuppressLint("InlinedApi")
-		public static void applySwag(Activity activity) {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-				int id = activity.getResources().getIdentifier("config_enableTranslucentDecor", "bool", "android");
-				if (id != 0 && activity.getResources().getBoolean(id)) { // Translucent available
-					//View statusBarBackground = activity.findViewById(R.id.statusBarBackground);
-					//LinearLayout.LayoutParams statusBarParams = (LinearLayout.LayoutParams) statusBarBackground.getLayoutParams();
-					//statusBarParams.height = Util.getStatusBarHeight(activity);
-					//statusBarBackground.setLayoutParams(statusBarParams);
-
-					Window w = activity.getWindow();
-					//w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-					w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-					// On Android KitKat => statusBarColor. Above => actionBarColor
-					int statusBarColor = Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT ? R.color.statusBarColor : R.color.actionBarColor;
-					SystemBarTintManager tintManager = new SystemBarTintManager(activity);
-					tintManager.setStatusBarTintEnabled(true);
-					tintManager.setStatusBarTintResource(statusBarColor);
-				}
-			}
-		}
-
 		/**
 		 * Prepares a Gmail-style progressbar on the actionBar
 		 * Should be call in onCreate

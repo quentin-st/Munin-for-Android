@@ -95,8 +95,6 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 
 		dh = new DrawerHelper(this, muninFoo, this.toolbar);
 
-		Util.UI.applySwag(this);
-
 		progressBar = Util.UI.prepareGmailStyleProgressBar(this, getSupportActionBar());
 		
 		Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.Roboto_Regular);
