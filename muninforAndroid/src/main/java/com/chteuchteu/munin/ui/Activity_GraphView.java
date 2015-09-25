@@ -113,11 +113,6 @@ public class Activity_GraphView extends MuninActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		if (settings.getString(Settings.PrefKeys.GraphviewOrientation).equals("vertical"))
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		else if (settings.getString(Settings.PrefKeys.GraphviewOrientation).equals("horizontal"))
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 		setContentView(R.layout.activity_graphview);
 		super.onContentViewSet();

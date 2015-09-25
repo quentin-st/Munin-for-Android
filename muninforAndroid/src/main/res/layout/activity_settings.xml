@@ -283,19 +283,6 @@
 
 				<View style="@style/Material_Divider" />
 
-				<!-- Graphs screen orientation -->
-
-				<TextView
-					android:tag="set_font"
-					style="@style/Settings_SettingTitle"
-					android:text="@string/settings_graphview_orientation" />
-
-				<Spinner
-					android:id="@+id/spinner_orientation"
-					style="@style/Settings_SettingSpinner" />
-
-				<View style="@style/Material_Divider" />
-
 				<!-- GRIDS SETTINGS -->
 
 				<TextView

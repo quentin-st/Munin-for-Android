@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;

@@ -42,7 +42,6 @@ public class Activity_Settings extends MuninActivity {
 	private Spinner	spinner_scale;
 	private Spinner	spinner_defaultNode;
 	private Spinner	spinner_lang;
-	private Spinner	spinner_orientation;
 	private Spinner spinner_gridsLegend;
 	private Spinner spinner_defaultActivity;
 	private Spinner spinner_defaultActivity_grid;
@@ -69,7 +68,6 @@ public class Activity_Settings extends MuninActivity {
 		spinner_scale = (Spinner)findViewById(R.id.spinner_scale);
 		spinner_defaultNode = (Spinner)findViewById(R.id.spinner_defaultnode);
 		spinner_lang = (Spinner)findViewById(R.id.spinner_lang);
-		spinner_orientation = (Spinner)findViewById(R.id.spinner_orientation);
 		spinner_gridsLegend = (Spinner)findViewById(R.id.spinner_gridsLegend);
 		spinner_defaultActivity = (Spinner)findViewById(R.id.spinner_defaultActivity);
 		spinner_defaultActivity_grid = (Spinner)findViewById(R.id.spinner_defaultActivity_grid);
@@ -88,17 +86,17 @@ public class Activity_Settings extends MuninActivity {
 		
 		
 		// Spinner default period
-		List<String> list = new ArrayList<>();
-		list.add(getString(R.string.text47_1)); list.add(getString(R.string.text47_2));
-		list.add(getString(R.string.text47_3)); list.add(getString(R.string.text47_4));
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
+		String[] scales = {
+				getString(R.string.text47_1), getString(R.string.text47_2), getString(R.string.text47_3), getString(R.string.text47_4)
+		};
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, scales);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_scale.setAdapter(dataAdapter);
 		
 		
 		// Default node spinner
 		List<String> nodesList = new ArrayList<>();
-		nodesList.add(getString(R.string.text48_3));
+		nodesList.add(getString(R.string.auto));
 		for (MuninNode node : muninFoo.getNodes())
 			nodesList.add(node.getName());
 		ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nodesList);
@@ -114,33 +112,20 @@ public class Activity_Settings extends MuninActivity {
 		dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_lang.setAdapter(dataAdapter2);
 
-		// Orientation spinner
-		List<String> list3 = new ArrayList<>();
-		list3.add(getString(R.string.text48_1));
-		list3.add(getString(R.string.text48_2));
-		list3.add(getString(R.string.text48_3));
-		ArrayAdapter<String> dataAdapter3 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list3);
-		dataAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner_orientation.setAdapter(dataAdapter3);
-
 		// Grids legend spinner
-		List<String> list4 = new ArrayList<>();
-		list4.add(getString(R.string.grids_legend_none));
-		list4.add(getString(R.string.grids_legend_pluginName));
-		list4.add(getString(R.string.grids_legend_nodeName));
-		list4.add(getString(R.string.grids_legend_both));
-		ArrayAdapter<String> dataAdapter4 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list4);
+		String[] legendModes = {
+				getString(R.string.grids_legend_none), getString(R.string.grids_legend_pluginName), getString(R.string.grids_legend_nodeName), getString(R.string.grids_legend_both)
+		};
+		ArrayAdapter<String> dataAdapter4 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, legendModes);
 		dataAdapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_gridsLegend.setAdapter(dataAdapter4);
 
 		// Default activity spinner
 		grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
-		List<String> list5 = new ArrayList<>();
-		list5.add(getString(R.string.grids_legend_none));
-		list5.add(getString(R.string.button_grid));
-		list5.add(getString(R.string.button_labels));
-		list5.add(getString(R.string.alertsTitle));
-		ArrayAdapter<String> dataAdapter5 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list5);
+		String[] activities = {
+				getString(R.string.grids_legend_none), getString(R.string.button_grid), getString(R.string.button_labels), getString(R.string.alertsTitle)
+		};
+		ArrayAdapter<String> dataAdapter5 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, activities);
 		dataAdapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_defaultActivity.setAdapter(dataAdapter5);
 		spinner_defaultActivity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -205,13 +190,7 @@ public class Activity_Settings extends MuninActivity {
 		}
 
 		spinner_lang.setSelection(appLanguage.getIndex());
-		
-		// Graphview orientation
-		switch (settings.getString(Settings.PrefKeys.GraphviewOrientation)) {
-			case "horizontal": spinner_orientation.setSelection(0); break;
-			case "vertical": spinner_orientation.setSelection(1); break;
-			default: spinner_orientation.setSelection(2); break;
-		}
+
 		
 		// Always on
 		checkbox_alwaysOn.setChecked(settings.getBool(Settings.PrefKeys.ScreenAlwaysOn));
@@ -233,7 +212,7 @@ public class Activity_Settings extends MuninActivity {
 			String defaultNodeUrl = settings.getString(Settings.PrefKeys.DefaultNode);
 			MuninNode node = muninFoo.getNode(defaultNodeUrl);
 			if (node != null)
-				spinner_defaultNode.setSelection(muninFoo.getNodes().indexOf(node));
+				spinner_defaultNode.setSelection(muninFoo.getNodes().indexOf(node) + 1);
 		}
 
 		// User Agent
@@ -269,7 +248,7 @@ public class Activity_Settings extends MuninActivity {
 			}
 		}
 		else
-			spinner_defaultNode.setSelection(0);
+			spinner_defaultActivity.setSelection(0);
 
 		// Default activity_grid
 		if (spinner_defaultActivity.getSelectedItemPosition() == 1) {
@@ -354,18 +333,11 @@ public class Activity_Settings extends MuninActivity {
 
 		if (currentLang != newLang)
 			I18nHelper.loadLanguage(context, muninFoo, true);
-		
-		// Orientation
-		switch (spinner_orientation.getSelectedItemPosition()) {
-			case 0: settings.set(Settings.PrefKeys.GraphviewOrientation, "horizontal"); break;
-			case 1: settings.set(Settings.PrefKeys.GraphviewOrientation, "vertical"); break;
-			case 2: settings.set(Settings.PrefKeys.GraphviewOrientation, "auto"); break;
-		}
-		
-		settings.set(Settings.PrefKeys.ScreenAlwaysOn, String.valueOf(checkbox_alwaysOn.isChecked()));
-		settings.set(Settings.PrefKeys.AutoRefresh, String.valueOf(checkbox_autoRefresh.isChecked()));
-		settings.set(Settings.PrefKeys.GraphsZoom, String.valueOf(checkbox_graphsZoom.isChecked()));
-		settings.set(Settings.PrefKeys.HDGraphs, String.valueOf(checkbox_hdGraphs.isChecked()));
+
+		settings.set(Settings.PrefKeys.ScreenAlwaysOn, checkbox_alwaysOn.isChecked());
+		settings.set(Settings.PrefKeys.AutoRefresh, checkbox_autoRefresh.isChecked());
+		settings.set(Settings.PrefKeys.GraphsZoom, checkbox_graphsZoom.isChecked());
+		settings.set(Settings.PrefKeys.HDGraphs, checkbox_hdGraphs.isChecked());
 		
 		// Default node
 		int defaultNodePosition = spinner_defaultNode.getSelectedItemPosition()-1;
@@ -405,8 +377,7 @@ public class Activity_Settings extends MuninActivity {
 				// When there's no grid, the grids spinner is empty
 				if (selectedItemPos != Spinner.INVALID_POSITION) {
 					settings.set(Settings.PrefKeys.DefaultActivity, "grid");
-					settings.set(Settings.PrefKeys.DefaultActivity_GridId,
-							String.valueOf(grids.get(selectedItemPos).getId()));
+					settings.set(Settings.PrefKeys.DefaultActivity_GridId, (int) grids.get(selectedItemPos).getId());
 				}
 				break;
 			}
@@ -416,8 +387,7 @@ public class Activity_Settings extends MuninActivity {
 				// When there's no label, the labels spinner is empty
 				if (selectedItemPos != Spinner.INVALID_POSITION) {
 					settings.set(Settings.PrefKeys.DefaultActivity, "label");
-					settings.set(Settings.PrefKeys.DefaultActivity_LabelId,
-							String.valueOf(muninFoo.labels.get(selectedItemPos).getId()));
+					settings.set(Settings.PrefKeys.DefaultActivity_LabelId, (int) muninFoo.labels.get(selectedItemPos).getId());
 				}
 				break;
 			}
@@ -427,7 +397,7 @@ public class Activity_Settings extends MuninActivity {
 		}
 
 		// Disable Chromecast
-		settings.set(Settings.PrefKeys.DisableChromecast, String.valueOf(checkbox_disableChromecast.isChecked()));
+		settings.set(Settings.PrefKeys.DisableChromecast, checkbox_disableChromecast.isChecked());
 
 		// Chromecast App Id
 		settings.set(Settings.PrefKeys.ChromecastApplicationId, editText_chromecastAppId.getText().toString());

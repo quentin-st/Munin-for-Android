@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Settings {
     private static Settings instance;
@@ -113,13 +114,21 @@ public class Settings {
     }
 
 
+    /**
+     * For debug purpose, get raw shared preferences values
+     * @return Map
+     */
+    public Map<String, ?> getAll() {
+        return this.sharedPreferences.getAll();
+    }
+
+
     // HAS
     public boolean has(PrefKeys key) {
         return this.sharedPreferences.contains(key.getKey());
     }
 
     public enum PrefKeys {
-        GraphviewOrientation("graphview_orientation", "auto"),
         ScreenAlwaysOn("screenAlwaysOn", false),
         DefaultScale("defaultScale", "day"),
         LastMFAVersion("lastMFAVersion", ""),

@@ -89,9 +89,7 @@
 	<string name="text46">"Node elérése "</string>
 	<string name="text47.1">nap</string>
 	<string name="text47.2">hét</string>
-	<string name="text47.3">hónap</string>
-	<string name="text47.4">év</string>
-	<string name="text48.3">Automatikus</string>
+	<string name="auto">Automatikus</string>
 	<string name="text49.1">A normál állapotú nodeok elrejtése</string>
 	<string name="text49.2">A normál állapotú nodeok megjelenítése</string>
 	<string name="text50.1">kritikus</string>

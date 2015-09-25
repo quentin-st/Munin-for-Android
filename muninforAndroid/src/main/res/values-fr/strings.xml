@@ -83,9 +83,7 @@
 	<string name="text47.2">semaine</string>
 	<string name="text47.3">mois</string>
 	<string name="text47.4">année</string>
-	<string name="text48.1">Horizontal</string>
-	<string name="text48.2">Vertical</string>
-	<string name="text48.3">Auto</string>
+	<string name="auto">Auto</string>
 	<string name="text49.1">Masquer les noeud d\'état normal</string>
 	<string name="text49.2">Afficher les noeud d\'état normal</string>
 	<string name="text50.1">critique</string>

@@ -110,9 +110,7 @@
 	<string name="text47.2">semana</string>
 	<string name="text47.3">mes</string>
 	<string name="text47.4">año</string>
-	<string name="text48.1">Forzar horizontal</string>
-	<string name="text48.2">Forzar vertical</string>
-	<string name="text48.3">Auto</string>
+	<string name="auto">Auto</string>
 	<string name="text49.1">Ocultar nodos en estado normal</string>
 	<string name="text50.1">crítico</string>
 	<string name="text50.2">críticos</string>

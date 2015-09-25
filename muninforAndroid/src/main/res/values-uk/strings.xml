@@ -92,9 +92,7 @@
 	<string name="text47.2">тиждень</string>
 	<string name="text47.3">місяць</string>
 	<string name="text47.4">рік</string>
-	<string name="text48.1">Горизонтально</string>
-	<string name="text48.2">Вертикально</string>
-	<string name="text48.3">Автоматично</string>
+	<string name="auto">Автоматично</string>
 	<string name="text50.1">критично</string>
 	<string name="text50.2">критичне</string>
 	<string name="text51.1">попередження</string>

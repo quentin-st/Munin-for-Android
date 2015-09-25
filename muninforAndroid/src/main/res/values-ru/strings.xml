@@ -62,9 +62,7 @@
 	<string name="text47.2">"неделя"</string>
 	<string name="text47.3">"месяц"</string>
 	<string name="text47.4">"год"</string>
-	<string name="text48.1">"зафиксировать горизонтально"</string>
-	<string name="text48.2">"зафиксировать вертикально"</string>
-	<string name="text48.3">"Авто"</string>
+	<string name="auto">"Авто"</string>
 	<string name="button_alerts">"Оповещения"</string>
 	<string name="button_labels">"Метки"</string>
 	<string name="button_notifications">"Уведомления"</string>

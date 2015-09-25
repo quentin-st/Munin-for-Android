@@ -105,9 +105,7 @@
 	<string name="text47.2">週</string>
 	<string name="text47.3">月</string>
 	<string name="text47.4">年</string>
-	<string name="text48.1">強制的に横</string>
-	<string name="text48.2">強制的に縦</string>
-	<string name="text48.3">自動</string>
+	<string name="auto">自動</string>
 	<string name="text49.1">通常の状態のノードを非表示にする</string>
 	<string name="text49.2">通常の状態のノードを表示する</string>
 	<string name="text50.1">致命的</string>

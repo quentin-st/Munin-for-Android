@@ -104,9 +104,7 @@
 	<string name="text47.2">week</string>
 	<string name="text47.3">maand</string>
 	<string name="text47.4">jaar</string>
-	<string name="text48.1">Forceer horizontale weergave</string>
-	<string name="text48.2">Forceer verticale weergave</string>
-	<string name="text48.3">Automatisch</string>
+	<string name="auto">Automatisch</string>
 	<string name="text49.1">Verberg servers in normale staat</string>
 	<string name="text49.2">Toon servers in normale staat</string>
 	<string name="text50.1">kritisch</string>

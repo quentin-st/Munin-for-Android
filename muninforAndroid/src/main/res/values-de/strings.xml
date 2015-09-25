@@ -66,9 +66,7 @@
 	<string name="text47.2">"Woche"</string>
 	<string name="text47.3">"Monat"</string>
 	<string name="text47.4">"Jahr"</string>
-	<string name="text48.1">"erzwinge horizontal"</string>
-	<string name="text48.2">"erzwinge vertikal"</string>
-	<string name="text48.3">"automatisch"</string>
+	<string name="auto">"automatisch"</string>
 	<string name="button_alerts">"Alarme"</string>
 	<string name="button_labels">"Labels"</string>
 	<string name="button_notifications">"Benachrichtigungen"</string>

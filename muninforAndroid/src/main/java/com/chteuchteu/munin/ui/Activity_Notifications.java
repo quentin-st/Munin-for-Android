@@ -39,21 +39,22 @@ import com.chteuchteu.munin.obj.MuninNode;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 @SuppressLint("InflateParams")
 public class Activity_Notifications extends MuninActivity {
 	private CheckBox		cb_notifications;
-	private Spinner		sp_refreshRate;
+	private Spinner			sp_refreshRate;
 	private CheckBox		cb_wifiOnly;
-	private CheckBox       cb_vibrate;
+	private CheckBox       	cb_vibrate;
 
 	private LinearLayout	checkboxesView;
-	private static CheckBox[]	checkboxes;
+	private static CheckBox[] checkboxes;
 	
-	private String			currentRefreshRate;
-	private static final String[] REFRESH_RATES = {"10", "30", "60", "120", "300", "600", "1440"};
+	private int				currentRefreshRate;
+	private static final int[] REFRESH_RATES = {10, 30, 60, 120, 300, 600, 1440};
 	private static final float PAGE_WEIGHT = 12.25f;
 	
 	@Override
@@ -90,32 +91,14 @@ public class Activity_Notifications extends MuninActivity {
 		cb_vibrate.setEnabled(v.hasVibrator());
 		cb_vibrate.setChecked(settings.getBool(Settings.PrefKeys.Notifs_Vibrate));
 		
-		currentRefreshRate = settings.getString(Settings.PrefKeys.Notifs_RefreshRate);
-		if (currentRefreshRate.equals(""))
-			currentRefreshRate = "60";
-        switch (currentRefreshRate) {
-            case "10":
-                sp_refreshRate.setSelection(0);
-                break;
-            case "30":
-                sp_refreshRate.setSelection(1);
-                break;
-            case "60":
-                sp_refreshRate.setSelection(2);
-                break;
-            case "120":
-                sp_refreshRate.setSelection(3);
-                break;
-            case "300":
-                sp_refreshRate.setSelection(4);
-                break;
-            case "600":
-                sp_refreshRate.setSelection(5);
-                break;
-            case "1440":
-                sp_refreshRate.setSelection(6);
-                break;
-        }
+		currentRefreshRate = settings.has(Settings.PrefKeys.Notifs_RefreshRate)
+				? settings.getInt(Settings.PrefKeys.Notifs_RefreshRate)
+				: 60;
+
+		for (int i=0; i<REFRESH_RATES.length; i++) {
+			if (REFRESH_RATES[i] == currentRefreshRate)
+				sp_refreshRate.setSelection(i);
+		}
 		
 		sp_refreshRate.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
@@ -258,7 +241,7 @@ public class Activity_Notifications extends MuninActivity {
 	}
 	
 	private void computeEstimatedConsumption() {
-		int refreshRate = Integer.parseInt(currentRefreshRate);
+		int refreshRate = currentRefreshRate;
 
 		int nbNodes = 0;
 		if (settings.has(Settings.PrefKeys.Notifs_NodesList))
