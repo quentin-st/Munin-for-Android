@@ -12,6 +12,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import com.chteuchteu.munin.BuildConfig;
+import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.TagFormat;
 import com.chteuchteu.munin.hlpr.Util;
@@ -19,6 +21,7 @@ import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class Activity_About extends MuninActivity {
@@ -70,6 +73,8 @@ public class Activity_About extends MuninActivity {
 		super.createOptionsMenu();
 
 		getMenuInflater().inflate(R.menu.about, menu);
+
+		menu.findItem(R.id.menu_debug_preferences).setVisible(BuildConfig.DEBUG);
 	}
 
 	@Override
@@ -79,6 +84,9 @@ public class Activity_About extends MuninActivity {
 		switch (item.getItemId()) {
 			case R.id.menu_libraries:
 				showLibrariesDialog();
+				return true;
+			case R.id.menu_debug_preferences:
+				debugPreferences();
 				return true;
 		}
 
@@ -122,6 +130,22 @@ public class Activity_About extends MuninActivity {
 						startActivity(browserIntent);
 					}
 				})
+				.show();
+	}
+
+	private void debugPreferences() {
+		Map<String, ?> allPrefs = settings.getAll();
+
+		CharSequence[] prefs = new CharSequence[allPrefs.size()];
+		int i=0;
+		for (Map.Entry<String, ?> entry : allPrefs.entrySet()) {
+			prefs[i] = entry.getKey() + ": " + (entry.getValue() == null ? "null" : entry.getValue().toString());
+			i++;
+		}
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setNeutralButton(R.string.close, null)
+				.setItems(prefs, null)
 				.show();
 	}
 	

@@ -6,5 +6,8 @@
 		android:id="@+id/menu_libraries"
 		app:showAsAction="never"
 		android:title="@string/about_librariesTitle"/>
+	<item
+		android:id="@+id/menu_debug_preferences"
+		android:title="@string/debug_preferences"/>
 
 </menu>

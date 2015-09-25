@@ -163,9 +163,6 @@
 	<string name="text47.2">week</string>
 	<string name="text47.3">month</string>
 	<string name="text47.4">year</string>
-	<string name="text48.1">Force horizontal</string>
-	<string name="text48.2">Force vertical</string>
-	<string name="text48.3">Auto</string>
 	<string name="text49.1">Hide normal state nodes</string>
 	<string name="text49.2">Show normal state nodes</string>
 	<string name="text50.1">critical</string>
@@ -291,5 +288,7 @@
 	<string name="disable_chromecast">Disable Chromecast feature</string>
 	<string name="disable_chromecast_text">If you don\'t own a Chromecast, you may want to disable its usage in the app</string>
 	<string name="about">About</string>
+	<string name="auto">Auto</string>
+	<string name="debug_preferences" translatable="false">Debug preferences</string>
 
 </resources>
