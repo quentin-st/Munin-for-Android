@@ -10,8 +10,14 @@ public class Settings {
 
     private SharedPreferences sharedPreferences;
 
+    private HashMap<PrefKeys, String> stringPrefs;
+    private HashMap<PrefKeys, Boolean> boolPrefs;
+
     private Settings(Context context) {
         this.sharedPreferences = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
+
+        this.stringPrefs = new HashMap<>();
+        this.boolPrefs = new HashMap<>();
     }
 
     public static synchronized void init(Context context) { instance = new Settings(context);}
@@ -23,23 +29,37 @@ public class Settings {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putBoolean(key.getKey(), value);
         editor.apply();
+
+        // Update cached val
+        this.boolPrefs.put(key, value);
     }
 
     public void set(PrefKeys key, String value) {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putString(key.getKey(), value);
         editor.apply();
+
+        // Update cached val
+        this.stringPrefs.put(key, value);
     }
 
 
     // GET
     public boolean getBool(PrefKeys key) { return getBool(key, false); }
     public boolean getBool(PrefKeys key, boolean defaultValue) {
+        // Cache hit
+        if (this.boolPrefs.keySet().contains(key))
+            return this.boolPrefs.get(key);
+
         return this.sharedPreferences.getBoolean(key.getKey(), defaultValue);
     }
 
     public String getString(PrefKeys key) { return getString(key, null); }
     public String getString(PrefKeys key, String defaultValue) {
+        // Cache hit
+        if (this.stringPrefs.keySet().contains(key))
+            return this.stringPrefs.get(key);
+
         return this.sharedPreferences.getString(key.getKey(), defaultValue);
     }
 
@@ -49,6 +69,12 @@ public class Settings {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.remove(key.getKey());
         editor.apply();
+
+        // Update cache
+        if (this.boolPrefs.keySet().contains(key))
+            this.boolPrefs.remove(key);
+        else if (this.stringPrefs.keySet().contains(key))
+            this.stringPrefs.remove(key);
     }
 
 
