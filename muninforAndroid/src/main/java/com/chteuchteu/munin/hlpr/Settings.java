@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class Settings {
     private static Settings instance;
@@ -59,7 +60,10 @@ public class Settings {
 
 
     // GET
-    public boolean getBool(PrefKeys key) { return getBool(key, false); }
+    public boolean getBool(PrefKeys key) {
+        Object defaultValue = getDefaultValue(key);
+        return getBool(key, defaultValue != null && (boolean) defaultValue);
+    }
     public boolean getBool(PrefKeys key, boolean defaultValue) {
         // Cache hit
         if (this.boolPrefs.keySet().contains(key))
@@ -74,16 +78,40 @@ public class Settings {
         if (this.stringPrefs.keySet().contains(key))
             return this.stringPrefs.get(key);
 
-        return this.sharedPreferences.getString(key.getKey(), defaultValue);
+        if (this.sharedPreferences.contains(key.getKey()))
+            return this.sharedPreferences.getString(key.getKey(), defaultValue);
+
+        if (defaultValue != null)
+            return defaultValue;
+
+        return (String) getDefaultValue(key);
     }
 
-    public int getInt(PrefKeys key) { return getInt(key, -1); }
+    public int getInt(PrefKeys key) {
+        Object defaultValue = getDefaultValue(key);
+        return getInt(key, defaultValue != null ? (int) defaultValue : -1);
+    }
     public int getInt(PrefKeys key, int defaultValue) {
         // Cache hit
         if (this.intPrefs.keySet().contains(key))
             return this.intPrefs.get(key);
 
         return this.sharedPreferences.getInt(key.getKey(), defaultValue);
+    }
+
+    private Object getDefaultValue(PrefKeys key) {
+        switch (key) {
+            case Lang:
+                Locale.getDefault().getLanguage();
+            case GraphviewOrientation:
+                return "auto";
+            case DefaultScale:
+                return "day";
+            case GraphsZoom:
+                return true;
+            default:
+                return null;
+        }
     }
 
 
