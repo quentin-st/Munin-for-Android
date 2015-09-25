@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -269,68 +268,6 @@ public final class Util {
 		} catch (Exception ex) {
 			return src;
 		}
-	}
-	
-	public static boolean hasPref(Context context, PrefKeys key) {
-		return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).contains(key.getKey());
-	}
-
-	public enum PrefKeys {
-		GraphviewOrientation("graphview_orientation"),  Notifications("notifications"),
-		ScreenAlwaysOn("screenAlwaysOn"),                 Notifs_RefreshRate("notifs_refreshRate"),
-		DefaultScale("defaultScale"),                      Notifs_NodesList("notifs_serversList"),
-		LastMFAVersion("lastMFAVersion"),				  Notifs_WifiOnly("notifs_wifiOnly"),
-											                  Notifs_Vibrate("notifs_vibrate"),
-															  Notifs_LastNotificationText("lastNotificationText"),
-
-		AutoRefresh("autoRefresh"),                        UserAgent("userAgent"), UserAgentChanged("userAgentChanged"),
-		HDGraphs("hdGraphs"),                               Lang("lang"),
-		GraphsZoom("graphsZoom"),                          DefaultNode("defaultServer"),
-		GridsLegend("gridsLegend"),						 DisableChromecast("disableChromecast"),
-
-		Twitter_NbLaunches("twitter_nbLaunches"),        AddServer_History("addserver_history"),
-		Widget2_ForceUpdate("widget2_forceUpdate"),      OpenSourceDialogShown("openSourceDialogShown"),
-														       I18NDialogShown("i18nDialogShown"),
-		DefaultActivity("defaultActivity"),
-		DefaultActivity_GridId("defaultActivity_gridId"),
-		DefaultActivity_LabelId("defaultActivity_labelId"),
-
-        ChromecastApplicationId("chromecastAppId"),
-        ImportExportServer("importExportServer"),
-
-		// Old prefs
-		Drawer("drawer"), Splash("splash"), ListViewMode("listViewMode"), Transitions("transitions");
-
-		private String key;
-		PrefKeys(String k) { this.key = k; }
-
-		public String getKey() { return this.key; }
-	}
-
-	public static String getPref(Context context, PrefKeys key) {
-		return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key.getKey(), "");
-	}
-
-    public static String getPref(Context context, PrefKeys key, String defaultValue) {
-        return context.getSharedPreferences("user_pref", Context.MODE_PRIVATE).getString(key.getKey(), defaultValue);
-    }
-	
-	public static void setPref(Context context, PrefKeys key, String value) {
-		if (value.equals(""))
-			removePref(context, key);
-		else {
-			SharedPreferences prefs = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(key.getKey(), value);
-			editor.apply();
-		}
-	}
-	
-	public static void removePref(Context context, PrefKeys key) {
-		SharedPreferences prefs = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.remove(key.getKey());
-		editor.apply();
 	}
 	
 	public static class URLManipulation {
