@@ -245,5 +245,6 @@
 	<string name="lang_chinese_taiwan">Chinois (Taiwan)</string>
 <string name="disable_chromecast">Désactiver la fonctionnalité Chromecast</string>
 	<string name="disable_chromecast_text">Si vous ne possédez pas de Chromecast, vous voudriez peut-être désactiver son utilisation dans l\'application</string>
+	<string name="about">A propos</string>
 
 </resources>

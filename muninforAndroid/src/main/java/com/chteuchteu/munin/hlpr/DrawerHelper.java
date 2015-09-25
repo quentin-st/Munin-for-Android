@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.async.DonateAsync;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.ui.Activity_About;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
 import com.chteuchteu.munin.ui.Activity_Grid;
@@ -26,6 +26,7 @@ import com.chteuchteu.munin.ui.Activity_Labels;
 import com.chteuchteu.munin.ui.Activity_Notifications;
 import com.chteuchteu.munin.ui.Activity_Plugins;
 import com.chteuchteu.munin.ui.Activity_Servers;
+import com.chteuchteu.munin.ui.Activity_Settings;
 import com.chteuchteu.munin.ui.MuninActivity;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.materialdrawer.Drawer;
@@ -43,7 +44,6 @@ public class DrawerHelper {
 	private Activity activity;
 	private Context context;
 	private MuninFoo muninFoo;
-	private MuninActivity currentActivity;
 	private Drawer drawer;
 	private HashMap<DrawerMenuItem, IDrawerItem> drawerItems;
 	private Toolbar toolbar;
@@ -58,7 +58,9 @@ public class DrawerHelper {
 		Notifications(6),
 		Premium(7),
 		Support(8),
-		Donate(9);
+		Donate(9),
+		Settings(10),
+		About(11);
 
 		private int identifier;
 		public int getIdentifier() { return this.identifier; }
@@ -90,11 +92,6 @@ public class DrawerHelper {
 			this.drawer.closeDrawer();
 		else
 			this.drawer.openDrawer();
-	}
-
-	private int getIntentFlag() {
-		return this.currentActivity instanceof Activity_Grid ? Intent.FLAG_ACTIVITY_CLEAR_TOP
-				: Intent.FLAG_ACTIVITY_NEW_TASK;
 	}
 
 	private void initDrawer() {
@@ -159,6 +156,21 @@ public class DrawerHelper {
 						.withIcon(CommunityMaterial.Icon.cmd_lock_open)
 		);
 
+		// Settings
+		this.drawerItems.put(DrawerMenuItem.Settings,
+				new SecondaryDrawerItem()
+						.withName(R.string.settingsTitle)
+						.withIdentifier(DrawerMenuItem.Settings.getIdentifier())
+						.withIcon(CommunityMaterial.Icon.cmd_settings)
+		);
+
+		// About
+		this.drawerItems.put(DrawerMenuItem.About,
+				new SecondaryDrawerItem()
+						.withName(R.string.about)
+						.withIdentifier(DrawerMenuItem.About.getIdentifier())
+						.withIcon(CommunityMaterial.Icon.cmd_information));
+
 		// Support
 		this.drawerItems.put(DrawerMenuItem.Support,
 				new SecondaryDrawerItem()
@@ -196,6 +208,8 @@ public class DrawerHelper {
 
 		builder.addDrawerItems(
 				new DividerDrawerItem(),
+				this.drawerItems.get(DrawerMenuItem.Settings),
+				this.drawerItems.get(DrawerMenuItem.About),
 				this.drawerItems.get(DrawerMenuItem.Support),
 				this.drawerItems.get(DrawerMenuItem.Donate));
 
@@ -225,6 +239,12 @@ public class DrawerHelper {
 						return true;
 					case Premium:
 						startActivity(Activity_GoPremium.class);
+						return true;
+					case Settings:
+						startActivity(Activity_Settings.class);
+						return true;
+					case About:
+						startActivity(Activity_About.class);
 						return true;
 					case Support:
 						Intent send = new Intent(Intent.ACTION_SENDTO);
@@ -261,8 +281,11 @@ public class DrawerHelper {
 		if (((Object) activity).getClass() == targetActivity)
 			closeDrawerIfOpen();
 		else {
+			int intentFlag = this.activity instanceof Activity_Grid
+					? Intent.FLAG_ACTIVITY_CLEAR_TOP
+					: Intent.FLAG_ACTIVITY_NEW_TASK;
 			Intent intent = new Intent(activity, targetActivity);
-			intent.addFlags(getIntentFlag());
+			intent.addFlags(intentFlag);
 			activity.startActivity(intent);
 			Util.setTransition(activity, TransitionStyle.DEEPER);
 		}
