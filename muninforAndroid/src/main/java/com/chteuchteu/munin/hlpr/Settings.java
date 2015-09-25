@@ -12,15 +12,20 @@ public class Settings {
 
     private HashMap<PrefKeys, String> stringPrefs;
     private HashMap<PrefKeys, Boolean> boolPrefs;
+    private HashMap<PrefKeys, Integer> intPrefs;
 
     private Settings(Context context) {
         this.sharedPreferences = context.getSharedPreferences("user_pref", Context.MODE_PRIVATE);
 
         this.stringPrefs = new HashMap<>();
         this.boolPrefs = new HashMap<>();
+        this.intPrefs = new HashMap<>();
     }
 
-    public static synchronized void init(Context context) { instance = new Settings(context);}
+    public static synchronized Settings init(Context context) {
+        instance = new Settings(context);
+        return instance;
+    }
     public static synchronized Settings getInstance() { return instance; }
 
 
@@ -43,6 +48,15 @@ public class Settings {
         this.stringPrefs.put(key, value);
     }
 
+    public void set(PrefKeys key, int value) {
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+        editor.putInt(key.getKey(), value);
+        editor.apply();
+
+        // Update cached val
+        this.intPrefs.put(key, value);
+    }
+
 
     // GET
     public boolean getBool(PrefKeys key) { return getBool(key, false); }
@@ -61,6 +75,15 @@ public class Settings {
             return this.stringPrefs.get(key);
 
         return this.sharedPreferences.getString(key.getKey(), defaultValue);
+    }
+
+    public int getInt(PrefKeys key) { return getInt(key, -1); }
+    public int getInt(PrefKeys key, int defaultValue) {
+        // Cache hit
+        if (this.intPrefs.keySet().contains(key))
+            return this.intPrefs.get(key);
+
+        return this.sharedPreferences.getInt(key.getKey(), defaultValue);
     }
 
 
