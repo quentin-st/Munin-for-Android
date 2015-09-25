@@ -16,11 +16,5 @@
 				android:title="@string/export_servers" />
 		</menu>
 	</item>
-	
-	<item
-		android:id="@+id/menu_add"
-		android:icon="@drawable/ic_action_content_add"
-		app:showAsAction="ifRoom"
-		android:title="@string/addServerTitle"/>
 
 </menu>

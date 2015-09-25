@@ -39,6 +39,7 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.AuthType;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninNode;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -61,6 +62,17 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 		expListView = (ExpandableListView) findViewById(R.id.servers_list);
 		
 		refreshList();
+
+		// Init fab
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.attachToListView(expListView);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				startActivity(new Intent(activity, Activity_Server.class));
+				Util.setTransition(activity, TransitionStyle.DEEPER);
+			}
+		});
 	}
 	
 	public void refreshList() {
@@ -439,10 +451,6 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-			case R.id.menu_add:
-				startActivity(new Intent(this, Activity_Server.class));
-				Util.setTransition(this, TransitionStyle.DEEPER);
-				return true;
 			case R.id.menu_import:
 				displayImportDialog();
 				return true;
