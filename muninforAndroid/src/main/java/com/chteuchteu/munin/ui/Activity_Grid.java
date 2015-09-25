@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
@@ -53,7 +54,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		setContentView(R.layout.activity_grid);
 		super.onContentViewSet();
 
-		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
+		if (settings.getBool(Settings.PrefKeys.ScreenAlwaysOn))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		this.currentPeriod = Util.getDefaultPeriod(this);
@@ -118,7 +119,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		}
 
 		// Launch periodical check
-		if (Util.getPref(this, Util.PrefKeys.AutoRefresh).equals("true")) {
+		if (settings.getBool(Settings.PrefKeys.AutoRefresh)) {
 			mHandler = new Handler();
 			final int INTERVAL = 1000 * 60 * 5;
 			mHandlerTask = new Runnable() {
@@ -133,7 +134,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		}
 
 		// Chromecast
-		chromecastEnabled = muninFoo.premium == !Util.getPref(this, Util.PrefKeys.DisableChromecast).equals("true");
+		chromecastEnabled = muninFoo.premium && !settings.getBool(Settings.PrefKeys.DisableChromecast);
 
 		if (chromecastEnabled) {
 			// If null: not connected yet
@@ -345,7 +346,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			muninFoo.chromecastHelper.onStop();
 		super.onStop();
 
-		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
+		if (settings.getBool(Settings.PrefKeys.ScreenAlwaysOn))
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 }

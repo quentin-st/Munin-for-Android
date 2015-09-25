@@ -48,6 +48,7 @@ import com.chteuchteu.munin.hlpr.DocumentationHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper.DynazoomFetcher;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.HTTPResponse.BaseResponse;
@@ -113,15 +114,15 @@ public class Activity_GraphView extends MuninActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (Util.getPref(this, Util.PrefKeys.GraphviewOrientation).equals("vertical"))
+		if (settings.getString(Settings.PrefKeys.GraphviewOrientation).equals("vertical"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		else if (Util.getPref(this, Util.PrefKeys.GraphviewOrientation).equals("horizontal"))
+		else if (settings.getString(Settings.PrefKeys.GraphviewOrientation).equals("horizontal"))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 		setContentView(R.layout.activity_graphview);
 		super.onContentViewSet();
 
-		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
+		if (settings.getBool(Settings.PrefKeys.ScreenAlwaysOn))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		TextView nodeName = (TextView) findViewById(R.id.serverName);
@@ -140,7 +141,7 @@ public class Activity_GraphView extends MuninActivity {
 			}
 		});
 		
-		load_period = Period.get(Util.getPref(this, Util.PrefKeys.DefaultScale));
+		load_period = Period.get(settings.getString(Settings.PrefKeys.DefaultScale));
 		
 		// Coming from widget
 		Intent thisIntent = getIntent();
@@ -293,7 +294,7 @@ public class Activity_GraphView extends MuninActivity {
 		});
 		
 		// Launch periodical check
-		if (Util.getPref(this, Util.PrefKeys.AutoRefresh).equals("true")) {
+		if (settings.getBool(Settings.PrefKeys.AutoRefresh)) {
 			mHandler = new Handler();
 			final int INTERVAL = 1000 * 60 * 5;
 			mHandlerTask = new Runnable() {
@@ -975,7 +976,7 @@ public class Activity_GraphView extends MuninActivity {
 	public void onStop() {
 		super.onStop();
 		
-		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
+		if (settings.getBool(Settings.PrefKeys.ScreenAlwaysOn))
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 }

@@ -12,6 +12,7 @@ import android.widget.RemoteViewsService;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.AlertsWidget;
 import com.chteuchteu.munin.obj.MuninNode;
@@ -38,7 +39,7 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 	private void refresh() {
 		this.nodes.clear();
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-		Util.setPref(context, Util.PrefKeys.Widget2_ForceUpdate, "false");
+		Settings.getInstance(context).set(Settings.PrefKeys.Widget2_ForceUpdate, false);
 		new PluginsStatesFetcher(appWidgetManager, widgetId).execute();
 	}
 
@@ -183,7 +184,7 @@ public class Widget_AlertsWidget_ViewsFactory implements RemoteViewsService.Remo
 	@Override
 	public void onDataSetChanged() {
 		// Called from Widget_AlertsWidget_WidgetProvider on refresh button click
-		if (!pluginsStatesFetched || Util.getPref(context, Util.PrefKeys.Widget2_ForceUpdate).equals("true"))
+		if (!pluginsStatesFetched || Settings.getInstance(context).getBool(Settings.PrefKeys.Widget2_ForceUpdate))
 			refresh();
 	}
 

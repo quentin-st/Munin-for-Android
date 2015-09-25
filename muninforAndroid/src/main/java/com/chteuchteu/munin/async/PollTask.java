@@ -11,6 +11,7 @@ import android.support.v7.app.NotificationCompat;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.ntfs.Service_Notifications;
 import com.chteuchteu.munin.obj.MuninMaster;
@@ -38,7 +39,7 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         List<MuninNode> nodes = new ArrayList<>();
-        String nodesList = Util.getPref(context, Util.PrefKeys.Notifs_NodesList);
+        String nodesList = Settings.getInstance(context).getString(Settings.PrefKeys.Notifs_NodesList);
         String[] nodesToWatch = nodesList.split(";");
 
         DatabaseHelper dbHelper = new DatabaseHelper(context);
@@ -151,7 +152,8 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
             notifText = warningPlugins;
 
         if (nbCriticals > 0 || nbWarnings > 0) {
-            if (!Util.getPref(context, Util.PrefKeys.Notifs_LastNotificationText).equals(notifText)) {
+            Settings settings = Settings.getInstance(context);
+            if (!settings.getString(Settings.PrefKeys.Notifs_LastNotificationText).equals(notifText)) {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -166,9 +168,9 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
                 // Dismiss notification on click, set lights
                 builder.setDefaults(Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL);
 
-                Util.setPref(context, Util.PrefKeys.Notifs_LastNotificationText, notifText);
+                settings.set(Settings.PrefKeys.Notifs_LastNotificationText, notifText);
 
-                if (Util.getPref(context, Util.PrefKeys.Notifs_Vibrate).equals("true"))
+                if (settings.getBool(Settings.PrefKeys.Notifs_Vibrate))
                     Util.vibrate(context, 500);
 
                 notificationManager.notify(1234, builder.build());

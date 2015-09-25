@@ -25,6 +25,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_IconList;
 import com.chteuchteu.munin.adptr.Adapter_NodesList;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.chteuchteu.munin.ui.Fragment_Grid;
@@ -113,10 +114,10 @@ public class GridItem {
 			if (fragment.isEditing())
 				footer.setVisibility(View.GONE);
 
-			switch (Util.getPref(context, Util.PrefKeys.GridsLegend)) {
+			switch (Settings.getInstance(context).getString(Settings.PrefKeys.GridsLegend)) {
 				case "none": footer.setVisibility(View.GONE); break;
-				case "serverName": case "": pluginName.setVisibility(View.GONE); break;
 				case "pluginName": nodeName.setVisibility(View.GONE); break;
+				case "serverName": default: pluginName.setVisibility(View.GONE); break;
 			}
 
 			this.applyPlaceholder(false);

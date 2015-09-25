@@ -15,6 +15,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.I18nHelper;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.crashlytics.android.Crashlytics;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -30,6 +31,7 @@ import io.fabric.sdk.android.Fabric;
 @SuppressLint("Registered")
 public class MuninActivity extends AppCompatActivity {
 	protected MuninFoo      muninFoo;
+	protected Settings		settings;
 	protected DrawerHelper  dh;
 	protected Context       context;
 	protected Activity      activity;
@@ -46,6 +48,7 @@ public class MuninActivity extends AppCompatActivity {
 		this.context = this;
 		this.activity = this;
 		this.muninFoo = MuninFoo.getInstance(this);
+		this.settings = muninFoo.getSettings();
 		I18nHelper.loadLanguage(this, muninFoo);
 
 		// setContentView...

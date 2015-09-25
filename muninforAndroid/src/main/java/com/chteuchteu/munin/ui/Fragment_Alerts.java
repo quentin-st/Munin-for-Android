@@ -16,6 +16,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_Alerts;
 import com.chteuchteu.munin.async.AlertsScanner;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninNode;
 
@@ -88,7 +89,7 @@ public class Fragment_Alerts extends Fragment {
 		});
 
 		// Launch periodical check
-		if (Util.getPref(context, Util.PrefKeys.AutoRefresh).equals("true")) {
+		if (Settings.getInstance(context).getBool(Settings.PrefKeys.AutoRefresh)) {
 			mHandler = new Handler();
 			final int INTERVAL = 1000 * 60 * 5;
 			mHandlerTask = new Runnable() {

@@ -149,10 +149,6 @@ public final class Util {
 		}
 	}
 
-	public static int dpToPx(int dp) {
-		return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
-	}
-
 	public static int pxToDp(int px) {
 		return (int) (px / Resources.getSystem().getDisplayMetrics().density);
 	}
@@ -201,8 +197,8 @@ public final class Util {
 		return netInfo != null && netInfo.isConnectedOrConnecting();
 	}
 	
-	public static Period getDefaultPeriod(Context c) {
-		return Period.get(Util.getPref(c, PrefKeys.DefaultScale));
+	public static Period getDefaultPeriod(Context context) {
+		return Period.get(Settings.getInstance(context).getString(Settings.PrefKeys.DefaultScale));
 	}
 	
 	public static Bitmap removeBitmapBorder(Bitmap original) {
@@ -331,36 +327,6 @@ public final class Util {
 				ex.printStackTrace();
 				return defaultUri;
 			}
-		}
-		/**
-		 * Get http://host.dd/ from ascendDirectory(2, http://host.dd/x/y/)
-		 *  If we ascent too much times, the original URL will be returned.
-		 * @param nbLevels Ascend X times
-		 * @param url Source URL
-		 * @return Result URL
-		 */
-		public static String ascendDirectory(int nbLevels, String url) {
-			// We assume the last trailing slash has been added :
-			// http://host.dd/sub/
-			
-			String newUrl = url;
-			// Remove everything after the trailing slash
-			newUrl = newUrl.substring(0, newUrl.lastIndexOf('/'));
-			
-			// Ascend
-			for (int i=0; i<nbLevels; i++)
-				newUrl = newUrl.substring(0, newUrl.lastIndexOf('/'));
-			
-			// Add trailing slash
-			if (!newUrl.endsWith("/"))
-				newUrl += "/";
-			
-			// Check if we still have a consistent URL
-			String hostName = Util.URLManipulation.getHostFromUrl(url);
-			if (!newUrl.contains(hostName))
-				return url;
-			
-			return newUrl;
 		}
 	}
 	

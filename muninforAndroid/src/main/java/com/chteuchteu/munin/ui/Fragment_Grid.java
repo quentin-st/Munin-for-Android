@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.GridDownloadHelper;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
@@ -165,7 +166,7 @@ public class Fragment_Grid extends Fragment {
 
 		// Download HD graph if possible
 		if (grid.currentlyOpenedGridItem.getPlugin().getInstalledOn().getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE
-				&& !Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")) {
+				&& Settings.getInstance(context).getBool(Settings.PrefKeys.HDGraphs)) {
 			// We need to get imageView dimensions (which aren't available right now => globalLayoutListener)
 			fullscreenImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 				@Override

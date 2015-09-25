@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.async.ServerScanner;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -123,9 +124,8 @@ public class Activity_Server extends MuninActivity {
 		super.createOptionsMenu();
 
 		getMenuInflater().inflate(R.menu.server, menu);
-		
-		if (Util.getPref(context, Util.PrefKeys.AddServer_History).equals(""))
-			menu.findItem(R.id.menu_clear_history).setVisible(false);
+
+		menu.findItem(R.id.menu_clear_history).setVisible(settings.has(Settings.PrefKeys.AddServer_History));
 	}
 	
 	@Override
@@ -137,7 +137,7 @@ public class Activity_Server extends MuninActivity {
                 actionSave();
                 return true;
 			case R.id.menu_clear_history:
-				Util.setPref(context, Util.PrefKeys.AddServer_History, "");
+				settings.remove(Settings.PrefKeys.AddServer_History);
 				createOptionsMenu();
 				Toast.makeText(getApplicationContext(), getString(R.string.text66_1), Toast.LENGTH_SHORT).show();
 				return true;
@@ -158,15 +158,17 @@ public class Activity_Server extends MuninActivity {
 				contains = true;
 		}
 		if (!contains) {
-			String his = Util.getPref(context, Util.PrefKeys.AddServer_History);
-			his += url.replaceAll(";", ",") + ";";
-			Util.setPref(context, Util.PrefKeys.AddServer_History, his);
+			String history = settings.getString(Settings.PrefKeys.AddServer_History, "");
+			history += url.replaceAll(";", ",") + ";";
+			settings.set(Settings.PrefKeys.AddServer_History, history);
 		}
 	}
 	
 	private String[] getHistory() {
-		String his = Util.getPref(context, Util.PrefKeys.AddServer_History);
-        return his.equals("") ? new String[0] : his.split(";");
+		String history = settings.has(Settings.PrefKeys.AddServer_History)
+				? settings.getString(Settings.PrefKeys.AddServer_History)
+				: "";
+        return history.split(";");
 	}
 
 	@Override

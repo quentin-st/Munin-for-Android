@@ -7,6 +7,7 @@ import com.chteuchteu.munin.exc.NullMuninFooException;
 import com.chteuchteu.munin.exc.TrialExpirationDateReached;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.SQLite;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
@@ -27,6 +28,8 @@ import java.util.List;
 public class MuninFoo {
 	private static MuninFoo instance;
 	public boolean languageLoaded = false;
+
+	private Settings settings;
 	
 	private List<MuninNode> nodes;
 	public List<Label> labels;
@@ -37,7 +40,7 @@ public class MuninFoo {
 
 	private String userAgent;
 
-	public static final double VERSION = 6.7;
+	public static final double VERSION = 6.8;
 	private static final boolean FORCE_NOT_PREMIUM = false;
 
     // Allows an user to test the app until the TRIAL_EXPIRATION date is reached
@@ -58,9 +61,12 @@ public class MuninFoo {
 		sqlite = new SQLite(context, this);
 		instance = null;
 
+		// Settings singleton
+		this.settings = Settings.getInstance(context);
+
 		// User agent
-		String userAgentPref = Util.getPref(context, Util.PrefKeys.UserAgent);
-		this.userAgent = userAgentPref.equals("") ? generateUserAgent(context) : userAgentPref;
+		String userAgentPref = settings.getString(Settings.PrefKeys.UserAgent);
+		this.userAgent = userAgentPref == null ? generateUserAgent(context) : userAgentPref;
 
 		loadInstance(context);
 
@@ -88,6 +94,8 @@ public class MuninFoo {
 		}
 	}
 
+	public Settings getSettings() { return this.settings; }
+
 	public MuninNode getCurrentNode() { return getCurrentNode(null); }
 	public MuninNode getCurrentNode(Context context) {
 		updateCurrentNode(context);
@@ -101,9 +109,9 @@ public class MuninFoo {
 			return;
 
 		if (context != null) {
-			String defaultNodeUrl = Util.getPref(context, Util.PrefKeys.DefaultNode);
+			if (settings.has(Settings.PrefKeys.DefaultNode)) {
+				String defaultNodeUrl = settings.getString(Settings.PrefKeys.DefaultNode);
 
-			if (!defaultNodeUrl.equals("")) {
 				MuninNode defaultNode = getNode(defaultNodeUrl);
 				if (defaultNode != null) {
 					this.currentNode = defaultNode;
@@ -419,8 +427,8 @@ public class MuninFoo {
 	 * @return User Agent
 	 */
 	public static String getUserAgent(Context context) {
-		String userAgentPref = Util.getPref(context, Util.PrefKeys.UserAgent);
-		return userAgentPref.equals("") ? generateUserAgent(context) : userAgentPref;
+		String userAgentPref = Settings.getInstance(context).getString(Settings.PrefKeys.UserAgent);
+		return userAgentPref == null ? generateUserAgent(context) : userAgentPref;
 	}
 	public void setUserAgent(String val) { this.userAgent = val; }
 }

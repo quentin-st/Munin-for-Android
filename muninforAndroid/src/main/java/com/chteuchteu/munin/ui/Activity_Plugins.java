@@ -23,7 +23,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -33,8 +32,8 @@ import com.chteuchteu.munin.adptr.NodesListAlertDialog;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
-import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninNode;
+import com.chteuchteu.munin.obj.MuninPlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;

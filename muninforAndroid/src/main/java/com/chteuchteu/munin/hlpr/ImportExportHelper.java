@@ -224,7 +224,7 @@ public class ImportExportHelper {
 
     public static String getImportExportServerUrl(Context context) {
 		String oldUrl = "http://www.munin-for-android.com/ws/importExport.php";
-        String url = Util.getPref(context, Util.PrefKeys.ImportExportServer, IMPORT_EXPORT_URI);
+        String url = Settings.getInstance(context).getString(Settings.PrefKeys.ImportExportServer, IMPORT_EXPORT_URI);
 
 		return url.equals(oldUrl) ? IMPORT_EXPORT_URI : url;
     }

@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 
-import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Settings;
 
 /**
  * BootReceiver called by Android system on device launch
@@ -15,11 +15,13 @@ import com.chteuchteu.munin.hlpr.Util;
  */
 public class BootReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
+		Settings settings = Settings.getInstance(context);
+
 		// In our case intent will always be BOOT_COMPLETED, so we can just set the alarm
-		if (Util.getPref(context, Util.PrefKeys.Notifications).equals("true")) {
+		if (settings.getBool(Settings.PrefKeys.Notifications)) {
 			int min = 0;
 
-			String refreshRate = Util.getPref(context, Util.PrefKeys.Notifs_RefreshRate);
+			String refreshRate = settings.getString(Settings.PrefKeys.Notifs_RefreshRate);
 			if (!refreshRate.equals(""))
 				min = Integer.parseInt(refreshRate);
 			

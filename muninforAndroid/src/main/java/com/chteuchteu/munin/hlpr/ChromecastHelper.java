@@ -417,6 +417,6 @@ public class ChromecastHelper {
 	}
 
     public static String getChromecastApplicationId(Context context) {
-        return Util.getPref(context, Util.PrefKeys.ChromecastApplicationId, CHROMECAST_APPLICATION_ID);
+		return Settings.getInstance(context).getString(Settings.PrefKeys.ChromecastApplicationId, CHROMECAST_APPLICATION_ID);
     }
 }

@@ -26,6 +26,7 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.I18nHelper;
 import com.chteuchteu.munin.hlpr.ImportExportHelper;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -182,8 +183,10 @@ public class Activity_Settings extends MuninActivity {
 
 
 		// Apply current settings
+		Settings settings = muninFoo.getSettings();
+
 		// Graph default scale
-		switch (Util.getPref(context, Util.PrefKeys.DefaultScale)) {
+		switch (settings.getString(Settings.PrefKeys.DefaultScale)) {
 			case "day": spinner_scale.setSelection(0, true); break;
 			case "week": spinner_scale.setSelection(1, true); break;
 			case "month": spinner_scale.setSelection(2, true); break;
@@ -192,8 +195,8 @@ public class Activity_Settings extends MuninActivity {
 		
 		// App language
 		I18nHelper.AppLanguage appLanguage;
-		if (!Util.getPref(context, Util.PrefKeys.Lang).equals(""))
-			appLanguage = I18nHelper.AppLanguage.get(Util.getPref(context, Util.PrefKeys.Lang));
+		if (settings.has(Settings.PrefKeys.Lang))
+			appLanguage = I18nHelper.AppLanguage.get(settings.getString(Settings.PrefKeys.Lang));
 		else {
 			if (I18nHelper.isLanguageSupported(Locale.getDefault().getLanguage()))
 				appLanguage = I18nHelper.AppLanguage.get(Locale.getDefault().getLanguage());
@@ -204,46 +207,33 @@ public class Activity_Settings extends MuninActivity {
 		spinner_lang.setSelection(appLanguage.getIndex());
 		
 		// Graphview orientation
-		switch (Util.getPref(context, Util.PrefKeys.GraphviewOrientation)) {
+		switch (settings.getString(Settings.PrefKeys.GraphviewOrientation)) {
 			case "horizontal": spinner_orientation.setSelection(0); break;
 			case "vertical": spinner_orientation.setSelection(1); break;
 			default: spinner_orientation.setSelection(2); break;
 		}
 		
 		// Always on
-		checkbox_alwaysOn.setChecked(
-				Util.getPref(context, Util.PrefKeys.ScreenAlwaysOn).equals("true"));
+		checkbox_alwaysOn.setChecked(settings.getBool(Settings.PrefKeys.ScreenAlwaysOn));
 		
 		// Auto refresh
-		checkbox_autoRefresh.setChecked(
-				Util.getPref(context, Util.PrefKeys.AutoRefresh).equals("true"));
+		checkbox_autoRefresh.setChecked(settings.getBool(Settings.PrefKeys.AutoRefresh));
 		
 		// Graph zoom
-		checkbox_graphsZoom.setChecked(
-					Util.getPref(context, Util.PrefKeys.GraphsZoom).equals("true"));
+		checkbox_graphsZoom.setChecked(settings.getBool(Settings.PrefKeys.GraphsZoom));
 		
 		// HD Graphs
-		checkbox_hdGraphs.setChecked(
-				!Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false"));
+		checkbox_hdGraphs.setChecked(settings.getBool(Settings.PrefKeys.HDGraphs));
 
 		// Disable Chromecast
-		checkbox_disableChromecast.setChecked(
-				Util.getPref(context, Util.PrefKeys.DisableChromecast).equals("true"));
+		checkbox_disableChromecast.setChecked(settings.getBool(Settings.PrefKeys.DisableChromecast));
 		
 		// Default node
-		String defaultNodeUrl = Util.getPref(this, Util.PrefKeys.DefaultNode);
-		if (!defaultNodeUrl.equals("")) {
-			int pos = -1;
-			int i = 0;
-			for (MuninNode node : muninFoo.getNodes()) {
-				if (node.getUrl().equals(defaultNodeUrl)) {
-					pos = i;
-					break;
-				}
-				i++;
-			}
-			if (pos != -1)
-				spinner_defaultNode.setSelection(pos+1);
+		if (settings.has(Settings.PrefKeys.DefaultNode)) {
+			String defaultNodeUrl = settings.getString(Settings.PrefKeys.DefaultNode);
+			MuninNode node = muninFoo.getNode(defaultNodeUrl);
+			if (node != null)
+				spinner_defaultNode.setSelection(muninFoo.getNodes().indexOf(node));
 		}
 
 		// User Agent
@@ -256,25 +246,34 @@ public class Activity_Settings extends MuninActivity {
 		});
 
 		// Grids legend
-		switch (Util.getPref(this, Util.PrefKeys.GridsLegend)) {
+		switch (settings.getString(Settings.PrefKeys.GridsLegend)) {
 			case "none": spinner_gridsLegend.setSelection(0); break;
-			case "pluginName":
-			case "": spinner_gridsLegend.setSelection(1); break;
 			case "serverName": spinner_gridsLegend.setSelection(2); break;
 			case "both": spinner_gridsLegend.setSelection(3); break;
+			case "pluginName":
+			default: spinner_gridsLegend.setSelection(1); break;
 		}
 
 		// Default activity
-		switch (Util.getPref(this, Util.PrefKeys.DefaultActivity)) {
-			case "": spinner_defaultActivity.setSelection(0); break;
-			case "grid": spinner_defaultActivity.setSelection(1); break;
-			case "label": spinner_defaultActivity.setSelection(2); break;
-			case "alerts": spinner_defaultActivity.setSelection(3); break;
+		if (settings.has(Settings.PrefKeys.DefaultActivity)) {
+			switch (settings.getString(Settings.PrefKeys.DefaultActivity)) {
+				case "grid":
+					spinner_defaultActivity.setSelection(1);
+					break;
+				case "label":
+					spinner_defaultActivity.setSelection(2);
+					break;
+				case "alerts":
+					spinner_defaultActivity.setSelection(3);
+					break;
+			}
 		}
+		else
+			spinner_defaultNode.setSelection(0);
 
 		// Default activity_grid
 		if (spinner_defaultActivity.getSelectedItemPosition() == 1) {
-			int gridId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_GridId));
+			int gridId = settings.getInt(Settings.PrefKeys.DefaultActivity_GridId);
 			for (Grid grid : grids) {
 				if (grid.getId() == gridId)
 					spinner_defaultActivity_grid.setSelection(grids.indexOf(grid));
@@ -283,7 +282,7 @@ public class Activity_Settings extends MuninActivity {
 
 		// Default activity label
 		if (spinner_defaultActivity.getSelectedItemPosition() == 2) {
-			int labelId = Integer.parseInt(Util.getPref(context, Util.PrefKeys.DefaultActivity_LabelId));
+			int labelId = settings.getInt(Settings.PrefKeys.DefaultActivity_LabelId);
 			spinner_defaultActivity_label.setSelection(muninFoo.labels.indexOf(muninFoo.getLabel(labelId)));
 		}
 
@@ -338,73 +337,75 @@ public class Activity_Settings extends MuninActivity {
 	}
 	
 	private void actionSave() {
+		Settings settings = muninFoo.getSettings();
+
 		// Graph default scale
 		switch (spinner_scale.getSelectedItemPosition()) {
-			case 0: Util.setPref(context, Util.PrefKeys.DefaultScale, "day"); break;
-			case 1: Util.setPref(context, Util.PrefKeys.DefaultScale, "week"); break;
-			case 2: Util.setPref(context, Util.PrefKeys.DefaultScale, "month"); break;
-			case 3: Util.setPref(context, Util.PrefKeys.DefaultScale, "year"); break;
+			case 0: settings.set(Settings.PrefKeys.DefaultScale, "day"); break;
+			case 1: settings.set(Settings.PrefKeys.DefaultScale, "week"); break;
+			case 2: settings.set(Settings.PrefKeys.DefaultScale, "month"); break;
+			case 3: settings.set(Settings.PrefKeys.DefaultScale, "year"); break;
 		}
 		
 		// App language
-		I18nHelper.AppLanguage currentLang = I18nHelper.AppLanguage.get(Util.getPref(context, Util.PrefKeys.Lang));
+		I18nHelper.AppLanguage currentLang = I18nHelper.AppLanguage.get(settings.getString(Settings.PrefKeys.Lang));
 		I18nHelper.AppLanguage newLang = I18nHelper.AppLanguage.values()[spinner_lang.getSelectedItemPosition()];
-		Util.setPref(context, Util.PrefKeys.Lang, newLang.langCode);
+		settings.set(Settings.PrefKeys.Lang, newLang.langCode);
 
 		if (currentLang != newLang)
 			I18nHelper.loadLanguage(context, muninFoo, true);
 		
 		// Orientation
 		switch (spinner_orientation.getSelectedItemPosition()) {
-			case 0: Util.setPref(context, Util.PrefKeys.GraphviewOrientation, "horizontal"); break;
-			case 1: Util.setPref(context, Util.PrefKeys.GraphviewOrientation, "vertical"); break;
-			case 2: Util.setPref(context, Util.PrefKeys.GraphviewOrientation, "auto"); break;
+			case 0: settings.set(Settings.PrefKeys.GraphviewOrientation, "horizontal"); break;
+			case 1: settings.set(Settings.PrefKeys.GraphviewOrientation, "vertical"); break;
+			case 2: settings.set(Settings.PrefKeys.GraphviewOrientation, "auto"); break;
 		}
 		
-		Util.setPref(context, Util.PrefKeys.ScreenAlwaysOn, String.valueOf(checkbox_alwaysOn.isChecked()));
-		Util.setPref(context, Util.PrefKeys.AutoRefresh, String.valueOf(checkbox_autoRefresh.isChecked()));
-		Util.setPref(context, Util.PrefKeys.GraphsZoom, String.valueOf(checkbox_graphsZoom.isChecked()));
-		Util.setPref(context, Util.PrefKeys.HDGraphs, String.valueOf(checkbox_hdGraphs.isChecked()));
+		settings.set(Settings.PrefKeys.ScreenAlwaysOn, String.valueOf(checkbox_alwaysOn.isChecked()));
+		settings.set(Settings.PrefKeys.AutoRefresh, String.valueOf(checkbox_autoRefresh.isChecked()));
+		settings.set(Settings.PrefKeys.GraphsZoom, String.valueOf(checkbox_graphsZoom.isChecked()));
+		settings.set(Settings.PrefKeys.HDGraphs, String.valueOf(checkbox_hdGraphs.isChecked()));
 		
 		// Default node
 		int defaultNodePosition = spinner_defaultNode.getSelectedItemPosition()-1;
 		if (defaultNodePosition == -1)
-			Util.removePref(this, Util.PrefKeys.DefaultNode);
+			settings.remove(Settings.PrefKeys.DefaultNode);
 		else {
 			MuninNode defaultNode = muninFoo.getNodes().get(defaultNodePosition);
-			Util.setPref(this, Util.PrefKeys.DefaultNode, defaultNode.getUrl());
+			settings.set(Settings.PrefKeys.DefaultNode, defaultNode.getUrl());
 		}
 
 		// User Agent
-		boolean userAgentChanged = !Util.getPref(context, Util.PrefKeys.UserAgent).equals(editText_userAgent.getText().toString());
+		boolean userAgentChanged = !settings.getString(Settings.PrefKeys.UserAgent).equals(editText_userAgent.getText().toString());
 		if (userAgentChanged) {
-			Util.setPref(context, Util.PrefKeys.UserAgentChanged, "true");
-			Util.setPref(context, Util.PrefKeys.UserAgent, editText_userAgent.getText().toString());
+			settings.set(Settings.PrefKeys.UserAgentChanged, true);
+			settings.set(Settings.PrefKeys.UserAgent, editText_userAgent.getText().toString());
 			muninFoo.setUserAgent(editText_userAgent.getText().toString());
 		}
 
 		// Grids legend
 		switch (spinner_gridsLegend.getSelectedItemPosition()) {
-			case 0: Util.setPref(this, Util.PrefKeys.GridsLegend, "none"); break;
-			case 1: Util.setPref(this, Util.PrefKeys.GridsLegend, "pluginName"); break;
-			case 2: Util.setPref(this, Util.PrefKeys.GridsLegend, "serverName"); break;
-			case 3: Util.setPref(this, Util.PrefKeys.GridsLegend, "both"); break;
+			case 0: settings.set(Settings.PrefKeys.GridsLegend, "none"); break;
+			case 1: settings.set(Settings.PrefKeys.GridsLegend, "pluginName"); break;
+			case 2: settings.set(Settings.PrefKeys.GridsLegend, "serverName"); break;
+			case 3: settings.set(Settings.PrefKeys.GridsLegend, "both"); break;
 		}
 
 		// Default activity
 		switch (spinner_defaultActivity.getSelectedItemPosition()) {
 			case 0:
-				Util.removePref(this, Util.PrefKeys.DefaultActivity);
-				Util.removePref(this, Util.PrefKeys.DefaultActivity_GridId);
-				Util.removePref(this, Util.PrefKeys.DefaultActivity_LabelId);
+				settings.remove(Settings.PrefKeys.DefaultActivity);
+				settings.remove(Settings.PrefKeys.DefaultActivity_GridId);
+				settings.remove(Settings.PrefKeys.DefaultActivity_LabelId);
 				break;
 			case 1: {
 				int selectedItemPos = spinner_defaultActivity_grid.getSelectedItemPosition();
 
 				// When there's no grid, the grids spinner is empty
 				if (selectedItemPos != Spinner.INVALID_POSITION) {
-					Util.setPref(this, Util.PrefKeys.DefaultActivity, "grid");
-					Util.setPref(this, Util.PrefKeys.DefaultActivity_GridId,
+					settings.set(Settings.PrefKeys.DefaultActivity, "grid");
+					settings.set(Settings.PrefKeys.DefaultActivity_GridId,
 							String.valueOf(grids.get(selectedItemPos).getId()));
 				}
 				break;
@@ -414,25 +415,25 @@ public class Activity_Settings extends MuninActivity {
 
 				// When there's no label, the labels spinner is empty
 				if (selectedItemPos != Spinner.INVALID_POSITION) {
-					Util.setPref(this, Util.PrefKeys.DefaultActivity, "label");
-					Util.setPref(this, Util.PrefKeys.DefaultActivity_LabelId,
+					settings.set(Settings.PrefKeys.DefaultActivity, "label");
+					settings.set(Settings.PrefKeys.DefaultActivity_LabelId,
 							String.valueOf(muninFoo.labels.get(selectedItemPos).getId()));
 				}
 				break;
 			}
 			case 3:
-				Util.setPref(this, Util.PrefKeys.DefaultActivity, "alerts");
+				settings.set(Settings.PrefKeys.DefaultActivity, "alerts");
 				break;
 		}
 
 		// Disable Chromecast
-		Util.setPref(this, Util.PrefKeys.DisableChromecast, String.valueOf(checkbox_disableChromecast.isChecked()));
+		settings.set(Settings.PrefKeys.DisableChromecast, String.valueOf(checkbox_disableChromecast.isChecked()));
 
 		// Chromecast App Id
-		Util.setPref(this, Util.PrefKeys.ChromecastApplicationId, editText_chromecastAppId.getText().toString());
+		settings.set(Settings.PrefKeys.ChromecastApplicationId, editText_chromecastAppId.getText().toString());
 
 		// Import/export server
-		Util.setPref(this, Util.PrefKeys.ImportExportServer, editText_importExportServer.getText().toString());
+		settings.set(Settings.PrefKeys.ImportExportServer, editText_importExportServer.getText().toString());
 
 
 		Toast.makeText(this, getString(R.string.text36), Toast.LENGTH_SHORT).show();
@@ -469,8 +470,8 @@ public class Activity_Settings extends MuninActivity {
 		.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				// Delete every preference
-				for (Util.PrefKeys prefKey : Util.PrefKeys.values())
-					Util.removePref(context, prefKey);
+				for (Settings.PrefKeys prefKey : Settings.PrefKeys.values())
+					muninFoo.getSettings().remove(prefKey);
 
 
 				muninFoo.sqlite.dbHlpr.deleteGraphWidgets();

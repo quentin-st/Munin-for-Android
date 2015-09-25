@@ -72,10 +72,11 @@ public final class I18nHelper {
 	 * @param forceLoad Force language load (after language change)
 	 */
 	public static void loadLanguage(Context context, MuninFoo muninFoo, boolean forceLoad) {
-		String lang = Util.getPref(context, Util.PrefKeys.Lang);
+		Settings settings = muninFoo.getSettings();
 
-		if (!lang.equals("")) {
+		if (settings.has(Settings.PrefKeys.Lang)) {
 			if (!muninFoo.languageLoaded || forceLoad) {
+				String lang = settings.getString(Settings.PrefKeys.Lang);
 				if (!isLanguageSupported(lang))
 					lang = "en";
 

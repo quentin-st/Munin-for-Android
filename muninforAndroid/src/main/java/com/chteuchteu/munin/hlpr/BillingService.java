@@ -62,7 +62,7 @@ public class BillingService {
 		};
 		Intent intent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
 		intent.setPackage("com.android.vending");
-		isBound = activityContext.bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
+		isBound = this.activityContext.bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
 	}
 	
 	private void launchPurchase(String product) {

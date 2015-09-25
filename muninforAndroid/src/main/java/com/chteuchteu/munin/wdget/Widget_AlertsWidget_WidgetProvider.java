@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 
@@ -63,7 +64,7 @@ public class Widget_AlertsWidget_WidgetProvider extends AppWidgetProvider {
 			if (intent.getAction().equals(ACTION_REFRESH)) {
 				// Only display "No connection" toast if manual refresh
 				if (Util.isOnline(context)) {
-					Util.setPref(context, Util.PrefKeys.Widget2_ForceUpdate, "true");
+					Settings.getInstance(context).set(Settings.PrefKeys.Widget2_ForceUpdate, true);
 					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 					int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
 							new ComponentName(context, Widget_AlertsWidget_WidgetProvider.class));

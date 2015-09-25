@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 
@@ -32,7 +33,7 @@ public class Activity_Alerts extends MuninActivity implements IAlertsActivity {
 		fragment = new Fragment_Alerts();
 		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
 
-		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
+		if (muninFoo.getSettings().getBool(Settings.PrefKeys.ScreenAlwaysOn))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
@@ -86,7 +87,7 @@ public class Activity_Alerts extends MuninActivity implements IAlertsActivity {
 	public void onStop() {
 		super.onStop();
 		
-		if (Util.getPref(this, Util.PrefKeys.ScreenAlwaysOn).equals("true"))
+		if (muninFoo.getSettings().getBool(Settings.PrefKeys.ScreenAlwaysOn))
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 }

@@ -9,7 +9,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 
 import com.chteuchteu.munin.async.PollTask;
-import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Settings;
 
 /**
  * Notifications Service
@@ -27,8 +27,7 @@ public class Service_Notifications extends Service {
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	private void handleIntent(Intent intent) {
 		// obtain the wake lock
 		PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
@@ -43,7 +42,7 @@ public class Service_Notifications extends Service {
 		}
 		
 		NetworkInfo mWifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		boolean wifiOnly = Util.getPref(Service_Notifications.this, Util.PrefKeys.Notifs_WifiOnly).equals("true");
+		boolean wifiOnly = Settings.getInstance(this).getBool(Settings.PrefKeys.Notifs_WifiOnly);
 		
 		if (!wifiOnly || mWifi.isConnected())
 			new PollTask(this).execute();

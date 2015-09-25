@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.HTTPResponse.BitmapResponse;
 import com.chteuchteu.munin.obj.MuninMaster;
@@ -68,8 +69,10 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 		if (activity.isBitmapNull(position)) {
 			String imgUrl;
 
+			Settings settings = Settings.getInstance(context);
+
 			if (node.getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE
-					&& !Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")) { // Dynazoom (HD graph)
+					&& !settings.getBool(Settings.PrefKeys.HDGraphs)) { // Dynazoom (HD graph)
 				// Check if HD graph is really needed : if the standard-res bitmap isn't upscaled, it's OK
 				float xScale = ((float) activity.imageViewDimensions[0]) / AVERAGE_GRAPH_DIMENSIONS[0];
 				float yScale = ((float) activity.imageViewDimensions[1]) / AVERAGE_GRAPH_DIMENSIONS[1];
@@ -98,11 +101,13 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 	protected void onPostExecute(Void result) {
 		progressBar.setVisibility(View.GONE);
 
+		Settings settings = Settings.getInstance(context);
+
 		if (!activity.isBitmapNull(position)) {
 			imageView.setImageBitmap(activity.getBitmap(position));
 
 			// Update or create PhotoViewAttacher
-			if (Util.getPref(context, Util.PrefKeys.GraphsZoom).equals("true")) {
+			if (settings.getBool(Settings.PrefKeys.GraphsZoom)) {
 				if (activity.photoViewAttachers.keySet().contains(position)) {
 					PhotoViewAttacher mAttacher = activity.photoViewAttachers.get(position);
 					mAttacher.update();
@@ -139,7 +144,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 				errorText.setText(response.getResponseCode() + " - " + response.getResponseMessage());
 
 			// Allow user to disable HD Graphs / rescan HD Graphs URL
-			if (!Util.getPref(context, Util.PrefKeys.HDGraphs).equals("false")
+			if (!settings.getBool(Settings.PrefKeys.HDGraphs)
 					&& this.node.getParent().isDynazoomAvailable() == MuninMaster.DynazoomAvailability.TRUE
 					&& Util.isOnline(context)) {
 				Button rescanHdGraphsUrl = (Button) view.findViewById(R.id.error_rescanHdGraphsUrl);
