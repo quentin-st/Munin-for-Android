@@ -229,20 +229,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() != android.R.id.home
-				&& item.getItemId() != R.id.menu_settings
-				&& item.getItemId() != R.id.menu_about)
-			dh.closeDrawerIfOpen();
-
 		switch (item.getItemId()) {
-			case R.id.menu_settings:
-				startActivity(new Intent(context, Activity_Settings.class));
-				Util.setTransition(this, Util.TransitionStyle.DEEPER);
-				return true;
-			case R.id.menu_about:
-				startActivity(new Intent(context, Activity_About.class));
-				Util.setTransition(this, Util.TransitionStyle.DEEPER);
-				return true;
 			/* Fragments */
 			case R.id.menu_open:
 				switch (mainFragment) {
