@@ -93,11 +93,12 @@ public class Activity_About extends MuninActivity {
 		this.libraries.put("jsoup", "http://jsoup.org/");
 		this.libraries.put("Crashlytics", "https://crashlytics.com");
 		this.libraries.put("AppRate", "https://github.com/TimotheeJeannin/AppRate");
-		this.libraries.put("SystemBarTint", "https://github.com/jgilfelt/SystemBarTint");
-		this.libraries.put("MaterialMenuToolbar", "https://github.com/balysv/material-menu");
 		this.libraries.put("Floating Action Button", "https://github.com/makovkastar/FloatingActionButton");
 		this.libraries.put("Range Bar", "https://github.com/edmodo/range-bar");
 		this.libraries.put("PhotoView", "https://github.com/chrisbanes/PhotoView");
+		this.libraries.put("Android DB Inspector", "https://github.com/infinum/android_dbinspector");
+		this.libraries.put("MaterialDrawer", "https://github.com/mikepenz/MaterialDrawer");
+		this.libraries.put("CommunityMaterialTypeface", null);
 	}
 
 	private void showLibrariesDialog() {
@@ -113,6 +114,9 @@ public class Activity_About extends MuninActivity {
 					public void onClick(DialogInterface dialogInterface, int i) {
 						String libraryName = (String) libraries.keySet().toArray()[i];
 						String target = libraries.get(libraryName);
+
+						if (target == null)
+							return;
 
 						Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(target));
 						startActivity(browserIntent);
