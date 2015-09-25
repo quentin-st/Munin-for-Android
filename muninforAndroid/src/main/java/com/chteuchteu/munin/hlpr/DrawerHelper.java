@@ -29,6 +29,8 @@ import com.chteuchteu.munin.ui.Activity_Servers;
 import com.chteuchteu.munin.ui.Activity_Settings;
 import com.chteuchteu.munin.ui.MuninActivity;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -263,6 +265,14 @@ public class DrawerHelper {
 				}
 			}
 		});
+
+		// Header
+		AccountHeader header = new AccountHeaderBuilder()
+				.withActivity(activity)
+				.withCompactStyle(true)
+				.withHeaderBackground(R.drawable.header)
+				.build();
+		builder.withAccountHeader(header);
 
 		// Selected item
 		if (this.activity instanceof MuninActivity) {
