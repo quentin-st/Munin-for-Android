@@ -18,7 +18,7 @@ repositories {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '22.0.1'
+    buildToolsVersion '23.0.0'
 
     defaultConfig {
         applicationId "com.chteuchteu.munin"
@@ -55,7 +55,7 @@ dependencies {
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'com.edmodo:rangebar:1.0.0'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.4@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
     debugCompile 'im.dino:dbinspector:3.1.0@aar'
