@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.async;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -46,7 +45,6 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
     private MuninFoo muninFoo;
 
     private ProgressBar progressBar;
-    private TextView 	alert_title1;
     private TextView 	alert_title2;
     private View		cancelButton;
 
@@ -78,10 +76,10 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
             if (scannerState != ScannerState.WAITING_FOR_CREDENTIALS
                     && scannerState != ScannerState.WAITING_FOR_URL) {
 	            if (!activity.isAlertShown) {
-		            @SuppressLint("InflateParams")
 		            final View view = LayoutInflater.from(context).inflate(R.layout.server_popup, null);
 
 		            activity.alertDialog = new AlertDialog.Builder(context)
+                            .setTitle(R.string.loading)
 				            .setView(view)
 				            .setCancelable(false)
 				            .show();
@@ -91,11 +89,7 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
                 progressBar = (ProgressBar) activity.alertDialog.findViewById(R.id.progressbar);
                 progressBar.setProgress(0);
                 progressBar.setIndeterminate(true);
-                alert_title1 = (TextView) activity.alertDialog.findViewById(R.id.popup_text_a);
                 alert_title2 = (TextView) activity.alertDialog.findViewById(R.id.popup_text_b);
-                Util.Fonts.setFont(context, alert_title1, Util.Fonts.CustomFont.RobotoCondensed_Regular);
-                Util.Fonts.setFont(context, alert_title2, Util.Fonts.CustomFont.RobotoCondensed_Regular);
-                alert_title1.setText(context.getString(R.string.text43)); // Please wait...
                 cancelButton = activity.alertDialog.findViewById(R.id.cancelButton);
 
                 cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +101,9 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
             }
             setPopupState(0);
         }
+
+        activity.alertDialog.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
+        activity.alertDialog.findViewById(R.id.popup_url).setVisibility(View.GONE);
     }
 
     private ReturnCode start() {
@@ -139,11 +136,7 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
             public void run() {
                 TextView popup_url_message = (TextView) activity.alertDialog.findViewById(R.id.popup_url_message);
                 TextView popup_url_message2 = (TextView) activity.alertDialog.findViewById(R.id.popup_url_message2);
-                Util.Fonts.setFont(context, popup_url_message, Util.Fonts.CustomFont.RobotoCondensed_Regular);
-                Util.Fonts.setFont(context, popup_url_message2, Util.Fonts.CustomFont.RobotoCondensed_Regular);
-                Util.Fonts.setFont(context, cancel, Util.Fonts.CustomFont.RobotoCondensed_Regular);
-                Util.Fonts.setFont(context, continu, Util.Fonts.CustomFont.RobotoCondensed_Regular);
-                alert_title1.setVisibility(View.GONE);
+                activity.alertDialog.setTitle("");
                 alert_title2.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
                 activity.alertDialog.findViewById(R.id.popup_url).setVisibility(View.VISIBLE);
@@ -165,7 +158,6 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (alert_title1 != null)	alert_title1.setText("");
                 if (alert_title2 != null)	alert_title2.setText("");
 
                 activity.isAlertShown = false;
@@ -190,7 +182,6 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
                         activity.tv_serverUrl.setText(url);
-                        alert_title1.setVisibility(View.VISIBLE);
                         alert_title2.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.VISIBLE);
                         activity.alertDialog.findViewById(R.id.popup_url).setVisibility(View.GONE);
@@ -425,12 +416,10 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
 
         activity.runOnUiThread(new Runnable() {
             public void run() {
-                alert_title1.setVisibility(View.GONE);
+                activity.alertDialog.setTitle("");
                 alert_title2.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
                 activity.alertDialog.findViewById(R.id.popup_credentials).setVisibility(View.VISIBLE);
-                Util.Fonts.setFont(context, cancel, Util.Fonts.CustomFont.RobotoCondensed_Regular);
-                Util.Fonts.setFont(context, continu, Util.Fonts.CustomFont.RobotoCondensed_Regular);
 
                 // AuthType spinner
                 List<String> list2 = new ArrayList<>();
@@ -468,7 +457,6 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (alert_title1 != null)	alert_title1.setText("");
                 if (alert_title2 != null)	alert_title2.setText("");
 
                 activity.runOnUiThread(new Runnable() {
@@ -476,7 +464,6 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
                         pop_sp_authType.setSelection(0);
                         et_login.setText("");
                         et_password.setText("");
-                        alert_title1.setVisibility(View.VISIBLE);
                         alert_title2.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.VISIBLE);
                         activity.alertDialog.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
@@ -507,7 +494,6 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
 
                     activity.runOnUiThread(new Runnable() {
                         public void run() {
-                            alert_title1.setVisibility(View.VISIBLE);
                             alert_title2.setVisibility(View.VISIBLE);
                             progressBar.setVisibility(View.VISIBLE);
                             activity.alertDialog.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
@@ -524,8 +510,7 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
     }
 
     public boolean stop() {
-        if (alert_title1 != null)
-            alert_title1.setText("");
+        activity.alertDialog.setTitle("");
         if (alert_title2 != null)
             alert_title2.setText("");
         activity.alertDialog.dismiss();
@@ -537,8 +522,6 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
 
     @Override
     protected Void doInBackground(Void... arg0) {
-        activity.alertDialog.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
-        activity.alertDialog.findViewById(R.id.popup_url).setVisibility(View.GONE);
         // Don't execute steps that have already been done
         boolean stop = false;
         if (scannerState != ScannerState.WAITING_FOR_CREDENTIALS) {
@@ -583,7 +566,6 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
         scannerState = ScannerState.IDLE;
         if (returnCode != ReturnCode.UNDEFINED) {
             Button b = (Button) activity.alertDialog.findViewById(R.id.popup_button);
-            Util.Fonts.setFont(context, b, Util.Fonts.CustomFont.RobotoCondensed_Regular);
 
 	        switch (returnCode) {
 		        case SERVER_SUCCESS:
@@ -642,11 +624,9 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
     private void setPopupText(final String title1, final String title2) {
         activity.runOnUiThread(new Runnable() {
             public void run() {
-                if (alert_title1.getVisibility() == View.GONE)
-                    alert_title1.setVisibility(View.VISIBLE);
                 if (alert_title2.getVisibility() == View.GONE)
                     alert_title2.setVisibility(View.VISIBLE);
-                if (!title1.equals("")) alert_title1.setText(title1);
+                activity.alertDialog.setTitle(title1);
                 if (!title2.equals("")) alert_title2.setText(title2);
             }
         });

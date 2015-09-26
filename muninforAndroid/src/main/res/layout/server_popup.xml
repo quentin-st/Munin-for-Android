@@ -82,42 +82,24 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal" >
+				android:orientation="horizontal"
+				android:gravity="right">
 
 				<Button
 					android:id="@+id/popup_credentials_cancel"
-					android:layout_width="0dp"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_margin="0dp"
-					android:layout_weight="1"
-					android:background="@drawable/button_addserverlarge_white"
-					android:gravity="center_horizontal|center_vertical"
-					android:padding="0dp"
-					android:shadowColor="#ffffff"
-					android:shadowDx="1"
-					android:shadowDy="1"
-					android:shadowRadius="2"
 					android:text="@string/text64"
-					android:textColor="#99000000"
-					android:textSize="30sp" />
+					style="?android:attr/borderlessButtonStyle"
+					android:textColor="@color/colorPrimary" />
 
 				<Button
 					android:id="@+id/popup_credentials_continue"
-					style="@style/ButtonText"
-					android:layout_width="0dp"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_margin="0dp"
-					android:layout_weight="1"
-					android:background="@drawable/button_addserverlarge"
-					android:gravity="center_horizontal|center_vertical"
-					android:padding="0dp"
-					android:shadowColor="#ffffff"
-					android:shadowDx="1"
-					android:shadowDy="1"
-					android:shadowRadius="2"
 					android:text="@string/text60"
-					android:textColor="#99000000"
-					android:textSize="30sp" />
+					style="?android:attr/borderlessButtonStyle"
+					android:textColor="@color/colorPrimary" />
 			</LinearLayout>
 		</LinearLayout>
 
@@ -163,60 +145,26 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal" >
+				android:orientation="horizontal"
+				android:gravity="right">
 
 				<Button
 					android:id="@+id/popup_url_cancel"
-					android:layout_width="0dp"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_margin="0dp"
-					android:layout_weight="1"
-					android:background="@drawable/button_addserverlarge_white"
-					android:gravity="center_horizontal|center_vertical"
-					android:padding="0dp"
-					android:shadowColor="#ffffff"
-					android:shadowDx="1"
-					android:shadowDy="1"
-					android:shadowRadius="2"
 					android:text="@string/text64"
-					android:textColor="#99000000"
-					android:textSize="30sp" />
+					style="?android:attr/borderlessButtonStyle"
+					android:textColor="@color/colorPrimary" />
 
 				<Button
 					android:id="@+id/popup_url_continue"
-					style="@style/ButtonText"
-					android:layout_width="0dp"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_margin="0dp"
-					android:layout_weight="1"
-					android:background="@drawable/button_addserverlarge"
-					android:gravity="center_horizontal|center_vertical"
-					android:padding="0dp"
-					android:shadowColor="#ffffff"
-					android:shadowDx="1"
-					android:shadowDy="1"
-					android:shadowRadius="2"
 					android:text="@string/text60"
-					android:textColor="#99000000"
-					android:textSize="30sp" />
+					style="?android:attr/borderlessButtonStyle"
+					android:textColor="@color/colorPrimary" />
 			</LinearLayout>
 		</LinearLayout>
-
-		<TextView
-			android:id="@+id/popup_text_a"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="10dp"
-			android:background="@color/actionBarColor"
-			android:gravity="center"
-			android:paddingBottom="10dp"
-			android:paddingTop="10dp"
-			android:shadowColor="#BB000000"
-			android:shadowDx="1"
-			android:shadowDy="1"
-			android:shadowRadius="2"
-			android:textColor="#fff"
-			android:textSize="@dimen/addserver_popup_fontsize2" />
 
 		<ProgressBar
 			android:id="@+id/progressbar"
@@ -240,20 +188,13 @@
 
 		<Button
 			android:id="@+id/popup_button"
-			android:layout_width="match_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:background="@drawable/button_addserverlarge"
-			android:gravity="center_horizontal"
-			android:paddingBottom="10dp"
-			android:paddingTop="10dp"
-			android:shadowColor="#BB000000"
-			android:shadowDx="1"
-			android:shadowDy="1"
-			android:shadowRadius="2"
+			android:layout_gravity="right"
 			android:text="@string/text60"
-			android:textColor="#fff"
-			android:textSize="30sp"
-			android:visibility="gone" />
+			android:visibility="gone"
+			style="?android:attr/borderlessButtonStyle"
+			android:textColor="@color/colorPrimary" />
 	</LinearLayout>
 
 	<ImageView
@@ -263,6 +204,6 @@
 		android:layout_gravity="top|right"
 		android:layout_marginRight="4dp"
 		android:layout_marginTop="4dp"
-		android:src="@drawable/ic_action_remove_dark" />
+		android:src="@drawable/ic_action_remove" />
 
 </FrameLayout>

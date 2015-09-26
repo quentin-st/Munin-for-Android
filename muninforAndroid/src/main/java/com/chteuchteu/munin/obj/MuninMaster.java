@@ -449,6 +449,9 @@ public class MuninMaster {
 				// Check grids
 				for (Grid grid : grids) {
 					for (GridItem item : grid.getItems()) {
+						if (item.getPlugin() == null)
+							continue;
+
 						if (item.getPlugin().equals(plugin)) {
 							// Reattach
 							item.setPlugin(this.getNode(node.getUrl()).getPlugin(item.getPlugin().getName()));
