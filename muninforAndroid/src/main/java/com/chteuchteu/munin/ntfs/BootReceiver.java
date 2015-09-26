@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.os.SystemClock;
 
 import com.chteuchteu.munin.hlpr.Settings;
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * BootReceiver called by Android system on device launch
@@ -15,6 +18,7 @@ import com.chteuchteu.munin.hlpr.Settings;
  */
 public class BootReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
+		Fabric.with(context, new Crashlytics());
 		Settings settings = Settings.getInstance(context);
 
 		// In our case intent will always be BOOT_COMPLETED, so we can just set the alarm
