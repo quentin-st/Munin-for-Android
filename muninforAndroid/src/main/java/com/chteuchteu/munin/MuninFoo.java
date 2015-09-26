@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.chteuchteu.munin.exc.NullMuninFooException;
-import com.chteuchteu.munin.exc.TrialExpirationDateReached;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Settings;
@@ -19,7 +18,6 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -45,10 +43,6 @@ public class MuninFoo {
 	public static final double VERSION = 6.8;
 	private static final boolean FORCE_NOT_PREMIUM = false;
 
-    // Allows an user to test the app until the TRIAL_EXPIRATION date is reached
-    private static final boolean TRIAL = false;
-    private static final Calendar TRIAL_EXPIRATION = new GregorianCalendar(2015, 1, 10);
-
     public boolean premium;
 
 	public Calendar alerts_lastUpdated;
@@ -73,9 +67,6 @@ public class MuninFoo {
 		this.userAgent = userAgentPref == null ? generateUserAgent(context) : userAgentPref;
 
 		loadInstance(context);
-
-        if (TRIAL && isTrialExpired())
-            throw new RuntimeException(new TrialExpirationDateReached("Trial has expired"));
 	}
 	
 	public static boolean isLoaded() { return instance != null; }
@@ -377,10 +368,7 @@ public class MuninFoo {
 	public static void logW(String tag, String msg) { if (BuildConfig.DEBUG) Log.w(tag, msg); }
 
 	public static boolean isPremium(Context c) {
-        if (TRIAL)
-            return true;
-
-		if (Util.isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
+        if (Util.isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
 			if (BuildConfig.DEBUG && FORCE_NOT_PREMIUM)
 				return false;
 			if (BuildConfig.DEBUG)
@@ -392,11 +380,6 @@ public class MuninFoo {
 		}
 		return false;
 	}
-
-    public static boolean isTrialExpired() {
-        Calendar today = Calendar.getInstance();
-        return today.after(TRIAL_EXPIRATION);
-    }
 
 	/**
 	 * Generates "MuninForAndroid/3.0 (Android 4.4.4 KITKAT)" from context
