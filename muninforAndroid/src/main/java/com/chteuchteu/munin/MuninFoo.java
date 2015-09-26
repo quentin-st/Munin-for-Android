@@ -14,6 +14,8 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,6 +54,8 @@ public class MuninFoo {
 	public Calendar alerts_lastUpdated;
 
 	public ChromecastHelper chromecastHelper;
+
+	private Tracker tracker;
 	
 	private MuninFoo(Context context) {
 		premium = false;
@@ -431,4 +435,13 @@ public class MuninFoo {
 		return userAgentPref == null ? generateUserAgent(context) : userAgentPref;
 	}
 	public void setUserAgent(String val) { this.userAgent = val; }
+
+	public synchronized Tracker getDefaultTracker(Context context) {
+		if (this.tracker == null) {
+			GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
+			this.tracker = analytics.newTracker(R.xml.global_tracker);
+		}
+
+		return this.tracker;
+	}
 }

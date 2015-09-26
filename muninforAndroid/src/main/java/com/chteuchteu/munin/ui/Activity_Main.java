@@ -30,7 +30,8 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.crashlytics.android.Crashlytics;
-import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.tjeannin.apprate.AppRate;
 
 import java.util.Locale;
@@ -76,6 +77,13 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		muninFoo = MuninFoo.getInstance(this);
 		settings = muninFoo.getSettings();
 		I18nHelper.loadLanguage(this, muninFoo);
+
+		if (!BuildConfig.DEBUG) {
+			Tracker tracker = this.muninFoo.getDefaultTracker(this);
+			tracker.setScreenName(this.getClass().getSimpleName());
+			tracker.send(new HitBuilders.ScreenViewBuilder().build());
+		}
+
 		optionsMenuLoaded = false;
 		if (loaded)
 			preloading = false;
@@ -334,20 +342,6 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 				muninFoo.getSettings().set(Settings.PrefKeys.I18NDialogShown, true);
 			}
 		}
-	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		if (!BuildConfig.DEBUG)
-			EasyTracker.getInstance(this).activityStart(this);
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		if (!BuildConfig.DEBUG)
-			EasyTracker.getInstance(this).activityStop(this);
 	}
 	
 	private void preload() {
