@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.TagFormat;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -138,6 +139,9 @@ public class Activity_About extends MuninActivity {
 				.setItems(prefs, null)
 				.show();
 	}
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.About; }
 	
 	@Override
 	public void onBackPressed() {

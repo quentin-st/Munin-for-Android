@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
+import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.I18nHelper;
 import com.chteuchteu.munin.hlpr.ImportExportHelper;
 import com.chteuchteu.munin.hlpr.Settings;
@@ -498,6 +499,9 @@ public class Activity_Settings extends MuninActivity {
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/muninforandroid")));
 		}
 	}
+
+	@Override
+	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Settings; }
 	
 	@Override
 	public void onBackPressed() {
