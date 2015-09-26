@@ -102,8 +102,6 @@ public class GridItem {
 		footer = (LinearLayout) view.findViewById(R.id.gridItemFooter);
 		TextView pluginName = (TextView) view.findViewById(R.id.pluginName);
 		TextView nodeName = (TextView) view.findViewById(R.id.serverName);
-		Util.Fonts.setFont(context, pluginName, Util.Fonts.CustomFont.Roboto_Regular);
-		Util.Fonts.setFont(context, nodeName, Util.Fonts.CustomFont.Roboto_Regular);
 
 		if (this.isDetached()) {
 			footer.setVisibility(View.GONE);

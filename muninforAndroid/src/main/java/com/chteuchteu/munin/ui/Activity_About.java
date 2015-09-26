@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,11 +12,9 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.BuildConfig;
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.TagFormat;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 
 import java.util.HashMap;
@@ -27,7 +24,6 @@ import java.util.Map;
 public class Activity_About extends MuninActivity {
 	private HashMap<String, String> libraries;
 
-	@SuppressLint("DefaultLocale")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -56,15 +52,9 @@ public class Activity_About extends MuninActivity {
 		wv.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 		wv.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 		//wv.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-		
-		TextView tv1 = (TextView) findViewById(R.id.about_txt1);
+
 		TextView tv2 = (TextView) findViewById(R.id.about_txt2);
 		TextView userAgent = (TextView) findViewById(R.id.useragent);
-		TextView userAgent_label = (TextView) findViewById(R.id.useragent_label);
-		Util.Fonts.setFont(this, tv1, CustomFont.Roboto_Regular);
-		Util.Fonts.setFont(this, tv2, CustomFont.Roboto_Regular);
-		Util.Fonts.setFont(this, userAgent, CustomFont.Roboto_Regular);
-		Util.Fonts.setFont(this, userAgent_label, CustomFont.Roboto_Medium);
 		tv2.setText(getString(R.string.app_name) + " " + versionName);
 		userAgent.setText(muninFoo.getUserAgent());
 	}

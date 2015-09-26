@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
@@ -25,8 +24,6 @@ import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.I18nHelper;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.hlpr.Util.Fonts;
-import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
@@ -97,8 +94,6 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		dh = new DrawerHelper(this, muninFoo, this.toolbar);
 
 		progressBar = Util.UI.prepareGmailStyleProgressBar(this, getSupportActionBar());
-		
-		Fonts.setFont(this, (TextView)findViewById(R.id.main_clear_appname), CustomFont.Roboto_Regular);
 		
 		if (loaded)
 			onLoadFinished();

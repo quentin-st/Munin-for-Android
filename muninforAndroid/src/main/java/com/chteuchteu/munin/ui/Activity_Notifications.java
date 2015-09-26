@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -30,20 +29,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.hlpr.Settings;
-import com.chteuchteu.munin.ntfs.Service_Notifications;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
+import com.chteuchteu.munin.ntfs.Service_Notifications;
 import com.chteuchteu.munin.obj.MuninNode;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@SuppressLint("InflateParams")
 public class Activity_Notifications extends MuninActivity {
 	private CheckBox		cb_notifications;
 	private Spinner			sp_refreshRate;

@@ -3,7 +3,6 @@ package com.chteuchteu.munin.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -18,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
@@ -40,8 +38,8 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_GraphView;
-import com.chteuchteu.munin.adptr.PluginsListAlertDialog;
 import com.chteuchteu.munin.adptr.NodesListAlertDialog;
+import com.chteuchteu.munin.adptr.PluginsListAlertDialog;
 import com.chteuchteu.munin.async.DynazoomDetector;
 import com.chteuchteu.munin.async.FieldsDescriptionFetcher;
 import com.chteuchteu.munin.hlpr.DocumentationHelper;
@@ -54,9 +52,9 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.HTTPResponse.BaseResponse;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
+import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-import com.chteuchteu.munin.obj.MuninNode;
 import com.edmodo.rangebar.RangeBar;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -782,12 +780,9 @@ public class Activity_GraphView extends MuninActivity {
 			TextView line2 = (TextView) findViewById(R.id.doc_line2);
 			line1.setText(currentPlugin.getFancyName());
 			line2.setText(currentPlugin.getName());
-			Util.Fonts.setFont(context, line1, Util.Fonts.CustomFont.Roboto_Regular);
-			Util.Fonts.setFont(context, line2, Util.Fonts.CustomFont.Roboto_Regular);
 
 			final TextView doc = (TextView) findViewById(R.id.doc);
 			doc.setText(Html.fromHtml(fileContent));
-			Util.Fonts.setFont(context, doc, Util.Fonts.CustomFont.Roboto_Regular);
 
 			Spinner spinner = (Spinner) findViewById(R.id.doc_spinner);
 			final List<String> nodes = DocumentationHelper.getNodes(currentPlugin);
@@ -841,8 +836,6 @@ public class Activity_GraphView extends MuninActivity {
 		Util.Animations.reveal_show(this, dynazoom, new int[]{cx, cy}, finalRadius, Util.Animations.CustomAnimation.SLIDE_IN);
 
 		fab.hide();
-
-		Util.Fonts.setFont(this, (ViewGroup) findViewById(R.id.dynazoom_params), Util.Fonts.CustomFont.Roboto_Regular);
 
 		dynazoom_from = DynazoomHelper.getFromPinPoint(load_period);
 		dynazoom_to = DynazoomHelper.getToPinPoint();

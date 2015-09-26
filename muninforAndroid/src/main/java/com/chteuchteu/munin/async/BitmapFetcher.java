@@ -128,10 +128,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 			// Display error
 			view.findViewById(R.id.error).setVisibility(View.VISIBLE);
 			TextView errorText = (TextView) view.findViewById(R.id.error_text);
-			Util.Fonts.setFont(context, errorText, Util.Fonts.CustomFont.Roboto_Regular);
 			imageView.setImageBitmap(null);
-
-			Util.Fonts.setFont(context, ((TextView) view.findViewById(R.id.error_title)), Util.Fonts.CustomFont.Roboto_Regular);
 
 			if (response.getResponseCode() < 0) { // Not HTTP error
 				if (response.getResponseCode() == BitmapResponse.UnknownHostExceptionError
@@ -151,9 +148,6 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 				Button disableHdGraphs = (Button) view.findViewById(R.id.error_disableHdGraphs);
 				rescanHdGraphsUrl.setVisibility(View.VISIBLE);
 				disableHdGraphs.setVisibility(View.VISIBLE);
-
-				Util.Fonts.setFont(context, rescanHdGraphsUrl, Util.Fonts.CustomFont.Roboto_Regular);
-				Util.Fonts.setFont(context, disableHdGraphs, Util.Fonts.CustomFont.Roboto_Regular);
 
 				disableHdGraphs.setOnClickListener(new View.OnClickListener() {
 					@Override

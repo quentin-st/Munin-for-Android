@@ -98,11 +98,6 @@ public class Activity_GoPremium extends MuninActivity {
 				}
 			}
 		});
-		
-		Util.Fonts.setFont(this, price1, CustomFont.RobotoCondensed_Regular);
-		Util.Fonts.setFont(this, price2, CustomFont.RobotoCondensed_Regular);
-		Util.Fonts.setFont(this, price3, CustomFont.RobotoCondensed_Regular);
-		Util.Fonts.setFont(this, buyNow, CustomFont.RobotoCondensed_Regular);
 	}
 
 	@Override

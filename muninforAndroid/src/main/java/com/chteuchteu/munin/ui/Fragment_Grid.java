@@ -111,8 +111,6 @@ public class Fragment_Grid extends Fragment {
 			}
 		});
 
-		Util.Fonts.setFont(context, (TextView) view.findViewById(R.id.fullscreen_tv), Util.Fonts.CustomFont.Roboto_Regular);
-
 		if (autoLoad && grid.getItems().size() == 0)
 			edit();
 

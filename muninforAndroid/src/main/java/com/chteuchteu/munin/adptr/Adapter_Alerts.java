@@ -165,7 +165,6 @@ public class Adapter_Alerts {
 				}
 			});
 
-			Util.Fonts.setFont(context, cardHeader, Util.Fonts.CustomFont.Roboto_Regular);
 			Util.Fonts.setFont(context, criticals, Util.Fonts.CustomFont.RobotoCondensed_Regular);
 			Util.Fonts.setFont(context, warnings, Util.Fonts.CustomFont.RobotoCondensed_Regular);
 

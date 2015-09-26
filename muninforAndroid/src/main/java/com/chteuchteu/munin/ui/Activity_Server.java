@@ -20,7 +20,6 @@ import com.chteuchteu.munin.async.ServerScanner;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.MuninMaster;
 
@@ -44,8 +43,6 @@ public class Activity_Server extends MuninActivity {
 		super.onContentViewSet();
 
 		actionBar.setTitle(getString(R.string.addServerTitle));
-
-		Util.Fonts.setFont(this, (TextView) findViewById(R.id.muninMasterUrlLabel), CustomFont.Roboto_Medium);
 		
 		spinner = (Spinner)findViewById(R.id.spinner);
 		tv_serverUrl = (AutoCompleteTextView)findViewById(R.id.textbox_serverUrl);
