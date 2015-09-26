@@ -3,8 +3,6 @@ package com.chteuchteu.munin.hlpr;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.util.DisplayMetrics;
-import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
@@ -81,11 +79,12 @@ public final class I18nHelper {
 				if (!isLanguageSupported(lang))
 					lang = "en";
 
-				Resources res = context.getApplicationContext().getResources();
-				DisplayMetrics dm = res.getDisplayMetrics();
-				Configuration conf = res.getConfiguration();
-				conf.locale = new Locale(lang);
-				res.updateConfiguration(conf, dm);
+				Locale locale = new Locale(lang);
+				Locale.setDefault(locale);
+				Resources resources = context.getApplicationContext().getResources();
+				Configuration configuration = resources.getConfiguration();
+				configuration.locale = locale;
+				resources.updateConfiguration(configuration, null);
 
 				muninFoo.languageLoaded = true;
 			}
