@@ -182,7 +182,7 @@ public class PollTask extends AsyncTask<Void, Void, Void> {
 
         // Important : release wake lock in the end
         service.stopSelf();
-        if (service.mWakeLock.isHeld())
-            service.mWakeLock.release();
+        if (service.wakeLock.isHeld())
+            service.wakeLock.release();
     }
 }
