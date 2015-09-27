@@ -176,67 +176,98 @@ public class Settings {
      */
     public void migrate() {
         // Screen always on
-        String screenAlwaysOn = getString(PrefKeys.ScreenAlwaysOn);
-        remove(PrefKeys.ScreenAlwaysOn);
-        set(PrefKeys.ScreenAlwaysOn, screenAlwaysOn != null && screenAlwaysOn.equals("true"));
+        if (this.sharedPreferences.contains(PrefKeys.ScreenAlwaysOn.getKey())) {
+            String screenAlwaysOn = this.sharedPreferences.getString(PrefKeys.ScreenAlwaysOn.getKey(), null);
+            remove(PrefKeys.ScreenAlwaysOn);
+            set(PrefKeys.ScreenAlwaysOn, screenAlwaysOn != null && screenAlwaysOn.equals("true"));
+        }
 
         // Auto-refresh
-        String autoRefresh = getString(PrefKeys.AutoRefresh);
-        remove(PrefKeys.AutoRefresh);
-        set(PrefKeys.AutoRefresh, autoRefresh != null && autoRefresh.equals("true"));
+        if (this.sharedPreferences.contains(PrefKeys.AutoRefresh.getKey())) {
+            String autoRefresh = this.sharedPreferences.getString(PrefKeys.AutoRefresh.getKey(), null);
+            remove(PrefKeys.AutoRefresh);
+            set(PrefKeys.AutoRefresh, autoRefresh != null && autoRefresh.equals("true"));
+        }
 
         // Graph zoom
-        String graphsZoom = getString(PrefKeys.GraphsZoom);
-        remove(PrefKeys.GraphsZoom);
-        set(PrefKeys.GraphsZoom, graphsZoom == null || graphsZoom.equals("true"));
+        if (this.sharedPreferences.contains(PrefKeys.GraphsZoom.getKey())) {
+            String graphsZoom = this.sharedPreferences.getString(PrefKeys.GraphsZoom.getKey(), null);
+            remove(PrefKeys.GraphsZoom);
+            set(PrefKeys.GraphsZoom, graphsZoom == null || graphsZoom.equals("true"));
+        }
 
         // HD graphs
-        String hdGraphs = getString(PrefKeys.HDGraphs);
-        remove(PrefKeys.HDGraphs);
-        set(PrefKeys.HDGraphs, hdGraphs != null && hdGraphs.equals("true"));
+        if (this.sharedPreferences.contains(PrefKeys.HDGraphs.getKey())) {
+            String hdGraphs = this.sharedPreferences.getString(PrefKeys.HDGraphs.getKey(), null);
+            remove(PrefKeys.HDGraphs);
+            set(PrefKeys.HDGraphs, hdGraphs != null && hdGraphs.equals("true"));
+        }
 
         // Disable chromecast
-        String disableChromecast = getString(PrefKeys.DisableChromecast);
-        remove(PrefKeys.DisableChromecast);
-        set(PrefKeys.DisableChromecast, disableChromecast != null && disableChromecast.equals("true"));
+        if (this.sharedPreferences.contains(PrefKeys.DisableChromecast.getKey())) {
+            String disableChromecast = this.sharedPreferences.getString(PrefKeys.DisableChromecast.getKey(), null);
+            remove(PrefKeys.DisableChromecast);
+            set(PrefKeys.DisableChromecast, disableChromecast != null && disableChromecast.equals("true"));
+        }
 
         // Default activity_grid
-        String activity_grid = getString(PrefKeys.DefaultActivity_GridId);
-        remove(PrefKeys.DefaultActivity_GridId);
-        if (activity_grid != null && !activity_grid.equals(""))
-            set(PrefKeys.DefaultActivity_GridId, Integer.parseInt(activity_grid));
+        if (this.sharedPreferences.contains(PrefKeys.DefaultActivity_GridId.getKey())) {
+            String activity_grid = this.sharedPreferences.getString(PrefKeys.DefaultActivity_GridId.getKey(), null);
+            remove(PrefKeys.DefaultActivity_GridId);
+            if (activity_grid != null && !activity_grid.equals(""))
+                set(PrefKeys.DefaultActivity_GridId, Integer.parseInt(activity_grid));
+        }
 
         // Default activity_label
-        String activity_label = getString(PrefKeys.DefaultActivity_LabelId);
-        remove(PrefKeys.DefaultActivity_LabelId);
-        if (activity_label != null && !activity_label.equals(""))
-            set(PrefKeys.DefaultActivity_LabelId, Integer.parseInt(activity_label));
+        if (this.sharedPreferences.contains(PrefKeys.DefaultActivity_LabelId.getKey())) {
+            String activity_label = this.sharedPreferences.getString(PrefKeys.DefaultActivity_LabelId.getKey(), null);
+            remove(PrefKeys.DefaultActivity_LabelId);
+            if (activity_label != null && !activity_label.equals(""))
+                set(PrefKeys.DefaultActivity_LabelId, Integer.parseInt(activity_label));
+        }
 
         // I18NDialogShown
-        String i18NDialogShown = getString(PrefKeys.I18NDialogShown);
-        remove(PrefKeys.I18NDialogShown);
-        if (i18NDialogShown != null && !i18NDialogShown.equals(""))
-            set(PrefKeys.I18NDialogShown, i18NDialogShown.equals("true"));
+        if (this.sharedPreferences.contains(PrefKeys.I18NDialogShown.getKey())) {
+            String i18NDialogShown = getString(PrefKeys.I18NDialogShown);
+            remove(PrefKeys.I18NDialogShown);
+            if (i18NDialogShown != null && !i18NDialogShown.equals(""))
+                set(PrefKeys.I18NDialogShown, i18NDialogShown.equals("true"));
+        }
 
         // Vibrate
-        String vibrate = getString(PrefKeys.Notifs_Vibrate);
-        remove(PrefKeys.Notifs_Vibrate);
-        set(PrefKeys.Notifs_Vibrate, vibrate == null || vibrate.equals("true"));
+        if (this.sharedPreferences.contains(PrefKeys.Notifs_Vibrate.getKey())) {
+            String vibrate = this.sharedPreferences.getString(PrefKeys.Notifs_Vibrate.getKey(), null);
+            remove(PrefKeys.Notifs_Vibrate);
+            set(PrefKeys.Notifs_Vibrate, vibrate == null || vibrate.equals("true"));
+        }
 
         // Notifications
-        String notifications = getString(PrefKeys.Notifications);
-        remove(PrefKeys.Notifications);
-        set(PrefKeys.Notifications, notifications != null && notifications.equals("true"));
+        if (this.sharedPreferences.contains(PrefKeys.Notifications.getKey())) {
+            String notifications = this.sharedPreferences.getString(PrefKeys.Notifications.getKey(), null);
+            remove(PrefKeys.Notifications);
+            set(PrefKeys.Notifications, notifications != null && notifications.equals("true"));
+        }
 
         // Refresh rate
-        String refreshRate = getString(PrefKeys.Notifs_RefreshRate);
-        remove(PrefKeys.Notifs_RefreshRate);
-        if (refreshRate != null && !refreshRate.equals(""))
-            set(PrefKeys.Notifs_RefreshRate, Integer.valueOf(refreshRate));
+        if (this.sharedPreferences.contains(PrefKeys.Notifs_RefreshRate.getKey())) {
+            String refreshRate = this.sharedPreferences.getString(PrefKeys.Notifs_RefreshRate.getKey(), null);
+            remove(PrefKeys.Notifs_RefreshRate);
+            if (refreshRate != null && !refreshRate.equals(""))
+                set(PrefKeys.Notifs_RefreshRate, Integer.valueOf(refreshRate));
+        }
 
         // Notifs_wifiOnly
-        String wifiOnly = getString(PrefKeys.Notifs_WifiOnly);
-        remove(PrefKeys.Notifs_WifiOnly);
-        set(PrefKeys.Notifs_WifiOnly, wifiOnly != null && wifiOnly.equals("true"));
+        if (this.sharedPreferences.contains(PrefKeys.Notifs_WifiOnly.getKey())) {
+            String wifiOnly = this.sharedPreferences.getString(PrefKeys.Notifs_WifiOnly.getKey(), null);
+            remove(PrefKeys.Notifs_WifiOnly);
+            set(PrefKeys.Notifs_WifiOnly, wifiOnly != null && wifiOnly.equals("true"));
+        }
+
+        // User agent changed
+        if (this.sharedPreferences.contains(PrefKeys.UserAgentChanged.getKey())) {
+            String userAgentChanged = this.sharedPreferences.getString(PrefKeys.UserAgentChanged.getKey(), null);
+            remove(PrefKeys.UserAgentChanged);
+            set(PrefKeys.UserAgentChanged, userAgentChanged != null && userAgentChanged.equals("true"));
+        }
     }
 }
