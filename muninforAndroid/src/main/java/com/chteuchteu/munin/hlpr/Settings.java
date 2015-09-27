@@ -111,6 +111,8 @@ public class Settings {
             this.boolPrefs.remove(key);
         else if (this.stringPrefs.keySet().contains(key))
             this.stringPrefs.remove(key);
+        else if (this.intPrefs.keySet().contains(key))
+            this.intPrefs.remove(key);
     }
 
 
