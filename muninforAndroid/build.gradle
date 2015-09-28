@@ -45,6 +45,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.0.1'
     compile files('libs/AppRate_1.1.jar')
 
+    compile 'com.google.android.gms:play-services:8.1.0'
     compile 'com.google.android.gms:play-services-base:8.1.0'
     compile 'com.google.android.gms:play-services-cast:8.1.0'
     compile 'com.google.android.gms:play-services-wallet:8.1.0'
