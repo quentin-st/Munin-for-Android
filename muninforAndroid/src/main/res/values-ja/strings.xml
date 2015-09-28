@@ -176,7 +176,7 @@
 	<string name="update_credentials">接続の資格情報を編集</string>
 	<string name="long_click">長押しして編集</string>
 	<string name="rescan">再スキャン</string>
-	<string name="support">サポート / フィードバック</string>
+	<string name="support">サポート</string>
 	<string name="choose_email_client">お使いのメールのアプリを選択してください</string>
 	<string name="donate">寄付</string>
 	<string name="donate_text">このような大規模のアプリケーションを開発するには、膨大な時間と関与が必要です。アプリが、あなたの日常生活に役立つ場合は、寄付をご検討いただけませんでしょうか? ありがとうございます! その場合、個人的に私があなたに感謝を伝えられるように、私にメールをお送りください!</string>
@@ -231,4 +231,5 @@
 	<string name="disable_chromecast">Chromecast 機能を無効にする</string>
 	<string name="disable_chromecast_text">Chromecast を所有していない場合は、アプリでの使用を無効にすることができます</string>
 
-</resources>
+<string name="about">アプリについて</string>
+	</resources>
