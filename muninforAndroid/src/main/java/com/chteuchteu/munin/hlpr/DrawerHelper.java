@@ -348,6 +348,8 @@ public class DrawerHelper {
 				.show();
 	}
 
+	public Drawer getDrawer() { return this.drawer; }
+
     /**
      * Close drawer if it is open
      * @return boolean true if drawer has been closed

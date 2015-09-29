@@ -47,37 +47,6 @@
 					android:src="@drawable/ic_insecure"
 					android:contentDescription="@string/certificate_error"
 					android:visibility="gone"/>
-
-				<LinearLayout
-					android:id="@+id/serverSwitcher"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:background="@drawable/actionbar_customview"
-					android:clickable="true"
-					android:orientation="horizontal"
-					android:layout_centerHorizontal="true"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp"
-					android:paddingTop="4dp"
-					android:paddingBottom="4dp">
-
-					<TextView
-						android:id="@+id/serverName"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_gravity="center_vertical"
-						android:textSize="16sp"
-						android:textColor="#ffffff"
-						android:maxLines="1" />
-
-					<ImageView
-						android:layout_width="14dp"
-						android:layout_height="14dp"
-						android:layout_marginLeft="10dp"
-						android:layout_marginStart="10dp"
-						android:layout_gravity="center_vertical"
-						android:src="@drawable/ic_action_navigation_arrow_drop_down" />
-				</LinearLayout>
 			</RelativeLayout>
 
 			<LinearLayout

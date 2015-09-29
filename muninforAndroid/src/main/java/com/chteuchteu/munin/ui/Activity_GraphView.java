@@ -14,6 +14,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +40,6 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_GraphView;
-import com.chteuchteu.munin.adptr.NodesListAlertDialog;
 import com.chteuchteu.munin.adptr.PluginsListAlertDialog;
 import com.chteuchteu.munin.async.DynazoomDetector;
 import com.chteuchteu.munin.async.FieldsDescriptionFetcher;
@@ -52,12 +52,18 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.HTTPResponse.BaseResponse;
 import com.chteuchteu.munin.obj.Label;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.edmodo.rangebar.RangeBar;
 import com.melnykov.fab.FloatingActionButton;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,7 +80,6 @@ public class Activity_GraphView extends MuninActivity {
 	private View        ic_insecure;
     private TextView    toolbarPluginName;
     private PluginsListAlertDialog pluginsListAlertDialog;
-    private NodesListAlertDialog nodesListAlertDialog;
 
 	public int          viewFlowMode;
 	public static final int VIEWFLOWMODE_GRAPHS = 1;
@@ -118,12 +123,6 @@ public class Activity_GraphView extends MuninActivity {
 
 		if (settings.getBool(Settings.PrefKeys.ScreenAlwaysOn))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-		TextView nodeName = (TextView) findViewById(R.id.serverName);
-		if (muninFoo.getCurrentNode().getName().equals(MuninNode.DEFAULT_NODE_NAME))
-			nodeName.setText(muninFoo.getCurrentNode().getParent().getName() + " - " + muninFoo.getCurrentNode().getName());
-		else
-			nodeName.setText(muninFoo.getCurrentNode().getName());
 
 		actionBar.setTitle("");
 		ic_secure = findViewById(R.id.connection_secure);
@@ -332,37 +331,48 @@ public class Activity_GraphView extends MuninActivity {
 				break;
 		}
 
-        // Node spinner
-        final View nodeSwitcher = findViewById(R.id.serverSwitcher);
-        nodeSwitcher.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (nodesListAlertDialog == null) {
-                    nodesListAlertDialog = new NodesListAlertDialog(context, nodeSwitcher,
-                            new NodesListAlertDialog.NodesListAlertDialogClick() {
-                                @Override
-                                public void onItemClick(MuninNode node) {
-                                    if (node != muninFoo.getCurrentNode()) {
-                                        muninFoo.setCurrentNode(node);
-                                        Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
-                                        if (node.hasPlugin(currentPlugin)) // Switch to the same plugin
-                                            intent.putExtra("position", muninFoo.getCurrentNode().getPosition(currentPlugin));
-                                        else if (node.hasCategory(currentPlugin.getCategory())) // Switch to same category
-                                            intent.putExtra("position",
-                                                    muninFoo.getCurrentNode().getPosition(
-                                                            node.getFirstPluginFromCategory(currentPlugin.getCategory())));
-                                        else
-                                            intent.putExtra("position", 0);
-                                        startActivity(intent);
-                                        Util.setTransition(activity, TransitionStyle.DEEPER);
-                                    }
-                                }
-                            });
-                }
+		// Build secondary drawer for node change
+		DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this);
 
-                nodesListAlertDialog.show();
-            }
-        });
+		for (MuninMaster master : muninFoo.getMasters()) {
+			drawerBuilder.addDrawerItems(new SectionDrawerItem().withName(master.getName()));
+
+			for (MuninNode node : master.getChildren()) {
+				drawerBuilder.addDrawerItems(
+						new PrimaryDrawerItem()
+								.withName(node.getName())
+								.withIdentifier((int) node.getId())
+				);
+			}
+		}
+
+		drawerBuilder
+				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+					@Override
+					public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
+						MuninNode node = muninFoo.getNodeById(iDrawerItem.getIdentifier());
+
+						if (node != muninFoo.getCurrentNode()) {
+							muninFoo.setCurrentNode(node);
+							Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
+							if (node.hasPlugin(currentPlugin)) // Switch to the same plugin
+								intent.putExtra("position", muninFoo.getCurrentNode().getPosition(currentPlugin));
+							else if (node.hasCategory(currentPlugin.getCategory())) // Switch to same category
+								intent.putExtra("position",
+										muninFoo.getCurrentNode().getPosition(
+												node.getFirstPluginFromCategory(currentPlugin.getCategory())));
+							else
+								intent.putExtra("position", 0);
+							startActivity(intent);
+							Util.setTransition(activity, TransitionStyle.DEEPER);
+						}
+						return false;
+					}
+				})
+				.withDrawerGravity(Gravity.END)
+				.withSelectedItem((int) muninFoo.getCurrentNode().getId())
+				.append(dh.getDrawer());
+
 
         // Toolbar custom view (plugins spinner)
         actionBar.setDisplayShowCustomEnabled(true);

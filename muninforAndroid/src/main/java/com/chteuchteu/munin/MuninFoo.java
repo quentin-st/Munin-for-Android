@@ -265,6 +265,13 @@ public class MuninFoo {
 		}
 		return null;
 	}
+	public MuninNode getNodeById(long nodeId) {
+		for (MuninNode node : nodes) {
+			if (node.getId() == nodeId)
+				return node;
+		}
+		return null;
+	}
 	public MuninPlugin getPlugin(int id) {
 		for (MuninNode node : nodes) {
 			for (MuninPlugin plugin : node.getPlugins()) {
