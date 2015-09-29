@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.Display;
@@ -96,10 +97,10 @@ public class Activity_GraphView extends MuninActivity {
 
 	private MenuItem    item_period;
 	private MenuItem    item_documentation;
-	
+
 	private Handler	    mHandler;
 	private Runnable    mHandlerTask;
-	
+
 	// If the Adapter_GraphView:getView method should
 	// load the graphs
 	public boolean	    loadGraphs = false;
@@ -133,9 +134,9 @@ public class Activity_GraphView extends MuninActivity {
 				Toast.makeText(context, R.string.certificate_error, Toast.LENGTH_SHORT).show();
 			}
 		});
-		
+
 		load_period = Period.get(settings.getString(Settings.PrefKeys.DefaultScale));
-		
+
 		// Coming from widget
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null
@@ -146,16 +147,16 @@ public class Activity_GraphView extends MuninActivity {
 			String plugin = thisIntent.getExtras().getString("plugin");
 			// Setting currentNode
 			muninFoo.setCurrentNode(muninFoo.getNode(node));
-			
+
 			// Giving position of plugin in list to GraphView
 			for (int i=0; i<muninFoo.getCurrentNode().getPlugins().size(); i++) {
 				if (muninFoo.getCurrentNode().getPlugins().get(i).getName().equals(plugin))
 					thisIntent.putExtra("position", i);
 			}
 		}
-		
+
 		int pos = 0;
-		
+
 		// Coming from Grid
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("plugin")) {
 			int i = 0;
@@ -205,6 +206,8 @@ public class Activity_GraphView extends MuninActivity {
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		adapter = new Adapter_GraphView(getSupportFragmentManager(), this, muninFoo, nbPlugins);
 		viewPager.setAdapter(adapter);
+		TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+		tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(pos);
 
 		viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
