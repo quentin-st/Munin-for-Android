@@ -350,7 +350,8 @@ public class Activity_Settings extends MuninActivity {
 		}
 
 		// User Agent
-		boolean userAgentChanged = !settings.getString(Settings.PrefKeys.UserAgent).equals(editText_userAgent.getText().toString());
+		String oldUserAgent = settings.getString(Settings.PrefKeys.UserAgent);
+		boolean userAgentChanged = oldUserAgent == null || !oldUserAgent.equals(editText_userAgent.getText().toString());
 		if (userAgentChanged) {
 			settings.set(Settings.PrefKeys.UserAgentChanged, true);
 			settings.set(Settings.PrefKeys.UserAgent, editText_userAgent.getText().toString());
