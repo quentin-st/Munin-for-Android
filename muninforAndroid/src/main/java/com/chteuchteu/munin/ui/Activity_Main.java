@@ -400,7 +400,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		menu_grid_refresh.setVisible(true);
 		menu_grid_changePeriod.setVisible(true);
 	}
-	@Override public void onGridSaved() { }
+	@Override public void onGridSaved(Grid grid) { }
 
 	/* Label fragment */
 	@Override public void onLabelClick(Label label) { } // Not used here

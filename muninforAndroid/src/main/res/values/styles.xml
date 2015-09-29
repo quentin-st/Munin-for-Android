@@ -229,4 +229,12 @@
 		<item name="textAllCaps">false</item>
 	</style>
 
+	<style name="TabLayout_Grids">
+		<item name="tabMode">scrollable</item>
+		<item name="tabGravity">fill</item>
+		<item name="tabTextColor">#99ffffff</item>
+		<item name="tabSelectedTextColor">#ffffff</item>
+		<item name="tabIndicatorColor">#ffffff</item>
+	</style>
+
 </resources>

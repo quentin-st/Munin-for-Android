@@ -214,7 +214,7 @@ public class Fragment_Grid extends Fragment {
 			grid.cancelEdit(context);
 			grid.toggleFootersVisibility(true);
 			muninFoo.sqlite.dbHlpr.saveGridItemsRelations(grid);
-			activity.onGridSaved();
+			activity.onGridSaved(grid);
 		} else { // Edit
 			grid.edit(view);
 			grid.toggleFootersVisibility(false);

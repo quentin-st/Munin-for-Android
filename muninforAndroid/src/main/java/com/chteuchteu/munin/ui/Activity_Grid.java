@@ -4,15 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBar;
+import android.support.design.widget.TabLayout;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.SpinnerAdapter;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_Grids;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Settings;
@@ -21,7 +22,6 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Activity_Grid extends MuninActivity implements IGridActivity {
@@ -32,19 +32,15 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	private MenuItem menu_open;
 	private Period currentPeriod;
 
+	private LockableViewPager viewPager;
+	private TabLayout tabLayout;
+	private Adapter_Grids adapter;
+
 	private boolean chromecastEnabled;
 
-	/**
-	 * Temporary grid object used activity instantiation. Should not be used
-	 *  for main interactions with grid (ie. grid.currentlyOpenedGridItem)
-     *  since Activity.tmpGrid is not the same instance as Fragment.grid
-	 */
-	private Grid tmpGrid;
-	private List<Grid> grids;
 	private Handler mHandler;
 	private Runnable mHandlerTask;
-
-	private Fragment_Grid fragment;
+	private Grid currentGrid;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -53,70 +49,34 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 
 		setContentView(R.layout.activity_grid);
 		super.onContentViewSet();
+		this.actionBar.setTitle("");
 
 		if (settings.getBool(Settings.PrefKeys.ScreenAlwaysOn))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+		this.chromecastEnabled = muninFoo.premium && !settings.getBool(Settings.PrefKeys.DisableChromecast);
 		this.currentPeriod = Util.getDefaultPeriod(this);
+		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
+		this.currentGrid = grids.get(0);
 
-		// Init fragment
-		this.fragment = new Fragment_Grid();
-		// Pass the gridId
-		Bundle bundle = new Bundle();
-		long gridId = getIntent().getExtras().getLong(ARG_GRIDID);
-		bundle.putLong(Fragment_Grid.ARG_GRIDID, gridId);
-		this.fragment.setArguments(bundle);
-		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, this.fragment).commit();
+		// Init ViewPager
+		viewPager = (LockableViewPager) findViewById(R.id.viewPager);
+		adapter = new Adapter_Grids(getSupportFragmentManager(), grids);
+		viewPager.setAdapter(adapter);
+		tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+		tabLayout.setupWithViewPager(viewPager);
+		tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+			@Override
+			public void onTabSelected(TabLayout.Tab tab) {
+				chromecast_switchTo();
+			}
 
-		this.grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
-		// tmpGrid: temporary grid object used to instantiate activity.
-		// Should not be used afterwards (use Fragment_Grid.grid instead)
-		tmpGrid = getGrid(grids, gridId);
-		actionBar.setTitle(getText(R.string.text75) + " " + tmpGrid.getName());
+			@Override public void onTabUnselected(TabLayout.Tab tab) { }
+			@Override public void onTabReselected(TabLayout.Tab tab) { }
+		});
 
 		if (!Util.isOnline(context))
 			Toast.makeText(context, getString(R.string.text30), Toast.LENGTH_LONG).show();
-
-		
-		// ActionBar spinner if needed
-		if (grids.size() > 1) {
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-			actionBar.setDisplayShowTitleEnabled(false);
-
-			SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(getApplicationContext(),
-					android.R.layout.simple_spinner_dropdown_item, getGridsNames(grids));
-			
-			ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
-				@Override
-				public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-					if (itemPosition != grids.indexOf(tmpGrid)) {
-						long gridId = grids.get(itemPosition).getId();
-						tmpGrid = getGrid(grids, gridId);
-
-						// If editing / previewing: cancel those
-						if (fragment.isPreviewing())
-							fragment.hidePreview();
-
-						if (fragment.isEditing())
-							fragment.edit();
-
-						fragment = new Fragment_Grid();
-						Bundle bundle = new Bundle();
-						bundle.putLong(Fragment_Grid.ARG_GRIDID, grids.get(itemPosition).getId());
-						bundle.putString(Fragment_Grid.ARG_PERIOD, currentPeriod.name());
-						fragment.setArguments(bundle);
-						getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-
-						if (ChromecastHelper.isConnected(muninFoo.chromecastHelper))
-							muninFoo.chromecastHelper.sendMessage_inflateGrid(grids.get(itemPosition), currentPeriod);
-					}
-					return false;
-				}
-			};
-			actionBar.setListNavigationCallbacks(spinnerAdapter, navigationListener);
-			if (grids.indexOf(tmpGrid) != -1)
-				actionBar.setSelectedNavigationItem(grids.indexOf(tmpGrid));
-		}
 
 		// Launch periodical check
 		if (settings.getBool(Settings.PrefKeys.AutoRefresh)) {
@@ -125,16 +85,15 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			mHandlerTask = new Runnable() {
 				@Override 
 				public void run() {
-					if (!fragment.isUpdating())
-						fragment.autoRefresh();
+					for (Fragment_Grid fragment : adapter.getAll()) {
+						if (!fragment.isUpdating())
+							fragment.autoRefresh();
+					}
 					mHandler.postDelayed(mHandlerTask, INTERVAL);
 				}
 			};
 			mHandlerTask.run();
 		}
-
-		// Chromecast
-		chromecastEnabled = muninFoo.premium && !settings.getBool(Settings.PrefKeys.DisableChromecast);
 
 		if (chromecastEnabled) {
 			// If null: not connected yet
@@ -144,24 +103,26 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 				muninFoo.chromecastHelper.onCreate(new Runnable() {
 					@Override
 					public void run() {
-						if (fragment == null || fragment.getGrid() == null)
+						if (currentGrid == null)
 							return;
 
-						muninFoo.chromecastHelper.sendMessage_inflateGrid(fragment.getGrid(), currentPeriod);
+						muninFoo.chromecastHelper.sendMessage_inflateGrid(currentGrid, currentPeriod);
 					}
 				});
-
-			} else if (muninFoo.chromecastHelper.isConnected())
-				muninFoo.chromecastHelper.sendMessage_inflateGrid(tmpGrid, currentPeriod);
+			} else if (muninFoo.chromecastHelper.isConnected()) {
+				muninFoo.chromecastHelper.sendMessage_inflateGrid(currentGrid, currentPeriod);
+			}
 		}
 	}
 
-	private static Grid getGrid(List<Grid> grids, long gridId) {
-		for (Grid grid : grids) {
-			if (grid.getId() == gridId)
-				return grid;
-		}
-		return null;
+	private void chromecast_switchTo() {
+		if (!chromecastEnabled)
+			return;
+
+		if (!muninFoo.chromecastHelper.isConnected())
+			return;
+
+		muninFoo.chromecastHelper.sendMessage_inflateGrid(currentGrid, currentPeriod);
 	}
 
 	/**
@@ -169,14 +130,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	 * that the fragment has been initialized!
 	 */
 	public Grid getGrid() {
-		return fragment.getGrid();
-	}
-
-	private static List<String> getGridsNames(List<Grid> grids) {
-		List<String> list = new ArrayList<>();
-		for (Grid grid : grids)
-			list.add(grid.getName());
-		return list;
+		return this.currentGrid;
 	}
 
 	@Override
@@ -187,7 +141,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		menu_edit.setVisible(false);
 
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
-			muninFoo.chromecastHelper.sendMessage_preview(fragment.getGrid().currentlyOpenedGridItem);
+			muninFoo.chromecastHelper.sendMessage_preview(this.currentGrid.currentlyOpenedGridItem);
 	}
 
 	@Override
@@ -209,6 +163,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			menu_edit.setIcon(
 					editing ? R.drawable.ic_action_image_edit
 							: R.drawable.ic_action_navigation_check);
+
+		setPagingEnabled(editing);
 	}
 
 	@Override
@@ -216,6 +172,34 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 
 	@Override
 	public void onManualLoad() { /* autoLoad=false only used in Activity_Main */ }
+
+	/**
+	 * Lock or unlock paging
+	 * @param enabled boolean
+	 */
+	private void setPagingEnabled(boolean enabled) {
+		this.viewPager.setPagingEnabled(enabled);
+
+		if (enabled)
+			this.tabLayout.setAlpha(1.0f);
+		else
+			this.tabLayout.setAlpha(0.5f);
+
+		// Enable/disable each children click
+		LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+		for (int i=0; i<tabStrip.getChildCount(); i++) {
+			if (enabled)
+				tabStrip.getChildAt(i).setOnTouchListener(null);
+			else {
+				tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						return true;
+					}
+				});
+			}
+		}
+	}
 
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();
@@ -225,11 +209,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		menu_edit = menu.findItem(R.id.menu_edit);
 		menu_period = menu.findItem(R.id.menu_period);
 		menu_open = menu.findItem(R.id.menu_open);
-		menu_refresh.setVisible(!fragment.isEditing());
-		if (fragment.isEditing())
-			menu_edit.setIcon(R.drawable.ic_action_navigation_check);
-		else
-			menu_edit.setIcon(R.drawable.ic_action_image_edit);
+		menu_refresh.setVisible(true);
+		menu_edit.setIcon(R.drawable.ic_action_image_edit);
 		menu_period.setTitle(currentPeriod.getLabel(this));
 
 		if (chromecastEnabled)
@@ -237,18 +218,22 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	}
 
 	private void openGraph() {
-		if (fragment.getGrid().currentlyOpenedGridItem == null)
+		if (this.currentGrid == null || this.currentGrid.currentlyOpenedGridItem == null)
 			return;
 
-		fragment.getGrid().f.setCurrentNode(fragment.getGrid().currentlyOpenedGridItem.getPlugin().getInstalledOn());
+		muninFoo.setCurrentNode(this.currentGrid.currentlyOpenedGridItem.getPlugin().getInstalledOn());
 		Intent i = new Intent(context, Activity_GraphView.class);
-		i.putExtra("plugin", fragment.getGrid().currentlyOpenedGridItem.getPlugin().getName());
+		i.putExtra("plugin", this.currentGrid.currentlyOpenedGridItem.getPlugin().getName());
 		i.putExtra("from", "grid");
 		Intent gridIntent = ((Activity) context).getIntent();
 		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("gridName"))
 			i.putExtra("fromGrid", gridIntent.getExtras().getString("gridName"));
 		context.startActivity(i);
 		Util.setTransition(this, TransitionStyle.DEEPER);
+	}
+
+	private Fragment_Grid getCurrentFragment() {
+		return (Fragment_Grid) adapter.getItem(viewPager.getCurrentItem());
 	}
 
 	@Override
@@ -259,13 +244,25 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-			case R.id.menu_refresh:
-				fragment.refresh();
+			case R.id.menu_refresh: {
+				Fragment_Grid currentFragment = getCurrentFragment();
+				if (currentFragment == null)
+					return false;
+
+				currentFragment.refresh();
 
 				if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
 					muninFoo.chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.REFRESH);
 				return true;
-			case R.id.menu_edit: fragment.edit(); return true;
+			}
+			case R.id.menu_edit: {
+				Fragment_Grid currentFragment = getCurrentFragment();
+				if (currentFragment == null)
+					return false;
+
+				currentFragment.edit();
+				return true;
+			}
 			case R.id.period_day:
 				onPeriodMenuItemChange(Period.DAY);
 				return true;
@@ -285,16 +282,21 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	}
 
 	@Override
-	public void onGridSaved() {
+	public void onGridSaved(Grid grid) {
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
-			muninFoo.chromecastHelper.sendMessage_inflateGrid(fragment.getGrid(), currentPeriod);
+			muninFoo.chromecastHelper.sendMessage_inflateGrid(grid, currentPeriod);
 	}
 
 	private void onPeriodMenuItemChange(Period newPeriod) {
 		this.currentPeriod = newPeriod;
-		fragment.setCurrentPeriod(newPeriod);
+
+		// Notify all fragments
+		for (Fragment_Grid fragment : adapter.getAll()) {
+			fragment.setCurrentPeriod(newPeriod);
+			fragment.refresh();
+		}
+
 		menu_period.setTitle(newPeriod.getLabel(context));
-		fragment.refresh();
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
 			muninFoo.chromecastHelper.sendMessage_changePeriod(newPeriod);
 	}
@@ -304,11 +306,17 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
         if (dh.closeDrawerIfOpen())
             return;
 
-        if (findViewById(R.id.fullscreen).getVisibility() == View.VISIBLE)
-			fragment.hidePreview();
+		Fragment_Grid currentFragment = getCurrentFragment();
+
+        if (findViewById(R.id.fullscreen).getVisibility() == View.VISIBLE) {
+			if (currentFragment == null)
+				return;
+
+			currentFragment.hidePreview();
+		}
 		else {
-			if (fragment.isEditing())
-				fragment.edit(); // quit edit mode
+			if (currentFragment != null && currentFragment.isEditing())
+				currentFragment.edit(); // quit edit mode
 			else {
 				Intent intent = new Intent(this, Activity_Grids.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
