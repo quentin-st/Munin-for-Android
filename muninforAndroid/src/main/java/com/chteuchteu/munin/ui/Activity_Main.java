@@ -233,9 +233,9 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 			case R.id.menu_open:
 				switch (mainFragment) {
 					case GRID: {
-						Intent intent = new Intent(context, Activity_Grid.class);
+						Intent intent = new Intent(context, Activity_Grids.class);
 						Grid grid = ((Fragment_Grid) fragment).getGrid();
-						intent.putExtra(Activity_Grid.ARG_GRIDID, grid.getId());
+						intent.putExtra(Activity_Grids.ARG_GRIDID, grid.getId());
 						startActivity(intent);
 						Util.setTransition(this, Util.TransitionStyle.DEEPER);
 						break;

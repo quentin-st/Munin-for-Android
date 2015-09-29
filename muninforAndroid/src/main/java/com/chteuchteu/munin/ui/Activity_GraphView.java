@@ -531,7 +531,7 @@ public class Activity_GraphView extends MuninActivity {
 					break;
 				case "grid":
 					if (thisIntent.getExtras().containsKey("fromGrid")) {
-						Intent intent = new Intent(Activity_GraphView.this, Activity_Grid.class);
+						Intent intent = new Intent(Activity_GraphView.this, Activity_Grids.class);
 						intent.putExtra("gridName", thisIntent.getExtras().getString("fromGrid"));
 						startActivity(intent);
 						Util.setTransition(this, TransitionStyle.SHALLOWER);
