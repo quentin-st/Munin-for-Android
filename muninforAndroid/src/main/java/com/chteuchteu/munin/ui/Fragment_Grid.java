@@ -111,9 +111,6 @@ public class Fragment_Grid extends Fragment {
 			}
 		});
 
-		if (autoLoad && grid.getItems().size() == 0)
-			edit();
-
 		if (!autoLoad) {
 			view.findViewById(R.id.manual_load).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.manual_load_action).setOnClickListener(new View.OnClickListener() {

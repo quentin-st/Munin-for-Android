@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -67,11 +68,15 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 		if (grids.size() == 0)
 			addDefaultGrid();
 
-		int currentGridIndex = 0;
+		long currentGridId = grids.get(0).getId();
 		if (getIntent() != null)
-			currentGridIndex = getIntent().getIntExtra(ARG_GRIDID, 0);
+			currentGridId = getIntent().getIntExtra(ARG_GRIDID, (int) currentGridId);
 
-		this.currentGrid = grids.get(currentGridIndex);
+		// Get currentGrid
+		for (Grid grid : grids) {
+			if (grid.getId() == currentGridId)
+				currentGrid = grid;
+		}
 
 		// Init ViewPager
 		viewPager = (LockableViewPager) findViewById(R.id.viewPager);
@@ -85,9 +90,17 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 				chromecast_switchTo();
 			}
 
-			@Override public void onTabUnselected(TabLayout.Tab tab) { }
-			@Override public void onTabReselected(TabLayout.Tab tab) { }
+			@Override
+			public void onTabUnselected(TabLayout.Tab tab) {
+			}
+
+			@Override
+			public void onTabReselected(TabLayout.Tab tab) {
+			}
 		});
+		TabLayout.Tab tab = tabLayout.getTabAt(grids.indexOf(currentGrid));
+		if (tab != null) // Just to ignore Android Studio warning
+			tab.select();
 
 		if (!Util.isOnline(context))
 			Toast.makeText(context, getString(R.string.text30), Toast.LENGTH_LONG).show();
@@ -317,7 +330,43 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 				return true;
 			case R.id.menu_open: openGraph(); return true;
 			case R.id.menu_add:
-				// TODO
+				final LinearLayout ll = new LinearLayout(this);
+				ll.setOrientation(LinearLayout.VERTICAL);
+				ll.setPadding(10, 30, 10, 10);
+				final EditText input = new EditText(this);
+				ll.addView(input);
+
+				AlertDialog.Builder b = new AlertDialog.Builder(Activity_Grids.this)
+						.setTitle(getText(R.string.text69))
+						.setView(ll)
+						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								String value = input.getText().toString();
+								if (!value.equals("")) {
+									List<String> existingNames = muninFoo.sqlite.dbHlpr.getGridsNames();
+									boolean available = true;
+									for (String s : existingNames) {
+										if (s.equals(value))
+											available = false;
+									}
+									if (available) {
+										long id = muninFoo.sqlite.dbHlpr.insertGrid(value);
+										dialog.dismiss();
+
+										// Restart activity... We should probably handle this
+										Intent intent = new Intent(Activity_Grids.this, Activity_Grids.class);
+										intent.putExtra(ARG_GRIDID, id);
+										startActivity(intent);
+										Util.setTransition(activity, TransitionStyle.DEEPER);
+									}
+									else
+										Toast.makeText(context, getString(R.string.text74), Toast.LENGTH_LONG).show();
+								}
+							}
+						})
+						.setNegativeButton(getText(R.string.text64), null);
+				AlertDialog d = b.create();
+				d.show();
 				return true;
 			case R.id.menu_delete:
 				new AlertDialog.Builder(context)
