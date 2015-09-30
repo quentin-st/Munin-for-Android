@@ -7,10 +7,12 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.Display;
@@ -114,6 +116,8 @@ public class Activity_GraphView extends MuninActivity {
 	private DynazoomFetcher dynazoomFetcher;
 	private long    dynazoom_from;
 	private long    dynazoom_to;
+
+	private Drawable toolbar_originalIcon;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -738,6 +742,9 @@ public class Activity_GraphView extends MuninActivity {
 
 
 	private void hideDocumentation() {
+		toolbar.setNavigationIcon(toolbar_originalIcon);
+		toolbar.setNavigationOnClickListener(dh.getToggleListener());
+
 		final View documentation = findViewById(R.id.documentation);
 		iv_documentation = (ImageView) findViewById(R.id.doc_imageview);
 		iv_documentation.setTag("");
@@ -769,6 +776,17 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	private void actionDocumentation() {
 		menu.clear();
+
+		if (this.toolbar_originalIcon == null)
+			this.toolbar_originalIcon = toolbar.getNavigationIcon();
+
+		toolbar.setNavigationIcon(ContextCompat.getDrawable(context, R.drawable.ic_action_navigation_arrow_back));
+		toolbar.setNavigationOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
+		});
 
 		// Get file content
 		String fileContent = DocumentationHelper.getDocumentation(context, currentPlugin, "");
