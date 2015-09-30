@@ -84,19 +84,16 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 		viewPager.setAdapter(adapter);
 		tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 		tabLayout.setupWithViewPager(viewPager);
+		viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 		tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 			@Override
 			public void onTabSelected(TabLayout.Tab tab) {
+				viewPager.setCurrentItem(tab.getPosition());
 				chromecast_switchTo();
 			}
 
-			@Override
-			public void onTabUnselected(TabLayout.Tab tab) {
-			}
-
-			@Override
-			public void onTabReselected(TabLayout.Tab tab) {
-			}
+			@Override public void onTabUnselected(TabLayout.Tab tab) { }
+			@Override public void onTabReselected(TabLayout.Tab tab) { }
 		});
 		TabLayout.Tab tab = tabLayout.getTabAt(grids.indexOf(currentGrid));
 		if (tab != null) // Just to ignore Android Studio warning
