@@ -110,7 +110,7 @@ public class DrawerHelper {
 				new PrimaryDrawerItem()
 						.withName(R.string.button_grid)
 						.withIdentifier(DrawerMenuItem.Grids.getIdentifier())
-						.withIcon(CommunityMaterial.Icon.cmd_grid)
+						.withIcon(CommunityMaterial.Icon.cmd_view_grid)
 						.withEnabled(muninFoo.premium && muninFoo.getNodes().size() > 0)
 		);
 
@@ -119,7 +119,7 @@ public class DrawerHelper {
 				new PrimaryDrawerItem()
 						.withName(R.string.button_alerts)
 						.withIdentifier(DrawerMenuItem.Alerts.getIdentifier())
-						.withIcon(CommunityMaterial.Icon.cmd_alert_box)
+						.withIcon(CommunityMaterial.Icon.cmd_alert_circle)
 						.withEnabled(muninFoo.getNodes().size() > 0)
 		);
 
