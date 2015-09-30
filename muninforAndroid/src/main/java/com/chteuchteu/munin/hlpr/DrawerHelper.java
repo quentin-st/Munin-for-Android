@@ -360,4 +360,13 @@ public class DrawerHelper {
 		}
 		return false;
 	}
+
+	public View.OnClickListener getToggleListener() {
+		return new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				toggle();
+			}
+		};
+	}
 }

@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,6 +51,8 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 
 	private Handler mHandler;
 	private Runnable mHandlerTask;
+
+	private Drawable toolbar_originalIcon;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -202,6 +206,23 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 						: R.drawable.ic_action_navigation_check);
 
 		setPagingEnabled(editing);
+
+		// Toolbar: back button
+		if (this.toolbar_originalIcon == null)
+			this.toolbar_originalIcon = toolbar.getNavigationIcon();
+
+		if (editing) {
+			toolbar.setNavigationIcon(this.toolbar_originalIcon);
+			toolbar.setNavigationOnClickListener(dh.getToggleListener());
+		} else {
+			toolbar.setNavigationIcon(ContextCompat.getDrawable(context, R.drawable.ic_action_navigation_arrow_back));
+			toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onBackPressed();
+				}
+			});
+		}
 	}
 
 	@Override
