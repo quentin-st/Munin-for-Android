@@ -866,6 +866,17 @@ public class Activity_GraphView extends MuninActivity {
 		if (currentPlugin.getInstalledOn().getParent().isDynazoomAvailable() != DynazoomAvailability.TRUE)
 			return;
 
+		if (this.toolbar_originalIcon == null)
+			this.toolbar_originalIcon = toolbar.getNavigationIcon();
+
+		toolbar.setNavigationIcon(ContextCompat.getDrawable(context, R.drawable.ic_action_navigation_arrow_back));
+		toolbar.setNavigationOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
+		});
+
 		// Animation
 		View dynazoom = findViewById(R.id.dynazoom);
 		View mainContainer = findViewById(R.id.mainContainer);
@@ -966,6 +977,9 @@ public class Activity_GraphView extends MuninActivity {
 		});
 	}
 	private void hideDynazoom() {
+		toolbar.setNavigationIcon(toolbar_originalIcon);
+		toolbar.setNavigationOnClickListener(dh.getToggleListener());
+
 		final View dynazoom = findViewById(R.id.dynazoom);
 
 		View mainContainer = findViewById(R.id.mainContainer);
