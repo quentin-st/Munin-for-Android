@@ -213,7 +213,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 
 		if (editing) {
 			toolbar.setNavigationIcon(this.toolbar_originalIcon);
-			toolbar.setNavigationOnClickListener(dh.getToggleListener());
+			toolbar.setNavigationOnClickListener(drawerHelper.getToggleListener());
 		} else {
 			toolbar.setNavigationIcon(ContextCompat.getDrawable(context, R.drawable.ic_action_navigation_arrow_back));
 			toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -465,7 +465,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
 		Fragment_Grid currentFragment = getCurrentFragment();

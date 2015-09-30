@@ -174,7 +174,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 	 */
 	public void updateDrawerIfNeeded() {
 		if (muninFoo.getMasters().size() == 0)
-			dh.reset();
+			drawerHelper.reset();
 	}
 	
 	/**
@@ -464,7 +464,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
         Intent intent = new Intent(this, Activity_Main.class);

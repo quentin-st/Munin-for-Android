@@ -384,7 +384,7 @@ public class Activity_GraphView extends MuninActivity {
 				})
 				.withDrawerGravity(Gravity.END)
 				.withSelectedItem((int) muninFoo.getCurrentNode().getId())
-				.append(dh.getDrawer());
+				.append(drawerHelper.getDrawer());
 
 
         // Toolbar custom view (plugins spinner)
@@ -503,7 +503,7 @@ public class Activity_GraphView extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
         if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE) {
@@ -743,7 +743,7 @@ public class Activity_GraphView extends MuninActivity {
 
 	private void hideDocumentation() {
 		toolbar.setNavigationIcon(toolbar_originalIcon);
-		toolbar.setNavigationOnClickListener(dh.getToggleListener());
+		toolbar.setNavigationOnClickListener(drawerHelper.getToggleListener());
 
 		final View documentation = findViewById(R.id.documentation);
 		iv_documentation = (ImageView) findViewById(R.id.doc_imageview);
@@ -978,7 +978,7 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	private void hideDynazoom() {
 		toolbar.setNavigationIcon(toolbar_originalIcon);
-		toolbar.setNavigationOnClickListener(dh.getToggleListener());
+		toolbar.setNavigationOnClickListener(drawerHelper.getToggleListener());
 
 		final View dynazoom = findViewById(R.id.dynazoom);
 

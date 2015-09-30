@@ -460,7 +460,7 @@ public class Activity_Settings extends MuninActivity {
 				// Reset performed.
 				Toast.makeText(getApplicationContext(), getString(R.string.text02), Toast.LENGTH_SHORT).show();
 				
-				dh.reset();
+				drawerHelper.reset();
 			}
 		})
 		.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -506,7 +506,7 @@ public class Activity_Settings extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
         Intent intent = new Intent(this, Activity_Main.class);
