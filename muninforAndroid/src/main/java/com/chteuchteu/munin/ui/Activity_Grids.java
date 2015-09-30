@@ -58,6 +58,14 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 		this.currentPeriod = Util.getDefaultPeriod(this);
 		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
 
+		if (grids.size() == 0) {
+			String defaultGridName = getString(R.string.default_grid);
+			Grid grid = new Grid(defaultGridName);
+			long id = muninFoo.sqlite.dbHlpr.insertGrid(getString(R.string.default_grid));
+			grid.setId(id);
+			grids.add(grid);
+		}
+
 		int currentGridIndex = 0;
 		if (getIntent() != null)
 			currentGridIndex = getIntent().getIntExtra(ARG_GRIDID, 0);
@@ -220,6 +228,14 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 
 		if (chromecastEnabled)
 			muninFoo.chromecastHelper.createOptionsMenu(menu);
+
+		// If editing:
+		Fragment_Grid fragment = getCurrentFragment();
+		if (fragment != null && fragment.isEditing()) {
+			menu_refresh.setVisible(false);
+			menu_period.setVisible(false);
+			menu_edit.setIcon(R.drawable.ic_action_navigation_check);
+		}
 	}
 
 	private void openGraph() {
