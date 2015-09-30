@@ -1,6 +1,8 @@
 package com.chteuchteu.munin.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,17 +32,21 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 	private MenuItem menu_edit;
 	private MenuItem menu_period;
 	private MenuItem menu_open;
+	private MenuItem menu_add;
+	private MenuItem menu_delete;
 	private Period currentPeriod;
 
 	private LockableViewPager viewPager;
 	private TabLayout tabLayout;
 	private Adapter_Grids adapter;
 
+	private List<Grid> grids;
+	private Grid currentGrid;
+
 	private boolean chromecastEnabled;
 
 	private Handler mHandler;
 	private Runnable mHandlerTask;
-	private Grid currentGrid;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -49,22 +55,17 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 
 		setContentView(R.layout.activity_grid);
 		super.onContentViewSet();
-		this.actionBar.setTitle("");
+		this.actionBar.setTitle(R.string.button_grid);
 
 		if (settings.getBool(Settings.PrefKeys.ScreenAlwaysOn))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		this.chromecastEnabled = muninFoo.premium && !settings.getBool(Settings.PrefKeys.DisableChromecast);
 		this.currentPeriod = Util.getDefaultPeriod(this);
-		List<Grid> grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
+		this.grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
 
-		if (grids.size() == 0) {
-			String defaultGridName = getString(R.string.default_grid);
-			Grid grid = new Grid(defaultGridName);
-			long id = muninFoo.sqlite.dbHlpr.insertGrid(getString(R.string.default_grid));
-			grid.setId(id);
-			grids.add(grid);
-		}
+		if (grids.size() == 0)
+			addDefaultGrid();
 
 		int currentGridIndex = 0;
 		if (getIntent() != null)
@@ -128,6 +129,14 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 		}
 	}
 
+	private void addDefaultGrid() {
+		String defaultGridName = getString(R.string.default_grid);
+		Grid grid = new Grid(defaultGridName);
+		long id = muninFoo.sqlite.dbHlpr.insertGrid(getString(R.string.default_grid));
+		grid.setId(id);
+		grids.add(grid);
+	}
+
 	private void chromecast_switchTo() {
 		if (!chromecastEnabled)
 			return;
@@ -152,6 +161,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 		menu_period.setVisible(false);
 		menu_refresh.setVisible(false);
 		menu_edit.setVisible(false);
+		menu_add.setVisible(false);
 
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
 			muninFoo.chromecastHelper.sendMessage_preview(this.currentGrid.currentlyOpenedGridItem);
@@ -163,6 +173,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 		if (menu_edit != null)		menu_edit.setVisible(true);
 		if (menu_period != null)	menu_period.setVisible(true);
 		if (menu_open != null)		menu_open.setVisible(false);
+		if (menu_add != null)		menu_add.setVisible(false);
 
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
 			muninFoo.chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.CANCEL_PREVIEW);
@@ -172,10 +183,13 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 	public void onEditModeChange(boolean editing) {
 		if (menu_refresh != null)	menu_refresh.setVisible(editing);
 		if (menu_period != null)	menu_period.setVisible(editing);
-		if (menu_edit != null)
+		if (menu_add != null)		menu_add.setVisible(editing);
+		if (menu_delete != null)	menu_delete.setVisible(!editing);
+		if (menu_edit != null) {
 			menu_edit.setIcon(
 					editing ? R.drawable.ic_action_image_edit
 							: R.drawable.ic_action_navigation_check);
+		}
 
 		setPagingEnabled(editing);
 	}
@@ -222,6 +236,9 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 		menu_edit = menu.findItem(R.id.menu_edit);
 		menu_period = menu.findItem(R.id.menu_period);
 		menu_open = menu.findItem(R.id.menu_open);
+		menu_add = menu.findItem(R.id.menu_add);
+		menu_delete = menu.findItem(R.id.menu_delete);
+
 		menu_refresh.setVisible(true);
 		menu_edit.setIcon(R.drawable.ic_action_image_edit);
 		menu_period.setTitle(currentPeriod.getLabel(this));
@@ -234,6 +251,8 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 		if (fragment != null && fragment.isEditing()) {
 			menu_refresh.setVisible(false);
 			menu_period.setVisible(false);
+			menu_add.setVisible(false);
+			menu_delete.setVisible(true);
 			menu_edit.setIcon(R.drawable.ic_action_navigation_check);
 		}
 	}
@@ -297,9 +316,31 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 				onPeriodMenuItemChange(Period.YEAR);
 				return true;
 			case R.id.menu_open: openGraph(); return true;
-		}
+			case R.id.menu_add:
+				// TODO
+				return true;
+			case R.id.menu_delete:
+				new AlertDialog.Builder(context)
+						.setTitle(R.string.delete)
+						.setMessage(R.string.text80)
+						.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								if (currentGrid == null)
+									return;
 
-		return true;
+								muninFoo.sqlite.dbHlpr.deleteGrid(currentGrid);
+
+								// Restart activity... We should probably handle this
+								Util.setTransition(activity, TransitionStyle.DEEPER);
+								startActivity(new Intent(Activity_Grids.this, Activity_Grids.class));
+							}
+						})
+						.setNegativeButton(R.string.no, null)
+						.show();
+				return true;
+			default: return false;
+		}
 	}
 
 	@Override

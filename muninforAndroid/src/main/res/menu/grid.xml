@@ -8,6 +8,16 @@
 		app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
 		app:showAsAction="always"/>
 	<item
+		android:id="@+id/menu_add"
+		app:showAsAction="never"
+		android:title="@string/text70"/>
+	<item
+		android:id="@+id/menu_delete"
+		app:showAsAction="ifRoom"
+		android:title="@string/delete"
+		android:icon="@drawable/ic_action_delete"
+		android:visible="false"/>
+	<item
 		android:id="@+id/menu_period"
 		app:showAsAction="ifRoom"
 		android:title="@string/text76">
