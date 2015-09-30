@@ -34,6 +34,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 	private MenuItem menu_period;
 	private MenuItem menu_open;
 	private MenuItem menu_add;
+	private MenuItem menu_rename;
 	private MenuItem menu_delete;
 	private Period currentPeriod;
 
@@ -179,11 +180,11 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 
 	@Override
 	public void onPreviewHide() {
-		if (menu_refresh != null)	menu_refresh.setVisible(true);
-		if (menu_edit != null)		menu_edit.setVisible(true);
-		if (menu_period != null)	menu_period.setVisible(true);
-		if (menu_open != null)		menu_open.setVisible(false);
-		if (menu_add != null)		menu_add.setVisible(false);
+		menu_open.setVisible(false);
+		menu_period.setVisible(true);
+		menu_refresh.setVisible(true);
+		menu_edit.setVisible(true);
+		menu_add.setVisible(false);
 
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
 			muninFoo.chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.CANCEL_PREVIEW);
@@ -191,15 +192,14 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 
 	@Override
 	public void onEditModeChange(boolean editing) {
-		if (menu_refresh != null)	menu_refresh.setVisible(editing);
-		if (menu_period != null)	menu_period.setVisible(editing);
-		if (menu_add != null)		menu_add.setVisible(editing);
-		if (menu_delete != null)	menu_delete.setVisible(!editing);
-		if (menu_edit != null) {
-			menu_edit.setIcon(
-					editing ? R.drawable.ic_action_image_edit
-							: R.drawable.ic_action_navigation_check);
-		}
+		menu_refresh.setVisible(editing);
+		menu_period.setVisible(editing);
+		menu_add.setVisible(editing);
+		menu_rename.setVisible(!editing);
+		menu_delete.setVisible(!editing);
+		menu_edit.setIcon(
+				editing ? R.drawable.ic_action_image_edit
+						: R.drawable.ic_action_navigation_check);
 
 		setPagingEnabled(editing);
 	}
@@ -247,9 +247,9 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 		menu_period = menu.findItem(R.id.menu_period);
 		menu_open = menu.findItem(R.id.menu_open);
 		menu_add = menu.findItem(R.id.menu_add);
+		menu_rename = menu.findItem(R.id.menu_rename);
 		menu_delete = menu.findItem(R.id.menu_delete);
 
-		menu_refresh.setVisible(true);
 		menu_edit.setIcon(R.drawable.ic_action_image_edit);
 		menu_period.setTitle(currentPeriod.getLabel(this));
 
@@ -326,16 +326,16 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 				onPeriodMenuItemChange(Period.YEAR);
 				return true;
 			case R.id.menu_open: openGraph(); return true;
-			case R.id.menu_add:
-				final LinearLayout ll = new LinearLayout(this);
-				ll.setOrientation(LinearLayout.VERTICAL);
-				ll.setPadding(10, 30, 10, 10);
+			case R.id.menu_add: {
+				final LinearLayout linearLayout = new LinearLayout(this);
+				linearLayout.setOrientation(LinearLayout.VERTICAL);
+				linearLayout.setPadding(10, 30, 10, 10);
 				final EditText input = new EditText(this);
-				ll.addView(input);
+				linearLayout.addView(input);
 
-				AlertDialog.Builder b = new AlertDialog.Builder(Activity_Grids.this)
+				new AlertDialog.Builder(Activity_Grids.this)
 						.setTitle(getText(R.string.text69))
-						.setView(ll)
+						.setView(linearLayout)
 						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								String value = input.getText().toString();
@@ -355,16 +355,48 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 										intent.putExtra(ARG_GRIDID, id);
 										startActivity(intent);
 										Util.setTransition(activity, TransitionStyle.DEEPER);
-									}
-									else
+									} else
 										Toast.makeText(context, getString(R.string.text74), Toast.LENGTH_LONG).show();
 								}
 							}
 						})
-						.setNegativeButton(getText(R.string.text64), null);
-				AlertDialog d = b.create();
-				d.show();
+						.setNegativeButton(getText(R.string.text64), null)
+						.create()
+						.show();
 				return true;
+			}
+			case R.id.menu_rename: {
+				if (currentGrid == null)
+					return false;
+
+				final EditText input = new EditText(context);
+				input.setText(currentGrid.getName());
+
+				new AlertDialog.Builder(context)
+						.setTitle(R.string.rename_grid)
+						.setView(input)
+						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								String value = input.getText().toString();
+								if (!value.equals(currentGrid.getName())) {
+									// Check if there's a grid with this name
+									boolean alreadyExists = muninFoo.sqlite.dbHlpr.gridExists(value);
+									if (!alreadyExists) {
+										muninFoo.sqlite.dbHlpr.updateGridName(currentGrid.getName(), value);
+
+										// Restart activity... We should probably handle this
+										Util.setTransition(activity, TransitionStyle.DEEPER);
+										startActivity(new Intent(Activity_Grids.this, Activity_Grids.class));
+									} else
+										Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
+								}
+								dialog.dismiss();
+							}
+						})
+						.setNegativeButton(R.string.text64, null)
+						.show();
+				return true;
+			}
 			case R.id.menu_delete:
 				new AlertDialog.Builder(context)
 						.setTitle(R.string.delete)
@@ -385,7 +417,8 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 						.setNegativeButton(R.string.no, null)
 						.show();
 				return true;
-			default: return false;
+			default:
+				return false;
 		}
 	}
 
