@@ -4,7 +4,9 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<include layout="@layout/incl_actionbar" />
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/toolbar"
+		style="@style/Toolbar" />
 
 	<ScrollView
 		android:layout_width="match_parent"
