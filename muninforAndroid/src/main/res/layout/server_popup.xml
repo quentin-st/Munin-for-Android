@@ -16,23 +16,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="center"
 			android:orientation="vertical"
-			android:visibility="gone" >
-
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginBottom="10dp"
-				android:background="@color/actionBarColor"
-				android:gravity="center"
-				android:paddingBottom="10dp"
-				android:paddingTop="10dp"
-				android:shadowColor="#BB000000"
-				android:shadowDx="1"
-				android:shadowDy="1"
-				android:shadowRadius="2"
-				android:text="@string/settings_http_auth2"
-				android:textColor="#fff"
-				android:textSize="@dimen/addserver_popup_fontsize2" />
+			android:visibility="gone">
 
 			<LinearLayout
 				android:layout_width="match_parent"

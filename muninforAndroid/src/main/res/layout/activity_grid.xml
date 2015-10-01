@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<include layout="@layout/incl_actionbar" />
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/toolbar"
+		style="@style/Toolbar">
 
-	<RelativeLayout
+		<android.support.design.widget.TabLayout
+			android:id="@+id/tabLayout"
+			style="@style/TabLayout_Grids"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize" />
+
+	</android.support.v7.widget.Toolbar>
+
+	<com.chteuchteu.munin.ui.LockableViewPager
+		android:id="@+id/viewPager"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="@drawable/bottom_shadow" >
-
-		<FrameLayout
-			android:id="@+id/fragment_container"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent" />
-	</RelativeLayout>
+		android:background="@drawable/bottom_shadow"/>
 </LinearLayout>

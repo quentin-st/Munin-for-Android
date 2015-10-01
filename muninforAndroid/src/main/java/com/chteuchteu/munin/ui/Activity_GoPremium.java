@@ -16,7 +16,6 @@ import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.TagFormat;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 
 import java.util.Currency;
@@ -105,7 +104,7 @@ public class Activity_GoPremium extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
         Intent intent = new Intent(this, Activity_Main.class);

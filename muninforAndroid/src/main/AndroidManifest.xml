@@ -36,9 +36,8 @@
 				  android:configChanges="orientation|screenSize|keyboardHidden" />
 		<activity android:name=".ui.Activity_AlertsPlugins" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GraphView" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Grid"
+		<activity android:name=".ui.Activity_Grids"
 				  android:configChanges="orientation|screenSize|keyboardHidden"/>
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Grids" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Labels" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Main"
 				  android:icon="@drawable/launcher_icon"

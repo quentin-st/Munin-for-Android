@@ -145,7 +145,7 @@ public class Activity_About extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
         Intent intent = new Intent(this, Activity_Main.class);

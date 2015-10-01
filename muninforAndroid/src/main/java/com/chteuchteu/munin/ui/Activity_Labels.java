@@ -147,7 +147,7 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
 		if (activityState == ActivityState.SELECTING_PLUGIN) {
