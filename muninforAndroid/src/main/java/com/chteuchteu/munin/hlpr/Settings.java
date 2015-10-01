@@ -135,11 +135,7 @@ public class Settings {
         DefaultScale("defaultScale", "day"),
         LastMFAVersion("lastMFAVersion", ""),
         Notifications("notifications", false),
-        Notifs_RefreshRate("notifs_refreshRate", -1),
-        Notifs_NodesList("notifs_serversList", ""),
-        Notifs_WifiOnly("notifs_wifiOnly",  false),
         Notifs_Vibrate("notifs_vibrate", true),
-        Notifs_LastNotificationText("lastNotificationText", ""),
 
 
         AutoRefresh("autoRefresh", false),
@@ -248,21 +244,6 @@ public class Settings {
             String notifications = this.sharedPreferences.getString(PrefKeys.Notifications.getKey(), null);
             remove(PrefKeys.Notifications);
             set(PrefKeys.Notifications, notifications != null && notifications.equals("true"));
-        }
-
-        // Refresh rate
-        if (this.sharedPreferences.contains(PrefKeys.Notifs_RefreshRate.getKey())) {
-            String refreshRate = this.sharedPreferences.getString(PrefKeys.Notifs_RefreshRate.getKey(), null);
-            remove(PrefKeys.Notifs_RefreshRate);
-            if (refreshRate != null && !refreshRate.equals(""))
-                set(PrefKeys.Notifs_RefreshRate, Integer.valueOf(refreshRate));
-        }
-
-        // Notifs_wifiOnly
-        if (this.sharedPreferences.contains(PrefKeys.Notifs_WifiOnly.getKey())) {
-            String wifiOnly = this.sharedPreferences.getString(PrefKeys.Notifs_WifiOnly.getKey(), null);
-            remove(PrefKeys.Notifs_WifiOnly);
-            set(PrefKeys.Notifs_WifiOnly, wifiOnly != null && wifiOnly.equals("true"));
         }
 
         // User agent changed

@@ -102,16 +102,6 @@
 		<service android:name=".wdget.Widget_AlertsWidget_WidgetService"
 				 android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-		<!-- Notifications -->
-		<receiver android:name=".ntfs.BootReceiver" >
-			<intent-filter>
-				<action android:name="android.intent.action.BOOT_COMPLETED" />
-			</intent-filter>
-		</receiver>
-		<service
-			android:name=".ntfs.Service_Notifications"
-			android:enabled="true" />
-
 		<!-- Crashlytics -->
 		<meta-data
 			android:name="com.crashlytics.ApiKey"
