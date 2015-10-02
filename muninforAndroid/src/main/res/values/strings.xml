@@ -291,5 +291,9 @@
 	<string name="auto">Auto</string>
 	<string name="debug_preferences" translatable="false">Debug preferences</string>
 	<string name="default_grid">Default grid</string>
+	<string name="notifications_device_code">Device code</string>
+	<string name="notifications_instructions">You have to configure each master so they can send notifications to this devices.</string>
+	<string name="notifications_sendByMail">Send me the instructions by mail</string>
+	<string name="notifications_mailSent">Mail sent! Please check your inbox for it</string>
 
 </resources>

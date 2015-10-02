@@ -134,7 +134,8 @@ public class Settings {
         ScreenAlwaysOn("screenAlwaysOn", false),
         DefaultScale("defaultScale", "day"),
         LastMFAVersion("lastMFAVersion", ""),
-        Notifications("notifications", false),
+        Notifications("notifications_gcm", false),
+        Notifs_GCM_regId("notifs_gcm_regId", null),
         Notifs_Vibrate("notifs_vibrate", true),
 
 
