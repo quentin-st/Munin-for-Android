@@ -68,21 +68,3 @@ dependencies {
     // Debug-specific dependencies
     debugCompile 'im.dino:dbinspector:3.1.0@aar'
 }
-
-// One google-services.json file for each flavor (debug/release)
-gradle.taskGraph.beforeTask { Task task ->
-    if(task.name ==~ /process.*GoogleServices/) {
-        android.applicationVariants.all { variant ->
-            if(task.name ==~ /(?i)process${variant.name}GoogleServices/){
-                copy {
-                    from '.'
-                    into '.'
-                    rename { String fileName ->
-                        fileName.replace("google-services-${variant.name}.json", 'google-services.json')
-                    }
-                    include "google-services-${variant.name}.json"
-                }
-            }
-        }
-    }
-}
