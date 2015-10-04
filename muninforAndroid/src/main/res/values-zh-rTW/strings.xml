@@ -15,7 +15,6 @@
 	<string name="settings_login">登入</string>
 	<string name="settings_password">密碼</string>
 	<string name="settings_default_scale">圖形預設縮放比</string>
-	<string name="settings_graphview_orientation">圖形螢幕的方向</string>
 	<string name="settings_screenalwayson_label">螢幕一直開啟</string>
 	<string name="settings_screenalwayson_checkbox">當顯示圖形 / 警報時，防止螢幕關閉</string>
 	<string name="settings_autorefresh_label">自動重整</string>
@@ -34,7 +33,6 @@
 	<string name="about_eraseData">重置 app</string>
 	<string name="app_name">Munin for Android</string>
 	<string name="about_gplay">給 app 評論</string>
-	<string name="menu_serversedit_revert">恢復伺服器</string>
 	<string name="servers_noservers_1">還沒有伺服器</string>
 	<string name="edit">編輯</string>
 	<string name="yourerunning">您正在執行</string>
@@ -44,7 +42,6 @@
 	<string name="about_specialThanksTitle">特別感謝</string>
 	<string name="goPremium_title">Munin for Android 功能包</string>
 	<string name="buy_now">現在購買</string>
-	<string name="splashDesc">載入</string>
 	<string name="graphView_ImageViewDescription">圖形</string>
 
 	<string name="addServerTitle">增加伺服器</string>

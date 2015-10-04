@@ -17,7 +17,6 @@
 	<string name="settings_login">Користувач</string>
 	<string name="settings_password">Пароль</string>
 	<string name="settings_default_scale">Базовий розмір графіку</string>
-	<string name="settings_graphview_orientation">Орієнтація екрану графіків</string>
 	<string name="settings_screenalwayson_label">Екран завжди увімкнено</string>
 	<string name="settings_screenalwayson_checkbox">Запобігати вимкненню екрана протягом перегляду графіків і сповіщень</string>
 	<string name="settings_autorefresh_label">Автооновлення</string>
@@ -35,7 +34,6 @@
 	<string name="search">Пошук</string>
 	<string name="about_eraseData">Обнулити програму</string>
 	<string name="about_gplay">Проголосувати</string>
-	<string name="menu_serversedit_revert">Відновити сервери</string>
 	<string name="servers_noservers_1">Відсутній сервер</string>
 	<string name="servers_noservers_2">Додайте ваш або демонстраційний натисканням +</string>
 	<string name="edit">Редагування</string>
@@ -52,7 +50,6 @@
 	<string name="about_librariesTitle">Бібліотеки</string>
 	<string name="goPremium_title">Розширений пакет Мунін для Андроід</string>
 	<string name="buy_now">ПРИДБАТИ</string>
-	<string name="splashDesc">Завантаження</string>
 	<string name="graphView_ImageViewDescription">Графік</string>
 
 	<string name="addServerTitle">Додати сервер</string>
@@ -77,7 +74,7 @@
 	<string name="text18">Успішно!</string>
 	<string name="text21.1">" сервер"</string>
 	<string name="text21.2">" додано!\n"</string>
-	<string name="text24">Успішно</string>
+	<string name="success">Успішно</string>
 	<string name="text27">" додатки знайдено!"</string>
 	<string name="yes">Так</string>
 	<string name="no">Ні</string>

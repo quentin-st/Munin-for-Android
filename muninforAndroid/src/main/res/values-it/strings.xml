@@ -17,7 +17,6 @@
 	<string name="settings_login">Utente</string>
 	<string name="settings_password">Password</string>
 	<string name="settings_default_scale">Scala grafico predefinita</string>
-	<string name="settings_graphview_orientation">Orientamento schermo grafici</string>
 	<string name="settings_screenalwayson_label">Schermo sempre acceso</string>
 	<string name="settings_screenalwayson_checkbox">Impedisci allo schermo di spegnersi mentre vengono visualizzati i grafici o gli avvisi</string>
 	<string name="settings_autorefresh_label">Aggiornamento automatico</string>
@@ -35,7 +34,6 @@
 	<string name="search">Cerca</string>
 	<string name="about_eraseData">Reimposta app</string>
 	<string name="about_gplay">Valuta l\'app</string>
-	<string name="menu_serversedit_revert">Ripristina server</string>
 	<string name="servers_noservers_1">Ancora nessun server</string>
 	<string name="servers_noservers_2">Aggiungine di tuoi o di esempio premendo + ora</string>
 	<string name="edit">Modifica</string>
@@ -91,7 +89,7 @@
 	<string name="text18">Riuscito!</string>
 	<string name="text21.1">" nodo"</string>
 	<string name="text21.2">" aggiunto!\n"</string>
-	<string name="text24">Riuscito</string>
+	<string name="success">Riuscito</string>
 	<string name="text27">" plugin trovati!"</string>
 	<string name="text28">Grafico salvato come /muninForAndroid/</string>
 	<string name="text29">Errore salvando il grafico</string>

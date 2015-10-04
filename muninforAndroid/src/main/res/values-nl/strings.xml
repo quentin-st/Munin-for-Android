@@ -17,7 +17,6 @@
 	<string name="settings_password">Wachtwoord</string>
 	<string name="settings_login">Gebruikersnaam</string>
 	<string name="settings_default_scale">Standaard grafiek schaal</string>
-	<string name="settings_graphview_orientation">Schermoriëntatie grafieken</string>
 	<string name="settings_screenalwayson_label">Scherm blijft aan</string>
 	<string name="settings_screenalwayson_checkbox">Voorkom dat het scherm uitgaat wanneer grafieken / waarschuwingen worden weergegeven</string>
 	<string name="settings_autorefresh_label">Automatisch verversen</string>
@@ -35,7 +34,6 @@
 	<string name="search">Zoeken</string>
 	<string name="about_eraseData">App resetten</string>
 	<string name="about_gplay">Beoordeel deze app</string>
-	<string name="menu_serversedit_revert">Servers opnieuw instellen</string>
 	<string name="servers_noservers_1">Nog geen server ingesteld</string>
 	<string name="servers_noservers_2">Voeg je eigen server, of een voorbeeldserver toe door op \"+\" te tikken</string>
 	<string name="edit">Aanpassen</string>
@@ -53,7 +51,6 @@
 	<string name="goPremium_title">Munin voor Android Premium pakket</string>
 	<string name="goPremium_features"> <li>Grafieken in rasters</li> <li>Grafiek widgets</li> <li>Samenvattingsverificatie</li> <li>Notificaties</li> <li>Support met hoge prioriteit</li> <li>Eén pakket voor alles: betaal één keer voor huidige en toekomstige mogelijkheden!</li> <li>Zorg dat automatische updates in Google Play aanstaat om alle nieuwe premium mogelijkheden te ontvangen</li> </string>
 	<string name="buy_now">NU KOPEN</string>
-	<string name="splashDesc">Aan het laden</string>
 	<string name="graphView_ImageViewDescription">Grafiek</string>
 
 	<string name="addServerTitle">Server toevoegen</string>
@@ -84,7 +81,7 @@
 	<string name="text18">Succes!</string>
 	<string name="text21.1">" Subserver"</string>
 	<string name="text21.2">" toegevoegd!\n"</string>
-	<string name="text24">Succes</string>
+	<string name="success">Succes</string>
 	<string name="text27">" Plug-ins gevonden!"</string>
 	<string name="text28">Grafiek is opgeslagen als /muninForAndroid/</string>
 	<string name="text29">Fout tijdens het opslaan van de grafiek</string>
