@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.ui.Activity_IgnoreAlert;
 import com.chteuchteu.munin.ui.Activity_Main;
@@ -25,6 +26,8 @@ import org.json.JSONObject;
 import java.util.Date;
 
 public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerService {
+    public static String EXTRA_NOTIFICATION_ID = "notification_id";
+
     /**
      * Called when message is received.
      *
@@ -38,10 +41,16 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
             debugDataBundle(data);
 
         // Check if this is a test notifications
-        if (data.getString("test", "false").equals("true")) {
+        if (data.getString("test", "false").equals("true"))
             sendTestNotification();
+        else
+            handleNotification(data);
+    }
+
+    private void handleNotification(Bundle data) {
+        // Check if notifications are enabled
+        if (!Settings.getInstance(this).getBool(Settings.PrefKeys.Notifications))
             return;
-        }
 
         // Parse alerts
         String alerts = data.getString("alerts");
@@ -106,6 +115,8 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
      * Create and show a notification for an alert
      */
     private void sendNotification(String group, String host, String plugin, String value, String field, MuninPlugin.AlertState alertLevel) {
+        int notificationId = getUniqueNotificationId();
+
         // Open app intent
         Intent intent = new Intent(this, Activity_Main.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -114,6 +125,7 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
 
         // Ignore intent
         Intent ignoreIntent = new Intent(this, Activity_IgnoreAlert.class);
+        ignoreIntent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
         ignoreIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent ignorePendingIntent = PendingIntent.getActivity(this, 1, ignoreIntent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -142,7 +154,7 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(getUniqueNotificationId(), notificationBuilder.build());
+        notificationManager.notify(notificationId, notificationBuilder.build());
     }
 
     private void sendTestNotification() {
