@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.AppCompatCheckBox;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.async.Notifications_SendInstructionsByMail;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -138,21 +135,6 @@ public class Activity_Notifications extends MuninActivity {
 			tv_deviceCode.setText(deviceCode.substring(0, deviceCode.length() > 15 ? 15 : deviceCode.length() - 1) + "...");
 		}
 	}
-	
-	private void enableNotifications() {
-		if (muninFoo.getSettings().getString(Settings.PrefKeys.Notifs_GCM_regId) == null) {
-			// Get reg_id
-			if (checkPlayServices()) {
-				progressDialog = ProgressDialog.show(this, "", getString(R.string.loading), true);
-				Intent intent = new Intent(this, RegistrationIntentService.class);
-				startService(intent);
-			}
-		}
-	}
-	
-	private void disableNotifications() {
-
-	}
 
 	@Override
 	protected void onResume() {
@@ -179,10 +161,22 @@ public class Activity_Notifications extends MuninActivity {
 	}
 
 	private void actionSave() {
-		if (muninFoo.premium) {
-			// TODO
-			enableNotifications();
+		if (!muninFoo.premium)
+			return;
+
+		if (cb_notifications.isChecked()) {
+			// Get reg_id
+			if (muninFoo.getSettings().getString(Settings.PrefKeys.Notifs_GCM_regId) == null) {
+				if (checkPlayServices()) {
+					progressDialog = ProgressDialog.show(this, "", getString(R.string.loading), true);
+					Intent intent = new Intent(this, RegistrationIntentService.class);
+					startService(intent);
+				}
+			}
 		}
+
+		settings.set(Settings.PrefKeys.Notifications, cb_notifications.isChecked());
+		settings.set(Settings.PrefKeys.Notifs_Vibrate, cb_vibrate.isChecked());
 	}
 
 	@Override
