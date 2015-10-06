@@ -46,42 +46,51 @@
 				android:id="@+id/notificationsEnabled"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="vertical" >
+				android:orientation="vertical">
 
 				<View style="@style/Material_Divider" />
 
-				<RelativeLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content">
-
-					<TextView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_marginLeft="15dp"
-						android:layout_marginTop="5dp"
-						android:layout_marginRight="50dp"
-						android:textColor="#666666"
-						android:textSize="14sp"
-						android:text="@string/notifications_device_code" />
-
-					<TextView
-						android:id="@+id/device_code"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentRight="true"
-						android:layout_marginRight="15dp" />
-				</RelativeLayout>
-
-				<TextView
+				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:text="@string/notifications_instructions" />
+					android:orientation="vertical"
+					android:layout_marginLeft="15dp"
+					android:layout_marginRight="15dp">
 
-				<Button
-					android:id="@+id/sendByMail"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/notifications_sendByMail"/>
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="15dp"
+						android:layout_marginTop="5dp">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginRight="35dp"
+							android:textColor="#666666"
+							android:textSize="14sp"
+							android:text="@string/notifications_device_code" />
+
+						<TextView
+							android:id="@+id/device_code"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_alignParentRight="true" />
+					</RelativeLayout>
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/notifications_instructions" />
+
+					<Button
+						android:id="@+id/sendByMail"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/notifications_sendByMail"
+						android:layout_gravity="center_horizontal"
+						android:layout_marginBottom="15dp" />
+				</LinearLayout>
 
 				<RelativeLayout
 					style="@style/Settings_Checkbox_Container"

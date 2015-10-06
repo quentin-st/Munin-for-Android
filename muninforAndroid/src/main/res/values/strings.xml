@@ -290,8 +290,8 @@
 	<string name="debug_preferences" translatable="false">Debug preferences</string>
 	<string name="default_grid">Default grid</string>
 	<string name="notifications_device_code">Device code</string>
-	<string name="notifications_instructions">You have to configure each master so they can send notifications to this devices.</string>
-	<string name="notifications_sendByMail">Send me the instructions by mail</string>
+	<string name="notifications_instructions">You have to configure each master so they can send notifications to this device.</string>
+	<string name="notifications_sendByMail">Send me the code and instructions by mail</string>
 	<string name="notifications_mailSent">Mail sent! Please check your inbox for it</string>
 	<string name="notifications_test_title">Munin for Android test notification</string>
 	<string name="notifications_test_text">Munin for Android GCM Trigger has been successfully installed</string>
