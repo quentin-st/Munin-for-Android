@@ -102,7 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String KEY_GRIDITEMRELATIONS_PLUGINPAGEURL = "pluginPageUrl";
 
 	// IgnoredNotifications
-	public static final String KEY_IGNOREDNOTIFICATIONS_GROUP = "group";
+	public static final String KEY_IGNOREDNOTIFICATIONS_GROUP = "groupName"; // "group" is a SQLite keyword
 	public static final String KEY_IGNOREDNOTIFICATIONS_HOST = "host";
 	public static final String KEY_IGNOREDNOTIFICATIONS_PLUGIN = "plugin";
 	public static final String KEY_IGNOREDNOTIFICATIONS_UNTIL = "until";

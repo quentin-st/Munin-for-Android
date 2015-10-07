@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
-import com.chteuchteu.munin.ntfs.GcmListenerService;
 import com.chteuchteu.munin.obj.IgnoredNotification;
 
 import java.util.Calendar;
@@ -56,16 +56,34 @@ public class Activity_IgnoreNotification extends Activity {
 		container.setPadding(30, 45, 30, 0);
 		container.setOrientation(LinearLayout.VERTICAL);
 
-		TextView textView = new TextView(this);
-		textView.setText(R.string.ignore_for);
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		layoutParams.setMargins(15, 10, 15, 10);
+
+		TextView textView = new TextView(this);
+		textView.setText(R.string.ignore_for);
 		textView.setLayoutParams(layoutParams);
 		container.addView(textView);
 
-		Spinner ignoreDuration = new Spinner(this);
+		// Ignore mode spinner
+		final Spinner ignoreMode = new Spinner(this);
+		String[] ignoreModeArray = {
+				String.format(getString(R.string.ignore_whole_group), group),
+				String.format(getString(R.string.ignore_whole_host), host, group),
+				String.format(getString(R.string.ignore_plugin_in), plugin, host, group),
+				String.format(getString(R.string.ignore_plugin), plugin)
+		};
+		ArrayAdapter<String> ignoreModeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ignoreModeArray);
+		ignoreModeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		ignoreMode.setAdapter(ignoreModeAdapter);
+		ignoreMode.setLayoutParams(layoutParams);
+
+		container.addView(ignoreMode);
+
+
+		// Ignore duration spinner
+		final Spinner ignoreDuration = new Spinner(this);
 		String[] spinnerArray = {
 				getString(R.string.one_hour),
 				getString(R.string.six_hours),
@@ -76,6 +94,7 @@ public class Activity_IgnoreNotification extends Activity {
 		ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerArray);
 		spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		ignoreDuration.setAdapter(spinnerAdapter);
+		ignoreDuration.setLayoutParams(layoutParams);
 
 		container.addView(ignoreDuration);
 
@@ -85,9 +104,27 @@ public class Activity_IgnoreNotification extends Activity {
 				.setView(container)
 				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						Calendar until = Calendar.getInstance();
+						String _group = group, _host = host, _plugin = plugin;
 
-						switch (which) {
+						// Depending on ignore mode, set any of _group, _host & _plugin to null
+						switch (ignoreMode.getSelectedItemPosition()) {
+							case 0:
+								_host = _plugin = null;
+								break;
+							case 1:
+								_plugin = null;
+								break;
+							case 2:
+								// Noting
+								break;
+							case 3:
+								_group = _host = null;
+								break;
+						}
+
+						// Until
+						Calendar until = Calendar.getInstance();
+						switch (ignoreDuration.getSelectedItemPosition()) {
 							case 0:
 								until.add(Calendar.HOUR, 1);
 								break;
@@ -107,7 +144,7 @@ public class Activity_IgnoreNotification extends Activity {
 
 						DatabaseHelper dbHelper = MuninFoo.getInstance(activity).sqlite.dbHlpr;
 						dbHelper.addIgnoredNotification(new IgnoredNotification(
-								group, host, plugin, until
+								_group, _host, _plugin, until
 						));
 
 						activity.finish();

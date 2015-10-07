@@ -303,5 +303,9 @@
 	<string name="one_day">1 day</string>
 	<string name="one_week">1 week</string>
 	<string name="forever">Forever</string>
+	<string name="ignore_whole_group">All plugins in %1$s group</string>
+	<string name="ignore_whole_host">All plugins in %1$s host (%2$s group)</string>
+	<string name="ignore_plugin_in">Plugin %1$s in host %2$s (%3$s group)</string>
+	<string name="ignore_plugin">Plugin %1$s regardless of host and group</string>
 
 </resources>
