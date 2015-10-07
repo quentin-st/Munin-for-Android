@@ -9,8 +9,7 @@
 		app:showAsAction="always"/>
 	<item
 		android:id="@+id/menu_edit"
-		app:showAsAction="ifRoom"
-		android:icon="@drawable/ic_action_image_edit"
+		app:showAsAction="never"
 		android:title="@string/edit"/>
 	<item
 		android:id="@+id/menu_add"
@@ -58,8 +57,10 @@
 		android:icon="@drawable/ic_action_navigation_refresh"
 		app:showAsAction="ifRoom"
 		android:title="@string/menu_graph_refresh"/>
+
 	<!-- Fragment on Activity_Main -->
-	<item android:id="@+id/menu_openInActivity"
+	<item
+		android:id="@+id/menu_openInActivity"
 		app:showAsAction="never"
 		android:title="@string/openGrid"
 		android:visible="false"/>
