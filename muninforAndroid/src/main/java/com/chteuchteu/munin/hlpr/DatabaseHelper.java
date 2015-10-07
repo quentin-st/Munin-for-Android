@@ -24,7 +24,7 @@ import java.util.List;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-	public static final int DATABASE_VERSION = 7;
+	public static final int DATABASE_VERSION = 8;
 	public static final String DATABASE_NAME = "muninForAndroid2.db";
 	
 	// Table names
@@ -38,6 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String TABLE_WIDGET_ALERTSWIDGETSRELATIONS = "alertsWidgetsRelations";
 	public static final String TABLE_GRIDS = "grids";
 	public static final String TABLE_GRIDITEMRELATIONS = "gridItemsRelations";
+	public static final String TABLE_IGNOREDNOTIFICATIONS = "ignoredNotifications";
 	
 	// Fields
 	public static final String KEY_ID = "id";
@@ -98,6 +99,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String KEY_GRIDITEMRELATIONS_Y = "y";
 	public static final String KEY_GRIDITEMRELATIONS_PLUGIN = "plugin";
 	public static final String KEY_GRIDITEMRELATIONS_PLUGINPAGEURL = "pluginPageUrl";
+
+	// IgnoredNotifications
+	public static final String KEY_IGNOREDNOTIFICATIONS_FIELD = "field";
+	public static final String KEY_IGNOREDNOTIFICATIONS_UNTIL = "until";
 	
 	
 	private static final String CREATE_TABLE_MUNINMASTERS = "CREATE TABLE " + TABLE_MUNINMASTERS + " ("
@@ -166,6 +171,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_GRIDITEMRELATIONS_X + " INTEGER,"
 			+ KEY_GRIDITEMRELATIONS_Y + " INTEGER,"
 			+ KEY_GRIDITEMRELATIONS_PLUGINPAGEURL + " TEXT)";
+
+	private static final String CREATE_TABLE_IGNOREDNOTIFICATIONS = "CREATE TABLE " + TABLE_IGNOREDNOTIFICATIONS + " ("
+			+ KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_IGNOREDNOTIFICATIONS_FIELD + " TEXT,"
+			+ KEY_IGNOREDNOTIFICATIONS_UNTIL + " INTEGER)";
 	
 	public DatabaseHelper(Context c) {
 		super(c, DATABASE_NAME, null, DATABASE_VERSION);
@@ -183,6 +193,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_ALERTSWIDGETSRELATIONS);
 		db.execSQL(CREATE_TABLE_GRIDS);
 		db.execSQL(CREATE_TABLE_GRIDITEMRELATIONS);
+		db.execSQL(CREATE_TABLE_IGNOREDNOTIFICATIONS);
 	}
 	
 	@Override
@@ -220,6 +231,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 			// Migration
 			SQLite.migrateFrom6To7(db);
+		}
+		if (oldVersion < 8) {
+			db.execSQL(CREATE_TABLE_IGNOREDNOTIFICATIONS);
 		}
 	}
 	
