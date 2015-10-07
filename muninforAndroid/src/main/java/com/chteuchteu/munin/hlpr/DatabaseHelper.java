@@ -1028,7 +1028,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		put(values, KEY_IGNOREDNOTIFICATIONS_GROUP, ignoredNotification.getGroup());
 		put(values, KEY_IGNOREDNOTIFICATIONS_HOST, ignoredNotification.getHost());
 		put(values, KEY_IGNOREDNOTIFICATIONS_PLUGIN, ignoredNotification.getPlugin());
-		values.put(KEY_IGNOREDNOTIFICATIONS_UNTIL, ignoredNotification.getUntil().getTimeInMillis());
+		values.put(KEY_IGNOREDNOTIFICATIONS_UNTIL,
+				ignoredNotification.getUntil() == null
+						? 0
+						: ignoredNotification.getUntil().getTimeInMillis()
+		);
 
 		db.insert(TABLE_IGNOREDNOTIFICATIONS, null, values);
 

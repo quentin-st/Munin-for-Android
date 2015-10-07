@@ -56,7 +56,7 @@
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Servers" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_Settings" />
 		<activity android:name="com.chteuchteu.munin.ui.Activity_GoPremium" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_IgnoreAlert" android:theme="@style/Transparent" />
+		<activity android:name=".ui.Activity_IgnoreNotification" android:theme="@style/Transparent" />
 
 		<!-- GraphWidget -->
 		<receiver android:name=".wdget.Widget_GraphWidget_WidgetProvider"

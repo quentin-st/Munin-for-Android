@@ -13,14 +13,26 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.DatabaseHelper;
 import com.chteuchteu.munin.ntfs.GcmListenerService;
+import com.chteuchteu.munin.obj.IgnoredNotification;
+
+import java.util.Calendar;
 
 /**
  * Activity launched on click to the "Ignore" button on each notification
  */
-public class Activity_IgnoreAlert extends Activity {
+public class Activity_IgnoreNotification extends Activity {
+	public static String EXTRA_NOTIFICATION_ID = "notification_id";
+	public static String EXTRA_GROUP = "group";
+	public static String EXTRA_HOST = "host";
+	public static String EXTRA_PLUGIN = "plugin";
+
 	private Activity activity;
+
+	private String group, host, plugin;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,11 +42,15 @@ public class Activity_IgnoreAlert extends Activity {
 
 		// Dismiss notification
 		Intent intent = getIntent();
-		if (intent.hasExtra(GcmListenerService.EXTRA_NOTIFICATION_ID)) {
+		if (intent.hasExtra(EXTRA_NOTIFICATION_ID)) {
 			NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			notificationManager.cancel(intent.getIntExtra(GcmListenerService.EXTRA_NOTIFICATION_ID, -1));
+			notificationManager.cancel(intent.getIntExtra(EXTRA_NOTIFICATION_ID, -1));
 		}
 
+		// Get extras
+		group = intent.getStringExtra(EXTRA_GROUP);
+		host = intent.getStringExtra(EXTRA_HOST);
+		plugin = intent.getStringExtra(EXTRA_PLUGIN);
 
 		LinearLayout container = new LinearLayout(this);
 		container.setPadding(30, 45, 30, 0);
@@ -69,7 +85,30 @@ public class Activity_IgnoreAlert extends Activity {
 				.setView(container)
 				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO
+						Calendar until = Calendar.getInstance();
+
+						switch (which) {
+							case 0:
+								until.add(Calendar.HOUR, 1);
+								break;
+							case 1:
+								until.add(Calendar.HOUR, 6);
+								break;
+							case 2:
+								until.add(Calendar.DATE, 1);
+								break;
+							case 3:
+								until.add(Calendar.DATE, 7);
+								break;
+							case 4:
+								until = null;
+								break;
+						}
+
+						DatabaseHelper dbHelper = MuninFoo.getInstance(activity).sqlite.dbHlpr;
+						dbHelper.addIgnoredNotification(new IgnoredNotification(
+								group, host, plugin, until
+						));
 
 						activity.finish();
 					}

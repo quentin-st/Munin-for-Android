@@ -19,9 +19,13 @@ public class IgnoredNotification {
 		this.group = group;
 		this.host = host;
 		this.plugin = plugin;
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(untilMillis);
-		this.until = calendar;
+		if (untilMillis == 0)
+			this.until = null;
+		else {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(untilMillis);
+			this.until = calendar;
+		}
 	}
 
 	public String getGroup() { return this.group; }

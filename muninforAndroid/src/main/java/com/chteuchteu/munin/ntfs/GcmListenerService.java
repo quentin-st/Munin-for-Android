@@ -16,7 +16,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.ui.Activity_IgnoreAlert;
+import com.chteuchteu.munin.ui.Activity_IgnoreNotification;
 import com.chteuchteu.munin.ui.Activity_Main;
 
 import org.json.JSONArray;
@@ -26,7 +26,6 @@ import org.json.JSONObject;
 import java.util.Date;
 
 public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerService {
-    public static String EXTRA_NOTIFICATION_ID = "notification_id";
 
     /**
      * Called when message is received.
@@ -48,6 +47,8 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
     }
 
     private void handleNotification(Bundle data) {
+        // [{"plugin":"plugin","host":"localhost.localdomain","category":"plugin_category","fields":[{"c":":2","level":"c","w":":1","extra":"","label":"submitted","value":"6.00"}],"group":"localdomain"}]
+
         // Check if notifications are enabled
         if (!Settings.getInstance(this).getBool(Settings.PrefKeys.Notifications))
             return;
@@ -92,14 +93,17 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
                     }
                 }
 
-                this.sendNotification(group, host, plugin, value, fieldName, alertLevel);
+                if (!isNotificationIgnored(group, host, plugin))
+                    sendNotification(group, host, plugin, value, fieldName, alertLevel);
             }
 
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
+    }
 
-        // [{"plugin":"plugin","host":"localhost.localdomain","category":"plugin_category","fields":[{"c":":2","level":"c","w":":1","extra":"","label":"submitted","value":"6.00"}],"group":"localdomain"}]
+    private boolean isNotificationIgnored(String group, String host, String plugin) {
+        return false;
     }
 
     private void debugDataBundle(Bundle data) {
@@ -124,8 +128,11 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
                 PendingIntent.FLAG_ONE_SHOT);
 
         // Ignore intent
-        Intent ignoreIntent = new Intent(this, Activity_IgnoreAlert.class);
-        ignoreIntent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
+        Intent ignoreIntent = new Intent(this, Activity_IgnoreNotification.class);
+        ignoreIntent.putExtra(Activity_IgnoreNotification.EXTRA_NOTIFICATION_ID, notificationId);
+        ignoreIntent.putExtra(Activity_IgnoreNotification.EXTRA_GROUP, group);
+        ignoreIntent.putExtra(Activity_IgnoreNotification.EXTRA_HOST, host);
+        ignoreIntent.putExtra(Activity_IgnoreNotification.EXTRA_PLUGIN, plugin);
         ignoreIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent ignorePendingIntent = PendingIntent.getActivity(this, 1, ignoreIntent, PendingIntent.FLAG_ONE_SHOT);
 
