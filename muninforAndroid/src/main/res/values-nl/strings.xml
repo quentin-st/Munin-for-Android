@@ -66,7 +66,7 @@
 	<string name="notificationsTitle">Notificaties</string>
 	<string name="widget_configuration1">De widget is aan je homescreen toegevoegd. Tip: je kunt de grafiek bijwerken, door op de grijze balk aan de onderkant van de widget te tikken!</string>
 	<string name="widget_configuration2">Grafiek alleen automatisch bijwerken met Wifi verbinding (1 update per uur)</string>
-	<string name="widget_configuration3">Verberg servernaam</string>
+	<string name="widget_configuration3">Verberg server naam</string>
 	<string name="settings_defaultnode">Standaardserver</string>
 	<string name="settings_lang">App taal</string>
 	<string name="lang_english">Engels</string>
@@ -82,7 +82,7 @@
 	<string name="text11">De Google Play app lijkt niet aanwezig te zijn op je telefoon.</string>
 	<string name="text16">Deze URL lijkt niet goed te zijn. Controleer deze alsjeblieft opnieuw.</string>
 	<string name="text18">Succes!</string>
-	<string name="text21.1">" Subserver"</string>
+	<string name="text21.1">" Server"</string>
 	<string name="text21.2">" toegevoegd!\n"</string>
 	<string name="text24">Succes</string>
 	<string name="text27">" Plug-ins gevonden!"</string>
@@ -221,4 +221,5 @@
 	<string name="chromecastAuthWarning">Waarschuwing - De chromecast functie werkt niet met Apache Basic/Digest auth</string>
 	<string name="lang_hungarian">Hongaars</string>
 	<string name="lang_chinese_taiwan">Chinees (Taiwan)</string>
-</resources>
+<string name="lang_japanese">Japans</string>
+	</resources>
