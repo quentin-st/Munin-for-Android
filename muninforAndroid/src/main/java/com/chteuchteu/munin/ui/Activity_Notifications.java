@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class Activity_Notifications extends MuninActivity {
 
 	private CheckBox	cb_notifications;
 	private CheckBox    cb_vibrate;
+	private Button      bt_sendByMail;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,16 +60,18 @@ public class Activity_Notifications extends MuninActivity {
 					progressDialog.dismiss();
 
 				updateDeviceCode();
+				bt_sendByMail.setEnabled(true);
 			}
 		};
 		
 		cb_notifications = (CheckBox) findViewById(R.id.checkbox_notifications);
 		cb_vibrate = (CheckBox) findViewById(R.id.checkbox_vibrate);
-		Button bt_sendByMail = (Button) findViewById(R.id.sendByMail);
+		bt_sendByMail = (Button) findViewById(R.id.sendByMail);
 		bt_sendByMail.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				final EditText input = new EditText(context);
+				input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
 				new AlertDialog.Builder(context)
 						.setView(input)
@@ -88,9 +92,10 @@ public class Activity_Notifications extends MuninActivity {
 						.show();
 			}
 		});
+		bt_sendByMail.setEnabled(settings.getString(Settings.PrefKeys.Notifs_GCM_regId) != null);
 
 		updateDeviceCode();
-		
+
 		boolean notificationsEnabled = settings.getBool(Settings.PrefKeys.Notifications);
 		cb_notifications.setChecked(notificationsEnabled);
 		if (!notificationsEnabled)
@@ -129,7 +134,7 @@ public class Activity_Notifications extends MuninActivity {
 	}
 
 	private void updateDeviceCode() {
-		String deviceCode = muninFoo.getSettings().getString(Settings.PrefKeys.Notifs_GCM_regId);
+		String deviceCode = settings.getString(Settings.PrefKeys.Notifs_GCM_regId);
 		if (deviceCode != null) {
 			TextView tv_deviceCode = (TextView) findViewById(R.id.device_code);
 			tv_deviceCode.setText(deviceCode.substring(0, deviceCode.length() > 15 ? 15 : deviceCode.length() - 1) + "...");

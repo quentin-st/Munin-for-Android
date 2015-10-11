@@ -298,10 +298,10 @@
 	<string name="ignore">Ignore</string>
 	<string name="ignore_alert">Ignore alert</string>
 	<string name="ignore_for">Ignore for</string>
-	<string name="one_hour">1 hour</string>
-	<string name="six_hours">6 hours</string>
-	<string name="one_day">1 day</string>
-	<string name="one_week">1 week</string>
+	<string name="one_hour">For 1 hour</string>
+	<string name="six_hours">For 6 hours</string>
+	<string name="one_day">For 1 day</string>
+	<string name="one_week">For 1 week</string>
 	<string name="forever">Forever</string>
 	<string name="ignore_whole_group">All plugins in %1$s group</string>
 	<string name="ignore_whole_host">All plugins in %1$s host (%2$s group)</string>

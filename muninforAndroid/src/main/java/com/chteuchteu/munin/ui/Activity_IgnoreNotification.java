@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -66,20 +68,29 @@ public class Activity_IgnoreNotification extends Activity {
 		textView.setLayoutParams(layoutParams);
 		container.addView(textView);
 
-		// Ignore mode spinner
-		final Spinner ignoreMode = new Spinner(this);
-		String[] ignoreModeArray = {
-				String.format(getString(R.string.ignore_whole_group), group),
-				String.format(getString(R.string.ignore_whole_host), host, group),
-				String.format(getString(R.string.ignore_plugin_in), plugin, host, group),
-				String.format(getString(R.string.ignore_plugin), plugin)
-		};
-		ArrayAdapter<String> ignoreModeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ignoreModeArray);
-		ignoreModeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		ignoreMode.setAdapter(ignoreModeAdapter);
-		ignoreMode.setLayoutParams(layoutParams);
+		// Ignore mode RadioGroup
+		RadioGroup radioGroup = new RadioGroup(this);
+		radioGroup.setOrientation(RadioGroup.VERTICAL);
+		radioGroup.setLayoutParams(layoutParams);
 
-		container.addView(ignoreMode);
+		final RadioButton rb_wholeGroup = new RadioButton(this);
+		rb_wholeGroup.setText(String.format(getString(R.string.ignore_whole_group), group));
+		radioGroup.addView(rb_wholeGroup);
+
+		final RadioButton rb_wholeHost = new RadioButton(this);
+		rb_wholeHost.setText(String.format(getString(R.string.ignore_whole_host), host, group));
+		radioGroup.addView(rb_wholeHost);
+
+		final RadioButton rb_pluginIn = new RadioButton(this);
+		rb_pluginIn.setText(String.format(getString(R.string.ignore_plugin_in), plugin, host, group));
+		rb_pluginIn.setChecked(true);
+		radioGroup.addView(rb_pluginIn);
+
+		final RadioButton rb_plugin = new RadioButton(this);
+		rb_plugin.setText(String.format(getString(R.string.ignore_plugin), plugin));
+		radioGroup.addView(rb_plugin);
+
+		container.addView(radioGroup);
 
 
 		// Ignore duration spinner
@@ -107,39 +118,21 @@ public class Activity_IgnoreNotification extends Activity {
 						String _group = group, _host = host, _plugin = plugin;
 
 						// Depending on ignore mode, set any of _group, _host & _plugin to null
-						switch (ignoreMode.getSelectedItemPosition()) {
-							case 0:
-								_host = _plugin = null;
-								break;
-							case 1:
-								_plugin = null;
-								break;
-							case 2:
-								// Noting
-								break;
-							case 3:
-								_group = _host = null;
-								break;
-						}
+						if (rb_wholeGroup.isChecked())
+							_host = _plugin = null;
+						else if (rb_wholeHost.isChecked())
+							_plugin = null;
+						else if (rb_plugin.isChecked())
+							_group = _host = null;
 
 						// Until
 						Calendar until = Calendar.getInstance();
 						switch (ignoreDuration.getSelectedItemPosition()) {
-							case 0:
-								until.add(Calendar.HOUR, 1);
-								break;
-							case 1:
-								until.add(Calendar.HOUR, 6);
-								break;
-							case 2:
-								until.add(Calendar.DATE, 1);
-								break;
-							case 3:
-								until.add(Calendar.DATE, 7);
-								break;
-							case 4:
-								until = null;
-								break;
+							case 0: until.add(Calendar.HOUR, 1);    break;
+							case 1: until.add(Calendar.HOUR, 6);    break;
+							case 2: until.add(Calendar.DATE, 1);    break;
+							case 3: until.add(Calendar.DATE, 7);    break;
+							case 4: until = null;                   break;
 						}
 
 						DatabaseHelper dbHelper = MuninFoo.getInstance(activity).sqlite.dbHlpr;
