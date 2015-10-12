@@ -242,4 +242,25 @@
 	<string name="disable_chromecast_text">Si vous ne possédez pas de Chromecast, vous voudriez peut-être désactiver son utilisation dans l\'application</string>
 	<string name="about">A propos</string>
 
+<string name="splashDesc">Chargement</string>
+	<string name="default_grid">Grille par défaut</string>
+	<string name="notifications_device_code">Code de l\'appareil</string>
+	<string name="notifications_instructions">Vous devez configurer chacun des hôtes pour qu\'ils puissent envoyer des notifications à cet appareil.</string>
+	<string name="notifications_sendByMail">Envoyer le code et les instructions par e-mail</string>
+	<string name="notifications_mailSent">Mail envoyé ! Vérifier votre boîte de réception</string>
+	<string name="notifications_test_title">Test de notification Munin for Android</string>
+	<string name="notifications_test_text">Munin for Android GCM Trigger a été installé avec succès</string>
+	<string name="ignore">Ignorer</string>
+	<string name="ignore_alert">Ignorer alerte</string>
+	<string name="ignore_for">Ignorer pour</string>
+	<string name="one_hour">Pour une heure</string>
+	<string name="six_hours">Pour 6 heures</string>
+	<string name="one_day">Pour 1 jour</string>
+	<string name="one_week">Pour 1 semaine</string>
+	<string name="forever">Indéfiniment</string>
+	<string name="ignore_whole_group">Tous les plugins dans le group %1$s</string>
+	<string name="ignore_whole_host">Tous les plugins de l\'hôte %1$s (groupe %2$s)</string>
+	<string name="ignore_plugin_in">Plugin %1$s sur l\'hôte %2$s (groupe %3$s)</string>
+	<string name="ignore_plugin">Plugin %1$s quels que soient l\'hôte et le groupe</string>
+
 </resources>
