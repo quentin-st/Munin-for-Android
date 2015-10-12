@@ -416,7 +416,7 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
 
         activity.runOnUiThread(new Runnable() {
             public void run() {
-                activity.alertDialog.setTitle("");
+                activity.alertDialog.setTitle(context.getString(R.string.settings_http_auth2));
                 alert_title2.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
                 activity.alertDialog.findViewById(R.id.popup_credentials).setVisibility(View.VISIBLE);

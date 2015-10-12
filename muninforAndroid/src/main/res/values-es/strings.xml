@@ -17,7 +17,6 @@
 	<string name="settings_login">Iniciar sesión</string>
 	<string name="settings_password">Contraseña</string>
 	<string name="settings_default_scale">Escala por defecto para los gráficos</string>
-	<string name="settings_graphview_orientation">Orientación de los gráficos</string>
 	<string name="settings_screenalwayson_label">Pantalla siempre encendida</string>
 	<string name="settings_screenalwayson_checkbox">Impedir que la pantalla se apague al mostrar gráficos / alertas</string>
 	<string name="settings_autorefresh_label">Refresco automático</string>
@@ -35,7 +34,6 @@
 	<string name="search">Buscar</string>
 	<string name="about_eraseData">Borrar datos de la aplicación</string>
 	<string name="about_gplay">Calificar la aplicación</string>
-	<string name="menu_serversedit_revert">Revertir servidores</string>
 	<string name="servers_noservers_1">No hay servidores definidos aún</string>
 	<string name="servers_noservers_2">Agrega tu servidor o servidores de muestra ahora tocando en +</string>
 	<string name="edit">Editar</string>
@@ -90,7 +88,7 @@
 	<string name="text18">Éxito!</string>
 	<string name="text21.1">" servidor"</string>
 	<string name="text21.2">" agregado!\n"</string>
-	<string name="text24">Éxito</string>
+	<string name="success">Éxito</string>
 	<string name="text27">" plugins encontrados!"</string>
 	<string name="text28">Gráfico guardado como /muninForAndroid/</string>
 	<string name="text29">Error al guardar el gráfico</string>

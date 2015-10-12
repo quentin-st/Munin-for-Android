@@ -20,7 +20,6 @@
 	<string name="settings_login">Login</string>
 	<string name="settings_password">Password</string>
 	<string name="settings_default_scale">Graph default scale</string>
-	<string name="settings_graphview_orientation">Graphs screen orientation</string>
 	<string name="settings_screenalwayson_label">Screen always on</string>
 	<string name="settings_screenalwayson_checkbox">Prevent screen from turning off while displaying graphs / alerts</string>
 	<string name="settings_autorefresh_label">Auto refresh</string>
@@ -38,7 +37,6 @@
 	<string name="search">Search</string>
 	<string name="about_eraseData">Reset app</string>
 	<string name="about_gplay">Rate the app</string>
-	<string name="menu_serversedit_revert">Revert servers</string>
 	<string name="servers_noservers_1">No server yet</string>
 	<string name="servers_noservers_2">Add yours or sample ones now by tapping on +</string>
 	<string name="edit">Edit</string>
@@ -143,7 +141,7 @@
 	<string name="text18">Success!</string>
 	<string name="text21.1"> node</string>
 	<string name="text21.2"> added!\n</string>
-	<string name="text24">Success</string>
+	<string name="success">Success</string>
 	<string name="text27"> plugins found!</string>
 	<string name="text28">Graph saved as /muninForAndroid/</string>
 	<string name="text29">Error while saving the graph</string>
@@ -290,5 +288,24 @@
 	<string name="about">About</string>
 	<string name="auto">Auto</string>
 	<string name="debug_preferences" translatable="false">Debug preferences</string>
+	<string name="default_grid">Default grid</string>
+	<string name="notifications_device_code">Device code</string>
+	<string name="notifications_instructions">You have to configure each master so they can send notifications to this device.</string>
+	<string name="notifications_sendByMail">Send me the code and instructions by mail</string>
+	<string name="notifications_mailSent">Mail sent! Please check your inbox for it</string>
+	<string name="notifications_test_title">Munin for Android test notification</string>
+	<string name="notifications_test_text">Munin for Android GCM Trigger has been successfully installed</string>
+	<string name="ignore">Ignore</string>
+	<string name="ignore_alert">Ignore alert</string>
+	<string name="ignore_for">Ignore for</string>
+	<string name="one_hour">For 1 hour</string>
+	<string name="six_hours">For 6 hours</string>
+	<string name="one_day">For 1 day</string>
+	<string name="one_week">For 1 week</string>
+	<string name="forever">Forever</string>
+	<string name="ignore_whole_group">All plugins in %1$s group</string>
+	<string name="ignore_whole_host">All plugins in %1$s host (%2$s group)</string>
+	<string name="ignore_plugin_in">Plugin %1$s in host %2$s (%3$s group)</string>
+	<string name="ignore_plugin">Plugin %1$s regardless of host and group</string>
 
 </resources>

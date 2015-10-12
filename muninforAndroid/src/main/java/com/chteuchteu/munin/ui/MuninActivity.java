@@ -30,7 +30,7 @@ import io.fabric.sdk.android.Fabric;
 public class MuninActivity extends AppCompatActivity {
 	protected MuninFoo      muninFoo;
 	protected Settings		settings;
-	protected DrawerHelper  dh;
+	protected DrawerHelper  drawerHelper;
 	protected Context       context;
 	protected Activity      activity;
 	protected android.support.v7.app.ActionBar actionBar;
@@ -62,7 +62,7 @@ public class MuninActivity extends AppCompatActivity {
 		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		this.actionBar = getSupportActionBar();
-		this.dh = new DrawerHelper(this, muninFoo, this.toolbar);
+		this.drawerHelper = new DrawerHelper(this, muninFoo, this.toolbar);
 	}
 
 	protected void createOptionsMenu() { menu.clear(); }

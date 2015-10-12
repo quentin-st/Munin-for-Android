@@ -4,7 +4,9 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<include layout="@layout/incl_actionbar" />
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/toolbar"
+		style="@style/Toolbar" />
 
 	<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:fab="http://schemas.android.com/apk/res-auto"
@@ -16,8 +18,7 @@
 			android:id="@+id/mainContainer"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:orientation="vertical"
-			android:background="@drawable/bottom_shadow">
+			android:orientation="vertical">
 
 			<RelativeLayout
 				android:layout_width="match_parent"
@@ -48,58 +49,26 @@
 					android:src="@drawable/ic_insecure"
 					android:contentDescription="@string/certificate_error"
 					android:visibility="gone"/>
-
-				<LinearLayout
-					android:id="@+id/serverSwitcher"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:background="@drawable/actionbar_customview"
-					android:clickable="true"
-					android:orientation="horizontal"
-					android:layout_centerHorizontal="true"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp"
-					android:paddingTop="4dp"
-					android:paddingBottom="4dp">
-
-					<TextView
-						android:id="@+id/serverName"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_gravity="center_vertical"
-						android:textSize="16sp"
-						android:textColor="#ffffff"
-						android:maxLines="1" />
-
-					<ImageView
-						android:layout_width="14dp"
-						android:layout_height="14dp"
-						android:layout_marginLeft="10dp"
-						android:layout_marginStart="10dp"
-						android:layout_gravity="center_vertical"
-						android:src="@drawable/ic_action_navigation_arrow_drop_down" />
-				</LinearLayout>
 			</RelativeLayout>
 
-			<RelativeLayout
+			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:orientation="vertical" >
+				android:orientation="vertical">
+
+				<android.support.design.widget.TabLayout
+					android:id="@+id/tabLayout"
+					style="@style/TabLayout"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="@color/actionBarColor" />
 
 				<com.chteuchteu.munin.ui.HackyViewPager
 					android:id="@+id/viewPager"
 					android:layout_width="match_parent"
-					android:layout_height="match_parent">
-
-					<android.support.v4.view.PagerTabStrip
-						android:id="@+id/pagerTabStrip"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:layout_gravity="top"
-						android:background="?attr/colorPrimary"
-						android:textColor="#fff" />
-				</com.chteuchteu.munin.ui.HackyViewPager>
-			</RelativeLayout>
+					android:layout_height="match_parent"
+					android:background="@drawable/bottom_shadow" />
+			</LinearLayout>
 		</LinearLayout>
 
 		<com.melnykov.fab.FloatingActionButton

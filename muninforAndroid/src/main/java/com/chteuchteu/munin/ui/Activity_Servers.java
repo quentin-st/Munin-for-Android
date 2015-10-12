@@ -174,7 +174,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 	 */
 	public void updateDrawerIfNeeded() {
 		if (muninFoo.getMasters().size() == 0)
-			dh.reset();
+			drawerHelper.reset();
 	}
 	
 	/**
@@ -296,14 +296,11 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (cb_auth.isChecked()) {
-                            AuthType authType;
-                            int index = sp_authType.getSelectedItemPosition();
-                            if (index == 0)
-                                authType = AuthType.BASIC;
-                            else
-                                authType = AuthType.DIGEST;
+                            AuthType authType = sp_authType.getSelectedItemPosition() == 0
+		                            ? AuthType.BASIC
+		                            : AuthType.DIGEST;
 
-                            if (authType == AuthType.DIGEST == !muninFoo.premium) {
+                            if (authType == AuthType.DIGEST && !muninFoo.premium) {
                                 Toast.makeText(context, context.getString(R.string.text65), Toast.LENGTH_SHORT).show();
                             } else {
                                 master.setAuthIds(tb_authLogin.getText().toString(),
@@ -464,7 +461,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
         Intent intent = new Intent(this, Activity_Main.class);

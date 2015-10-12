@@ -111,9 +111,6 @@ public class Fragment_Grid extends Fragment {
 			}
 		});
 
-		if (autoLoad && grid.getItems().size() == 0)
-			edit();
-
 		if (!autoLoad) {
 			view.findViewById(R.id.manual_load).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.manual_load_action).setOnClickListener(new View.OnClickListener() {
@@ -214,7 +211,7 @@ public class Fragment_Grid extends Fragment {
 			grid.cancelEdit(context);
 			grid.toggleFootersVisibility(true);
 			muninFoo.sqlite.dbHlpr.saveGridItemsRelations(grid);
-			activity.onGridSaved();
+			activity.onGridSaved(grid);
 		} else { // Edit
 			grid.edit(view);
 			grid.toggleFootersVisibility(false);

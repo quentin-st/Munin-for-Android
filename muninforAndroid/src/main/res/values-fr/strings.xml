@@ -19,7 +19,6 @@
 	<string name="settings_login">Identifiant</string>
 	<string name="settings_password">Mot de passe</string>
 	<string name="settings_default_scale">Période par défaut des graphs</string>
-	<string name="settings_graphview_orientation">Orientation de l\'écran des graphs</string>
 	<string name="settings_screenalwayson_label">Garder l\'écran allumé</string>
 	<string name="settings_screenalwayson_checkbox">Empêcher l\'écran de s\'éteindre lors de l\'affichage de graphs / alertes</string>
 	<string name="settings_autorefresh_label">Actualisation automatique</string>
@@ -46,11 +45,9 @@
 	<string name="goPremiumTitle">Premium</string>
 	<string name="alertsTitle">Alertes</string>
 	<string name="notificationsTitle">Notifications</string>
-	<string name="menu_serversedit_revert">Annuler les modifications</string>
 	<string name="servers_noservers_1">Aucun serveur</string>
 	<string name="servers_noservers_2">Ajoutez-en en cliquant sur +</string>
 	<string name="buy_now">BUY NOW</string>
-	<string name="splashDesc">Chargement</string>
 	<string name="edit">Editer</string>
 	<string name="widget_configuration1">Félicitations ! Le widget a été ajouté avec succès à votre écran d\'accueil. Conseil : vous pouvez actualiser le graph en tapant sur la barre horizontale grise en-dessous de celui-ci !</string>
 	<string name="widget_configuration2">Rafraîchissement auto du graph par Wifi uniquement (1 par heure)</string>
@@ -63,7 +60,7 @@
 	<string name="text18">Félicitations !</string>
 	<string name="text21.1"> noeud</string>
 	<string name="text21.2"> ajouté(s) !</string>
-	<string name="text24">Succès !</string>
+	<string name="success">Succès !</string>
 	<string name="text27"> plugins trouvés !</string>
 	<string name="text28">Graph sauvegardé sous /muninForAndroid/</string>
 	<string name="text29">Erreur lors de la sauvegarde du graphique</string>

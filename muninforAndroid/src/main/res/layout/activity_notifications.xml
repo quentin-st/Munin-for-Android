@@ -4,7 +4,9 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<include layout="@layout/incl_actionbar" />
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/toolbar"
+		style="@style/Toolbar" />
 
 	<ScrollView
 		android:layout_width="match_parent"
@@ -44,21 +46,51 @@
 				android:id="@+id/notificationsEnabled"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="vertical" >
+				android:orientation="vertical">
 
 				<View style="@style/Material_Divider" />
 
-				<RelativeLayout
-					style="@style/Settings_Checkbox_Container"
-					android:tag="checkable">
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:layout_marginLeft="15dp"
+					android:layout_marginRight="15dp">
+
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="15dp"
+						android:layout_marginTop="5dp">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginRight="35dp"
+							android:textColor="#666666"
+							android:textSize="14sp"
+							android:text="@string/notifications_device_code" />
+
+						<TextView
+							android:id="@+id/device_code"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_alignParentRight="true" />
+					</RelativeLayout>
 
 					<TextView
-						style="@style/Settings_Checkbox_Label"
-						android:text="@string/text53"/>
-					<CheckBox
-						android:id="@+id/checkbox_wifiOnly"
-						style="@style/Settings_Checkbox"/>
-				</RelativeLayout>
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/notifications_instructions" />
+
+					<Button
+						android:id="@+id/sendByMail"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/notifications_sendByMail"
+						android:layout_gravity="center_horizontal"
+						android:layout_marginBottom="15dp" />
+				</LinearLayout>
 
 				<RelativeLayout
 					style="@style/Settings_Checkbox_Container"
@@ -71,53 +103,6 @@
 						android:id="@+id/checkbox_vibrate"
 						style="@style/Settings_Checkbox"/>
 				</RelativeLayout>
-
-				<RelativeLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="15dp"
-					android:layout_marginRight="20dp"
-					android:gravity="center_vertical"
-					android:orientation="horizontal" >
-
-					<TextView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentLeft="true"
-						android:layout_centerInParent="true"
-						android:text="@string/text55"
-						android:textColor="#666666"
-						android:textSize="14sp" />
-
-					<Spinner
-						android:id="@+id/spinner_refresh"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentRight="true" />
-				</RelativeLayout>
-
-				<TextView
-					android:id="@+id/estimated_data_consumption"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="20dp"
-					android:layout_marginRight="20dp"
-					android:layout_marginTop="20dp"
-					android:gravity="center_horizontal"
-					android:textColor="#888888" />
-
-				<View style="@style/Material_Divider" />
-
-				<Button
-					android:id="@+id/btn_selectServersToWatch"
-					style="@style/Material_ButtonText"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center_horizontal"
-					android:layout_marginLeft="20dp"
-					android:layout_marginRight="20dp"
-					android:text="@string/text56"
-					android:textSize="19sp" />
 			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>

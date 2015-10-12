@@ -66,7 +66,7 @@ public class MuninPlugin {
 	}
 	
 	public enum AlertState {
-		UNDEFINED, OK, WARNING, CRITICAL
+		UNDEFINED, OK, WARNING, CRITICAL, UNKNOWN
 	}
 	
 	public void setId(long id) { this.id = id; }

@@ -789,4 +789,10 @@ public final class Util {
 
 		return charSequenceArray;
 	}
+
+	public static boolean isWifiConnected(Context context) {
+		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		return activeNetwork != null && activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+	}
 }

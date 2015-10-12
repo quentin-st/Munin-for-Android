@@ -350,7 +350,8 @@ public class Activity_Settings extends MuninActivity {
 		}
 
 		// User Agent
-		boolean userAgentChanged = !settings.getString(Settings.PrefKeys.UserAgent).equals(editText_userAgent.getText().toString());
+		String oldUserAgent = settings.getString(Settings.PrefKeys.UserAgent);
+		boolean userAgentChanged = oldUserAgent == null || !oldUserAgent.equals(editText_userAgent.getText().toString());
 		if (userAgentChanged) {
 			settings.set(Settings.PrefKeys.UserAgentChanged, true);
 			settings.set(Settings.PrefKeys.UserAgent, editText_userAgent.getText().toString());
@@ -459,7 +460,7 @@ public class Activity_Settings extends MuninActivity {
 				// Reset performed.
 				Toast.makeText(getApplicationContext(), getString(R.string.text02), Toast.LENGTH_SHORT).show();
 				
-				dh.reset();
+				drawerHelper.reset();
 			}
 		})
 		.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -505,7 +506,7 @@ public class Activity_Settings extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
         Intent intent = new Intent(this, Activity_Main.class);
