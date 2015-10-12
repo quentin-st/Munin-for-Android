@@ -21,6 +21,7 @@ import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninMaster.AuthType;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -1040,14 +1041,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	public List<IgnoredNotification> getIgnoredNotifications(String group, String host, String plugin) {
-		String rawQuery = "SELECT * FROM " + TABLE_IGNOREDNOTIFICATIONS;
+		long now = Calendar.getInstance().getTimeInMillis();
 
-		// Build where
-		rawQuery += " WHERE " + KEY_IGNOREDNOTIFICATIONS_GROUP + " = \"" + group + "\"";
-		if (host != null)
-			rawQuery += " AND " + KEY_IGNOREDNOTIFICATIONS_HOST + " = \"" + host + "\"";
-		if (plugin != null)
-			rawQuery += " AND " + KEY_IGNOREDNOTIFICATIONS_PLUGIN + " = \"" + plugin + "\"";
+		String rawQuery = "SELECT * FROM " + TABLE_IGNOREDNOTIFICATIONS
+				+ " WHERE (" + KEY_IGNOREDNOTIFICATIONS_GROUP + " IS NULL"
+				+ " OR " + KEY_IGNOREDNOTIFICATIONS_GROUP + " = \"" + group + "\")"
+				+ " AND (" + KEY_IGNOREDNOTIFICATIONS_HOST + " IS NULL"
+				+ " OR " + KEY_IGNOREDNOTIFICATIONS_HOST + " = \"" + host + "\")"
+				+ " AND (" + KEY_IGNOREDNOTIFICATIONS_PLUGIN + " IS NULL"
+				+ " OR " + KEY_IGNOREDNOTIFICATIONS_PLUGIN + " = \"" + plugin + "\")"
+				+ " AND (" + KEY_IGNOREDNOTIFICATIONS_UNTIL + " = 0"
+				+ " OR " + KEY_IGNOREDNOTIFICATIONS_UNTIL + " > " + now + ")";
 
 		List<IgnoredNotification> list = new ArrayList<>();
 

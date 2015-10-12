@@ -32,4 +32,11 @@ public class IgnoredNotification {
 	public String getHost() { return this.host; }
 	public String getPlugin() { return this.plugin; }
 	public Calendar getUntil() { return this.until; }
+
+	@Override
+	public String toString() {
+		return  (this.group != null ? this.group : "") +
+				(this.host != null ? this.host : "") +
+				(this.plugin != null ? this.plugin : "");
+	}
 }
