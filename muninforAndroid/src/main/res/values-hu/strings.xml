@@ -11,7 +11,6 @@
 	<string name="settings_login">Belépés</string>
 	<string name="settings_password">Jelszó</string>
 	<string name="settings_default_scale">Gráf alapértelmezett skálázása</string>
-	<string name="settings_graphview_orientation">Gráf orientációja</string>
 	<string name="settings_screenalwayson_label">Képernyő ébrentartása</string>
 	<string name="settings_screenalwayson_checkbox">A képernyő kikapcsolásának megakadályozása ábrák vagy riasztások megjelenítésekor</string>
 	<string name="settings_autorefresh_label">Automatikus frissítés</string>
@@ -39,7 +38,6 @@
 	<string name="about_specialThanksTitle">Külön köszönet</string>
 	<string name="about_librariesTitle">Könyvtárak</string>
 	<string name="buy_now">Vedd meg MOST</string>
-	<string name="splashDesc">Töltés</string>
 	<string name="graphView_ImageViewDescription">Grafikonok</string>
 
 	<string name="addServerTitle">Szerver hozzáadása</string>
@@ -71,7 +69,7 @@
 	<string name="text18">Siker!</string>
 	<string name="text21.1">" node"</string>
 	<string name="text21.2">" hozzáadva!\n"</string>
-	<string name="text24">Siker</string>
+	<string name="success">Siker</string>
 	<string name="text27">" pluginok megtalálva!"</string>
 	<string name="text28">Ábrák mentve a /muninForAndroid/ mappába</string>
 	<string name="text29">Hiba az ábra mentése közben</string>

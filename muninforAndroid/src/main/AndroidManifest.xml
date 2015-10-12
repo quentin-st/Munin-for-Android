@@ -10,7 +10,11 @@
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="com.android.vending.BILLING" />
-	<uses-permission android:name="android.permission.VIBRATE"/>
+	<uses-permission android:name="android.permission.VIBRATE" />
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+	<uses-permission android:name="com.chteuchteu.munin.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="com.chteuchteu.munin.debug.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="com.google.android.c2dm.permission.SEND" />
 
 	<!-- Bug Fix (font size with locale) -->
 	<supports-screens
@@ -27,16 +31,15 @@
 		android:theme="@style/AppTheme"
 		android:fullBackupContent="true">
 
-		<activity android:name="com.chteuchteu.munin.ui.Activity_About" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Alerts"
+		<activity android:name=".ui.Activity_About" />
+		<activity android:name=".ui.Activity_Alerts"
 				  android:configChanges="orientation|screenSize|keyboardHidden" />
 		<activity android:name=".ui.Activity_AlertsPlugins" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_GraphView" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Grid"
+		<activity android:name=".ui.Activity_GraphView" />
+		<activity android:name=".ui.Activity_Grids"
 				  android:configChanges="orientation|screenSize|keyboardHidden"/>
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Grids" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Labels" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Main"
+		<activity android:name=".ui.Activity_Labels" />
+		<activity android:name=".ui.Activity_Main"
 				  android:icon="@drawable/launcher_icon"
 				  android:label="@string/app_name"
 				  android:theme="@style/AppTheme" >
@@ -45,14 +48,19 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Notifications" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Plugins" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Server"
+		<activity android:name=".ui.Activity_Notifications" />
+		<activity android:name=".ui.Activity_Plugins" />
+		<activity android:name=".ui.Activity_Server"
 				  android:configChanges="orientation|screenSize|keyboardHidden"
 				  android:windowSoftInputMode="stateHidden|adjustResize" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Servers" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_Settings" />
-		<activity android:name="com.chteuchteu.munin.ui.Activity_GoPremium" />
+		<activity android:name=".ui.Activity_Servers" />
+		<activity android:name=".ui.Activity_Settings" />
+		<activity android:name=".ui.Activity_GoPremium" />
+		<activity android:name=".ui.Activity_IgnoreNotification"
+				  android:theme="@style/Transparent"
+				  android:noHistory="true"
+				  android:taskAffinity=""
+				  android:excludeFromRecents="true"/>
 
 		<!-- GraphWidget -->
 		<receiver android:name=".wdget.Widget_GraphWidget_WidgetProvider"
@@ -99,16 +107,6 @@
 		<service android:name=".wdget.Widget_AlertsWidget_WidgetService"
 				 android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-		<!-- Notifications -->
-		<receiver android:name=".ntfs.BootReceiver" >
-			<intent-filter>
-				<action android:name="android.intent.action.BOOT_COMPLETED" />
-			</intent-filter>
-		</receiver>
-		<service
-			android:name=".ntfs.Service_Notifications"
-			android:enabled="true" />
-
 		<!-- Crashlytics -->
 		<meta-data
 			android:name="com.crashlytics.ApiKey"
@@ -129,5 +127,36 @@
 		<service android:name="com.google.android.gms.analytics.AnalyticsService"
 			android:enabled="true"
 			android:exported="false"/>
+
+		<!-- Google Cloud Messaging -->
+		<receiver
+			android:name="com.google.android.gms.gcm.GcmReceiver"
+			android:exported="true"
+			android:permission="com.google.android.c2dm.permission.SEND" >
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+				<category android:name="com.chteuchteu.munin" />
+				<category android:name="com.chteuchteu.munin.debug" />
+			</intent-filter>
+		</receiver>
+		<service
+			android:name=".ntfs.GcmListenerService"
+			android:exported="false">
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+			</intent-filter>
+		</service>
+		<service
+			android:name=".ntfs.InstanceIDListenerService"
+			android:exported="false">
+			<intent-filter>
+				<action android:name="com.google.android.gms.iid.InstanceID"/>
+			</intent-filter>
+		</service>
+		<service
+			android:name=".ntfs.RegistrationIntentService"
+			android:exported="false">
+		</service>
 	</application>
 </manifest>

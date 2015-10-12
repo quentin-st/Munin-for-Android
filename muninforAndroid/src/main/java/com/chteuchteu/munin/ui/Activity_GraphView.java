@@ -7,12 +7,16 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +42,6 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_GraphView;
-import com.chteuchteu.munin.adptr.NodesListAlertDialog;
 import com.chteuchteu.munin.adptr.PluginsListAlertDialog;
 import com.chteuchteu.munin.async.DynazoomDetector;
 import com.chteuchteu.munin.async.FieldsDescriptionFetcher;
@@ -51,12 +54,18 @@ import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.HTTPResponse.BaseResponse;
 import com.chteuchteu.munin.obj.Label;
+import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.edmodo.rangebar.RangeBar;
 import com.melnykov.fab.FloatingActionButton;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +82,6 @@ public class Activity_GraphView extends MuninActivity {
 	private View        ic_insecure;
     private TextView    toolbarPluginName;
     private PluginsListAlertDialog pluginsListAlertDialog;
-    private NodesListAlertDialog nodesListAlertDialog;
 
 	public int          viewFlowMode;
 	public static final int VIEWFLOWMODE_GRAPHS = 1;
@@ -96,10 +104,10 @@ public class Activity_GraphView extends MuninActivity {
 
 	private MenuItem    item_period;
 	private MenuItem    item_documentation;
-	
+
 	private Handler	    mHandler;
 	private Runnable    mHandlerTask;
-	
+
 	// If the Adapter_GraphView:getView method should
 	// load the graphs
 	public boolean	    loadGraphs = false;
@@ -108,6 +116,8 @@ public class Activity_GraphView extends MuninActivity {
 	private DynazoomFetcher dynazoomFetcher;
 	private long    dynazoom_from;
 	private long    dynazoom_to;
+
+	private Drawable toolbar_originalIcon;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -118,12 +128,6 @@ public class Activity_GraphView extends MuninActivity {
 		if (settings.getBool(Settings.PrefKeys.ScreenAlwaysOn))
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		TextView nodeName = (TextView) findViewById(R.id.serverName);
-		if (muninFoo.getCurrentNode().getName().equals(MuninNode.DEFAULT_NODE_NAME))
-			nodeName.setText(muninFoo.getCurrentNode().getParent().getName() + " - " + muninFoo.getCurrentNode().getName());
-		else
-			nodeName.setText(muninFoo.getCurrentNode().getName());
-
 		actionBar.setTitle("");
 		ic_secure = findViewById(R.id.connection_secure);
 		ic_insecure = findViewById(R.id.connection_insecure);
@@ -133,9 +137,9 @@ public class Activity_GraphView extends MuninActivity {
 				Toast.makeText(context, R.string.certificate_error, Toast.LENGTH_SHORT).show();
 			}
 		});
-		
+
 		load_period = Period.get(settings.getString(Settings.PrefKeys.DefaultScale));
-		
+
 		// Coming from widget
 		Intent thisIntent = getIntent();
 		if (thisIntent != null && thisIntent.getExtras() != null
@@ -146,16 +150,16 @@ public class Activity_GraphView extends MuninActivity {
 			String plugin = thisIntent.getExtras().getString("plugin");
 			// Setting currentNode
 			muninFoo.setCurrentNode(muninFoo.getNode(node));
-			
+
 			// Giving position of plugin in list to GraphView
 			for (int i=0; i<muninFoo.getCurrentNode().getPlugins().size(); i++) {
 				if (muninFoo.getCurrentNode().getPlugins().get(i).getName().equals(plugin))
 					thisIntent.putExtra("position", i);
 			}
 		}
-		
+
 		int pos = 0;
-		
+
 		// Coming from Grid
 		if (thisIntent != null && thisIntent.getExtras() != null && thisIntent.getExtras().containsKey("plugin")) {
 			int i = 0;
@@ -205,6 +209,17 @@ public class Activity_GraphView extends MuninActivity {
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		adapter = new Adapter_GraphView(getSupportFragmentManager(), this, muninFoo, nbPlugins);
 		viewPager.setAdapter(adapter);
+		TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+		tabLayout.setupWithViewPager(viewPager);
+		viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+		tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+			@Override
+			public void onTabSelected(TabLayout.Tab tab) {
+				viewPager.setCurrentItem(tab.getPosition());
+			}
+			@Override public void onTabUnselected(TabLayout.Tab tab) { }
+			@Override public void onTabReselected(TabLayout.Tab tab) { }
+		});
         viewPager.setCurrentItem(pos);
 
 		viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -329,37 +344,48 @@ public class Activity_GraphView extends MuninActivity {
 				break;
 		}
 
-        // Node spinner
-        final View nodeSwitcher = findViewById(R.id.serverSwitcher);
-        nodeSwitcher.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (nodesListAlertDialog == null) {
-                    nodesListAlertDialog = new NodesListAlertDialog(context, nodeSwitcher,
-                            new NodesListAlertDialog.NodesListAlertDialogClick() {
-                                @Override
-                                public void onItemClick(MuninNode node) {
-                                    if (node != muninFoo.getCurrentNode()) {
-                                        muninFoo.setCurrentNode(node);
-                                        Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
-                                        if (node.hasPlugin(currentPlugin)) // Switch to the same plugin
-                                            intent.putExtra("position", muninFoo.getCurrentNode().getPosition(currentPlugin));
-                                        else if (node.hasCategory(currentPlugin.getCategory())) // Switch to same category
-                                            intent.putExtra("position",
-                                                    muninFoo.getCurrentNode().getPosition(
-                                                            node.getFirstPluginFromCategory(currentPlugin.getCategory())));
-                                        else
-                                            intent.putExtra("position", 0);
-                                        startActivity(intent);
-                                        Util.setTransition(activity, TransitionStyle.DEEPER);
-                                    }
-                                }
-                            });
-                }
+		// Build secondary drawer for node change
+		DrawerBuilder drawerBuilder = new DrawerBuilder().withActivity(this);
 
-                nodesListAlertDialog.show();
-            }
-        });
+		for (MuninMaster master : muninFoo.getMasters()) {
+			drawerBuilder.addDrawerItems(new SectionDrawerItem().withName(master.getName()));
+
+			for (MuninNode node : master.getChildren()) {
+				drawerBuilder.addDrawerItems(
+						new PrimaryDrawerItem()
+								.withName(node.getName())
+								.withIdentifier((int) node.getId())
+				);
+			}
+		}
+
+		drawerBuilder
+				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+					@Override
+					public boolean onItemClick(View view, int i, IDrawerItem iDrawerItem) {
+						MuninNode node = muninFoo.getNodeById(iDrawerItem.getIdentifier());
+
+						if (node != muninFoo.getCurrentNode()) {
+							muninFoo.setCurrentNode(node);
+							Intent intent = new Intent(Activity_GraphView.this, Activity_GraphView.class);
+							if (node.hasPlugin(currentPlugin)) // Switch to the same plugin
+								intent.putExtra("position", muninFoo.getCurrentNode().getPosition(currentPlugin));
+							else if (node.hasCategory(currentPlugin.getCategory())) // Switch to same category
+								intent.putExtra("position",
+										muninFoo.getCurrentNode().getPosition(
+												node.getFirstPluginFromCategory(currentPlugin.getCategory())));
+							else
+								intent.putExtra("position", 0);
+							startActivity(intent);
+							Util.setTransition(activity, TransitionStyle.DEEPER);
+						}
+						return false;
+					}
+				})
+				.withDrawerGravity(Gravity.END)
+				.withSelectedItem((int) muninFoo.getCurrentNode().getId())
+				.append(drawerHelper.getDrawer());
+
 
         // Toolbar custom view (plugins spinner)
         actionBar.setDisplayShowCustomEnabled(true);
@@ -477,7 +503,7 @@ public class Activity_GraphView extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
         if (findViewById(R.id.documentation).getVisibility() == View.VISIBLE) {
@@ -518,7 +544,7 @@ public class Activity_GraphView extends MuninActivity {
 					break;
 				case "grid":
 					if (thisIntent.getExtras().containsKey("fromGrid")) {
-						Intent intent = new Intent(Activity_GraphView.this, Activity_Grid.class);
+						Intent intent = new Intent(Activity_GraphView.this, Activity_Grids.class);
 						intent.putExtra("gridName", thisIntent.getExtras().getString("fromGrid"));
 						startActivity(intent);
 						Util.setTransition(this, TransitionStyle.SHALLOWER);
@@ -716,6 +742,9 @@ public class Activity_GraphView extends MuninActivity {
 
 
 	private void hideDocumentation() {
+		toolbar.setNavigationIcon(toolbar_originalIcon);
+		toolbar.setNavigationOnClickListener(drawerHelper.getToggleListener());
+
 		final View documentation = findViewById(R.id.documentation);
 		iv_documentation = (ImageView) findViewById(R.id.doc_imageview);
 		iv_documentation.setTag("");
@@ -747,6 +776,17 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	private void actionDocumentation() {
 		menu.clear();
+
+		if (this.toolbar_originalIcon == null)
+			this.toolbar_originalIcon = toolbar.getNavigationIcon();
+
+		toolbar.setNavigationIcon(ContextCompat.getDrawable(context, R.drawable.ic_action_navigation_arrow_back));
+		toolbar.setNavigationOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
+		});
 
 		// Get file content
 		String fileContent = DocumentationHelper.getDocumentation(context, currentPlugin, "");
@@ -825,6 +865,17 @@ public class Activity_GraphView extends MuninActivity {
 	private void actionDynazoom() {
 		if (currentPlugin.getInstalledOn().getParent().isDynazoomAvailable() != DynazoomAvailability.TRUE)
 			return;
+
+		if (this.toolbar_originalIcon == null)
+			this.toolbar_originalIcon = toolbar.getNavigationIcon();
+
+		toolbar.setNavigationIcon(ContextCompat.getDrawable(context, R.drawable.ic_action_navigation_arrow_back));
+		toolbar.setNavigationOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
+		});
 
 		// Animation
 		View dynazoom = findViewById(R.id.dynazoom);
@@ -926,6 +977,9 @@ public class Activity_GraphView extends MuninActivity {
 		});
 	}
 	private void hideDynazoom() {
+		toolbar.setNavigationIcon(toolbar_originalIcon);
+		toolbar.setNavigationOnClickListener(drawerHelper.getToggleListener());
+
 		final View dynazoom = findViewById(R.id.dynazoom);
 
 		View mainContainer = findViewById(R.id.mainContainer);

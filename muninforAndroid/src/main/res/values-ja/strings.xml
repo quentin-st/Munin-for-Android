@@ -17,7 +17,6 @@
 	<string name="settings_login">ログイン</string>
 	<string name="settings_password">パスワード</string>
 	<string name="settings_default_scale">グラフ デフォルト スケール</string>
-	<string name="settings_graphview_orientation">グラフ画面の向き</string>
 	<string name="settings_screenalwayson_label">画面を常にオンにする</string>
 	<string name="settings_screenalwayson_checkbox">グラフ / アラートの表示中に画面がオフになるのを防止します</string>
 	<string name="settings_autorefresh_label">自動リフレッシュ</string>
@@ -35,7 +34,6 @@
 	<string name="search">検索</string>
 	<string name="about_eraseData">アプリをリセット</string>
 	<string name="about_gplay">アプリを評価</string>
-	<string name="menu_serversedit_revert">サーバーを戻す</string>
 	<string name="servers_noservers_1">まだサーバーはありません</string>
 	<string name="servers_noservers_2">+ をタップしてご利用の、またはサンプルのサーバーを追加してください</string>
 	<string name="edit">編集</string>
@@ -53,7 +51,6 @@
 	<string name="goPremium_title">Munin for Android フィーチャーパック</string>
 	<string name="goPremium_features"> <li>グラフ グリッド</li> <li>グラフ ウィジェット</li> <li>ダイジェスト認証</li> <li>通知</li> <li>高優先サポート</li> <li>プレミアム機能の単体パック: 一度お支払い頂くだけで今後プレミアム機能をご利用になれます!</li> <li>さらにずっと! 最新のプレミアム機能を受け取るために、Google Play で自動更新を有効にするようにしてください</li> </string>
 	<string name="buy_now">今すぐ購入</string>
-	<string name="splashDesc">ロード中</string>
 	<string name="graphView_ImageViewDescription">グラフ</string>
 
 	<string name="addServerTitle">サーバーを追加</string>
@@ -85,7 +82,7 @@
 	<string name="text18">成功しました!</string>
 	<string name="text21.1">ノード</string>
 	<string name="text21.2">" 追加しました!\n"</string>
-	<string name="text24">成功しました</string>
+	<string name="success">成功しました</string>
 	<string name="text27">" プラグインが見つかりました!"</string>
 	<string name="text28">グラフを /muninForAndroid/ として保存しました</string>
 	<string name="text29">グラフの保存中にエラー</string>

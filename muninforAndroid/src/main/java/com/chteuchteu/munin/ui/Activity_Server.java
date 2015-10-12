@@ -92,7 +92,7 @@ public class Activity_Server extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
         // Hitting "back" within the AlertDialog will call its own onBackPressed

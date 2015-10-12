@@ -8,6 +8,26 @@
 		app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
 		app:showAsAction="always"/>
 	<item
+		android:id="@+id/menu_edit"
+		app:showAsAction="never"
+		android:title="@string/edit"/>
+	<item
+		android:id="@+id/menu_add"
+		app:showAsAction="never"
+		android:title="@string/text70"/>
+	<item
+		android:id="@+id/menu_rename"
+		app:showAsAction="ifRoom"
+		android:visible="false"
+		android:icon="@drawable/ic_action_text"
+		android:title="@string/rename_grid"/>
+	<item
+		android:id="@+id/menu_delete"
+		app:showAsAction="ifRoom"
+		android:title="@string/delete"
+		android:icon="@drawable/ic_action_delete"
+		android:visible="false"/>
+	<item
 		android:id="@+id/menu_period"
 		app:showAsAction="ifRoom"
 		android:title="@string/text76">
@@ -37,13 +57,10 @@
 		android:icon="@drawable/ic_action_navigation_refresh"
 		app:showAsAction="ifRoom"
 		android:title="@string/menu_graph_refresh"/>
-	<item
-		android:id="@+id/menu_edit"
-		app:showAsAction="ifRoom"
-		android:icon="@drawable/ic_action_image_edit"
-		android:title="@string/edit"/>
+
 	<!-- Fragment on Activity_Main -->
-	<item android:id="@+id/menu_openInActivity"
+	<item
+		android:id="@+id/menu_openInActivity"
 		app:showAsAction="never"
 		android:title="@string/openGrid"
 		android:visible="false"/>

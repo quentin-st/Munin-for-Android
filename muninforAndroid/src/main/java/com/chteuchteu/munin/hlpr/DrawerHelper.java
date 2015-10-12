@@ -20,7 +20,6 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.ui.Activity_About;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
-import com.chteuchteu.munin.ui.Activity_Grid;
 import com.chteuchteu.munin.ui.Activity_Grids;
 import com.chteuchteu.munin.ui.Activity_Labels;
 import com.chteuchteu.munin.ui.Activity_Notifications;
@@ -111,7 +110,7 @@ public class DrawerHelper {
 				new PrimaryDrawerItem()
 						.withName(R.string.button_grid)
 						.withIdentifier(DrawerMenuItem.Grids.getIdentifier())
-						.withIcon(CommunityMaterial.Icon.cmd_grid)
+						.withIcon(CommunityMaterial.Icon.cmd_view_grid)
 						.withEnabled(muninFoo.premium && muninFoo.getNodes().size() > 0)
 		);
 
@@ -120,7 +119,7 @@ public class DrawerHelper {
 				new PrimaryDrawerItem()
 						.withName(R.string.button_alerts)
 						.withIdentifier(DrawerMenuItem.Alerts.getIdentifier())
-						.withIcon(CommunityMaterial.Icon.cmd_alert_box)
+						.withIcon(CommunityMaterial.Icon.cmd_alert_circle)
 						.withEnabled(muninFoo.getNodes().size() > 0)
 		);
 
@@ -291,7 +290,7 @@ public class DrawerHelper {
 		if (((Object) activity).getClass() == targetActivity)
 			closeDrawerIfOpen();
 		else {
-			int intentFlag = this.activity instanceof Activity_Grid
+			int intentFlag = this.activity instanceof Activity_Grids
 					? Intent.FLAG_ACTIVITY_CLEAR_TOP
 					: Intent.FLAG_ACTIVITY_NEW_TASK;
 			Intent intent = new Intent(activity, targetActivity);
@@ -348,6 +347,8 @@ public class DrawerHelper {
 				.show();
 	}
 
+	public Drawer getDrawer() { return this.drawer; }
+
     /**
      * Close drawer if it is open
      * @return boolean true if drawer has been closed
@@ -358,5 +359,14 @@ public class DrawerHelper {
 			return true;
 		}
 		return false;
+	}
+
+	public View.OnClickListener getToggleListener() {
+		return new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				toggle();
+			}
+		};
 	}
 }

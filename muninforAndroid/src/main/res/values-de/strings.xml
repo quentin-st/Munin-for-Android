@@ -18,10 +18,7 @@
 	<string name="loading">Lade…</string>
 	<string name="search">"Suche"</string>
 	<string name="about_eraseData">"App zurücksetzen"</string>
-
-	<!-- I don't get it.. whats the meaning of this? -->
 	<string name="about_gplay">Bewerte die App</string>
-	<string name="splashDesc">Laden</string>
 	<string name="graphView_ImageViewDescription">"Graph"</string>
 	<string name="addServerTitle">"Server hinzufügen"</string>
 	<string name="serversTitle">"Server"</string>
@@ -35,7 +32,7 @@
 	<string name="text18">Erfolgreich!</string>
 	<string name="text21.1">" Node-Server"</string>
 	<string name="text21.2">" hinzugefügt!\n"</string>
-	<string name="text24">Erfolgreich</string>
+	<string name="success">Erfolgreich</string>
 	<string name="text27">"Plugins gefunden!"</string>
 	<string name="text28">"Graphen unter /muninForAndroid/ gespeichert"</string>
 	<string name="text29">"Fehler beim Speichern des Graphen"</string>
@@ -61,7 +58,6 @@
 	<string name="text44">Lade URL…</string>
 	<string name="text45">"Speichern!"</string>
 	<string name="text46">"Kontaktiere Node-Server… "</string>
-	<string name="settings_graphview_orientation">"Bildschirmausrichtung der Graphen"</string>
 	<string name="text47.1">"Tag"</string>
 	<string name="text47.2">"Woche"</string>
 	<string name="text47.3">"Monat"</string>
@@ -74,7 +70,6 @@
 	<string name="settings_titlelabel_app">Einstellungen</string>
 	<string name="settings_titlelabel_graphs">"GRAPHEN"</string>
 	<string name="menu_graph_switch">Node-Server wechseln</string>
-	<string name="menu_serversedit_revert">"Server zurücksetzen"</string>
 	<string name="servers_noservers_1">Noch kein Server vorhanden</string>
 	<string name="servers_noservers_2">"Eigene oder Beispielserver mit einem Klick auf + hinzufügen"</string>
 	<string name="alertsTitle">"Alarme"</string>

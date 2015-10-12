@@ -317,7 +317,7 @@ public class Activity_Plugins extends MuninActivity {
 	
 	@Override
 	public void onBackPressed() {
-        if (dh.closeDrawerIfOpen())
+        if (drawerHelper.closeDrawerIfOpen())
             return;
 
         if (filter.getTag().equals("shown")) {

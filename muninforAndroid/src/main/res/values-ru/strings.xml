@@ -19,7 +19,6 @@
 	<string name="search">"Поиск"</string>
 	<string name="about_eraseData">"Перезапустить"</string>
 	<string name="about_gplay">"Подробнее о Google Play"</string>
-	<string name="splashDesc">"Загрузка"</string>
 	<string name="graphView_ImageViewDescription">"График"</string>
 	<string name="addServerTitle">"Добавить имя сервера"</string>
 	<string name="serversTitle">"Серверы"</string>
@@ -33,7 +32,7 @@
 	<string name="text18">"Готово!"</string>
 	<string name="text21.1">"Суб-сервер"</string>
 	<string name="text21.2">" Добавлено!\n"</string>
-	<string name="text24">"Готово"</string>
+	<string name="success">"Готово"</string>
 	<string name="text27">" плагины найдены!"</string>
 	<string name="text28">"График сохранён как /muninForAndroid/"</string>
 	<string name="text29">"Ошибка сохранения графика"</string>
@@ -57,7 +56,6 @@
 	<string name="text44">"получение URL…"</string>
 	<string name="text45">"Сохранено!"</string>
 	<string name="text46">"Подключение к серверу"</string>
-	<string name="settings_graphview_orientation">"Ориентация графиков на экране"</string>
 	<string name="text47.1">"день"</string>
 	<string name="text47.2">"неделя"</string>
 	<string name="text47.3">"месяц"</string>
@@ -70,13 +68,10 @@
 	<string name="settings_titlelabel_app">"ПРИЛОЖЕНИЕ"</string>
 	<string name="settings_titlelabel_graphs">"ГРАФИКИ"</string>
 	<string name="menu_graph_switch">"Сменить сервер"</string>
-	<string name="menu_serversedit_revert">"Вернуться"</string>
 	<string name="servers_noservers_1">"Серверы не добавлены"</string>
 	<string name="servers_noservers_2">"Добавьте ваш или тестовый сервер, кликните +"</string>
 	<string name="alertsTitle">"Оповещения"</string>
 	<string name="notificationsTitle">"Уведомления"</string>
-
-	<!-- MAIN BUTTON -->
 	<string name="widget_configuration1">Готово! Виджет добавлен на главный экран. Подсказка: для обновления графика коснитесь серой полоски на виджете!</string>
 	<string name="widget_configuration2">"Авто-обновление графика только по WiFi (1 раз в час)"</string>
 	<string name="text49.1">"Скрыть серверы с норм. статусом"</string>

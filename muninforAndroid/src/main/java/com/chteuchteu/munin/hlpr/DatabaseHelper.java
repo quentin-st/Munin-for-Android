@@ -12,6 +12,7 @@ import com.chteuchteu.munin.obj.AlertsWidget;
 import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
+import com.chteuchteu.munin.obj.IgnoredNotification;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
@@ -20,11 +21,12 @@ import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninMaster.AuthType;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-	public static final int DATABASE_VERSION = 7;
+	public static final int DATABASE_VERSION = 8;
 	public static final String DATABASE_NAME = "muninForAndroid2.db";
 	
 	// Table names
@@ -38,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String TABLE_WIDGET_ALERTSWIDGETSRELATIONS = "alertsWidgetsRelations";
 	public static final String TABLE_GRIDS = "grids";
 	public static final String TABLE_GRIDITEMRELATIONS = "gridItemsRelations";
+	public static final String TABLE_IGNOREDNOTIFICATIONS = "ignoredNotifications";
 	
 	// Fields
 	public static final String KEY_ID = "id";
@@ -98,6 +101,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String KEY_GRIDITEMRELATIONS_Y = "y";
 	public static final String KEY_GRIDITEMRELATIONS_PLUGIN = "plugin";
 	public static final String KEY_GRIDITEMRELATIONS_PLUGINPAGEURL = "pluginPageUrl";
+
+	// IgnoredNotifications
+	public static final String KEY_IGNOREDNOTIFICATIONS_GROUP = "groupName"; // "group" is a SQLite keyword
+	public static final String KEY_IGNOREDNOTIFICATIONS_HOST = "host";
+	public static final String KEY_IGNOREDNOTIFICATIONS_PLUGIN = "plugin";
+	public static final String KEY_IGNOREDNOTIFICATIONS_UNTIL = "until";
 	
 	
 	private static final String CREATE_TABLE_MUNINMASTERS = "CREATE TABLE " + TABLE_MUNINMASTERS + " ("
@@ -166,6 +175,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_GRIDITEMRELATIONS_X + " INTEGER,"
 			+ KEY_GRIDITEMRELATIONS_Y + " INTEGER,"
 			+ KEY_GRIDITEMRELATIONS_PLUGINPAGEURL + " TEXT)";
+
+	private static final String CREATE_TABLE_IGNOREDNOTIFICATIONS = "CREATE TABLE " + TABLE_IGNOREDNOTIFICATIONS + " ("
+			+ KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_IGNOREDNOTIFICATIONS_GROUP + " TEXT,"
+			+ KEY_IGNOREDNOTIFICATIONS_HOST + " TEXT,"
+			+ KEY_IGNOREDNOTIFICATIONS_PLUGIN + " TEXT,"
+			+ KEY_IGNOREDNOTIFICATIONS_UNTIL + " INTEGER)";
 	
 	public DatabaseHelper(Context c) {
 		super(c, DATABASE_NAME, null, DATABASE_VERSION);
@@ -183,6 +199,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_ALERTSWIDGETSRELATIONS);
 		db.execSQL(CREATE_TABLE_GRIDS);
 		db.execSQL(CREATE_TABLE_GRIDITEMRELATIONS);
+		db.execSQL(CREATE_TABLE_IGNOREDNOTIFICATIONS);
 	}
 	
 	@Override
@@ -221,11 +238,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			// Migration
 			SQLite.migrateFrom6To7(db);
 		}
+		if (oldVersion < 8) {
+			db.execSQL(CREATE_TABLE_IGNOREDNOTIFICATIONS);
+		}
 	}
 	
 	public static void close(Cursor c, SQLiteDatabase db) {
 		if (c != null)	c.close();
 		if (db != null)	db.close();
+	}
+
+	/**
+	 * Puts a value with key in contentValues.
+	 * Calls "putNull" if value is null, or "put" if it is not
+	 * @param contentValues ContentValues
+	 * @param key String
+	 * @param value String (nullable)
+	 */
+	private void put(ContentValues contentValues, String key, String value) {
+		if (value == null)
+			contentValues.putNull(key);
+		else
+			contentValues.put(key, value);
 	}
 	
 	public long insertMuninMaster(MuninMaster m) {
@@ -440,14 +474,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		for (GridItem i : g.getItems())
 			insertGridItemRelation(i);
 	}
-	
-	public void saveMuninMaster(MuninMaster m) {
-		if (!m.isPersistant)
-			insertMuninMaster(m);
-		else
-			updateMuninMaster(m);
-	}
-	
+
 	public int updateMuninMaster(MuninMaster m) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -994,6 +1021,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		close(null, db);
 	}
+
+	public void addIgnoredNotification(IgnoredNotification ignoredNotification) {
+		SQLiteDatabase db = getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		put(values, KEY_IGNOREDNOTIFICATIONS_GROUP, ignoredNotification.getGroup());
+		put(values, KEY_IGNOREDNOTIFICATIONS_HOST, ignoredNotification.getHost());
+		put(values, KEY_IGNOREDNOTIFICATIONS_PLUGIN, ignoredNotification.getPlugin());
+		values.put(KEY_IGNOREDNOTIFICATIONS_UNTIL,
+				ignoredNotification.getUntil() == null
+						? 0
+						: ignoredNotification.getUntil().getTimeInMillis()
+		);
+
+		db.insert(TABLE_IGNOREDNOTIFICATIONS, null, values);
+
+		close(null, db);
+	}
+
+	public List<IgnoredNotification> getIgnoredNotifications(String group, String host, String plugin) {
+		long now = Calendar.getInstance().getTimeInMillis();
+
+		String rawQuery = "SELECT * FROM " + TABLE_IGNOREDNOTIFICATIONS
+				+ " WHERE (" + KEY_IGNOREDNOTIFICATIONS_GROUP + " IS NULL"
+				+ " OR " + KEY_IGNOREDNOTIFICATIONS_GROUP + " = \"" + group + "\")"
+				+ " AND (" + KEY_IGNOREDNOTIFICATIONS_HOST + " IS NULL"
+				+ " OR " + KEY_IGNOREDNOTIFICATIONS_HOST + " = \"" + host + "\")"
+				+ " AND (" + KEY_IGNOREDNOTIFICATIONS_PLUGIN + " IS NULL"
+				+ " OR " + KEY_IGNOREDNOTIFICATIONS_PLUGIN + " = \"" + plugin + "\")"
+				+ " AND (" + KEY_IGNOREDNOTIFICATIONS_UNTIL + " = 0"
+				+ " OR " + KEY_IGNOREDNOTIFICATIONS_UNTIL + " > " + now + ")";
+
+		List<IgnoredNotification> list = new ArrayList<>();
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(rawQuery, null);
+
+		if (c.moveToFirst()) {
+			do {
+				list.add(new IgnoredNotification(
+						c.getString(c.getColumnIndex(KEY_IGNOREDNOTIFICATIONS_GROUP)),
+						c.getString(c.getColumnIndex(KEY_IGNOREDNOTIFICATIONS_HOST)),
+						c.getString(c.getColumnIndex(KEY_IGNOREDNOTIFICATIONS_PLUGIN)),
+						c.getInt(c.getColumnIndex(KEY_IGNOREDNOTIFICATIONS_UNTIL))
+				));
+			} while (c.moveToNext());
+		}
+		close(c, db);
+
+		return list;
+	}
+
 
 	public void deleteMaster(MuninMaster m, boolean deleteChildren) { deleteMaster(m, deleteChildren, null); }
 	public void deleteMaster(MuninMaster m, boolean deleteChildren, Util.ProgressNotifier progressNotifier) {

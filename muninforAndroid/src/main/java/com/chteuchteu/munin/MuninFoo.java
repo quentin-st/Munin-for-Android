@@ -50,6 +50,7 @@ public class MuninFoo {
 	public ChromecastHelper chromecastHelper;
 
 	private Tracker tracker;
+	private static final String ANALYTICS_TRACKING_ID = "UA-44703951-1";
 	
 	private MuninFoo(Context context) {
 		premium = false;
@@ -264,6 +265,13 @@ public class MuninFoo {
 		}
 		return null;
 	}
+	public MuninNode getNodeById(long nodeId) {
+		for (MuninNode node : nodes) {
+			if (node.getId() == nodeId)
+				return node;
+		}
+		return null;
+	}
 	public MuninPlugin getPlugin(int id) {
 		for (MuninNode node : nodes) {
 			for (MuninPlugin plugin : node.getPlugins()) {
@@ -422,7 +430,7 @@ public class MuninFoo {
 	public synchronized Tracker getDefaultTracker(Context context) {
 		if (this.tracker == null) {
 			GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
-			this.tracker = analytics.newTracker(R.xml.global_tracker);
+			this.tracker = analytics.newTracker(ANALYTICS_TRACKING_ID);
 		}
 
 		return this.tracker;

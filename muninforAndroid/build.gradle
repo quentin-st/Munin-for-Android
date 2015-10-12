@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.19.2'
+        classpath 'io.fabric.tools:gradle:1.20.1'
     }
 }
 
@@ -24,8 +24,8 @@ android {
         applicationId "com.chteuchteu.munin"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 58
-        versionName "3.6.5-beta2"
+        versionCode 59
+        versionName "3.6.5-beta3"
     }
 
     buildTypes {
@@ -41,27 +41,30 @@ android {
 }
 
 dependencies {
+    // AppCompat-v7 & Support-v4
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:support-v4:23.0.1'
-    compile files('libs/AppRate_1.1.jar')
 
+    // Android libraries
+    compile 'com.google.android.gms:play-services:8.1.0'
     compile 'com.google.android.gms:play-services-base:8.1.0'
     compile 'com.google.android.gms:play-services-cast:8.1.0'
     compile 'com.google.android.gms:play-services-wallet:8.1.0'
-    compile 'com.android.support:mediarouter-v7:23.0.1'
+    compile 'com.google.android.gms:play-services-gcm:8.1.0'
     compile 'com.google.android.gms:play-services-analytics:8.1.0'
+    compile 'com.android.support:mediarouter-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
 
+    // 3d party dependencies
     compile 'org.jsoup:jsoup:1.8.1'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'com.edmodo:rangebar:1.0.0'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
-        transitive = true;
-    }
-    debugCompile 'im.dino:dbinspector:3.1.0@aar'
-
-    compile('com.mikepenz:materialdrawer:4.3.0@aar') {
-        transitive = true
-    }
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') { transitive = true; }
+    compile('com.mikepenz:materialdrawer:4.3.0@aar') { transitive = true }
     compile 'com.mikepenz:community-material-typeface:1.2.64.1@aar'
+    compile files('libs/AppRate_1.1.jar')
+
+    // Debug-specific dependencies
+    debugCompile 'im.dino:dbinspector:3.1.0@aar'
 }
