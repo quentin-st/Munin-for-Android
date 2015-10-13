@@ -1,5 +1,8 @@
 package com.chteuchteu.munin.hlpr;
 
+import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.obj.Grid;
+import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
 import com.chteuchteu.munin.obj.MuninNode;
@@ -7,6 +10,7 @@ import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninMaster.AuthType;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -47,6 +51,16 @@ public class JSONHelper {
     private static final String PLUGINS = "ps";
     private static final String NODES = "srvss";
     private static final String MASTERS = "ms";
+
+	private static final String GRIDS = "gs";
+	private static final String GRID_ID = "i";
+	private static final String GRID_NAME = "n";
+	private static final String GRID_ITEMS = "is";
+
+	private static final String GRIDITEM_ID = "i";
+	private static final String GRIDITEM_X = "x";
+	private static final String GRIDITEM_Y = "y";
+	private static final String GRIDITEM_PLUGINPAGEURL = "ppu";
 
     /**
 	 * Serializes the Masters objects tree
@@ -200,6 +214,86 @@ public class JSONHelper {
 			return muninMasters;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static String getGridsJSONString(List<Grid> grids) {
+		try {
+			JSONObject obj = new JSONObject();
+			JSONArray jsonGrids = new JSONArray();
+
+			for (Grid grid : grids) {
+				JSONObject jsonGrid = new JSONObject();
+
+				jsonGrid.put(GRID_ID, grid.getId());
+				jsonGrid.put(GRID_NAME, grid.getName());
+
+				JSONArray jsonItems = new JSONArray();
+				for (GridItem item : grid.getItems()) {
+					JSONObject jsonItem = new JSONObject();
+					jsonItem.put(GRIDITEM_ID, item.getId());
+					jsonItem.put(GRIDITEM_X, item.getX());
+					jsonItem.put(GRIDITEM_Y, item.getY());
+					jsonItem.put(GRIDITEM_PLUGINPAGEURL, item.getPluginPageUrl());
+
+					jsonItems.put(jsonItem);
+				}
+
+				jsonGrid.put(GRID_ITEMS, jsonItems);
+				jsonGrids.put(jsonGrid);
+			}
+
+			obj.put(GRIDS, jsonGrids);
+			return obj.toString();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return "";
+		}
+	}
+
+	public static List<Grid> getGridsFromJSON(JSONObject obj, MuninFoo muninFoo) {
+		try {
+			List<Grid> grids = new ArrayList<>();
+
+			JSONArray jsonGrids = obj.getJSONArray(GRIDS);
+			for (int i=0; i<jsonGrids.length(); i++) {
+				JSONObject jsonGrid = jsonGrids.getJSONObject(i);
+				Grid grid = new Grid(jsonGrid.getString(GRID_NAME));
+
+				List<GridItem> gridItems = new ArrayList<>();
+				JSONArray jsonGridItems = jsonGrid.getJSONArray(GRID_ITEMS);
+				for (int y=0; y<jsonGridItems.length(); y++) {
+					JSONObject jsonGridItem = jsonGridItems.getJSONObject(y);
+					GridItem item = new GridItem(grid, null);
+
+					// Try to find plugin from its PluginPageUrl attribute
+					String pluginPageUrl = jsonGridItem.getString(GRIDITEM_PLUGINPAGEURL);
+					item.setPluginPageUrl(pluginPageUrl);
+
+					MuninPlugin plugin = muninFoo.getPlugin(pluginPageUrl);
+
+					if (plugin != null) {
+						item.setPlugin(plugin);
+					} else {
+						item.setPlugin(null);
+						item.setDetached(true);
+					}
+
+					item.setId(jsonGridItem.getLong(GRIDITEM_ID));
+					item.setX(jsonGridItem.getInt(GRIDITEM_X));
+					item.setY(jsonGridItem.getInt(GRIDITEM_Y));
+
+					gridItems.add(item);
+				}
+
+				grid.setItems(gridItems);
+				grids.add(grid);
+			}
+
+			return grids;
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			return null;
 		}
 	}
