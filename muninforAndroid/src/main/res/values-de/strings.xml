@@ -229,4 +229,14 @@
 <string name="disable_chromecast">Chromecast Funktion deaktivieren</string>
 	<string name="disable_chromecast_text">Falls du keinen Chromecast besitzt kannst du die Funktion in der App abstellen</string>
 	<string name="about">Über</string>
+	<string name="splashDesc">Lade</string>
+	<string name="notifications_mailSent">E-Mail versendet! Bitte überprüfe deinen Posteingang.</string>
+	<string name="notifications_test_title">Munin for Android Test Benachrichtigung</string>
+	<string name="notifications_test_text">Munin for Android CGM Trigger wurde erfolgreich installiert</string>
+	<string name="ignore">Ignorieren</string>
+	<string name="one_hour">Für 1 Stunde</string>
+	<string name="six_hours">Für 6 Stunden</string>
+	<string name="one_day">Für 1 Tag</string>
+	<string name="one_week">Für 1 Woche</string>
+	<string name="forever">Ständig</string>
 	</resources>
