@@ -525,7 +525,9 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						context.startActivity(new Intent(context, Activity_Servers.class));
+						// Restart activity... We should probably handle this
+						Util.setTransition(activity, TransitionStyle.DEEPER);
+						startActivity(new Intent(Activity_Grids.this, Activity_Grids.class));
 					}
 				})
 				.show();
