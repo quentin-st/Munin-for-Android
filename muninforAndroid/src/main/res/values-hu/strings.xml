@@ -113,8 +113,8 @@
 	<string name="text81">Nincs elérhető adat ehhez a pluginhoz</string>
 	<string name="text82">A címke törölve lesz. Biztos akarod?</string>
 	<string name="text83">A node törölve lesz. Biztos akarod?</string>
-	<string name="import_servers">Importálás</string>
-	<string name="export_servers">Exportálás</string>
+	<string name="action_import">Importálás</string>
+	<string name="action_export">Exportálás</string>
 	<string name="import_export">Importálás / Exportálás</string>
 	<string name="export_failed">Exportálási hiba…</string>
 	<string name="import_title">Importálás</string>
@@ -128,7 +128,6 @@
 	<string name="not_now">Ne most</string>
 	<string name="export_success_title">Sikeres exportálás</string>
 	<string name="import_success_title">Sikeres importálás</string>
-	<string name="import_success_txt1">A szerverek importálása sikeres volt</string>
 	<string name="delete_plugin">Plugin törlése</string>
 	<string name="delete_label">Címke törlése</string>
 	<string name="rename_label">Címke átnevezése</string>

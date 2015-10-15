@@ -143,8 +143,8 @@
 	<string name="text82">Dit label zal worden verwijderd. Weet je het zeker?</string>
 	<string name="text83">Deze server zal worden verwijderd. Weet je het zeker?</string>
 	<string name="text84">De master zal worden verwijderd. Weet je het zeker?</string>
-	<string name="import_servers">Importeren</string>
-	<string name="export_servers">Exporteren</string>
+	<string name="action_import">Importeren</string>
+	<string name="action_export">Exporteren</string>
 	<string name="import_export">Import / Export</string>
 	<string name="export_failed">Exporteren is mislukt…</string>
 	<string name="export_subject">Munin voor Android Export</string>
@@ -162,7 +162,6 @@
 	<string name="export_success_title">Export geslaagd</string>
 	<string name="export_success_txt1">De configuratie van je servers is succesvol geüpload. Gebruik de volgende code op je andere apparaat om de configuratie te importeren.</string>
 	<string name="import_success_title">Importeren geslaagd</string>
-	<string name="import_success_txt1">Het importeren van de servers is geslaagd</string>
 	<string name="delete_plugin">Plug-in verwijderen</string>
 	<string name="delete_label">Label verwijderen</string>
 	<string name="rename_label">Label hernoemen</string>

@@ -58,6 +58,21 @@
 		app:showAsAction="ifRoom"
 		android:title="@string/menu_graph_refresh"/>
 
+	<item
+		android:id="@+id/menu_importexport"
+		android:icon="@drawable/ic_action_import_export"
+		app:showAsAction="ifRoom"
+		android:title="@string/import_export">
+		<menu>
+			<item
+				android:id="@+id/menu_import"
+				android:title="@string/action_import" />
+			<item
+				android:id="@+id/menu_export"
+				android:title="@string/action_export" />
+		</menu>
+	</item>
+
 	<!-- Fragment on Activity_Main -->
 	<item
 		android:id="@+id/menu_openInActivity"

@@ -150,8 +150,8 @@
 	<string name="text82">Questa etichetta verrà cancellata. Sei sicuro?</string>
 	<string name="text83">Questo nodo verrà cancellato. Sei sicuro?</string>
 	<string name="text84">Questo nodo master verrà cancellato. Sei sicuro?</string>
-	<string name="import_servers">Importa</string>
-	<string name="export_servers">Esporta</string>
+	<string name="action_import">Importa</string>
+	<string name="action_export">Esporta</string>
 	<string name="import_export">Importa / Esporta</string>
 	<string name="export_failed">Esportazione fallita…</string>
 	<string name="export_subject">Esportazione Munin per Android</string>
@@ -169,7 +169,6 @@
 	<string name="export_success_title">Esportazione riuscita</string>
 	<string name="export_success_txt1">La configurazione dei tuoi server nell\'app è stata inviata con successo. Usa questo codice sul tuo dispositivo secondario per importarla.</string>
 	<string name="import_success_title">Importazione riuscita</string>
-	<string name="import_success_txt1">L\'importazione dei server è riuscita</string>
 	<string name="delete_plugin">Cancella plugin</string>
 	<string name="delete_label">Cancella etichetta</string>
 	<string name="rename_label">Rinomina etichetta</string>

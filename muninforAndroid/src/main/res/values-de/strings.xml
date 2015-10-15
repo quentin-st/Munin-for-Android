@@ -147,8 +147,8 @@
 	<string name="text81">"Keine Daten für dieses Plugin vorhanden"</string>
 	<string name="text82">"Dieses Label wird gelöscht. Sicher?"</string>
 	<string name="text83">Dieser Node-Server wird gelöscht. Sicher?</string>
-	<string name="import_servers">"Import"</string>
-	<string name="export_servers">"Export"</string>
+	<string name="action_import">"Import"</string>
+	<string name="action_export">"Export"</string>
 	<string name="import_export">"Import / Export"</string>
 	<string name="export_failed">Exportieren fehlgeschlagen …</string>
 	<string name="export_subject">"Munin für Android-Export"</string>
@@ -158,7 +158,6 @@
 	<string name="export_success_title">Export erfolgreich</string>
 	<string name="export_success_txt1">"Die Konfiguration der App wurde erfolgreich hochgeladen. Bitte nutze den folgenden Code, um die Konfiguration auf dem anderen Gerät zu importieren."</string>
 	<string name="import_success_title">"Import erfolgreich"</string>
-	<string name="import_success_txt1">"Der Server-Import war erfolgreich"</string>
 	<string name="delete_plugin">"Plugin löschen"</string>
 	<string name="delete_label">"Label löschen"</string>
 	<string name="rename_label">"Label umbenennen"</string>

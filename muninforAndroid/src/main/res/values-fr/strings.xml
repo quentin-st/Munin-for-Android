@@ -122,8 +122,8 @@
 	<string name="text82">Ce label va être supprimé. Êtes-vous sûr(e) ?</string>
 	<string name="text83">Ce noeud va être supprimé. Êtes-vous sûr(e) ?</string>
 	<string name="text84">Ce master va être supprimé. Êtes-vous sûr(e) ?</string>
-	<string name="import_servers">Importer</string>
-	<string name="export_servers">Exporter</string>
+	<string name="action_import">Importer</string>
+	<string name="action_export">Exporter</string>
 	<string name="import_export">Importer / Exporter</string>
 	<string name="export_failed">Erreur lors de l\'export…</string>
 	<string name="export_subject">Export Munin for Android</string>
@@ -158,7 +158,6 @@
 	<string name="export_success_txt1">La configuration de vos serveurs dans l\'application a été exportée avec succès.
 	    Veuillez utiliser le code suivant dans votre autre appareil Android afin de l\'importer.</string>
 	<string name="import_success_title">Import réussi</string>
-	<string name="import_success_txt1">L\'importation des serveurs a réussi</string>
 	<string name="delete_plugin">Supprimer le plugin</string>
 	<string name="rename_label">Renommer ce label</string>
 	<string name="delete_label">Supprimer ce label</string>

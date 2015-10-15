@@ -149,8 +149,8 @@
 	<string name="text82">Esta etiqueta será eliminada. Está Ud seguro?</string>
 	<string name="text83">El servidor será eliminado. Está Ud seguro?</string>
 	<string name="text84">Este servidor master será eliminado. Está Ud seguro?</string>
-	<string name="import_servers">Importar</string>
-	<string name="export_servers">Exportar</string>
+	<string name="action_import">Importar</string>
+	<string name="action_export">Exportar</string>
 	<string name="import_export">Importar / Exportar</string>
 	<string name="export_failed">Falló la exportación…</string>
 	<string name="export_subject">Exportar Munin para Android</string>
@@ -170,7 +170,6 @@
 	<string name="export_success_title">Los datos se exportaron correctamente</string>
 	<string name="export_success_txt1">La configuración de los servidores fue enviada correctamente. Por favor utilice el siguiente código en su dispositivo secundario para importarla.</string>
 	<string name="import_success_title">Los datos se importaron correctamente</string>
-	<string name="import_success_txt1">El proceso de importación ha sido completado con éxito</string>
 	<string name="delete_plugin">Eliminar plugin</string>
 	<string name="delete_label">Eliminar etiqueta</string>
 	<string name="rename_label">Renombrar etiqueta</string>
