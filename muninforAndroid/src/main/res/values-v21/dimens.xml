@@ -1,0 +1,5 @@
+<resources>
+
+    <dimen name="fab_compat_margin">16dp</dimen>
+
+</resources>

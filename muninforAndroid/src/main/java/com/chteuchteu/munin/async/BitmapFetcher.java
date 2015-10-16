@@ -154,7 +154,7 @@ public class BitmapFetcher extends AsyncTask<Void, Integer, Void> {
 					public void onClick(View view) {
 						node.getParent().setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
 						MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(node.getParent());
-						activity.fab.hide(true);
+						activity.fab.hide();
 						activity.isFabShown = false;
 						activity.actionRefresh();
 					}

@@ -45,7 +45,7 @@ public class DynazoomUrlScanner extends AsyncTask<Void, Integer, Void> {
 		}
 
 		if (master.isDynazoomAvailable() == MuninMaster.DynazoomAvailability.FALSE) {
-			activity.fab.hide(true);
+			activity.fab.hide();
 			activity.isFabShown = false;
 		}
 

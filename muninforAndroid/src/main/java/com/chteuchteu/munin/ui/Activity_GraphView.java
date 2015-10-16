@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -60,7 +61,6 @@ import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 import com.edmodo.rangebar.RangeBar;
-import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
@@ -259,13 +259,13 @@ public class Activity_GraphView extends MuninActivity {
 				boolean dynazoomAvailable = currentPlugin.getInstalledOn().getParent().isDynazoomAvailable() == DynazoomAvailability.TRUE;
 
 				if (!dynazoomAvailable && isFabShown) { // Hide fab
-					fab.hide(true);
+					fab.hide();
 					isFabShown = false;
 				} else if (dynazoomAvailable && !isFabShown) { // Show fab
 					if (fab.getVisibility() == View.GONE)
 						fab.setVisibility(View.VISIBLE);
 					isFabShown = true;
-					fab.show(true);
+					fab.show();
 				}
 			}
 
@@ -291,7 +291,7 @@ public class Activity_GraphView extends MuninActivity {
 			fab.setVisibility(View.VISIBLE);
 			fab.show();
 		} else {
-			fab.hide(true);
+			fab.hide();
 			isFabShown = false;
 		}
 		fab.setOnClickListener(new OnClickListener() {
