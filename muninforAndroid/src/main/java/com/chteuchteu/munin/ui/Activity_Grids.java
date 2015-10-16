@@ -77,7 +77,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 
 		long currentGridId = grids.get(0).getId();
 		if (getIntent() != null)
-			currentGridId = getIntent().getIntExtra(ARG_GRIDID, (int) currentGridId);
+			currentGridId = getIntent().getLongExtra(ARG_GRIDID, currentGridId);
 
 		// Get currentGrid
 		Grid currentGrid_ = null;
@@ -307,9 +307,11 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 		if (currentFragment == null || currentFragment.getGrid() == null || currentFragment.getGrid().currentlyOpenedGridItem == null)
 			return;
 
-		muninFoo.setCurrentNode(currentFragment.getGrid().currentlyOpenedGridItem.getPlugin().getInstalledOn());
+		Grid currentGrid = currentFragment.getGrid();
+
+		muninFoo.setCurrentNode(currentGrid.currentlyOpenedGridItem.getPlugin().getInstalledOn());
 		Intent i = new Intent(context, Activity_GraphView.class);
-		i.putExtra("plugin", currentFragment.getGrid().currentlyOpenedGridItem.getPlugin().getName());
+		i.putExtra("plugin", currentGrid.currentlyOpenedGridItem.getPlugin().getName());
 		i.putExtra("from", "grid");
 		Intent gridIntent = ((Activity) context).getIntent();
 		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("gridName"))
@@ -406,8 +408,10 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 				if (currentFragment == null)
 					return false;
 
+				final Grid currentGrid = currentFragment.getGrid();
+
 				final EditText input = new EditText(context);
-				input.setText(currentFragment.getGrid().getName());
+				input.setText(currentGrid.getName());
 
 				new AlertDialog.Builder(context)
 						.setTitle(R.string.rename_grid)
@@ -415,15 +419,17 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								String value = input.getText().toString();
-								if (!value.equals(currentFragment.getGrid().getName())) {
+								if (!value.equals(currentGrid.getName())) {
 									// Check if there's a grid with this name
 									boolean alreadyExists = muninFoo.sqlite.dbHlpr.gridExists(value);
 									if (!alreadyExists) {
-										muninFoo.sqlite.dbHlpr.updateGridName(currentFragment.getGrid().getName(), value);
+										muninFoo.sqlite.dbHlpr.updateGridName(currentGrid.getName(), value);
 
 										// Restart activity... We should probably handle this
 										Util.setTransition(activity, TransitionStyle.DEEPER);
-										startActivity(new Intent(Activity_Grids.this, Activity_Grids.class));
+										Intent intent = new Intent(Activity_Grids.this, Activity_Grids.class);
+										intent.putExtra(ARG_GRIDID, currentGrid.getId());
+										startActivity(intent);
 									} else
 										Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
 								}

@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
@@ -17,7 +16,7 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
 import com.chteuchteu.munin.hlpr.Settings;
-import com.chteuchteu.munin.obj.IgnoredNotification;
+import com.chteuchteu.munin.obj.NotifIgnoreRule;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.ui.Activity_IgnoreNotification;
 import com.chteuchteu.munin.ui.Activity_Main;
@@ -108,16 +107,16 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
 
     private boolean isNotificationIgnored(String group, String host, String plugin) {
         DatabaseHelper databaseHelper = MuninFoo.getInstance(this).sqlite.dbHlpr;
-        List<IgnoredNotification> ignoredNotifications = databaseHelper.getIgnoredNotifications(group, host, plugin);
+        List<NotifIgnoreRule> notifIgnoreRules = databaseHelper.getNotifIgnoreRules(group, host, plugin);
 
         if (BuildConfig.DEBUG) {
-            MuninFoo.log("Found " + ignoredNotifications.size() + " rules:");
-            for (IgnoredNotification rule : ignoredNotifications)
+            MuninFoo.log("Found " + notifIgnoreRules.size() + " rules:");
+            for (NotifIgnoreRule rule : notifIgnoreRules)
                 MuninFoo.log(rule.toString());
         }
 
         // Notification is ignored if ignoredNotifications list is not empty
-        return ignoredNotifications.size() > 0;
+        return notifIgnoreRules.size() > 0;
     }
 
     private void debugDataBundle(Bundle data) {

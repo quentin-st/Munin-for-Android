@@ -2,20 +2,20 @@ package com.chteuchteu.munin.obj;
 
 import java.util.Calendar;
 
-public class IgnoredNotification {
+public class NotifIgnoreRule {
 	private String group;
 	private String host;
 	private String plugin;
 	private Calendar until;
 
-	public IgnoredNotification(String group, String host, String plugin, Calendar until) {
+	public NotifIgnoreRule(String group, String host, String plugin, Calendar until) {
 		this.group = group;
 		this.host = host;
 		this.plugin = plugin;
 		this.until = until;
 	}
 
-	public IgnoredNotification(String group, String host, String plugin, long untilMillis) {
+	public NotifIgnoreRule(String group, String host, String plugin, long untilMillis) {
 		this.group = group;
 		this.host = host;
 		this.plugin = plugin;

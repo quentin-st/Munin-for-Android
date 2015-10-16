@@ -12,7 +12,7 @@ import com.chteuchteu.munin.obj.AlertsWidget;
 import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.GridItem;
-import com.chteuchteu.munin.obj.IgnoredNotification;
+import com.chteuchteu.munin.obj.NotifIgnoreRule;
 import com.chteuchteu.munin.obj.Label;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninMaster.DynazoomAvailability;
@@ -40,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String TABLE_WIDGET_ALERTSWIDGETSRELATIONS = "alertsWidgetsRelations";
 	public static final String TABLE_GRIDS = "grids";
 	public static final String TABLE_GRIDITEMRELATIONS = "gridItemsRelations";
-	public static final String TABLE_IGNOREDNOTIFICATIONS = "ignoredNotifications";
+	public static final String TABLE_NOTIFIGNORERULES = "notifsIgnoreRules";
 	
 	// Fields
 	public static final String KEY_ID = "id";
@@ -103,10 +103,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String KEY_GRIDITEMRELATIONS_PLUGINPAGEURL = "pluginPageUrl";
 
 	// IgnoredNotifications
-	public static final String KEY_IGNOREDNOTIFICATIONS_GROUP = "groupName"; // "group" is a SQLite keyword
-	public static final String KEY_IGNOREDNOTIFICATIONS_HOST = "host";
-	public static final String KEY_IGNOREDNOTIFICATIONS_PLUGIN = "plugin";
-	public static final String KEY_IGNOREDNOTIFICATIONS_UNTIL = "until";
+	public static final String KEY_NOTIFIGNORERULES_GROUP = "groupName"; // "group" is a SQLite keyword
+	public static final String KEY_NOTIFIGNORERULES_HOST = "host";
+	public static final String KEY_NOTIFIGNORERULES_PLUGIN = "plugin";
+	public static final String KEY_NOTIFIGNORERULES_UNTIL = "until";
 	
 	
 	private static final String CREATE_TABLE_MUNINMASTERS = "CREATE TABLE " + TABLE_MUNINMASTERS + " ("
@@ -176,12 +176,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ KEY_GRIDITEMRELATIONS_Y + " INTEGER,"
 			+ KEY_GRIDITEMRELATIONS_PLUGINPAGEURL + " TEXT)";
 
-	private static final String CREATE_TABLE_IGNOREDNOTIFICATIONS = "CREATE TABLE " + TABLE_IGNOREDNOTIFICATIONS + " ("
+	private static final String CREATE_TABLE_NOTIFIGNORERULES = "CREATE TABLE " + TABLE_NOTIFIGNORERULES + " ("
 			+ KEY_ID + " INTEGER PRIMARY KEY,"
-			+ KEY_IGNOREDNOTIFICATIONS_GROUP + " TEXT,"
-			+ KEY_IGNOREDNOTIFICATIONS_HOST + " TEXT,"
-			+ KEY_IGNOREDNOTIFICATIONS_PLUGIN + " TEXT,"
-			+ KEY_IGNOREDNOTIFICATIONS_UNTIL + " INTEGER)";
+			+ KEY_NOTIFIGNORERULES_GROUP + " TEXT,"
+			+ KEY_NOTIFIGNORERULES_HOST + " TEXT,"
+			+ KEY_NOTIFIGNORERULES_PLUGIN + " TEXT,"
+			+ KEY_NOTIFIGNORERULES_UNTIL + " INTEGER)";
 	
 	public DatabaseHelper(Context c) {
 		super(c, DATABASE_NAME, null, DATABASE_VERSION);
@@ -199,7 +199,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_ALERTSWIDGETSRELATIONS);
 		db.execSQL(CREATE_TABLE_GRIDS);
 		db.execSQL(CREATE_TABLE_GRIDITEMRELATIONS);
-		db.execSQL(CREATE_TABLE_IGNOREDNOTIFICATIONS);
+		db.execSQL(CREATE_TABLE_NOTIFIGNORERULES);
 	}
 	
 	@Override
@@ -239,7 +239,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			SQLite.migrateFrom6To7(db);
 		}
 		if (oldVersion < 8) {
-			db.execSQL(CREATE_TABLE_IGNOREDNOTIFICATIONS);
+			db.execSQL(CREATE_TABLE_NOTIFIGNORERULES);
 		}
 	}
 	
@@ -1022,53 +1022,71 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		close(null, db);
 	}
 
-	public void addIgnoredNotification(IgnoredNotification ignoredNotification) {
+	public void addNotifIgnoreRule(NotifIgnoreRule notifIgnoreRule) {
 		SQLiteDatabase db = getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		put(values, KEY_IGNOREDNOTIFICATIONS_GROUP, ignoredNotification.getGroup());
-		put(values, KEY_IGNOREDNOTIFICATIONS_HOST, ignoredNotification.getHost());
-		put(values, KEY_IGNOREDNOTIFICATIONS_PLUGIN, ignoredNotification.getPlugin());
-		values.put(KEY_IGNOREDNOTIFICATIONS_UNTIL,
-				ignoredNotification.getUntil() == null
+		put(values, KEY_NOTIFIGNORERULES_GROUP, notifIgnoreRule.getGroup());
+		put(values, KEY_NOTIFIGNORERULES_HOST, notifIgnoreRule.getHost());
+		put(values, KEY_NOTIFIGNORERULES_PLUGIN, notifIgnoreRule.getPlugin());
+		values.put(KEY_NOTIFIGNORERULES_UNTIL,
+				notifIgnoreRule.getUntil() == null
 						? 0
-						: ignoredNotification.getUntil().getTimeInMillis()
+						: notifIgnoreRule.getUntil().getTimeInMillis()
 		);
 
-		db.insert(TABLE_IGNOREDNOTIFICATIONS, null, values);
+		db.insert(TABLE_NOTIFIGNORERULES, null, values);
 
 		close(null, db);
 	}
 
-	public List<IgnoredNotification> getIgnoredNotifications(String group, String host, String plugin) {
-		long now = Calendar.getInstance().getTimeInMillis();
-
-		String rawQuery = "SELECT * FROM " + TABLE_IGNOREDNOTIFICATIONS
-				+ " WHERE (" + KEY_IGNOREDNOTIFICATIONS_GROUP + " IS NULL"
-				+ " OR " + KEY_IGNOREDNOTIFICATIONS_GROUP + " = \"" + group + "\")"
-				+ " AND (" + KEY_IGNOREDNOTIFICATIONS_HOST + " IS NULL"
-				+ " OR " + KEY_IGNOREDNOTIFICATIONS_HOST + " = \"" + host + "\")"
-				+ " AND (" + KEY_IGNOREDNOTIFICATIONS_PLUGIN + " IS NULL"
-				+ " OR " + KEY_IGNOREDNOTIFICATIONS_PLUGIN + " = \"" + plugin + "\")"
-				+ " AND (" + KEY_IGNOREDNOTIFICATIONS_UNTIL + " = 0"
-				+ " OR " + KEY_IGNOREDNOTIFICATIONS_UNTIL + " > " + now + ")";
-
-		List<IgnoredNotification> list = new ArrayList<>();
+	public List<NotifIgnoreRule> getAllNotifIgnoreRules() {
+		String rawQuery = "SELECT * FROM " + TABLE_NOTIFIGNORERULES;
 
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(rawQuery, null);
 
+		List<NotifIgnoreRule> list = cursorToNotifIgnoreRulesList(c);
+		close(c, db);
+
+		return list;
+	}
+
+	public List<NotifIgnoreRule> getNotifIgnoreRules(String group, String host, String plugin) {
+		long now = Calendar.getInstance().getTimeInMillis();
+
+		String rawQuery = "SELECT * FROM " + TABLE_NOTIFIGNORERULES
+				+ " WHERE (" + KEY_NOTIFIGNORERULES_GROUP + " IS NULL"
+				+ " OR " + KEY_NOTIFIGNORERULES_GROUP + " = \"" + group + "\")"
+				+ " AND (" + KEY_NOTIFIGNORERULES_HOST + " IS NULL"
+				+ " OR " + KEY_NOTIFIGNORERULES_HOST + " = \"" + host + "\")"
+				+ " AND (" + KEY_NOTIFIGNORERULES_PLUGIN + " IS NULL"
+				+ " OR " + KEY_NOTIFIGNORERULES_PLUGIN + " = \"" + plugin + "\")"
+				+ " AND (" + KEY_NOTIFIGNORERULES_UNTIL + " = 0"
+				+ " OR " + KEY_NOTIFIGNORERULES_UNTIL + " > " + now + ")";
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.rawQuery(rawQuery, null);
+
+		List<NotifIgnoreRule> list = cursorToNotifIgnoreRulesList(c);
+		close(c, db);
+
+		return list;
+	}
+
+	private List<NotifIgnoreRule> cursorToNotifIgnoreRulesList(Cursor c) {
+		List<NotifIgnoreRule> list = new ArrayList<>();
+
 		if (c.moveToFirst()) {
 			do {
-				list.add(new IgnoredNotification(
-						c.getString(c.getColumnIndex(KEY_IGNOREDNOTIFICATIONS_GROUP)),
-						c.getString(c.getColumnIndex(KEY_IGNOREDNOTIFICATIONS_HOST)),
-						c.getString(c.getColumnIndex(KEY_IGNOREDNOTIFICATIONS_PLUGIN)),
-						c.getInt(c.getColumnIndex(KEY_IGNOREDNOTIFICATIONS_UNTIL))
+				list.add(new NotifIgnoreRule(
+						c.getString(c.getColumnIndex(KEY_NOTIFIGNORERULES_GROUP)),
+						c.getString(c.getColumnIndex(KEY_NOTIFIGNORERULES_HOST)),
+						c.getString(c.getColumnIndex(KEY_NOTIFIGNORERULES_PLUGIN)),
+						c.getInt(c.getColumnIndex(KEY_NOTIFIGNORERULES_UNTIL))
 				));
 			} while (c.moveToNext());
 		}
-		close(c, db);
 
 		return list;
 	}

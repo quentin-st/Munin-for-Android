@@ -20,17 +20,24 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_NotifIgnoreRules;
 import com.chteuchteu.munin.async.Notifications_SendInstructionsByMail;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.ntfs.RegistrationIntentService;
+import com.chteuchteu.munin.obj.NotifIgnoreRule;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
 
 public class Activity_Notifications extends MuninActivity {
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -43,6 +50,9 @@ public class Activity_Notifications extends MuninActivity {
 	private CheckBox	cb_notifications;
 	private CheckBox    cb_vibrate;
 	private Button      bt_sendByMail;
+
+	private List<NotifIgnoreRule> ignoreRules;
+	private TextView ignoreRulesText;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -114,6 +124,15 @@ public class Activity_Notifications extends MuninActivity {
 					notificationsSettings.setVisibility(View.VISIBLE);
 				else
 					notificationsSettings.setVisibility(View.GONE);
+
+				// Get reg id
+				if (isChecked && muninFoo.getSettings().getString(Settings.PrefKeys.Notifs_GCM_regId) == null) {
+					if (checkPlayServices()) {
+						progressDialog = ProgressDialog.show(context, "", getString(R.string.loading), true);
+						Intent intent = new Intent(context, RegistrationIntentService.class);
+						startService(intent);
+					}
+				}
 			}
 		});
 
@@ -131,13 +150,47 @@ public class Activity_Notifications extends MuninActivity {
 				}
 			});
 		}
+
+		// Set fonts
+		for (View view : Util.getViewsByTag((ViewGroup)findViewById(R.id.container), "set_font"))
+			Util.Fonts.setFont(this, (TextView) view, Util.Fonts.CustomFont.Roboto_Medium);
+
+		// Get ignore rules
+		ignoreRules = muninFoo.sqlite.dbHlpr.getAllNotifIgnoreRules();
+		ignoreRulesText = (TextView) findViewById(R.id.ignoreRulesText);
+		ignoreRulesText.setText(String.format(getString(R.string.ignoreRulesText), ignoreRules.size()));
+
+		findViewById(R.id.manageIgnoreRules).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				manageIgnoreRules();
+			}
+		});
+	}
+
+	private void manageIgnoreRules() {
+		// Create view
+		ListView listView = new ListView(this);
+		Adapter_NotifIgnoreRules adapter = new Adapter_NotifIgnoreRules(this, this.ignoreRules);
+		listView.setAdapter(adapter);
+
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.ignoreRules)
+				.setView(listView)
+				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						// Update rules count
+						ignoreRulesText.setText(String.format(getString(R.string.ignoreRulesText), ignoreRules.size()));
+					}
+				})
+				.show();
 	}
 
 	private void updateDeviceCode() {
 		String deviceCode = settings.getString(Settings.PrefKeys.Notifs_GCM_regId);
 		if (deviceCode != null) {
 			TextView tv_deviceCode = (TextView) findViewById(R.id.device_code);
-			tv_deviceCode.setText(deviceCode.substring(0, deviceCode.length() > 15 ? 15 : deviceCode.length() - 1) + "...");
+			tv_deviceCode.setText(deviceCode.substring(0, Math.min(deviceCode.length()-1, 15)) + "...");
 		}
 	}
 
@@ -168,17 +221,6 @@ public class Activity_Notifications extends MuninActivity {
 	private void actionSave() {
 		if (!muninFoo.premium)
 			return;
-
-		if (cb_notifications.isChecked()) {
-			// Get reg_id
-			if (muninFoo.getSettings().getString(Settings.PrefKeys.Notifs_GCM_regId) == null) {
-				if (checkPlayServices()) {
-					progressDialog = ProgressDialog.show(this, "", getString(R.string.loading), true);
-					Intent intent = new Intent(this, RegistrationIntentService.class);
-					startService(intent);
-				}
-			}
-		}
 
 		settings.set(Settings.PrefKeys.Notifications, cb_notifications.isChecked());
 		settings.set(Settings.PrefKeys.Notifs_Vibrate, cb_vibrate.isChecked());

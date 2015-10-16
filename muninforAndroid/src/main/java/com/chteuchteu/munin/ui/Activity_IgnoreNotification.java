@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,7 +18,7 @@ import android.widget.TextView;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DatabaseHelper;
-import com.chteuchteu.munin.obj.IgnoredNotification;
+import com.chteuchteu.munin.obj.NotifIgnoreRule;
 
 import java.util.Calendar;
 
@@ -83,12 +82,13 @@ public class Activity_IgnoreNotification extends Activity {
 
 		final RadioButton rb_pluginIn = new RadioButton(this);
 		rb_pluginIn.setText(String.format(getString(R.string.ignore_plugin_in), plugin, host, group));
-		rb_pluginIn.setChecked(true);
 		radioGroup.addView(rb_pluginIn);
 
 		final RadioButton rb_plugin = new RadioButton(this);
 		rb_plugin.setText(String.format(getString(R.string.ignore_plugin), plugin));
 		radioGroup.addView(rb_plugin);
+
+		radioGroup.check(rb_pluginIn.getId());
 
 		container.addView(radioGroup);
 
@@ -136,7 +136,7 @@ public class Activity_IgnoreNotification extends Activity {
 						}
 
 						DatabaseHelper dbHelper = MuninFoo.getInstance(activity).sqlite.dbHlpr;
-						dbHelper.addIgnoredNotification(new IgnoredNotification(
+						dbHelper.addNotifIgnoreRule(new NotifIgnoreRule(
 								_group, _host, _plugin, until
 						));
 

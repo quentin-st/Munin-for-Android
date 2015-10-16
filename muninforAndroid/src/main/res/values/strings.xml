@@ -307,5 +307,10 @@
 	<string name="ignore_whole_host">All plugins in %1$s host (%2$s group)</string>
 	<string name="ignore_plugin_in">Plugin %1$s in host %2$s (%3$s group)</string>
 	<string name="ignore_plugin">Plugin %1$s regardless of host and group</string>
+	<string name="ignoreRules">Ignore rules</string>
+	<string name="ignoreRulesText">There are currently %1$s ignore rule(s). Rules are created from individual notifications and can be managed from here</string>
+	<string name="manageIgnoreRules">Manage ignore rules</string>
+	<string name="until">Until</string>
+	<string name="expired">Expired</string>
 
 </resources>
