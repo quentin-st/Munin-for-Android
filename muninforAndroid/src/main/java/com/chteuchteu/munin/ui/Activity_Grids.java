@@ -205,6 +205,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 		menu_period.setVisible(editing);
 		menu_add.setVisible(editing);
 		menu_importExport.setVisible(editing);
+		menu_edit.setVisible(editing);
 		menu_rename.setVisible(!editing);
 		menu_delete.setVisible(!editing);
 		menu_edit.setIcon(
@@ -213,7 +214,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 
 		setPagingEnabled(editing);
 
-		// Toolbar: back button
+		// Toolbar: save button
 		if (this.toolbar_originalIcon == null)
 			this.toolbar_originalIcon = toolbar.getNavigationIcon();
 
@@ -221,11 +222,13 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 			toolbar.setNavigationIcon(this.toolbar_originalIcon);
 			toolbar.setNavigationOnClickListener(drawerHelper.getToggleListener());
 		} else {
-			toolbar.setNavigationIcon(ContextCompat.getDrawable(context, R.drawable.ic_action_navigation_arrow_back));
+			toolbar.setNavigationIcon(ContextCompat.getDrawable(context, R.drawable.ic_action_navigation_check));
 			toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					onBackPressed();
+					Fragment_Grid currentFragment = getCurrentFragment();
+					if (currentFragment != null)
+						currentFragment.edit();
 				}
 			});
 		}
