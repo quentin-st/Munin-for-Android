@@ -92,7 +92,6 @@ public class Activity_About extends MuninActivity {
 		this.libraries.put("jsoup", "http://jsoup.org/");
 		this.libraries.put("Crashlytics", "https://crashlytics.com");
 		this.libraries.put("AppRate", "https://github.com/TimotheeJeannin/AppRate");
-		this.libraries.put("Floating Action Button", "https://github.com/makovkastar/FloatingActionButton");
 		this.libraries.put("Range Bar", "https://github.com/edmodo/range-bar");
 		this.libraries.put("PhotoView", "https://github.com/chrisbanes/PhotoView");
 		this.libraries.put("Android DB Inspector", "https://github.com/infinum/android_dbinspector");
