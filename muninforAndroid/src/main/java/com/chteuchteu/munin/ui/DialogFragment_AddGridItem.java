@@ -43,7 +43,7 @@ public class DialogFragment_AddGridItem extends DialogFragment {
 		this.context = getActivity();
 		this.dialog = getDialog();
 		Activity_Grids activity = (Activity_Grids) getActivity();
-		Grid grid = activity.getGrid();
+		//Grid grid = activity.getGrid();
 		Bundle args = getArguments();
 		int gridItemX = args.getInt(KEY_X);
 		int gridItemY = args.getInt(KEY_Y);

@@ -48,7 +48,6 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 	private Adapter_Grids adapter;
 
 	private List<Grid> grids;
-	private Grid currentGrid;
 
 	private boolean chromecastEnabled;
 
@@ -81,10 +80,12 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 			currentGridId = getIntent().getIntExtra(ARG_GRIDID, (int) currentGridId);
 
 		// Get currentGrid
+		Grid currentGrid_ = null;
 		for (Grid grid : grids) {
 			if (grid.getId() == currentGridId)
-				currentGrid = grid;
+				currentGrid_ = grid;
 		}
+		final Grid currentGrid = currentGrid_;
 
 		// Init ViewPager
 		viewPager = (LockableViewPager) findViewById(R.id.viewPager);
@@ -162,15 +163,11 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 		if (!muninFoo.chromecastHelper.isConnected())
 			return;
 
-		muninFoo.chromecastHelper.sendMessage_inflateGrid(currentGrid, currentPeriod);
-	}
+		Fragment_Grid currentFragment = getCurrentFragment();
+		if (currentFragment == null)
+			return;
 
-	/**
-	 * Return the fragment grid. Must be used only when we are sure
-	 * that the fragment has been initialized!
-	 */
-	public Grid getGrid() {
-		return this.currentGrid;
+		muninFoo.chromecastHelper.sendMessage_inflateGrid(currentFragment.getGrid(), currentPeriod);
 	}
 
 	@Override
@@ -182,8 +179,14 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 		menu_add.setVisible(false);
 		menu_importExport.setVisible(false);
 
-		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
-			muninFoo.chromecastHelper.sendMessage_preview(this.currentGrid.currentlyOpenedGridItem);
+		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper)) {
+			Fragment_Grid currentFragment = getCurrentFragment();
+
+			if (currentFragment == null)
+				return;
+
+			muninFoo.chromecastHelper.sendMessage_preview(currentFragment.getGrid().currentlyOpenedGridItem);
+		}
 	}
 
 	@Override
@@ -192,7 +195,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 		menu_period.setVisible(true);
 		menu_refresh.setVisible(true);
 		menu_edit.setVisible(true);
-		menu_add.setVisible(false);
+		menu_add.setVisible(true);
 		menu_importExport.setVisible(true);
 
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
@@ -300,12 +303,13 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 	}
 
 	private void openGraph() {
-		if (this.currentGrid == null || this.currentGrid.currentlyOpenedGridItem == null)
+		Fragment_Grid currentFragment = getCurrentFragment();
+		if (currentFragment == null || currentFragment.getGrid() == null || currentFragment.getGrid().currentlyOpenedGridItem == null)
 			return;
 
-		muninFoo.setCurrentNode(this.currentGrid.currentlyOpenedGridItem.getPlugin().getInstalledOn());
+		muninFoo.setCurrentNode(currentFragment.getGrid().currentlyOpenedGridItem.getPlugin().getInstalledOn());
 		Intent i = new Intent(context, Activity_GraphView.class);
-		i.putExtra("plugin", this.currentGrid.currentlyOpenedGridItem.getPlugin().getName());
+		i.putExtra("plugin", currentFragment.getGrid().currentlyOpenedGridItem.getPlugin().getName());
 		i.putExtra("from", "grid");
 		Intent gridIntent = ((Activity) context).getIntent();
 		if (gridIntent != null && gridIntent.getExtras() != null && gridIntent.getExtras().containsKey("gridName"))
@@ -398,11 +402,12 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 				return true;
 			}
 			case R.id.menu_rename: {
-				if (currentGrid == null)
+				final Fragment_Grid currentFragment = getCurrentFragment();
+				if (currentFragment == null)
 					return false;
 
 				final EditText input = new EditText(context);
-				input.setText(currentGrid.getName());
+				input.setText(currentFragment.getGrid().getName());
 
 				new AlertDialog.Builder(context)
 						.setTitle(R.string.rename_grid)
@@ -410,11 +415,11 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								String value = input.getText().toString();
-								if (!value.equals(currentGrid.getName())) {
+								if (!value.equals(currentFragment.getGrid().getName())) {
 									// Check if there's a grid with this name
 									boolean alreadyExists = muninFoo.sqlite.dbHlpr.gridExists(value);
 									if (!alreadyExists) {
-										muninFoo.sqlite.dbHlpr.updateGridName(currentGrid.getName(), value);
+										muninFoo.sqlite.dbHlpr.updateGridName(currentFragment.getGrid().getName(), value);
 
 										// Restart activity... We should probably handle this
 										Util.setTransition(activity, TransitionStyle.DEEPER);
@@ -436,10 +441,11 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 						.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								if (currentGrid == null)
+								final Fragment_Grid currentFragment = getCurrentFragment();
+								if (currentFragment == null)
 									return;
 
-								muninFoo.sqlite.dbHlpr.deleteGrid(currentGrid);
+								muninFoo.sqlite.dbHlpr.deleteGrid(currentFragment.getGrid());
 
 								// Restart activity... We should probably handle this
 								Util.setTransition(activity, TransitionStyle.DEEPER);
