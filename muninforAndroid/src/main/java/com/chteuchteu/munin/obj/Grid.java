@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.obj;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -149,9 +148,9 @@ public class Grid {
 		reEnablePlusButtons();
 	}
 	
-	public void cancelEdit(Context c) {
-		((Activity) c).findViewById(R.id.add_line_bottom).setVisibility(View.GONE);
-		((Activity) c).findViewById(R.id.add_column_right).setVisibility(View.GONE);
+	public void cancelEdit(View gridView, Context c) {
+		gridView.findViewById(R.id.add_line_bottom).setVisibility(View.GONE);
+		gridView.findViewById(R.id.add_column_right).setVisibility(View.GONE);
 		for (GridItem i : items) {
 			if (i.editing)
 				i.cancelEdit();

@@ -486,22 +486,18 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
             return;
 
 		Fragment_Grid currentFragment = getCurrentFragment();
+		if (currentFragment == null)
+			return;
 
-        if (findViewById(R.id.fullscreen).getVisibility() == View.VISIBLE) {
-			if (currentFragment == null)
-				return;
-
+        if (currentFragment.isPreviewing())
 			currentFragment.hidePreview();
-		}
+		else if (currentFragment.isEditing())
+			currentFragment.edit(); // quit edit mode
 		else {
-			if (currentFragment != null && currentFragment.isEditing())
-				currentFragment.edit(); // quit edit mode
-			else {
-				Intent intent = new Intent(this, Activity_Grids.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				Util.setTransition(this, TransitionStyle.SHALLOWER);
-			}
+			Intent intent = new Intent(this, Activity_Main.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			Util.setTransition(this, TransitionStyle.SHALLOWER);
 		}
 	}
 

@@ -25,32 +25,39 @@
 			android:visibility="gone"/>
 
 		<LinearLayout
-			android:id="@+id/gridItemFooter"
+			android:id="@+id/gridItemFooterWrap"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
-			android:orientation="vertical"
-			android:padding="6dp"
-			android:background="#99666666">
+			android:orientation="vertical">
 
-			<TextView
-				android:id="@+id/pluginName"
+			<LinearLayout
+				android:id="@+id/gridItemFooter"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:textColor="#ffffff"
-				android:textSize="12sp"
-				android:maxLines="1"
-				android:ellipsize="end"/>
+				android:orientation="vertical"
+				android:padding="6dp"
+				android:background="#99666666">
 
-			<TextView
-				android:id="@+id/serverName"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:textColor="#ffffff"
-				android:textSize="12sp"
-				android:maxLines="1"
-				android:ellipsize="end"/>
+				<TextView
+					android:id="@+id/pluginName"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="#ffffff"
+					android:textSize="12sp"
+					android:maxLines="1"
+					android:ellipsize="end"/>
 
+				<TextView
+					android:id="@+id/serverName"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="#ffffff"
+					android:textSize="12sp"
+					android:maxLines="1"
+					android:ellipsize="end"/>
+
+			</LinearLayout>
 		</LinearLayout>
 
 		<!-- Action buttons -->

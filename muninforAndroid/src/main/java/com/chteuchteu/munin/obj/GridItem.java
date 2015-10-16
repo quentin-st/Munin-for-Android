@@ -56,6 +56,7 @@ public class GridItem {
 	private Fragment_Grid   fragment;
 	public ImageView 		iv;
 	public ProgressBar 		pb;
+	public LinearLayout     footerWrap;
 	public LinearLayout     footer;
 	public RelativeLayout   container;
 
@@ -99,23 +100,25 @@ public class GridItem {
 		pb = (ProgressBar) view.findViewById(R.id.pb);
 
 		// Footer
+		footerWrap = (LinearLayout) view.findViewById(R.id.gridItemFooterWrap);
 		footer = (LinearLayout) view.findViewById(R.id.gridItemFooter);
 		TextView pluginName = (TextView) view.findViewById(R.id.pluginName);
 		TextView nodeName = (TextView) view.findViewById(R.id.serverName);
 
 		if (this.isDetached()) {
-			footer.setVisibility(View.GONE);
+			footerWrap.setVisibility(View.GONE);
 			this.applyPlaceholder(true);
 		} else {
 			pluginName.setText(plugin.getFancyName());
 			nodeName.setText(plugin.getInstalledOn().getName());
 			if (fragment.isEditing())
-				footer.setVisibility(View.GONE);
+				footerWrap.setVisibility(View.GONE);
 
 			switch (Settings.getInstance(context).getString(Settings.PrefKeys.GridsLegend)) {
-				case "none": footer.setVisibility(View.GONE); break;
+				case "none": footerWrap.setVisibility(View.GONE); break;
 				case "pluginName": nodeName.setVisibility(View.GONE); break;
-				case "serverName": default: pluginName.setVisibility(View.GONE); break;
+				case "serverName": pluginName.setVisibility(View.GONE); break;
+				case "both": default: /* Don't hide anything */ break;
 			}
 
 			this.applyPlaceholder(false);
@@ -176,19 +179,7 @@ public class GridItem {
 	}
 
 	public void toggleFooterVisibility(boolean visible) {
-		if (visible) {
-			// Check if there is some text in the footer
-			// (there is none if it is detached for example)
-			TextView serverName = (TextView) footer.getChildAt(0);
-			TextView nodeName = (TextView) footer.getChildAt(1);
-			if (serverName.getText().equals("")
-					&& nodeName.getText().equals(""))
-				return;
-
-			footer.setVisibility(View.VISIBLE);
-		}
-		else
-			footer.setVisibility(View.GONE);
+		footerWrap.setVisibility(visible ? View.VISIBLE : View.GONE);
 	}
 	
 	private void preview() {

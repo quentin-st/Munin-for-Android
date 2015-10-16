@@ -208,8 +208,9 @@ public class Fragment_Grid extends Fragment {
 		activity.onEditModeChange(editing);
 
 		if (editing) { // Cancel edit (save)
-			grid.cancelEdit(context);
-			grid.toggleFootersVisibility(true);
+			grid.cancelEdit(view, context);
+			grid.toggleFootersVisibility(
+					!Settings.getInstance(context).getString(Settings.PrefKeys.GridsLegend).equals("none"));
 			muninFoo.sqlite.dbHlpr.saveGridItemsRelations(grid);
 			activity.onGridSaved(grid);
 		} else { // Edit
