@@ -155,8 +155,7 @@
 		S\'il y en a, les mots de passe de vos serveurs seront cryptés. A la fin de l\'exportation, un code aléatoire vous permettra de télécharger la configuration sur votre
 		deuxième appareil. La configuration sera supprimée du serveur Munin for Android dès lors que vous la téléchargez, ou après 24 heures sinon.</string>
 	<string name="export_success_title">Export réussi</string>
-	<string name="export_success_txt1">La configuration de vos serveurs dans l\'application a été exportée avec succès.
-	    Veuillez utiliser le code suivant dans votre autre appareil Android afin de l\'importer.</string>
+	<string name="export_success_txt1">La configuration a été exportée avec succès. Veuillez utiliser le code suivant dans votre autre appareil Android afin de l\'importer.</string>
 	<string name="import_success_title">Import réussi</string>
 	<string name="delete_plugin">Supprimer le plugin</string>
 	<string name="rename_label">Renommer ce label</string>
@@ -262,4 +261,5 @@
 	<string name="ignore_plugin_in">Plugin %1$s sur l\'hôte %2$s (groupe %3$s)</string>
 	<string name="ignore_plugin">Plugin %1$s quels que soient l\'hôte et le groupe</string>
 
-</resources>
+<string name="import_success">L\'import a réussi</string>
+	</resources>
