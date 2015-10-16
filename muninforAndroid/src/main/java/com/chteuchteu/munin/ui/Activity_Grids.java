@@ -40,6 +40,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 	private MenuItem menu_add;
 	private MenuItem menu_rename;
 	private MenuItem menu_delete;
+	private MenuItem menu_importExport;
 	private Period currentPeriod;
 
 	private LockableViewPager viewPager;
@@ -179,6 +180,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 		menu_refresh.setVisible(false);
 		menu_edit.setVisible(false);
 		menu_add.setVisible(false);
+		menu_importExport.setVisible(false);
 
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
 			muninFoo.chromecastHelper.sendMessage_preview(this.currentGrid.currentlyOpenedGridItem);
@@ -191,6 +193,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 		menu_refresh.setVisible(true);
 		menu_edit.setVisible(true);
 		menu_add.setVisible(false);
+		menu_importExport.setVisible(true);
 
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
 			muninFoo.chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.CANCEL_PREVIEW);
@@ -201,6 +204,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 		menu_refresh.setVisible(editing);
 		menu_period.setVisible(editing);
 		menu_add.setVisible(editing);
+		menu_importExport.setVisible(editing);
 		menu_rename.setVisible(!editing);
 		menu_delete.setVisible(!editing);
 		menu_edit.setIcon(
@@ -272,6 +276,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 		menu_add = menu.findItem(R.id.menu_add);
 		menu_rename = menu.findItem(R.id.menu_rename);
 		menu_delete = menu.findItem(R.id.menu_delete);
+		menu_importExport = menu.findItem(R.id.menu_importexport);
 
 		menu_edit.setIcon(R.drawable.ic_action_image_edit);
 		menu_period.setTitle(currentPeriod.getLabel(this));
@@ -286,6 +291,7 @@ public class Activity_Grids extends MuninActivity implements IGridActivity, IImp
 			menu_period.setVisible(false);
 			menu_add.setVisible(false);
 			menu_delete.setVisible(true);
+			menu_importExport.setVisible(false);
 			menu_edit.setIcon(R.drawable.ic_action_navigation_check);
 		}
 	}
