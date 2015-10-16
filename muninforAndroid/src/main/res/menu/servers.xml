@@ -10,10 +10,10 @@
 		<menu>
 			<item
 				android:id="@+id/menu_import"
-				android:title="@string/import_servers" />
+				android:title="@string/action_import" />
 			<item
 				android:id="@+id/menu_export"
-				android:title="@string/export_servers" />
+				android:title="@string/action_export" />
 		</menu>
 	</item>
 

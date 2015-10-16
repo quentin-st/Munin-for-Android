@@ -29,9 +29,6 @@ import com.chteuchteu.munin.async.MasterDeleter;
 import com.chteuchteu.munin.async.MasterScanner;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.ImportExportHelper;
-import com.chteuchteu.munin.hlpr.ImportExportHelper.Export.ExportRequestMaker;
-import com.chteuchteu.munin.hlpr.ImportExportHelper.Import.ImportRequestMaker;
-import com.chteuchteu.munin.hlpr.JSONHelper;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.Fonts.CustomFont;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -46,7 +43,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Activity_Servers extends MuninActivity implements IServersActivity {
+public class Activity_Servers extends MuninActivity implements IServersActivity, IImportExportActivity {
 	private static Context context;
 	private ExpandableListView expListView;
 	
@@ -147,7 +144,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 								
 								// Delete labels relations stored in MuninFoo.labels for the current session
 								for (MuninPlugin plugin : node.getPlugins())
-										muninFoo.removeLabelRelation(plugin);
+									muninFoo.removeLabelRelation(plugin);
 								
 								if (muninFoo.getCurrentNode().equalsApprox(node))
 									muninFoo.updateCurrentNode(context);
@@ -280,13 +277,13 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
             ll_auth.setVisibility(View.GONE);
 
         cb_auth.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    ll_auth.setVisibility(View.VISIBLE);
-                else
-                    ll_auth.setVisibility(View.GONE);
-            }
+	        @Override
+	        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		        if (isChecked)
+			        ll_auth.setVisibility(View.VISIBLE);
+		        else
+			        ll_auth.setVisibility(View.GONE);
+	        }
         });
 
 
@@ -294,25 +291,26 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
                 .setTitle(R.string.update_credentials)
                 .setView(dialog_updatecredentials)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if (cb_auth.isChecked()) {
-                            AuthType authType = sp_authType.getSelectedItemPosition() == 0
-		                            ? AuthType.BASIC
-		                            : AuthType.DIGEST;
+	                public void onClick(DialogInterface dialog, int whichButton) {
+		                if (cb_auth.isChecked()) {
+			                AuthType authType = sp_authType.getSelectedItemPosition() == 0
+					                ? AuthType.BASIC
+					                : AuthType.DIGEST;
 
-                            if (authType == AuthType.DIGEST && !muninFoo.premium) {
-                                Toast.makeText(context, context.getString(R.string.text65), Toast.LENGTH_SHORT).show();
-                            } else {
-                                master.setAuthIds(tb_authLogin.getText().toString(),
-                                        tb_authPassword.getText().toString(), authType);
-                            }
-                        } else
-                            master.setAuthIds("", "", AuthType.NONE);
+			                if (authType == AuthType.DIGEST && !muninFoo.premium) {
+				                Toast.makeText(context, context.getString(R.string.text65), Toast.LENGTH_SHORT).show();
+			                } else {
+				                master.setAuthIds(tb_authLogin.getText().toString(),
+						                tb_authPassword.getText().toString(), authType);
+			                }
+		                } else
+			                master.setAuthIds("", "", AuthType.NONE);
 
-                        MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
-                    }
+		                MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
+	                }
                 }).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) { }
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	        }
         }).show();
     }
 
@@ -338,34 +336,12 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 						MuninFoo.getInstance(context).sqlite.dbHlpr.updateMuninMaster(master);
 					}
 				}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) { }
+			public void onClick(DialogInterface dialog, int whichButton) {
+			}
 		}).show();
 	}
 
-	private void displayImportDialog() {
-		if (!muninFoo.premium) {
-			Toast.makeText(context, R.string.featuresPackNeeded, Toast.LENGTH_SHORT).show();
-			return;
-		}
-
-		final View dialogView = View.inflate(this, R.layout.dialog_import, null);
-		new AlertDialog.Builder(this)
-			.setTitle(R.string.import_title)
-			.setView(dialogView)
-			.setCancelable(true)
-			.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					String code = ((EditText) dialogView.findViewById(R.id.import_code)).getText().toString();
-					code = code.toLowerCase();
-					new ImportRequestMaker(code, Activity_Servers.this).execute();
-					dialog.dismiss();
-				}
-			})
-			.setNegativeButton(R.string.text64, null)
-			.show();
-	}
-	
+	@Override
 	public void onExportSuccess(String pswd) {
 		final View dialogView = View.inflate(context, R.layout.dialog_export_success, null);
 		TextView code = (TextView) dialogView.findViewById(R.id.export_succes_code);
@@ -373,62 +349,36 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 		code.setText(pswd);
 		
 		new AlertDialog.Builder(context)
-		.setTitle(R.string.export_success_title)
-		.setView(dialogView)
-		.setCancelable(true)
-		.setPositiveButton(R.string.ok, null)
-		.show();
+			.setTitle(R.string.export_success_title)
+			.setView(dialogView)
+			.setCancelable(true)
+			.setPositiveButton(R.string.ok, null)
+			.show();
 	}
-	
+
+	@Override
 	public void onExportError() {
 		Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
 	}
-	
+
+	@Override
 	public void onImportSuccess() {
 		new AlertDialog.Builder(context)
-		.setTitle(R.string.import_success_title)
-		.setMessage(R.string.import_success_txt1)
-		.setCancelable(true)
-		.setPositiveButton(R.string.ok, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				context.startActivity(new Intent(context, Activity_Servers.class));
-			}
-		})
-		.show();
-	}
-	
-	public void onImportError() {
-		Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
-	}
-	
-	private void displayExportDialog() {
-		if (!muninFoo.premium) {
-			Toast.makeText(context, R.string.featuresPackNeeded, Toast.LENGTH_SHORT).show();
-			return;
-		}
-
-		new AlertDialog.Builder(context)
-			.setTitle(R.string.export_servers)
-			.setMessage(R.string.export_explanation)
+			.setTitle(R.string.import_success_title)
+			.setMessage(R.string.import_success)
 			.setCancelable(true)
 			.setPositiveButton(R.string.ok, new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					String json = JSONHelper.getMastersJSONString(MuninFoo.getInstance(context).getMasters(), ImportExportHelper.ENCRYPTION_SEED);
-					if (json.equals(""))
-						Toast.makeText(context, R.string.export_failed, Toast.LENGTH_SHORT).show();
-					else
-						new ExportRequestMaker(json, Activity_Servers.this).execute();
-				}
-			})
-			.setNegativeButton(R.string.text64, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
+					context.startActivity(new Intent(context, Activity_Servers.class));
 				}
 			})
 			.show();
+	}
+
+	@Override
+	public void onImportError() {
+		Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -449,10 +399,10 @@ public class Activity_Servers extends MuninActivity implements IServersActivity 
 
 		switch (item.getItemId()) {
 			case R.id.menu_import:
-				displayImportDialog();
+				ImportExportHelper.showImportDialog(muninFoo, context, ImportExportHelper.ImportExportType.MASTERS, this);
 				return true;
 			case R.id.menu_export:
-				displayExportDialog();
+				ImportExportHelper.showExportDialog(muninFoo, context, ImportExportHelper.ImportExportType.MASTERS, this);
 				return true;
 		}
 

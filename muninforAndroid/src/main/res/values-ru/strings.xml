@@ -138,8 +138,8 @@
 	<string name="text81">"Нет данных для этого плагина "</string>
 	<string name="text82">"Метка будет удалена. Вы уверены?"</string>
 	<string name="text83">"Сервер будет удалён. Вы уверены?"</string>
-	<string name="import_servers">"Импорт"</string>
-	<string name="export_servers">"Экспорт"</string>
+	<string name="action_import">"Импорт"</string>
+	<string name="action_export">"Экспорт"</string>
 	<string name="import_export">"Импорт / Экспорт"</string>
 	<string name="export_failed">Не удалось экспортировать…</string>
 	<string name="export_subject">"Экспорт Munin for Android"</string>
@@ -149,7 +149,6 @@
 	<string name="export_success_title">"Экспорт успешно выполнен"</string>
 	<string name="export_success_txt1">"Настройки ваших серверов успешно выгружены. Пожалуйста, используйте этот код на втором устройстве для импорта настроек."</string>
 	<string name="import_success_title">"Импорт успешно выполнен"</string>
-	<string name="import_success_txt1">"Импорт серверов завершён"</string>
 	<string name="delete_plugin">"Удалить плагин"</string>
 	<string name="delete_label">"Удалить метку"</string>
 	<string name="rename_label">"Переименовать метку"</string>

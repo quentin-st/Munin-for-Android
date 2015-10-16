@@ -145,8 +145,8 @@
 	<string name="text82">ラベルを削除します。よろしいですか?</string>
 	<string name="text83">ノードを削除します。よろしいですか?</string>
 	<string name="text84">マスターを削除します。よろしいですか?</string>
-	<string name="import_servers">インポート</string>
-	<string name="export_servers">エクスポート</string>
+	<string name="action_import">インポート</string>
+	<string name="action_export">エクスポート</string>
 	<string name="import_export">インポート / エクスポート</string>
 	<string name="export_failed">エクスポートに失敗しました…</string>
 	<string name="export_subject">Munin for Android エクスポート</string>
@@ -164,7 +164,6 @@
 	<string name="export_success_title">正常にエクスポートしました</string>
 	<string name="export_success_txt1">アプリのサーバー構成が正常にアップロードされました。あなたの別のデバイスで次のコードを使用して、インポートしてください。</string>
 	<string name="import_success_title">正常にインポートしました</string>
-	<string name="import_success_txt1">サーバーのインポートに成功しました</string>
 	<string name="delete_plugin">プラグインを削除</string>
 	<string name="delete_label">ラベルを削除</string>
 	<string name="rename_label">ラベルの名前を変更</string>

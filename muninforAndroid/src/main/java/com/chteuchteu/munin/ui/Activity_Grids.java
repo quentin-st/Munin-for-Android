@@ -15,12 +15,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_Grids;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
+import com.chteuchteu.munin.hlpr.ImportExportHelper;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -29,7 +31,7 @@ import com.chteuchteu.munin.obj.MuninPlugin.Period;
 
 import java.util.List;
 
-public class Activity_Grids extends MuninActivity implements IGridActivity {
+public class Activity_Grids extends MuninActivity implements IGridActivity, IImportExportActivity {
 	public static final String ARG_GRIDID = "gridId";
 	private MenuItem menu_refresh;
 	private MenuItem menu_edit;
@@ -438,6 +440,12 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 						.setNegativeButton(R.string.no, null)
 						.show();
 				return true;
+			case R.id.menu_import:
+				ImportExportHelper.showImportDialog(muninFoo, context, ImportExportHelper.ImportExportType.GRIDS, this);
+				return true;
+			case R.id.menu_export:
+				ImportExportHelper.showExportDialog(muninFoo, context, ImportExportHelper.ImportExportType.GRIDS, this);
+				return true;
 			default:
 				return false;
 		}
@@ -486,6 +494,48 @@ public class Activity_Grids extends MuninActivity implements IGridActivity {
 				Util.setTransition(this, TransitionStyle.SHALLOWER);
 			}
 		}
+	}
+
+	@Override
+	public void onExportSuccess(String pswd) {
+		final View dialogView = View.inflate(context, R.layout.dialog_export_success, null);
+		TextView code = (TextView) dialogView.findViewById(R.id.export_succes_code);
+		Util.Fonts.setFont(context, code, Util.Fonts.CustomFont.RobotoCondensed_Bold);
+		code.setText(pswd);
+
+		new AlertDialog.Builder(context)
+				.setTitle(R.string.export_success_title)
+				.setView(dialogView)
+				.setCancelable(true)
+				.setPositiveButton(R.string.ok, null)
+				.show();
+	}
+
+	@Override
+	public void onExportError() {
+		Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onImportSuccess() {
+		new AlertDialog.Builder(context)
+				.setTitle(R.string.import_success_title)
+				.setMessage(R.string.import_success)
+				.setCancelable(true)
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Restart activity... We should probably handle this
+						Util.setTransition(activity, TransitionStyle.DEEPER);
+						startActivity(new Intent(Activity_Grids.this, Activity_Grids.class));
+					}
+				})
+				.show();
+	}
+
+	@Override
+	public void onImportError() {
+		Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

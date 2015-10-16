@@ -202,8 +202,8 @@
 	<string name="text82">This label will be deleted. Are you sure?</string>
 	<string name="text83">This node will be deleted. Are you sure?</string>
 	<string name="text84">This master will be deleted. Are you sure?</string>
-	<string name="import_servers">Import</string>
-	<string name="export_servers">Export</string>
+	<string name="action_import">Import</string>
+	<string name="action_export">Export</string>
 	<string name="import_export">Import / Export</string>
 	<string name="export_failed">Export failed…</string>
 	<string name="export_subject">Munin for Android Export</string>
@@ -221,10 +221,10 @@
 		will be encrypted. At the end of the export, a randomly generated code will allow you to download the configuration on your other device.
 		The configuration will be deleted from the Munin for Android server as soon as you download it, or after 24 hours if you don\'t.</string>
 	<string name="export_success_title">Export successful</string>
-	<string name="export_success_txt1">Your servers configuration in the app has successfully been uploaded.
+	<string name="export_success_txt1">Your configuration has successfully been uploaded.
 	    Please use the following code into your secondary device in order to import it.</string>
 	<string name="import_success_title">Import successful</string>
-	<string name="import_success_txt1">The servers importation has succeeded</string>
+	<string name="import_success">The importation has succeeded</string>
 	<string name="delete_plugin">Delete plugin</string>
 	<string name="delete_label">Delete label</string>
 	<string name="rename_label">Rename label</string>

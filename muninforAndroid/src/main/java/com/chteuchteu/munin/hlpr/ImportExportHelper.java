@@ -1,18 +1,25 @@
 package com.chteuchteu.munin.hlpr;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Pair;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.exc.ImportExportWebserviceException;
+import com.chteuchteu.munin.obj.Grid;
+import com.chteuchteu.munin.obj.GridItem;
 import com.chteuchteu.munin.obj.HTTPResponse.HTMLResponse;
 import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
-import com.chteuchteu.munin.ui.Activity_Servers;
+import com.chteuchteu.munin.ui.IImportExportActivity;
 import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONException;
@@ -25,16 +32,19 @@ public class ImportExportHelper {
 	public static final String ENCRYPTION_SEED = "786547E9431EE";
 
     /**
-     * Default import/export target URI. Can be overriden by user.
+     * Default import/export target URI. Can be overridden by user.
      */
     public static final String IMPORT_EXPORT_URI = "http://ws.munin-for-android.com/importExport.php";
     public static final int IMPORT_EXPORT_VERSION = 1;
+
+	public enum ImportExportType { MASTERS, GRIDS }
 	
 	public static class Export {
-		private static String sendExportRequest(Context context, String jsonString) {
+		private static String sendExportRequest(Context context, String jsonString, ImportExportType type) {
 			List<Pair<String, String>> params = new ArrayList<>();
 			params.add(new Pair<>("dataString", jsonString));
 			params.add(new Pair<>("version", String.valueOf(IMPORT_EXPORT_VERSION)));
+			params.add(new Pair<>("dataType", type.name().toLowerCase()));
 
 			String url = getImportExportServerUrl(context) + "?export";
 			String userAgent = MuninFoo.getInstance().getUserAgent();
@@ -61,18 +71,21 @@ public class ImportExportHelper {
 		
 		public static class ExportRequestMaker extends AsyncTask<Void, Integer, Void> {
 			private String jsonString;
+			private ImportExportType type;
 			private boolean result;
 			private String pswd;
 			private ProgressDialog progressDialog;
-			private Activity_Servers activity_servers;
+			private IImportExportActivity activity;
 			private Context context;
 			
-			public ExportRequestMaker (String jsonString, Activity_Servers activity) {
+			public ExportRequestMaker (String jsonString, ImportExportType type,
+			                           Context context, IImportExportActivity activity) {
 				super();
 				this.jsonString = jsonString;
+				this.type = type;
 				this.result = false;
-				this.activity_servers = activity;
-				this.context = activity;
+				this.activity = activity;
+				this.context = context;
 			}
 			
 			@Override
@@ -85,7 +98,7 @@ public class ImportExportHelper {
 			@Override
 			protected Void doInBackground(Void... arg0) {
                 try {
-                    pswd = sendExportRequest(context, jsonString);
+                    pswd = sendExportRequest(context, jsonString, type);
                     result = pswd != null && !pswd.equals("");
                 } catch (IllegalStateException ex) {
                     // Thrown when the URL isn't valid
@@ -100,15 +113,15 @@ public class ImportExportHelper {
 				this.progressDialog.dismiss();
 				
 				if (result)
-					activity_servers.onExportSuccess(pswd);
+					activity.onExportSuccess(pswd);
 				else
-					activity_servers.onExportError();
+					activity.onExportError();
 			}
 		}
 	}
 	
 	public static class Import {
-		public static void applyImportation(Context context, JSONObject jsonObject, String code) {
+		public static void applyMastersImport(Context context, JSONObject jsonObject, String code) {
 			List<MuninMaster> newMasters = JSONHelper.getMastersFromJSON(jsonObject, code);
 			removeIds(newMasters);
 
@@ -126,11 +139,23 @@ public class ImportExportHelper {
 				}
 			}
 		}
+
+		public static void applyGridsImport(Context context, JSONObject jsonObject, List<String> currentGridsNames) {
+			MuninFoo muninFoo = MuninFoo.getInstance(context);
+			List<Grid> newGrids = JSONHelper.getGridsFromJSON(jsonObject, muninFoo);
+			removeIdsFromGrids(currentGridsNames, newGrids);
+
+			for (Grid grid : newGrids) {
+				muninFoo.sqlite.dbHlpr.insertGrid(grid.getName());
+				muninFoo.sqlite.dbHlpr.insertGridItemRelations(grid.getItems());
+			}
+		}
 		
-		private static JSONObject sendImportRequest(Context context, String code) {
+		private static JSONObject sendImportRequest(Context context, String code, ImportExportType type) {
 			List<Pair<String, String>> params = new ArrayList<>();
 			params.add(new Pair<>("pswd", code));
 			params.add(new Pair<>("version", String.valueOf(IMPORT_EXPORT_VERSION)));
+			params.add(new Pair<>("dataType", type.name().toLowerCase()));
 
 			String url = getImportExportServerUrl(context) + "?import";
 			String userAgent = MuninFoo.getInstance().getUserAgent();
@@ -158,18 +183,21 @@ public class ImportExportHelper {
 		
 		public static class ImportRequestMaker extends AsyncTask<Void, Integer, Void> {
 			private JSONObject jsonObject;
+			private ImportExportType type;
 			private String code;
 			private boolean result;
-			private Activity_Servers activity_servers;
+			private IImportExportActivity activity;
 			private Context context;
 			private ProgressDialog progressDialog;
 			
-			public ImportRequestMaker (String code, Activity_Servers activity) {
+			public ImportRequestMaker (String code, Context context,
+			                           ImportExportType type, IImportExportActivity activity) {
 				super();
 				this.code = code;
+				this.type = type;
 				this.result = false;
-				this.activity_servers = activity;
-				this.context = activity;
+				this.activity = activity;
+				this.context = context;
 			}
 			
 			@Override
@@ -182,15 +210,23 @@ public class ImportExportHelper {
 			@Override
 			protected Void doInBackground(Void... arg0) {
                 try {
-                    jsonObject = sendImportRequest(context, code);
+                    jsonObject = sendImportRequest(context, code, type);
                     result = jsonObject != null;
                 } catch (IllegalStateException ex) {
                     // Thrown when the URL isn't valid
                     result = false;
                 }
 				
-				if (result)
-					applyImportation(context, jsonObject, ENCRYPTION_SEED);
+				if (result) {
+					switch (type) {
+						case MASTERS:
+							applyMastersImport(context, jsonObject, ENCRYPTION_SEED);
+							break;
+						case GRIDS:
+							List<String> currentGridsNames = MuninFoo.getInstance().sqlite.dbHlpr.getGridsNames();
+							applyGridsImport(context, jsonObject, currentGridsNames);
+					}
+				}
 				
 				return null;
 			}
@@ -200,9 +236,9 @@ public class ImportExportHelper {
 				this.progressDialog.dismiss();
 				
 				if (result)
-					activity_servers.onImportSuccess();
+					activity.onImportSuccess();
 				else
-					activity_servers.onImportError();
+					activity.onImportError();
 			}
 		}
 	}
@@ -222,10 +258,86 @@ public class ImportExportHelper {
 		}
 	}
 
+	/**
+	 * Removes ids from grids and resolve possible conflicted names
+	 */
+	private static void removeIdsFromGrids(List<String> currentGridNames, List<Grid> grids) {
+		// Remove ids
+		for (Grid grid : grids) {
+			grid.setId(-1);
+			for (GridItem item : grid.getItems())
+				item.setId(-1);
+		}
+
+		// Fix possible conflicts in names
+		for (Grid grid : grids) {
+			// Find a grid with this name
+
+			if (currentGridNames.contains(grid.getName()))
+				grid.setName(grid.getName() + " (2)");
+		}
+	}
+
     public static String getImportExportServerUrl(Context context) {
 		String oldUrl = "http://www.munin-for-android.com/ws/importExport.php";
         String url = Settings.getInstance(context).getString(Settings.PrefKeys.ImportExportServer, IMPORT_EXPORT_URI);
 
 		return url.equals(oldUrl) ? IMPORT_EXPORT_URI : url;
     }
+
+	public static void showExportDialog(MuninFoo muninFoo, final Context context,
+	                                    final ImportExportType type, final IImportExportActivity activity) {
+		if (!muninFoo.premium) {
+			Toast.makeText(context, R.string.featuresPackNeeded, Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		new AlertDialog.Builder(context)
+				.setTitle(R.string.action_export)
+				.setMessage(R.string.export_explanation)
+				.setCancelable(true)
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						MuninFoo muninFoo = MuninFoo.getInstance(context);
+						String json = JSONHelper.getGridsJSONString(muninFoo.sqlite.dbHlpr.getGrids(muninFoo));
+						if (json.equals(""))
+							Toast.makeText(context, R.string.export_failed, Toast.LENGTH_SHORT).show();
+						else
+							new Export.ExportRequestMaker(json, type, context, activity).execute();
+					}
+				})
+				.setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				})
+				.show();
+	}
+
+	public static void showImportDialog(MuninFoo muninFoo, final Context context,
+	                                    final ImportExportType type, final IImportExportActivity activity) {
+		if (!muninFoo.premium) {
+			Toast.makeText(context, R.string.featuresPackNeeded, Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		final View dialogView = View.inflate(context, R.layout.dialog_import, null);
+		new AlertDialog.Builder(context)
+				.setTitle(R.string.import_title)
+				.setView(dialogView)
+				.setCancelable(true)
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						String code = ((EditText) dialogView.findViewById(R.id.import_code)).getText().toString();
+						code = code.toLowerCase();
+						new Import.ImportRequestMaker(code, context, type, activity).execute();
+						dialog.dismiss();
+					}
+				})
+				.setNegativeButton(R.string.text64, null)
+				.show();
+	}
 }
