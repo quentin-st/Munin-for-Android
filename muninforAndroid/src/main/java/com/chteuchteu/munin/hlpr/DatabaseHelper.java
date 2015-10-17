@@ -1035,13 +1035,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 						: notifIgnoreRule.getUntil().getTimeInMillis()
 		);
 
-		db.insert(TABLE_NOTIFIGNORERULES, null, values);
+		notifIgnoreRule.setId(db.insert(TABLE_NOTIFIGNORERULES, null, values));
 
 		close(null, db);
 	}
 
-	public List<NotifIgnoreRule> getAllNotifIgnoreRules() {
+	public List<NotifIgnoreRule> getAllNotifIgnoreRules(boolean excludeExpired) {
+		long now = Calendar.getInstance().getTimeInMillis();
+
 		String rawQuery = "SELECT * FROM " + TABLE_NOTIFIGNORERULES;
+
+		if (excludeExpired) {
+			rawQuery +=
+					" WHERE " + KEY_NOTIFIGNORERULES_UNTIL + " = 0"
+					+ " OR " + KEY_NOTIFIGNORERULES_UNTIL + " > " + now;
+		}
 
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.rawQuery(rawQuery, null);
@@ -1079,16 +1087,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		if (c.moveToFirst()) {
 			do {
-				list.add(new NotifIgnoreRule(
+				NotifIgnoreRule rule = new NotifIgnoreRule(
 						c.getString(c.getColumnIndex(KEY_NOTIFIGNORERULES_GROUP)),
 						c.getString(c.getColumnIndex(KEY_NOTIFIGNORERULES_HOST)),
 						c.getString(c.getColumnIndex(KEY_NOTIFIGNORERULES_PLUGIN)),
-						c.getInt(c.getColumnIndex(KEY_NOTIFIGNORERULES_UNTIL))
-				));
+						c.getLong(c.getColumnIndex(KEY_NOTIFIGNORERULES_UNTIL))
+				);
+				rule.setId(c.getLong(c.getColumnIndex(KEY_ID)));
+				list.add(rule);
 			} while (c.moveToNext());
 		}
 
 		return list;
+	}
+
+	public void deleteNotifIgnoreRule(NotifIgnoreRule rule) {
+		if (rule == null || rule.getId() == -1)
+			return;
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_NOTIFIGNORERULES, KEY_ID + " = ?", new String[]{String.valueOf(rule.getId())});
+		close(null, db);
 	}
 
 

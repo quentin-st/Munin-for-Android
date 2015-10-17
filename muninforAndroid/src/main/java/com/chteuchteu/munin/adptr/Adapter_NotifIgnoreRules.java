@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.NotifIgnoreRule;
 
@@ -32,11 +32,11 @@ public class Adapter_NotifIgnoreRules extends ArrayAdapter<NotifIgnoreRule> {
 		else
 			view = LayoutInflater.from(context).inflate(R.layout.list_notifignorerule, parent, false);
 
-		NotifIgnoreRule rule = rules.get(position);
+		final NotifIgnoreRule rule = rules.get(position);
 
 		TextView tv_rule = (TextView) view.findViewById(R.id.rule);
 		TextView tv_until = (TextView) view.findViewById(R.id.until);
-		ImageButton delete = (ImageButton) view.findViewById(R.id.delete);
+		View delete = view.findViewById(R.id.delete);
 
 		// Depending on what is null and what is not, let's build the rule sentence
 		if (rule.getHost() == null && rule.getPlugin() == null)
@@ -52,10 +52,18 @@ public class Adapter_NotifIgnoreRules extends ArrayAdapter<NotifIgnoreRule> {
 			tv_until.setText(context.getString(R.string.forever));
 		else {
 			long millis = rule.getUntil().getTimeInMillis();
-
 			int flags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME;
 			tv_until.setText(DateUtils.formatDateTime(context, millis, flags));
 		}
+
+		delete.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				rules.remove(rule);
+				MuninFoo.getInstance(context).sqlite.dbHlpr.deleteNotifIgnoreRule(rule);
+				notifyDataSetChanged();
+			}
+		});
 
 		return view;
 	}

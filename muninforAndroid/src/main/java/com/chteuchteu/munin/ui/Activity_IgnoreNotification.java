@@ -127,6 +127,7 @@ public class Activity_IgnoreNotification extends Activity {
 
 						// Until
 						Calendar until = Calendar.getInstance();
+						MuninFoo.log("Now: " + until.getTimeInMillis());
 						switch (ignoreDuration.getSelectedItemPosition()) {
 							case 0: until.add(Calendar.HOUR, 1);    break;
 							case 1: until.add(Calendar.HOUR, 6);    break;
@@ -134,6 +135,7 @@ public class Activity_IgnoreNotification extends Activity {
 							case 3: until.add(Calendar.DATE, 7);    break;
 							case 4: until = null;                   break;
 						}
+						MuninFoo.log("Now modified: " + (until != null ? until.getTimeInMillis() : 0));
 
 						DatabaseHelper dbHelper = MuninFoo.getInstance(activity).sqlite.dbHlpr;
 						dbHelper.addNotifIgnoreRule(new NotifIgnoreRule(

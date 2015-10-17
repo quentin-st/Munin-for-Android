@@ -35,8 +35,6 @@ import com.chteuchteu.munin.obj.NotifIgnoreRule;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 public class Activity_Notifications extends MuninActivity {
@@ -50,9 +48,10 @@ public class Activity_Notifications extends MuninActivity {
 	private CheckBox	cb_notifications;
 	private CheckBox    cb_vibrate;
 	private Button      bt_sendByMail;
+	private TextView    ignoreRulesText;
+	private Button      manageIgnoreRules;
 
 	private List<NotifIgnoreRule> ignoreRules;
-	private TextView ignoreRulesText;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -156,16 +155,22 @@ public class Activity_Notifications extends MuninActivity {
 			Util.Fonts.setFont(this, (TextView) view, Util.Fonts.CustomFont.Roboto_Medium);
 
 		// Get ignore rules
-		ignoreRules = muninFoo.sqlite.dbHlpr.getAllNotifIgnoreRules();
+		ignoreRules = muninFoo.sqlite.dbHlpr.getAllNotifIgnoreRules(true);
 		ignoreRulesText = (TextView) findViewById(R.id.ignoreRulesText);
-		ignoreRulesText.setText(String.format(getString(R.string.ignoreRulesText), ignoreRules.size()));
-
-		findViewById(R.id.manageIgnoreRules).setOnClickListener(new View.OnClickListener() {
+		manageIgnoreRules = (Button) findViewById(R.id.manageIgnoreRules);
+		manageIgnoreRules.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				manageIgnoreRules();
 			}
 		});
+
+		updateIgnoreRulesCount();
+	}
+
+	private void updateIgnoreRulesCount() {
+		ignoreRulesText.setText(String.format(getString(R.string.ignoreRulesText), ignoreRules.size()));
+		manageIgnoreRules.setEnabled(ignoreRules.size() > 0);
 	}
 
 	private void manageIgnoreRules() {

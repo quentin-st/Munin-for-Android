@@ -4,35 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:enabled="false"
-        android:checked="true"
-        android:clickable="false"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginBottom="15dp" />
-
-    <ImageButton
+    <ImageView
         android:id="@+id/delete"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="20dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="15dp"
-        android:src="@drawable/ic_delete"
-        android:background="@null"/>
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_delete"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginRight="60dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">

@@ -311,6 +311,5 @@
 	<string name="ignoreRulesText">There are currently %1$s ignore rule(s). Rules are created from individual notifications and can be managed from here</string>
 	<string name="manageIgnoreRules">Manage ignore rules</string>
 	<string name="until">Until</string>
-	<string name="expired">Expired</string>
 
 </resources>
