@@ -168,7 +168,7 @@ public class Activity_Notifications extends MuninActivity {
 		updateIgnoreRulesCount();
 	}
 
-	private void updateIgnoreRulesCount() {
+	public void updateIgnoreRulesCount() {
 		ignoreRulesText.setText(String.format(getString(R.string.ignoreRulesText), ignoreRules.size()));
 		manageIgnoreRules.setEnabled(ignoreRules.size() > 0);
 	}
@@ -176,7 +176,7 @@ public class Activity_Notifications extends MuninActivity {
 	private void manageIgnoreRules() {
 		// Create view
 		ListView listView = new ListView(this);
-		Adapter_NotifIgnoreRules adapter = new Adapter_NotifIgnoreRules(this, this.ignoreRules);
+		Adapter_NotifIgnoreRules adapter = new Adapter_NotifIgnoreRules(this, context, this.ignoreRules);
 		listView.setAdapter(adapter);
 
 		new AlertDialog.Builder(this)
