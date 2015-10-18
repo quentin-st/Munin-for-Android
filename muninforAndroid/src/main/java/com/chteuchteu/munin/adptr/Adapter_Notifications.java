@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.chteuchteu.munin.ui.Fragment_Notifications_POll;
+import com.chteuchteu.munin.ui.Fragment_Notifications_Poll;
 import com.chteuchteu.munin.ui.Fragment_Notifications_Push;
 import com.chteuchteu.munin.ui.INotificationsFragment;
 
@@ -20,7 +20,7 @@ public class Adapter_Notifications extends FragmentStatePagerAdapter {
 		super(fragmentManager);
 		this.fragments = new HashMap<>();
 		this.fragments.put(FRAGMENT_PUSH, new Fragment_Notifications_Push());
-		this.fragments.put(FRAGMENT_POLL, new Fragment_Notifications_POll());
+		this.fragments.put(FRAGMENT_POLL, new Fragment_Notifications_Poll());
 	}
 
 	@Override

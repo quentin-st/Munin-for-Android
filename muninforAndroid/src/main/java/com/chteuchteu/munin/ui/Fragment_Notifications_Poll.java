@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Fragment_Notifications_POll extends Fragment implements INotificationsFragment {
+public class Fragment_Notifications_Poll extends Fragment implements INotificationsFragment {
 	private View        view;
 	private Context     context;
 	private MuninFoo    muninFoo;
@@ -63,7 +63,7 @@ public class Fragment_Notifications_POll extends Fragment implements INotificati
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fragment_notifications_push, container, false);
+		view = inflater.inflate(R.layout.fragment_notifications_poll, container, false);
 		muninFoo = MuninFoo.getInstance(context);
 		settings = muninFoo.getSettings();
 
