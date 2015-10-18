@@ -214,6 +214,8 @@ public class DrawerHelper {
 				this.drawerItems.get(DrawerMenuItem.Support),
 				this.drawerItems.get(DrawerMenuItem.Donate));
 
+		builder.withDrawerLayout(R.layout.material_drawer);
+
 		builder.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 			@Override
 			public boolean onItemClick(View view, int index, IDrawerItem iDrawerItem) {
