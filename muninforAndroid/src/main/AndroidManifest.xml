@@ -62,6 +62,16 @@
 				  android:taskAffinity=""
 				  android:excludeFromRecents="true"/>
 
+		<!-- Pull notifications -->
+		<receiver android:name=".ntfs.poll.BootReceiver" >
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+		</receiver>
+		<service
+			android:name=".ntfs.poll.Service_PollNotifications"
+			android:enabled="true" />
+
 		<!-- GraphWidget -->
 		<receiver android:name=".wdget.Widget_GraphWidget_WidgetProvider"
 				  android:label="@string/graphwidgetname">
@@ -141,21 +151,21 @@
 			</intent-filter>
 		</receiver>
 		<service
-			android:name=".ntfs.GcmListenerService"
+			android:name=".ntfs.push.GcmListenerService"
 			android:exported="false">
 			<intent-filter>
 				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
 			</intent-filter>
 		</service>
 		<service
-			android:name=".ntfs.InstanceIDListenerService"
+			android:name=".ntfs.push.InstanceIDListenerService"
 			android:exported="false">
 			<intent-filter>
 				<action android:name="com.google.android.gms.iid.InstanceID"/>
 			</intent-filter>
 		</service>
 		<service
-			android:name=".ntfs.RegistrationIntentService"
+			android:name=".ntfs.push.RegistrationIntentService"
 			android:exported="false">
 		</service>
 	</application>

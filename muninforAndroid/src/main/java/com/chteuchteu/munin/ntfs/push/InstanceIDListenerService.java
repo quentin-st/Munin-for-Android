@@ -1,4 +1,4 @@
-package com.chteuchteu.munin.ntfs;
+package com.chteuchteu.munin.ntfs.push;
 
 import android.content.Intent;
 

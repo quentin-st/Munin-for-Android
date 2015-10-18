@@ -134,10 +134,17 @@ public class Settings {
         ScreenAlwaysOn("screenAlwaysOn", false),
         DefaultScale("defaultScale", "day"),
         LastMFAVersion("lastMFAVersion", ""),
-        Notifications("notifications_gcm", false),
-        Notifs_GCM_regId("notifs_gcm_regId", null),
-        Notifs_Vibrate("notifs_vibrate", true),
 
+        Notifs_Push("notifs_push", false),
+        Notifs_Push_regId("notifs_push_regId", null),
+        Notifs_Push_Vibrate("notifs_push_vibrate", true),
+
+        Notifs_Poll("notifications", false),
+        Notifs_Poll_WifiOnly("notifs_wifiOnly", true),
+        Notifs_Poll_Vibrate("notifs_vibrate", true),
+        Notifs_Poll_LastNotificationText("lastNotificationText", ""),
+        Notifs_Poll_NodesList("notifs_serversList", ""),
+        Notifs_Poll_RefreshRate("notifs_refreshRate", -1),
 
         AutoRefresh("autoRefresh", false),
         HDGraphs("hdGraphs", false),
@@ -234,17 +241,32 @@ public class Settings {
         }
 
         // Vibrate
-        if (this.sharedPreferences.contains(PrefKeys.Notifs_Vibrate.getKey())) {
-            String vibrate = this.sharedPreferences.getString(PrefKeys.Notifs_Vibrate.getKey(), null);
-            remove(PrefKeys.Notifs_Vibrate);
-            set(PrefKeys.Notifs_Vibrate, vibrate == null || vibrate.equals("true"));
+        if (this.sharedPreferences.contains(PrefKeys.Notifs_Poll_Vibrate.getKey())) {
+            String vibrate = this.sharedPreferences.getString(PrefKeys.Notifs_Poll_Vibrate.getKey(), null);
+            remove(PrefKeys.Notifs_Poll_Vibrate);
+            set(PrefKeys.Notifs_Poll_Vibrate, vibrate == null || vibrate.equals("true"));
         }
 
         // Notifications
-        if (this.sharedPreferences.contains(PrefKeys.Notifications.getKey())) {
-            String notifications = this.sharedPreferences.getString(PrefKeys.Notifications.getKey(), null);
-            remove(PrefKeys.Notifications);
-            set(PrefKeys.Notifications, notifications != null && notifications.equals("true"));
+        if (this.sharedPreferences.contains(PrefKeys.Notifs_Poll.getKey())) {
+            String notifications = this.sharedPreferences.getString(PrefKeys.Notifs_Poll.getKey(), null);
+            remove(PrefKeys.Notifs_Poll);
+            set(PrefKeys.Notifs_Poll, notifications != null && notifications.equals("true"));
+        }
+
+        // Refresh rate
+        if (this.sharedPreferences.contains(PrefKeys.Notifs_Poll_RefreshRate.getKey())) {
+            String refreshRate = this.sharedPreferences.getString(PrefKeys.Notifs_Poll_RefreshRate.getKey(), null);
+            remove(PrefKeys.Notifs_Poll_RefreshRate);
+            if (refreshRate != null && !refreshRate.equals(""))
+                set(PrefKeys.Notifs_Poll_RefreshRate, Integer.valueOf(refreshRate));
+        }
+
+        // Notifs_wifiOnly
+        if (this.sharedPreferences.contains(PrefKeys.Notifs_Poll_WifiOnly.getKey())) {
+        String wifiOnly = this.sharedPreferences.getString(PrefKeys.Notifs_Poll_WifiOnly.getKey(), null);
+            remove(PrefKeys.Notifs_Poll_WifiOnly);
+            set(PrefKeys.Notifs_Poll_WifiOnly, wifiOnly != null && wifiOnly.equals("true"));
         }
 
         // User agent changed

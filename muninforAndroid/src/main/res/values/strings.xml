@@ -312,6 +312,6 @@
 	<string name="manageIgnoreRules">Manage ignore rules</string>
 	<string name="until">Until</string>
 	<string name="push">Push</string>
-	<string name="pull">Pull</string>
+	<string name="poll">Poll</string>
 
 </resources>

@@ -27,7 +27,7 @@ public class Activity_Notifications extends MuninActivity {
 		// Init tabs
 		TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 		tabLayout.addTab(tabLayout.newTab().setText(R.string.push));
-		tabLayout.addTab(tabLayout.newTab().setText(R.string.pull));
+		tabLayout.addTab(tabLayout.newTab().setText(R.string.poll));
 		tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 		final ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);

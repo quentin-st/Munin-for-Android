@@ -1,4 +1,4 @@
-package com.chteuchteu.munin.ntfs;
+package com.chteuchteu.munin.ntfs.push;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -53,7 +53,7 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
         // [{"plugin":"plugin","host":"localhost.localdomain","category":"plugin_category","fields":[{"c":":2","level":"c","w":":1","extra":"","label":"submitted","value":"6.00"}],"group":"localdomain"}]
 
         // Check if notifications are enabled
-        if (!Settings.getInstance(this).getBool(Settings.PrefKeys.Notifications))
+        if (!Settings.getInstance(this).getBool(Settings.PrefKeys.Notifs_Push))
             return;
 
         // Parse alerts

@@ -29,7 +29,7 @@ import com.chteuchteu.munin.adptr.Adapter_NotifIgnoreRules;
 import com.chteuchteu.munin.async.Notifications_SendInstructionsByMail;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.ntfs.RegistrationIntentService;
+import com.chteuchteu.munin.ntfs.push.RegistrationIntentService;
 import com.chteuchteu.munin.obj.NotifIgnoreRule;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -97,7 +97,7 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 								if (!value.isEmpty()) {
 									new Notifications_SendInstructionsByMail(
 											context, value,
-											muninFoo.getSettings().getString(Settings.PrefKeys.Notifs_GCM_regId),
+											muninFoo.getSettings().getString(Settings.PrefKeys.Notifs_Push_regId),
 											muninFoo.getUserAgent()
 									).execute();
 								}
@@ -108,11 +108,11 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 						.show();
 			}
 		});
-		bt_sendByMail.setEnabled(settings.getString(Settings.PrefKeys.Notifs_GCM_regId) != null);
+		bt_sendByMail.setEnabled(settings.getString(Settings.PrefKeys.Notifs_Push_regId) != null);
 
 		updateDeviceCode();
 
-		boolean notificationsEnabled = settings.getBool(Settings.PrefKeys.Notifications);
+		boolean notificationsEnabled = settings.getBool(Settings.PrefKeys.Notifs_Push);
 		cb_notifications.setChecked(notificationsEnabled);
 		if (!notificationsEnabled)
 			view.findViewById(R.id.notificationsEnabled).setVisibility(View.GONE);
@@ -120,7 +120,7 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 		// Check if the device can vibrate
 		Vibrator vivrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 		cb_vibrate.setEnabled(vivrator.hasVibrator());
-		cb_vibrate.setChecked(settings.getBool(Settings.PrefKeys.Notifs_Vibrate));
+		cb_vibrate.setChecked(settings.getBool(Settings.PrefKeys.Notifs_Push_Vibrate));
 
 		cb_notifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
@@ -132,7 +132,7 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 					notificationsSettings.setVisibility(View.GONE);
 
 				// Get reg id
-				if (isChecked && muninFoo.getSettings().getString(Settings.PrefKeys.Notifs_GCM_regId) == null) {
+				if (isChecked && muninFoo.getSettings().getString(Settings.PrefKeys.Notifs_Push_regId) == null) {
 					if (checkPlayServices()) {
 						progressDialog = ProgressDialog.show(context, "", getString(R.string.loading), true);
 						Intent intent = new Intent(context, RegistrationIntentService.class);
@@ -201,7 +201,7 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 	}
 
 	private void updateDeviceCode() {
-		String deviceCode = settings.getString(Settings.PrefKeys.Notifs_GCM_regId);
+		String deviceCode = settings.getString(Settings.PrefKeys.Notifs_Push_regId);
 		if (deviceCode != null) {
 			TextView tv_deviceCode = (TextView) view.findViewById(R.id.device_code);
 			tv_deviceCode.setText(deviceCode.substring(0, Math.min(deviceCode.length()-1, 15)) + "...");
@@ -227,8 +227,8 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 
 	@Override
 	public void save() {
-		settings.set(Settings.PrefKeys.Notifications, cb_notifications.isChecked());
-		settings.set(Settings.PrefKeys.Notifs_Vibrate, cb_vibrate.isChecked());
+		settings.set(Settings.PrefKeys.Notifs_Push, cb_notifications.isChecked());
+		settings.set(Settings.PrefKeys.Notifs_Push_Vibrate, cb_vibrate.isChecked());
 	}
 
 	@Override

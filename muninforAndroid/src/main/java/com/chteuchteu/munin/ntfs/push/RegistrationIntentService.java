@@ -1,4 +1,4 @@
-package com.chteuchteu.munin.ntfs;
+package com.chteuchteu.munin.ntfs.push;
 
 import android.app.IntentService;
 import android.content.Context;
@@ -26,10 +26,10 @@ public class RegistrationIntentService extends IntentService {
             InstanceID instanceID = InstanceID.getInstance(this);
             String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
 
-            sharedPreferences.edit().putString(Settings.PrefKeys.Notifs_GCM_regId.getKey(), token).apply();
+            sharedPreferences.edit().putString(Settings.PrefKeys.Notifs_Push_regId.getKey(), token).apply();
         } catch (Exception e) {
             e.printStackTrace();
-            sharedPreferences.edit().putString(Settings.PrefKeys.Notifs_GCM_regId.getKey(), null).apply();
+            sharedPreferences.edit().putString(Settings.PrefKeys.Notifs_Push_regId.getKey(), null).apply();
         }
 
         // Notify UI that registration has completed, so the progress indicator can be hidden.
