@@ -40,7 +40,7 @@ public class MuninFoo {
 
 	private String userAgent;
 
-	public static final double VERSION = 6.9;
+	public static final double VERSION = 7.0;
 	private static final boolean FORCE_NOT_PREMIUM = false;
 
     public boolean premium;

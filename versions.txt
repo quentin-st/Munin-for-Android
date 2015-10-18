@@ -61,3 +61,5 @@
  57    | 3.6.5-beta1| 6.6   | beta
  58    | 3.6.5-beta2| 6.7   | beta
  59    | 3.6.5-beta3| 6.8   | beta
+ 60    | 3.6.5-beta4| 6.9   | beta
+ 61    | 3.6.5-beta5| 7.0   | beta
