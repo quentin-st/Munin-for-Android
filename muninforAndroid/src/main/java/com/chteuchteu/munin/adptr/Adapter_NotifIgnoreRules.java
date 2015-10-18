@@ -12,17 +12,18 @@ import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.obj.NotifIgnoreRule;
 import com.chteuchteu.munin.ui.Activity_Notifications;
+import com.chteuchteu.munin.ui.Fragment_Notifications_Push;
 
 import java.util.List;
 
 public class Adapter_NotifIgnoreRules extends ArrayAdapter<NotifIgnoreRule> {
-	private Activity_Notifications activity;
+	private Fragment_Notifications_Push fragment;
 	private Context context;
 	private List<NotifIgnoreRule> rules;
 
-	public Adapter_NotifIgnoreRules(Activity_Notifications activity, Context context, List<NotifIgnoreRule> rules) {
+	public Adapter_NotifIgnoreRules(Fragment_Notifications_Push fragment, Context context, List<NotifIgnoreRule> rules) {
 		super(context, R.layout.list_notifignorerule, rules);
-		this.activity = activity;
+		this.fragment = fragment;
 		this.context = context;
 		this.rules = rules;
 	}
@@ -65,7 +66,7 @@ public class Adapter_NotifIgnoreRules extends ArrayAdapter<NotifIgnoreRule> {
 				rules.remove(rule);
 				MuninFoo.getInstance(context).sqlite.dbHlpr.deleteNotifIgnoreRule(rule);
 				notifyDataSetChanged();
-				activity.updateIgnoreRulesCount();
+				fragment.updateIgnoreRulesCount();
 			}
 		});
 

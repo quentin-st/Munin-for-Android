@@ -6,13 +6,9 @@ import android.os.AsyncTask;
 import android.util.Pair;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.NetHelper;
-import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.obj.MuninMaster;
-import com.chteuchteu.munin.ui.Activity_Notifications;
-import com.chteuchteu.munin.ui.Activity_Servers;
+import com.chteuchteu.munin.ui.Fragment_Notifications_Push;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +41,7 @@ public class Notifications_SendInstructionsByMail extends AsyncTask<Void, Intege
 		params.add(new Pair<>("mailAddress", this.email));
 		params.add(new Pair<>("regId", this.regId));
 
-		NetHelper.simplePost(Activity_Notifications.INSTRUCTIONS_EMAIL_TARGET, params, this.userAgent);
+		NetHelper.simplePost(Fragment_Notifications_Push.INSTRUCTIONS_EMAIL_TARGET, params, this.userAgent);
 
 		return null;
 	}

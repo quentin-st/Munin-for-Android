@@ -4,14 +4,11 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.widget.Toast;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.Settings;
-import com.chteuchteu.munin.ui.Activity_Notifications;
+import com.chteuchteu.munin.ui.Fragment_Notifications_Push;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
@@ -36,7 +33,7 @@ public class RegistrationIntentService extends IntentService {
         }
 
         // Notify UI that registration has completed, so the progress indicator can be hidden.
-        Intent registrationComplete = new Intent(Activity_Notifications.REGISTRATION_COMPLETE);
+        Intent registrationComplete = new Intent(Fragment_Notifications_Push.REGISTRATION_COMPLETE);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 }
