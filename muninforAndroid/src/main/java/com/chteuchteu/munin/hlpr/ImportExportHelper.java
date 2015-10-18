@@ -300,7 +300,9 @@ public class ImportExportHelper {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						MuninFoo muninFoo = MuninFoo.getInstance(context);
-						String json = JSONHelper.getGridsJSONString(muninFoo.sqlite.dbHlpr.getGrids(muninFoo));
+						String json = type == ImportExportType.MASTERS
+							? JSONHelper.getMastersJSONString(muninFoo.getMasters(), ImportExportHelper.ENCRYPTION_SEED)
+							: JSONHelper.getGridsJSONString(muninFoo.sqlite.dbHlpr.getGrids(muninFoo));
 						if (json.equals(""))
 							Toast.makeText(context, R.string.export_failed, Toast.LENGTH_SHORT).show();
 						else
