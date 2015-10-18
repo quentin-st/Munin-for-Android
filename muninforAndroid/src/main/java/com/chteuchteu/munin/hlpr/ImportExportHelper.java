@@ -146,7 +146,7 @@ public class ImportExportHelper {
 			removeIdsFromGrids(currentGridsNames, newGrids);
 
 			for (Grid grid : newGrids) {
-				muninFoo.sqlite.dbHlpr.insertGrid(grid.getName());
+				grid.setId(muninFoo.sqlite.dbHlpr.insertGrid(grid.getName()));
 				muninFoo.sqlite.dbHlpr.insertGridItemRelations(grid.getItems());
 			}
 		}
