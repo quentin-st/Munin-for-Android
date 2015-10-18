@@ -24,8 +24,8 @@ android {
         applicationId "com.chteuchteu.munin"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 59
-        versionName "3.6.5-beta3"
+        versionCode 60
+        versionName "3.6.5-beta4"
     }
 
     buildTypes {
