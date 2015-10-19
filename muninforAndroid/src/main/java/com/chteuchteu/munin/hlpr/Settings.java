@@ -136,7 +136,7 @@ public class Settings {
         LastMFAVersion("lastMFAVersion", ""),
 
         Notifs_Push("notifs_push", false),
-        Notifs_Push_regId("notifs_push_regId", null),
+        Notifs_Push_regId("notifs_gcm_regId", null),
         Notifs_Push_Vibrate("notifs_push_vibrate", true),
 
         Notifs_Poll("notifications", false),
