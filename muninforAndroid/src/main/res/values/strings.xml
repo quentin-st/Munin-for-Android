@@ -312,6 +312,13 @@
 	<string name="manageIgnoreRules">Manage ignore rules</string>
 	<string name="until">Until</string>
 	<string name="push">Push</string>
+	<string name="push_notifications">Push notifications</string>
 	<string name="poll">Poll</string>
+	<string name="poll_notifications">Poll notifications</string>
+	<string name="push_explanation">Recommended: in this mode, munin pushes alerts directly to your device.
+		This allows real-time notifications, low battery footprint and reduced data usage but you have to install a small script on each master.</string>
+	<string name="poll_explanation">In this mode, Munin for Android polls each of your servers regularly.
+		There\'s no extra configuration, but it is not as reliable as the push mode and may reduce your battery life and data plan.
+		Only use this mode if you cannot install the script mentioned in push mode.</string>
 
 </resources>

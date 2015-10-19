@@ -191,6 +191,10 @@ public class Fragment_Notifications_Poll extends Fragment implements INotificati
 			});
 		}
 
+		// Set fonts
+		for (View v : Util.getViewsByTag((ViewGroup)view.findViewById(R.id.container), "set_font"))
+			Util.Fonts.setFont(context, (TextView) v, Util.Fonts.CustomFont.Roboto_Medium);
+
 		return view;
 	}
 

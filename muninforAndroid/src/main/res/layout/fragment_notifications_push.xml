@@ -21,6 +21,31 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/card"
             android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <TextView
+                android:tag="set_font"
+                style="@style/Material_SubTitle"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="@string/push_notifications" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/push_explanation"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/card"
+            android:orientation="vertical"
             android:paddingBottom="20dp"
             android:paddingTop="20dp">
 
