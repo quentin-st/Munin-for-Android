@@ -1,4 +1,4 @@
-# Munin for Android
+# <img src="/muninforAndroid/src/main/res/drawable-mdpi/launcher_icon.png" align="left" width="45" />&nbsp; Munin for Android
 Munin for Android is an Android application allowing munin users to display generated
 graphs on their Android devices. See [Munin for Android on Google
 Play](https://play.google.com/store/apps/details?id=com.chteuchteu.munin) for screenshots
