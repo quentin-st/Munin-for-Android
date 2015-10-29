@@ -318,7 +318,12 @@ public class MuninMaster {
 						// Get every host for that domain
 						Elements hosts = domain.parent().select("ul>li");
 						for (Element host : hosts) {
-							Element infos = host.select("a.link-host").get(0);
+							Elements infosList = host.select("a.link-host");
+
+							if (infosList.size() == 0)
+								continue;
+
+							Element infos = infosList.get(0);
 							MuninNode serv = new MuninNode(infos.text(), infos.attr("abs:href"));
 							serv.setParent(this);
 							previousPosition++;
