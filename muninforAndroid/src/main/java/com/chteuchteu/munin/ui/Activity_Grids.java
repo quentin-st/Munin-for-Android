@@ -252,7 +252,7 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						context.startActivity(new Intent(context, Activity_Servers.class));
+						context.startActivity(new Intent(context, Activity_Grids.class));
 					}
 				})
 				.show();
