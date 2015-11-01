@@ -504,4 +504,9 @@ public class Grid {
 
 		return reparedSome;
 	}
+
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }

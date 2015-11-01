@@ -9,10 +9,7 @@
 		android:id="@+id/toolbar"
 		style="@style/Toolbar">
 
-		<Spinner
-			android:id="@+id/spinner"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
+		<include layout="@layout/actionbar_dropdown" />
 
 	</android.support.v7.widget.Toolbar>
 

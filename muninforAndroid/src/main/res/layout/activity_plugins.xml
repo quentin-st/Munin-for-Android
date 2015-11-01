@@ -6,7 +6,11 @@
 
 	<android.support.v7.widget.Toolbar
 		android:id="@+id/toolbar"
-		style="@style/Toolbar" />
+		style="@style/Toolbar">
+
+		<include layout="@layout/actionbar_dropdown" />
+
+	</android.support.v7.widget.Toolbar>
 
 	<LinearLayout
 		android:layout_width="match_parent"

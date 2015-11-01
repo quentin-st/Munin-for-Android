@@ -74,8 +74,8 @@ public class Activity_Plugins extends MuninActivity {
 		actionBar.setDisplayShowTitleEnabled(false);
 
 		// ActionBar custom view
-		LayoutInflater inflater = LayoutInflater.from(context);
-		customActionBarView = inflater.inflate(R.layout.actionbar_dropdown, null);
+		actionBar.setDisplayShowTitleEnabled(false);
+		customActionBarView = findViewById(R.id.actionbar_dropdown);
 		customActionBarView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -97,8 +97,6 @@ public class Activity_Plugins extends MuninActivity {
 		});
         customActionBarView_textView = (TextView) customActionBarView.findViewById(R.id.text);
         customActionBarView_textView.setText(muninFoo.getCurrentNode().getName());
-		
-		actionBar.setCustomView(customActionBarView);
 
 		mode = MODE_GROUPED;
 
@@ -294,6 +292,7 @@ public class Activity_Plugins extends MuninActivity {
 			filter.setFocusable(true);
 			filter.setFocusableInTouchMode(true);
 
+			customActionBarView.setVisibility(View.GONE);
 			actionBar.setCustomView(filter);
 
 			filter.setLayoutParams(new Toolbar.LayoutParams(
@@ -311,7 +310,8 @@ public class Activity_Plugins extends MuninActivity {
 			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(filter.getWindowToken(), 0);
 
-			actionBar.setCustomView(customActionBarView);
+			customActionBarView.setVisibility(View.VISIBLE);
+			actionBar.setCustomView(null);
 		}
 	}
 	

@@ -9,12 +9,11 @@ import android.support.v4.content.ContextCompat;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.GridsListAlertDialog;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Settings;
@@ -23,7 +22,6 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Activity_Grid extends MuninActivity implements IGridActivity {
@@ -46,7 +44,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	private Handler mHandler;
 	private Runnable mHandlerTask;
 
-	private Spinner toolbarSpinner;
+	private GridsListAlertDialog gridsListAlertDialog;
 	private Fragment_Grid fragment;
 
 	private Drawable toolbar_originalButton;
@@ -82,42 +80,47 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 
 
 		// Toolbar spinner
-		actionBar.setTitle("");
-		toolbarSpinner = (Spinner) findViewById(R.id.spinner);
-		toolbarSpinner.setAdapter(new ArrayAdapter<>(getApplicationContext(),
-				android.R.layout.simple_spinner_dropdown_item, getGridsNames(grids)));
-
-		final int index = grids.indexOf(tmpGrid);
-		if (index != -1)
-			toolbarSpinner.setSelection(index);
-
-		toolbarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		actionBar.setDisplayShowTitleEnabled(false);
+		final View customActionBarView = findViewById(R.id.actionbar_dropdown);
+		final TextView customActionBarView_textView = (TextView) customActionBarView.findViewById(R.id.text);
+		customActionBarView.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				if (position != grids.indexOf(tmpGrid)) {
-					long gridId = grids.get(position).getId();
-					tmpGrid = getGrid(grids, gridId);
+			public void onClick(View v) {
+				if (gridsListAlertDialog == null)
+					gridsListAlertDialog = new GridsListAlertDialog(context, customActionBarView, grids,
+							new GridsListAlertDialog.GridsListAlertDialogClick() {
+								@Override
+								public void onItemClick(Grid grid) {
+									if (tmpGrid != grid) {
+										customActionBarView_textView.setText(grid.getName());
 
-					// If editing / previewing: cancel those
-					if (fragment.isPreviewing())
-						fragment.hidePreview();
+										tmpGrid = grid;
 
-					if (fragment.isEditing())
-						fragment.edit();
+										// If editing / previewing: cancel those
+										if (fragment.isPreviewing())
+											fragment.hidePreview();
 
-					fragment = new Fragment_Grid();
-					Bundle bundle = new Bundle();
-					bundle.putLong(Fragment_Grid.ARG_GRIDID, grids.get(position).getId());
-					bundle.putString(Fragment_Grid.ARG_PERIOD, currentPeriod.name());
-					fragment.setArguments(bundle);
-					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+										if (fragment.isEditing())
+											fragment.edit();
 
-					if (ChromecastHelper.isConnected(muninFoo.chromecastHelper))
-						muninFoo.chromecastHelper.sendMessage_inflateGrid(grids.get(position), currentPeriod);
-				}
+										fragment = new Fragment_Grid();
+										Bundle bundle = new Bundle();
+										bundle.putLong(Fragment_Grid.ARG_GRIDID, tmpGrid.getId());
+										bundle.putString(Fragment_Grid.ARG_PERIOD, currentPeriod.name());
+										fragment.setArguments(bundle);
+										getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
+										if (ChromecastHelper.isConnected(muninFoo.chromecastHelper))
+											muninFoo.chromecastHelper.sendMessage_inflateGrid(tmpGrid, currentPeriod);
+									}
+								}
+							});
+
+				gridsListAlertDialog.show();
 			}
-			@Override public void onNothingSelected(AdapterView<?> parent) { }
 		});
+		customActionBarView_textView.setText(tmpGrid.getName());
+
 
 		// Launch periodical check
 		if (settings.getBool(Settings.PrefKeys.AutoRefresh)) {
@@ -173,13 +176,6 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		return fragment.getGrid();
 	}
 
-	private static List<String> getGridsNames(List<Grid> grids) {
-		List<String> list = new ArrayList<>();
-		for (Grid grid : grids)
-			list.add(grid.getName());
-		return list;
-	}
-
 	@Override
 	public void onPreview() {
 		menu_open.setVisible(true);
@@ -210,8 +206,6 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			menu_edit.setIcon(
 					editing ? R.drawable.ic_action_image_edit
 							: R.drawable.ic_action_navigation_check);
-
-		toolbarSpinner.setEnabled(editing);
 
 		// Toolbar: back button
 		if (this.toolbar_originalButton == null)

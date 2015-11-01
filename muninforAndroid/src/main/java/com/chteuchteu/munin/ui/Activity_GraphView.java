@@ -388,10 +388,8 @@ public class Activity_GraphView extends MuninActivity {
 
 
         // Toolbar custom view (plugins spinner)
-        actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        final View customToolbarView = inflater.inflate(R.layout.actionbar_dropdown, null);
+        final View customToolbarView = findViewById(R.id.actionbar_dropdown);
         customToolbarView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -415,7 +413,6 @@ public class Activity_GraphView extends MuninActivity {
         });
         toolbarPluginName = (TextView) customToolbarView.findViewById(R.id.text);
         toolbarPluginName.setText(currentPlugin.getFancyNameOrDefault());
-        actionBar.setCustomView(customToolbarView);
 	}
 
 	public void onResume() {
