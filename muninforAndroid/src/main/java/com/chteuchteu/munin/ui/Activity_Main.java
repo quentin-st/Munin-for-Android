@@ -233,9 +233,9 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 			case R.id.menu_open:
 				switch (mainFragment) {
 					case GRID: {
-						Intent intent = new Intent(context, Activity_Grids.class);
+						Intent intent = new Intent(context, Activity_Grid.class);
 						Grid grid = ((Fragment_Grid) fragment).getGrid();
-						intent.putExtra(Activity_Grids.ARG_GRIDID, grid.getId());
+						intent.putExtra(Activity_Grid.ARG_GRIDID, grid.getId());
 						startActivity(intent);
 						Util.setTransition(this, Util.TransitionStyle.DEEPER);
 						break;
@@ -400,7 +400,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		menu_grid_refresh.setVisible(true);
 		menu_grid_changePeriod.setVisible(true);
 	}
-	@Override public void onGridSaved(Grid grid) { }
+	@Override public void onGridSaved() { }
 
 	/* Label fragment */
 	@Override public void onLabelClick(Label label) { } // Not used here

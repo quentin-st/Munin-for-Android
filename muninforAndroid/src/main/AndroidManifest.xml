@@ -35,9 +35,10 @@
 		<activity android:name=".ui.Activity_Alerts"
 				  android:configChanges="orientation|screenSize|keyboardHidden" />
 		<activity android:name=".ui.Activity_AlertsPlugins" />
-		<activity android:name=".ui.Activity_GraphView" />
-		<activity android:name=".ui.Activity_Grids"
+		<activity android:name=".ui.Activity_Grid"
 				  android:configChanges="orientation|screenSize|keyboardHidden"/>
+		<activity android:name=".ui.Activity_Grids" />
+		<activity android:name=".ui.Activity_GraphView" />
 		<activity android:name=".ui.Activity_Labels" />
 		<activity android:name=".ui.Activity_Main"
 				  android:icon="@drawable/launcher_icon"

@@ -7,7 +7,7 @@ public interface IGridActivity {
 	void onEditModeChange(boolean editing);
 	void onPreview();
 	void onGridLoaded(Grid grid);
-	void onGridSaved(Grid grid);
+	void onGridSaved();
 
 	/**
 	 * Triggered when the user hits the "Load" button when autoLoad=false

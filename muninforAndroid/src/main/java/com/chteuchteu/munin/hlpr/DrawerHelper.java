@@ -20,6 +20,7 @@ import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
 import com.chteuchteu.munin.ui.Activity_About;
 import com.chteuchteu.munin.ui.Activity_Alerts;
 import com.chteuchteu.munin.ui.Activity_GoPremium;
+import com.chteuchteu.munin.ui.Activity_Grid;
 import com.chteuchteu.munin.ui.Activity_Grids;
 import com.chteuchteu.munin.ui.Activity_Labels;
 import com.chteuchteu.munin.ui.Activity_Notifications;
@@ -292,7 +293,7 @@ public class DrawerHelper {
 		if (((Object) activity).getClass() == targetActivity)
 			closeDrawerIfOpen();
 		else {
-			int intentFlag = this.activity instanceof Activity_Grids
+			int intentFlag = this.activity instanceof Activity_Grid
 					? Intent.FLAG_ACTIVITY_CLEAR_TOP
 					: Intent.FLAG_ACTIVITY_NEW_TASK;
 			Intent intent = new Intent(activity, targetActivity);
