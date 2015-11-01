@@ -7,7 +7,14 @@
 
 	<android.support.v7.widget.Toolbar
 		android:id="@+id/toolbar"
-		style="@style/Toolbar" />
+		style="@style/Toolbar">
+
+		<Spinner
+			android:id="@+id/spinner"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+	</android.support.v7.widget.Toolbar>
 
 	<RelativeLayout
 		android:layout_width="match_parent"
