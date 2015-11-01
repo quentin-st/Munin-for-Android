@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="@dimen/listview_horizontal_margin"
-    android:paddingRight="@dimen/listview_horizontal_margin"
-    android:background="@drawable/bottom_shadow">
+    android:paddingRight="@dimen/listview_horizontal_margin">
 
     <LinearLayout
         android:id="@+id/container"
