@@ -211,11 +211,13 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 					editing ? R.drawable.ic_action_image_edit
 							: R.drawable.ic_action_navigation_check);
 
+		toolbarSpinner.setEnabled(editing);
+
 		// Toolbar: back button
 		if (this.toolbar_originalButton == null)
 			this.toolbar_originalButton = toolbar.getNavigationIcon();
 
-		if (fragment.isEditing()) {
+		if (editing) {
 			toolbar.setNavigationIcon(this.toolbar_originalButton);
 			toolbar.setNavigationOnClickListener(drawerHelper.getToggleListener());
 		} else {
