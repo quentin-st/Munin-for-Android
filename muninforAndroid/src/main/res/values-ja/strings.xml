@@ -162,7 +162,7 @@
 	<string name="not_now">今はしない</string>
 	<string name="export_explanation">次のデバイスから検索できるように、あなたの構成がアップロードされます。パスワードがある場合は、暗号化されます。エクスポートが終わると、ランダムに生成されるコードを使って、お使いの他のデバイスで構成をダウンロードできるようになります。あなたが構成をダウンロードするとすぐに Munin for Android のサーバーから削除されます。または 24 時間以内に構成をダウンロードしない場合も削除されます。</string>
 	<string name="export_success_title">正常にエクスポートしました</string>
-	<string name="export_success_txt1">アプリのサーバー構成が正常にアップロードされました。あなたの別のデバイスで次のコードを使用して、インポートしてください。</string>
+	<string name="export_success_txt1">構成が正常にアップロードされました。別のデバイスで次のコードを使用して、インポートしてください。</string>
 	<string name="import_success_title">正常にインポートしました</string>
 	<string name="delete_plugin">プラグインを削除</string>
 	<string name="delete_label">ラベルを削除</string>
@@ -228,4 +228,26 @@
 	<string name="disable_chromecast_text">Chromecast を所有していない場合は、アプリでの使用を無効にすることができます</string>
 
 <string name="about">アプリについて</string>
-	</resources>
+	<string name="splashDesc">ロード中</string>
+	<string name="import_success">正常にインポートしました</string>
+	<string name="default_grid">デフォルトのグリッド</string>
+	<string name="notifications_device_code">デバイス コード</string>
+	<string name="notifications_instructions">このデバイスに通知を送信できるように、各マスターを構成する必要があります。</string>
+	<string name="notifications_sendByMail">メールで私にコードと操作を送ってください</string>
+	<string name="notifications_mailSent">メールを送信しました! 受信トレイを確認してください</string>
+	<string name="notifications_test_title">Munin for Android テスト通知</string>
+	<string name="notifications_test_text">Munin for Android GCM トリガーは正しくインストールされました</string>
+	<string name="ignore">無視</string>
+	<string name="ignore_alert">アラートを無視</string>
+	<string name="ignore_for">次を無視</string>
+	<string name="one_hour">1 時間</string>
+	<string name="six_hours">6 時間</string>
+	<string name="one_day">1 日</string>
+	<string name="one_week">1 週間</string>
+	<string name="forever">永久</string>
+	<string name="ignore_whole_group">%1$s グループ内のすべてのプラグイン</string>
+	<string name="ignore_whole_host">%1$s ホスト (%2$s グループ) のすべてのプラグイン</string>
+	<string name="ignore_plugin_in">ホスト %2$s (%3$s グループ) のプラグイン %1$s</string>
+	<string name="ignore_plugin">ホストやグループに関係なくプラグイン %1$s</string>
+
+</resources>
