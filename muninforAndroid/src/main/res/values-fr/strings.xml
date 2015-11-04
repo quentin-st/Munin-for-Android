@@ -262,4 +262,10 @@
 	<string name="ignore_plugin">Plugin %1$s quels que soient l\'hôte et le groupe</string>
 
 <string name="import_success">L\'import a réussi</string>
+	<string name="ignoreRulesText">Il y a actuellement %1$s règle(s). Les règles sont créées depuis les notifications et peuvent être gérées ici</string>
+	<string name="until">Jusqu\'à</string>
+	<string name="push">Push</string>
+	<string name="push_notifications">Notifications push</string>
+	<string name="poll">Poll</string>
+	<string name="poll_notifications">Notifications poll</string>
 	</resources>
