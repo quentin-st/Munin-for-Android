@@ -5,8 +5,7 @@ import com.chteuchteu.munin.MuninFoo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Label {
-	private long id;
+public class Label extends Entity {
 	private String name;
 	public List<MuninPlugin> plugins;
 	
@@ -18,10 +17,6 @@ public class Label {
 		this.name = name;
 		this.plugins = new ArrayList<>();
 	}
-	
-	public void setId(long id) { this.id = id; }
-	public long getId() { return this.id; }
-	
 	
 	// Returns a List of List of MuninPlugin, sorted by node.
 	// To be displayed in Activity_Label

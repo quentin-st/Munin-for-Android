@@ -34,8 +34,7 @@ import com.chteuchteu.munin.ui.IGridActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GridItem {
-	private long			id;
+public class GridItem extends Entity {
 	private int 			X;
 	private int 			Y;
 	private MuninPlugin 	plugin;
@@ -492,9 +491,6 @@ public class GridItem {
 		iv.setImageBitmap(Util.dropShadow(
 				BitmapFactory.decodeResource(context.getResources(), imgRes)));
 	}
-
-	public long getId() { return id; }
-	public void setId(long id) { this.id = id; }
 
 	public int getX() { return X; }
 	public void setX(int x) { this.X = x; }

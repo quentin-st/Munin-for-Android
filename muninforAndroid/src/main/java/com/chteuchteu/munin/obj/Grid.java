@@ -16,8 +16,7 @@ import com.chteuchteu.munin.ui.IGridActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grid {
-	private long id;
+public class Grid extends Entity {
 	private String name;
 	private int nbColumns;
 	private int nbLines;
@@ -460,9 +459,6 @@ public class Grid {
 		
 		return r;
 	}
-
-	public long getId() { return id; }
-	public void setId(long id) { this.id = id; }
 
 	public String getName() { return name; }
 	public void setName(String name) { this.name = name; }

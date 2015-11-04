@@ -13,8 +13,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.List;
 
-public class MuninPlugin {
-	private long 		id;
+public class MuninPlugin extends Entity {
 	private String 		name;
 	private String 		fancyName;
 	private MuninNode installedOn;
@@ -68,10 +67,7 @@ public class MuninPlugin {
 	public enum AlertState {
 		UNDEFINED, OK, WARNING, CRITICAL, UNKNOWN
 	}
-	
-	public void setId(long id) { this.id = id; }
-	public long getId() { return this.id; }
-	
+
 	public void setName(String name) { this.name = name; }
 	public String getName() { return this.name; }
 	

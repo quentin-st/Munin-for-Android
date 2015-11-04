@@ -18,8 +18,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MuninMaster {
-	private long id;
+public class MuninMaster extends Entity {
 	private String name;
 	private String url;
 	private List<MuninNode> children;
@@ -33,11 +32,8 @@ public class MuninMaster {
 	
 	public boolean defaultMaster;
 	
-	public boolean isPersistant;
-	
 	public MuninMaster () {
 		this.name = "";
-		this.id = -1;
 		this.url = "";
 		this.defaultMaster = false;
 		this.children = new ArrayList<>();
@@ -48,8 +44,6 @@ public class MuninMaster {
 		this.authPassword = "";
 		this.ssl = false;
 		this.authString = "";
-		
-		this.isPersistant = false;
 	}
 	
 	public enum DynazoomAvailability {
@@ -164,10 +158,7 @@ public class MuninMaster {
 		// If there's no more node under this, delete self.
 		f.deleteMuninMaster(this);
 	}
-	
-	public void setId(long id) { this.id = id; }
-	public long getId() { return this.id; }
-	
+
 	public void setName(String name) { this.name = name; }
 	public String getName() { return this.name; }
 	

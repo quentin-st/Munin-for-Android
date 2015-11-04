@@ -15,10 +15,9 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MuninNode {
+public class MuninNode extends Entity {
 	public static final String DEFAULT_NODE_NAME = "localhost.localdomain";
 
-	private long id;
 	private String name;
 	private String url;
 	private List<MuninPlugin> plugins;
@@ -26,7 +25,6 @@ public class MuninNode {
 	private String hdGraphURL;
 	public MuninMaster master;
 	private int position;
-	public boolean isPersistant = false;
 	/**
 	 * Used for Alerts (display if node is unreachable)
 	 */
@@ -57,10 +55,7 @@ public class MuninNode {
 		this.reachable = SpecialBool.UNKNOWN;
 		this.position = -1;
 	}
-	
-	public void setId(long id) { this.id = id; }
-	public long getId() { return this.id; }
-	
+
 	public void setUrl(String u) { this.url = u; }
 	public String getUrl() { return this.url; }
 	
