@@ -250,4 +250,15 @@
 	<string name="ignore_plugin_in">ホスト %2$s (%3$s グループ) のプラグイン %1$s</string>
 	<string name="ignore_plugin">ホストやグループに関係なくプラグイン %1$s</string>
 
+<string name="ignoreRules">無視ルール</string>
+	<string name="ignoreRulesText">現在 %1$s 無視ルールがあります。ルールは、個々の通知から作成し、ここから管理することができます</string>
+	<string name="manageIgnoreRules">無視ルールを管理</string>
+	<string name="until">まで</string>
+	<string name="push">プッシュ</string>
+	<string name="push_notifications">プッシュ通知</string>
+	<string name="poll">プル</string>
+	<string name="poll_notifications">プル通知</string>
+	<string name="push_explanation">推奨: このモードは、munin がお使いのデバイスにアラートを直接プッシュします。マスターごとに小さなスクリプトをインストールする必要がありますが、これにより、リアルタイム通知、低バッテリのフットプリント、そしてデータ使用量を削減することができます。</string>
+	<string name="poll_explanation">このモードは Munin for Android が定期的に各サーバーをポーリングします。余分な設定はありませんが、プッシュ モードより信頼性が高くありません。バッテリの残量とデータ料金プランを減らす可能性があります。プッシュ モードで必要なスクリプトをインストールできない場合のみこのモードを使用してください。</string>
+
 </resources>
