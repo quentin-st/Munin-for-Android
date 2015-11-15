@@ -262,8 +262,6 @@ public class Activity_GraphView extends MuninActivity {
 					fab.hide();
 					isFabShown = false;
 				} else if (dynazoomAvailable && !isFabShown) { // Show fab
-					if (fab.getVisibility() == View.GONE)
-						fab.setVisibility(View.VISIBLE);
 					isFabShown = true;
 					fab.show();
 				}
@@ -767,7 +765,8 @@ public class Activity_GraphView extends MuninActivity {
 		});
 		documentation.startAnimation(a1);
 
-		fab.show();
+		if (isFabShown)
+			fab.show();
 
 		createOptionsMenu();
 	}
@@ -985,7 +984,8 @@ public class Activity_GraphView extends MuninActivity {
 		int initialRadius = Math.max(mainContainer.getWidth(), mainContainer.getHeight());
 		Util.Animations.reveal_hide(context, dynazoom, new int[]{cx, cy}, initialRadius, Util.Animations.CustomAnimation.SLIDE_OUT);
 
-		fab.show();
+		if (isFabShown)
+			fab.show();
 	}
 	private boolean isDynazoomOpen() { return findViewById(R.id.dynazoom).getVisibility() == View.VISIBLE; }
 	private void dynazoom_updateFromTo() {
