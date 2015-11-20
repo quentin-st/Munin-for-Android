@@ -27,7 +27,8 @@ public final class I18nHelper {
 		NL("nl", R.string.lang_dutch),
 		RU("ru", R.string.lang_russian),
 		UK("uk", R.string.lang_ukrainian),
-		ZH_TW("zh_TW", R.string.lang_chinese_taiwan);
+		ZH_TW("zh_TW", R.string.lang_chinese_taiwan),
+		PL("pl", R.string.lang_polish);
 
 		public String langCode;
 		public int localeNameRes;

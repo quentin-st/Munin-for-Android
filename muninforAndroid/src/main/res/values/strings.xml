@@ -133,6 +133,7 @@
 	<string name="lang_japanese">Japanese</string>
 	<string name="lang_hungarian">Hungarian</string>
 	<string name="lang_chinese_taiwan">Chinese (Taiwan)</string>
+	<string name="lang_polish">Polish</string>
 	<string name="text01">Settings and servers configuration will be reset. Are you sure?</string>
 	<string name="text02">Reset performed.</string>
 	<string name="text09">Error!</string>
