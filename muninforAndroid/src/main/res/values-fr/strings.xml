@@ -268,4 +268,9 @@
 	<string name="push_notifications">Notifications push</string>
 	<string name="poll">Poll</string>
 	<string name="poll_notifications">Notifications poll</string>
+	<string name="push_explanation">Recommandé : dans ce mode, munin pousse les alertes directement vers votre appareil. Cela permet des notifications en temps réel, un faible impact sur la batterie et une utilisation de données réduite. Vous devez cependant installer un petit script sur chacun des serveurs maîtres.</string>
+	<string name="poll_explanation">Dans ce mode, Munin for Android contacte chacun de vos serveurs régulièrement. Il n\'y a pas de configuration additionnelle, mais ce n\'est pas autant fiable que le mode push et peut réduire la durée de vie de votre batterie et votre forfait de données. N\'utilisez ce mode que si vous ne pouvez pas installer le script mentionné dans le mode push.</string>
+
+<string name="ignoreRules">Règles</string>
+	<string name="manageIgnoreRules">Gérer les règles</string>
 	</resources>
