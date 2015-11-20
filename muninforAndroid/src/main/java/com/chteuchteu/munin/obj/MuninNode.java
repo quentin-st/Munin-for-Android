@@ -238,10 +238,8 @@ public class MuninNode {
 								// Now that we have the HD Graph URL, let's try to reach it to see if it is available
 								if (this.master.isDynazoomAvailable(currentPl, userAgent))
 									this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
-								else {
-									this.hdGraphURL = "";
+								else
 									this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
-								}
 							}
 						} else
 							this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);

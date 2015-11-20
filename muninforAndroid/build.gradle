@@ -24,8 +24,8 @@ android {
         applicationId "com.chteuchteu.munin"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 62
-        versionName "3.6.5-beta6"
+        versionCode 63
+        versionName "3.6.5-beta7"
     }
 
     buildTypes {
@@ -42,18 +42,18 @@ android {
 
 dependencies {
     // AppCompat-v7 & Support-v4
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:support-v4:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:support-v4:23.1.1'
 
     // Android libraries
-    compile 'com.google.android.gms:play-services:8.1.0'
-    compile 'com.google.android.gms:play-services-base:8.1.0'
-    compile 'com.google.android.gms:play-services-cast:8.1.0'
-    compile 'com.google.android.gms:play-services-wallet:8.1.0'
-    compile 'com.google.android.gms:play-services-gcm:8.1.0'
-    compile 'com.google.android.gms:play-services-analytics:8.1.0'
-    compile 'com.android.support:mediarouter-v7:23.1.0'
-    compile 'com.android.support:design:23.0.1'
+    // compile 'com.google.android.gms:play-services:8.3.0'
+    compile 'com.google.android.gms:play-services-base:8.3.0'
+    compile 'com.google.android.gms:play-services-cast:8.3.0'
+    compile 'com.google.android.gms:play-services-wallet:8.3.0'
+    compile 'com.google.android.gms:play-services-gcm:8.3.0'
+    compile 'com.google.android.gms:play-services-analytics:8.3.0'
+    compile 'com.android.support:mediarouter-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
 
     // 3d party dependencies
     compile 'org.jsoup:jsoup:1.8.1'

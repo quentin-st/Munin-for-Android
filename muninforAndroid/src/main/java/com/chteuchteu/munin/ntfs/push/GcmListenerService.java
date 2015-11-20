@@ -149,7 +149,8 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
         ignoreIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent ignorePendingIntent = PendingIntent.getActivity(this, 1, ignoreIntent, PendingIntent.FLAG_ONE_SHOT);
 
-        String title = plugin + "." + field + " = " + value;
+        // Field & value can both be null. In that case, just display the plugin name
+        String title = field != null ? plugin + "." + field + " = " + value : plugin;
         String text = group + " - " + host;
 
         int iLargeIcon = alertLevel == MuninPlugin.AlertState.CRITICAL
