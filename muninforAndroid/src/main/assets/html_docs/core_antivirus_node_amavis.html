@@ -21,20 +21,22 @@
  </dd> 
 </dl> 
 <p>On most systems the mail logs are not readable by nobody which the plugin usually runs at. To enable log reading it needs to run as a group or user that has read access, as shown above.</p> 
-<p>By default the logtail program is started without any explicit path, but if it is not found in the system $PATH then you'll need to specify the full path for the program.</p> 
+<p>By default the logtail program is started without any explicit path, but if it is not found in the system $PATH then you will need to specify the full path for the program.</p> 
 <h2>EXAMPLE CONFIGURATION</h2> 
 <p>The following shows a typical configuration:</p> 
 <pre>  [amavis]
      env.amavislog     /var/log/mail/mail.info
      env.logtail       /usr/bin/logtail
      group adm</pre> 
+<h2>DEFAULT CONFIGURATION</h2> 
+<p>This is the default configuration:</p> 
+<pre>  [amavis]
+    env.mktemp_command /bin/mktemp</pre> 
 <h1>INTERPRETATION</h1> 
 <p>The plugin shows &quot;probable spam&quot;, &quot;surley spam&quot; and &quot;virus&quot;. If your &quot;probable spam&quot; raises you may need to tune your spam configuration to classify more spam as &quot;surley spam&quot; and so be able to eliminate it.</p> 
 <h1>MAGIC MARKERS</h1> 
 <pre>  #%# family=auto
   #%# capabilities=autoconf</pre> 
-<h1>VERSION</h1> 
-<pre>  $Id$</pre> 
 <h1>BUGS</h1> 
 <p>Should use counters since the origin data is really counters. If the node has multiple masters the data served will now be incorrect. Proper operation may require porting to perl or such.</p> 
 <h1>AUTHOR</h1> 

@@ -14,7 +14,7 @@
     env.exclude none unknown rootfs iso9660 squashfs udf romfs ramfs debugfs cgroup_root devtmpfs
     env.warning 92
     env.critical 98</pre> 
-<p>Put it in a file in @@CONFDIR@@/plugin-conf.d/ and restart the munin-node.</p> 
+<p>Put it in a file in /etc/munin/plugin-conf.d/ and restart the munin-node.</p> 
 <p>You may specify filesystem specific warning and critical levels:</p> 
 <pre>    env._dev_sda2_warning 98
     env._dev_sda2_critical 99</pre> 
@@ -27,7 +27,7 @@
 <pre>    env.dfopts -P</pre> 
 <p>Please note that this will also add other shares you've mounted on your computer (Samba/CIFS, etc). If you don't want them, you can exclude them, using the &quot;env.include/env.exclude&quot; settings mentioned above.</p> 
 <h1>USAGE</h1> 
-<p>Link this plugin to @@CONFDIR@@/plugins/ and restart the munin-node. If you want to monitor inode usage instead of disk usage, just link the plugin as <code>df_inode</code>.</p> 
+<p>Link this plugin to /etc/munin/plugins/ and restart the munin-node. If you want to monitor inode usage instead of disk usage, just link the plugin as <code>df_inode</code>.</p> 
 <h1>MAGIC MARKERS</h1> 
 <pre>  #%# family=auto
   #%# capabilities=autoconf</pre> 

@@ -4,14 +4,12 @@
 <p>Connects over the network to Informix databases. Uses informix commands to connect to the databases so these must be present on the munin-node it runs on.</p> 
 <h1>CONFIGURATION</h1> 
 <p>As Informix installations can vary wildly the autoconf may fail. However, it is recommended to let munin-node-configure set the plugin links by e.g.</p> 
-<pre>   # @@SBINDIR@@/munin-node-configure --families contrib --shell |
+<pre>   # munin-node-configure --families contrib --shell |
      grep concurrent | sh -</pre> 
 <p>Yet, for this plugin to work it is most likely required to grant select to the user the munin-node runs this plugin as. This usually requires to login as user &quot;informix&quot; and execute the following command:</p> 
 <pre>   $ echo &quot;grant select on syssqlstat to munin as informix&quot; |
      INFORMIXDIR=/path/to/ifx_base INFORMIXSERVER=inst_name dbaccess sysmaster</pre> 
 <p>The value of INFORMIXSERVER usually equals to that of DBSERVERNAME in the $INFORMIXDIR/etc/onconfig file.</p> 
-<h1>VERSION</h1> 
-<pre> $Id$</pre> 
 <h1>BUGS</h1> 
 <p>This plugin hangs during autoconf - at least on systems without informix. Therefore capabilities magic marker has been removed.</p> 
 <p>May not autoconfigure correctly as noted above.</p> 

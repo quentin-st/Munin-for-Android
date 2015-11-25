@@ -4,7 +4,7 @@
 <p>This plugin needs to run as a user that has access to run exiqgrep and examine the queue directories. This is done like this for example:</p> 
 <pre>  [exim_*]
     user exim</pre> 
-<p>Configuration parameters for a file in @@CONFDIR@@/plugin-conf.d/ if you need to override the defaults below:</p> 
+<p>Configuration parameters for a file in /etc/munin/plugin-conf.d/ if you need to override the defaults below:</p> 
 <pre>  [exim_mailqueue]
     env.exiqgrep   - Use if exiqgrep is not in $PATH
     env.graphtitle - Title of the graph
