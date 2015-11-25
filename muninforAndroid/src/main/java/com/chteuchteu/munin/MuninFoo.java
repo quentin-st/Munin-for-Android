@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.chteuchteu.munin.exc.NullMuninFooException;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
+import com.chteuchteu.munin.hlpr.DocumentationHelper;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
@@ -48,6 +49,7 @@ public class MuninFoo {
 	public Calendar alerts_lastUpdated;
 
 	public ChromecastHelper chromecastHelper;
+	public DocumentationHelper documentationHelper;
 
 	private Tracker tracker;
 	private static final String ANALYTICS_TRACKING_ID = "UA-44703951-1";
@@ -60,8 +62,8 @@ public class MuninFoo {
 		sqlite = new SQLite(context, this);
 		instance = null;
 
-		// Settings singleton
 		this.settings = Settings.getInstance(context);
+		this.documentationHelper = DocumentationHelper.init();
 
 		// User agent
 		String userAgentPref = settings.getString(Settings.PrefKeys.UserAgent);

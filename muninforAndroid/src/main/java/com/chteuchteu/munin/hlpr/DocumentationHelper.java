@@ -1,6 +1,5 @@
 package com.chteuchteu.munin.hlpr;
 
-
 import android.content.Context;
 
 import com.chteuchteu.munin.obj.MuninPlugin;
@@ -15,15 +14,43 @@ import java.util.List;
 public class DocumentationHelper {
 	private static final String HTML_DOCS_SUBDIR = "html_docs/";
 
-	public static String getDocumentation(Context context, MuninPlugin plugin, String node) {
-		String fileName = "";
+	private JSONObject index;
+
+	public static DocumentationHelper init() {
+		return new DocumentationHelper();
+	}
+
+	/**
+	 * Json structure lazy loading
+	 * @return JSONObject
+	 */
+	private JSONObject getIndex() {
+		if (this.index == null) {
+			try {
+				this.index = new JSONObject(jsonStruct);
+			} catch (JSONException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return this.index;
+	}
+
+	/**
+	 * Get documentation content for a plugin
+	 * @param context Context
+	 * @param plugin MuninPlugin
+	 * @param node String
+	 * @return String
+	 */
+	public String getDocumentation(Context context, MuninPlugin plugin, String node) {
+		String fileName = null;
+
 		try {
-			JSONObject obj = new JSONObject(jsonStruct);
-			JSONArray index = obj.getJSONArray("index");
+			JSONArray index = this.getIndex().getJSONArray("index");
 			for (int i=0; i<index.length(); i++) {
 				JSONObject element = (JSONObject) index.get(i);
 
-				if (node.equals("")) { // Don't care about node : take the first
+				if (node == null) { // Don't care about node : take the first
 					if (element.getString("name").equals(plugin.getName())) {
 						fileName = element.getString("file");
 						break;
@@ -43,22 +70,27 @@ public class DocumentationHelper {
 					}
 				}
 			}
-		} catch (JSONException ex) { ex.printStackTrace(); return ""; }
+		} catch (JSONException ex) {
+			ex.printStackTrace();
+			return null;
+		}
 
-		if (fileName.equals(""))
-			return "";
+		if (fileName == null)
+			return null;
 
-		fileName = HTML_DOCS_SUBDIR + fileName;
-
-		return Util.readFromAssets(context, fileName);
+		return Util.readFromAssets(context, HTML_DOCS_SUBDIR + fileName);
 	}
 
-	public static List<String> getNodes(MuninPlugin plugin) {
+	/**
+	 * Returns "nodes" (categories) list for a specific plugin
+	 * @param plugin MuninPlugin
+	 * @return List<String>
+	 */
+	public List<String> getNodes(MuninPlugin plugin) {
 		List<String> list = new ArrayList<>();
 
 		try {
-			JSONObject obj = new JSONObject(jsonStruct);
-			JSONArray index = obj.getJSONArray("index");
+			JSONArray index = this.getIndex().getJSONArray("index");
 			for (int i=0; i<index.length(); i++) {
 				JSONObject element = (JSONObject) index.get(i);
 
@@ -75,12 +107,16 @@ public class DocumentationHelper {
 		return list;
 	}
 
-	public static boolean hasDocumentation(MuninPlugin plugin) {
+	/**
+	 * Checks if there is a documentation file for a specific plugin
+	 * @param plugin MuninPlugin
+	 * @return boolean
+	 */
+	public boolean hasDocumentation(MuninPlugin plugin) {
 		String pluginName = plugin.getName();
 
 		try {
-			JSONObject obj = new JSONObject(jsonStruct);
-			JSONArray index = obj.getJSONArray("index");
+			JSONArray index = this.getIndex().getJSONArray("index");
 			for (int i=0; i<index.length(); i++) {
 				if (((JSONObject) index.get(i)).getString("name").equals(pluginName))
 					return true;
