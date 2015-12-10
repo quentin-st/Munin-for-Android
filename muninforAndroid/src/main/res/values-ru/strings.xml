@@ -3,7 +3,7 @@
 	<string name="app_name">"Munin для Android"</string>
 	<string name="button_graphs">"Графики"</string>
 	<string name="button_server">"Серверы"</string>
-	<string name="settings_URL_label">"мастер-URL Munin"</string>
+	<string name="settings_URL_label">Мастер-URL Munin</string>
 	<string name="settings_URL_label2">"пример: https://88.180.108.192:80/munin/"</string>
 	<string name="settings_text">… либо выберите сервер согласно примеру:</string>
 	<string name="settings_http_auth2">"необходима HTTP аутентификация"</string>
@@ -253,7 +253,7 @@
 	<string name="lang_chinese_taiwan">Китайский (Тайвань)</string>
 	<string name="push">Push</string>
 	<string name="push_notifications">Push уведомления</string>
-	<string name="poll">Poll</string>
+	<string name="poll">Poll режим</string>
 	<string name="poll_notifications">Poll уведомления</string>
 	<string name="push_explanation">Рекомендовано: в этом режиме Munin доставляет уведомления прямо на ваше устройство. Это позволяет получать уведомления в режиме реального времени, при этом экономит батарею и использование трафика. Но для этого вам необходимо установить небольшой скрипт на каждый мастер сервер.</string>
 	<string name="poll_explanation">В этом режиме Munin for Android регулярно опрашивает все ваши сервера. Работает без какой-либо дополнительной настройки, но не настолько надёжно как Push и может увеличить расход батареи и трафика. Используйте этот режем только если у вас нету возможности установить скрипты упомянутые в Push режиме на сервер.</string>
