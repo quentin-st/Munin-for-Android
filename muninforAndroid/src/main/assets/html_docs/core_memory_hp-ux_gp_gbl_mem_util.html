@@ -4,7 +4,7 @@
 <p>On HP-UX with GlancePlus (GP) installed</p> 
 <h1>USAGE</h1> 
 <p>Run this command as root user to install the plugin</p> 
-<pre>  @@SBINDIR@@/munin-node-configure --families auto --shell|grep gp_gbl_mem_util|sh -</pre> 
+<pre>  munin-node-configure --families auto --shell|grep gp_gbl_mem_util|sh -</pre> 
 <p>and restart your munin-node.</p> 
 <h2>REQUIRES</h2> 
 <p>Separate GP adviser syntax file whose location is made known by ADVISER environment variable which defaults to @@LIBDIR@@/gp_gbl_mem_util.adv.</p> 
@@ -28,7 +28,7 @@
   [gp_gbl_mem_util]
       env.ADVISER           @@LIBDIR@@/gp_gbl_mem_util.adv</pre> 
 <h2>NOTE</h2> 
-<p>If you put the *.adv file in above mentioned location add &quot;ignore_file \.adv$&quot; to your @@CONFDIR@@/munin-node.conf to avoid parsing problems on start of munin-node.</p> 
+<p>If you put the *.adv file in above mentioned location add &quot;ignore_file \.adv$&quot; to your /etc/munin/munin-node.conf to avoid parsing problems on start of munin-node.</p> 
 <h1>AUTHOR</h1> 
 <pre> Ralph Grothe &lt;ralph dot grothe at itdz minus berlin dot de&gt;</pre> 
 <h1>MAGIC MARKERS</h1> 

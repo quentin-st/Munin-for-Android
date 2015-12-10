@@ -5,7 +5,7 @@
 <h1>CONFIGURATION</h1> 
 <p>None needed</p> 
 <h1>USAGE</h1> 
-<p>Link this into @@CONFDIR@@/plugins/ and restart the munin-node.</p> 
+<p>Link this into /etc/munin/plugins/ and restart the munin-node.</p> 
 <h1>INTERPRETATION</h1> 
 <p>The plugin shows the average time a IO-operation needs to complete for each disk or block device on the system.</p> 
 <p>Simple partitioned disks will only show as the whole disk. When/if you use some device layer over that, such as LVM then LV devices will show up individually.</p> 
@@ -14,7 +14,6 @@
 <pre>  #%# family=legacy
   #%# capabilities=autoconf</pre> 
 <h1>VERSION</h1> 
-<pre>  $Id$</pre> 
 <h1>BUGS</h1> 
 <p>Should show more useful device names/labels for device-mapper devices, such as those used by LVM and so on.</p> 
 <h1>AUTHOR</h1> 

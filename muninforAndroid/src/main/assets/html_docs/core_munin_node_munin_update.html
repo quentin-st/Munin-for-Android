@@ -22,8 +22,6 @@
 <h1>BUGS</h1> 
 <p>Munin-update is always run at the same time as this plugin runs - therefore the stats file may be incompletely written and the plugin will likely show a incomplete list of hosts. It should be using munin-update.old-stats, which is not currently even made.</p> 
 <p>Munin-update removes the &quot;domain&quot; information on all hosts. If there are two hosts with the same host name in different domains then one of them will be disappeared by the munin-update collection process.</p> 
-<h1>VERSION</h1> 
-<pre>  $Id$</pre> 
 <h1>AUTHOR</h1> 
 <p>The munin_update plugin has been included in munin for many years (at least 2004). The most likely author is one of the original munin team.</p> 
 <p>Documentation and updating to 2009 for Munin 1.4 by Nicolai Langfeldt.</p> 

@@ -46,7 +46,6 @@ import com.chteuchteu.munin.adptr.Adapter_GraphView;
 import com.chteuchteu.munin.adptr.PluginsListAlertDialog;
 import com.chteuchteu.munin.async.DynazoomDetector;
 import com.chteuchteu.munin.async.FieldsDescriptionFetcher;
-import com.chteuchteu.munin.hlpr.DocumentationHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper.DynazoomFetcher;
@@ -246,7 +245,7 @@ public class Activity_GraphView extends MuninActivity {
 				if (item_documentation != null) {
 					// DocumentationAvailability is cached in order to avoid browsing the JSON array too much
 					if (currentPlugin.isDocumentationAvailable() == Util.SpecialBool.UNKNOWN)
-						currentPlugin.setDocumentationAvailability(DocumentationHelper.hasDocumentation(currentPlugin));
+						currentPlugin.setDocumentationAvailability(muninFoo.documentationHelper.hasDocumentation(currentPlugin));
 
 					item_documentation.setVisible(currentPlugin.isDocumentationAvailable() == Util.SpecialBool.TRUE);
 				}
@@ -444,7 +443,7 @@ public class Activity_GraphView extends MuninActivity {
 		
 		item_period = menu.findItem(R.id.menu_period);
 		item_documentation = menu.findItem(R.id.menu_documentation);
-		item_documentation.setVisible(DocumentationHelper.hasDocumentation(currentPlugin));
+		item_documentation.setVisible(muninFoo.documentationHelper.hasDocumentation(currentPlugin));
 		MenuItem item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
         MenuItem item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
 		
@@ -785,7 +784,7 @@ public class Activity_GraphView extends MuninActivity {
 		});
 
 		// Get file content
-		String fileContent = DocumentationHelper.getDocumentation(context, currentPlugin, "");
+		String fileContent = muninFoo.documentationHelper.getDocumentation(context, currentPlugin, null);
 		if (!fileContent.equals("")) {
 			// Animation
 			View documentation = findViewById(R.id.documentation);
@@ -821,7 +820,7 @@ public class Activity_GraphView extends MuninActivity {
 			doc.setText(Html.fromHtml(fileContent));
 
 			Spinner spinner = (Spinner) findViewById(R.id.doc_spinner);
-			final List<String> nodes = DocumentationHelper.getNodes(currentPlugin);
+			final List<String> nodes = muninFoo.documentationHelper.getNodes(currentPlugin);
 
 			findViewById(R.id.doc_scrollview).setScrollY(0);
 
@@ -840,7 +839,7 @@ public class Activity_GraphView extends MuninActivity {
 						String node = nodes.get(i);
 						if (node.equals(""))
 							node = "node";
-						String fileContent = DocumentationHelper.getDocumentation(context, currentPlugin, node);
+						String fileContent = muninFoo.documentationHelper.getDocumentation(context, currentPlugin, node);
 						doc.setText(Html.fromHtml(fileContent));
 					}
 					@Override public void onNothingSelected(AdapterView<?> adapterView) { }

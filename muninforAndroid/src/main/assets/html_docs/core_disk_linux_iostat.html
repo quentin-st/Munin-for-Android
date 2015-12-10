@@ -11,14 +11,12 @@
    env.include_only sda,sdb</pre> 
 <p>it will show numbered devices. This is sometimes needed in virtualized environments (e.g. Xen) where sda1 to sda&lt;n&gt; exists but not sda. In a virtualized environment this is useful to show which guest OS/dom-U IO-traffic originates in.</p> 
 <h1>USAGE</h1> 
-<p>Link this plugin to @@CONFDIR@@/plugins/ and restart the munin-node.</p> 
+<p>Link this plugin to /etc/munin/plugins/ and restart the munin-node.</p> 
 <h1>INTERPRETATION</h1> 
 <p>To be written...</p> 
 <h1>MAGIC MARKERS</h1> 
 <pre> #%# family=legacy
  #%# capabilities=autoconf</pre> 
-<h1>VERSION</h1> 
-<pre>  $Id$</pre> 
 <h1>AUTHOR</h1> 
 <p>This plugin has been in Munin since it was called &quot;LRRD&quot;. The log for this file shows that there was a rewrite by Mike Fedyk applied in January 2004. We have no other records of who wrote it.</p> 
 <h1>LICENSE</h1> 

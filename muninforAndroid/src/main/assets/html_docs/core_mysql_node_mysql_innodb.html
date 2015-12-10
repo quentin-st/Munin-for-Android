@@ -11,7 +11,7 @@
   mysql&gt; CREATE TABLE something (anything int) ENGINE=InnoDB;
   mysql&gt; GRANT SELECT ON munin_innodb.* TO 'munin'@'localhost' IDENTIFIED BY 'munin';</pre> 
 <h1>CONFIGURATION</h1> 
-<p>Configuration parameters for @@CONFDIR@@/mysql_innodb, if you need to override the defaults below:</p> 
+<p>Configuration parameters for /etc/munin/mysql_innodb, if you need to override the defaults below:</p> 
 <pre> [mysql_innodb]
   env.mysql     - Path to the mysql binary
   env.mysqlopts - Options to pass to mysql (host, username, password)

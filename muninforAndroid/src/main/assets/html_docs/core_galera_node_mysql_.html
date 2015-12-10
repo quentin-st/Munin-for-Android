@@ -1,7 +1,9 @@
 <h1>NAME</h1> 
 <p>mysql_ - Munin plugin to display misc MySQL server status</p> 
 <h1>APPLICABLE SYSTEMS</h1> 
-<p>Any MySQL platform, tested by the authors on: * MySQL 5.6.12 * MySQL 5.5.32, 5.5.37 * MySQL 5.1.29, * MySQL 5.0.51 * MariaDB 5.5.39 * MariaDB-5.5.39(galera).</p> 
+<p>Any MySQL platform, tested by the authors on: * MySQL 5.6.12 * MySQL 5.5.32, 5.5.37 * MySQL 5.1.29, * MySQL 5.0.51 * MariaDB 5.5.39 * MariaDB-5.5.39(galera). * MariaDB 10.0.18</p> 
+<p>Plugins: * MariaDB-10 Query Response Time: https://mariadb.com/kb/en/mariadb/query_response_time-plugin/</p> 
+<p>Information Schema tables: * User statistics - MariaDB-5.2+, OurDelta, Percona Server - https://mariadb.com/kb/en/mariadb/user-statistics</p> 
 <h1>CONFIGURATION</h1> 
 <p>This script is used to generate data for several graphs. To generate data for one specific graph, you need to create a symbolic link with a name like mysql_&lt;GRAPH&gt; to this script.</p> 
 <p>If you need to run against multiple MySQL instances on the same host, create your symlinks with names like mysql&lt;N&gt;_&lt;GRAPH&gt; where N is any non-negative integer. You must also set the env.cachenamespace variable to a unique value for each group of symlinks.</p> 
@@ -9,19 +11,33 @@
 <pre>  ./mysql_ suggest</pre> 
 <p>In addition you might need to specify connection parameters in the plugin configuration to override the defaults. These are the defaults:</p> 
 <pre>  [mysql_*]
-    env.mysqlconnection DBI:mysql:mysql
+    env.mysqlconnection DBI:mysql:information_schema
     env.mysqluser root</pre> 
 <p>Non-default example:</p> 
 <pre>  [mysql_*]
-    env.mysqlconnection DBI:mysql:mysql;host=127.0.0.1;port=3306
-    env.mysqluser root
+    env.mysqlconnection DBI:mysql:information_schema;host=127.0.0.1;port=3306
+    env.mysqluser munin
     env.mysqlpassword geheim
     env.cachenamespace munin_mysql_pri
   [mysql2_*]
-    env.mysqlconnection DBI:mysql:mysql;host=127.0.0.1;port=13306
-    env.mysqluser root
+    env.mysqlconnection DBI:mysql:information_schema;host=127.0.0.1;port=13306
+    env.mysqluser munin;
     env.mysqlpassword ryuWyawEv
-    env.cachenamespace munin_mysql_alt</pre> 
+    env.cachenamespace munin_mysql_alt
+  [mysql10_*]
+    user munin
+    env.mysqluser munin
+    env.mysqlconnection DBI:mysql:information_schema;mysql_read_default_file=/etc/munin/.my-10.cnf
+    env.cachenamespace munin_mysql_10
+    # here the [client] section of /etc/munin/.my-10.cnf is read. socket= can
+    # be specified here.</pre> 
+<p>Creating a munin user:</p> 
+<pre>  CREATE USER 'munin'@'localhost' IDENTIFIED BY 'ryuWyawEv';</pre> 
+<p>or with a unix_socket plugin (INSTALL PLUGIN unix_socket SONAME 'auth_socket')</p> 
+<pre>  CREATE USER 'munin'@'localhost' IDENTIFIED WITH unix_socket;</pre> 
+<p>Note: requires 'user munin' in the configuration.</p> 
+<p>The minimum required priviledges of the munin database user is:</p> 
+<pre>  GRANT PROCESS, REPLICATION CLIENT ON *.* TO 'munin'@'localhost';</pre> 
 <p>Warning and critical values can be set via the environment in the usual way. For example:</p> 
 <pre>  [mysql_replication]
     env.slave_io_running_warning 0.5

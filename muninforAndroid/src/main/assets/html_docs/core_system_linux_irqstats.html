@@ -8,15 +8,13 @@
    env.skipdevs blkif,vif</pre> 
 <p>None needed</p> 
 <h1>USAGE</h1> 
-<p>Link this plugin to @@CONFDIR@@/plugins/ and restart the munin-node.</p> 
+<p>Link this plugin to /etc/munin/plugins/ and restart the munin-node.</p> 
 <h1>INTERPRETATION</h1> 
 <p>The plugin simply shows the number of interrupts on each interrupt line. The lines are identified by the attached equipment rather than the IRQ numbers.</p> 
 <p>High interrupt rates may coincide with high loads on disk, network or other I/O, this is normal.</p> 
 <h1>MAGIC MARKERS</h1> 
 <pre>  #%# family=auto
   #%# capabilities=autoconf</pre> 
-<h1>VERSION</h1> 
-<pre>  $Id$</pre> 
 <h1>BUGS</h1> 
 <p>None known</p> 
 <h1>AUTHOR</h1> 

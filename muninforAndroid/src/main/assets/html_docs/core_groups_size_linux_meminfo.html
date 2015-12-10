@@ -1,0 +1,103 @@
+<h1>NAME</h1> 
+<p>meminfo - Plugin to monitor memory usage.</p> 
+<h1>WARNING</h1> 
+<p>Do not enable this plugin unless you need it. It alone produces significantly more data than any normal munin-node in sum. Therefore it is not autimatically enabled.</p> 
+<h1>APPLICABLE SYSTEMS</h1> 
+<p>All Linux systems</p> 
+<h1>INTERPRETATION</h1> 
+<p>This plugin show many graphs (on my pc ~90 graphs with total ~750 values). Graph splitted to 8 groups, every group has child graphs:</p> 
+<pre>  Application groups memory usage                  - show applications groups memory using by group (env.) [env.applications_group]
+    Group `groupName1` applications memory usage     v
+    ...                                            - show applications groups memory using per application in every group
+    Group `groupNameX` applications memory usage     ^
+    Summary group `groupName1` memory usage          v
+    ...                                            - show applications groups memory using as summ of every parametr of application in every group
+    Summary group `groupNameX` memory usage          ^
+  Application memory usage                         - show memory usage per application [env.applications]
+    Application processes                          - show processes count of every application
+    Summary `applicationName1` memory usage          v
+    ...                                            - Summary application processes memory using
+    Summary `applicationNameX` memory usage          ^
+  External fragmentation: Buddyinfo                - Buddyinfo/ Nodes and zones summary
+     Node X, zone ZZZ                              - Chunks for each zone
+  External fragmentation: Page type info           - Page type info, summary node-zone-type pages
+    Node X, zone ZZZ, type TTT                     - Free pages per node-zone-page by order
+  Physical memory usage                            - Main graph, show physical memory usage
+    Active/Inactive memory                         - subj :)
+    Memory usage by cashes and buffers             - subj :)
+    mmap                                           - mmapp'ed memory
+    HugePages count                                - subj :)
+    HugePages size                                 - subj :)
+    Kernel memory                                  - subj :)
+    Low and high memory                            - subj :)
+  Slab objects size                                - subj :)
+    Slabs size [GroupName1]                          v
+    ...                                            - show slabs size. I try split fields by this types. 
+    Slabs size [GroupNameX]                          ^
+    Slabs sizes of groups                          - &quot;Groups&quot; sizes
+    Slab objects                                   - Active/inactive objects
+    Slabs                                          - Active/inactive and shared slabs
+    Reclaim                                        - Reclaimed
+  Swap usage                                       - subj :)
+    First candidates to swap out                   - subj :)
+    Writeback                                      - writeback and dirty
+  Virtual memory usage                             - subj :)
+    Vmalloc                                        - show vmalloc usage
+    Vmalloc allocates                              - allocates per object</pre> 
+<h1>CONFIGURATION</h1> 
+<p>The plugin automatically selects which graphics drawing. But you can select graphs to draw by enabled_graphs environment. enabled_graphs is a regexp, where you include graphs to draw.</p> 
+<p>Default: undefined</p> 
+<p>Examples:</p> 
+<pre>  env.enabled_graphs meminfo_\w+\.?       # Draw only meminfo graphs
+  env.enabled_graphs (meminfo|swapinfo)$  # Draw only meminfo and swapinfo graphs, without 'childs'</pre> 
+<p>Also you can select applications to monitor it by applications environment applications environment is regexp</p> 
+<p>Default: undefined</p> 
+<p>Examples:</p> 
+<pre>  env.applications (firefox|\w{1,3}?sh) # Monitor firefox and shells (bash, zsh, sh, etc...)</pre> 
+<p>Also you can group applications and show memory using of this groups, per application in group and summmary applications in group. Use env.applications_group for this.</p> 
+<p>Format: env.applications_group regexp:groupName;regexp:groupName;...</p> 
+<p>where regexp - it applications names regexp, and groupName - on-screen group name</p> 
+<p>Default: undefined</p> 
+<p>Examples:</p> 
+<pre>  env.applications_group ^(firefox|chrome|opera|konqu|arora):Browsers;(^lx|openbox|menu|gnome|slim|^X):X;^(hal|console-kit|syslog|cron|dhcp|udev|dbus|bluetoo|agett|login|automount):System;</pre> 
+<p>And you can select time to display data after application close (all values return as 'NaN'), for this you must used environment env.application_wait Value - secunds</p> 
+<p>Default: 1800</p> 
+<p>Example:</p> 
+<pre>  env.application_wait 86400 #24h</pre> 
+<h2>PERMISSIONS NOTE</h2> 
+<p>Please check, can your munin user read files such as</p> 
+<pre>  /proc/meminfo
+  /proc/slabinfo
+  /proc/vmallocinfo
+  /proc/buddyinfo
+  /proc/pagetypeinfo
+  /proc/[pid]/status</pre> 
+<p>If no access, just write in plugin-config</p> 
+<pre>  [meminfo]
+  user root
+  group root</pre> 
+<h2>WARNING AND CRITICAL SETTINGS</h2> 
+<p>You can set warning and critical levels for *each* of the data series the plugin reports.</p> 
+<p>Template for limits:</p> 
+<pre>  env.limit_%field% (warning_num:crytical_num|critical_num)[kMG]</pre> 
+<p>where %field% - field name. You can see it in graph view, 'field internal name' field</p> 
+<pre>  warning_num - number, warning value
+  crytical_num - number, critical value
+  k - kilobytes, M - megabytes, G - gigabytes</pre> 
+<p>Examples:</p> 
+<pre>  env.limit_apps 300M:500M    # Applications, warning - 300M, critical - 500m
+  env.limit_committed_as 700M # Committed AS, critical - 700M</pre> 
+<h1>MAGIC MARKERS</h1> 
+<pre>  #%# family=contrib
+  #%# capabilities=autoconf</pre> 
+<h1>VERSION</h1> 
+<pre>  1.0</pre> 
+<h1>BUGS</h1> 
+<p>none known</p> 
+<h1>AUTHOR</h1> 
+<p>Gorlow Maxim aka Sheridan &lt;sheridan@sheridan-home.ru&gt; (email and jabber)</p> 
+<h1>LICENSE</h1> 
+<p>GPLv2</p>   
+<div>
+ Source : http://gallery.munin-monitoring.org/
+</div>

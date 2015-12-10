@@ -10,15 +10,13 @@
 <p>A few aspects are not linked by default. They are marked as 'DEBUG' =&gt; 'yes' (or any other value). They are:</p> 
 <p>data_structures, vcl_and_bans, lru, objects_per_objhead, obj_sendfile_vs_write, losthdr, esi, hcb, shm, shm_writes, overflow, session, session_herd</p> 
 <p>You can link them yourself with something like this:</p> 
-<pre>  ln -s @@LIBDIR@@/plugins/varnish_ \
-    @@CONFDIR@@/plugins/varnish_data_structures</pre> 
+<pre>  ln -s /usr/share/munin/plugins/varnish_ \
+    /etc/munin/plugins/varnish_data_structures</pre> 
 <h1>INTERPRETATION</h1> 
 <p>Each graph uses data from varnishstat.</p> 
 <h1>MAGIC MARKERS</h1> 
 <pre> #%# family=auto
  #%# capabilities=autoconf suggest</pre> 
-<h1>VERSION</h1> 
-<pre> $Id$</pre> 
 <h1>BUGS</h1> 
 <p>The hit_rate graph requires munin r2040 or newer to display correctly.</p> 
 <h1>PATCHES-TO</h1> 
