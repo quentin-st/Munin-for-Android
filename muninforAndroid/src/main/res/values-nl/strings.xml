@@ -238,4 +238,8 @@
 	<string name="ignore_plugin">Plugin %1$s ongeacht host en groep</string>
 	<string name="ignoreRules">Regels negeren</string>
 	<string name="until">Tot</string>
+	<string name="lang_polish">Pools</string>
+	<string name="chromecast_application_id">Chromecast toepassings-ID</string>
+    <string name="import_export_server">Import/Export server</string>
+    <string name="disable_chromecast">Chromecast ondersteuning uitschakelen</string>
 	</resources>
