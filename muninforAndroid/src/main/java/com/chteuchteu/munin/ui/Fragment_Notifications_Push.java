@@ -90,6 +90,7 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 				input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
 				new AlertDialog.Builder(context)
+						.setTitle(R.string.notifications_sendByMail)
 						.setView(input)
 						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
