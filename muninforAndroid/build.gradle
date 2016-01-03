@@ -10,7 +10,6 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'com.google.gms.google-services'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -18,7 +17,7 @@ repositories {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.0'
+    buildToolsVersion '23.0.1'
 
     defaultConfig {
         applicationId "com.chteuchteu.munin"
@@ -46,12 +45,12 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.1'
 
     // Android libraries
-    // compile 'com.google.android.gms:play-services:8.3.0'
-    compile 'com.google.android.gms:play-services-base:8.3.0'
-    compile 'com.google.android.gms:play-services-cast:8.3.0'
-    compile 'com.google.android.gms:play-services-wallet:8.3.0'
-    compile 'com.google.android.gms:play-services-gcm:8.3.0'
-    compile 'com.google.android.gms:play-services-analytics:8.3.0'
+    // compile 'com.google.android.gms:play-services:8.4.0'
+    compile 'com.google.android.gms:play-services-base:8.4.0'
+    compile 'com.google.android.gms:play-services-cast:8.4.0'
+    compile 'com.google.android.gms:play-services-wallet:8.4.0'
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile 'com.android.support:mediarouter-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
 
@@ -67,3 +66,5 @@ dependencies {
     // Debug-specific dependencies
     debugCompile 'im.dino:dbinspector:3.1.0@aar'
 }
+
+apply plugin: 'com.google.gms.google-services'
