@@ -179,7 +179,6 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	@Override
 	public void onPreview() {
 		menu_open.setVisible(true);
-		menu_period.setVisible(false);
 		menu_refresh.setVisible(false);
 		menu_edit.setVisible(false);
 
@@ -191,7 +190,6 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	public void onPreviewHide() {
 		if (menu_refresh != null)	menu_refresh.setVisible(true);
 		if (menu_edit != null)		menu_edit.setVisible(true);
-		if (menu_period != null)	menu_period.setVisible(true);
 		if (menu_open != null)		menu_open.setVisible(false);
 
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
