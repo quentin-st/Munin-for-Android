@@ -2,6 +2,7 @@ package com.chteuchteu.munin.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -188,6 +189,16 @@ public class Fragment_Grid extends Fragment {
 				}
 			});
 		}
+	}
+
+	public void updatePreviewBitmap(Bitmap bitmap) {
+		if (!this.isPreviewing()) {
+			MuninFoo.logE("Nothing's previewing right now");
+			return;
+		}
+
+		ImageView fullscreenImageView = (ImageView) view.findViewById(R.id.fullscreen_iv);
+		fullscreenImageView.setImageBitmap(bitmap);
 	}
 
 	public void hidePreview() {

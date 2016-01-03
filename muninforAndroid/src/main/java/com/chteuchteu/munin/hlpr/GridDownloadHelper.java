@@ -62,7 +62,10 @@ public class GridDownloadHelper {
 	private void onStop() {
 		fragment.setUpdating(false);
 	}
-	
+
+	/**
+	 * BitmapDownloader: simple AsyncTask downloading & applying the bitmap to each GridItem
+	 */
 	private class BitmapDownloader extends AsyncTask<Void, Integer, Void> {
 		private GridItem gridItem;
 		private boolean forceUpdate;
@@ -78,7 +81,9 @@ public class GridDownloadHelper {
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
+			// Check if we need to update the ImageView
 			if (forceUpdate || gridItem.iv.getDrawable() == null) {
+				// Safety checks
 				if (gridItem != null && gridItem.getPlugin() != null && gridItem.getPlugin().getInstalledOn() != null
 						&& gridItem.getPlugin().getInstalledOn().getParent() != null) {
 					String graphUrl = gridItem.getPlugin().getImgUrl(period);
@@ -100,13 +105,22 @@ public class GridDownloadHelper {
 				onStop();
 
 			if (gridItem != null) {
+				// Download succeeded
 				if (originalBitmap != null && croppedBitmap != null) {
 					gridItem.iv.setImageBitmap(croppedBitmap);
 					gridItem.originalGraph = originalBitmap;
 					gridItem.croppedGraph = croppedBitmap;
+
+					// If currently previewing: update preview bitmap too
+					if (gridItem.isPreviewed())
+						fragment.updatePreviewBitmap(originalBitmap);
 				}
-				else if (forceUpdate)
+				else if (forceUpdate) {
+					// Download failed: apply placeholder if refresh triggered by user
 					gridItem.applyPlaceholder(true);
+				}
+
+				// Hide ProgressBar
 				gridItem.pb.setVisibility(View.GONE);
 			}
 		}

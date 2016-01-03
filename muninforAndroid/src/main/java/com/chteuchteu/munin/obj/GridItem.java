@@ -185,6 +185,13 @@ public class GridItem {
 	private void preview() {
 		fragment.preview(this);
 	}
+	/**
+	 * Returns true if this GridItem is currently previewed in fragment
+	 * @return boolean, true if previewing
+	 */
+	public boolean isPreviewed() {
+		return fragment.isPreviewing() && grid.currentlyOpenedGridItem == this;
+	}
 	
 	public static class HDGraphDownloader extends AsyncTask<Void, Integer, Void> {
 		private MuninPlugin plugin;
