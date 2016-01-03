@@ -232,8 +232,8 @@
 		<item name="tabIndicatorColor">#ffffff</item>
 	</style>
 
-	<style name="TabLayout.TextStyle">
-		<item name="textSize">11sp</item>
+	<style name="TabLayout.TextStyle" parent="TextAppearance.Design.Tab">
+		<item name="textSize">12sp</item>
 		<item name="textAllCaps">false</item>
 	</style>
 
