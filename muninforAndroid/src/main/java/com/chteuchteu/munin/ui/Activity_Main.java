@@ -258,20 +258,23 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 				((Fragment_Grid) fragment).refresh();
 				break;
 			case R.id.period_day:
-				((Fragment_Grid) fragment).setCurrentPeriod(MuninPlugin.Period.DAY);
-				((Fragment_Grid) fragment).refresh();
-				return true;
 			case R.id.period_week:
-				((Fragment_Grid) fragment).setCurrentPeriod(MuninPlugin.Period.WEEK);
-				((Fragment_Grid) fragment).refresh();
-				return true;
 			case R.id.period_month:
-				((Fragment_Grid) fragment).setCurrentPeriod(MuninPlugin.Period.MONTH);
-				((Fragment_Grid) fragment).refresh();
-				return true;
 			case R.id.period_year:
-				((Fragment_Grid) fragment).setCurrentPeriod(MuninPlugin.Period.YEAR);
-				((Fragment_Grid) fragment).refresh();
+				// Get Period from menu item
+				MuninPlugin.Period period;
+				switch (item.getItemId())  {
+					case R.id.period_day: period = MuninPlugin.Period.DAY; break;
+					case R.id.period_week: period = MuninPlugin.Period.WEEK; break;
+					case R.id.period_month: period = MuninPlugin.Period.MONTH; break;
+					case R.id.period_year: period = MuninPlugin.Period.YEAR; break;
+					default: period = MuninPlugin.Period.DAY; break; // Arbitrary default
+				}
+
+				Fragment_Grid fragment_grid = (Fragment_Grid) this.fragment;
+				fragment_grid.setCurrentPeriod(period);
+				menu_grid_changePeriod.setTitle(period.getLabel(this));
+				fragment_grid.refresh();
 				return true;
 			/* Fragment - Alerts */
 			case R.id.menu_alerts_refresh:
@@ -399,6 +402,9 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	public void onManualLoad() {
 		menu_grid_refresh.setVisible(true);
 		menu_grid_changePeriod.setVisible(true);
+		// Set period MenuItem text
+		Fragment_Grid fragment = (Fragment_Grid) this.fragment;
+		menu_grid_changePeriod.setTitle(fragment.getCurrentPeriod().getLabel(this));
 	}
 	@Override public void onGridSaved() { }
 

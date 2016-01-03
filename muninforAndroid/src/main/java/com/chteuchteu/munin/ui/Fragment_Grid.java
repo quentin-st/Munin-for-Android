@@ -231,6 +231,7 @@ public class Fragment_Grid extends Fragment {
 	public Grid getGrid() { return this.grid; }
 
 	public void setCurrentPeriod(MuninPlugin.Period period) { this.currentPeriod = period; }
+	public MuninPlugin.Period getCurrentPeriod() { return this.currentPeriod; }
 
 	public void refresh() {
 		if (!Util.isOnline(context))
