@@ -7,7 +7,7 @@
 	<string name="button_labels">Etichette</string>
 	<string name="button_grid">Griglie</string>
 	<string name="button_notifications">Notifiche</string>
-	<string name="settings_URL_label">URL nodo master</string>
+	<string name="settings_URL_label">Munin-master URL</string>
 	<string name="settings_URL_label2">es: https://88.180.108.192:80/munin/</string>
 	<string name="settings_text">...o scegli un server demo:</string>
 	<string name="settings_http_auth2">Autenticazione HTTP richiesta</string>
@@ -81,7 +81,7 @@
 	<string name="lang_russian">Russo</string>
 	<string name="lang_spanish">Spagnolo</string>
 	<string name="lang_italian">Italiano</string>
-	<string name="text01">Le impostazioni e la lista dei server verranno ripristinati. Sei sicuro?</string>
+	<string name="text01">Le impostazioni verranno ripristinate. Sei sicuro?</string>
 	<string name="text02">Ripristino eseguito.</string>
 	<string name="text09">Errore!</string>
 	<string name="text11">L\'app Google Play sembra mancare sul tuo dispositivo.</string>
@@ -167,7 +167,7 @@
 	<string name="not_now">Non ora</string>
 	<string name="export_explanation">La tua configurazione verrà inviata in modo da poter essere recuperata dal tuo dispositivo secondario. Se sono presenti, le password saranno criptate. Alla fine dell\'esportazione, un codice casuale ti permetterà di scaricare la configurazione sull\'altro dispositivo. La configurazione verrà cancellata dal server di Munin per Android appena sarà stata scaricata, e in ogni caso entro 24 ore.</string>
 	<string name="export_success_title">Esportazione riuscita</string>
-	<string name="export_success_txt1">La configurazione dei tuoi server nell\'app è stata inviata con successo. Usa questo codice sul tuo dispositivo secondario per importarla.</string>
+	<string name="export_success_txt1">La configurazione è stata esportata con successo. Usa questo codice sul tuo dispositivo secondario per importarla.</string>
 	<string name="import_success_title">Importazione riuscita</string>
 	<string name="delete_plugin">Cancella plugin</string>
 	<string name="delete_label">Cancella etichetta</string>
@@ -177,7 +177,7 @@
 	<string name="update_credentials">Modifica credenziali d\'accesso</string>
 	<string name="long_click">Premi a lungo per modificare</string>
 	<string name="rescan">Scansiona di nuovo</string>
-	<string name="support">Supporto / suggerimenti</string>
+	<string name="support">Supporto</string>
 	<string name="choose_email_client">Scegli la tua app per l\'email</string>
 	<string name="donate">Dona</string>
 	<string name="donate_text">Sviluppare un\'applicazione così grossa richiede molto tempo e impegno. Se l\'app ti è utile nella vita di tutti i giorni, potresti fare una donazione? Grazie! Se lo fai, inviami un\'email in modo che possa ringraziarti di persona!</string>
@@ -211,7 +211,7 @@
 	<string name="documentation">Documentazione</string>
 	<string name="ok">OK</string>
 	<string name="grids_settings">Impostazioni griglie</string>
-	<string name="alert_i18n">Sembra che l\'app non sia disponibile nella tua lingua. Puoi aiutarci rendendola disponibile nella tua lingua, per favore?</string>
+	<string name="alert_i18n">Sembra che l\'app non sia disponibile nella tua lingua. Puoi aiutarci a renderla disponibile nella tua lingua?</string>
 	<string name="alert_i18n_yes">Grazie molte! Usiamo un tool online semplice da usare per gestire le traduzioni. Usa questo link per raggiungerlo: www.munin-for-android.com/i18n.php</string>
 	<string name="text53">Aggiorna solo con Wifi</string>
 	<string name="lang_ukrainian">Ucraino</string>
@@ -231,4 +231,39 @@
 	<string name="advanced">Avanzate</string>
 	<string name="lang_hungarian">Ungherese</string>
 	<string name="lang_chinese_taiwan">Cinese (Taiwan)</string>
+<string name="lang_polish">Polacco</string>
+	<string name="import_success">l\'importazione è andata a buon fine</string>
+	<string name="disable_chromecast">Disabillita supporto Chromecast</string>
+	<string name="disable_chromecast_text">Se non possiedi un Chromecast, potresti voler disabilitare il suo utilizzo nell\'app</string>
+	<string name="about">Informazioni</string>
+	<string name="default_grid">Griglia di default</string>
+	<string name="notifications_device_code">Codice dispositivo</string>
+	<string name="notifications_instructions">Devi configurare ogni master per fare in modo che possano mandare notifiche a questo dispositivo.</string>
+	<string name="notifications_sendByMail">Inviami codice e istruzioni via mail</string>
+	<string name="notifications_mailSent">Mail inviata! Controlla la tua casella di posta</string>
+	<string name="notifications_test_title">Munin per Android notifica di prova</string>
+	<string name="notifications_test_text">Munin GCM Trigger installato con successo</string>
+	<string name="ignore">Ignora</string>
+	<string name="ignore_alert">Ignora notifica</string>
+	<string name="ignore_for">Ignora per</string>
+	<string name="one_hour">1 ora</string>
+	<string name="six_hours">6 ore</string>
+	<string name="one_day">1 giorno</string>
+	<string name="one_week">1 settimana</string>
+	<string name="forever">Per sempre</string>
+	<string name="ignore_whole_group">Tutti i plugin nel gruppo %1$</string>
+	<string name="ignore_whole_host">Tutti i plugin per l\'host %1$ (gruppo %2$)</string>
+	<string name="ignore_plugin_in">Plugin %1$ nell\'host %2$ (gruppo %3$)</string>
+	<string name="ignore_plugin">Plugin %1$ senza contare host e gruppo</string>
+	<string name="ignoreRules">Regole di esclusione</string>
+	<string name="ignoreRulesText">Al momento ci sono %1$ regole di esclusione. Le regole sono create per ogni singola notifica e possono essere gestite da qui</string>
+	<string name="manageIgnoreRules">Gestisci regole di esclusione</string>
+	<string name="until">"Fino a "</string>
+	<string name="push">Push</string>
+	<string name="push_notifications">Notifiche push</string>
+	<string name="poll">Poll</string>
+	<string name="poll_notifications">Notifiche Poll</string>
+	<string name="push_explanation">Raccomandato: In questo modo, munin manda informazioni direttamente al tuo dispositivo. Questo permette notifiche in tempo reale, basso consumo di batteria e ridotto utilizzo di banda ma richiede l\'installazione di uno script intelligente su ogni master.</string>
+	<string name="poll_explanation">In questo modo, Munin per Android contatta ogni server regolarmente. Queto non richiede alcuna configurazione aggiuntiva, ma non è cosi affidabile come le notifiche push e potrebbe ridurre la durat della batteria e aumentare il consumo del piano dati. Usa questa modalita solo se non puoi installare lo script menzionato nella modalità push.</string>
+
 </resources>
