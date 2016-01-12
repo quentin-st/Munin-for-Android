@@ -71,7 +71,7 @@ public class Widget_AlertsWidget_Configure extends Activity {
 
 			for (int i=0; i<muninFoo.getNodes().size(); i++) {
 				LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				View v = vi.inflate(R.layout.servers_list_checkbox, checkboxesView, false);
+				View v = vi.inflate(R.layout.adapter_twolines_checkbox, checkboxesView, false);
 
 				checkboxes[i] = (CheckBox) v.findViewById(R.id.line_0);
 				int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");

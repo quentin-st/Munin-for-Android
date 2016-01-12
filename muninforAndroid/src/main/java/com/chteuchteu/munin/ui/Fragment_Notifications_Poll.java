@@ -126,7 +126,7 @@ public class Fragment_Notifications_Poll extends Fragment implements INotificati
 					MuninNode node = muninFoo.getNodes().get(i);
 
 					LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					View v = vi.inflate(R.layout.servers_list_checkbox, null);
+					View v = vi.inflate(R.layout.adapter_twolines_checkbox, null);
 
 					checkboxes[i] = (CheckBox) v.findViewById(R.id.line_0);
 					int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");

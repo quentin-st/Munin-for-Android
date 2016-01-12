@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_CheckablePluginsList;
 import com.chteuchteu.munin.adptr.Adapter_IconList;
 import com.chteuchteu.munin.adptr.Adapter_NodesList;
 import com.chteuchteu.munin.hlpr.Settings;
@@ -301,29 +302,19 @@ public class GridItem {
 	
 	private static void add_pluginsListDialog(final Context c, final MuninNode node, final MuninFoo f, final Grid g, final IGridActivity activity, final Fragment_Grid fragment,
 	                                          final int X, final int Y) {
-		List<MuninPlugin> l = node.getPlugins();
-		
-		final CharSequence[] items = new CharSequence[l.size()];
-		for (int i=0; i<l.size(); i++)
-			items[i] = l.get(i).getFancyName();
-		
-		final List<Integer> selectedItems = new ArrayList<>();
-		
+		final Adapter_CheckablePluginsList pluginsAdapter = new Adapter_CheckablePluginsList(c, node.getPlugins());
+		ListView pluginsList = new ListView(c);
+		pluginsList.setAdapter(pluginsAdapter);
+
 		AlertDialog dialog;
 		AlertDialog.Builder builder = new AlertDialog.Builder(c);
-		builder.setTitle(c.getText(R.string.text72));
-		builder.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
-				if (isChecked)
-					selectedItems.add(indexSelected);
-				else if (selectedItems.contains(indexSelected))
-					selectedItems.remove(Integer.valueOf(indexSelected));
-			}
-		})
-		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+		builder.setTitle(c.getText(R.string.text72))
+				.setView(pluginsList)
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
+				List<MuninPlugin> selectedItems = pluginsAdapter.getSelectedItems();
+
 				if (selectedItems.isEmpty())
 					return;
 
@@ -333,8 +324,7 @@ public class GridItem {
 				
 				int maxWidth = g.getNbColumns();
 				List<GridItem> addedItems = new ArrayList<>();
-				for (Integer i : selectedItems) {
-					MuninPlugin p = node.getPlugin(i);
+				for (MuninPlugin p : selectedItems) {
 					if (!alreadyAdded(g, p)) {
 						GridItem item = new GridItem(g, p);
 						item.setActivityReferences(c, activity, fragment);
