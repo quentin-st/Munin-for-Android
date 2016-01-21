@@ -33,7 +33,7 @@ public class Grid {
 	public Grid(String name) {
 		this.name = name;
 		this.items = new ArrayList<>();
-		this.nbColumns = 2;
+		this.nbColumns = 1;
 		this.nbLines = 2;
 	}
 
