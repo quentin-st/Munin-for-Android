@@ -164,7 +164,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 					Bundle bundle = new Bundle();
 					int gridId = muninFoo.getSettings().getInt(Settings.PrefKeys.DefaultActivity_GridId);
 					bundle.putLong(Fragment_Grid.ARG_GRIDID, gridId);
-					bundle.putBoolean(Fragment_Grid.ARG_AUTOLOAD, false);
+					bundle.putBoolean(Fragment_Grid.ARG_AUTOLOAD, settings.getBool(Settings.PrefKeys.DefaultActivity_Grid_AutoloadGraphs));
 					fragment.setArguments(bundle);
 					getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
 					break;

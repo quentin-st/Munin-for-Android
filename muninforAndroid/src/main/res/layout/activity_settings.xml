@@ -19,7 +19,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="@dimen/listview_horizontal_margin"
 			android:layout_marginRight="@dimen/listview_horizontal_margin"
-			android:orientation="vertical" >
+			android:orientation="vertical">
 
 			<LinearLayout
 				android:id="@+id/settingsContainer"
@@ -106,11 +106,9 @@
 
 				<!-- Default activity -->
 
-				<LinearLayout
+				<RelativeLayout
 					android:id="@+id/defaultActivityContainer"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:orientation="vertical">
+					style="@style/Settings_Checkbox_Container">
 
 					<TextView
 						android:tag="set_font"
@@ -120,40 +118,56 @@
 					<Spinner
 						android:id="@+id/spinner_defaultActivity"
 						style="@style/Settings_SettingSpinner"/>
-				</LinearLayout>
+				</RelativeLayout>
 
 				<!-- Default activity - label -->
-				<LinearLayout
+				<RelativeLayout
 					android:id="@+id/defaultActivity_label_container"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:orientation="vertical">
+					style="@style/Settings_Checkbox_Container"
+					android:layout_marginTop="5dp">
 
 					<TextView
 						android:id="@+id/title15"
-						style="@style/Settings_SettingTitle"
+						style="@style/Settings_Checkbox_Label"
 						android:text="@string/label" />
 
 					<Spinner
 						android:id="@+id/spinner_defaultActivity_label"
 						style="@style/Settings_SettingSpinner"/>
-				</LinearLayout>
+				</RelativeLayout>
 
 				<!-- Default activity - grid -->
 				<LinearLayout
 					android:id="@+id/defaultActivity_grid_container"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:orientation="vertical">
+					android:orientation="vertical"
+					android:layout_marginTop="5dp">
 
-					<TextView
-						android:id="@+id/title16"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/text75" />
+					<RelativeLayout
+						style="@style/Settings_Checkbox_Container">
 
-					<Spinner
-						android:id="@+id/spinner_defaultActivity_grid"
-						style="@style/Settings_SettingSpinner"/>
+						<TextView
+							android:id="@+id/title16"
+							style="@style/Settings_Checkbox_Label"
+							android:text="@string/text75" />
+
+						<Spinner
+							android:id="@+id/spinner_defaultActivity_grid"
+							style="@style/Settings_SettingSpinner"/>
+					</RelativeLayout>
+
+					<RelativeLayout
+						style="@style/Settings_Checkbox_Container"
+						android:tag="checkable">
+
+						<TextView
+							style="@style/Settings_Checkbox_Label"
+							android:text="@string/graphs_autoload"/>
+						<CheckBox
+							android:id="@+id/checkbox_autoload_graphs"
+							style="@style/Settings_Checkbox" />
+					</RelativeLayout>
 				</LinearLayout>
 
 				<View style="@style/Material_Divider" />

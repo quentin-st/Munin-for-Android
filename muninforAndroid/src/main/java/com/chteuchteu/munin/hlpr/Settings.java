@@ -161,6 +161,7 @@ public class Settings {
         I18NDialogShown("i18nDialogShown", false),
         DefaultActivity("defaultActivity", null),
         DefaultActivity_GridId("defaultActivity_gridId", -1),
+        DefaultActivity_Grid_AutoloadGraphs("defaultActivity_grid_autoload", true),
         DefaultActivity_LabelId("defaultActivity_labelId", -1),
 
         ChromecastApplicationId("chromecastAppId", null),

@@ -286,6 +286,7 @@
 	<string name="advanced">Advanced</string>
 	<string name="disable_chromecast">Disable Chromecast feature</string>
 	<string name="disable_chromecast_text">If you don\'t own a Chromecast, you may want to disable its usage in the app</string>
+	<string name="graphs_autoload">Automatically load graphs</string>
 	<string name="about">About</string>
 	<string name="auto">Auto</string>
 	<string name="debug_preferences" translatable="false">Debug preferences</string>

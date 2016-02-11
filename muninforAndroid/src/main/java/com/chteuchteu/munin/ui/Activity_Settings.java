@@ -52,6 +52,7 @@ public class Activity_Settings extends MuninActivity {
 	private CheckBox checkbox_graphsZoom;
 	private CheckBox checkbox_hdGraphs;
 	private CheckBox checkbox_disableChromecast;
+	private CheckBox checkbox_autoloadGraphs;
 	private EditText editText_userAgent;
 	private EditText editText_chromecastAppId;
 	private EditText editText_importExportServer;
@@ -79,6 +80,7 @@ public class Activity_Settings extends MuninActivity {
 		checkbox_graphsZoom = (CheckBox)findViewById(R.id.checkbox_enablegraphszoom);
 		checkbox_hdGraphs = (CheckBox)findViewById(R.id.checkbox_hdgraphs);
 		checkbox_disableChromecast = (CheckBox)findViewById(R.id.checkbox_disable_chromecast);
+		checkbox_autoloadGraphs = (CheckBox)findViewById(R.id.checkbox_autoload_graphs);
 
 		editText_userAgent = (EditText)findViewById(R.id.edittext_useragent);
 
@@ -149,6 +151,9 @@ public class Activity_Settings extends MuninActivity {
 			findViewById(R.id.title16).setAlpha(0.5f);
 			findViewById(R.id.spinner_defaultActivity_grid).setEnabled(false);
 		}
+
+		// Default activity - Grid - Autoload graphs
+		checkbox_autoloadGraphs.setChecked(settings.getBool(Settings.PrefKeys.DefaultActivity_Grid_AutoloadGraphs));
 
 		// Default activity - Labels spinner
 		List<String> labelsList = new ArrayList<>();
@@ -373,7 +378,7 @@ public class Activity_Settings extends MuninActivity {
 				settings.remove(Settings.PrefKeys.DefaultActivity_GridId);
 				settings.remove(Settings.PrefKeys.DefaultActivity_LabelId);
 				break;
-			case 1: {
+			case 1: { // Grid
 				int selectedItemPos = spinner_defaultActivity_grid.getSelectedItemPosition();
 
 				// When there's no grid, the grids spinner is empty
@@ -381,9 +386,11 @@ public class Activity_Settings extends MuninActivity {
 					settings.set(Settings.PrefKeys.DefaultActivity, "grid");
 					settings.set(Settings.PrefKeys.DefaultActivity_GridId, (int) grids.get(selectedItemPos).getId());
 				}
+
+				settings.set(Settings.PrefKeys.DefaultActivity_Grid_AutoloadGraphs, checkbox_autoloadGraphs.isChecked());
 				break;
 			}
-			case 2: {
+			case 2: { // Label
 				int selectedItemPos = spinner_defaultActivity_label.getSelectedItemPosition();
 
 				// When there's no label, the labels spinner is empty
