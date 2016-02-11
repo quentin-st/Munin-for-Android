@@ -3,7 +3,7 @@
 	android:id="@+id/alerts_part"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:orientation="vertical" >
+	android:orientation="vertical">
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -14,7 +14,7 @@
 		android:layout_marginBottom="5dp"
 		android:background="@drawable/card"
 		android:orientation="vertical"
-		android:padding="2dp" >
+		android:padding="2dp">
 
 		<RelativeLayout
 			android:id="@+id/cardHeader"
@@ -23,30 +23,25 @@
 			android:orientation="vertical"
 			android:clickable="true"
 			android:focusable="true"
-			android:background="@drawable/alerts_hover"
+			android:background="?attr/selectableItemBackground"
 			android:paddingTop="3dp"
 			android:paddingLeft="15dp"
 			android:paddingBottom="3dp">
 
-			<LinearLayout
+			<TextView
+				android:id="@+id/alerts_part_masterName"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="vertical">
+				android:textColor="@color/alerts_mastername_text_color"
+				android:textSize="14sp"/>
 
-				<TextView
-					android:id="@+id/alerts_part_masterName"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textColor="@color/alerts_mastername_text_color"
-					android:textSize="14sp"/>
-
-				<TextView
-					android:id="@+id/alerts_part_serverName"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textColor="@color/alerts_servername_text_color"
-					android:textSize="19sp"/>
-			</LinearLayout>
+			<TextView
+				android:id="@+id/alerts_part_serverName"
+				android:layout_below="@id/alerts_part_masterName"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textColor="@color/alerts_servername_text_color"
+				android:textSize="19sp"/>
 
 			<ImageView
 				android:id="@+id/arrow"
@@ -63,7 +58,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="2dp"
 			android:background="#B2B2B2"
-			android:orientation="horizontal" >
+			android:orientation="horizontal">
 
 			<TextView
 				android:id="@+id/alerts_part_criticalsNumber"
@@ -90,7 +85,7 @@
 
 			<HorizontalScrollView
 				android:layout_width="match_parent"
-				android:layout_height="match_parent" >
+				android:layout_height="match_parent">
 
 				<TextView
 					android:id="@+id/alerts_part_criticalsPluginsList"
@@ -110,7 +105,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="3dp"
 			android:background="#B2B2B2"
-			android:orientation="horizontal" >
+			android:orientation="horizontal">
 
 			<TextView
 				android:id="@+id/alerts_part_warningsNumber"
@@ -136,7 +131,7 @@
 
 			<HorizontalScrollView
 				android:layout_width="match_parent"
-				android:layout_height="match_parent" >
+				android:layout_height="match_parent">
 
 				<TextView
 					android:id="@+id/alerts_part_warningsPluginsList"
