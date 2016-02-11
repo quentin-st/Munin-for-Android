@@ -45,11 +45,11 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/card"
             android:orientation="vertical"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp">
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <RelativeLayout
-                style="@style/Settings_Checkbox_Container"
+                style="@style/Settings_Item"
                 android:tag="checkable">
 
                 <TextView
@@ -94,7 +94,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    style="@style/Settings_Checkbox_Container"
+                    style="@style/Settings_Item"
                     android:tag="checkable">
 
                     <TextView

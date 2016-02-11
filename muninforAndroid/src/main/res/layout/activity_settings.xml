@@ -12,38 +12,30 @@
 		android:id="@+id/scrollView1"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="@drawable/bottom_shadow" >
+		android:background="@drawable/bottom_shadow">
 
 		<LinearLayout
+			android:id="@+id/settingsContainer"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="@dimen/listview_horizontal_margin"
 			android:layout_marginRight="@dimen/listview_horizontal_margin"
+			android:paddingLeft="10dp"
+			android:paddingRight="10dp"
+			android:paddingBottom="10dp"
 			android:orientation="vertical">
 
-			<LinearLayout
-				android:id="@+id/settingsContainer"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginBottom="15dp"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
-				android:layout_marginTop="15dp"
-				android:background="@drawable/card"
-				android:orientation="vertical"
-				android:paddingBottom="10dp" >
+			<!-- APP SETTINGS -->
 
-				<!-- APP SETTINGS -->
+			<TextView
+				android:tag="set_font"
+				style="@style/Material_SubTitle"
+				android:layout_marginLeft="15dp"
+				android:layout_marginRight="15dp"
+				android:text="@string/settings_titlelabel_app" />
 
-				<TextView
-					android:tag="set_font"
-					style="@style/Material_SubTitle"
-					android:layout_marginLeft="15dp"
-					android:layout_marginRight="15dp"
-					android:text="@string/settings_titlelabel_app" />
-
-				<!-- Default server -->
-
+			<!-- Default node -->
+			<LinearLayout style="@style/Settings_Item">
 				<TextView
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
@@ -52,11 +44,12 @@
 				<Spinner
 					android:id="@+id/spinner_defaultnode"
 					style="@style/Settings_SettingSpinner" />
+			</LinearLayout>
 
-				<View style="@style/Material_Divider" />
+			<View style="@style/Material_ThinDivider" />
 
-				<!-- App language -->
-
+			<!-- App language -->
+			<LinearLayout style="@style/Settings_Item">
 				<TextView
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
@@ -65,11 +58,12 @@
 				<Spinner
 					android:id="@+id/spinner_lang"
 					style="@style/Settings_SettingSpinner" />
+			</LinearLayout>
 
-				<View style="@style/Material_Divider" />
+			<View style="@style/Material_ThinDivider" />
 
-				<!-- User agent -->
-
+			<!-- User agent -->
+			<LinearLayout style="@style/Settings_Item">
 				<TextView
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
@@ -101,238 +95,220 @@
 						android:layout_toStartOf="@id/userAgent_reset"
 						android:textSize="13sp"/>
 				</RelativeLayout>
+			</LinearLayout>
 
-				<View style="@style/Material_Divider" />
+			<View style="@style/Material_ThinDivider" />
 
-				<!-- Default activity -->
-
-				<RelativeLayout
-					android:id="@+id/defaultActivityContainer"
-					style="@style/Settings_Checkbox_Container">
-
-					<TextView
-						android:tag="set_font"
-						style="@style/Settings_SettingTitle"
-						android:text="@string/defaultActivity" />
-
-					<Spinner
-						android:id="@+id/spinner_defaultActivity"
-						style="@style/Settings_SettingSpinner"/>
-				</RelativeLayout>
-
-				<!-- Default activity - label -->
-				<RelativeLayout
-					android:id="@+id/defaultActivity_label_container"
-					style="@style/Settings_Checkbox_Container"
-					android:layout_marginTop="5dp">
-
-					<TextView
-						android:id="@+id/title15"
-						style="@style/Settings_Checkbox_Label"
-						android:text="@string/label" />
-
-					<Spinner
-						android:id="@+id/spinner_defaultActivity_label"
-						style="@style/Settings_SettingSpinner"/>
-				</RelativeLayout>
-
-				<!-- Default activity - grid -->
-				<LinearLayout
-					android:id="@+id/defaultActivity_grid_container"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:orientation="vertical"
-					android:layout_marginTop="5dp">
-
-					<RelativeLayout
-						style="@style/Settings_Checkbox_Container">
-
-						<TextView
-							android:id="@+id/title16"
-							style="@style/Settings_Checkbox_Label"
-							android:text="@string/text75" />
-
-						<Spinner
-							android:id="@+id/spinner_defaultActivity_grid"
-							style="@style/Settings_SettingSpinner"/>
-					</RelativeLayout>
-
-					<RelativeLayout
-						style="@style/Settings_Checkbox_Container"
-						android:tag="checkable">
-
-						<TextView
-							style="@style/Settings_Checkbox_Label"
-							android:text="@string/graphs_autoload"/>
-						<CheckBox
-							android:id="@+id/checkbox_autoload_graphs"
-							style="@style/Settings_Checkbox" />
-					</RelativeLayout>
-				</LinearLayout>
-
-				<View style="@style/Material_Divider" />
-
-				<!-- Disable Chromecast feature -->
-
+			<!-- Default activity -->
+			<RelativeLayout
+				style="@style/Settings_Item"
+				android:id="@+id/defaultActivityContainer">
 				<TextView
+					android:tag="set_font"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/defaultActivity" />
+
+				<Spinner
+					android:id="@+id/spinner_defaultActivity"
+					style="@style/Settings_SettingSpinner"/>
+			</RelativeLayout>
+
+			<!-- Default activity - label -->
+			<RelativeLayout
+				android:id="@+id/defaultActivity_label_container"
+				style="@style/Settings_Item">
+				<TextView
+					android:id="@+id/title15"
+					style="@style/Settings_SettingTitle"
+					android:text="@string/label" />
+
+				<Spinner
+					android:id="@+id/spinner_defaultActivity_label"
+					style="@style/Settings_SettingSpinner"/>
+			</RelativeLayout>
+
+			<!-- Default activity - grid -->
+			<LinearLayout
+				android:id="@+id/defaultActivity_grid_container"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+
+				<RelativeLayout style="@style/Settings_Item">
+					<TextView
+						android:id="@+id/title16"
+						style="@style/Settings_SettingTitle"
+						android:text="@string/text75" />
+
+					<Spinner
+						android:id="@+id/spinner_defaultActivity_grid"
+						style="@style/Settings_SettingSpinner"/>
+				</RelativeLayout>
+
+				<RelativeLayout
+					style="@style/Settings_Item"
+					android:tag="checkable">
+					<TextView
+						style="@style/Settings_Checkbox_Label"
+						android:text="@string/graphs_autoload"/>
+
+					<CheckBox
+						android:id="@+id/checkbox_autoload_graphs"
+						style="@style/Settings_Checkbox" />
+				</RelativeLayout>
+			</LinearLayout>
+
+			<View style="@style/Material_ThinDivider" />
+
+			<!-- Disable Chromecast feature -->
+			<RelativeLayout
+				style="@style/Settings_Item"
+				android:tag="checkable">
+				<TextView
+					android:id="@+id/a1d323"
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
 					android:text="@string/disable_chromecast" />
-
-				<RelativeLayout
-					style="@style/Settings_Checkbox_Container"
-					android:tag="checkable">
-
-					<TextView
-						style="@style/Settings_Checkbox_Label"
-						android:text="@string/disable_chromecast_text"/>
-					<CheckBox
-						android:id="@+id/checkbox_disable_chromecast"
-						style="@style/Settings_Checkbox" />
-				</RelativeLayout>
-
-				<View style="@style/Material_Divider" />
-
-				<!-- GRAPHS SETTINGS -->
-
 				<TextView
-					android:tag="set_font"
-					style="@style/Material_SubTitle"
-					android:layout_marginLeft="15dp"
-					android:layout_marginRight="15dp"
-					android:text="@string/settings_titlelabel_graphs" />
+					android:layout_below="@id/a1d323"
+					style="@style/Settings_Checkbox_Label"
+					android:text="@string/disable_chromecast_text"/>
+				<CheckBox
+					android:id="@+id/checkbox_disable_chromecast"
+					style="@style/Settings_Checkbox" />
+			</RelativeLayout>
 
-				<!-- Screen always on -->
+			<View style="@style/Material_ThinDivider" />
 
+			<!-- GRAPHS SETTINGS -->
+			<TextView
+				android:tag="set_font"
+				style="@style/Material_SubTitle"
+				android:layout_marginLeft="15dp"
+				android:layout_marginRight="15dp"
+				android:text="@string/settings_titlelabel_graphs" />
+
+			<!-- Screen always on -->
+			<RelativeLayout
+				style="@style/Settings_Item"
+				android:tag="checkable">
 				<TextView
+					android:id="@+id/a8cbf3"
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
 					android:text="@string/settings_screenalwayson_label" />
-
-				<RelativeLayout
-					style="@style/Settings_Checkbox_Container"
-					android:tag="checkable">
-
-					<TextView
-						style="@style/Settings_Checkbox_Label"
-						android:text="@string/settings_screenalwayson_checkbox"/>
-					<CheckBox
-						android:id="@+id/checkbox_screenalwayson"
-						style="@style/Settings_Checkbox" />
-				</RelativeLayout>
-
-				<View style="@style/Material_Divider" />
-
-				<!-- Auto refresh -->
-
 				<TextView
+					android:layout_below="@id/a8cbf3"
+					style="@style/Settings_Checkbox_Label"
+					android:text="@string/settings_screenalwayson_checkbox"/>
+				<CheckBox
+					android:id="@+id/checkbox_screenalwayson"
+					style="@style/Settings_Checkbox" />
+			</RelativeLayout>
+
+			<View style="@style/Material_ThinDivider" />
+
+			<!-- Auto refresh -->
+			<RelativeLayout
+				style="@style/Settings_Item"
+				android:tag="checkable">
+				<TextView
+					android:id="@+id/ad53e6"
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
 					android:text="@string/settings_autorefresh_label" />
+				<TextView
+					android:layout_below="@id/ad53e6"
+					style="@style/Settings_Checkbox_Label"
+					android:text="@string/settings_autorefresh_checkbox"/>
+				<CheckBox
+					android:id="@+id/checkbox_autorefresh"
+					style="@style/Settings_Checkbox" />
+			</RelativeLayout>
 
-				<RelativeLayout
-					style="@style/Settings_Checkbox_Container"
-					android:tag="checkable">
+			<View style="@style/Material_ThinDivider" />
 
-					<TextView
-						style="@style/Settings_Checkbox_Label"
-						android:text="@string/settings_autorefresh_checkbox"/>
-					<CheckBox
-						android:id="@+id/checkbox_autorefresh"
-						style="@style/Settings_Checkbox" />
-				</RelativeLayout>
-
-				<View style="@style/Material_Divider" />
-
-				<!-- Graph zoom -->
-
+			<!-- Graph zoom -->
+			<RelativeLayout
+				style="@style/Settings_Item"
+				android:tag="checkable">
 				<TextView
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
 					android:text="@string/settings_enablegraphszoom" />
+				<CheckBox
+					android:id="@+id/checkbox_enablegraphszoom"
+					style="@style/Settings_Checkbox" />
+			</RelativeLayout>
 
-				<RelativeLayout
-					style="@style/Settings_Checkbox_Container"
-					android:tag="checkable">
+			<View style="@style/Material_ThinDivider" />
 
-					<TextView
-						style="@style/Settings_Checkbox_Label"
-						android:text="@string/settings_enablegraphszoom"/>
-					<CheckBox
-						android:id="@+id/checkbox_enablegraphszoom"
-						style="@style/Settings_Checkbox" />
-				</RelativeLayout>
-
-				<View style="@style/Material_Divider" />
-
-				<!-- HD Graphs -->
-
+			<!-- HD Graphs -->
+			<RelativeLayout
+				style="@style/Settings_Item"
+				android:tag="checkable">
 				<TextView
+					android:id="@+id/aa9884"
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
 					android:text="@string/settings_hdgraphs" />
+				<TextView
+					android:layout_below="@id/aa9884"
+					style="@style/Settings_Checkbox_Label"
+					android:text="@string/settings_hdgraphs_text"/>
+				<CheckBox
+					android:id="@+id/checkbox_hdgraphs"
+					style="@style/Settings_Checkbox" />
+			</RelativeLayout>
 
-				<RelativeLayout
-					style="@style/Settings_Checkbox_Container"
-					android:tag="checkable">
+			<View style="@style/Material_ThinDivider" />
 
-					<TextView
-						style="@style/Settings_Checkbox_Label"
-						android:text="@string/settings_hdgraphs_text"/>
-					<CheckBox
-						android:id="@+id/checkbox_hdgraphs"
-						style="@style/Settings_Checkbox" />
-				</RelativeLayout>
-
-				<View style="@style/Material_Divider" />
-
-				<!-- Graph default scale -->
-
+			<!-- Graph default scale -->
+			<RelativeLayout style="@style/Settings_Item">
 				<TextView
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
 					android:text="@string/settings_default_scale" />
-
 				<Spinner
 					android:id="@+id/spinner_scale"
 					style="@style/Settings_SettingSpinner" />
+			</RelativeLayout>
 
-				<View style="@style/Material_Divider" />
+			<View style="@style/Material_ThinDivider" />
 
-				<!-- GRIDS SETTINGS -->
+			<!-- GRIDS SETTINGS -->
+			<TextView
+				android:tag="set_font"
+				style="@style/Material_SubTitle"
+				android:layout_marginLeft="15dp"
+				android:layout_marginRight="15dp"
+				android:text="@string/grids_settings" />
 
-				<TextView
-					android:tag="set_font"
-					style="@style/Material_SubTitle"
-					android:layout_marginLeft="15dp"
-					android:layout_marginRight="15dp"
-					android:text="@string/grids_settings" />
-
-				<!-- Graphs screen orientation -->
-
+			<!-- Grids legend -->
+			<RelativeLayout style="@style/Settings_Item">
 				<TextView
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
 					android:text="@string/grids_legend" />
-
 				<Spinner
 					android:id="@+id/spinner_gridsLegend"
 					style="@style/Settings_SettingSpinner" />
+			</RelativeLayout>
 
-				<View style="@style/Material_Divider" />
+			<View style="@style/Material_ThinDivider" />
 
 
-				<!-- ADVANCED SETTINGS -->
+			<!-- ADVANCED SETTINGS -->
 
-				<TextView
-					android:tag="set_font"
-					style="@style/Material_SubTitle"
-					android:layout_marginLeft="15dp"
-					android:layout_marginRight="15dp"
-					android:text="@string/advanced" />
+			<TextView
+				android:tag="set_font"
+				style="@style/Material_SubTitle"
+				android:layout_marginLeft="15dp"
+				android:layout_marginRight="15dp"
+				android:text="@string/advanced" />
 
-				<!-- Chromecast application Id -->
-
+			<!-- Chromecast application Id -->
+			<LinearLayout style="@style/Settings_Item">
 				<TextView
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
@@ -349,6 +325,7 @@
 						android:layout_height="wrap_content"
 						android:background="@drawable/ic_action_reset"
 						android:contentDescription="@string/reset"
+						android:layout_centerVertical="true"
 						android:layout_alignParentRight="true"
 						android:layout_alignParentEnd="true"
 						android:layout_marginRight="10dp"
@@ -360,14 +337,16 @@
 						android:layout_marginRight="0dp"
 						android:layout_marginEnd="0dp"
 						android:inputType="text"
+						android:layout_centerVertical="true"
 						android:layout_toLeftOf="@id/chromecastAppId_reset"
 						android:layout_toStartOf="@id/chromecastAppId_reset"/>
 				</RelativeLayout>
+			</LinearLayout>
 
-				<View style="@style/Material_Divider" />
+			<View style="@style/Material_ThinDivider" />
 
-				<!-- Import/Export url -->
-
+			<!-- Import/Export url -->
+			<LinearLayout style="@style/Settings_Item">
 				<TextView
 					android:tag="set_font"
 					style="@style/Settings_SettingTitle"
@@ -384,6 +363,7 @@
 						android:layout_height="wrap_content"
 						android:background="@drawable/ic_action_reset"
 						android:contentDescription="@string/reset"
+						android:layout_centerVertical="true"
 						android:layout_alignParentRight="true"
 						android:layout_alignParentEnd="true"
 						android:layout_marginRight="10dp"
@@ -395,6 +375,7 @@
 						android:layout_marginRight="0dp"
 						android:layout_marginEnd="0dp"
 						android:inputType="text"
+						android:layout_centerVertical="true"
 						android:layout_toLeftOf="@id/importExportServer_reset"
 						android:layout_toStartOf="@id/importExportServer_reset"
 						android:textSize="13sp"/>

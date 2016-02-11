@@ -49,7 +49,7 @@
             android:paddingTop="20dp">
 
             <RelativeLayout
-                style="@style/Settings_Checkbox_Container"
+                style="@style/Settings_Item"
                 android:tag="checkable">
 
                 <TextView
@@ -71,7 +71,7 @@
                 <View style="@style/Material_Divider" />
 
                 <RelativeLayout
-                    style="@style/Settings_Checkbox_Container"
+                    style="@style/Settings_Item"
                     android:tag="checkable">
 
                     <TextView
@@ -83,7 +83,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    style="@style/Settings_Checkbox_Container"
+                    style="@style/Settings_Item"
                     android:tag="checkable">
 
                     <TextView
