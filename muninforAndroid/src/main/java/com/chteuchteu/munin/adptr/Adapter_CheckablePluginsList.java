@@ -38,9 +38,19 @@ public class Adapter_CheckablePluginsList extends ArrayAdapter<MuninPlugin> {
             view = LayoutInflater.from(context).inflate(rowLayout, parent, false);
 
         final MuninPlugin plugin = this.plugins.get(position);
-        CheckBox checkBox = (CheckBox) view.findViewById(R.id.line_0);
+        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.line_0);
         TextView row1 = (TextView) view.findViewById(R.id.line_a);
         TextView row2 = (TextView) view.findViewById(R.id.line_b);
+
+        // Toggle checkbox on text click
+        View.OnClickListener onTextClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkBox.setChecked(!checkBox.isChecked());
+            }
+        };
+        row1.setOnClickListener(onTextClick);
+        row2.setOnClickListener(onTextClick);
 
         row1.setText(plugin.getFancyNameOrDefault());
         row2.setText(plugin.getCategory());
