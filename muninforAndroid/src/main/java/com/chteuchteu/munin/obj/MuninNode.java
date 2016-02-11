@@ -147,9 +147,9 @@ public class MuninNode {
 						is2 = false;
 				} else {
 					// chteuchteu's munin redesign: removed tables
-					Element h3 = image.parent().parent();
-					if (h3 != null && h3.hasAttr("data-category"))
-						group = h3.attr("data-category");
+					Element container = image.parent().parent().parent().parent();
+					if (container != null && container.hasAttr("data-category"))
+						group = container.attr("data-category");
 					else is2 = false;
 				}
 				
