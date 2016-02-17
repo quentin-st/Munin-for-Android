@@ -1,5 +1,6 @@
 package com.chteuchteu.munin.ui;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -49,6 +51,7 @@ import com.chteuchteu.munin.async.FieldsDescriptionFetcher;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper.DynazoomFetcher;
+import com.chteuchteu.munin.hlpr.PermissionsHelper;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -571,7 +574,27 @@ public class Activity_GraphView extends MuninActivity {
 			adapter.refreshAll();
 		}
 	}
+
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		PermissionsHelper.onRequestPermissionsResult(this, requestCode, permissions, grantResults, new Runnable() {
+			@Override
+			public void run() {
+				actionSave_do();
+			}
+		});
+	}
+
+	/**
+	 * Saves currently shown graph to the SD card
+	 */
 	private void actionSave() {
+		if (PermissionsHelper.ensurePermissions(this, new String[] {
+				Manifest.permission.READ_EXTERNAL_STORAGE,
+				Manifest.permission.WRITE_EXTERNAL_STORAGE
+		}))
+			actionSave_do();
+	}
+	private void actionSave_do() {
 		Bitmap image = null;
 		if (isDynazoomOpen() && ((ImageView) findViewById(R.id.dynazoom_imageview)).getDrawable() != null)
 			image = ((BitmapDrawable) ((ImageView) findViewById(R.id.dynazoom_imageview)).getDrawable()).getBitmap();

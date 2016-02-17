@@ -693,6 +693,7 @@ public final class Util {
 
 	/**
 	 * Save Bitmap on SD card (Activity_GraphView)
+	 * We assume that we own both READ_ & WRITE_EXTERNAL_STORAGE permissions
 	 */
 	public static String saveBitmap(Context context, Bitmap bitmap, MuninPlugin plugin, Period period) {
 		String root = Environment.getExternalStorageDirectory().toString();
