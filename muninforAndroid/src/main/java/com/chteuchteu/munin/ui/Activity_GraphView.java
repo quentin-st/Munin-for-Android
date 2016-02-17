@@ -235,7 +235,6 @@ public class Activity_GraphView extends MuninActivity {
 					currentPlugin = muninFoo.getCurrentNode().getPlugin(position);
 				else {
 					currentPlugin = label.getPlugins().get(position);
-					((TextView) findViewById(R.id.serverName)).setText(currentPlugin.getInstalledOn().getName());
 					muninFoo.setCurrentNode(currentPlugin.getInstalledOn());
 				}
 
