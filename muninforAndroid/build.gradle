@@ -65,6 +65,7 @@ dependencies {
 
     // Debug-specific dependencies
     debugCompile 'im.dino:dbinspector:3.1.0@aar'
+    androidTestCompile 'tools.fastlane:screengrab:0.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
