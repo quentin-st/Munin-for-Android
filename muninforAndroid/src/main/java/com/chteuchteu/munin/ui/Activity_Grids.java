@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +12,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -158,15 +158,13 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 	}
 	
 	private void add() {
-		final LinearLayout ll = new LinearLayout(this);
-		ll.setOrientation(LinearLayout.VERTICAL);
-		ll.setPadding(10, 30, 10, 10);
-		final EditText input = new EditText(this);
-		ll.addView(input);
+		LayoutInflater inflater = LayoutInflater.from(this);
+		View dialogLayout = inflater.inflate(R.layout.dialog_newgrid, null, false);
+		final EditText input = (EditText) dialogLayout.findViewById(R.id.input);
 		
 		AlertDialog.Builder b = new AlertDialog.Builder(Activity_Grids.this)
 				.setTitle(getText(R.string.text69))
-				.setView(ll)
+				.setView(dialogLayout)
 				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						String value = input.getText().toString();
