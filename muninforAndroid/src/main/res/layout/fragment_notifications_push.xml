@@ -43,12 +43,12 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/card"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingBottom="10dp">
 
             <RelativeLayout
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 style="@style/Settings_Item"
                 android:tag="checkable">
 
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginLeft="15dp">
 
                     <TextView
@@ -94,6 +94,8 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     style="@style/Settings_Item"
                     android:tag="checkable">
 
@@ -109,9 +111,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/notifications_instructions"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="15dp" />
 
                 <Button
@@ -122,44 +124,32 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginRight="15dp"
                     android:layout_marginLeft="15dp" />
+
+                <TextView
+                    android:tag="set_font"
+                    style="@style/Material_SubTitle"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/ignoreRules" />
+
+                <TextView
+                    android:id="@+id/ignoreRulesText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="15dp" />
+
+                <Button
+                    android:id="@+id/manageIgnoreRules"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/manageIgnoreRules"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="15dp" />
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/card"
-            android:orientation="vertical"
-            android:paddingBottom="20dp">
-
-            <TextView
-                android:tag="set_font"
-                style="@style/Material_SubTitle"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:text="@string/ignoreRules" />
-
-            <TextView
-                android:id="@+id/ignoreRulesText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="15dp" />
-
-            <Button
-                android:id="@+id/manageIgnoreRules"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/manageIgnoreRules"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp" />
-
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -43,12 +43,12 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/card"
             android:orientation="vertical"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp">
+            android:paddingBottom="20dp">
 
             <RelativeLayout
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 style="@style/Settings_Item"
                 android:tag="checkable">
 
@@ -71,6 +71,8 @@
                 <View style="@style/Material_Divider" />
 
                 <RelativeLayout
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     style="@style/Settings_Item"
                     android:tag="checkable">
 
@@ -83,6 +85,8 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     style="@style/Settings_Item"
                     android:tag="checkable">
 
@@ -95,27 +99,16 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="20dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal" >
-
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    style="@style/Settings_Item">
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerInParent="true"
                         android:text="@string/text55"
-                        android:textColor="#666666"
-                        android:textSize="14sp" />
+                        style="@style/Settings_Checkbox_Label" />
 
                     <Spinner
                         android:id="@+id/spinner_refresh"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true" />
+                        style="@style/Settings_SettingSpinner" />
                 </RelativeLayout>
 
                 <TextView
@@ -128,8 +121,6 @@
                     android:gravity="center_horizontal"
                     android:textColor="#888888" />
 
-                <View style="@style/Material_Divider" />
-
                 <Button
                     android:id="@+id/btn_selectServersToWatch"
                     style="@style/Material_ButtonText"
@@ -138,8 +129,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:text="@string/text56"
-                    android:textSize="19sp" />
+                    android:text="@string/text56" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -17,14 +17,14 @@ repositories {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         applicationId "com.chteuchteu.munin"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 64
-        versionName "3.6.5-beta8"
+        versionCode 65
+        versionName "4.0"
     }
 
     buildTypes {

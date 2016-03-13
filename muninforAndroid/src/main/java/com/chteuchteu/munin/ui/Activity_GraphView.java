@@ -1,5 +1,6 @@
 package com.chteuchteu.munin.ui;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -49,6 +51,7 @@ import com.chteuchteu.munin.async.FieldsDescriptionFetcher;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper;
 import com.chteuchteu.munin.hlpr.DynazoomHelper.DynazoomFetcher;
+import com.chteuchteu.munin.hlpr.PermissionsHelper;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.TransitionStyle;
@@ -192,6 +195,7 @@ public class Activity_GraphView extends MuninActivity {
 		if (this.currentPlugin == null) {
 			Toast.makeText(this, R.string.text09, Toast.LENGTH_SHORT).show();
 			startActivity(new Intent(this, Activity_Plugins.class));
+			return;
 		}
 
 		// Viewflow
@@ -235,7 +239,6 @@ public class Activity_GraphView extends MuninActivity {
 					currentPlugin = muninFoo.getCurrentNode().getPlugin(position);
 				else {
 					currentPlugin = label.getPlugins().get(position);
-					((TextView) findViewById(R.id.serverName)).setText(currentPlugin.getInstalledOn().getName());
 					muninFoo.setCurrentNode(currentPlugin.getInstalledOn());
 				}
 
@@ -572,7 +575,27 @@ public class Activity_GraphView extends MuninActivity {
 			adapter.refreshAll();
 		}
 	}
+
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		PermissionsHelper.onRequestPermissionsResult(this, requestCode, permissions, grantResults, new Runnable() {
+			@Override
+			public void run() {
+				actionSave_do();
+			}
+		});
+	}
+
+	/**
+	 * Saves currently shown graph to the SD card
+	 */
 	private void actionSave() {
+		if (PermissionsHelper.ensurePermissions(this, new String[] {
+				Manifest.permission.READ_EXTERNAL_STORAGE,
+				Manifest.permission.WRITE_EXTERNAL_STORAGE
+		}))
+			actionSave_do();
+	}
+	private void actionSave_do() {
 		Bitmap image = null;
 		if (isDynazoomOpen() && ((ImageView) findViewById(R.id.dynazoom_imageview)).getDrawable() != null)
 			image = ((BitmapDrawable) ((ImageView) findViewById(R.id.dynazoom_imageview)).getDrawable()).getBitmap();
@@ -591,26 +614,24 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	
 	private void actionAddLabel() {
-		final LinearLayout ll = new LinearLayout(this);
-		ll.setOrientation(LinearLayout.VERTICAL);
-		ll.setPadding(10, 30, 10, 10);
-		final EditText input = new EditText(this);
-		ll.addView(input);
-		
+		LayoutInflater inflater = LayoutInflater.from(this);
+		LinearLayout view = (LinearLayout) inflater.inflate(R.layout.dialog_edittext, null, false);
+		final EditText editText = (EditText) view.findViewById(R.id.input);
+
 		new AlertDialog.Builder(Activity_GraphView.this)
-		.setTitle(getText(R.string.text70_2))
-		.setView(ll)
-		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				String value = input.getText().toString();
-				if (!value.trim().equals(""))
-					muninFoo.addLabel(new Label(value));
-				dialog.dismiss();
-				actionLabels();
-			}
-		}).setNegativeButton(getText(R.string.text64), new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) { }
-		}).show();
+				.setTitle(getText(R.string.text70_2))
+				.setView(view)
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						String value = editText.getText().toString();
+						if (!value.trim().equals(""))
+							muninFoo.addLabel(new Label(value));
+						dialog.dismiss();
+						actionLabels();
+					}
+				}).setNegativeButton(getText(R.string.text64), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) { }
+				}).show();
 	}
 	
 	private void actionLabels() {

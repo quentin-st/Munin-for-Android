@@ -17,6 +17,7 @@
 		android:gravity="center"
 	    android:layout_margin="20dp"
 		android:textSize="40sp"
-		android:maxLength="6" />
+		android:maxLength="6"
+		android:inputType="text|textNoSuggestions|textCapCharacters"/>
 
 </LinearLayout>

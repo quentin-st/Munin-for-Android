@@ -322,5 +322,7 @@
 	<string name="poll_explanation">In this mode, Munin for Android polls each of your servers regularly.
 		There\'s no extra configuration, but it is not as reliable as the push mode and may reduce your battery life and data plan.
 		Only use this mode if you cannot install the script mentioned in push mode.</string>
+	<string name="permission_required">A permission is required in order to do this</string>
+	<string name="permission_missing">Unable to achieve action: one or more permissions are missing.</string>
 
 </resources>

@@ -4,8 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -48,6 +51,15 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 		list = new ArrayList<>();
 
 		updateList();
+
+		// Init fab
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				add();
+			}
+		});
 	}
 
 	private Grid getGridFromName(String gridName) {
@@ -105,12 +117,14 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 
 							switch (which) {
 								case 0: // Rename grid
-									final EditText input = new EditText(context);
+									LayoutInflater layoutInflater = LayoutInflater.from(context);
+									ViewGroup alertDialogView = (ViewGroup) layoutInflater.inflate(R.layout.dialog_edittext, null, false);
+									final EditText input = (EditText) alertDialogView.findViewById(R.id.input);
 									input.setText(gridName);
 
 									new AlertDialog.Builder(context)
 											.setTitle(R.string.rename_grid)
-											.setView(input)
+											.setView(alertDialogView)
 											.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 												public void onClick(DialogInterface dialog, int whichButton) {
 													String value = input.getText().toString();
@@ -158,15 +172,13 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 	}
 	
 	private void add() {
-		final LinearLayout ll = new LinearLayout(this);
-		ll.setOrientation(LinearLayout.VERTICAL);
-		ll.setPadding(10, 30, 10, 10);
-		final EditText input = new EditText(this);
-		ll.addView(input);
+		LayoutInflater inflater = LayoutInflater.from(this);
+		View dialogLayout = inflater.inflate(R.layout.dialog_edittext, null, false);
+		final EditText input = (EditText) dialogLayout.findViewById(R.id.input);
 		
 		AlertDialog.Builder b = new AlertDialog.Builder(Activity_Grids.this)
 				.setTitle(getText(R.string.text69))
-				.setView(ll)
+				.setView(dialogLayout)
 				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						String value = input.getText().toString();
@@ -210,9 +222,6 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-			case R.id.menu_add:
-				add();
-				return true;
 			case R.id.menu_import:
 				ImportExportHelper.showImportDialog(muninFoo, context, ImportExportHelper.ImportExportType.GRIDS, this);
 				return true;

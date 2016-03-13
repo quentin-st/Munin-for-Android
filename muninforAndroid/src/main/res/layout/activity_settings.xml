@@ -336,7 +336,7 @@
 						style="@style/Settings_SettingEditText"
 						android:layout_marginRight="0dp"
 						android:layout_marginEnd="0dp"
-						android:inputType="text"
+						android:inputType="text|textNoSuggestions|textCapCharacters"
 						android:layout_centerVertical="true"
 						android:layout_toLeftOf="@id/chromecastAppId_reset"
 						android:layout_toStartOf="@id/chromecastAppId_reset"/>
@@ -374,7 +374,7 @@
 						style="@style/Settings_SettingEditText"
 						android:layout_marginRight="0dp"
 						android:layout_marginEnd="0dp"
-						android:inputType="text"
+						android:inputType="text|textUri"
 						android:layout_centerVertical="true"
 						android:layout_toLeftOf="@id/importExportServer_reset"
 						android:layout_toStartOf="@id/importExportServer_reset"

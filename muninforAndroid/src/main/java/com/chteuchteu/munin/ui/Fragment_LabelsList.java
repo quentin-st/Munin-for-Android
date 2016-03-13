@@ -104,12 +104,14 @@ public class Fragment_LabelsList extends Fragment {
 						public void onClick(DialogInterface dialog, int which) {
 							switch (which) {
 								case 0: // Rename label
-									final EditText input = new EditText(context);
+									LayoutInflater inflater = LayoutInflater.from(context);
+									ViewGroup view = (ViewGroup) inflater.inflate(R.layout.dialog_edittext, null, false);
+									final EditText input = (EditText) view.findViewById(R.id.input);
 									input.setText(labelName);
 
 									new AlertDialog.Builder(context)
 											.setTitle(R.string.rename_label)
-											.setView(input)
+											.setView(view)
 											.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 												public void onClick(DialogInterface dialog, int whichButton) {
 													String value = input.getText().toString();

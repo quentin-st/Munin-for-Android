@@ -50,7 +50,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="@dimen/addserver_popup_margin_verti_thin"
 					android:hint="@string/settings_login"
-					android:inputType="text"
+					android:inputType="text|textNoSuggestions"
 					android:padding="10dp" />
 
 				<EditText

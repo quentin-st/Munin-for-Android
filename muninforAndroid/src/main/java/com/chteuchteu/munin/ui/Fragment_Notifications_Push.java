@@ -86,12 +86,14 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 		bt_sendByMail.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				final EditText input = new EditText(context);
+				LayoutInflater inflater = LayoutInflater.from(context);
+				ViewGroup view = (ViewGroup) inflater.inflate(R.layout.dialog_edittext, null, false);
+				final EditText input = (EditText) view.findViewById(R.id.input);
 				input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
 				new AlertDialog.Builder(context)
 						.setTitle(R.string.notifications_sendByMail)
-						.setView(input)
+						.setView(view)
 						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								String value = input.getText().toString();
