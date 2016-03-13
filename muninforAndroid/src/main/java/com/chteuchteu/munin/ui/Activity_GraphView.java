@@ -613,26 +613,24 @@ public class Activity_GraphView extends MuninActivity {
 	}
 	
 	private void actionAddLabel() {
-		final LinearLayout ll = new LinearLayout(this);
-		ll.setOrientation(LinearLayout.VERTICAL);
-		ll.setPadding(10, 30, 10, 10);
-		final EditText input = new EditText(this);
-		ll.addView(input);
-		
+		LayoutInflater inflater = LayoutInflater.from(this);
+		LinearLayout view = (LinearLayout) inflater.inflate(R.layout.dialog_edittext, null, false);
+		final EditText editText = (EditText) view.findViewById(R.id.input);
+
 		new AlertDialog.Builder(Activity_GraphView.this)
-		.setTitle(getText(R.string.text70_2))
-		.setView(ll)
-		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				String value = input.getText().toString();
-				if (!value.trim().equals(""))
-					muninFoo.addLabel(new Label(value));
-				dialog.dismiss();
-				actionLabels();
-			}
-		}).setNegativeButton(getText(R.string.text64), new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) { }
-		}).show();
+				.setTitle(getText(R.string.text70_2))
+				.setView(view)
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						String value = editText.getText().toString();
+						if (!value.trim().equals(""))
+							muninFoo.addLabel(new Label(value));
+						dialog.dismiss();
+						actionLabels();
+					}
+				}).setNegativeButton(getText(R.string.text64), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) { }
+				}).show();
 	}
 	
 	private void actionLabels() {

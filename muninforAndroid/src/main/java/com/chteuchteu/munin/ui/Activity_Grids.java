@@ -169,7 +169,7 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 	
 	private void add() {
 		LayoutInflater inflater = LayoutInflater.from(this);
-		View dialogLayout = inflater.inflate(R.layout.dialog_newgrid, null, false);
+		View dialogLayout = inflater.inflate(R.layout.dialog_edittext, null, false);
 		final EditText input = (EditText) dialogLayout.findViewById(R.id.input);
 		
 		AlertDialog.Builder b = new AlertDialog.Builder(Activity_Grids.this)
