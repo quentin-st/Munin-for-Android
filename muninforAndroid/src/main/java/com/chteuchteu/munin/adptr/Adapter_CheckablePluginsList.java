@@ -42,15 +42,13 @@ public class Adapter_CheckablePluginsList extends ArrayAdapter<MuninPlugin> {
         TextView row1 = (TextView) view.findViewById(R.id.line_a);
         TextView row2 = (TextView) view.findViewById(R.id.line_b);
 
-        // Toggle checkbox on text click
-        View.OnClickListener onTextClick = new View.OnClickListener() {
+        // Toggle checkbox on row click
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 checkBox.setChecked(!checkBox.isChecked());
             }
-        };
-        row1.setOnClickListener(onTextClick);
-        row2.setOnClickListener(onTextClick);
+        });
 
         row1.setText(plugin.getFancyNameOrDefault());
         row2.setText(plugin.getCategory());
