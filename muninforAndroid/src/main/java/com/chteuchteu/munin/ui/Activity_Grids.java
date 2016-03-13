@@ -8,11 +8,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -115,12 +117,14 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 
 							switch (which) {
 								case 0: // Rename grid
-									final EditText input = new EditText(context);
+									LayoutInflater layoutInflater = LayoutInflater.from(context);
+									ViewGroup alertDialogView = (ViewGroup) layoutInflater.inflate(R.layout.dialog_edittext, null, false);
+									final EditText input = (EditText) alertDialogView.findViewById(R.id.input);
 									input.setText(gridName);
 
 									new AlertDialog.Builder(context)
 											.setTitle(R.string.rename_grid)
-											.setView(input)
+											.setView(alertDialogView)
 											.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 												public void onClick(DialogInterface dialog, int whichButton) {
 													String value = input.getText().toString();

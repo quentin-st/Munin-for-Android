@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -192,12 +193,14 @@ public class Activity_Servers extends MuninActivity implements IServersActivity,
 						new MasterScanner(Activity_Servers.this, master).execute();
 						return true;
 					case R.id.menu_renameMaster:
-						final EditText input = new EditText(context);
+						LayoutInflater inflater = LayoutInflater.from(context);
+						ViewGroup view = (ViewGroup) inflater.inflate(R.layout.dialog_edittext, null, false);
+						final EditText input = (EditText) view.findViewById(R.id.input);
 						input.setText(master.getName());
 
 						new AlertDialog.Builder(context)
 								.setTitle(R.string.renameMaster)
-								.setView(input)
+								.setView(view)
 								.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog, int whichButton) {
 										String value = input.getText().toString();
@@ -209,9 +212,10 @@ public class Activity_Servers extends MuninActivity implements IServersActivity,
 										dialog.dismiss();
 									}
 								}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-							}
-						}).show();
+									public void onClick(DialogInterface dialog, int whichButton) {
+									}
+								}).show();
+
 						return true;
 					case R.id.menu_updateCredentials:
 						displayCredentialsDialog(master);

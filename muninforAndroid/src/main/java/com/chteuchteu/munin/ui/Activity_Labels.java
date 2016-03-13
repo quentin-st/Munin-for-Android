@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -117,28 +119,28 @@ public class Activity_Labels extends MuninActivity implements ILabelsActivity {
 
 		switch (item.getItemId()) {
 			case R.id.menu_add:
-				final LinearLayout ll = new LinearLayout(this);
-				ll.setOrientation(LinearLayout.VERTICAL);
-				ll.setPadding(10, 30, 10, 10);
-				final EditText input = new EditText(this);
-				ll.addView(input);
-				
+				LayoutInflater inflater = LayoutInflater.from(this);
+				ViewGroup view = (ViewGroup) inflater.inflate(R.layout.dialog_edittext, null, false);
+				final EditText editText = (EditText) view.findViewById(R.id.input);
+
 				new AlertDialog.Builder(activity)
-				.setTitle(getText(R.string.text70_2))
-				.setView(ll)
-				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						String value = input.getText().toString();
-						if (!value.trim().equals(""))
-							muninFoo.addLabel(new Label(value));
-						dialog.dismiss();
-						labelsListFragment.updateListView();
-						labelsItemsListFragment.unselectLabel();
-					}
-				}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) { }
-				}).show();
-					
+						.setTitle(getText(R.string.text70_2))
+						.setView(view)
+						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								String value = editText.getText().toString();
+								if (value.trim().equals(""))
+									return;
+
+								muninFoo.addLabel(new Label(value));
+								dialog.dismiss();
+								labelsListFragment.updateListView();
+								labelsItemsListFragment.unselectLabel();
+							}
+						}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) { }
+						}).show();
+
 				return true;
 		}
 
