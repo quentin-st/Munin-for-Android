@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto" >
-
-    <item
-        android:id="@+id/menu_add"
-        app:showAsAction="never"
-        android:title="@string/text70"/>
-
     <item
         android:id="@+id/menu_importexport"
         android:icon="@drawable/ic_action_import_export"
@@ -21,5 +15,4 @@
                 android:title="@string/action_export" />
         </menu>
     </item>
-
 </menu>

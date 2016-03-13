@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +49,15 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 		list = new ArrayList<>();
 
 		updateList();
+
+		// Init fab
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				add();
+			}
+		});
 	}
 
 	private Grid getGridFromName(String gridName) {
@@ -208,9 +218,6 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-			case R.id.menu_add:
-				add();
-				return true;
 			case R.id.menu_import:
 				ImportExportHelper.showImportDialog(muninFoo, context, ImportExportHelper.ImportExportType.GRIDS, this);
 				return true;
