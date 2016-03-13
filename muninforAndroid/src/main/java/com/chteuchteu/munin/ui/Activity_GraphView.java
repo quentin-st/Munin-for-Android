@@ -195,6 +195,7 @@ public class Activity_GraphView extends MuninActivity {
 		if (this.currentPlugin == null) {
 			Toast.makeText(this, R.string.text09, Toast.LENGTH_SHORT).show();
 			startActivity(new Intent(this, Activity_Plugins.class));
+			return;
 		}
 
 		// Viewflow
