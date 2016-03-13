@@ -57,12 +57,15 @@ public class Adapter_CheckablePluginsList extends ArrayAdapter<MuninPlugin> {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked)
+                if (checked && !selectedItems.contains(plugin))
                     selectedItems.add(plugin);
-                else
+                else if (!checked)
                     selectedItems.remove(plugin);
             }
         });
+
+        // Android will recycle views. We have to update the checkbox state
+        checkBox.setChecked(selectedItems.contains(plugin));
 
         return view;
     }
