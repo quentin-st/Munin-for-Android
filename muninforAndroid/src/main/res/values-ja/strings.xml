@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources><string name="app_name">Munin for Android</string>
 	<string name="button_graphs">グラフ</string>
 	<string name="button_server">サーバー</string>
@@ -262,4 +262,8 @@
 	<string name="poll_explanation">このモードは Munin for Android が定期的に各サーバーをポーリングします。余分な設定はありませんが、プッシュ モードより信頼性が高くありません。バッテリの残量とデータ料金プランを減らす可能性があります。プッシュ モードで必要なスクリプトをインストールできない場合のみこのモードを使用してください。</string>
 
 <string name="lang_polish">ポーランド語</string>
-	</resources>
+	<string name="graphs_autoload">グラフを自動的に読み込む</string>
+	<string name="permission_required">この操作を行うためにアクセス許可が必要です</string>
+	<string name="permission_missing">操作を行うことができません: 1 つまたは複数のアクセス許可がありません。</string>
+
+</resources>
