@@ -67,14 +67,12 @@ dependencies {
 
     // Test-specific dependencies
     testCompile 'junit:junit:4.12'
-    androidTestCompile "com.android.support:support-annotations:23.1.1"
+    androidTestCompile 'com.android.support:support-annotations:23.1.1'
     androidTestCompile 'com.android.support.test:runner:0.4.1'
     androidTestCompile 'com.android.support.test:rules:0.4.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
     androidTestCompile 'tools.fastlane:screengrab:0.2.0'
-    compile 'junit:junit:4.12'
-    compile 'tools.fastlane:screengrab:0.2.0'
 
     // Debug-specific dependencies
     debugCompile 'im.dino:dbinspector:3.1.0@aar'
