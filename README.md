@@ -49,6 +49,14 @@ simple Java documentation crawler
 install those manually if you don't use Google services (Google Play) on your device.
 You'll have to install updates by yourself)
 
+## About screengrab
+We're using [screengrab](https://github.com/fastlane/fastlane/tree/master/screengrab) to automate
+screenshot generation. Here are the steps to generate those:
+
+- Build test apk: `./gradlew assembleDebug assembleAndroidTest`
+- Run screengrab: `screengrab`
+- Enjoy: `cd fastlane/metadata/android/de-DE/images/phoneScreenshots/`
+
 ## Licensing
 Munin for Android is distributed under the GNU GPL version 2. Munin for Android is copyrighted 2015
 by its various authors as identified in the source files.
