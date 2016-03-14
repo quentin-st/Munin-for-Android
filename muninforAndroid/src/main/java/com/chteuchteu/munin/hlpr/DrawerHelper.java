@@ -37,6 +37,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.OnPostBindViewListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +50,8 @@ public class DrawerHelper {
 	private Drawer drawer;
 	private HashMap<DrawerMenuItem, IDrawerItem> drawerItems;
 	private Toolbar toolbar;
+
+	public static final String TAG_VALUE_SERVERS = "drawer_servers";
 
 	public enum DrawerMenuItem {
 		None(-1),
@@ -86,6 +89,11 @@ public class DrawerHelper {
 	}
 	
 	public void reset() {
+		if (this.drawer != null) {
+			this.drawer.removeHeader();
+			this.drawer.removeAllItems();
+		}
+
 		initDrawer();
 	}
 
@@ -139,6 +147,14 @@ public class DrawerHelper {
 						.withName(R.string.button_server)
 						.withIdentifier(DrawerMenuItem.Servers.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_view_list)
+						// Set view tag
+						.withPostOnBindViewListener(new OnPostBindViewListener() {
+							@Override
+							public void onBindView(IDrawerItem drawerItem, View view) {
+								if (drawerItem.getIdentifier() == DrawerMenuItem.Servers.getIdentifier())
+									view.setTag(TAG_VALUE_SERVERS);
+							}
+						})
 		);
 
 		// Notifications
