@@ -28,7 +28,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasToString;
-import static org.hamcrest.Matchers.isq;
+import static org.hamcrest.Matchers.is;
 
 @RunWith(JUnit4.class)
 @LargeTest
