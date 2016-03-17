@@ -51,8 +51,6 @@ public class DrawerHelper {
 	private HashMap<DrawerMenuItem, IDrawerItem> drawerItems;
 	private Toolbar toolbar;
 
-	public static final String TAG_VALUE_SERVERS = "drawer_servers";
-
 	public enum DrawerMenuItem {
 		None(-1),
 		Graphs(1),
@@ -112,6 +110,14 @@ public class DrawerHelper {
 						.withIdentifier(DrawerMenuItem.Graphs.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_pulse)
 						.withEnabled(muninFoo.getNodes().size() > 0)
+						// Set view tag
+						.withPostOnBindViewListener(new OnPostBindViewListener() {
+							@Override
+							public void onBindView(IDrawerItem drawerItem, View view) {
+								if (drawerItem.getIdentifier() == DrawerMenuItem.Graphs.getIdentifier())
+									view.setTag(TestsHelper.DRAWER_GRAPHS);
+							}
+						})
 		);
 
 		// Grids
@@ -121,6 +127,14 @@ public class DrawerHelper {
 						.withIdentifier(DrawerMenuItem.Grids.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_view_grid)
 						.withEnabled(muninFoo.premium && muninFoo.getNodes().size() > 0)
+						// Set view tag
+						.withPostOnBindViewListener(new OnPostBindViewListener() {
+							@Override
+							public void onBindView(IDrawerItem drawerItem, View view) {
+								if (drawerItem.getIdentifier() == DrawerMenuItem.Grids.getIdentifier())
+									view.setTag(TestsHelper.DRAWER_GRIDS);
+							}
+						})
 		);
 
 		// Alerts
@@ -130,6 +144,14 @@ public class DrawerHelper {
 						.withIdentifier(DrawerMenuItem.Alerts.getIdentifier())
 						.withIcon(CommunityMaterial.Icon.cmd_alert_circle)
 						.withEnabled(muninFoo.getNodes().size() > 0)
+						// Set view tag
+						.withPostOnBindViewListener(new OnPostBindViewListener() {
+							@Override
+							public void onBindView(IDrawerItem drawerItem, View view) {
+								if (drawerItem.getIdentifier() == DrawerMenuItem.Alerts.getIdentifier())
+									view.setTag(TestsHelper.DRAWER_ALERTS);
+							}
+						})
 		);
 
 		// Labels
@@ -152,7 +174,7 @@ public class DrawerHelper {
 							@Override
 							public void onBindView(IDrawerItem drawerItem, View view) {
 								if (drawerItem.getIdentifier() == DrawerMenuItem.Servers.getIdentifier())
-									view.setTag(TAG_VALUE_SERVERS);
+									view.setTag(TestsHelper.DRAWER_SERVERS);
 							}
 						})
 		);
