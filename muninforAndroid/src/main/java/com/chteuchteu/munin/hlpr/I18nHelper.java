@@ -10,7 +10,7 @@ import com.chteuchteu.munin.R;
 import java.util.Arrays;
 import java.util.Locale;
 
-public final class I18nHelper {
+public class I18nHelper {
 	/**
 	 * AppLanguage enum
 	 * Once most strings are supplied for a language,
@@ -64,32 +64,41 @@ public final class I18nHelper {
 		return false;
 	}
 
-	public static void loadLanguage(Context context, MuninFoo muninFoo) { loadLanguage(context, muninFoo, false); }
 	/**
-	 * Load language according to preferences, if set. If not : lang is
-	 *  already set according to device locale.
+	 * Updates the global locale if different than the current/default one
 	 * @param context Activity context
-	 * @param forceLoad Force language load (after language change)
 	 */
-	public static void loadLanguage(Context context, MuninFoo muninFoo, boolean forceLoad) {
-		Settings settings = muninFoo.getSettings();
+	public static void updateLocale(Context context, MuninFoo muninFoo) {
+		Locale locale = muninFoo.getLocale();
 
+		Resources resources = context.getApplicationContext().getResources();
+		Configuration configuration = resources.getConfiguration();
+
+		if (!configuration.locale.equals(locale) || !Locale.getDefault().equals(locale))
+			applyLocale(context, locale);
+	}
+
+	private static void applyLocale(Context context, Locale locale) {
+		Locale.setDefault(locale);
+		Resources resources = context.getApplicationContext().getResources();
+		Configuration configuration = new Configuration(resources.getConfiguration());
+		configuration.locale = locale;
+		resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+	}
+
+	public static Locale getSettingsLocaleOrDefault(Context context, Settings settings) {
 		if (settings.has(Settings.PrefKeys.Lang)) {
-			if (!muninFoo.languageLoaded || forceLoad) {
-				String lang = settings.getString(Settings.PrefKeys.Lang);
-				if (!isLanguageSupported(lang))
-					lang = "en";
+			String lang = settings.getString(Settings.PrefKeys.Lang);
 
-				Locale locale = new Locale(lang);
-				Locale.setDefault(locale);
-				Resources resources = context.getApplicationContext().getResources();
-				Configuration configuration = resources.getConfiguration();
-				configuration.locale = locale;
-				resources.updateConfiguration(configuration, null);
+			if (!isLanguageSupported(lang))
+				lang = AppLanguage.defaultLang().langCode;
 
-				muninFoo.languageLoaded = true;
-			}
+			return new Locale(lang);
 		}
-		// else: lang set according to device locale
+
+		// Locale not set: return default one
+		Resources resources = context.getApplicationContext().getResources();
+		Configuration configuration = resources.getConfiguration();
+		return configuration.locale;
 	}
 }

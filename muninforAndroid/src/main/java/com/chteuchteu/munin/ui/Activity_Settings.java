@@ -337,8 +337,10 @@ public class Activity_Settings extends MuninActivity {
 		I18nHelper.AppLanguage newLang = I18nHelper.AppLanguage.values()[spinner_lang.getSelectedItemPosition()];
 		settings.set(Settings.PrefKeys.Lang, newLang.langCode);
 
-		if (currentLang != newLang)
-			I18nHelper.loadLanguage(context, muninFoo, true);
+		if (currentLang != newLang) {
+			muninFoo.setLocale(new Locale(newLang.langCode));
+			I18nHelper.updateLocale(context, muninFoo);
+		}
 
 		settings.set(Settings.PrefKeys.ScreenAlwaysOn, checkbox_alwaysOn.isChecked());
 		settings.set(Settings.PrefKeys.AutoRefresh, checkbox_autoRefresh.isChecked());

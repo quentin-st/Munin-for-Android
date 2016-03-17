@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -76,7 +77,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		boolean loaded = MuninFoo.isLoaded();
 		muninFoo = MuninFoo.getInstance(this);
 		settings = muninFoo.getSettings();
-		I18nHelper.loadLanguage(this, muninFoo);
+		I18nHelper.updateLocale(this, muninFoo);
 
 		if (!BuildConfig.DEBUG) {
 			Tracker tracker = this.muninFoo.getDefaultTracker(this);
@@ -388,6 +389,13 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 
 		settings.set(Settings.PrefKeys.LastMFAVersion, MuninFoo.VERSION + "");
 		muninFoo.resetInstance(this);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+
+		I18nHelper.updateLocale(this, muninFoo);
 	}
 
 	/* Grid fragment */

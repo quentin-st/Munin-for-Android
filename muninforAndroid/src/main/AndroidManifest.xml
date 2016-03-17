@@ -31,37 +31,38 @@
 		android:theme="@style/AppTheme"
 		android:fullBackupContent="true">
 
-		<activity android:name=".ui.Activity_About" />
+		<activity android:name=".ui.Activity_About"
+				  android:configChanges="layoutDirection|locale" />
 		<activity android:name=".ui.Activity_Alerts"
-				  android:configChanges="orientation|screenSize|keyboardHidden" />
-		<activity android:name=".ui.Activity_AlertsPlugins" />
+				  android:configChanges="layoutDirection|locale|orientation|screenSize|keyboardHidden" />
+		<activity android:name=".ui.Activity_AlertsPlugins" android:configChanges="layoutDirection|locale" />
 		<activity android:name=".ui.Activity_Grid"
-				  android:configChanges="orientation|screenSize|keyboardHidden"/>
-		<activity android:name=".ui.Activity_Grids" />
-		<activity android:name=".ui.Activity_GraphView" />
-		<activity android:name=".ui.Activity_Labels" />
+				  android:configChanges="layoutDirection|locale|orientation|screenSize|keyboardHidden"/>
+		<activity android:name=".ui.Activity_Grids" android:configChanges="layoutDirection|locale" />
+		<activity android:name=".ui.Activity_GraphView" android:configChanges="layoutDirection|locale" />
+		<activity android:name=".ui.Activity_Labels" android:configChanges="layoutDirection|locale" />
 		<activity android:name=".ui.Activity_Main"
 				  android:icon="@drawable/launcher_icon"
 				  android:label="@string/app_name"
-				  android:theme="@style/AppTheme" >
+				  android:theme="@style/AppTheme" android:configChanges="layoutDirection|locale">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".ui.Activity_Notifications" />
-		<activity android:name=".ui.Activity_Plugins" />
+		<activity android:name=".ui.Activity_Notifications" android:configChanges="layoutDirection|locale" />
+		<activity android:name=".ui.Activity_Plugins" android:configChanges="layoutDirection|locale" />
 		<activity android:name=".ui.Activity_Server"
-				  android:configChanges="orientation|screenSize|keyboardHidden"
+				  android:configChanges="layoutDirection|locale|orientation|screenSize|keyboardHidden"
 				  android:windowSoftInputMode="stateHidden|adjustResize" />
-		<activity android:name=".ui.Activity_Servers" />
-		<activity android:name=".ui.Activity_Settings" />
-		<activity android:name=".ui.Activity_GoPremium" />
+		<activity android:name=".ui.Activity_Servers" android:configChanges="layoutDirection|locale" />
+		<activity android:name=".ui.Activity_Settings" android:configChanges="layoutDirection|locale" />
+		<activity android:name=".ui.Activity_GoPremium" android:configChanges="layoutDirection|locale" />
 		<activity android:name=".ui.Activity_IgnoreNotification"
 				  android:theme="@style/Transparent"
 				  android:noHistory="true"
 				  android:taskAffinity=""
-				  android:excludeFromRecents="true"/>
+				  android:excludeFromRecents="true" />
 
 		<!-- Pull notifications -->
 		<receiver android:name=".ntfs.poll.BootReceiver" >

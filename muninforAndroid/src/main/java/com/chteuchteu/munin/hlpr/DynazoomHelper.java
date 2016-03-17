@@ -16,7 +16,7 @@ import com.edmodo.rangebar.RangeBar;
 
 import java.util.Calendar;
 
-public final class DynazoomHelper {
+public class DynazoomHelper {
 	private static final int GRAPH_LEFT_MARGIN = 155;
 	private static final int GRAPH_RIGHT_MARGIN = 50;
 	// Because of the bitmap shadow
