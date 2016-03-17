@@ -6,7 +6,7 @@ use_tests_in_packages ['com.chteuchteu.munin.test']
 app_apk_path 'muninforAndroid/build/outputs/apk/muninforAndroid-debug.apk'
 tests_apk_path 'muninforAndroid/build/outputs/apk/muninforAndroid-debug-androidTest-unaligned.apk'
 
-locales ['en-US', 'fr-FR']
+locales ['en-US', 'fr-FR', 'de-DE']
 
 # clear all previously generated screenshots in your local output directory before creating new ones
 clear_previous_screenshots true
