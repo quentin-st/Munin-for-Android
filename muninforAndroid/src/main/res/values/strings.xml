@@ -3,6 +3,7 @@
 		   tools:locale="en">
 
 	<string name="app_name">Munin for Android</string>
+	<string name="app_name_invariable" translatable="false">Munin for Android</string>
 	<string name="button_graphs">Graphs</string>
 	<string name="button_server">Servers</string>
 	<string name="button_premium">Go premium</string>
