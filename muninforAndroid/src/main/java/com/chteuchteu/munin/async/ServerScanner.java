@@ -76,7 +76,7 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
             if (scannerState != ScannerState.WAITING_FOR_CREDENTIALS
                     && scannerState != ScannerState.WAITING_FOR_URL) {
 	            if (!activity.isAlertShown) {
-		            final View view = LayoutInflater.from(context).inflate(R.layout.server_popup, null);
+		            final View view = LayoutInflater.from(context).inflate(R.layout.server_popup, null, false);
 
 		            activity.alertDialog = new AlertDialog.Builder(context)
                             .setTitle(R.string.loading)

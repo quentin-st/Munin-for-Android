@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -53,17 +55,32 @@ public class Activity_Server extends MuninActivity {
 		tv_serverUrl.setAdapter(addServerAdapter);
 		
 		tv_serverUrl.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                if (spinner.getSelectedItemPosition() != 0 &&
-                        !tv_serverUrl.getText().toString().contains("demo.munin-monitoring.org")
-                        && !tv_serverUrl.getText().toString().contains("munin.ping.uio.no"))
-                    spinner.setSelection(0);
-            }
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				if (spinner.getSelectedItemPosition() != 0 &&
+						!tv_serverUrl.getText().toString().contains("demo.munin-monitoring.org")
+						&& !tv_serverUrl.getText().toString().contains("munin.ping.uio.no"))
+					spinner.setSelection(0);
+			}
 
-            @Override public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
-            @Override public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) { }
-        });
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+			}
+		});
+		tv_serverUrl.setOnKeyListener(new View.OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+					actionSave();
+					return true;
+				}
+				return false;
+			}
+		});
 		
 		// Sample server
 		List<String> list = new ArrayList<>();

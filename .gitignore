@@ -26,3 +26,6 @@ fabric.properties
 gradlew
 gradlew.bat
 local.properties
+
+# Screengrab screenshots
+fastlane/
