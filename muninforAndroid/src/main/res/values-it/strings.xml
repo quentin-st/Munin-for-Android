@@ -256,7 +256,7 @@
 	<string name="ignore_plugin_in">Plugin %1$ nell\'host %2$ (gruppo %3$)</string>
 	<string name="ignore_plugin">Plugin %1$ senza contare host e gruppo</string>
 	<string name="ignoreRules">Regole di esclusione</string>
-	<string name="ignoreRulesText">Al momento ci sono %1$ regole di esclusione. Le regole sono create per ogni singola notifica e possono essere gestite da qui</string>
+	<string name="ignoreRulesText">Al momento ci sono %1$s regole di esclusione. Le regole sono create per ogni singola notifica e possono essere gestite da qui</string>
 	<string name="manageIgnoreRules">Gestisci regole di esclusione</string>
 	<string name="until">"Fino a "</string>
 	<string name="push">Push</string>
