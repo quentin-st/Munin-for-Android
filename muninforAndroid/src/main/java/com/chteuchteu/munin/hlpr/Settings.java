@@ -69,6 +69,14 @@ public class Settings {
         if (this.boolPrefs.keySet().contains(key))
             return this.boolPrefs.get(key);
 
+        // Check type from SharedPreference
+        if (getType(key) == String.class) {
+            String boolVal = getString(key, null);
+            return boolVal != null
+                    ? Boolean.parseBoolean(boolVal)
+                    : defaultValue;
+        }
+
         return this.sharedPreferences.getBoolean(key.getKey(), defaultValue);
     }
 
@@ -113,6 +121,16 @@ public class Settings {
             this.stringPrefs.remove(key);
         else if (this.intPrefs.keySet().contains(key))
             this.intPrefs.remove(key);
+    }
+
+
+    // TYPES
+    public Class<?> getType(PrefKeys prefKeys) {
+        Object value = getAll().get(prefKeys.getKey());
+
+        return value == null
+                ? null
+                : value.getClass();
     }
 
 
