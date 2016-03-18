@@ -115,7 +115,9 @@ public class Fragment_Grid extends Fragment {
 		if (autoLoad && grid.getItems().isEmpty())
 			edit();
 
-		if (!autoLoad) {
+		if (autoLoad)
+			activity.onManualLoad();
+		else {
 			view.findViewById(R.id.manual_load).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.manual_load_action).setOnClickListener(new View.OnClickListener() {
 				@Override
