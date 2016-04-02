@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
 
 	<string name="app_name">Munin for Android</string>
@@ -273,4 +273,9 @@
 
 <string name="ignoreRules">Règles</string>
 	<string name="manageIgnoreRules">Gérer les règles</string>
+	<string name="graphs_autoload">Charger les graphs automatiquement</string>
+	<string name="permission_required">Une permission est nécessaire pour faire cela</string>
+	<string name="permission_missing">Impossible d\'achever : une ou plusieurs permissions sont manquantes.</string>
+
+<string name="lang_polish">Polonais</string>
 	</resources>
