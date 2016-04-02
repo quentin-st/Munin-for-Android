@@ -1,2 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><string name="app_name">Munin Androidille</string>
+	<string name="button_graphs">Graafit</string>
+	<string name="button_server">Palvelimet</string>
+	<string name="button_premium">Hanki premium</string>
+	<string name="button_alerts">Hälytykset</string>
+	<string name="button_labels">Nimilaput</string>
+	<string name="button_grid">Ruudukot</string>
+	<string name="button_notifications">Ilmoitukset</string>
+	<string name="settings_URL_label">Munin-palvelimen URL</string>
+	<string name="settings_URL_label2">esim. https://88.180.108.192:80/munin/</string>
+	<string name="settings_text">... tai valitse esimerkkipalvelin:</string>
+	<string name="settings_http_auth2">HTTP autentikointi vaaditaan</string>
+	<string name="settings_hdgraphs">Salli korkean resoluution graafit</string>
+	<string name="settings_hdgraphs_text">Yritä käyttää DynaZoom ominaisuutta saadaksesi korkean tarkkuuden graafit</string>
+	<string name="settings_auth_type">Autentikointitapa</string>
+	<string name="settings_login">Tunnus</string>
+	<string name="settings_password">Salasana</string>
+	<string name="settings_default_scale">Graafin oletusskaala</string>
+	<string name="settings_screenalwayson_label">Pidä näyttö päällä</string>
+	<string name="settings_screenalwayson_checkbox">Estä näyttöä sammumasta kun näytetään graafeja / hälytyksiä</string>
+	<string name="settings_autorefresh_label">Automaattinen päivitys</string>
+	<string name="settings_autorefresh_checkbox">Päivitä graafit / hälytykset viiden minuutin välein niitä katsottaessa</string>
+	<string name="settings_enablegraphszoom">Salli graafien zoomaus</string>
+	<string name="settings_titlelabel_app">Sovelluksen asetukset</string>
+	<string name="settings_titlelabel_graphs">Graafien asetukset</string>
+	<string name="save_button">Tallenna</string>
+	<string name="menu_graph_refresh">Päivitä</string>
+	<string name="menu_graph_save">Tallenna graafi muistikortille</string>
+	<string name="menu_graph_switch">Vaihda kohdetta</string>
+	<string name="menu_addserver_save">Tallenna palvelin</string>
+	<string name="menu_addserver_delete">Poista palvelin</string>
+	<string name="loading">Ladataan…</string>
+	<string name="search">Haku</string>
+	<string name="about_eraseData">Poista tiedot</string>
+	<string name="about_gplay">Arvostele sovellus</string>
+	<string name="servers_noservers_1">Ei palvelinta vielä</string>
+	<string name="servers_noservers_2">Lisää omasi tai jokin esimerkeistä painamalla +</string>
+	<string name="edit">Muokkaa</string>
+	<string name="yourerunning">Käynnissä tällä hetkellä</string>
+	<string name="openInBrowser">Avaa selaimessa</string>
+	<string name="fieldsDescription">Kenttien kuvaukset</string>
+	<string name="follow">Seuraa Twitterissä</string>
+	<string name="notifs_vibrate">Värinä</string>
+	<string name="about_firstPhrase">Haluatko sanoa hei? Onko sinulla innovatiivinen idea sovelluksen parantamiseksi? Huomasitko kriittisen virheen? Voit lähettää sähköpostia osoitteeseen <b><u>support@munin-for-android.com</u></b>! Kiitos!</string>
+	<string name="about_independantApp">Tämä sovellus on kehitetty itsenäisesti eikä ole virallinen sovellus.</string>
+	<string name="about_changelog">"Osoitteesta &lt;a href=http://munin-for-android.com/&gt;munin-for-android.com&lt;/a&gt;  löydät muutoshistorian sekä versioiden huomautukset."</string>
+	<string name="about_openSource">Munin Androidille on avointa koodia! &lt;a href=https://github.com/chteuchteu/Munin-for-Android&gt;Voit myötävaikuttaa projektiin GitHubissa&lt;/a&gt;. Sovellusta jaetaan GNU GPL version 2 lisenssillä.</string>
+	<string name="about_specialThanksTitle">Erityiskiitokset</string>
+	<string name="about_librariesTitle">Kirjastot</string>
+	<string name="goPremium_title">Munin Androidille lisäosa</string>
+	<string name="goPremium_features"> <li>Graafien ruudukot</li> <li>Graafit työpöydälle (widget)</li> <li>Koontiarvotodennus (Digest auth)</li> <li>Ilmoitukset</li> <li>Korkean prioriteetin tuki</li> <li>Yksi paketti : Maksat kerran tämän hetken sekä tulevaisuuden ominaisuuksista!</li> <li>Ja lisää tiedossa! Varmistathan automaattipäivitykset Googlen sovelluskaupassa saadaksesi uusimmat ominaisuudet.</li> </string>
+	<string name="buy_now">Osta NYT</string>
+	<string name="splashDesc">Ladataan</string>
+	<string name="graphView_ImageViewDescription">Graafi</string>
+
+	<string name="addServerTitle">Lisää palvelin</string>
+	</resources>
