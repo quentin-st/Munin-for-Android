@@ -117,10 +117,6 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	 */
     public void onLoadFinished() {
 		preloading = false;
-
-		// Inflate menu if not already done
-		if (!optionsMenuLoaded)
-			createOptionsMenu();
 		
 		// Ask the user to rate the app
 		AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -155,17 +151,19 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 			} else
 				findViewById(R.id.setDefaultActivity).setVisibility(View.GONE);
 		} else {
-			switch (muninFoo.getSettings().getString(Settings.PrefKeys.DefaultActivity)) {
+			switch (settings.getString(Settings.PrefKeys.DefaultActivity)) {
 				case "grid": {
 					mainFragment = MainFragment.GRID;
 					findViewById(R.id.empty_layout).setVisibility(View.GONE);
 					findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
 
+					// Prepare fragment
+					boolean autoLoad = settings.getBool(Settings.PrefKeys.DefaultActivity_Grid_AutoloadGraphs);
 					fragment = new Fragment_Grid();
 					Bundle bundle = new Bundle();
 					int gridId = muninFoo.getSettings().getInt(Settings.PrefKeys.DefaultActivity_GridId);
 					bundle.putLong(Fragment_Grid.ARG_GRIDID, gridId);
-					bundle.putBoolean(Fragment_Grid.ARG_AUTOLOAD, settings.getBool(Settings.PrefKeys.DefaultActivity_Grid_AutoloadGraphs));
+					bundle.putBoolean(Fragment_Grid.ARG_AUTOLOAD, autoLoad);
 					fragment.setArguments(bundle);
 					getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
 					break;
@@ -201,6 +199,10 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		dh.reset();
 		if (mainFragment == MainFragment.NONE)
 			dh.toggle();
+
+	    // Inflate menu if not already done
+	    if (!optionsMenuLoaded)
+		    createOptionsMenu();
 	}
 	
 	@Override
@@ -310,6 +312,11 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		// _refresh and _changePeriod are set visible when the user hits the "Load" button
 		menu_grid_refresh = menu.findItem(R.id.menu_grid_refresh);
 		menu_grid_changePeriod = menu.findItem(R.id.menu_grid_period);
+		// If autoLoad, toggle their visibility
+		if (settings.getString(Settings.PrefKeys.DefaultActivity, "none").equals("grid")
+				&& settings.getBool(Settings.PrefKeys.DefaultActivity_Grid_AutoloadGraphs)) {
+			onManualLoad();
+		}
 
 		// Alerts
 		menu.findItem(R.id.menu_alerts_refresh).setVisible(mainFragment == MainFragment.ALERTS);
