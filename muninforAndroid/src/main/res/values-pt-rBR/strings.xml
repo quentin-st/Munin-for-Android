@@ -1,2 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><string name="app_name">Munin para Android</string>
+	<string name="button_graphs">Gráficos</string>
+	<string name="button_server">Servidores</string>
+	<string name="button_premium">Obter premium</string>
+	<string name="button_alerts">Alertas</string>
+	<string name="button_labels">Etiquetas</string>
+	<string name="button_grid">Grades</string>
+	<string name="button_notifications">Notificações</string>
+	<string name="settings_URL_label">URL do Servidor Munin</string>
+	<string name="settings_URL_label2">ex: https://88.180.108.192:80/munin/</string>
+	<string name="settings_text">… ou selecione um servidor de exemplo:</string>
+	<string name="settings_http_auth2">Autenticação HTTP</string>
+	<string name="settings_hdgraphs">Habilitar gráficos HD</string>
+	<string name="settings_hdgraphs_text">Tentar usar o DynaZoom para obter gráficos em alta definição</string>
+	<string name="settings_auth_type">Tipo de autenticação</string>
+	<string name="settings_login">Login</string>
+	<string name="settings_password">Senha</string>
+	<string name="settings_default_scale">Escala padrão do gráfico</string>
+	<string name="settings_screenalwayson_label">Tela sempre ligada</string>
+	<string name="settings_screenalwayson_checkbox">Evita que a tela desligue enquanto exibindo os gráficos / alertas</string>
+	<string name="settings_autorefresh_label">Atualizar automaticamente</string>
+	<string name="settings_autorefresh_checkbox">Atualizar automaticamente os gráficos / alertas a cada 5 minutos quando os estiver exibindo</string>
+	<string name="settings_enablegraphszoom">Ativar o zoom dos gráficos</string>
+	<string name="settings_titlelabel_app">Configurações da aplicação</string>
+	<string name="settings_titlelabel_graphs">Configurações dos gráficos</string>
+	<string name="save_button">Salvar</string>
+	<string name="menu_graph_refresh">Atualizar</string>
+	<string name="menu_graph_save">Salvar o gráfico para o cartão SD</string>
+	<string name="menu_graph_switch">Trocar nó</string>
+	<string name="menu_addserver_save">Salvar servidor</string>
+	<string name="menu_addserver_delete">Remover servidor</string>
+	<string name="loading">Carregando…</string>
+	<string name="search">Pesquisar</string>
+	<string name="about_eraseData">Restaurar app</string>
+	<string name="about_gplay">Avaliar o app</string>
+	<string name="servers_noservers_1">Não há servidores</string>
+	<string name="servers_noservers_2">Adicionar a sua, ou uma de exemplo, clicando em +</string>
+	<string name="edit">Editar</string>
+	<string name="yourerunning">Você está executando</string>
+	<string name="openInBrowser">Abrir no navegador</string>
+	<string name="fieldsDescription">Descrição dos campos</string>
+	</resources>
