@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,10 +42,10 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Activity_Plugins extends MuninActivity {
-	private SimpleAdapter 		sa;
-	private List<HashMap<String,String>> list;
+	private SimpleAdapter 		adapter;
 	private List<MuninPlugin>	pluginsList;
-	private MuninPlugin[] 		pluginsFilter;
+	private List<HashMap<String,String>> adapterList;
+	private MuninPlugin[] 		filteredPluginsList;
 
 	private TextView			customActionBarView_textView;
     private NodesListAlertDialog nodesListAlertDialog;
@@ -56,9 +55,10 @@ public class Activity_Plugins extends MuninActivity {
 	private EditText		filter;
 	private ListView       listview;
 	
-	private int mode;
-	private static final int MODE_GROUPED = 1;
-	private static final int MODE_FLAT = 2;
+	private Mode mode;
+	private enum Mode {
+		GROUPED, FLAT
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,8 +67,8 @@ public class Activity_Plugins extends MuninActivity {
 		setContentView(R.layout.activity_plugins);
 		super.onContentViewSet();
 
-		this.listview = (ListView) findViewById(R.id.listview);
-		list = new ArrayList<>();
+		listview = (ListView) findViewById(R.id.listview);
+		adapterList = new ArrayList<>();
 
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(false);
@@ -98,49 +98,43 @@ public class Activity_Plugins extends MuninActivity {
         customActionBarView_textView = (TextView) customActionBarView.findViewById(R.id.text);
         customActionBarView_textView.setText(muninFoo.getCurrentNode().getName());
 
-		mode = MODE_GROUPED;
+		mode = Mode.GROUPED;
+		pluginsList = muninFoo.getCurrentNode().getPlugins();
 
 		updateListView(mode);
 	}
 	
-	private void updateListView(final int mode) {
+	private void updateListView(final Mode mode) {
 		this.mode = mode;
 		
-		if (mode == MODE_FLAT) {
-			pluginsList = new ArrayList<>();
-			for (int i=0; i<muninFoo.getCurrentNode().getPlugins().size(); i++) {
-				if (muninFoo.getCurrentNode().getPlugins().get(i) != null)
-					pluginsList.add(muninFoo.getCurrentNode().getPlugins().get(i));
-			}
-			
-			list.clear();
+		if (mode == Mode.FLAT) {
+			adapterList.clear();
+
 			HashMap<String,String> item;
-			for (MuninPlugin pl : pluginsList) {
+			for (MuninPlugin plugin : pluginsList) {
 				item = new HashMap<>();
-				item.put("line1", pl.getFancyName());
-				item.put("line2", pl.getName());
-				list.add(item);
+				item.put("line1", plugin.getFancyName());
+				item.put("line2", plugin.getName());
+				adapterList.add(item);
 			}
-			sa = new SimpleAdapter(this, list, R.layout.plugins_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
-			listview.setAdapter(sa);
+
+			adapter = new SimpleAdapter(this, adapterList, R.layout.plugins_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+			listview.setAdapter(adapter);
 		} else {
 			// Create plugins list
-			List<List<MuninPlugin>> pluginsListCat = muninFoo.getCurrentNode().getPluginsListWithCategory();
-			
-			pluginsList = new ArrayList<>();
-			for (int i=0; i<muninFoo.getCurrentNode().getPlugins().size(); i++) {
-				if (muninFoo.getCurrentNode().getPlugins().get(i) != null)
-					pluginsList.add(muninFoo.getCurrentNode().getPlugins().get(i));
-			}
-			
+			List<List<MuninPlugin>> categories = muninFoo.getCurrentNode().getPluginsListWithCategory();
+
 			Adapter_SeparatedList adapter = new Adapter_SeparatedList(this, false);
-			for (List<MuninPlugin> l : pluginsListCat) {
+			for (List<MuninPlugin> category : categories) {
 				List<Map<String,?>> elements = new LinkedList<>();
 				String categoryName = "";
-				for (MuninPlugin p : l) {
-					elements.add(createItem(p.getFancyName(), p.getName()));
-					categoryName = p.getCategory();
-					categoryName = Util.capitalize(categoryName);
+				for (MuninPlugin plugin : category) {
+					Map<String,String> item = new HashMap<>();
+					item.put("title", plugin.getFancyName());
+					item.put("caption", plugin.getName());
+
+					elements.add(item);
+					categoryName = Util.capitalize(plugin.getCategory());
 				}
 				
 				adapter.addSection(categoryName, new SimpleAdapter(this, elements, R.layout.plugins_list,
@@ -151,16 +145,11 @@ public class Activity_Plugins extends MuninActivity {
 		
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-				TextView plu = (TextView) view.findViewById(R.id.line_b);
+				TextView pluginName = (TextView) view.findViewById(R.id.line_b);
 				Intent intent = new Intent(Activity_Plugins.this, Activity_GraphView.class);
-				int p = 0;
-				for (int i = 0; i < muninFoo.getCurrentNode().getPlugins().size(); i++) {
-					if (muninFoo.getCurrentNode().getPlugin(i).getName().equals(plu.getText().toString())) {
-						p = i;
-						break;
-					}
-				}
-				intent.putExtra("position", p);
+
+				MuninPlugin plugin = muninFoo.getCurrentNode().getPlugin(pluginName.getText().toString());
+				intent.putExtra("position", muninFoo.getCurrentNode().getPlugins().indexOf(plugin));
 				intent.putExtra("from", "plugins");
 				startActivity(intent);
 				Util.setTransition(activity, TransitionStyle.DEEPER);
@@ -181,27 +170,25 @@ public class Activity_Plugins extends MuninActivity {
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 							case 0:
-								TextView plu = (TextView) view.findViewById(R.id.line_b);
-								for (int i = 0; i < muninFoo.getCurrentNode().getPlugins().size(); i++) {
-									MuninPlugin plugin = muninFoo.getCurrentNode().getPlugin(i);
-									if (plugin != null && plugin.getName().equals(plu.getText().toString())) {
-										muninFoo.getCurrentNode().getPlugins().remove(plugin);
-										muninFoo.sqlite.dbHlpr.deleteMuninPlugin(plugin, true);
-										// Remove from labels if necessary
-										muninFoo.removeLabelRelation(plugin);
+								String pluginName = ((TextView) view.findViewById(R.id.line_b)).getText().toString();
+								MuninPlugin plugin = muninFoo.getCurrentNode().getPlugin(pluginName);
 
-										// Save scroll state
-										int index = listview.getFirstVisiblePosition();
-										View v = listview.getChildAt(0);
-										int top = (v == null) ? 0 : v.getTop();
+								if (plugin == null)
+									return;
 
-										updateListView(mode);
+								muninFoo.getCurrentNode().getPlugins().remove(plugin);
+								muninFoo.sqlite.dbHlpr.deleteMuninPlugin(plugin, true);
+								// Remove from labels if necessary
+								muninFoo.removeLabelRelation(plugin);
 
-										listview.setSelectionFromTop(index, top);
-										break;
-									}
-								}
+								// Save scroll state
+								int index = listview.getFirstVisiblePosition();
+								View v = listview.getChildAt(0);
+								int top = (v == null) ? 0 : v.getTop();
 
+								updateListView(mode);
+
+								listview.setSelectionFromTop(index, top);
 								break;
 						}
 					}
@@ -211,13 +198,6 @@ public class Activity_Plugins extends MuninActivity {
 				return true;
 			}
 		});
-	}
-	
-	private static Map<String,?> createItem(String title, String caption) {
-		Map<String,String> item = new HashMap<>();
-		item.put("title", title);
-		item.put("caption", caption);
-		return item;
 	}
 
 	protected void createOptionsMenu() {
@@ -236,27 +216,27 @@ public class Activity_Plugins extends MuninActivity {
 			@Override
 			public void afterTextChanged(Editable s) {
 				if (pluginsList != null && !pluginsList.isEmpty() && s != null) {
-					list.clear();
+					adapterList.clear();
 					String search = s.toString();
 
-					pluginsFilter = new MuninPlugin[pluginsList.size()];
+					filteredPluginsList = new MuninPlugin[pluginsList.size()];
 					for (int i = 0; i < pluginsList.size(); i++) {
 						if (pluginsList.get(i).getFancyName().toLowerCase(Locale.ENGLISH).contains(search.toLowerCase(Locale.ENGLISH))
 								|| pluginsList.get(i).getName().toLowerCase(Locale.ENGLISH).contains(search.toLowerCase(Locale.ENGLISH)))
-							pluginsFilter[i] = pluginsList.get(i);
+							filteredPluginsList[i] = pluginsList.get(i);
 					}
 
 					HashMap<String, String> item;
-					for (MuninPlugin p : pluginsFilter) {
+					for (MuninPlugin p : filteredPluginsList) {
 						if (p != null) {
 							item = new HashMap<>();
 							item.put("line1", p.getFancyName());
 							item.put("line2", p.getName());
-							list.add(item);
+							adapterList.add(item);
 						}
 					}
-					sa = new SimpleAdapter(Activity_Plugins.this, list, R.layout.plugins_list, new String[]{"line1", "line2"}, new int[]{R.id.line_a, R.id.line_b});
-					listview.setAdapter(sa);
+					adapter = new SimpleAdapter(Activity_Plugins.this, adapterList, R.layout.plugins_list, new String[]{"line1", "line2"}, new int[]{R.id.line_a, R.id.line_b});
+					listview.setAdapter(adapter);
 				}
 			}
 
@@ -322,7 +302,7 @@ public class Activity_Plugins extends MuninActivity {
 
         if (filter.getTag().equals("shown")) {
 			toggleFilterField(false);
-			updateListView(MODE_GROUPED);
+			updateListView(Mode.GROUPED);
 		} else {
 			Intent intent = new Intent(this, Activity_Main.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
