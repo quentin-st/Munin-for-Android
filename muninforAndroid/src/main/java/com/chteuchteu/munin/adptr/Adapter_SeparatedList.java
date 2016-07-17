@@ -35,7 +35,7 @@ public class Adapter_SeparatedList extends BaseAdapter {
 	}
 	
 	public Object getItem(int position) {
-		for(Object section : this.sections.keySet()) {
+		for (String section : this.sections.keySet()) {
 			Adapter adapter = sections.get(section);
 			int size = adapter.getCount() + 1;
 			
@@ -67,7 +67,7 @@ public class Adapter_SeparatedList extends BaseAdapter {
 	
 	public int getItemViewType(int position) {
 		int type = 1;
-		for(Object section : this.sections.keySet()) {
+		for (String section : this.sections.keySet()) {
 			Adapter adapter = sections.get(section);
 			int size = adapter.getCount() + 1;
 			
@@ -88,27 +88,27 @@ public class Adapter_SeparatedList extends BaseAdapter {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		int sectionnum = 0;
-		for (Object section : this.sections.keySet()) {
+		int sectionNum = 0;
+		for (String section : this.sections.keySet()) {
 			Adapter adapter = sections.get(section);
 			int size = adapter.getCount() + 1;
 			
 			// check if position inside this section 
 			if (position == 0) {
                 // Header
-				View view = headers.getView(sectionnum, convertView, parent);
+				View view = headers.getView(sectionNum, convertView, parent);
 				TextView textView = (TextView) view.findViewById(R.id.list_header_title);
 				Util.Fonts.setFont(context, textView, CustomFont.Roboto_Medium);
 				if (removeMasterPaddingLeft)
 					textView.setPadding(55, textView.getPaddingTop(), textView.getPaddingRight(), textView.getPaddingBottom());
 				return view;
 			}
-			if (position < size) // MuninNode line
+			if (position < size) // content line
                 return adapter.getView(position-1, convertView, parent);
 			
 			// otherwise jump into next section
 			position -= size;
-			sectionnum++;
+			sectionNum++;
 		}
 		return null;
 	}

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -26,6 +27,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_GraphList;
 import com.chteuchteu.munin.adptr.Adapter_SeparatedList;
 import com.chteuchteu.munin.adptr.NodesListAlertDialog;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
@@ -98,10 +100,9 @@ public class Activity_Plugins extends MuninActivity {
         customActionBarView_textView = (TextView) customActionBarView.findViewById(R.id.text);
         customActionBarView_textView.setText(muninFoo.getCurrentNode().getName());
 
-		mode = Mode.GROUPED;
 		pluginsList = muninFoo.getCurrentNode().getPlugins();
 
-		updateListView(mode);
+		updateListView(Mode.GROUPED);
 	}
 	
 	private void updateListView(final Mode mode) {
@@ -136,9 +137,12 @@ public class Activity_Plugins extends MuninActivity {
 					elements.add(item);
 					categoryName = Util.capitalize(plugin.getCategory());
 				}
+
+				//Adapter childAdapter = new SimpleAdapter(this, elements, R.layout.plugins_list,
+				//		new String[] { "title", "caption" }, new int[] { R.id.line_a, R.id.line_b });
+				Adapter childAdapter = new Adapter_GraphList(this, category);
 				
-				adapter.addSection(categoryName, new SimpleAdapter(this, elements, R.layout.plugins_list,
-						new String[] { "title", "caption" }, new int[] { R.id.line_a, R.id.line_b }));
+				adapter.addSection(categoryName, childAdapter);
 			}
 			listview.setAdapter(adapter);
 		}
