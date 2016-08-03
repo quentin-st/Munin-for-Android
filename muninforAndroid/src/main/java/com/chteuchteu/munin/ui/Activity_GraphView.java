@@ -43,6 +43,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_GraphView;
 import com.chteuchteu.munin.adptr.PluginsListAlertDialog;
@@ -952,11 +953,8 @@ public class Activity_GraphView extends MuninActivity {
 					DynazoomHelper.updateHighlightedArea(highlight1, highlight2, rangeBar, (ImageView) findViewById(R.id.dynazoom_imageview));
 				}
 
-				int fromIndex = rangeBar.getLeftIndex();
-				int toIndex = rangeBar.getRightIndex();
-
-				long new_dynazoom_from = dynazoom_from + (dynazoom_to-dynazoom_from) * fromIndex / DynazoomHelper.RANGEBAR_TICKS_COUNT;
-				long new_dynazoom_to = dynazoom_from + (dynazoom_to-dynazoom_from) * toIndex / DynazoomHelper.RANGEBAR_TICKS_COUNT;
+				long new_dynazoom_from = dynazoom_from + (dynazoom_to-dynazoom_from) * leftThumbIndex / DynazoomHelper.RANGEBAR_TICKS_COUNT;
+				long new_dynazoom_to = dynazoom_from + (dynazoom_to-dynazoom_from) * (rightThumbIndex+1) / DynazoomHelper.RANGEBAR_TICKS_COUNT;
 
 				dynazoom_updateFromTo(new_dynazoom_from, new_dynazoom_to);
 			}
@@ -971,11 +969,14 @@ public class Activity_GraphView extends MuninActivity {
 				if (rangeBar.getLeftIndex() == rangeBar.getRightIndex())
 					return;
 
-				int fromIndex = rangeBar.getLeftIndex();
-				int toIndex = rangeBar.getRightIndex();
+				int fromIndex = rangeBar.getLeftIndex(),
+					toIndex = rangeBar.getRightIndex();
 
-				dynazoom_from = dynazoom_from + (dynazoom_to-dynazoom_from) * fromIndex / DynazoomHelper.RANGEBAR_TICKS_COUNT;
-				dynazoom_to = dynazoom_from + (dynazoom_to-dynazoom_from) * toIndex / DynazoomHelper.RANGEBAR_TICKS_COUNT;
+				long new_dynazoom_from = dynazoom_from + (dynazoom_to-dynazoom_from) * fromIndex / DynazoomHelper.RANGEBAR_TICKS_COUNT;
+				long new_dynazoom_to = dynazoom_from + (dynazoom_to-dynazoom_from) * (toIndex+1) / DynazoomHelper.RANGEBAR_TICKS_COUNT;
+
+				dynazoom_from = new_dynazoom_from;
+				dynazoom_to = new_dynazoom_to;
 
 				if (dynazoomFetcher != null && !dynazoomFetcher.isCancelled())
 					dynazoomFetcher.cancel(true);
