@@ -243,7 +243,8 @@
 	<string name="about_firstPhrase">想打个招呼？有一个好的想法改善此应用？发现了一个关键问题？请随时发送邮件到 <b><u>support@munin-for-android.com</u></b>！感谢您的支持！</string>
 	<string name="about_changelog">请访问 &lt;a href=http://munin-for-android.com/&gt;munin-for-android.com&lt;/a&gt; 查看完整的变更日志和版本说明。</string>
 	<string name="about_librariesTitle">图书馆</string>
-	<string name="about_openSource">Munin for Android 是开源软件！&lt;a href=https://github.com/chteuchteu/Munin-for-Android&gt;您可以在 GitHub 上贡献&lt;/a&gt;。本应用采用 GNU GPL 版本 2 发布。</string>
+	<string name="about_openSource">Munin for Android 是开源软件！&lt;a href=https://github.com/chteuchteu/Munin-for-Android&gt;您可以在 GitHub 上贡献&lt;/a&gt;。
+本应用采用 GNU GPL 版本 2 发布。</string>
 	<string name="widget_configuration1">成功！小部件已添加到您的主屏幕。提示：您可以点击小部件底部的灰色栏更新图表！</string>
 	<string name="widget_configuration2">仅通过 Wifi 自动更新图标 (每小时更新一次)</string>
 	<string name="text54">预计花费数据流量：?? /天</string>
@@ -253,5 +254,22 @@
 	<string name="donate_amount">请选择捐款金额 (Google 会收取其中的 33%)</string>
 	<string name="grids_legend_both">两者</string>
 	<string name="redetectHdGraphsUrl">重新检测高清图表网址</string>
-	<string name="goPremium_features"> <li>图表网格</li> <li>图表小部件</li> <li>摘要身份验证</li> <li>通知</li> <li>高优先级支持</li> <li>一次购买高级功能包，目前和未来的功能您都享有，只需支付一次！</li> <li>更多惊喜还将到来，记得启用 Google Play 中的自动更新以接收最新版的高级版功能！</li> </string>
+	<string name="goPremium_features">
+ <li>图表网格</li>
+ <li>图表小部件</li>
+ <li>摘要身份验证</li>
+ <li>通知</li>
+ <li>高优先级支持</li>
+ <li>一次购买高级功能包，目前和未来的功能您都享有，只需支付一次！</li>
+ <li>更多惊喜还将到来，记得启用 Google Play 中的自动更新以接收最新版的高级版功能！</li>
+ </string>
+	<string name="restart_to_apply_lang_changes">应用程序必须重启才能使语言更改生效。</string>
+
+<string name="lang_chinese">中文（中国）</string>
+	<string name="lang_finnish">芬兰语</string>
+	<string name="lang_portuguese_brazil">葡萄牙语（巴西）</string>
+	<string name="export_success_txt1">您的配置已成功上传。
+ 请在您的另一台设备上使用下列代码以导入。</string>
+	<string name="alert_i18n">看上去本应用尚不支持您的语言。您能帮助我们翻译它吗？</string>
+	<string name="alert_i18n_yes">非常感谢！我们使用一个方便的在线工具管理翻译，链接如下: www.munin-for-android.com/i18n.php</string>
 	</resources>
