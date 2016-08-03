@@ -3,7 +3,6 @@ package com.chteuchteu.munin.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +12,6 @@ import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
-import com.chteuchteu.munin.hlpr.I18nHelper;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -48,7 +46,6 @@ public class MuninActivity extends AppCompatActivity {
 		this.activity = this;
 		this.muninFoo = MuninFoo.getInstance(this);
 		this.settings = muninFoo.getSettings();
-		I18nHelper.updateLocale(this, muninFoo);
 
 		if (!BuildConfig.DEBUG) {
 			Tracker tracker = this.muninFoo.getDefaultTracker(this);
@@ -80,11 +77,4 @@ public class MuninActivity extends AppCompatActivity {
 	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.None; }
 
 	protected void log(String s) { MuninFoo.log(((Object) this).getClass().getName(), s); }
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-
-		I18nHelper.updateLocale(this, muninFoo);
-	}
 }

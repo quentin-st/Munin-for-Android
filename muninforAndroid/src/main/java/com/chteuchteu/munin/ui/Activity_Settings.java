@@ -337,10 +337,8 @@ public class Activity_Settings extends MuninActivity {
 		I18nHelper.AppLanguage newLang = I18nHelper.AppLanguage.values()[spinner_lang.getSelectedItemPosition()];
 		settings.set(Settings.PrefKeys.Lang, newLang.langCode);
 
-		if (currentLang != newLang) {
-			muninFoo.setLocale(new Locale(newLang.langCode));
-			I18nHelper.updateLocale(context, muninFoo);
-		}
+		boolean restartRequired = currentLang != newLang;
+
 
 		settings.set(Settings.PrefKeys.ScreenAlwaysOn, checkbox_alwaysOn.isChecked());
 		settings.set(Settings.PrefKeys.AutoRefresh, checkbox_autoRefresh.isChecked());
@@ -417,7 +415,7 @@ public class Activity_Settings extends MuninActivity {
 		settings.set(Settings.PrefKeys.ImportExportServer, editText_importExportServer.getText().toString());
 
 
-		Toast.makeText(this, getString(R.string.text36), Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, getString(restartRequired ? R.string.restart_to_apply_lang_changes : R.string.text36), Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(Activity_Settings.this, Activity_Main.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);

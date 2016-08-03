@@ -328,5 +328,6 @@
 		Only use this mode if you cannot install the script mentioned in push mode.</string>
 	<string name="permission_required">A permission is required in order to do this</string>
 	<string name="permission_missing">Unable to achieve action: one or more permissions are missing.</string>
+	<string name="restart_to_apply_lang_changes">Application must be restarted for language changes to take effect.</string>
 
 </resources>

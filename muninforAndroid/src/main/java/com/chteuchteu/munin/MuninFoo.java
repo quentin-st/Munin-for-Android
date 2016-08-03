@@ -6,7 +6,6 @@ import android.util.Log;
 import com.chteuchteu.munin.exc.NullMuninFooException;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.DocumentationHelper;
-import com.chteuchteu.munin.hlpr.I18nHelper;
 import com.chteuchteu.munin.hlpr.SQLite;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
@@ -32,7 +31,6 @@ public class MuninFoo {
 	private static MuninFoo instance;
 
 	private Settings settings;
-	private Locale locale;
 	
 	private List<MuninNode> nodes;
 	public List<Label> labels;
@@ -65,7 +63,6 @@ public class MuninFoo {
 		instance = null;
 
 		this.settings = Settings.getInstance(context);
-		this.locale = I18nHelper.getSettingsLocaleOrDefault(context, settings);
 		this.documentationHelper = DocumentationHelper.init();
 
 		// User agent
@@ -348,13 +345,6 @@ public class MuninFoo {
 			l.add(nodesList);
 		}
 		return l;
-	}
-
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
-	public Locale getLocale() {
-		return this.locale;
 	}
 	
 	/**

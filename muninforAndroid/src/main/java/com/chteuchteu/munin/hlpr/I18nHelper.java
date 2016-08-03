@@ -1,10 +1,12 @@
 package com.chteuchteu.munin.hlpr;
 
-import android.content.Context;
+import android.app.Activity;
+import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
+import android.view.ContextThemeWrapper;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 
 import java.util.Arrays;
@@ -67,29 +69,25 @@ public class I18nHelper {
 		return false;
 	}
 
-	/**
-	 * Updates the global locale if different than the current/default one
-	 * @param context Activity context
-	 */
-	public static void updateLocale(Context context, MuninFoo muninFoo) {
-		Locale locale = muninFoo.getLocale();
+	@SuppressWarnings("deprecation")
+	public static void updateLocale(Application app) {
+		Locale locale = getSettingsLocaleOrDefault(Settings.getInstance(app));
 
-		Resources resources = context.getApplicationContext().getResources();
-		Configuration configuration = resources.getConfiguration();
+		if (locale == null)
+			return;
 
-		if (!configuration.locale.equals(locale) || !Locale.getDefault().equals(locale))
-			applyLocale(context, locale);
-	}
-
-	private static void applyLocale(Context context, Locale locale) {
-		Locale.setDefault(locale);
-		Resources resources = context.getApplicationContext().getResources();
+		Resources resources = app.getResources();
 		Configuration configuration = new Configuration(resources.getConfiguration());
-		configuration.locale = locale;
-		resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
+			configuration.locale = locale;
+		else
+			configuration.setLocale(locale);
+
+		app.getResources().updateConfiguration(configuration, resources.getDisplayMetrics());
 	}
 
-	public static Locale getSettingsLocaleOrDefault(Context context, Settings settings) {
+	public static Locale getSettingsLocaleOrDefault(Settings settings) {
 		if (settings.has(Settings.PrefKeys.Lang)) {
 			String lang = settings.getString(Settings.PrefKeys.Lang);
 
@@ -99,9 +97,7 @@ public class I18nHelper {
 			return new Locale(lang);
 		}
 
-		// Locale not set: return default one
-		Resources resources = context.getApplicationContext().getResources();
-		Configuration configuration = resources.getConfiguration();
-		return configuration.locale;
+		// Locale not set
+		return null;
 	}
 }
