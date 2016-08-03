@@ -133,6 +133,9 @@
 	<string name="lang_dutch">Dutch</string>
 	<string name="lang_japanese">Japanese</string>
 	<string name="lang_hungarian">Hungarian</string>
+	<string name="lang_chinese">Chinese (China)</string>
+	<string name="lang_finnish">Finnish</string>
+	<string name="lang_portuguese_brazil">Portuguese (Brazil)</string>
 	<string name="lang_chinese_taiwan">Chinese (Taiwan)</string>
 	<string name="lang_polish">Polish</string>
 	<string name="text01">Settings and servers configuration will be reset. Are you sure?</string>

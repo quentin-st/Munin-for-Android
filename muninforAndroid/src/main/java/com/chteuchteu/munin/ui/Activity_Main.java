@@ -323,7 +323,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	}
 
 	private void displayI18nAlertIfNeeded() {
-		// Only display the alertDialog if the device language is not fr/en/de/ru
+		// Only display the alertDialog if the device language is not fr/en/de/ru/...
 		String deviceLanguage = Locale.getDefault().getLanguage();
 
 		if (!I18nHelper.isLanguageSupported(deviceLanguage)) {

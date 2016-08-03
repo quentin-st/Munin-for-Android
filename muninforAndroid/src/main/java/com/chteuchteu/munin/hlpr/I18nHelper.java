@@ -20,13 +20,16 @@ public class I18nHelper {
 		DE("de", R.string.lang_german),
 		EN("en", R.string.lang_english),
 		ES("es", R.string.lang_spanish),
+		FI("fi", R.string.lang_finnish),
 		FR("fr", R.string.lang_french),
 		HU("hu", R.string.lang_hungarian),
 		IT("it", R.string.lang_italian),
 		JA("ja", R.string.lang_japanese),
 		NL("nl", R.string.lang_dutch),
+		PT_RBR("pt-rBR", R.string.lang_portuguese_brazil),
 		RU("ru", R.string.lang_russian),
 		UK("uk", R.string.lang_ukrainian),
+		ZH_RCN("zh_rCN", R.string.lang_chinese),
 		ZH_TW("zh_TW", R.string.lang_chinese_taiwan),
 		PL("pl", R.string.lang_polish);
 
@@ -57,7 +60,7 @@ public class I18nHelper {
 
 	public static boolean isLanguageSupported(String languageCode) {
 		for (AppLanguage lang : AppLanguage.values()) {
-			if (lang.langCode.equals(languageCode))
+			if (lang.langCode.toLowerCase().equals(languageCode.toLowerCase()))
 				return true;
 		}
 

@@ -44,8 +44,8 @@
 	<string name="notifs_vibrate">Värinä</string>
 	<string name="about_firstPhrase">Haluatko sanoa hei? Onko sinulla innovatiivinen idea sovelluksen parantamiseksi? Huomasitko kriittisen virheen? Voit lähettää sähköpostia osoitteeseen <b><u>support@munin-for-android.com</u></b>! Kiitos!</string>
 	<string name="about_independantApp">Tämä sovellus on kehitetty itsenäisesti eikä ole virallinen sovellus.</string>
-	<string name="about_changelog">"Osoitteesta &lt;a href=http://munin-for-android.com/&gt;munin-for-android.com&lt;/a&gt;  löydät muutoshistorian sekä versioiden huomautukset."</string>
-	<string name="about_openSource">Munin Androidille on avointa koodia! &lt;a href=https://github.com/chteuchteu/Munin-for-Android&gt;Voit myötävaikuttaa projektiin GitHubissa&lt;/a&gt;. Sovellusta jaetaan GNU GPL version 2 lisenssillä.</string>
+	<string name="about_changelog">"Osoitteesta <a href="http://munin-for-android.com">munin-for-android.com</a>  löydät muutoshistorian sekä versioiden huomautukset."</string>
+	<string name="about_openSource">Munin Androidille on avointa koodia! <a href="https://github.com/chteuchteu/Munin-for-Android">Voit myötävaikuttaa projektiin GitHubissa</a>. Sovellusta jaetaan GNU GPL version 2 lisenssillä.</string>
 	<string name="about_specialThanksTitle">Erityiskiitokset</string>
 	<string name="about_librariesTitle">Kirjastot</string>
 	<string name="goPremium_title">Munin Androidille lisäosa</string>
