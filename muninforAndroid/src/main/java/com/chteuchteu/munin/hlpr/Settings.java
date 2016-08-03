@@ -151,7 +151,7 @@ public class Settings {
     public enum PrefKeys {
         ScreenAlwaysOn("screenAlwaysOn", false),
         DefaultScale("defaultScale", "day"),
-        LastMFAVersion("lastMFAVersion", ""),
+        LastDbVersion("lastMFAVersion", ""),
 
         Notifs_Push("notifs_push", false),
         Notifs_Push_regId("notifs_gcm_regId", null),

@@ -356,7 +356,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	}
 	
 	private void preload() {
-		boolean updateOperations = !muninFoo.getSettings().getString(Settings.PrefKeys.LastMFAVersion).equals(MuninFoo.VERSION + "");
+		boolean updateOperations = !muninFoo.getSettings().getString(Settings.PrefKeys.LastDbVersion).equals(MuninFoo.DB_VERSION + "");
 		
 		
 		if (updateOperations) {
@@ -369,10 +369,10 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	}
 	
 	public void updateActions() {
-		String strFromVersion = settings.getString(Settings.PrefKeys.LastMFAVersion);
+		String strFromVersion = settings.getString(Settings.PrefKeys.LastDbVersion);
 		double fromVersion = 0;
 		if (!strFromVersion.equals(""))
-			fromVersion = Double.parseDouble(settings.getString(Settings.PrefKeys.LastMFAVersion));
+			fromVersion = Double.parseDouble(settings.getString(Settings.PrefKeys.LastDbVersion));
 
 		// Update preferences types
 		if (fromVersion != 0 && fromVersion < 6.8)
@@ -394,7 +394,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 			}
 		}
 
-		settings.set(Settings.PrefKeys.LastMFAVersion, MuninFoo.VERSION + "");
+		settings.set(Settings.PrefKeys.LastDbVersion, MuninFoo.DB_VERSION + "");
 		muninFoo.resetInstance(this);
 	}
 
