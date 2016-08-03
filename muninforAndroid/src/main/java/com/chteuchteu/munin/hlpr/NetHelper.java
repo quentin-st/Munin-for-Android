@@ -1,5 +1,6 @@
 package com.chteuchteu.munin.hlpr;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -84,7 +85,9 @@ public class NetHelper {
 					TrustManager[] trustAllCerts = new TrustManager[] {
 							new X509TrustManager() {
 								public java.security.cert.X509Certificate[] getAcceptedIssuers() { return null; }
+								@SuppressLint("TrustAllX509TrustManager")
 								public void checkClientTrusted(X509Certificate[] certs, String authType) { }
+								@SuppressLint("TrustAllX509TrustManager")
 								public void checkServerTrusted(X509Certificate[] certs, String authType) { }
 							}
 					};
@@ -139,35 +142,45 @@ public class NetHelper {
 			if (BuildConfig.DEBUG)
 				MuninFoo.log(responseCode + " - " + responseMessage);
 
-			if (responseCode != HttpURLConnection.HTTP_UNAUTHORIZED) {
-				if (downloadType == DownloadType.HTML) {
-					InputStream in = responseCode == 200 ? connection.getInputStream() : connection.getErrorStream();
-					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-					StringBuilder html = new StringBuilder();
-					String line;
-					while ((line = reader.readLine()) != null)
-						html.append(line);
+			switch (responseCode) {
+				case HttpURLConnection.HTTP_UNAUTHORIZED:
+					if (connection.getHeaderFields().containsKey("WWW-Authenticate"))
+						master.setAuthString(connection.getHeaderField("WWW-Authenticate"));
 
-					in.close();
-					reader.close();
+					if (master.isAuthNeeded() && !retried)
+						return download(downloadType, master, strUrl, userAgent, true);
+					else if (!master.isAuthNeeded()) // Unauthorized & no auth information: abort
+						return resp;
+					break;
+				case HttpURLConnection.HTTP_MOVED_PERM:
+				case HttpURLConnection.HTTP_MOVED_TEMP:
+				case HttpURLConnection.HTTP_SEE_OTHER:
+					// That's a redirection
+					String newUrl = connection.getHeaderField("Location");
+					return download(downloadType, master, newUrl, userAgent, true);
+				default:
+					if (downloadType == DownloadType.HTML) {
+						InputStream in = responseCode == 200 ? connection.getInputStream() : connection.getErrorStream();
+						BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+						StringBuilder html = new StringBuilder();
+						String line;
+						while ((line = reader.readLine()) != null)
+							html.append(line);
 
-					((HTMLResponse) resp).setHtml(html.toString());
-				} else {
-					InputStream in = responseCode == 200 ? connection.getInputStream() : connection.getErrorStream();
+						in.close();
+						reader.close();
 
-					Bitmap bitmap = BitmapFactory.decodeStream(in);
-					((BitmapResponse) resp).setBitmap(bitmap);
+						((HTMLResponse) resp).setHtml(html.toString());
+					} else {
+						InputStream in = responseCode == 200 ? connection.getInputStream() : connection.getErrorStream();
 
-					in.close();
-				}
-			} else {
-				if (connection.getHeaderFields().containsKey("WWW-Authenticate"))
-					master.setAuthString(connection.getHeaderField("WWW-Authenticate"));
+						Bitmap bitmap = BitmapFactory.decodeStream(in);
+						((BitmapResponse) resp).setBitmap(bitmap);
 
-				if (master.isAuthNeeded() && !retried)
-					return download(downloadType, master, strUrl, userAgent, true);
-				else if (!master.isAuthNeeded()) // Unauthorized & no auth information: abort
-					return resp;
+						if (in != null)
+							in.close();
+					}
+					break;
 			}
 
 			resp.end();
