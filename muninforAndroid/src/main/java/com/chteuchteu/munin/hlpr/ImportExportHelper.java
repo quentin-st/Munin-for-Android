@@ -34,7 +34,7 @@ public class ImportExportHelper {
     /**
      * Default import/export target URI. Can be overridden by user.
      */
-    public static final String IMPORT_EXPORT_URI = "http://ws.munin-for-android.com/importExport.php";
+    public static final String IMPORT_EXPORT_URI = "https://ws.munin-for-android.com/importExport.php";
     public static final int IMPORT_EXPORT_VERSION = 1;
 
 	public enum ImportExportType { MASTERS, GRIDS }

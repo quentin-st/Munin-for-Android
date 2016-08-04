@@ -338,7 +338,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 										.setPositiveButton(R.string.openInBrowser, new DialogInterface.OnClickListener() {
 											@Override
 											public void onClick(DialogInterface dialogInterface, int i) {
-												startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.munin-for-android.com/i18n.php")));
+												startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.munin-for-android.com/i18n.php")));
 											}
 										})
 										.setNegativeButton(R.string.close, null);
