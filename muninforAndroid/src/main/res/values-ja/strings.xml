@@ -45,11 +45,20 @@
 	<string name="about_firstPhrase">開発者に連絡しますか? アプリ改善のアイデアをお持ちですか? 致命的な問題を見つけませんでしたか? お気軽にメールをお送りください <b><u>support@munin-for-android.com</u></b>! ありがとうございます!</string>
 	<string name="about_independantApp">このアプリは独立して開発されています - 公式のアプリではありません。</string>
 	<string name="about_changelog">詳細な情報は <a href="http://munin-for-android.com/">munin-for-android.com</a> を参照してください。</string>
-	<string name="about_openSource">Munin for Android はオープンソースです! <a href="https://github.com/chteuchteu/Munin-for-Android">GitHub のプロジェクトに貢献してください</a>。 このアプリは GNU GPL バージョン 2 の下に配布されています。</string>
+	<string name="about_openSource">Munin for Android はオープンソースです! <a href="https://github.com/chteuchteu/Munin-for-Android">GitHub のプロジェクトに貢献してください</a>。
+このアプリは GNU GPL バージョン 2 の下に配布されています。</string>
 	<string name="about_specialThanksTitle">スペシャルサンクス</string>
 	<string name="about_librariesTitle">ライブラリー</string>
 	<string name="goPremium_title">Munin for Android フィーチャーパック</string>
-	<string name="goPremium_features"> <li>グラフ グリッド</li> <li>グラフ ウィジェット</li> <li>ダイジェスト認証</li> <li>通知</li> <li>高優先サポート</li> <li>プレミアム機能の単体パック: 一度お支払い頂くだけで今後プレミアム機能をご利用になれます!</li> <li>さらにずっと! 最新のプレミアム機能を受け取るために、Google Play で自動更新を有効にするようにしてください</li> </string>
+	<string name="goPremium_features">
+ <li>グラフ グリッド</li>
+<li>グラフ ウィジェット</li>
+<li>ダイジェスト認証</li>
+<li>通知</li>
+<li>高優先サポート</li>
+<li>プレミアム機能の単体パック: 一度お支払い頂くだけで今後プレミアム機能をご利用になれます!</li>
+<li>さらにずっと! 最新のプレミアム機能を受け取るために、Google Play で自動更新を有効にするようにしてください</li>
+ </string>
 	<string name="buy_now">今すぐ購入</string>
 	<string name="graphView_ImageViewDescription">グラフ</string>
 
@@ -160,9 +169,12 @@
 	<string name="rate">アプリを評価</string>
 	<string name="rate_long">アプリを気に入っていただいた場合、Google Play で評価していただけませんか? ありがとうございます!</string>
 	<string name="not_now">今はしない</string>
-	<string name="export_explanation">次のデバイスから検索できるように、あなたの構成がアップロードされます。パスワードがある場合は、暗号化されます。エクスポートが終わると、ランダムに生成されるコードを使って、お使いの他のデバイスで構成をダウンロードできるようになります。あなたが構成をダウンロードするとすぐに Munin for Android のサーバーから削除されます。または 24 時間以内に構成をダウンロードしない場合も削除されます。</string>
+	<string name="export_explanation">別のデバイスから検索できるように、構成がアップロードされます。パスワードがある場合は、暗号化されます。
+エクスポートが終わると、ランダムに生成されるコードを使って、お使いの他のデバイスで構成をダウンロードできるようになります。
+構成をダウンロードするとすぐに Munin for Android のサーバーから削除されます。または 24 時間以内に構成をダウンロードしない場合も削除されます。</string>
 	<string name="export_success_title">正常にエクスポートしました</string>
-	<string name="export_success_txt1">構成が正常にアップロードされました。別のデバイスで次のコードを使用して、インポートしてください。</string>
+	<string name="export_success_txt1">構成が正常にアップロードされました。
+別のデバイスで次のコードを使用して、インポートしてください。</string>
 	<string name="import_success_title">正常にインポートしました</string>
 	<string name="delete_plugin">プラグインを削除</string>
 	<string name="delete_label">ラベルを削除</string>
@@ -175,7 +187,8 @@
 	<string name="support">サポート</string>
 	<string name="choose_email_client">お使いのメールのアプリを選択してください</string>
 	<string name="donate">寄付</string>
-	<string name="donate_text">このような大規模のアプリケーションを開発するには、膨大な時間と関与が必要です。アプリが、あなたの日常生活に役立つ場合は、寄付をご検討いただけませんでしょうか? ありがとうございます! その場合、個人的に私があなたに感謝を伝えられるように、私にメールをお送りください!</string>
+	<string name="donate_text">このような大規模のアプリケーションを開発するのは、膨大な時間と関与が必要です。アプリが、あなたの日常生活に役立つ場合は、
+寄付をご検討いただけませんでしょうか? ありがとうございます! その場合、個人的にあなたに感謝を伝えられるように、私にメールをお送りください!</string>
 	<string name="donate_amount">寄付の金額を選択してください (この金額の 33% は Google に支払われます)</string>
 	<string name="sync_serversadded">XXX ノードを追加しました\n</string>
 	<string name="sync_serversupdated">XXX ノードを更新しました\n</string>
@@ -206,7 +219,8 @@
 	<string name="documentation">ドキュメント</string>
 	<string name="ok">OK</string>
 	<string name="grids_settings">グリッド設定</string>
-	<string name="alert_i18n">アプリはあなたの母国語でご利用できないようです。あなたの言語で利用できるように、ご支援いただけますか?</string>
+	<string name="alert_i18n">アプリはあなたの母国語でご利用できないようです。あなたの言語で利用できるように、
+ご支援いただけますか?</string>
 	<string name="alert_i18n_yes">どうもありがとうございます! 私たちは、翻訳を管理するために、簡単に使えるオンラインツールを使用しています。 このリンクから使用してください: Use this link to reach it: www.munin-for-android.com/i18n.php</string>
 	<string name="defaultActivity">デフォルト アクティビティ</string>
 	<string name="setDefaultActivity">デフォルト アクティビティを設定</string>
@@ -258,12 +272,20 @@
 	<string name="push_notifications">プッシュ通知</string>
 	<string name="poll">プル</string>
 	<string name="poll_notifications">プル通知</string>
-	<string name="push_explanation">推奨: このモードは、munin がお使いのデバイスにアラートを直接プッシュします。マスターごとに小さなスクリプトをインストールする必要がありますが、これにより、リアルタイム通知、低バッテリのフットプリント、そしてデータ使用量を削減することができます。</string>
-	<string name="poll_explanation">このモードは Munin for Android が定期的に各サーバーをポーリングします。余分な設定はありませんが、プッシュ モードより信頼性が高くありません。バッテリの残量とデータ料金プランを減らす可能性があります。プッシュ モードで必要なスクリプトをインストールできない場合のみこのモードを使用してください。</string>
+	<string name="push_explanation">推奨: このモードは、munin がお使いのデバイスにアラートを直接プッシュします。
+マスターごとに小さなスクリプトをインストールする必要がありますが、これにより、リアルタイム通知、低バッテリのフットプリント、そしてデータ使用量を削減することができます。</string>
+	<string name="poll_explanation">このモードは Munin for Android が定期的に各サーバーをポーリングします。
+余分な設定はありませんが、プッシュ モードより信頼性が高くありません。バッテリの残量とデータ料金プランを減らす可能性があります。
+プッシュ モードで必要なスクリプトをインストールできない場合のみこのモードを使用してください。</string>
 
 <string name="lang_polish">ポーランド語</string>
 	<string name="graphs_autoload">グラフを自動的に読み込む</string>
 	<string name="permission_required">この操作を行うためにアクセス許可が必要です</string>
 	<string name="permission_missing">操作を行うことができません: 1 つまたは複数のアクセス許可がありません。</string>
+
+<string name="lang_chinese">中国語 (中国)</string>
+	<string name="lang_finnish">フィンランド語</string>
+	<string name="lang_portuguese_brazil">ポルトガル語 (ブラジル)</string>
+	<string name="restart_to_apply_lang_changes">言語の変更を有効にするには、アプリケーションを再起動する必要があります。</string>
 
 </resources>
