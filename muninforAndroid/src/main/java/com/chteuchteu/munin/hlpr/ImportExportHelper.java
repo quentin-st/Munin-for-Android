@@ -61,7 +61,7 @@ public class ImportExportHelper {
 					String error = jsonResult.getString("error");
 					Crashlytics.logException(new ImportExportWebserviceException("Error is " + error));
 				}
-				
+
 				return null;
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -278,11 +278,19 @@ public class ImportExportHelper {
 		}
 	}
 
+	/**
+	 * Returns import-export server URL.
+	 * If it matches one of the old URLs, return the new one
+	 * @param context Context
+	 * @return string
+     */
     public static String getImportExportServerUrl(Context context) {
-		String oldUrl = "http://www.munin-for-android.com/ws/importExport.php";
+		String oldUrl1 = "http://www.munin-for-android.com/ws/importExport.php";
+		String oldUrl2 = "http://ws.munin-for-android.com/importExport.php";
+
         String url = Settings.getInstance(context).getString(Settings.PrefKeys.ImportExportServer, IMPORT_EXPORT_URI);
 
-		return url.equals(oldUrl) ? IMPORT_EXPORT_URI : url;
+		return url.equals(oldUrl1) || url.equals(oldUrl2) ? IMPORT_EXPORT_URI : url;
     }
 
 	public static void showExportDialog(MuninFoo muninFoo, final Context context,
