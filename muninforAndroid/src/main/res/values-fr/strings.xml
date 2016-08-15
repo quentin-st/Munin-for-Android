@@ -268,7 +268,7 @@ dans votre langue s\'il-vous plaît ?</string>
 	<string name="until">Jusqu\'à</string>
 	<string name="push">Push</string>
 	<string name="push_notifications">Notifications push</string>
-	<string name="poll">Scruter</string>
+	<string name="poll">Poll</string>
 	<string name="poll_notifications">Notifications poll</string>
 	<string name="push_explanation">Recommandé : dans ce mode, munin pousse les alertes directement vers votre appareil.
 Cela permet des notifications en temps réel, un faible impact sur la batterie et une utilisation de données réduite. Vous devez cependant installer un petit script sur chacun des serveurs maîtres.</string>
@@ -286,6 +286,6 @@ N\'utilisez ce mode que si vous ne pouvez pas installer le script mentionné dan
 	<string name="lang_chinese">Chinois (Chine)</string>
 	<string name="lang_finnish">Finlandais</string>
 	<string name="lang_portuguese_brazil">Portugais (Brésil)</string>
-	<string name="restart_to_apply_lang_changes">L\'application doit être redémarré pour que le changement de langue prenne effet.</string>
+	<string name="restart_to_apply_lang_changes">L\'application doit être redémarrée pour que le changements de langue prennent effet.</string>
 
 </resources>
