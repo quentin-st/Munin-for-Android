@@ -155,7 +155,8 @@
 		S\'il y en a, les mots de passe de vos serveurs seront cryptés. A la fin de l\'exportation, un code aléatoire vous permettra de télécharger la configuration sur votre
 		deuxième appareil. La configuration sera supprimée du serveur Munin for Android dès lors que vous la téléchargez, ou après 24 heures sinon.</string>
 	<string name="export_success_title">Export réussi</string>
-	<string name="export_success_txt1">La configuration a été exportée avec succès. Veuillez utiliser le code suivant dans votre autre appareil Android afin de l\'importer.</string>
+	<string name="export_success_txt1">La configuration a été exportée avec succès.
+Veuillez utiliser le code suivant sur votre autre appareil Android afin de l\'importer.</string>
 	<string name="import_success_title">Import réussi</string>
 	<string name="delete_plugin">Supprimer le plugin</string>
 	<string name="rename_label">Renommer ce label</string>
@@ -220,7 +221,8 @@
 	<string name="documentation">Documentation</string>
 	<string name="ok">OK</string>
 	<string name="grids_settings">Paramètres des grilles</string>
-	<string name="alert_i18n">Il semble que l\'application ne soit pas disponible dans votre langue. Pourriez-vous nous aider à la rendre disponible dans cette langue s\'il-vous plaît ?</string>
+	<string name="alert_i18n">Il semble que l\'application ne soit pas disponible dans votre langue. Pourriez-vous nous aider à la rendre disponible
+dans votre langue s\'il-vous plaît ?</string>
 	<string name="alert_i18n_yes">Merci beaucoup! Nous utilisons un outil en ligne facile à utilise pour gérer les traductions. Utilisez cette adresse pour y accéder : www.munin-for-android.com/i18n.php</string>
 	<string name="defaultActivity">Activité par défaut</string>
 	<string name="setDefaultActivity">Définir l\'activité par défaut</string>
@@ -266,10 +268,13 @@
 	<string name="until">Jusqu\'à</string>
 	<string name="push">Push</string>
 	<string name="push_notifications">Notifications push</string>
-	<string name="poll">Poll</string>
+	<string name="poll">Scruter</string>
 	<string name="poll_notifications">Notifications poll</string>
-	<string name="push_explanation">Recommandé : dans ce mode, munin pousse les alertes directement vers votre appareil. Cela permet des notifications en temps réel, un faible impact sur la batterie et une utilisation de données réduite. Vous devez cependant installer un petit script sur chacun des serveurs maîtres.</string>
-	<string name="poll_explanation">Dans ce mode, Munin for Android contacte chacun de vos serveurs régulièrement. Il n\'y a pas de configuration additionnelle, mais ce n\'est pas autant fiable que le mode push et peut réduire la durée de vie de votre batterie et votre forfait de données. N\'utilisez ce mode que si vous ne pouvez pas installer le script mentionné dans le mode push.</string>
+	<string name="push_explanation">Recommandé : dans ce mode, munin pousse les alertes directement vers votre appareil.
+Cela permet des notifications en temps réel, un faible impact sur la batterie et une utilisation de données réduite. Vous devez cependant installer un petit script sur chacun des serveurs maîtres.</string>
+	<string name="poll_explanation">Dans ce mode, Munin for Android contacte chacun de vos serveurs régulièrement.
+Il n\'y a pas de configuration additionnelle, mais ce n\'est pas autant fiable que le mode push et peut réduire la durée de vie de votre batterie et votre forfait de données.
+N\'utilisez ce mode que si vous ne pouvez pas installer le script mentionné dans le mode push.</string>
 
 <string name="ignoreRules">Règles</string>
 	<string name="manageIgnoreRules">Gérer les règles</string>
@@ -278,4 +283,9 @@
 	<string name="permission_missing">Impossible d\'achever : une ou plusieurs permissions sont manquantes.</string>
 
 <string name="lang_polish">Polonais</string>
-	</resources>
+	<string name="lang_chinese">Chinois (Chine)</string>
+	<string name="lang_finnish">Finlandais</string>
+	<string name="lang_portuguese_brazil">Portugais (Brésil)</string>
+	<string name="restart_to_apply_lang_changes">L\'application doit être redémarré pour que le changement de langue prenne effet.</string>
+
+</resources>
