@@ -34,13 +34,14 @@ Munin for Android relies on several other projects:
 * [Chromecast-Receiver](https://github.com/chteuchteu/Munin-for-Android-Chromecast-Receiver):
 HTML/CSS/JS code ran on Chromecast devices
 * [Import-Export-Server](https://github.com/chteuchteu/Munin-for-Android-Import-Export-Server):
-vanilla PHP script involved in Import/Export feature
+Symfony (PHP) server app involved in Import/Export feature
 * [GCM-Trigger](https://github.com/chteuchteu/Munin-for-Android-GCM-Trigger): simple Python
 script ran by munin-limits ; calls GCM-Proxy
-* [GCM-Proxy](https://github.com/chteuchteu/Munin-for-Android-GCM-Proxy): Symfony proxy
+* [GCM-Proxy](https://github.com/chteuchteu/Munin-for-Android-GCM-Proxy): Symfony (PHP) proxy
 between GCM-Trigger & Google Cloud Messaging servers
 * [Munin-Documentation-Crawler](https://github.com/chteuchteu/Munin-Documentation-Crawler):
 simple Java documentation crawler
+* [Munin-for-Android.com](https://github.com/chteuchteu/Munin-for-Android.com): website built upon Slim PHP micro framework
 
 ## Links
 * [Munin for Android on Google Play](https://play.google.com/store/apps/details?id=com.chteuchteu.munin)
