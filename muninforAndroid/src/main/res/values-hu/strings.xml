@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources><string name="button_graphs">Grafikon</string>
 	<string name="button_server">Szerverek</string>
 	<string name="button_premium">Válts prémiumra</string>
@@ -6,11 +6,11 @@
 	<string name="button_labels">Címkék</string>
 	<string name="button_notifications">Értesítések</string>
 	<string name="settings_URL_label2">pl.: https://88.180.108.192:80/munin/</string>
-	<string name="settings_text">... vagy válassz egyszerű szervert:</string>
+	<string name="settings_text">… vagy válasszon egy mintakiszolgálót:</string>
 	<string name="settings_http_auth2">HTTP bejelentkezés szükséges</string>
 	<string name="settings_login">Belépés</string>
 	<string name="settings_password">Jelszó</string>
-	<string name="settings_default_scale">Gráf alapértelmezett skálázása</string>
+	<string name="settings_default_scale">Gráf alapértelmezett méretezése</string>
 	<string name="settings_screenalwayson_label">Képernyő ébrentartása</string>
 	<string name="settings_screenalwayson_checkbox">A képernyő kikapcsolásának megakadályozása ábrák vagy riasztások megjelenítésekor</string>
 	<string name="settings_autorefresh_label">Automatikus frissítés</string>
@@ -99,9 +99,9 @@
 	<string name="text55">Frissítési idő</string>
 	<string name="text56">Válassz nodeot</string>
 	<string name="text57">10 perc/30 perc/1 óra/2 óra/5 óra/10 óra/24 óra</string>
-	<string name="text58">" kritikus / kritikus /&amp; / figyelmeztetés / figyelmeztetés /on / node/ nodeok"</string>
+	<string name="text58">" kritikus / kritikusok /&amp; / figyelmeztetés / figyelmeztetések /ezen: / csomópont/ csomópontok"</string>
 	<string name="text60">Folytatás</string>
-	<string name="text61">Új</string>
+	<string name="text61">Hozzáadás</string>
 	<string name="text62">Még nincs címke</string>
 	<string name="text64">Mégse</string>
 	<string name="text67">Még nincs címke</string>
@@ -109,7 +109,7 @@
 	<string name="text70.2">Címke hozzáadása</string>
 	<string name="text71">Szerver választása</string>
 	<string name="text78">Adj hozzá újat a + -al</string>
-	<string name="text79">Nyitott</string>
+	<string name="text79">Megnyitás</string>
 	<string name="text81">Nincs elérhető adat ehhez a pluginhoz</string>
 	<string name="text82">A címke törölve lesz. Biztos akarod?</string>
 	<string name="text83">A node törölve lesz. Biztos akarod?</string>
@@ -140,4 +140,7 @@
 	<string name="lang_hungarian">Magyar</string>
 	<string name="lang_chinese_taiwan">Chinese (Taiwan)</string>
 <string name="app_name">Munin Androidhoz</string>
+	<string name="button_grid">Rácsok</string>
+	<string name="settings_URL_label">Munin-master URL</string>
+	<string name="settings_hdgraphs">HD grafikonok engedélyezése</string>
 	</resources>
