@@ -796,4 +796,16 @@ public final class Util {
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		return activeNetwork != null && activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
 	}
+
+	/**
+	 * Removes all occurrences of each pattern in str
+	 * @param str String
+	 * @param patterns String array
+     * @return String
+     */
+	public static String removeAll(String str, String[] patterns) {
+		for (String pattern : patterns)
+			str = str.replace(pattern, "");
+		return str;
+	}
 }

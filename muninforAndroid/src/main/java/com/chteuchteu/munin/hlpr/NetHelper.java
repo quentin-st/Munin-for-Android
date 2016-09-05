@@ -104,7 +104,6 @@ public class NetHelper {
 					connection = (HttpsURLConnection) url.openConnection();
 					((HttpsURLConnection) connection).setHostnameVerifier(allHostsValid);
 					((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
-					MuninFoo.log("SSL things all set");
 				} catch (Exception e) {
 					e.printStackTrace();
 					connection = (HttpURLConnection) url.openConnection();

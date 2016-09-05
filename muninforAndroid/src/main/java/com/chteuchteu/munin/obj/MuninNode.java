@@ -2,6 +2,7 @@ package com.chteuchteu.munin.obj;
 
 import android.net.Uri;
 
+import com.chteuchteu.munin.hlpr.HTMLParser;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.hlpr.Util.SpecialBool;
 import com.chteuchteu.munin.obj.HTTPResponse.HTMLResponse;
@@ -14,10 +15,10 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MuninNode {
-	public static final String DEFAULT_NODE_NAME = "localhost.localdomain";
-
 	private long id;
 	private String name;
 	private String url;
@@ -104,19 +105,22 @@ public class MuninNode {
 		
 		//						   code  base_uri
 		Document doc = Jsoup.parse(html, this.getUrl());
-		Elements images = doc.select("img[src$=-day.png]");
+		Elements images = doc.select(HTMLParser.MUNIN_GRAPH_SELECTOR);
 
-		if (images.size() == 0)
-			images = doc.select("img[src$=-day.svg]");
-		
+		Pattern pluginNamePattern = Pattern.compile("/([^/]*)-day\\..*");
 		for (Element image : images) {
-			String pluginName = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
+			String imageSrc = image.attr("src");
+			Matcher pluginNameMatcher = pluginNamePattern.matcher(imageSrc);
+			if (!pluginNameMatcher.find())
+				throw new RuntimeException("Could not extract plugin name from URL " + imageSrc);
+
+			String pluginName = pluginNameMatcher.group(1);
+
 			// Delete special chars
-			pluginName = pluginName.replace("&", "");
-			pluginName = pluginName.replace("^", "");
-			pluginName = pluginName.replace("\"", "");
-			pluginName = pluginName.replace(",", "");
-			pluginName = pluginName.replace(";", "");
+			pluginName = Util.removeAll(pluginName, new String[]{
+					"&", "^", "\"", ",", ";"
+			});
+
 			String fancyName = image.attr("alt");
 			// Delete quotes
 			fancyName = fancyName.replaceAll("\"", "");
@@ -176,75 +180,79 @@ public class MuninNode {
 				this.graphURL = srcAttr.substring(0, srcAttr.lastIndexOf('/') + 1);
 			}
 
-			// Find HDGraphURL (if not already done) and DynazoomAvailability
+			// Find HDGraphURL (if not already done in a previous loop iteration) and DynazoomAvailability
 			if ((this.hdGraphURL == null || this.hdGraphURL.equals(""))
                     && this.master.isDynazoomAvailable() != MuninMaster.DynazoomAvailability.FALSE) {
 				try {
 					// To go to the dynazoom page, we have to "click" on the first graph.
 					// Then, on the second page, we have to "click" again on the first graph.
+					// With multigraph feature, we have to click once more.
 					// Finally, the only image on this third page is the dynazoom graph.
-					String srcAttr = image.parent().attr("abs:href");
 
-					String secondPageHtml = this.master.downloadUrl(srcAttr, userAgent).getHtml();
-					Document secondPage = Jsoup.parse(secondPageHtml, srcAttr);
+					String subPageUrl = image.parent().attr("abs:href");
+					boolean dynazoomPageReached = false;
+					int subLevel = 0,
+						maxLevels = 4;
 
-					Elements images2 = secondPage.select("img[src$=-day.png]");
-					if (images2.size() == 0)
-						images2 = doc.select("img[src$=-day.svg]");
+					while (!dynazoomPageReached) {
+						HTMLResponse subPageResponse = this.master.downloadUrl(subPageUrl, userAgent);
 
-					if (images2.size() > 0) {
-						Element imageParent = images2.get(0).parent();
-						if (imageParent.tagName().equals("a")) {
-							String srcAttr2 = imageParent.attr("abs:href");
-							String thirdPageHtml = this.master.downloadUrl(srcAttr2, userAgent).getHtml();
+						if (!subPageResponse.hasSucceeded())
+							throw new RuntimeException("Request failed (" + subPageResponse.getResponseMessage() + ")");
 
-							// If the plugin has one more details level, we have to go to a fourth page!
-							if (!thirdPageHtml.contains("Zooming is")) {
-								Document thirdPage = Jsoup.parse(thirdPageHtml, srcAttr2);
-								Elements images3 = thirdPage.select("img[src$=-day.png]");
+						String subPageHtml = subPageResponse.getHtml();
+						Document subPage = Jsoup.parse(subPageHtml, subPageUrl);
+						dynazoomPageReached = subPageHtml.contains("Zooming is");
 
-								if (images3.size() == 0)
-									images3 = doc.select("img[src$=-day.svg]");
+						if (dynazoomPageReached) {
+							// Since the image URL is built in JS on the web page, we have to build it manually
+							// Parse page URL
+							Uri uri = Uri.parse(subPageUrl);
+							String cgiUrl = uri.getQueryParameterNames().contains("cgiurl_graph")
+									? uri.getQueryParameter("cgiurl_graph")
+									: "/munin-cgi/munin-cgi-graph";
+							if (!cgiUrl.endsWith("/"))
+								cgiUrl += "/";
 
-								String link2 = images3.get(0).parent().attr("abs:href");
+							// localdomain/localhost.localdomain/if_eth0
+							String pluginNameUrl = uri.getQueryParameterNames().contains("plugin_name")
+									? uri.getQueryParameter("plugin_name")
+									: "localdomain/localhost.localdomain/pluginName";
 
-								thirdPageHtml = this.master.downloadUrl(link2, userAgent).getHtml();
-								srcAttr2 = link2;
-							}
+							// Remove plugin name from pluginNameUrl
+							// Get prefix from path:
+							// group/node/[multigraph_name/]/plugin_name
+							Pattern pattern = Pattern.compile("^(((?:[^/])*/){2}).*");
+							Matcher matcher = pattern.matcher(pluginNameUrl);
 
-							if (thirdPageHtml.equals(""))
+							if (!matcher.find())
+								throw new RuntimeException("Could not determine usable pluginNameUrl from " + pluginNameUrl);
+
+							pluginNameUrl = matcher.group(1);
+
+							this.hdGraphURL = Util.URLManipulation.getScheme(this.getUrl())
+									+ Util.URLManipulation.getHostFromUrl(this.getUrl())
+									+ ":" + Util.URLManipulation.getPort(this.getUrl())
+									+ cgiUrl + pluginNameUrl;
+
+							// Now that we have the HD Graph URL, let's try to reach it to see if it is available
+							if (this.master.isDynazoomAvailable(currentPl, userAgent))
+								this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
+							else
 								this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
-							else {
-								// Since the image URL is built in JS on the web page, we have to build it manually
-								Uri uri = Uri.parse(srcAttr2);
-								String cgiUrl = uri.getQueryParameterNames().contains("cgiurl_graph") ? uri.getQueryParameter("cgiurl_graph")
-										: "/munin-cgi/munin-cgi-graph";
-								if (!cgiUrl.endsWith("/"))
-									cgiUrl += "/";
+						} else {
+							// We haven't reached dynazoom page yet, find the first graph to click on
+							Element graph = subPage.select(HTMLParser.MUNIN_GRAPH_SELECTOR).get(0);
 
-								// localdomain/localhost.localdomain/if_eth0
-								String pluginNameUrl = uri.getQueryParameterNames().contains("plugin_name") ? uri.getQueryParameter("plugin_name")
-										: "localdomain/localhost.localdomain/pluginName";
+							subPageUrl = graph.parent().attr("abs:href");
+							// Loop over
+						}
 
-								// Remove plugin name from pluginNameUrl
-								pluginNameUrl = pluginNameUrl.substring(0, pluginNameUrl.lastIndexOf('/') + 1);
-
-
-								this.hdGraphURL = Util.URLManipulation.getScheme(this.getUrl())
-										+ Util.URLManipulation.getHostFromUrl(this.getUrl())
-										+ ":" + Util.URLManipulation.getPort(this.getUrl())
-										+ cgiUrl + pluginNameUrl;
-
-								// Now that we have the HD Graph URL, let's try to reach it to see if it is available
-								if (this.master.isDynazoomAvailable(currentPl, userAgent))
-									this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
-								else
-									this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
-							}
-						} else
-							this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
-					} else
-						this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
+						// Avoid infinite loop
+						subLevel++;
+						if (subLevel > maxLevels)
+							throw new RuntimeException("Max levels (" + maxLevels + ") reached: " + subLevel);
+					}
 				} catch (Exception ex) {
 					// Parsing pages is quite tricky, especially when the server configuration may be wrong.
 					this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
