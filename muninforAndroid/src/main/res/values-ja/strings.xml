@@ -288,4 +288,6 @@
 	<string name="lang_portuguese_brazil">ポルトガル語 (ブラジル)</string>
 	<string name="restart_to_apply_lang_changes">言語の変更を有効にするには、アプリケーションを再起動する必要があります。</string>
 
-</resources>
+<string name="addToHomescreen">ホーム画面に追加</string>
+	<string name="addToHomescreen_confirm">%1$s のショートカットがホーム画面に追加されました</string>
+	</resources>
