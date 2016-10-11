@@ -104,7 +104,6 @@ public class NetHelper {
 					connection = (HttpsURLConnection) url.openConnection();
 					((HttpsURLConnection) connection).setHostnameVerifier(allHostsValid);
 					((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
-					MuninFoo.log("SSL things all set");
 				} catch (Exception e) {
 					e.printStackTrace();
 					connection = (HttpURLConnection) url.openConnection();
@@ -155,6 +154,8 @@ public class NetHelper {
 				case HttpURLConnection.HTTP_MOVED_PERM:
 				case HttpURLConnection.HTTP_MOVED_TEMP:
 				case HttpURLConnection.HTTP_SEE_OTHER:
+				case 307: // Temporary Redirect, but keep POST data
+				case 308: // Permanent Redirect, but keep POST data
 					// That's a redirection
 					String newUrl = connection.getHeaderField("Location");
 					return download(downloadType, master, newUrl, userAgent, true);
@@ -294,19 +295,30 @@ public class NetHelper {
 			if (BuildConfig.DEBUG)
 				MuninFoo.log(responseCode + " - " + responseMessage);
 
+			// Handle redirects
+			switch (responseCode) {
+				case HttpURLConnection.HTTP_MOVED_PERM:
+				case HttpURLConnection.HTTP_MOVED_TEMP:
+				case HttpURLConnection.HTTP_SEE_OTHER:
+				case 307: // Temporary Redirect, but keep POST data
+				case 308: // Permanent Redirect, but keep POST data
+					String newUrl = connection.getHeaderField("Location");
+					return simplePost(newUrl, params, userAgent);
+				default:
+					// Read response
+					InputStream in = responseCode == 200 ? connection.getInputStream() : connection.getErrorStream();
+					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+					StringBuilder html = new StringBuilder();
+					String line;
+					while ((line = reader.readLine()) != null)
+						html.append(line);
 
-			// Read response
-			InputStream in = responseCode == 200 ? connection.getInputStream() : connection.getErrorStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			StringBuilder html = new StringBuilder();
-			String line;
-			while ((line = reader.readLine()) != null)
-				html.append(line);
+					in.close();
+					reader.close();
 
-			in.close();
-			reader.close();
+					resp.setHtml(html.toString());
+			}
 
-			resp.setHtml(html.toString());
 			resp.end();
 
 			// Get current URL (detect redirection)

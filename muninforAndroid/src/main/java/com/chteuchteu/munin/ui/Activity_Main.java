@@ -115,6 +115,22 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	 */
     public void onLoadFinished() {
 		preloading = false;
+
+		// Redirect user to an activity is specified
+		Intent intent = getIntent();
+		Bundle extras = intent != null ? intent.getExtras() : null;
+		if (intent != null && extras != null) {
+			String gridExtraKey = Activity_Grid.ARG_GRIDID;
+
+			if (extras.containsKey(gridExtraKey)) {
+				long gridId = intent.getExtras().getLong(gridExtraKey);
+
+				Intent newIntent = new Intent(this, Activity_Grid.class);
+				newIntent.putExtra(gridExtraKey, gridId);
+				startActivity(newIntent);
+				return;
+			}
+		}
 		
 		// Ask the user to rate the app
 		AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -338,7 +354,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 										.setPositiveButton(R.string.openInBrowser, new DialogInterface.OnClickListener() {
 											@Override
 											public void onClick(DialogInterface dialogInterface, int i) {
-												startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.munin-for-android.com/i18n.php")));
+												startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.munin-for-android.com/i18n.php")));
 											}
 										})
 										.setNegativeButton(R.string.close, null);

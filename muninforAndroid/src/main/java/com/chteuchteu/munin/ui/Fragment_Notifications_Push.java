@@ -39,7 +39,7 @@ import java.util.List;
 public class Fragment_Notifications_Push extends Fragment implements INotificationsFragment {
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	public static final String REGISTRATION_COMPLETE = "REGISTRATION_COMPLETE";
-	public static final String INSTRUCTIONS_EMAIL_TARGET = "http://gcm-proxy.munin-for-android.com/android/sendConfig";
+	public static final String INSTRUCTIONS_EMAIL_TARGET = "https://gcm-proxy.munin-for-android.com/android/sendConfig";
 
 	private MuninFoo    muninFoo;
 	private Settings    settings;

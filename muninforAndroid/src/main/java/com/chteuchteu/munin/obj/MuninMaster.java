@@ -268,97 +268,100 @@ public class MuninMaster {
 		int nbNodes = 0;
 		
 		// Grab HTML content
-		String html = downloadUrl(this.url, userAgent).getHtml();
-		
-		if (!html.equals("")) {
-			Document doc = Jsoup.parse(html, this.url);
-			/*
-			 * URL CATCHUP
-			 * Between MfA 2.8 and 3.0, we saved Master url as http://demo.munin-monitoring.org/munin-monitoring.org/
-			 * So let's update it if needed.													~~~~~~~~~~~~~~~~~~~~~
-			 * So let's just check if we are on the right page, if not : update the master url.
-			 */
-			if (!doc.select("span.comparison").isEmpty()) {
-				// Replace the current master URL
-				String parentUrl = "";
-				Elements parentLinks = doc.select("a[href=..]");
-				if (parentLinks.size() == 1)
+		HTMLResponse response = downloadUrl(this.url, userAgent);
+
+		if (!response.hasSucceeded())
+			return nbNodes;
+
+		String html = response.getHtml();
+
+		Document doc = Jsoup.parse(html, this.url);
+		/*
+		 * URL CATCHUP
+		 * Between MfA 2.8 and 3.0, we saved Master url as http://demo.munin-monitoring.org/munin-monitoring.org/
+		 * So let's update it if needed.													~~~~~~~~~~~~~~~~~~~~~
+		 * So let's just check if we are on the right page, if not : update the master url.
+		 */
+		if (!doc.select("span.comparison").isEmpty()) {
+			// Replace the current master URL
+			String parentUrl = "";
+			Elements parentLinks = doc.select("a[href=..]");
+			if (parentLinks.size() == 1)
+				parentUrl = parentLinks.get(0).absUrl("href");
+			else {
+				Elements parentLinks2 = doc.select("a[href=../index.html]");
+				if (parentLinks2.size() == 1)
 					parentUrl = parentLinks.get(0).absUrl("href");
-				else {
-					Elements parentLinks2 = doc.select("a[href=../index.html]");
-					if (parentLinks2.size() == 1)
-						parentUrl = parentLinks.get(0).absUrl("href");
+			}
+
+			if (!parentUrl.equals(this.url)) {
+				this.url = parentUrl;
+				String htmlBis = downloadUrl(parentUrl, userAgent).getHtml();
+				if (!html.equals("")) {
+					html = htmlBis;
+					doc = Jsoup.parse(html, this.url);
 				}
-				
-				if (!parentUrl.equals(this.url)) {
-					this.url = parentUrl;
-					String htmlBis = downloadUrl(parentUrl, userAgent).getHtml();
-					if (!html.equals("")) {
-						html = htmlBis;
-						doc = Jsoup.parse(html, this.url);
+			}
+		}
+		// URL catchup ends here
+
+		// Check if Munin or MunStrap
+		if (html.contains("MunStrap")) { // Munstrap
+			Elements domains = doc.select("ul.groupview > li > a.link-domain");
+
+			if (domains.size() > 0) {
+				// If there's just one domain : take the domain name as master name.
+				// Else : generate the name from host url
+				if (domains.size() == 1 && !domains.get(0).text().equals("localdomain"))
+					this.name = domains.get(0).text();
+				else
+					this.generateName();
+
+				int previousPosition = -1;
+				for (Element domain : domains) {
+					// Get every host for that domain
+					Elements hosts = domain.parent().select("ul>li");
+					for (Element host : hosts) {
+						Elements infosList = host.select("a.link-host");
+
+						if (infosList.size() == 0)
+							continue;
+
+						Element infos = infosList.get(0);
+						MuninNode serv = new MuninNode(infos.text(), infos.attr("abs:href"));
+						serv.setParent(this);
+						previousPosition++;
+						serv.setPosition(previousPosition);
+						nbNodes++;
 					}
 				}
 			}
-			// URL catchup ends here
-			
-			// Check if Munin or MunStrap
-			if (html.contains("MunStrap")) { // Munstrap
-				Elements domains = doc.select("ul.groupview > li > a.link-domain");
-				
-				if (domains.size() > 0) {
-					// If there's just one domain : take the domain name as master name.
-					// Else : generate the name from host url
-					if (domains.size() == 1 && !domains.get(0).text().equals("localdomain"))
-						this.name = domains.get(0).text();
-					else
-						this.generateName();
+		} else { // Munin
+			Elements domains = doc.select("span.domain");
 
-					int previousPosition = -1;
-					for (Element domain : domains) {
-						// Get every host for that domain
-						Elements hosts = domain.parent().select("ul>li");
-						for (Element host : hosts) {
-							Elements infosList = host.select("a.link-host");
-
-							if (infosList.size() == 0)
-								continue;
-
-							Element infos = infosList.get(0);
-							MuninNode serv = new MuninNode(infos.text(), infos.attr("abs:href"));
-							serv.setParent(this);
-							previousPosition++;
-							serv.setPosition(previousPosition);
-							nbNodes++;
-						}
-					}
+			if (domains.size() > 0) {
+				// If there's just one domain : take the domain name as master name.
+				// Else : generate the name from host url
+				if (domains.size() == 1 && !domains.get(0).text().equals("localdomain")) {
+					Element a = domains.get(0).child(0);
+					this.name = a.text();
 				}
-			} else { // Munin
-				Elements domains = doc.select("span.domain");
-				
-				if (domains.size() > 0) {
-					// If there's just one domain : take the domain name as master name.
-					// Else : generate the name from host url
-					if (domains.size() == 1 && !domains.get(0).text().equals("localdomain")) {
-						Element a = domains.get(0).child(0);
-						this.name = a.text();
-					}
-					else
-						this.generateName();
+				else
+					this.generateName();
 
-					int previousPosition = -1;
-					for (Element domain : domains) {
-						// Get every host for that domain
-						Elements hosts = domain.parent().select("span.host");
-						for (Element host : hosts) {
-							String nodeUrl = host.child(0).attr("abs:href");
-							// Avoid duplicates for weird DOM analysis: check if it has already been added
-							if (!this.has(nodeUrl)) {
-								MuninNode serv = new MuninNode(host.child(0).text(), nodeUrl);
-								serv.setParent(this);
-								previousPosition++;
-								serv.setPosition(previousPosition);
-								nbNodes++;
-							}
+				int previousPosition = -1;
+				for (Element domain : domains) {
+					// Get every host for that domain
+					Elements hosts = domain.parent().select("span.host");
+					for (Element host : hosts) {
+						String nodeUrl = host.child(0).attr("abs:href");
+						// Avoid duplicates for weird DOM analysis: check if it has already been added
+						if (!this.has(nodeUrl)) {
+							MuninNode node = new MuninNode(host.child(0).text(), nodeUrl);
+							node.setParent(this);
+							previousPosition++;
+							node.setPosition(previousPosition);
+							nbNodes++;
 						}
 					}
 				}
@@ -526,13 +529,14 @@ public class MuninMaster {
 
 							// Check if we can grab some attributes
                             // DynazoomAvailability
-                            if (node.getParent().isDynazoomAvailable() != onlineNode.getParent().isDynazoomAvailable()
-		                            && onlineNode.getParent().isDynazoomAvailable() != DynazoomAvailability.AUTO_DETECT) {
-	                            MuninFoo.logV("rescan", "Dynazoom availability has changed");
-                                node.getParent().setDynazoomAvailable(onlineNode.getParent().isDynazoomAvailable());
-	                            if (!toBeUpdated.contains(node))
-	                                toBeUpdated.add(node);
-                            }
+                            if (node.getParent().isDynazoomAvailable() != onlineNode.getParent().isDynazoomAvailable()) {
+								node.getParent().setDynazoomAvailable(onlineNode.getParent().isDynazoomAvailable());
+								if (onlineNode.getParent().isDynazoomAvailable() != DynazoomAvailability.AUTO_DETECT) {
+									MuninFoo.logV("rescan", "Dynazoom availability has changed");
+									if (!toBeUpdated.contains(node))
+										toBeUpdated.add(node);
+								}
+							}
 
 							// HDGraphURL
 							if (!node.getHdGraphURL().equals(onlineNode.getHdGraphURL()) && !onlineNode.getHdGraphURL().equals("")) {

@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -795,5 +796,30 @@ public final class Util {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		return activeNetwork != null && activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+	}
+
+	/**
+	 * Removes all occurrences of each pattern in str
+	 * @param str String
+	 * @param patterns String array
+     * @return String
+     */
+	public static String removeAll(String str, String[] patterns) {
+		for (String pattern : patterns)
+			str = str.replace(pattern, "");
+		return str;
+	}
+
+	public static void addShortcutToHomescreen(Context context, String name, Intent shortcutIntent) {
+		Intent addIntent = new Intent();
+		addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+		addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, name);
+		addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+				Intent.ShortcutIconResource.fromContext(context,
+						R.drawable.launcher_icon));
+
+		addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+		addIntent.putExtra("duplicate", false);
+		context.sendBroadcast(addIntent);
 	}
 }

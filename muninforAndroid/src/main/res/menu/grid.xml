@@ -42,6 +42,10 @@
 		app:showAsAction="ifRoom"
 		android:icon="@drawable/ic_action_image_edit"
 		android:title="@string/edit"/>
+	<item
+		android:id="@+id/menu_addToHomescreen"
+		app:showAsAction="never"
+		android:title="@string/addToHomescreen"/>
 	<!-- Fragment on Activity_Main -->
 	<item android:id="@+id/menu_openInActivity"
 		  app:showAsAction="never"

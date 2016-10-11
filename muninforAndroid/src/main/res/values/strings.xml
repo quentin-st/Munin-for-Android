@@ -41,6 +41,8 @@
 	<string name="servers_noservers_1">No server yet</string>
 	<string name="servers_noservers_2">Add yours or sample ones now by tapping on +</string>
 	<string name="edit">Edit</string>
+	<string name="addToHomescreen">Add to homescreen</string>
+	<string name="addToHomescreen_confirm">A shortcut for %1$s has been added to your homescreen</string>
 	<string name="yourerunning">You\'re running</string>
 	<string name="openInBrowser">Open in browser</string>
 	<string name="fieldsDescription">Fields description</string>

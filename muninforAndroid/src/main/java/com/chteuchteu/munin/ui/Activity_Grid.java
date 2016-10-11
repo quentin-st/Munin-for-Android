@@ -30,6 +30,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 	private MenuItem menu_edit;
 	private MenuItem menu_period;
 	private MenuItem menu_open;
+	private MenuItem menu_addToHomescreen;
 	private Period currentPeriod;
 
 	private boolean chromecastEnabled;
@@ -181,6 +182,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		menu_open.setVisible(true);
 		menu_refresh.setVisible(false);
 		menu_edit.setVisible(false);
+		menu_addToHomescreen.setVisible(false);
 
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
 			muninFoo.chromecastHelper.sendMessage_preview(fragment.getGrid().currentlyOpenedGridItem);
@@ -191,6 +193,8 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		if (menu_refresh != null)	menu_refresh.setVisible(true);
 		if (menu_edit != null)		menu_edit.setVisible(true);
 		if (menu_open != null)		menu_open.setVisible(false);
+		if (menu_addToHomescreen != null)
+			menu_addToHomescreen.setVisible(false);
 
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
 			muninFoo.chromecastHelper.sendMessage(ChromecastHelper.SimpleChromecastAction.CANCEL_PREVIEW);
@@ -237,6 +241,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		menu_edit = menu.findItem(R.id.menu_edit);
 		menu_period = menu.findItem(R.id.menu_period);
 		menu_open = menu.findItem(R.id.menu_open);
+		menu_addToHomescreen = menu.findItem(R.id.menu_addToHomescreen);
 		menu_refresh.setVisible(!fragment.isEditing());
 		if (fragment.isEditing())
 			menu_edit.setIcon(R.drawable.ic_action_navigation_check);
@@ -261,6 +266,16 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 			i.putExtra("fromGrid", gridIntent.getExtras().getString("gridName"));
 		context.startActivity(i);
 		Util.setTransition(this, TransitionStyle.DEEPER);
+	}
+
+	private void addToHomescreen() {
+		Intent intent = new Intent(this, Activity_Main.class);
+		intent.putExtra(Activity_Grid.ARG_GRIDID, getGrid().getId());
+        String gridName = getGrid().getName();
+		Util.addShortcutToHomescreen(this, gridName, intent);
+
+        String confirmationMsg = getString(R.string.addToHomescreen_confirm, gridName);
+        Toast.makeText(this, confirmationMsg, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -291,6 +306,9 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 				onPeriodMenuItemChange(Period.YEAR);
 				return true;
 			case R.id.menu_open: openGraph(); return true;
+			case R.id.menu_addToHomescreen:
+				addToHomescreen();
+				return true;
 		}
 
 		return true;
