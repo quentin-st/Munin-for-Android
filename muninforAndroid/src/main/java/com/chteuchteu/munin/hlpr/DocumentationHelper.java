@@ -113,6 +113,9 @@ public class DocumentationHelper {
 	 * @return boolean
 	 */
 	public boolean hasDocumentation(MuninPlugin plugin) {
+        if (plugin == null)
+            return false;
+
 		String pluginName = plugin.getName();
 
 		try {
