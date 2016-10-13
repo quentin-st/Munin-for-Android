@@ -55,7 +55,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	private ProgressBar     progressBar;
 
 	private DrawerHelper dh;
-	
+
 	// Preloading
 	private boolean preloading;
 	private boolean optionsMenuLoaded;
@@ -66,7 +66,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	private enum MainFragment { NONE, GRID, LABEL, ALERTS }
 	private MainFragment mainFragment;
 	private Fragment fragment;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,7 +86,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		optionsMenuLoaded = false;
 		if (loaded)
 			preloading = false;
-		
+
 		context = this;
 		setContentView(R.layout.activity_main);
 
@@ -101,13 +101,13 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		dh = new DrawerHelper(this, muninFoo, this.toolbar);
 
 		progressBar = Util.UI.prepareGmailStyleProgressBar(this, getSupportActionBar());
-		
+
 		if (loaded)
 			onLoadFinished();
 		else
 			preload();
 	}
-	
+
 	/**
 	 * Executed when the app has loaded :
 	 * 	- launching app, after the initialization
@@ -131,7 +131,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 				return;
 			}
 		}
-		
+
 		// Ask the user to rate the app
 		AlertDialog.Builder builder = new AlertDialog.Builder(this)
 			.setTitle(getText(R.string.rate))
@@ -218,7 +218,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	    if (!optionsMenuLoaded)
 		    createOptionsMenu();
 	}
-	
+
 	@Override
 	public void onBackPressed() {
         if (dh.closeDrawerIfOpen())
@@ -232,9 +232,9 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		}
-		
+
 		doubleBackPressed = true;
-		
+
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -301,14 +301,14 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 
 		return true;
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		this.menu = menu;
 
 		if (!preloading && !optionsMenuLoaded)
 			createOptionsMenu();
-		
+
 		return true;
 	}
 	private void createOptionsMenu() {
@@ -368,11 +368,11 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 			}
 		}
 	}
-	
+
 	private void preload() {
 		boolean updateOperations = !muninFoo.getSettings().getString(Settings.PrefKeys.LastDbVersion).equals(MuninFoo.DB_VERSION + "");
-		
-		
+
+
 		if (updateOperations) {
 			if (progressDialog == null || !progressDialog.isShowing())
 				progressDialog = ProgressDialog.show(context, "", getString(R.string.text39), true);
@@ -381,7 +381,7 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		} else
 			onLoadFinished();
 	}
-	
+
 	public void updateActions() {
 		String strFromVersion = settings.getString(Settings.PrefKeys.LastDbVersion);
 		double fromVersion = 0;
@@ -424,6 +424,12 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 	public void onManualLoad() {
 		menu_grid_refresh.setVisible(true);
 		menu_grid_changePeriod.setVisible(true);
+
+        // If the fragment wasn't prepared (when redirecting to another activity),
+        // don't try to interact with it
+        if (this.fragment == null)
+            return;
+
 		// Set period MenuItem text
 		Fragment_Grid fragment = (Fragment_Grid) this.fragment;
 		menu_grid_changePeriod.setTitle(fragment.getCurrentPeriod().getLabel(this));
