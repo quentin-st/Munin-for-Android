@@ -288,4 +288,6 @@ N\'utilisez ce mode que si vous ne pouvez pas installer le script mentionné dan
 	<string name="lang_portuguese_brazil">Portugais (Brésil)</string>
 	<string name="restart_to_apply_lang_changes">L\'application doit être redémarrée pour que le changements de langue prennent effet.</string>
 
-</resources>
+<string name="addToHomescreen">Ajouter à l\'écran d\'accueil</string>
+	<string name="addToHomescreen_confirm">Un raccourci pour %1$ a été ajouté à votre écran d\'accueil</string>
+	</resources>
