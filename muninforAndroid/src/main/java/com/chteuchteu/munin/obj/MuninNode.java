@@ -32,10 +32,10 @@ public class MuninNode {
 	 * Used for Alerts (display if node is unreachable)
 	 */
 	public SpecialBool reachable;
-	
+
 	private List<MuninPlugin> erroredPlugins;
 	private List<MuninPlugin> warnedPlugins;
-	
+
 	public MuninNode() {
 		this.name = "";
 		this.url = "";
@@ -58,22 +58,22 @@ public class MuninNode {
 		this.reachable = SpecialBool.UNKNOWN;
 		this.position = -1;
 	}
-	
+
 	public void setId(long id) { this.id = id; }
 	public long getId() { return this.id; }
-	
+
 	public void setUrl(String u) { this.url = u; }
 	public String getUrl() { return this.url; }
-	
+
 	public void setName(String n) { this.name = n; }
 	public String getName() { return this.name; }
-	
+
 	public void setGraphURL(String url) { this.graphURL = url; }
 	public String getGraphURL() { return this.graphURL; }
 
 	public void setHdGraphURL(String url) { this.hdGraphURL = url; }
 	public String getHdGraphURL() { return this.hdGraphURL == null ? "" : this.hdGraphURL; }
-	
+
 	public void setPluginsList(List<MuninPlugin> pL) { this.plugins = pL; }
 	public List<MuninPlugin> getPlugins() { return this.plugins; }
 
@@ -82,27 +82,27 @@ public class MuninNode {
 
 	public List<MuninPlugin> getErroredPlugins() { return this.erroredPlugins; }
 	public List<MuninPlugin> getWarnedPlugins() { return this.warnedPlugins; }
-	
+
 	public void addPlugin(MuninPlugin plugin) {
 		plugin.setInstalledOn(this);
 		this.plugins.add(plugin);
 	}
-	
+
 	public void setParent(MuninMaster p) {
 		this.master = p;
 		if (p != null && !p.getChildren().contains(this))
 			p.addChild(this);
 	}
 	public MuninMaster getParent() { return this.master; }
-	
-	
+
+
 	public List<MuninPlugin> getPluginsList(String userAgent) {
 		List<MuninPlugin> plugins = new ArrayList<>();
 		String html = this.master.downloadUrl(this.getUrl(), userAgent).getHtml();
-		
+
 		if (html.equals(""))
 			return null;
-		
+
 		//						   code  base_uri
 		Document doc = Jsoup.parse(html, this.getUrl());
 		Elements images = doc.select(HTMLParser.MUNIN_GRAPH_SELECTOR);
@@ -124,11 +124,11 @@ public class MuninNode {
 			String fancyName = image.attr("alt");
 			// Delete quotes
 			fancyName = fancyName.replaceAll("\"", "");
-			
+
 			// Get graphUrl
 			Element link = image.parent();
 			String pluginPageUrl = link.attr("abs:href");
-			
+
 			// Get groupName
 			String group = "";
 			if (html.contains("MunStrap")) {
@@ -156,7 +156,7 @@ public class MuninNode {
 						group = container.attr("data-category");
 					else is2 = false;
 				}
-				
+
 				// Munin 1.4
 				if (!is2) {
 					try {
@@ -166,12 +166,13 @@ public class MuninNode {
 					catch (Exception e) { e.printStackTrace(); }
 				}
 			}
-			
+
 			MuninPlugin currentPl = new MuninPlugin(pluginName, this);
 			currentPl.setFancyName(fancyName);
 			currentPl.setCategory(group);
 			currentPl.setPluginPageUrl(pluginPageUrl);
-			
+            currentPl.setPosition(plugins.size());
+
 			plugins.add(currentPl);
 
 			// Find GraphURL
@@ -261,10 +262,10 @@ public class MuninNode {
 		}
 		return plugins;
 	}
-	
+
 	public boolean fetchPluginsList(String userAgent) {
 		List<MuninPlugin> plugins = getPluginsList(userAgent);
-		
+
 		if (plugins != null) {
 			this.plugins = plugins;
 			return true;
@@ -280,27 +281,27 @@ public class MuninNode {
 	public void fetchPluginsStates(String userAgent) {
 		erroredPlugins.clear();
 		warnedPlugins.clear();
-		
+
 		// Set all to undefined
 		for (MuninPlugin plugin : this.plugins)
 			plugin.setState(AlertState.UNDEFINED);
-		
+
 		HTMLResponse response = master.downloadUrl(this.getUrl(), userAgent);
-		
+
 		if (!response.hasSucceeded())
 			this.reachable = SpecialBool.FALSE;
 		else {
 			this.reachable = SpecialBool.TRUE;
-			
+
 			Document doc = Jsoup.parse(response.getHtml(), this.getUrl());
 			Elements images = doc.select("img[src$=-day.png]");
 
 			if (images.size() == 0)
 				images = doc.select("img[src$=-day.svg]");
-			
+
 			for (Element image : images) {
 				String pluginName = image.attr("src").substring(image.attr("src").lastIndexOf('/') + 1, image.attr("src").lastIndexOf('-'));
-				
+
 				MuninPlugin plugin = null;
 				// Plugin lookup
 				for (MuninPlugin m : this.plugins) {
@@ -347,14 +348,14 @@ public class MuninNode {
         }
         return false;
     }
-	
+
 	public MuninPlugin getPlugin(int pos) {
 		if (pos < this.plugins.size() && pos >= 0)
 			return this.plugins.get(pos);
 		else
 			return null;
 	}
-	
+
 	public MuninPlugin getPlugin(String pluginName) {
 		for (MuninPlugin plugin : this.plugins) {
 			if (plugin.getName().equals(pluginName))
@@ -362,7 +363,7 @@ public class MuninNode {
 		}
 		return null;
 	}
-	
+
 	public int getPosition(MuninPlugin p) {
 		for (int i=0; i<this.plugins.size(); i++) {
 			if (p.equalsApprox(this.plugins.get(i)))
@@ -370,7 +371,7 @@ public class MuninNode {
 		}
 		return 0;
 	}
-	
+
 	private List<MuninPlugin> getPluginsByCategory(String c) {
 		List<MuninPlugin> l = new ArrayList<>();
 		for (MuninPlugin p : plugins) {
@@ -379,10 +380,10 @@ public class MuninNode {
 		}
 		return l;
 	}
-	
+
 	private List<String> getDistinctCategories() {
 		List<String> list = new ArrayList<>();
-		
+
 		for (MuninPlugin plugin : plugins) {
 			if (plugin.getCategory() == null)
 				continue;
@@ -398,7 +399,7 @@ public class MuninNode {
 		}
 		return list;
 	}
-	
+
 	public List<List<MuninPlugin>> getPluginsListWithCategory() {
 		List<List<MuninPlugin>> l = new ArrayList<>();
 		for (String s : getDistinctCategories()) {
@@ -406,11 +407,11 @@ public class MuninNode {
 		}
 		return l;
 	}
-	
+
 	public boolean equalsApprox (MuninNode node2) {
 		String address1 = this.getUrl();
 		String address2 = node2.getUrl();
-		
+
 		// transformations
 		if (address1.length() > 11) {
 			if (address1.endsWith("index.html"))
@@ -426,11 +427,11 @@ public class MuninNode {
 		}
 		return address1.equals(address2);
 	}
-	
+
 	public boolean equalsApprox (String node2) {
 		String address1 = this.getUrl();
 		String address2 = node2;
-		
+
 		// transformations
 		if (address1.length() > 11) {
 			if (address1.endsWith("index.html"))

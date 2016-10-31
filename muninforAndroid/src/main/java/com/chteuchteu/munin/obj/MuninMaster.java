@@ -24,17 +24,17 @@ public class MuninMaster {
 	private String url;
 	private List<MuninNode> children;
 	private DynazoomAvailability dynazoomAvailability;
-	
+
 	private Boolean ssl;
 	private AuthType authType;
 	private String authLogin;
 	private String authPassword;
 	private String authString;
-	
+
 	public boolean defaultMaster;
-	
+
 	public boolean isPersistant;
-	
+
 	public MuninMaster () {
 		this.name = "";
 		this.id = -1;
@@ -42,16 +42,16 @@ public class MuninMaster {
 		this.defaultMaster = false;
 		this.children = new ArrayList<>();
 		this.dynazoomAvailability = DynazoomAvailability.AUTO_DETECT;
-		
+
 		this.authType = AuthType.UNKNOWN;
 		this.authLogin = "";
 		this.authPassword = "";
 		this.ssl = false;
 		this.authString = "";
-		
+
 		this.isPersistant = false;
 	}
-	
+
 	public enum DynazoomAvailability {
 		AUTO_DETECT(""), FALSE("false"), TRUE("true");
 		private String val = "";
@@ -83,7 +83,7 @@ public class MuninMaster {
 			return UNKNOWN;
 		}
 	}
-	
+
 	public void setAuthType(AuthType t) { this.authType = t; }
 	public AuthType getAuthType() { return this.authType; }
 	public boolean isAuthNeeded() {
@@ -92,7 +92,7 @@ public class MuninMaster {
 	public void setAuthIds(String login, String password) {
 		this.authLogin = login;
 		this.authPassword = password;
-		
+
 		if ((login == null || login.equals("")) && (password == null || password.equals("")))
 			this.authType = AuthType.NONE;
 	}
@@ -102,30 +102,30 @@ public class MuninMaster {
 	}
 	public String getAuthLogin() { return this.authLogin; }
 	public String getAuthPassword() { return this.authPassword; }
-	
+
 	public void setAuthString(String s) { this.authString = s; }
 	public String getAuthString() { return this.authString; }
-	
+
 	public void setSSL(boolean value) { this.ssl = value; }
 	public boolean getSSL() { return this.ssl; }
-	
+
 	/**
 	 * Generates a custom name, to avoid "localdomain"
 	 */
 	private void generateName() {
 		if (this.url.equals(""))
 			return;
-		
+
 		// Everything else than localdomain is OK
 		if (!this.name.equals("localdomain") && !this.name.equals(""))
 			return;
-		
+
 		// http(s)://myurl.com/munin/
 		//           ---------
-		
+
 		this.name = Util.URLManipulation.getHostFromUrl(this.url, this.name);
 	}
-	
+
 	/**
 	 * Checks if dynazoom is available.
 	 * Warning : this has to be done on a thread
@@ -134,7 +134,7 @@ public class MuninMaster {
 	public boolean isDynazoomAvailable(String userAgent) {
 		if (this.defaultMaster || this.isEmpty())
 			return false;
-		
+
 		MuninNode node = getChildren().get(0);
 		if (node == null)
 			return false;
@@ -149,7 +149,7 @@ public class MuninMaster {
 
 		return res.hasSucceeded();
 	}
-	
+
 	public void rebuildChildren(MuninFoo f) {
 		this.children = new ArrayList<>();
 		for (MuninNode s : f.getNodes()) {
@@ -164,16 +164,16 @@ public class MuninMaster {
 		// If there's no more node under this, delete self.
 		f.deleteMuninMaster(this);
 	}
-	
+
 	public void setId(long id) { this.id = id; }
 	public long getId() { return this.id; }
-	
+
 	public void setName(String name) { this.name = name; }
 	public String getName() { return this.name; }
-	
+
 	public void setUrl(String url) { this.url = url; }
 	public String getUrl() { return this.url; }
-	
+
 	public void setDynazoomAvailable(DynazoomAvailability val) { this.dynazoomAvailability = val; }
 	public DynazoomAvailability isDynazoomAvailable() { return this.dynazoomAvailability; }
 
@@ -184,13 +184,13 @@ public class MuninMaster {
 			s.setParent(this);
 		}
 	}
-	
+
 	public boolean isEmpty() { return this.children.isEmpty(); }
-	
+
 	public boolean equalsApprox(MuninMaster p) {
 		return p != null && this.url.equals(p.url);
 	}
-	
+
 	private MuninNode getNode(String nodeUrl) {
 		for (MuninNode node : this.children) {
 			if (node.getUrl().equals(nodeUrl))
@@ -198,15 +198,15 @@ public class MuninMaster {
 		}
 		return null;
 	}
-	
+
 	public BitmapResponse downloadBitmap(String url, String userAgent) {
 		return NetHelper.downloadBitmap(this, url, userAgent);
 	}
-	
+
 	public HTMLResponse downloadUrl(String url, String userAgent) {
 		return NetHelper.downloadUrl(this, url, userAgent);
 	}
-	
+
 	/**
 	 * Get the type of the given page:
 	 * 	- munin/		: list of nodes
@@ -225,7 +225,7 @@ public class MuninMaster {
 			else if (res.getAuthenticateHeader().contains("Basic"))
 				this.authType = AuthType.BASIC;
 		}
-		
+
 		if (res.hasSucceeded()) {
 			if (res.wasRedirected()) {
 				// Redirected from http to https
@@ -239,16 +239,16 @@ public class MuninMaster {
 
 			if (images.size() == 0)
 				images = doc.select("img[src$=-day.svg]");
-			
+
 			if (images.size() > 0)
 				return "munin/x/";
 			else {
 				// Munin normal
 				Elements muninHosts = doc.select("span.host");
-				
+
 				// MunStrap
 				Elements munstrapHosts = doc.select("ul.groupview");
-				
+
 				if (muninHosts.size() > 0 || munstrapHosts.size() > 0)
 					return "munin/";
 				else
@@ -259,14 +259,14 @@ public class MuninMaster {
 		else
 			return res.getResponseCode() + " - " + res.getResponseMessage();
 	}
-	
+
 	/**
 	 * Fetches the children of this MuninMaster
 	 * @return How many nodes have been found
 	 */
 	public int fetchChildren(String userAgent) {
 		int nbNodes = 0;
-		
+
 		// Grab HTML content
 		HTMLResponse response = downloadUrl(this.url, userAgent);
 
@@ -367,10 +367,10 @@ public class MuninMaster {
 				}
 			}
 		}
-		
+
 		return nbNodes;
 	}
-	
+
 	/**
 	 * When temporary deleting an old Master, we should
 	 * care about labels, widgets and grids.
@@ -380,10 +380,10 @@ public class MuninMaster {
 	public List<GraphWidget> reattachWidgets(MuninFoo muninFoo, MuninMaster oldMaster) {
 		List<GraphWidget> toBeUpdated_graphWidgets = new ArrayList<>();
 		List<GraphWidget> graphWidgets = muninFoo.sqlite.dbHlpr.getGraphWidgets();
-		
+
 		if (graphWidgets.isEmpty())
 			return toBeUpdated_graphWidgets;
-		
+
 		for (MuninNode node : oldMaster.getChildren()) {
 			for (MuninPlugin plugin : node.getPlugins()) {
 				// Check graphWidgets
@@ -397,10 +397,10 @@ public class MuninMaster {
 				}
 			}
 		}
-		
+
 		return toBeUpdated_graphWidgets;
 	}
-	
+
 	/**
 	 * When replacing an old Master, we should care about labels, widgets and grids.
 	 * Here, we reattach and save the labels.
@@ -409,17 +409,17 @@ public class MuninMaster {
 	public List<Label> reattachLabels(MuninFoo muninFoo, MuninMaster oldMaster) {
 		List<Label> toBeUpdated_labels = new ArrayList<>();
 		List<Label> labels = muninFoo.labels;
-		
+
 		if (labels.isEmpty())
 			return toBeUpdated_labels;
-		
+
 		for (MuninNode node : oldMaster.getChildren()) {
 			for (MuninPlugin plugin : node.getPlugins()) {
 				// Check labels
 				for (Label label : labels) {
 					ArrayList<MuninPlugin> toBeRemoved = new ArrayList<>();
 					ArrayList<MuninPlugin> toBeAdded = new ArrayList<>();
-					
+
 					for (MuninPlugin labelPlugin : label.plugins) {
 						if (labelPlugin.equals(plugin)) {
 							// Reattach
@@ -430,16 +430,16 @@ public class MuninMaster {
 								toBeUpdated_labels.add(label);
 						}
 					}
-					
+
 					label.plugins.removeAll(toBeRemoved);
 					label.plugins.addAll(toBeAdded);
 				}
 			}
 		}
-		
+
 		return toBeUpdated_labels;
 	}
-	
+
 	/**
 	 * When replacing an old Master, we should care about labels, widgets and grids.
 	 * Here, we reattach and save the grids.
@@ -451,7 +451,7 @@ public class MuninMaster {
 
 		if (grids.isEmpty())
 			return toBeUpdated_grids;
-		
+
 		for (MuninNode node : oldMaster.getChildren()) {
 			for (MuninPlugin plugin : node.getPlugins()) {
 				// Check grids
@@ -469,17 +469,17 @@ public class MuninMaster {
 				}
 			}
 		}
-		
+
 		return toBeUpdated_grids;
 	}
-	
+
 	/**
 	 * Contacts the URL to check if there are some other nodes / plugins for each node
 	 */
 	public String rescan(Context context, MuninFoo muninFoo) {
 		if (isEmpty())
 			return null;
-		
+
 		String report = "";
 		int nbAddedNodes = 0;
 		int nbUpdatedNodes = 0;
@@ -487,7 +487,7 @@ public class MuninMaster {
 		int nbAddedPlugins = 0;
 		int nbUpdatedPlugins = 0;
 		int nbDeletedPlugins = 0;
-		
+
 		if (!this.defaultMaster) { // Regular master
 			// Check online
 			MuninMaster onlineMaster = new MuninMaster();
@@ -511,9 +511,9 @@ public class MuninMaster {
 
             // Set DynazoomAvailability to AUTO_DETECT to enable a new check
             onlineMaster.setDynazoomAvailable(DynazoomAvailability.AUTO_DETECT);
-			
+
 			onlineMaster.fetchChildren(muninFoo.getUserAgent());
-			
+
 			if (!onlineMaster.isEmpty()) {
 				// NODES DIFF
 				// Add new nodes if needed
@@ -561,11 +561,11 @@ public class MuninMaster {
 								if (!toBeUpdated.contains(node))
 									toBeUpdated.add(node);
 							}
-							
+
 							break;
 						}
 					}
-					
+
 					// There node isn't already there
 					if (!alreadyThere)
 						toBeAdded.add(onlineNode);
@@ -588,7 +588,7 @@ public class MuninMaster {
 					nbUpdatedNodes++;
 				}
 				toBeUpdated.clear();
-				
+
 				// Remove offline nodes if needed
 				ArrayList<MuninNode> toBeRemoved = new ArrayList<>();
 				for (MuninNode oldNode : this.children) {
@@ -600,12 +600,12 @@ public class MuninMaster {
 							break;
 						}
 					}
-					
+
 					// The node has been deleted in meantime
 					if (!stillThere)
 						toBeRemoved.add(oldNode);
 				}
-				
+
 				for (MuninNode node : toBeRemoved) {
 					this.children.remove(node);
 					muninFoo.getNodes().remove(node);
@@ -613,7 +613,7 @@ public class MuninMaster {
 					nbDeletedNodes++;
 				}
 				toBeRemoved.clear();
-				
+
 				// Nodes are now synced.
 				// PLUGINS DIFF
 				for (MuninNode node : this.children) {
@@ -640,18 +640,26 @@ public class MuninMaster {
 							for (MuninPlugin oldPlugin : node.getPlugins()) {
 								if (oldPlugin.equalsApprox(onlinePlugin)) {
 									alreadyThere = true;
-									
+
 									// Get other values
 									// Plugin category
 									if (!oldPlugin.getCategory().equals(onlinePlugin.getCategory()) && !onlinePlugin.getCategory().equals("")) {
 										oldPlugin.setCategory(onlinePlugin.getCategory());
 										pluginsToBeUpdated.add(oldPlugin);
 									}
-									
+
+                                    // Position
+                                    if (oldPlugin.getPosition() != onlinePlugin.getPosition()) {
+                                        oldPlugin.setPosition(onlinePlugin.getPosition());
+
+                                        if (!pluginsToBeUpdated.contains(oldPlugin))
+                                            pluginsToBeUpdated.add(oldPlugin);
+                                    }
+
 									break;
 								}
 							}
-							
+
 							if (!alreadyThere)
 								pluginsToBeAdded.add(onlinePlugin);
 						}
@@ -665,8 +673,8 @@ public class MuninMaster {
 							muninFoo.sqlite.dbHlpr.updateMuninPlugin(plugin);
 							nbUpdatedPlugins++;
 						}
-						
-						
+
+
 						// Remove deleted plugins
 						ArrayList<MuninPlugin> pluginsToBeRemoved = new ArrayList<>();
 						for (MuninPlugin oldPlugin : node.getPlugins()) {
@@ -677,7 +685,7 @@ public class MuninMaster {
 									break;
 								}
 							}
-							
+
 							if (!stillThere) {
 								pluginsToBeRemoved.add(oldPlugin);
 								muninFoo.sqlite.dbHlpr.deleteMuninPlugin(oldPlugin, true);
@@ -695,7 +703,7 @@ public class MuninMaster {
 				}
 			}
 		}
-		
+
 		// Generate report
 		if (nbAddedNodes + nbUpdatedNodes + nbDeletedNodes
 				+ nbAddedPlugins + nbUpdatedPlugins + nbDeletedPlugins == 0)
@@ -708,7 +716,7 @@ public class MuninMaster {
 				report += context.getString(R.string.sync_serversupdated).replace("XXX", String.valueOf(nbUpdatedNodes));
 			if (nbDeletedNodes > 0)
 				report += context.getString(R.string.sync_serversdeleted).replace("XXX", String.valueOf(nbDeletedNodes));
-			
+
 			// Plugins
 			if (nbAddedPlugins > 0)
 				report += context.getString(R.string.sync_pluginsadded).replace("XXX", String.valueOf(nbAddedPlugins));
@@ -717,7 +725,7 @@ public class MuninMaster {
 			if (nbDeletedPlugins > 0)
 				report += context.getString(R.string.sync_pluginsdeleted).replace("XXX", String.valueOf(nbDeletedPlugins));
 		}
-		
+
 		return report;
 	}
 
