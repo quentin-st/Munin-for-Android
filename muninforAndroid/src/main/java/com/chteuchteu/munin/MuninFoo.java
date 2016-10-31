@@ -31,17 +31,17 @@ public class MuninFoo {
 	private static MuninFoo instance;
 
 	private Settings settings;
-	
+
 	private List<MuninNode> nodes;
 	public List<Label> labels;
 	public List<MuninMaster> masters;
-	
+
 	public SQLite sqlite;
 	private MuninNode currentNode;
 
 	private String userAgent;
 
-	public static final double DB_VERSION = 7.6;
+	public static final double DB_VERSION = 7.7;
 	private static final boolean FORCE_NOT_PREMIUM = false;
 
     public boolean premium;
@@ -53,7 +53,7 @@ public class MuninFoo {
 
 	private Tracker tracker;
 	private static final String ANALYTICS_TRACKING_ID = "UA-44703951-1";
-	
+
 	private MuninFoo(Context context) {
 		premium = false;
 		nodes = new ArrayList<>();
@@ -71,9 +71,9 @@ public class MuninFoo {
 
 		loadInstance(context);
 	}
-	
+
 	public static boolean isLoaded() { return instance != null; }
-	
+
 	private void loadInstance(Context context) {
 		this.masters = sqlite.dbHlpr.getMasters();
 		this.nodes = sqlite.dbHlpr.getNodes(this.masters);
@@ -87,7 +87,7 @@ public class MuninFoo {
 		if (context != null) {
 			// Set default node
 			this.currentNode = getCurrentNode(context);
-			
+
 			this.premium = isPremium(context);
 		}
 	}
@@ -127,27 +127,27 @@ public class MuninFoo {
 		this.currentNode = this.nodes.get(0);
 	}
 	public void setCurrentNode(MuninNode node) { this.currentNode = node; }
-	
+
 	public void resetInstance(Context context) {
 		nodes = new ArrayList<>();
 		labels = new ArrayList<>();
 		sqlite = new SQLite(context, this);
 		loadInstance(context);
 	}
-	
+
 	public static synchronized MuninFoo getInstance() {
 		if (instance == null)
 			Crashlytics.logException(
 					new NullMuninFooException("getInstance() called without Context for the first time"));
 		return instance;
 	}
-	
+
 	public static synchronized MuninFoo getInstance(Context context) {
 		if (instance == null)
 			instance = new MuninFoo(context);
 		return instance;
 	}
-	
+
 	/**
 	 * Set a common parent to the nodes which does not
 	 * have one after getting them
@@ -157,18 +157,18 @@ public class MuninFoo {
 		MuninMaster defMaster = new MuninMaster();
 		defMaster.setName("Default");
 		defMaster.defaultMaster = true;
-		
+
 		for (MuninNode s : this.nodes) {
 			if (s.getParent() == null) {
 				s.setParent(defMaster);
 				n++;
 			}
 		}
-		
+
 		if (n > 0)
 			this.masters.add(defMaster);
 	}
-	
+
 	public void addNode(MuninNode node) {
 		boolean contains = false;
 		int pos = -1;
@@ -184,12 +184,12 @@ public class MuninFoo {
 	}
 	public void deleteNode(MuninNode s) {
 		s.getParent().rebuildChildren(this);
-		
+
 		// Delete from nodes list
 		this.nodes.remove(s);
-		
+
 		s.getParent().rebuildChildren(this);
-		
+
 		// Update current node
 		if (this.currentNode.equals(s) && this.nodes.size() > 0)
 			this.currentNode = this.nodes.get(0);
@@ -198,13 +198,13 @@ public class MuninFoo {
 	public void deleteMuninMaster(MuninMaster master, Util.ProgressNotifier progressNotifier) {
 		if (this.masters.remove(master)) {
 			sqlite.dbHlpr.deleteMaster(master, true, progressNotifier);
-			
+
 			// Remove labels relations for the current session
 			for (MuninNode node : master.getChildren()) {
 				for (MuninPlugin plugin : node.getPlugins())
 					removeLabelRelation(plugin);
 			}
-			
+
 			this.nodes.removeAll(master.getChildren());
 		}
 	}
@@ -292,7 +292,7 @@ public class MuninFoo {
 		}
 		return null;
 	}
-	
+
 	public List<MuninMaster> getMasters() { return this.masters; }
 
 	public MuninMaster getMasterById(int id) {
@@ -302,7 +302,7 @@ public class MuninFoo {
 		}
 		return null;
 	}
-	
+
 	public int getMasterPosition(MuninMaster m) {
 		int i = 0;
 		for (MuninMaster mas : this.masters) {
@@ -312,7 +312,7 @@ public class MuninFoo {
 		}
 		return 0;
 	}
-	
+
 	public Label getLabel(String lname) {
 		for (Label l : labels) {
 			if (l.getName().equals(lname))
@@ -328,7 +328,7 @@ public class MuninFoo {
 		}
 		return null;
 	}
-	
+
 	public boolean contains(MuninMaster master) {
 		for (MuninMaster m : masters) {
 			if (m.equalsApprox(master))
@@ -336,7 +336,7 @@ public class MuninFoo {
 		}
 		return false;
 	}
-	
+
 	public List<List<MuninNode>> getGroupedNodesList() {
 		List<List<MuninNode>> l = new ArrayList<>();
 		for (MuninMaster master : masters) {
@@ -346,7 +346,7 @@ public class MuninFoo {
 		}
 		return l;
 	}
-	
+
 	/**
 	 * Returns true if we should retrieve nodes information
 	 *  We consider alerts information as outdated after 10 minutes.
@@ -358,13 +358,13 @@ public class MuninFoo {
 			alerts_lastUpdated = Calendar.getInstance();
 			return true;
 		}
-		
+
 		Calendar updateTreshold = Calendar.getInstance();
 		updateTreshold.add(Calendar.MINUTE, -10);
-		
+
 		// If the last time the information was retrieved is before
 		// now -10 minutes, we should update it again.
-		
+
 		return alerts_lastUpdated.before(updateTreshold);
 	}
 
