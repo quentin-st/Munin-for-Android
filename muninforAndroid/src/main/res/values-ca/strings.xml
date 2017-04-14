@@ -147,8 +147,8 @@
 	<string name="text69">Nom de la graella</string>
 	<string name="text70">Afegir una graella</string>
 	<string name="text70.2">Afegir una etiqueta</string>
-	<string name="text71">Esculliu un servidor</string>
-	<string name="text72">Esculliu plugins per afegir</string>
+	<string name="text71">Escolliu un servidor</string>
+	<string name="text72">Escolliu plugins a afegir</string>
 	<string name="text73">Esborrar graella</string>
 	<string name="rename_grid">Renombrar graella</string>
 	<string name="text74">Una graella amb el mateix nom ja existeix.</string>
@@ -180,19 +180,19 @@
 	<string name="export_explanation">Es carregarà la vostra configuraci, per tant podrà ser obtinguda des del vostre dispositiu secundari. Si hi ha contrasenyes,
 aquestes seràn encriptades. Al final de l\'exportació, un codi generat aleatòriament us permetrà descarregar la configuració en l\'altre dispositiu.
 La configuració serà esborrada del servidor de Munin per a Android tan aviat com l\'hagueu descarregat, o al cap de 24 hores.</string>
-	<string name="export_success_title">Dades exportades correctement</string>
+	<string name="export_success_title">Dades exportades correctament</string>
 	<string name="export_success_txt1">La vostra configuració ha estat pujada correctament. Si us plau, feu servir el següent codi en el vostre dispositiu secondari per a importar-la.</string>
-	<string name="import_success_title">Dades importades correctement</string>
+	<string name="import_success_title">Dades importades correctament</string>
 	<string name="import_success">La importació ha finalitzat</string>
 	<string name="delete_plugin">Eliminar plugin</string>
 	<string name="delete_label">Esborrar etiqueta</string>
 	<string name="rename_label">Renombrar etiqueta</string>
 	<string name="delete_master">Eliminar nodes principal i secundaris</string>
-	<string name="alerts_ok">Bones notícies - tot funciona corretement</string>
+	<string name="alerts_ok">Bones notícies - tot funciona correctament</string>
 	<string name="update_credentials">Editar les credencials de la connexió</string>
 	<string name="long_click">Clic llarg per a editar</string>
 	<string name="rescan">Tornar a escanejar</string>
-	<string name="support">Soport</string>
+	<string name="support">Suport</string>
 	<string name="choose_email_client">Si us plau, escolliu l\'adreça de correu de l\'aplicació</string>
 	<string name="donate">Donar</string>
 	<string name="donate_text">Desenvolupar una aplicació tan gran requereix un gran esforç de temps i compromís. Si trobeu útil l\'aplicació en el seu dia a dia, consideraríeu realitzar una donació? Moltes gràcies! En cas de fer-ho, si us plau, envieu-me un correu electrònic per a que us ho pugui agraïr en persona!</string>
@@ -210,7 +210,7 @@ La configuració serà esborrada del servidor de Munin per a Android tan aviat c
 	<string name="sync_pluginsdeleted">plugin(s) XXX eliminat(s)
 </string>
 	<string name="sync_nochange">Sense canvis</string>
-	<string name="sync_reporttitle">Informe de l\'escaneig</string>
+	<string name="sync_reporttitle">Informe d\'escaneig</string>
 	<string name="graphwidgetname">Munin per a Android : Widgets de gràfiques</string>
 	<string name="alertswidgetname">Munin per Android : Widgets d\'alertes</string>
 	<string name="featuresPackNeeded">Es necessita el paquet de funcionalitats de Munin per a Android</string>
@@ -280,7 +280,7 @@ La configuració serà esborrada del servidor de Munin per a Android tan aviat c
 	<string name="push_explanation">Recomenació: en aquest mode, munin envia alertes directament al vostre dispositiu.
  Això permet notificacions en temps real, petjades de bateria baixa i ús reduït de dades però heu d\'instal·lar un petit script en cada màster.</string>
 	<string name="poll_explanation">En aquest mode, munin per a Android envia cada un dels vostres servidors regularment.
- No hi ha configuracions extres, però no és tan confiable com el mode push i pot reduir la vida de la vostra bateria i plans de dades.
+ No hi ha configuracions extres, però no és tan confiable com el mode push i pot consumir dades i reduir la vida de la vostra bateria.
  Utilitzeu aquest mode només si no podeu instal·lar l\'script mencionat en el mode push.</string>
 	<string name="permission_required">Cal tenir permís per a fer això</string>
 	<string name="permission_missing">Incapaç d\'aconseguir l\'acció: falten permisos.</string>
