@@ -267,4 +267,5 @@
 	<string name="permission_required">Se requiere permiso para hacer esto</string>
 	<string name="restart_to_apply_lang_changes">Hay que reiniciar la aplicación para que los cambios de idioma tengan efecto.</string>
 
-</resources>
+<string name="openGrid">Abrir cuadrícula</string>
+	</resources>
