@@ -86,7 +86,7 @@
 	<string name="text11">Pareciera que Google Play no está presente en su teléfono.</string>
 	<string name="text16">El URL no parece estar bien. Por favor intente nuevamente.</string>
 	<string name="text18">Éxito!</string>
-	<string name="text21.1">" nodo"</string>
+	<string name="text21.1">nodo</string>
 	<string name="text21.2">" agregado!\n"</string>
 	<string name="success">Éxito</string>
 	<string name="text27">" plugins encontrados!"</string>
