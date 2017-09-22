@@ -233,4 +233,5 @@
 	<string name="permission_missing">Kunne ikke utføre handling: Én eller flere tilganger mangler.</string>
 	<string name="restart_to_apply_lang_changes">Programmet må startes på nytt for at språket skal trå i effekt.</string>
 
-</resources>
+<string name="settings_login">Logg inn</string>
+	</resources>
