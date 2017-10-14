@@ -236,7 +236,7 @@
 	<string name="selectALabel">Seleccione una etiqueta</string>
 	<string name="emptyLabel">Etiqueta vacía</string>
 	<string name="chromecastAuthWarning">Atención - La funcionalidad Chromecast no funciona con autentificación Apache Básica / Digest</string>
-    <string name="chromecast_application_id">Id de aplicación de Chromecast</string>
+    <string name="chromecast_application_id">ID de aplicación de Chromecast</string>
     <string name="import_export_server">Importar/Exportar servidor</string>
     <string name="reset">Reset</string>
 	<string name="advanced">Avanzado</string>
