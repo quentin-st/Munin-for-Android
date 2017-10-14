@@ -234,4 +234,61 @@
 	<string name="restart_to_apply_lang_changes">Programmet må startes på nytt for at språket skal trå i effekt.</string>
 
 <string name="settings_login">Logg inn</string>
+	<string name="button_graphs">Grafer</string>
+	<string name="button_premium">Kjøp Premium</string>
+	<string name="settings_URL_label2">for eksempel: https://88.180.108.192:80/munin/</string>
+	<string name="settings_hdgraphs">Skru på høyoppløselige grafer</string>
+	<string name="settings_hdgraphs_text">Prøv å bruke DynaZoom for å få høyoppløselige grafer</string>
+	<string name="settings_default_scale">Forvalgt grafskalering</string>
+	<string name="goPremium_features">
+\n <li>Grafrutenett</li>
+\n <li>Graf-miniprogrammer</li>
+\n <li>Porteføljeautentisering</li>
+\n <li>Merknader</li>
+\n <li>Høyprioritetsstøtte</li>
+\n <li>Enkelt pakke med premium-funksjoner: Betal én gang for nåværende og kommende funksjoner!</li>
+\n <li>And more to come! Be sure to enable auto-updates in Google Play to receive latest premium features</li>
+\n </string>
+	<string name="goPremiumTitle">Kjøp Premium</string>
+	<string name="widget_configuration1">Vellykket! Miniprogrammet har blitt lagt til på hjemmeskjermen din. Tips: Du kan oppdatere grafen ved å tape den i det gråe feltet på bunnen av miniprogrammet.</string>
+	<string name="widget_configuration2">Kun oppdater på Wi-Fi (én oppdatering per time)</string>
+	<string name="text62">Det er ingen etikett enda</string>
+	<string name="text65">Porteføljeautentisering er tilgjengelig med funksjonspakken for Munin Android (1,49$).</string>
+	<string name="text65.1">Porteføljeautentisering er tilgjengelig med funksjonspakken for Munin Android (1,49$). Ønsker du å kjøpe det på Google Play?</string>
+	<string name="text67">Ingen etikett enda</string>
+	<string name="text68">Tidsavbrudd - Tjeneren brukte for lang tid på å behandle forespørselen</string>
+	<string name="text70.2">Legg til en etikett</string>
+	<string name="text82">Denne etiketten vil bli slettet. Er du sikker?</string>
+	<string name="export_subject">Eksporter Munin for Android</string>
+	<string name="export_explanation">Ditt oppsett vil bli lastet opp slik at det kan hentes fra en annen enhet. Hvis det finnes passord
+\nvil de bli kryptert. På slutten av eksporten, vil en tilfeldig generert kode la deg laste ned oppsettet på en annen enhet.
+\nOppsetet vil bli slettet for Munin for Android-tjeneren så snart du laster den ned, eller etter 24 timer hvis du ikke gjør det.</string>
+	<string name="export_success_txt1">Oppsettet ditt har blitt lastet opp.
+\nBruk lim inn følgende kode på din andre enhet for å importere det.</string>
+	<string name="delete_label">Slett etikett</string>
+	<string name="rename_label">Gi etikett nytt navn</string>
+	<string name="update_credentials">Rediger tilkoblingsidentitetsdetaljer</string>
+	<string name="donate_text">Å utvikle et stort program krever mye tid og innsats. Hvis det er nyttig i ditt
+\nhverdagsliv, overvei å gi en donasjon. Takk. Hvis du gjør det, send meg en e-post slik at jeg kan takke deg personlig!</string>
+	<string name="donate_amount">Velg donasjonsstørrelse (33% av dette beløpet vil tilfalle Google)</string>
+	<string name="grids_legend">Rutenett-\"legende\"</string>
+	<string name="redetectHdGraphsUrl">Detekter den høyoppløselige grafnettadressen igjen</string>
+	<string name="disableHDGraphs">Skru av høyoppløselige grafer</string>
+	<string name="alert_i18n">Det later til at programmet ikke er tilgjengelig på ditt morsmål. Kan du hjelpe oss
+\nå gjøre det tilgjengelig på ditt språk?</string>
+	<string name="label">Etikett</string>
+	<string name="selectALabel">Velg en etikett</string>
+	<string name="emptyLabel">Tom etikett</string>
+	<string name="chromecastAuthWarning">Advarsel - Chromecastfunksjonen fungerer ikke med Apache Basic/Porteføljeautentisering</string>
+    <string name="chromecast_application_id">ID for Chromecast-program</string>
+    <string name="notifications_test_text">Utløser for Munin for Android GCM har blitt installert</string>
+	<string name="push">Push</string>
+	<string name="push_notifications">Push-merknader</string>
+	<string name="poll">Sjekk</string>
+	<string name="poll_notifications">Sjekkmerknader</string>
+	<string name="push_explanation">Anbefaling: I dette moduset puffer Munin varsler direkte til din enhet.
+\nDette tillater sanntidsmerknader, lav batteribruk og redusert databruk, men du må installere et lite skript på hver \"master\".</string>
+	<string name="poll_explanation">I dette moduset, vil Munin for Android sjekke hver av tjenerne dine regelmessig.
+\nDet er ikke noe ekstra oppsett, men det er ikke så åplitelig som push-modus, og bruke mer batteri og data.
+\nKun bruk dette moduset hvis du ikke kan installere skriptet nevnt i push-modus.</string>
 	</resources>
