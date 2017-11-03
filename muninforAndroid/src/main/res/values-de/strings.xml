@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
 	<string name="app_name">"Munin für Android"</string>
 	<string name="button_graphs">"Graphen"</string>
@@ -50,7 +50,15 @@
 	<string name="lang_italian">Italienisch</string>
 	<string name="button_premium">Munin Premium</string>
 	<string name="goPremium_title">Munin für Android Premiumfunktionen</string>
-	<string name="goPremium_features"> <li>Graphen-Gitter</li> <li>Graph Widgets</li> <li>Digest-Authentifikation</li> <li>Benachrichtigungen</li> <li>Bevorzugter Support</li> <li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li> <li>Aktiviere die automatischen Update in Google Play um neue Premiumfunktionen automatisch zu erhalten.</li> </string>
+	<string name="goPremium_features">
+\n <li>Graphen-Gitter</li>
+\n<li>Graph Widgets</li>
+\n<li>Digest-Authentifikation</li>
+\n<li>Benachrichtigungen</li>
+\n<li>Bevorzugter Support</li>
+\n<li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li>
+\n<li>Und es kommt noch mehr! Aktiviere die automatischen Update in Google Play um neuesten Premiumfunktionen automatisch zu erhalten.</li>
+\n </string>
 	<string name="buy_now">"JETZT KAUFEN"</string>
 	<string name="goPremiumTitle">Munin Premium</string>
 	<string name="text42">Laden …</string>
@@ -154,9 +162,10 @@
 	<string name="export_subject">"Munin für Android-Export"</string>
 	<string name="import_title">Importieren</string>
 	<string name="import_sentence">Bitte den Code eingeben, der auf dem ersten Gerät generiert wurde</string>
-	<string name="export_explanation">"Deine Konfiguration wird hochgeladen, damit diese auf dem zweiten Gerät heruntergeladen werden kann. Wenn Passwörter vorhanden sind, dann werden diese verschlüsselt. Am Ende des Exports wird ein zufällig generierter Code angezeigt, mit dem Du die Konfiguration auf dem anderen Gerät herunterladen kannst. Die Konfiguration wird auf den Munin für Android-Servern gelöscht, so bald Du sie heruntergeladen hast. Wenn Du die Konfiguration nicht innerhalb von 24 Stunden herunterlädst, wird Sie auch gelöscht."</string>
+	<string name="export_explanation">Deine Konfiguration wird hochgeladen, damit diese auf deinem zweiten Gerät heruntergeladen werden kann. Wenn es sie gibt, werden Passwörter verschlüsselt. Am Ende des Exports wird ein zufällig generierter Code angezeigt, mit dem Du die Konfiguration auf dem anderen Gerät herunterladen kannst. Die Konfiguration wird von den Munin für Android-Servern gelöscht sobald Du sie heruntergeladen hast oder nach 24 Stunden, wenn du es nicht tust.</string>
 	<string name="export_success_title">Export erfolgreich</string>
-	<string name="export_success_txt1">"Die Konfiguration der App wurde erfolgreich hochgeladen. Bitte nutze den folgenden Code, um die Konfiguration auf dem anderen Gerät zu importieren."</string>
+	<string name="export_success_txt1">Die Konfiguration der App wurde erfolgreich hochgeladen.
+\n Bitte nutze den folgenden Code, um die Konfiguration auf dem anderen Gerät zu importieren.</string>
 	<string name="import_success_title">"Import erfolgreich"</string>
 	<string name="delete_plugin">"Plugin löschen"</string>
 	<string name="delete_label">"Label löschen"</string>
@@ -203,10 +212,10 @@
 	<string name="documentation">Dokumentation</string>
 	<string name="ok">OK</string>
 	<string name="grids_settings">Gitter-Einstellungen</string>
-	<string name="alert_i18n">Ist die Übersetzung unvollständig oder fehlerhaft? Wenn ja, hilf uns sie zu verbessern!</string>
+	<string name="alert_i18n">Ist die Übersetzung unvollständig oder fehlerhaft? Könntest du uns helfen, sie zu verbessern?</string>
 	<string name="alert_i18n_yes">Vielen Dank! Wir benutzen ein einfaches Online-Tool zum Übersetzen. Du kannst es unter http://www.munin-for-android.com/i18n.php erreichen</string>
 	<string name="lang_spanish">Spanisch</string>
-	<string name="about_openSource">Munin für Android ist Open Source! <a href="https://github.com/chteuchteu/Munin-for-Android">Du kannst uns auf GitHub unterstützen</a>. Die App wird unter der GNU GPL version 2 entwickelt.</string>
+	<string name="about_openSource">Munin für Android ist Open Source! <a href="https://github.com/chteuchteu/Munin-for-Android">Du kannst auf GitHub an dem Projekt mitwirken</a>. Die App wird unter der GNU GPL version 2 veröffentlicht.</string>
 	<string name="lang_ukrainian">Ukrainisch</string>
 	<string name="defaultActivity">Startansicht</string>
 	<string name="setDefaultActivity">Startansicht setzen</string>
@@ -229,7 +238,7 @@
 	<string name="disable_chromecast_text">Falls du keinen Chromecast besitzt kannst du die Funktion in der App abstellen</string>
 	<string name="about">Über</string>
 	<string name="splashDesc">Lade</string>
-	<string name="notifications_mailSent">E-Mail versendet! Bitte überprüfe deinen Posteingang.</string>
+	<string name="notifications_mailSent">E-Mail versendet! Bitte überprüfe deinen Posteingang</string>
 	<string name="notifications_test_title">Munin for Android Test Benachrichtigung</string>
 	<string name="notifications_test_text">Munin for Android CGM Trigger wurde erfolgreich installiert</string>
 	<string name="ignore">Ignorieren</string>
@@ -238,4 +247,38 @@
 	<string name="one_day">Für 1 Tag</string>
 	<string name="one_week">Für 1 Woche</string>
 	<string name="forever">Ständig</string>
-	</resources>
+	<string name="addToHomescreen">Zur Startseite hinzufügen</string>
+	<string name="addToHomescreen_confirm">Eine Abkürzung für %1$s wurde auf deiner Startseite hinzugefügt</string>
+	<string name="lang_chinese">Chinesisch (China)</string>
+	<string name="lang_finnish">Finnisch</string>
+	<string name="lang_portuguese_brazil">Portugiesisch (Brasilien)</string>
+	<string name="lang_polish">Polnisch</string>
+	<string name="import_success">Der Import war erfolgreich</string>
+	<string name="graphs_autoload">Lade Graphen automatisch</string>
+	<string name="default_grid">Standard-Raster</string>
+	<string name="notifications_device_code">Gerätecode</string>
+	<string name="notifications_instructions">Du musst jeden Master so konfigurieren, dass sie Benachrichtigungen an dieses Gerät senden können.</string>
+	<string name="notifications_sendByMail">Senden Sie mir den Code und Anweisungen per E-Mail</string>
+	<string name="ignore_alert">Warnung ignorieren</string>
+	<string name="ignore_for">Ignoriere für</string>
+	<string name="ignore_whole_group">Alle Plugins in der %1$s-Gruppe</string>
+	<string name="ignore_whole_host">Alle Plugins auf Host %1$s (Gruppe %2$s)</string>
+	<string name="ignore_plugin">Plugin %1$s unabhängig von Host und Gruppe</string>
+	<string name="ignoreRules">Ignoriere Regeln</string>
+	<string name="ignoreRulesText">Derzeit gibt es %1$s Ignorier-Regel(n). Regeln werden aus einzelnen Benachrichtigungen erstellt und können von hier aus verwaltet werden</string>
+	<string name="manageIgnoreRules">Ignorier-Regeln verwalten</string>
+	<string name="until">Bis</string>
+	<string name="push">Push</string>
+	<string name="push_notifications">Push-Benachrichtigungen</string>
+	<string name="poll">Poll</string>
+	<string name="poll_notifications">Polling-Benachrichtigungen</string>
+	<string name="push_explanation">Empfohlen: In diesem Modus sendet Munin Warnungen direkt auf Ihr Gerät.
+\n Dies ermöglicht Echtzeit-Benachrichtigungen, geringe Akku-Bilanz und reduzierte Datennutzung aber musst du ein kleines Script auf jeder Master installieren.</string>
+	<string name="poll_explanation">In diesem Modus fragt Munin für Android alle Server regelmäßig ab.
+\n Es gibt keine zusätzliche Konfiguration, aber es ist nicht so zuverlässig wie der Push-Modus und kann Ihre Batterie-Laufzeit und ihr Datenvolumen reduzieren.
+\n Verwenden Sie diesen Modus nur, wenn Sie das Skript nicht installieren, dass im Push-Modus erwähnt ist.</string>
+	<string name="permission_required">Eine Berechtigung wird benötigt um dies zu tun</string>
+	<string name="permission_missing">Unfähig Aktion durchzuführen: Eine oder mehrere Berechtigungen fehlen.</string>
+	<string name="restart_to_apply_lang_changes">Anwendung muss neu gestartet werden, damit Sprachänderungen wirksam werden.</string>
+
+</resources>
