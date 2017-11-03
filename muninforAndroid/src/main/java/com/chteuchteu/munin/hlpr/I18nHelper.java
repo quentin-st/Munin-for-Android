@@ -26,12 +26,15 @@ public class I18nHelper {
 		IT("it", R.string.lang_italian),
 		JA("ja", R.string.lang_japanese),
 		NL("nl", R.string.lang_dutch),
-		PT_RBR("pt-rBR", R.string.lang_portuguese_brazil),
+		PT_RBR("pt_BR", R.string.lang_portuguese_brazil),
 		RU("ru", R.string.lang_russian),
 		UK("uk", R.string.lang_ukrainian),
-		ZH_RCN("zh_rCN", R.string.lang_chinese),
+		ZH_RCN("zh_CN", R.string.lang_chinese),
 		ZH_TW("zh_TW", R.string.lang_chinese_taiwan),
-		PL("pl", R.string.lang_polish);
+		PL("pl", R.string.lang_polish),
+        CA("ca", R.string.lang_catalan),
+        CS("cs", R.string.lang_czech),
+        NB_RNO("nb_NO", R.string.lang_norwegian_bokmal);
 
 		public String langCode;
 		public int localeNameRes;
@@ -110,7 +113,7 @@ public class I18nHelper {
         Locale[] availableLocales = Locale.getAvailableLocales();
 
         for (Locale locale : availableLocales) {
-            if (locale.getLanguage().equals(language.langCode)) {
+            if (locale.toString().equals(language.langCode)) {
                 return true;
             }
         }

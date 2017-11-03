@@ -25,9 +25,8 @@ public class Adapter_Languages extends ArrayAdapter<String> {
     @Override
     public boolean isEnabled(int position) {
         I18nHelper.AppLanguage language = this.languages[position];
-        boolean isSupported = I18nHelper.isLanguageSupportedByDevice(language);
 
-        return isSupported;
+        return I18nHelper.isLanguageSupportedByDevice(language);
     }
 
     @Override
