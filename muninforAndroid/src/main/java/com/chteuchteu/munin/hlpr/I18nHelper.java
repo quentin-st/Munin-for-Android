@@ -1,11 +1,9 @@
 package com.chteuchteu.munin.hlpr;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
-import android.view.ContextThemeWrapper;
 
 import com.chteuchteu.munin.R;
 
@@ -60,6 +58,10 @@ public class I18nHelper {
 		}
 	}
 
+    /**
+     * Returns true if the specified language is explicitly supported by Munin for Android
+     * (if it has translation keys)
+     */
 	public static boolean isLanguageSupported(String languageCode) {
 		for (AppLanguage lang : AppLanguage.values()) {
 			if (lang.langCode.toLowerCase().equals(languageCode.toLowerCase()))
@@ -100,4 +102,19 @@ public class I18nHelper {
 		// Locale not set
 		return null;
 	}
+
+    /**
+     * Returns true if the specified language is supported on the current device
+     */
+	public static boolean isLanguageSupportedByDevice(AppLanguage language) {
+        Locale[] availableLocales = Locale.getAvailableLocales();
+
+        for (Locale locale : availableLocales) {
+            if (locale.getLanguage().equals(language.langCode)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
