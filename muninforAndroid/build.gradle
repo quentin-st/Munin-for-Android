@@ -27,8 +27,8 @@ android {
         applicationId "com.chteuchteu.munin"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 72
-        versionName "4.0.7"
+        versionCode 73
+        versionName "4.0.8"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
