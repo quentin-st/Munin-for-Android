@@ -248,7 +248,6 @@
 				</LinearLayout>
 
 				<com.edmodo.rangebar.RangeBar
-					xmlns:rangebar="http://schemas.android.com/apk/res-auto"
 					android:id="@+id/dynazoom_rangebar"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -258,14 +257,6 @@
 					android:layout_marginEnd="60px"
 					android:layout_marginTop="10dp"
 					android:layout_marginBottom="5dp"
-					rangebar:barWeight="1dp"
-					rangebar:connectingLineWeight="1dp"
-					rangebar:connectingLineColor="#3F51B5"
-					rangebar:thumbRadius="3dp"
-					rangebar:barColor="#d3d3d3"
-					rangebar:thumbColorNormal="#3F51B5"
-					rangebar:thumbColorPressed="#4c5eff"
-					rangebar:tickHeight="3dp"
 					android:layout_gravity="bottom" />
 			</LinearLayout>
 
