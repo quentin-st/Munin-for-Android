@@ -7,7 +7,6 @@
         <attr name="textSize" format="dimension"/>
         <attr name="textStyle" format="reference"/>
         <attr name="typeface" format="reference"/>
-        <attr name="fontFamily" format="reference"/>
         <attr name="textColorHighlight" format="color"/>
         <attr name="textColorHint" format="color" />
         <attr name="textColorLink" format="color" />

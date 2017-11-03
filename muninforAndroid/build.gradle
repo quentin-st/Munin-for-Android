@@ -20,13 +20,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.chteuchteu.munin"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 73
         versionName "4.0.8"
 
@@ -47,8 +47,8 @@ android {
 
 dependencies {
     // AppCompat-v7 & Support-v4
-    compile 'com.android.support:appcompat-v7:25.4.0'
-    compile 'com.android.support:support-v4:25.4.0'
+    compile 'com.android.support:appcompat-v7:27.0.0'
+    compile 'com.android.support:support-v4:27.0.0'
 
     // Android libraries
     // compile 'com.google.android.gms:play-services:8.4.0'
@@ -57,8 +57,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-wallet:11.4.2'
     compile 'com.google.android.gms:play-services-gcm:11.4.2'
     compile 'com.google.android.gms:play-services-analytics:11.4.2'
-    compile 'com.android.support:mediarouter-v7:25.4.0'
-    compile 'com.android.support:design:25.4.0'
+    compile 'com.android.support:mediarouter-v7:27.0.0'
+    compile 'com.android.support:design:27.0.0'
 
     // 3d party dependencies
     compile 'org.jsoup:jsoup:1.8.1'
@@ -71,7 +71,7 @@ dependencies {
 
     // Test-specific dependencies
     testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support:support-annotations:25.4.0'
+    androidTestCompile 'com.android.support:support-annotations:27.0.0'
     androidTestCompile 'com.android.support.test:runner:1.0.1'
     androidTestCompile 'com.android.support.test:rules:1.0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
