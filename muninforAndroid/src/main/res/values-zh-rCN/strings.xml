@@ -57,18 +57,6 @@
 	<string name="widget_configuration3">隐藏节点名称</string>
 	<string name="settings_defaultnode">默认节点</string>
 	<string name="settings_lang">应用语言</string>
-	<string name="lang_english">英语</string>
-	<string name="lang_french">法语</string>
-	<string name="lang_german">德语</string>
-	<string name="lang_russian">俄语</string>
-	<string name="lang_spanish">西班牙语</string>
-	<string name="lang_italian">意大利语</string>
-	<string name="lang_ukrainian">乌克兰语</string>
-	<string name="lang_dutch">荷兰语</string>
-	<string name="lang_japanese">日语</string>
-	<string name="lang_hungarian">匈牙利语</string>
-	<string name="lang_chinese_taiwan">繁体中文</string>
-	<string name="lang_polish">波兰语</string>
 	<string name="text01">设置和服务器配置将被重置。确定执行？</string>
 	<string name="text02">已执行重置。</string>
 	<string name="text09">出错！</string>
@@ -264,10 +252,6 @@
  <li>更多惊喜还将到来，记得启用 Google Play 中的自动更新以接收最新版的高级版功能！</li>
  </string>
 	<string name="restart_to_apply_lang_changes">应用程序必须重启才能使语言更改生效。</string>
-
-<string name="lang_chinese">中文（中国）</string>
-	<string name="lang_finnish">芬兰语</string>
-	<string name="lang_portuguese_brazil">葡萄牙语（巴西）</string>
 	<string name="export_success_txt1">您的配置已成功上传。
  请在您的另一台设备上使用下列代码以导入。</string>
 	<string name="alert_i18n">看上去本应用尚不支持您的语言。您能帮助我们翻译它吗？</string>

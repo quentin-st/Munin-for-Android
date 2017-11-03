@@ -58,17 +58,6 @@
 	<string name="widget_configuration3">Ukryj nazwę węzła</string>
 	<string name="settings_defaultnode">Domyślny węzeł</string>
 	<string name="settings_lang">Język aplikacji</string>
-	<string name="lang_english">Angielski</string>
-	<string name="lang_french">Francuski</string>
-	<string name="lang_german">Niemiecki</string>
-	<string name="lang_russian">Rosyjski</string>
-	<string name="lang_spanish">Hiszpański</string>
-	<string name="lang_italian">Włoski</string>
-	<string name="lang_ukrainian">Ukraiński</string>
-	<string name="lang_dutch">Holenderski</string>
-	<string name="lang_japanese">Japoński</string>
-	<string name="lang_hungarian">Węgierski</string>
-	<string name="lang_chinese_taiwan">Chiński (Tajwan)</string>
 	<string name="text01">Ustawienia i konfiguracja serwerów zostanie usunięta. Czy jesteś pewny?</string>
 	<string name="text02">Reset zakończony.</string>
 	<string name="text09">Błąd!</string>
@@ -219,7 +208,6 @@
 	<string name="about_independantApp">Ta aplikacja została stworzona niezależnie od projektu Munin, jest nie jest oficjalna.</string>
 	<string name="about_changelog">Proszę odwiedzić &lt;a href=http://munin-for-android.com/&gt;munin-for-android.com&lt;/a&gt; by zobaczyć pełną listę zmian.</string>
 	<string name="aboutTitle">O Munin na Android</string>
-	<string name="lang_polish">Polski</string>
 	<string name="text46">"Łączenie z węzłem "</string>
 	<string name="text49.1">Ukryj węzły z normalnym stanem</string>
 	<string name="text49.2">Pokaż węzły z normalnym stanem</string>

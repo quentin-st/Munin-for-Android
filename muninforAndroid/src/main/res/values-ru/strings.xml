@@ -44,10 +44,6 @@
 	<string name="text37">Серверы не добавлены. Добавьте их в настройках.</string>
 	<string name="text39">"Идет обновление приложения. Пожалуйста, подождите…"</string>
 	<string name="settings_lang">"Язык"</string>
-	<string name="lang_french">"Français"</string>
-	<string name="lang_german">"Deutsch"</string>
-	<string name="lang_english">"English"</string>
-	<string name="lang_italian">"Italian"</string>
 	<string name="button_premium">"Премиум версия"</string>
 	<string name="buy_now">"КУПИТЬ СЕЙЧАС"</string>
 	<string name="goPremiumTitle">"Премиум версия"</string>
@@ -123,7 +119,6 @@
 	<string name="settings_screenalwayson_checkbox">"Не отключать экран при отображении графиков / оповещений"</string>
 	<string name="settings_autorefresh_label">"Автообновление"</string>
 	<string name="settings_autorefresh_checkbox">"Автоматически обновлять графики / оповещения каждые 5 минут во время отображения"</string>
-	<string name="lang_russian">"Русский"</string>
 	<string name="settings_hdgraphs">"Включить HD графики"</string>
 	<string name="settings_hdgraphs_text">"Использовать DynaZoom для получения HD графиков"</string>
 	<string name="settings_enablegraphszoom">"Включить зум графиков"</string>
@@ -182,12 +177,6 @@
 	<string name="about_openSource">Munin for Android - это приложение с открытым кодом! &lt;a href=https://github.com/chteuchteu/Munin-for-Android&gt;Вы можете помочь проекту на GitHub&lt;/a&gt;. Приложение поставляется под GNU GPL версия 2.</string>
 	<string name="goPremium_title">Munin for Android Features Pack</string>
 	<string name="goPremium_features"> <li>Таблица графиков</li> <li>Виджет для просмотра графиков</li> <li>Digest аутентификация</li> <li>Уведомления</li> <li>Первоочередная поддержка</li> <li>Единый премиум пакет: плати один раз и пользуй все существующие и будущие достоинства премиального пакета!</li> <li>Список пополняется! Убедитесь что авто-обновления включены в Google Play чтобы постоянно получать новые расширенные возвозможности</li> </string>
-	<string name="lang_spanish">Español</string>
-	<string name="lang_ukrainian">Українська</string>
-	<string name="lang_japanese">日本語</string>
-	<string name="lang_dutch">Nederlands</string>
-	<string name="lang_polish">Polski</string>
-	<string name="lang_hungarian">Magyar</string>
 	<string name="import_success">Импорт успешно завершен</string>
 	<string name="graphwidgetname">Munin for Android : Виджет Графиков</string>
 	<string name="alertswidgetname">Munin for Android : Виджет оповещений</string>
@@ -250,7 +239,6 @@
 	<string name="ignoreRulesText">На данный момент создано %1$s правил(а) игнорирования. Правила созданы из отдельных уведомлений и могут быть изменены здесь</string>
 	<string name="manageIgnoreRules">Редактировать правила игнорирования</string>
 	<string name="until">До тех пор пока</string>
-	<string name="lang_chinese_taiwan">Китайский (Тайвань)</string>
 	<string name="push">Push</string>
 	<string name="push_notifications">Push уведомления</string>
 	<string name="poll">Poll режим</string>

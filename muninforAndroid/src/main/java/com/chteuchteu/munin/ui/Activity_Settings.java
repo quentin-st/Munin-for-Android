@@ -108,9 +108,21 @@ public class Activity_Settings extends MuninActivity {
 		spinner_defaultNode.setAdapter(dataAdapter1);
 
 		// Language spinner
+        I18nHelper.AppLanguage appLanguage;
+        if (settings.has(Settings.PrefKeys.Lang))
+            appLanguage = I18nHelper.AppLanguage.get(settings.getString(Settings.PrefKeys.Lang));
+        else {
+            if (I18nHelper.isLanguageSupported(Locale.getDefault().getLanguage()))
+                appLanguage = I18nHelper.AppLanguage.get(Locale.getDefault().getLanguage());
+            else
+                appLanguage = I18nHelper.AppLanguage.defaultLang();
+        }
+        Locale currentLocale = appLanguage.getLocale();
+
 		List<String> languageLabels = new ArrayList<>();
 		for (I18nHelper.AppLanguage lang : I18nHelper.AppLanguage.values()) {
-            languageLabels.add(getString(lang.localeNameRes) + " (" + lang.langCode + ")");
+		    Locale locale = lang.getLocale();
+            languageLabels.add(locale.getDisplayName(currentLocale) + " (" + lang.langCode + ")");
 		}
 		spinner_lang.setAdapter(new Adapter_Languages(this, I18nHelper.AppLanguage.values(), languageLabels));
 
@@ -184,16 +196,6 @@ public class Activity_Settings extends MuninActivity {
 		}
 
 		// App language
-		I18nHelper.AppLanguage appLanguage;
-		if (settings.has(Settings.PrefKeys.Lang))
-			appLanguage = I18nHelper.AppLanguage.get(settings.getString(Settings.PrefKeys.Lang));
-		else {
-			if (I18nHelper.isLanguageSupported(Locale.getDefault().getLanguage()))
-				appLanguage = I18nHelper.AppLanguage.get(Locale.getDefault().getLanguage());
-			else
-				appLanguage = I18nHelper.AppLanguage.defaultLang();
-		}
-
 		spinner_lang.setSelection(appLanguage.getIndex());
 
 

@@ -66,13 +66,6 @@
 	<string name="widget_configuration3">Verberg server naam</string>
 	<string name="settings_defaultnode">Standaardserver</string>
 	<string name="settings_lang">App taal</string>
-	<string name="lang_english">Engels</string>
-	<string name="lang_french">Frans</string>
-	<string name="lang_german">Duits</string>
-	<string name="lang_russian">Russisch</string>
-	<string name="lang_spanish">Spaans</string>
-	<string name="lang_italian">Italiaans</string>
-	<string name="lang_ukrainian">Oekraïens</string>
 	<string name="text01">De instellingen zullen opnieuw worden ingesteld. Weet je het zeker?</string>
 	<string name="text02">Opnieuw ingesteld.</string>
 	<string name="text09">Fout!</string>
@@ -212,12 +205,8 @@
 	<string name="label">Label</string>
 	<string name="selectALabel">Selecteer een label</string>
 	<string name="emptyLabel">Leeg label</string>
-	<string name="lang_dutch">Nederlands</string>
 	<string name="openGrid">Open raster</string>
 	<string name="chromecastAuthWarning">Waarschuwing - De chromecast functie werkt niet met Apache Basic/Digest auth</string>
-	<string name="lang_hungarian">Hongaars</string>
-	<string name="lang_chinese_taiwan">Chinees (Taiwan)</string>
-<string name="lang_japanese">Japans</string>
 	<string name="splashDesc">Aan het laden</string>
 	<string name="advanced">Geavanceerd</string>
 	<string name="about">Over</string>
@@ -238,7 +227,6 @@
 	<string name="ignore_plugin">Plugin %1$s ongeacht host en groep</string>
 	<string name="ignoreRules">Regels negeren</string>
 	<string name="until">Tot</string>
-	<string name="lang_polish">Pools</string>
 	<string name="chromecast_application_id">Chromecast toepassings-ID</string>
     <string name="import_export_server">Import/Export server</string>
     <string name="disable_chromecast">Chromecast ondersteuning uitschakelen</string>
