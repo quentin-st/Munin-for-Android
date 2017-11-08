@@ -27,7 +27,7 @@
 	<string name="settings_autorefresh_checkbox">Automatically refresh graphs / alerts every 5 minutes while displaying those</string>
 	<string name="settings_enablegraphszoom">Enable graph-zooming</string>
 	<string name="settings_titlelabel_app">App settings</string>
-	<string name="settings_titlelabel_graphs">Graphs settings</string>
+	<string name="settings_titlelabel_graphs">Graph settings</string>
 	<string name="save_button">Save</string>
 	<string name="menu_graph_refresh">Refresh</string>
 	<string name="menu_graph_save">Save graph to SD card</string>
@@ -191,7 +191,7 @@
 	<string name="text65.1">Digest auth is available in the Munin for Android Features Pack ($1.49). Do you want to purchase it on Google Play?</string>
 	<string name="text66">Clear URLs history</string>
 	<string name="text66.1">History cleared.</string>
-	<string name="text67">No label yet</string>
+	<string name="text67">Unlabeled</string>
 	<string name="text68">Timeout: The server took too long to handle the request</string>
 	<string name="text69">Grid name</string>
 	<string name="text70">Add a grid</string>
@@ -301,7 +301,7 @@
 	<string name="notifications_device_code">Device code</string>
 	<string name="notifications_instructions">You have to configure each master so they can send notifications to this device.</string>
 	<string name="notifications_sendByMail">Send me the code and instructions by mail</string>
-	<string name="notifications_mailSent">E-mail sent. PCheck your inbox</string>
+	<string name="notifications_mailSent">E-mail sent. Please check your inbox</string>
 	<string name="notifications_test_title">Munin for Android test notification</string>
 	<string name="notifications_test_text">Munin for Android GCM Trigger has been installed</string>
 	<string name="ignore">Ignore</string>
