@@ -108,7 +108,7 @@
 	    <li>Single pack of premium features: Pay once for current and upcoming premium features!</li>
 	    <li>More to come, be sure to enable auto-updates in Google Play to receive the latest premium features.</li>
 	]]></string>
-	<string name="buy_now">BUY NOW</string>
+	<string name="buy_now">Buy now</string>
 	<string name="splashDesc">Loading</string>
 	<string name="graphView_ImageViewDescription">Graph</string>
 
@@ -145,7 +145,7 @@
 	<string name="text01">Settings and servers configuration will be reset. Are you sure?</string>
 	<string name="text02">Reset performed.</string>
 	<string name="text09">Error!</string>
-	<string name="text11">Google Play app seems to be missing on your phone.</string>
+	<string name="text11">The Google Play app seems to be missing on your phone.</string>
 	<string name="text16">The URL doesn\'t seem to be good. Please check it again.</string>
 	<string name="text18">Success.</string>
 	<string name="text21.1"> node</string>
@@ -224,7 +224,7 @@
 	<string name="move_down">Move down</string>
 	<string name="move_left">Move left</string>
 	<string name="rate">Rate the app</string>
-	<string name="rate_long">If you like the app, rate it on Google Play. Thank you.</string>
+	<string name="rate_long">Please contribute your opinion of app by rating it on Google Play, because doing so helps others make informed decisions. Thank you.</string>
 	<string name="not_now">Not now</string>
 	<string name="export_explanation">Your configuration will be uploaded for retrival on another device. Any passwords
 		will be encrypted, and in the end you get a code for fetching the configuration on your other device.
@@ -271,7 +271,7 @@
 	<string name="disableHDGraphs">Disable HD Graphs</string>
 	<string name="downloadError">Download error</string>
 	<string name="certificate_error">Your connection is not private</string>
-	<string name="alert_opensource">Munin for Android is now GPLv2 copyleft libre software.</string>
+	<string name="alert_opensource">Munin for Android is GPLv2 copyleft libre software.</string>
 	<string name="alert_opensource_action">Contribute on GitHub</string>
 	<string name="close">Close</string>
 	<string name="documentation">Documentation</string>
