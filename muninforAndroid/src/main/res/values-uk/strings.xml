@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources><string name="app_name">Мунін для Андроїд</string>
 	<string name="button_graphs">Графіки</string>
 	<string name="button_server">Сервери</string>
@@ -63,12 +63,6 @@
 	<string name="widget_configuration3">Приховати ім\'я сервера</string>
 	<string name="settings_defaultnode">Базовий сервер</string>
 	<string name="settings_lang">Мова програми</string>
-	<string name="lang_english">Англійська</string>
-	<string name="lang_french">Французська</string>
-	<string name="lang_german">Німецька</string>
-	<string name="lang_russian">Московська</string>
-	<string name="lang_spanish">Іспанська</string>
-	<string name="lang_italian">Італійська</string>
 	<string name="text01">Налаштування і параметри серверів буде скинуто. Впевнені?</string>
 	<string name="text09">Помилка!</string>
 	<string name="text18">Успішно!</string>
@@ -115,4 +109,18 @@
 	<string name="text76">Зміна періоду…</string>
 	<string name="text77">Без графіка</string>
 	<string name="text79">Відкрити</string>
+	<string name="splashDesc">Завантаження</string>
+	<string name="widget_configuration1">Готово! Віджет доданий на головний екран. Підказка: для поновлення графіка торкніться сірої смужки на віджеті!</string>
+	<string name="widget_configuration2">Автопоновлення графіка тільки по WiFi (1 раз на годину)</string>
+	<string name="text02">Скидання виконано.</string>
+	<string name="text11">Програма Google Play, здається, відсутня у вашому телефоні.</string>
+	<string name="text16">URL не виглядає правильним. Будь ласка, спробуйте ще раз.</string>
+	<string name="text28">Графік збережений як /muninForAndroid/</string>
+	<string name="text29">Помилка при збереженні графіка</string>
+	<string name="text30">Немає підключення до Інтернету</string>
+	<string name="text37">Сервери не додано. Додайте їх в настройках.</string>
+	<string name="text39">Йде оновлення застосунку. Будь ласка, зачекайте…</string>
+	<string name="text49.1">Приховати суб-сервери з норм. статусом</string>
+	<string name="text49.2">Показати суб-сервери з норм. статусом</string>
+	<string name="text54">Розрахункове споживання трафіку: ?? / в день</string>
 	</resources>

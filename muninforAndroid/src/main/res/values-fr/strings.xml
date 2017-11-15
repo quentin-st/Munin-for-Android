@@ -131,15 +131,6 @@
 	<string name="import_sentence">Veuillez entrer le code généré sur le premier appareil</string>
 	<string name="settings_defaultnode">Noeud par défaut</string>
 	<string name="settings_lang">Langue de l\'application</string>
-	<string name="lang_french">Français</string>
-	<string name="lang_german">Allemand</string>
-	<string name="lang_english">Anglais</string>
-	<string name="lang_russian">Russe</string>
-	<string name="lang_spanish">Espagnol</string>
-	<string name="lang_italian">Italien</string>
-	<string name="lang_ukrainian">Ukrainien</string>
-	<string name="lang_dutch">Hollandais</string>
-	<string name="lang_japanese">Japonais</string>
 	<string name="delete">Supprimer</string>
 	<string name="move_up">Déplacer vers le haut</string>
 	<string name="move_right">Déplacer vers la droite</string>
@@ -236,9 +227,7 @@ dans votre langue s\'il-vous plaît ?</string>
     <string name="import_export_server">Server d\'Import/Export</string>
 	<string name="advanced">Avancé</string>
 	<string name="reset">Réinitialisation</string>
-	<string name="lang_hungarian">Hongrois</string>
-	<string name="lang_chinese_taiwan">Chinois (Taiwan)</string>
-<string name="disable_chromecast">Désactiver la fonctionnalité Chromecast</string>
+	<string name="disable_chromecast">Désactiver la fonctionnalité Chromecast</string>
 	<string name="disable_chromecast_text">Si vous ne possédez pas de Chromecast, vous voudriez peut-être désactiver son utilisation dans l\'application</string>
 	<string name="about">A propos</string>
 
@@ -281,11 +270,8 @@ N\'utilisez ce mode que si vous ne pouvez pas installer le script mentionné dan
 	<string name="graphs_autoload">Charger automatiquement les graphiques</string>
 	<string name="permission_required">Une permission est nécessaire pour faire cela</string>
 	<string name="permission_missing">Impossible d\'achever : une ou plusieurs permissions sont manquantes.</string>
-
-<string name="lang_polish">Polonais</string>
-	<string name="lang_chinese">Chinois (Chine)</string>
-	<string name="lang_finnish">Finlandais</string>
-	<string name="lang_portuguese_brazil">Portugais (Brésil)</string>
 	<string name="restart_to_apply_lang_changes">L\'application doit être redémarrée pour que le changements de langue prennent effet.</string>
 
-</resources>
+<string name="addToHomescreen">Ajouter à l\'écran d\'accueil</string>
+	<string name="addToHomescreen_confirm">Un raccourci pour %1$ a été ajouté à votre écran d\'accueil</string>
+	</resources>

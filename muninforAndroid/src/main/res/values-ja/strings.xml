@@ -75,14 +75,6 @@
 	<string name="widget_configuration3">ノード名を非表示にする</string>
 	<string name="settings_defaultnode">デフォルト サーバー</string>
 	<string name="settings_lang">アプリの言語</string>
-	<string name="lang_english">英語</string>
-	<string name="lang_french">フランス語</string>
-	<string name="lang_german">ドイツ語</string>
-	<string name="lang_russian">ロシア語</string>
-	<string name="lang_spanish">スペイン語</string>
-	<string name="lang_italian">イタリア語</string>
-	<string name="lang_ukrainian">ウクライナ語</string>
-	<string name="lang_dutch">オランダ語</string>
 	<string name="text01">設定およびサーバー構成がリセットされます。よろしいですか?</string>
 	<string name="text02">リセットしました。</string>
 	<string name="text09">エラー!</string>
@@ -120,7 +112,6 @@
 	<string name="text51.2">警告</string>
 	<string name="text52">通知を有効にする</string>
 	<string name="text53">WiFi 時のみ更新</string>
-	<string name="lang_japanese">日本語</string>
 	<string name="text54">見積のデータ消費量: ?? /日</string>
 	<string name="text55">リフレッシュレート</string>
 	<string name="text56">ウォッチするノードを選択</string>
@@ -235,9 +226,6 @@
     <string name="import_export_server">サーバーのインポート/エクスポート</string>
     <string name="reset">リセット</string>
 	<string name="advanced">詳細</string>
-
-<string name="lang_hungarian">ハンガリー語</string>
-	<string name="lang_chinese_taiwan">中国語 (台湾)</string>
 	<string name="disable_chromecast">Chromecast 機能を無効にする</string>
 	<string name="disable_chromecast_text">Chromecast を所有していない場合は、アプリでの使用を無効にすることができます</string>
 
@@ -277,15 +265,11 @@
 	<string name="poll_explanation">このモードは Munin for Android が定期的に各サーバーをポーリングします。
 余分な設定はありませんが、プッシュ モードより信頼性が高くありません。バッテリの残量とデータ料金プランを減らす可能性があります。
 プッシュ モードで必要なスクリプトをインストールできない場合のみこのモードを使用してください。</string>
-
-<string name="lang_polish">ポーランド語</string>
 	<string name="graphs_autoload">グラフを自動的に読み込む</string>
 	<string name="permission_required">この操作を行うためにアクセス許可が必要です</string>
 	<string name="permission_missing">操作を行うことができません: 1 つまたは複数のアクセス許可がありません。</string>
-
-<string name="lang_chinese">中国語 (中国)</string>
-	<string name="lang_finnish">フィンランド語</string>
-	<string name="lang_portuguese_brazil">ポルトガル語 (ブラジル)</string>
 	<string name="restart_to_apply_lang_changes">言語の変更を有効にするには、アプリケーションを再起動する必要があります。</string>
 
-</resources>
+<string name="addToHomescreen">ホーム画面に追加</string>
+	<string name="addToHomescreen_confirm">%1$s のショートカットがホーム画面に追加されました</string>
+	</resources>

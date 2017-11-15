@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.adptr.Adapter_Languages;
 import com.chteuchteu.munin.hlpr.ChromecastHelper;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.I18nHelper;
@@ -58,7 +59,7 @@ public class Activity_Settings extends MuninActivity {
 	private EditText editText_importExportServer;
 
 	private List<Grid> grids;
-	
+
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -66,7 +67,7 @@ public class Activity_Settings extends MuninActivity {
 		super.onContentViewSet();
 
 		actionBar.setTitle(getString(R.string.settingsTitle));
-		
+
 		spinner_scale = (Spinner)findViewById(R.id.spinner_scale);
 		spinner_defaultNode = (Spinner)findViewById(R.id.spinner_defaultnode);
 		spinner_lang = (Spinner)findViewById(R.id.spinner_lang);
@@ -86,8 +87,8 @@ public class Activity_Settings extends MuninActivity {
 
 		editText_chromecastAppId = (EditText)findViewById(R.id.edittext_chromecastAppid);
 		editText_importExportServer = (EditText)findViewById(R.id.edittext_importExportServer);
-		
-		
+
+
 		// Spinner default period
 		String[] scales = {
 				getString(R.string.text47_1), getString(R.string.text47_2), getString(R.string.text47_3), getString(R.string.text47_4)
@@ -95,8 +96,8 @@ public class Activity_Settings extends MuninActivity {
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, scales);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_scale.setAdapter(dataAdapter);
-		
-		
+
+
 		// Default node spinner
 		List<String> nodesList = new ArrayList<>();
 		nodesList.add(getString(R.string.auto));
@@ -105,15 +106,25 @@ public class Activity_Settings extends MuninActivity {
 		ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nodesList);
 		dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_defaultNode.setAdapter(dataAdapter1);
-		
+
 		// Language spinner
-		List<String> list2 = new ArrayList<>();
+        I18nHelper.AppLanguage appLanguage;
+        if (settings.has(Settings.PrefKeys.Lang))
+            appLanguage = I18nHelper.AppLanguage.get(settings.getString(Settings.PrefKeys.Lang));
+        else {
+            if (I18nHelper.isLanguageSupported(Locale.getDefault().getLanguage()))
+                appLanguage = I18nHelper.AppLanguage.get(Locale.getDefault().getLanguage());
+            else
+                appLanguage = I18nHelper.AppLanguage.defaultLang();
+        }
+        Locale currentLocale = appLanguage.getLocale();
+
+		List<String> languageLabels = new ArrayList<>();
 		for (I18nHelper.AppLanguage lang : I18nHelper.AppLanguage.values()) {
-			list2.add(getString(lang.localeNameRes) + " (" + lang.langCode + ")");
+		    Locale locale = lang.getLocale();
+            languageLabels.add(locale.getDisplayName(currentLocale) + " (" + lang.langCode + ")");
 		}
-		ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list2);
-		dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner_lang.setAdapter(dataAdapter2);
+		spinner_lang.setAdapter(new Adapter_Languages(this, I18nHelper.AppLanguage.values(), languageLabels));
 
 		// Grids legend spinner
 		String[] legendModes = {
@@ -183,36 +194,26 @@ public class Activity_Settings extends MuninActivity {
 			case "month": spinner_scale.setSelection(2, true); break;
 			case "year": spinner_scale.setSelection(3, true); break;
 		}
-		
-		// App language
-		I18nHelper.AppLanguage appLanguage;
-		if (settings.has(Settings.PrefKeys.Lang))
-			appLanguage = I18nHelper.AppLanguage.get(settings.getString(Settings.PrefKeys.Lang));
-		else {
-			if (I18nHelper.isLanguageSupported(Locale.getDefault().getLanguage()))
-				appLanguage = I18nHelper.AppLanguage.get(Locale.getDefault().getLanguage());
-			else
-				appLanguage = I18nHelper.AppLanguage.defaultLang();
-		}
 
+		// App language
 		spinner_lang.setSelection(appLanguage.getIndex());
 
-		
+
 		// Always on
 		checkbox_alwaysOn.setChecked(settings.getBool(Settings.PrefKeys.ScreenAlwaysOn));
-		
+
 		// Auto refresh
 		checkbox_autoRefresh.setChecked(settings.getBool(Settings.PrefKeys.AutoRefresh));
-		
+
 		// Graph zoom
 		checkbox_graphsZoom.setChecked(settings.getBool(Settings.PrefKeys.GraphsZoom));
-		
+
 		// HD Graphs
 		checkbox_hdGraphs.setChecked(settings.getBool(Settings.PrefKeys.HDGraphs));
 
 		// Disable Chromecast
 		checkbox_disableChromecast.setChecked(settings.getBool(Settings.PrefKeys.DisableChromecast));
-		
+
 		// Default node
 		if (settings.has(Settings.PrefKeys.DefaultNode)) {
 			String defaultNodeUrl = settings.getString(Settings.PrefKeys.DefaultNode);
@@ -320,7 +321,7 @@ public class Activity_Settings extends MuninActivity {
 			findViewById(R.id.defaultActivityContainer).startAnimation(animation);
 		}
 	}
-	
+
 	private void actionSave() {
 		Settings settings = muninFoo.getSettings();
 
@@ -331,7 +332,7 @@ public class Activity_Settings extends MuninActivity {
 			case 2: settings.set(Settings.PrefKeys.DefaultScale, "month"); break;
 			case 3: settings.set(Settings.PrefKeys.DefaultScale, "year"); break;
 		}
-		
+
 		// App language
 		I18nHelper.AppLanguage currentLang = I18nHelper.AppLanguage.get(settings.getString(Settings.PrefKeys.Lang));
 		I18nHelper.AppLanguage newLang = I18nHelper.AppLanguage.values()[spinner_lang.getSelectedItemPosition()];
@@ -344,7 +345,7 @@ public class Activity_Settings extends MuninActivity {
 		settings.set(Settings.PrefKeys.AutoRefresh, checkbox_autoRefresh.isChecked());
 		settings.set(Settings.PrefKeys.GraphsZoom, checkbox_graphsZoom.isChecked());
 		settings.set(Settings.PrefKeys.HDGraphs, checkbox_hdGraphs.isChecked());
-		
+
 		// Default node
 		int defaultNodePosition = spinner_defaultNode.getSelectedItemPosition()-1;
 		if (defaultNodePosition == -1)
@@ -440,7 +441,7 @@ public class Activity_Settings extends MuninActivity {
 
 		return true;
 	}
-	
+
 	private void actionReset() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Settings.this);
 		// Settings will be reset. Are you sure?
@@ -461,12 +462,12 @@ public class Activity_Settings extends MuninActivity {
 				muninFoo.sqlite.dbHlpr.deleteGrids();
 				muninFoo.sqlite.dbHlpr.deleteGridItemRelations();
 				muninFoo.sqlite.dbHlpr.deleteMuninMasters();
-				
+
 				muninFoo.resetInstance(context);
-				
+
 				// Reset performed.
 				Toast.makeText(getApplicationContext(), getString(R.string.text02), Toast.LENGTH_SHORT).show();
-				
+
 				drawerHelper.reset();
 			}
 		})
@@ -478,7 +479,7 @@ public class Activity_Settings extends MuninActivity {
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
-	
+
 	private void actionGPlay() {
 		try {
 			Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -510,7 +511,7 @@ public class Activity_Settings extends MuninActivity {
 
 	@Override
 	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Settings; }
-	
+
 	@Override
 	public void onBackPressed() {
         if (drawerHelper.closeDrawerIfOpen())

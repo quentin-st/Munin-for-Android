@@ -20,7 +20,6 @@ import com.google.android.gms.analytics.Tracker;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Main class of the app. This singleton is created on app launch

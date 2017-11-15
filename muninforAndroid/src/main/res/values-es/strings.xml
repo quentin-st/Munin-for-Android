@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources><string name="app_name">Munin para Android</string>
 	<string name="button_graphs">Gráfico</string>
 	<string name="button_server">Servidores</string>
@@ -27,7 +27,7 @@
 	<string name="save_button">Guardar</string>
 	<string name="menu_graph_refresh">Refrescar</string>
 	<string name="menu_graph_save">Guardar gráfico en la tarjeta SD</string>
-	<string name="menu_graph_switch">Cambiar de servidor</string>
+	<string name="menu_graph_switch">Cambiar de nodo</string>
 	<string name="menu_addserver_save">Guardar servidor</string>
 	<string name="menu_addserver_delete">Borrar servidor</string>
 	<string name="loading">Cargando…</string>
@@ -44,7 +44,7 @@
 	<string name="about_firstPhrase"><![CDATA[Quieres dejar un saludo? Tienes una idea innovadora para mejorar la aplicación? Descubrió un error crítico? Siéntase libre de escribirnos a <b><u>support@munin-for-android.com</u></b>! Muchas Gracias!]]></string>
 	<string name="about_independantApp">Esta aplicación fue desarrollada en forma independiente - No es la aplicación oficial.</string>
 	<string name="about_changelog"><![CDATA[Diríjase a <a href=http://munin-for-android.com/>munin-for-android.com</a> para ver el listado completo de cambios y las notas de versión.]]></string>
-	<string name="about_openSource"><![CDATA[Munin para Android es ahora software libre! <a href=https://github.com/chteuchteu/Munin-for-Android>Puede contribuir al proyecto en GitHub</a>. La aplicación se distribuye bajo la licencia GNU GPL versión 2.]]></string>
+	<string name="about_openSource">Munin para Android es ahora software libre! &lt;a href=https://github.com/chteuchteu/Munin-for-Android&gt;Puede contribuir al proyecto en GitHub&lt;/a&gt;. La aplicación se distribuye bajo la licencia GNU GPL versión 2.</string>
 	<string name="about_specialThanksTitle">Agradecimientos</string>
 	<string name="about_librariesTitle">Librerías</string>
 	<string name="goPremium_title">Paquete de funcionalidades de Munin para Android</string>
@@ -71,22 +71,16 @@
 	<string name="notificationsTitle">Notificaciones</string>
 	<string name="widget_configuration1">Éxito! El widget ha sido agregado a su ventana principal. Consejo: puede actualizar el gráfico tocando la barra gris en la parte inferior del widget!</string>
 	<string name="widget_configuration2">Actualizar los gráficos automáticamente solo con Wifi (1 actualización por hora)</string>
-	<string name="widget_configuration3">Ocultar el nombre del servidor</string>
+	<string name="widget_configuration3">Ocultar el nombre del nodo</string>
 	<string name="settings_defaultnode">Servidor por defecto</string>
 	<string name="settings_lang">Lenguaje de la aplicación</string>
-	<string name="lang_english">Inglés</string>
-	<string name="lang_french">Francés</string>
-	<string name="lang_german">Alemán</string>
-	<string name="lang_russian">Ruso</string>
-	<string name="lang_spanish">Español</string>
-	<string name="lang_italian">Italiano</string>
 	<string name="text01">Los ajustes y la configuración de los servidores se eliminará. Está Ud Seguro?</string>
 	<string name="text02">Borrado realizado.</string>
 	<string name="text09">Error!</string>
 	<string name="text11">Pareciera que Google Play no está presente en su teléfono.</string>
 	<string name="text16">El URL no parece estar bien. Por favor intente nuevamente.</string>
 	<string name="text18">Éxito!</string>
-	<string name="text21.1">" servidor"</string>
+	<string name="text21.1">nodo</string>
 	<string name="text21.2">" agregado!\n"</string>
 	<string name="success">Éxito</string>
 	<string name="text27">" plugins encontrados!"</string>
@@ -120,7 +114,7 @@
 	<string name="text55">Tasa de refresco</string>
 	<string name="text56">Seleccionar los servidores a monitorizar</string>
 	<string name="text57">10 minutos/30 minutos/1 hora/2 horas/5 horas/10 horas/24 horas</string>
-	<string name="text58">" crítico / críticos /&amp; / alerta / alertas /en el /servidor/ /en los /servidores"</string>
+	<string name="text58">" crítico / críticos /&amp; / alerta / alertas /en el /nodo/ /en los /nodos"</string>
 	<string name="text60">Continuar</string>
 	<string name="text61">Agregar</string>
 	<string name="text62">Aún no hay una etiqueta</string>
@@ -147,7 +141,7 @@
 	<string name="text80">Esta grilla será eliminada. Está Ud. seguro?</string>
 	<string name="text81">No hay información disponible para este plugin</string>
 	<string name="text82">Esta etiqueta será eliminada. Está Ud seguro?</string>
-	<string name="text83">El servidor será eliminado. Está Ud seguro?</string>
+	<string name="text83">El nodo será eliminado. Está Ud seguro?</string>
 	<string name="text84">Este servidor master será eliminado. Está Ud seguro?</string>
 	<string name="action_import">Importar</string>
 	<string name="action_export">Exportar</string>
@@ -168,12 +162,12 @@
 	<string name="yourerunning">Esta ejecutando</string>
 	<string name="text49.2">Mostrar nodos sin alertas</string>
 	<string name="export_success_title">Los datos se exportaron correctamente</string>
-	<string name="export_success_txt1">La configuración de los servidores fue enviada correctamente. Por favor utilice el siguiente código en su dispositivo secundario para importarla.</string>
+	<string name="export_success_txt1">La configuración se ha subido correctamente. Por favor utilice el siguiente código en su dispositivo secundario para importarla.</string>
 	<string name="import_success_title">Los datos se importaron correctamente</string>
 	<string name="delete_plugin">Eliminar plugin</string>
 	<string name="delete_label">Eliminar etiqueta</string>
 	<string name="rename_label">Renombrar etiqueta</string>
-	<string name="delete_master">Eliminar servidor principal y servidores secundarios</string>
+	<string name="delete_master">Eliminar nodo principal y nodos secundarios</string>
 	<string name="alerts_ok">Buenas noticias - todo funciona correctamente</string>
 	<string name="update_credentials">Editar las credenciales de conexión</string>
 	<string name="long_click">Realice una pulsación larga para editar</string>
@@ -181,11 +175,14 @@
 	<string name="support">Soporte</string>
 	<string name="choose_email_client">Por favor elija la dirección de correo de la aplicación</string>
 	<string name="donate">Donar</string>
-	<string name="donate_text">Desarrollar una aplicación tan grande requiere un gran esfuerzo de tiempo y compromiso. Si encuentra útil la aplicación, consideraría realizar una donación? Muchas gracias! En caso de hacerlo por favor envíeme un correo electrónico de manera que pueda agradecerle en persona!</string>
+	<string name="donate_text">Desarrollar una aplicación tan grande requiere un gran esfuerzo de tiempo y compromiso. Si encuentra útil la aplicación en su día a día, consideraría realizar una donación? Muchas gracias! En caso de hacerlo por favor envíeme un correo electrónico para que pueda agradecérselo en persona!</string>
 	<string name="donate_amount">Por favor elija una cantidad para donar (Google tomará 33% de esta cantidad)</string>
-	<string name="sync_serversadded">servidor(es) XXX agregado(s)\n</string>
-	<string name="sync_serversupdated">servidor(es) XXX actualizado(s)\n</string>
-	<string name="sync_serversdeleted">servidor(es) XXX eliminado(s)\n</string>
+	<string name="sync_serversadded">nodo(s) XXX agregado(s)
+</string>
+	<string name="sync_serversupdated">nodo(s) XXX actualizado(s)
+</string>
+	<string name="sync_serversdeleted">nodo(s) XXX eliminado(s)
+</string>
 	<string name="sync_pluginsadded">plugin(s) XXX agregado(s)\n</string>
 	<string name="sync_pluginsupdated">plugin(s) XXX actualizado(s)\n</string>
 	<string name="sync_pluginsdeleted">plugin(s) XXX eliminado(s)\n</string>
@@ -212,11 +209,48 @@
 	<string name="documentation">Documentación</string>
 	<string name="ok">OK</string>
 	<string name="grids_settings">Ajustes de las grillas</string>
-	<string name="alert_i18n">Tal parece que la aplicación no está disponible en su lenguaje. Podría Ud ayudarnos en hacerla disponible en su lenguaje?</string>
+	<string name="alert_i18n">Parece que la aplicación no está disponible en su lenguaje. Le gustaría ayudarnos a hacerla disponible en su lenguaje?</string>
 	<string name="alert_i18n_yes">"Muchas gracias! Utilizamos una herramienta en línea para gestionar las traducciones. Use este enlace para alcanzarla:  www.munin-for-android.com/i18n.php"</string>
-	<string name="lang_ukrainian">Ucranio</string>
-	<string name="lang_dutch">Holandés</string>
-	<string name="lang_hungarian">Húngaro</string>
-	<string name="lang_chinese_taiwan">Chino (Taiwan)</string>
-	<string name="lang_japanese">Japonés</string>
+	<string name="addToHomescreen">Añadir a pantalla de inicio</string>
+	<string name="addToHomescreen_confirm">Se ha añadido un acceso directo para %1$s en us pantalla de inicio</string>
+	<string name="import_success">La importación ha finalizado</string>
+	<string name="defaultActivity">Actividad por defecto</string>
+	<string name="setDefaultActivity">Establecer actividad por defecto</string>
+	<string name="load">Cargar</string>
+	<string name="label">Etiqueta</string>
+	<string name="selectALabel">Seleccione una etiqueta</string>
+	<string name="emptyLabel">Etiqueta vacía</string>
+	<string name="chromecastAuthWarning">Atención - La funcionalidad Chromecast no funciona con autentificación Apache Básica / Digest</string>
+    <string name="chromecast_application_id">ID de aplicación de Chromecast</string>
+    <string name="import_export_server">Importar/Exportar servidor</string>
+    <string name="reset">Reset</string>
+	<string name="advanced">Avanzado</string>
+	<string name="disable_chromecast">Desactivar funcionalidad Chromecast</string>
+	<string name="disable_chromecast_text">Si no tiene Chromecast, seguramente deseará desactivar su uso en la app</string>
+	<string name="graphs_autoload">Cargar gráficas automáticamente</string>
+	<string name="about">Acerca de</string>
+	<string name="notifications_device_code">Código del dispositivo</string>
+	<string name="notifications_instructions">Debe configurar cada dispositivo maestro para que pueda mandar notificaciones a este dispositivo.</string>
+	<string name="notifications_sendByMail">Envíeme el código e instrucciones por e-mail</string>
+	<string name="notifications_mailSent">E-mail enviado! Por favor, compruebe su bandeja de entrada</string>
+	<string name="ignore">Ignorar</string>
+	<string name="ignore_alert">Ignorar aviso</string>
+	<string name="one_day">Durante 1 día</string>
+	<string name="one_hour">Durante 1 hora</string>
+	<string name="six_hours">Durante 6 horas</string>
+	<string name="one_week">Durante 1 semana</string>
+	<string name="forever">Para siempre</string>
+	<string name="ignore_whole_group">Todos los plugins del grupo %1$s</string>
+	<string name="ignore_whole_host">Todos los plugins del host %1$s (grupo %2$s)</string>
+	<string name="ignore_plugin_in">Plugin %1$s del host %2$s (grupo %3$s)</string>
+	<string name="ignore_plugin">Plugin %1$s sin tener en cuenta ni host ni grupo</string>
+	<string name="ignoreRules">Ignorar reglas</string>
+	<string name="ignoreRulesText">Actualmente hay %1$s reglas de ignoración. Las reglas se crean desde notificaciones individuales y pueden ser gestionadas desde aquí</string>
+	<string name="manageIgnoreRules">Gestionar reglas de ignoración</string>
+	<string name="until">Hasta</string>
+	<string name="push"/>
+	<string name="permission_required">Se requiere permiso para hacer esto</string>
+	<string name="restart_to_apply_lang_changes">Hay que reiniciar la aplicación para que los cambios de idioma tengan efecto.</string>
+
+<string name="openGrid">Abrir cuadrícula</string>
 	</resources>

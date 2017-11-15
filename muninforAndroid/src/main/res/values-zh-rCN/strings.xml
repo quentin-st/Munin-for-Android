@@ -57,18 +57,6 @@
 	<string name="widget_configuration3">隐藏节点名称</string>
 	<string name="settings_defaultnode">默认节点</string>
 	<string name="settings_lang">应用语言</string>
-	<string name="lang_english">英语</string>
-	<string name="lang_french">法语</string>
-	<string name="lang_german">德语</string>
-	<string name="lang_russian">俄语</string>
-	<string name="lang_spanish">西班牙语</string>
-	<string name="lang_italian">意大利语</string>
-	<string name="lang_ukrainian">乌克兰语</string>
-	<string name="lang_dutch">荷兰语</string>
-	<string name="lang_japanese">日语</string>
-	<string name="lang_hungarian">匈牙利语</string>
-	<string name="lang_chinese_taiwan">繁体中文</string>
-	<string name="lang_polish">波兰语</string>
 	<string name="text01">设置和服务器配置将被重置。确定执行？</string>
 	<string name="text02">已执行重置。</string>
 	<string name="text09">出错！</string>
@@ -264,12 +252,17 @@
  <li>更多惊喜还将到来，记得启用 Google Play 中的自动更新以接收最新版的高级版功能！</li>
  </string>
 	<string name="restart_to_apply_lang_changes">应用程序必须重启才能使语言更改生效。</string>
-
-<string name="lang_chinese">中文（中国）</string>
-	<string name="lang_finnish">芬兰语</string>
-	<string name="lang_portuguese_brazil">葡萄牙语（巴西）</string>
 	<string name="export_success_txt1">您的配置已成功上传。
  请在您的另一台设备上使用下列代码以导入。</string>
 	<string name="alert_i18n">看上去本应用尚不支持您的语言。您能帮助我们翻译它吗？</string>
 	<string name="alert_i18n_yes">非常感谢！我们使用一个方便的在线工具管理翻译，链接如下: www.munin-for-android.com/i18n.php</string>
+	<string name="addToHomescreen">添加到主屏幕</string>
+	<string name="addToHomescreen_confirm">%1$s 的快捷方式已添加到您的主屏幕</string>
+	<string name="donate_text">开发这样一个应用程序需要大量的时间和精力。如果本应用对您的日常生活卓有成效，能否请您考虑捐赠？我在此提前感谢您！如果您愿意这样做，请给我发电子邮件，那样我能亲自感谢您！</string>
+	<string name="ignoreRulesText">目前有 %1$s 条忽略规则。规则是从各通知创建，并可以在这里管理</string>
+	<string name="poll_explanation">在此模式下，Munin for Android 会定期轮询您的每个服务器。
+无须额外配置，但它不如推送模式那么可靠，并可能减少您的电池续航和数据流量。
+请您仅在无法安装推送模式中提及的脚本时使用此模式。</string>
+	<string name="export_explanation">您的配置将被上传，以便您的第二设备检索。如果存在，将使用密码加密。在导出结束时，将提供给您一个随机生成的代码，以便您在其他设备上下载您的配置文件。
+配置文件将在您下载之后在 Munin for Android 服务器上删除，或者在24小时后自动删除。</string>
 	</resources>

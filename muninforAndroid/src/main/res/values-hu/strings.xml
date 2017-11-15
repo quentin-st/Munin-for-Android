@@ -52,15 +52,6 @@
 	<string name="widget_configuration3">Node nevének elrejtése</string>
 	<string name="settings_defaultnode">Alapértelmezett node</string>
 	<string name="settings_lang">Alkalmazás nyelve</string>
-	<string name="lang_english">Angol</string>
-	<string name="lang_french">Francia</string>
-	<string name="lang_german">Német</string>
-	<string name="lang_russian">Orosz</string>
-	<string name="lang_spanish">Spanyol</string>
-	<string name="lang_italian">Olasz</string>
-	<string name="lang_ukrainian">Ukrán</string>
-	<string name="lang_dutch">Holland</string>
-	<string name="lang_japanese">Japán</string>
 	<string name="text01">Beállítások, és a szerverek beállításai vissza lesznek állítva. Biztos akarod?</string>
 	<string name="text02">A visszaállítás megtörtént.</string>
 	<string name="text09">Hibák!</string>
@@ -137,9 +128,7 @@
 	<string name="downloadError">Letöltési hiba</string>
 	<string name="documentation">Dokumentáció</string>
 	<string name="ok">OK</string>
-	<string name="lang_hungarian">Magyar</string>
-	<string name="lang_chinese_taiwan">Chinese (Taiwan)</string>
-<string name="app_name">Munin Androidhoz</string>
+	<string name="app_name">Munin Androidhoz</string>
 	<string name="button_grid">Rácsok</string>
 	<string name="settings_URL_label">Munin-master URL</string>
 	<string name="settings_hdgraphs">HD grafikonok engedélyezése</string>

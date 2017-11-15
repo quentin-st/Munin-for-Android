@@ -1,13 +1,9 @@
 package com.chteuchteu.munin.hlpr;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
-import android.view.ContextThemeWrapper;
-
-import com.chteuchteu.munin.R;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -19,27 +15,29 @@ public class I18nHelper {
 	 * 	we make it available in the settings using this enum.
 	 */
 	public enum AppLanguage {
-		DE("de", R.string.lang_german),
-		EN("en", R.string.lang_english),
-		ES("es", R.string.lang_spanish),
-		FI("fi", R.string.lang_finnish),
-		FR("fr", R.string.lang_french),
-		HU("hu", R.string.lang_hungarian),
-		IT("it", R.string.lang_italian),
-		JA("ja", R.string.lang_japanese),
-		NL("nl", R.string.lang_dutch),
-		PT_RBR("pt-rBR", R.string.lang_portuguese_brazil),
-		RU("ru", R.string.lang_russian),
-		UK("uk", R.string.lang_ukrainian),
-		ZH_RCN("zh_rCN", R.string.lang_chinese),
-		ZH_TW("zh_TW", R.string.lang_chinese_taiwan),
-		PL("pl", R.string.lang_polish);
+		DE("de"),
+		EN("en"),
+		ES("es"),
+		FI("fi"),
+		FR("fr"),
+		HU("hu"),
+		IT("it"),
+		JA("ja"),
+		NL("nl"),
+		PT_RBR("pt_BR"),
+		RU("ru"),
+		UK("uk"),
+		ZH_RCN("zh_CN"),
+		ZH_TW("zh_TW"),
+		PL("pl"),
+        CA("ca"),
+        CS("cs"),
+        NB_RNO("nb_NO");
 
 		public String langCode;
-		public int localeNameRes;
 
-		AppLanguage(String langCode, int localeNameRes) {
-			this.langCode = langCode; this.localeNameRes = localeNameRes;
+		AppLanguage(String langCode) {
+			this.langCode = langCode;
 		}
 		public static AppLanguage defaultLang() { return AppLanguage.EN; }
 
@@ -58,8 +56,27 @@ public class I18nHelper {
 		public int getIndex() {
 			return Arrays.asList(AppLanguage.values()).indexOf(this);
 		}
+		public Locale getLocale() {
+		    int separatorIndex = this.langCode.indexOf('_');
+		    String language = "";
+		    String country = "";
+
+		    if (separatorIndex == -1) {
+		        language = this.langCode;
+            }
+            else {
+		        language = this.langCode.substring(0, separatorIndex);
+		        country = this.langCode.substring(separatorIndex+1);
+            }
+
+		    return new Locale(language, country);
+        }
 	}
 
+    /**
+     * Returns true if the specified language is explicitly supported by Munin for Android
+     * (if it has translation keys)
+     */
 	public static boolean isLanguageSupported(String languageCode) {
 		for (AppLanguage lang : AppLanguage.values()) {
 			if (lang.langCode.toLowerCase().equals(languageCode.toLowerCase()))
@@ -100,4 +117,19 @@ public class I18nHelper {
 		// Locale not set
 		return null;
 	}
+
+    /**
+     * Returns true if the specified language is supported on the current device
+     */
+	public static boolean isLanguageSupportedByDevice(AppLanguage language) {
+        Locale[] availableLocales = Locale.getAvailableLocales();
+
+        for (Locale locale : availableLocales) {
+            if (locale.toString().equals(language.langCode)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
