@@ -250,12 +250,12 @@
 \n <li>And more to come! Be sure to enable auto-updates in Google Play to receive latest premium features</li>
 \n </string>
 	<string name="goPremiumTitle">Kjøp Premium</string>
-	<string name="widget_configuration1">Vellykket! Miniprogrammet har blitt lagt til på hjemmeskjermen din. Tips: Du kan oppdatere grafen ved å tape den i det gråe feltet på bunnen av miniprogrammet.</string>
+	<string name="widget_configuration1">Vellykket! Miniprogrammet har blitt lagt til på hjemmeskjermen din. Tips: Du kan oppdatere grafen ved å trykke på den i det gråe feltet på bunnen av miniprogrammet.</string>
 	<string name="widget_configuration2">Kun oppdater på Wi-Fi (én oppdatering per time)</string>
-	<string name="text62">Det er ingen etikett enda</string>
+	<string name="text62">Mangler etikett</string>
 	<string name="text65">Porteføljeautentisering er tilgjengelig med funksjonspakken for Munin Android (1,49$).</string>
 	<string name="text65.1">Porteføljeautentisering er tilgjengelig med funksjonspakken for Munin Android (1,49$). Ønsker du å kjøpe det på Google Play?</string>
-	<string name="text67">Ingen etikett enda</string>
+	<string name="text67">Mangler etikett</string>
 	<string name="text68">Tidsavbrudd - Tjeneren brukte for lang tid på å behandle forespørselen</string>
 	<string name="text70.2">Legg til en etikett</string>
 	<string name="text82">Denne etiketten vil bli slettet. Er du sikker?</string>
@@ -279,14 +279,14 @@
 	<string name="label">Etikett</string>
 	<string name="selectALabel">Velg en etikett</string>
 	<string name="emptyLabel">Tom etikett</string>
-	<string name="chromecastAuthWarning">Advarsel - Chromecastfunksjonen fungerer ikke med Apache Basic/Porteføljeautentisering</string>
+	<string name="chromecastAuthWarning">Advarsel - Chromecastfunksjonen fungerer ikke med Apache Basic/føljetongsautentisering</string>
     <string name="chromecast_application_id">ID for Chromecast-program</string>
     <string name="notifications_test_text">Utløser for Munin for Android GCM har blitt installert</string>
 	<string name="push">Push</string>
 	<string name="push_notifications">Push-merknader</string>
 	<string name="poll">Sjekk</string>
 	<string name="poll_notifications">Sjekkmerknader</string>
-	<string name="push_explanation">Anbefaling: I dette moduset puffer Munin varsler direkte til din enhet.
+	<string name="push_explanation">Anbefaling: Dette er et modus der Munin puffer varsler direkte til din enhet.
 \nDette tillater sanntidsmerknader, lav batteribruk og redusert databruk, men du må installere et lite skript på hver \"master\".</string>
 	<string name="poll_explanation">I dette moduset, vil Munin for Android sjekke hver av tjenerne dine regelmessig.
 \nDet er ikke noe ekstra oppsett, men det er ikke så åplitelig som push-modus, og bruke mer batteri og data.
