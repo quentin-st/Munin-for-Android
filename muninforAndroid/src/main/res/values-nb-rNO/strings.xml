@@ -31,7 +31,7 @@
 	<string name="servers_noservers_2">Legg til din egen, eller prøv noen ved å trykke på +</string>
 	<string name="edit">Rediger</string>
 	<string name="addToHomescreen">Legg til på hjemmeskjerm</string>
-	<string name="addToHomescreen_confirm">En snarvei for %1$s har blitt lagt til på din hjemmeskjerm</string>
+	<string name="addToHomescreen_confirm">En snarvei for %1$s har blitt lagt til på hjemmeskjermen</string>
 	<string name="yourerunning">Du kjører</string>
 	<string name="openInBrowser">Åpne i nettleser</string>
 	<string name="fieldsDescription">Beskrivelse av felter</string>
@@ -45,7 +45,7 @@
 	<string name="about_specialThanksTitle">Spesiell takk til</string>
 	<string name="about_librariesTitle">Bibliotek</string>
 	<string name="goPremium_title">Munin for Android funksjonspakke</string>
-	<string name="buy_now">KJØP NÅ</string>
+	<string name="buy_now">Kjøp nå</string>
 	<string name="splashDesc">Laster</string>
 	<string name="graphView_ImageViewDescription">Diagram</string>
 
@@ -62,14 +62,14 @@
 	<string name="text01">Innstillinger og tjeneroppsett vil tilbakestilles. Er du sikker?</string>
 	<string name="text02">Tilbakestilling utført.</string>
 	<string name="text09">Feil!</string>
-	<string name="text11">Google Play programmet ser ut til å mangle på telefonen din.</string>
+	<string name="text11">Google Play-programmet ser ut til å mangle på telefonen din.</string>
 	<string name="text16">Nettadressen ser feilaktig ut. Sjekk den igjen.</string>
-	<string name="text18">Vellykket!</string>
-	<string name="text21.1">" node"</string>
+	<string name="text18">Vellykket.</string>
+	<string name="text21.1">node</string>
 	<string name="text21.2">" lagt til
 \n"</string>
 	<string name="success">Vellykket</string>
-	<string name="text27">" programtillegg funnet!"</string>
+	<string name="text27">programtillegg funnet.</string>
 	<string name="text28">Diagram lagret som /muninForAndroid/</string>
 	<string name="text29">Feil under lagring av diagram</string>
 	<string name="text30">Ingen internettilknytning</string>
@@ -77,12 +77,12 @@
 	<string name="no">Nei</string>
 	<string name="text35">Lær mer…</string>
 	<string name="text36">Innstillinger lagret.</string>
-	<string name="text37">Ingen tjener enda. Velg en i innstillingene.</string>
+	<string name="text37">Ingen tjener valgt. Legg til en i innstillingene.</string>
 	<string name="text39">Vent mens programmet fullfører oppdateringer…</string>
 	<string name="text42">Laster…</string>
 	<string name="text43">Vent…</string>
 	<string name="text44">Henter nettadresse…</string>
-	<string name="text45">Lagrer!</string>
+	<string name="text45">Lagrer…</string>
 	<string name="text46">"Kontakter node "</string>
 	<string name="text47.1">dag</string>
 	<string name="text47.2">uke</string>
@@ -95,12 +95,12 @@
 	<string name="text51.1">advarsel</string>
 	<string name="text51.2">advarsler</string>
 	<string name="text52">Skru på merknader</string>
-	<string name="text53">Bare oppdater på Wi-Fi</string>
+	<string name="text53">Kun oppdater på Wi-Fi</string>
 	<string name="text54">Estimert databruk: ?? /dag</string>
 	<string name="text55">Gjenoppfriskningsintervall</string>
 	<string name="text56">Velg noder å holde oppsyn med</string>
 	<string name="text57">10 minutter/en halvtime/en time/to timer/fem timer/ti timer/ett døgn</string>
-	<string name="text58">" kritisk / kritiske /og / advarsler / advarsler /på / node/ noder"</string>
+	<string name="text58">kritisk / kritiske /og / advarsler / advarsler /på / node/ noder</string>
 	<string name="text60">Fortsett</string>
 	<string name="text61">Legg til</string>
 	<string name="text64">Avbryt</string>
@@ -134,14 +134,14 @@
 	<string name="move_down">Flytt nedover</string>
 	<string name="move_left">Flytt til venstre</string>
 	<string name="rate">Vurder programmet</string>
-	<string name="rate_long">Hvis du liker programmet, kan du legge igjen en vurdering på Google Play? På forhånd takk.</string>
+	<string name="rate_long">Gi din vurdering av programmet på Google Play, det hjelper andre å fatte informerte beslutninger. På forhånd takk.</string>
 	<string name="not_now">Ikke nå</string>
 	<string name="export_success_title">Eksportert</string>
 	<string name="import_success_title">Importert</string>
-	<string name="import_success">Importering fullført</string>
+	<string name="import_success">Alt har blitt importert</string>
 	<string name="delete_plugin">Slett programtillegg</string>
-	<string name="delete_master">Slett hovedtjener og noder</string>
-	<string name="alerts_ok">Godt nytt - alt er OK</string>
+	<string name="delete_master">Slett hovedtjener og tilkoblede noder</string>
+	<string name="alerts_ok">Godt nytt, alt er OK</string>
 	<string name="long_click">Trykk lenge for å redigere</string>
 	<string name="rescan">Skann igjen</string>
 	<string name="support">Støtte</string>
@@ -161,8 +161,8 @@
 \n</string>
 	<string name="sync_nochange">Ingen endring</string>
 	<string name="sync_reporttitle">Skanningsrapport</string>
-	<string name="graphwidgetname">Munin for Android : Diagramminiprogram</string>
-	<string name="alertswidgetname">Munin for Android : Varslingsminiprogram</string>
+	<string name="graphwidgetname">Munin for Android: Diagramminiprogram</string>
+	<string name="alertswidgetname">Munin for Android: Varslingsminiprogram</string>
 	<string name="featuresPackNeeded">Munin for Android funksjonspakke behøves</string>
 	<string name="user_agent">Brukeragent</string>
 	<string name="from">Fra</string>
@@ -173,13 +173,13 @@
 	<string name="grids_legend_both">Begge</string>
 	<string name="downloadError">Nedlastingsfeil</string>
 	<string name="certificate_error">Tilkoblingen din er ikke privat</string>
-	<string name="alert_opensource">Har du fått det med deg? Munin for Android er nå fri programvare!</string>
+	<string name="alert_opensource">Munin for Android er GPLv2 copyleft fri programvare.</string>
 	<string name="alert_opensource_action">Bidra på GitHub</string>
 	<string name="close">Lukk</string>
 	<string name="documentation">Dokumentasjon</string>
 	<string name="ok">OK</string>
 	<string name="grids_settings">Rutenettinnstillinger</string>
-	<string name="alert_i18n_yes">Takk skal du ha! Vi bruker et veldig enkelt verktøy for å hanskes med oversettelser. Bruk denne lenken for å komme dit: www.munin-for-android.com/i18n.php</string>
+	<string name="alert_i18n_yes">Takk skal du ha. Vi bruker et veldig enkelt verktøy for å hanskes med oversettelser. Tilgjengelig her: www.munin-for-android.com/i18n.php</string>
 	<string name="defaultActivity">Forvalgt aktivitet</string>
 	<string name="setDefaultActivity">Velg forvalgt aktivitet</string>
 	<string name="load">Last</string>
@@ -196,7 +196,7 @@
 	<string name="notifications_device_code">Enhetskode</string>
 	<string name="notifications_instructions">Du må sette opp hver hovedtjener slik at de kan sende merknader til denne enheten.</string>
 	<string name="notifications_sendByMail">Send meg koden og instrukusjoner per e-post</string>
-	<string name="notifications_mailSent">E-post sendt! sjekk innboksen din</string>
+	<string name="notifications_mailSent">E-post sendt. sjekk innboksen din</string>
 	<string name="notifications_test_title">Munin for Android testmerknad</string>
 	<string name="ignore">Ignorer</string>
 	<string name="ignore_alert">Ignorer varsel</string>
@@ -214,7 +214,7 @@
 	<string name="ignoreRulesText">Det er nå %1$s-ignoreringsreg(el)/ler. Regler opprettes fra enkeltstående merknader og kan behandles herfra</string>
 	<string name="manageIgnoreRules">Behandle ignoreringsregler</string>
 	<string name="until">Til</string>
-	<string name="permission_required">En tilgang kreves for å gjøre dette</string>
+	<string name="permission_required">En ytterligere tilgang kreves for å gjøre dette</string>
 	<string name="permission_missing">Kunne ikke utføre handling: Én eller flere tilganger mangler.</string>
 	<string name="restart_to_apply_lang_changes">Programmet må startes på nytt for at språket skal trå i effekt.</string>
 
@@ -235,13 +235,13 @@
 \n <li>And more to come! Be sure to enable auto-updates in Google Play to receive latest premium features</li>
 \n </string>
 	<string name="goPremiumTitle">Kjøp Premium</string>
-	<string name="widget_configuration1">Vellykket! Miniprogrammet har blitt lagt til på hjemmeskjermen din. Tips: Du kan oppdatere grafen ved å trykke på den i det gråe feltet på bunnen av miniprogrammet.</string>
-	<string name="widget_configuration2">Kun oppdater på Wi-Fi (én oppdatering per time)</string>
+	<string name="widget_configuration1">Miniprogrammet har blitt lagt til på hjemmeskjermen. Tips: Du kan oppdatere grafen ved å trykke i det gråe feltet på bunnen av miniprogrammet.</string>
+	<string name="widget_configuration2">Kun oppdater grafen på Wi-Fi (én oppdatering per time)</string>
 	<string name="text62">Mangler etikett</string>
-	<string name="text65">Porteføljeautentisering er tilgjengelig med funksjonspakken for Munin Android (1,49$).</string>
-	<string name="text65.1">Porteføljeautentisering er tilgjengelig med funksjonspakken for Munin Android (1,49$). Ønsker du å kjøpe det på Google Play?</string>
+	<string name="text65">Porteføljeautentisering er tilgjengelig i funksjonspakken for Munin for Android (1,49$).</string>
+	<string name="text65.1">Porteføljeautentisering er tilgjengelig i funksjonspakken for Munin for Android (1,49$). Ønsker du å kjøpe den på Google Play?</string>
 	<string name="text67">Mangler etikett</string>
-	<string name="text68">Tidsavbrudd - Tjeneren brukte for lang tid på å behandle forespørselen</string>
+	<string name="text68">Tidsavbrudd: Tjeneren brukte for lang tid på å behandle forespørselen</string>
 	<string name="text70.2">Legg til en etikett</string>
 	<string name="text82">Denne etiketten vil bli slettet. Er du sikker?</string>
 	<string name="export_subject">Eksporter Munin for Android</string>
@@ -255,7 +255,7 @@
 	<string name="update_credentials">Rediger tilkoblingsidentitetsdetaljer</string>
 	<string name="donate_text">Å utvikle et stort program krever mye tid og innsats. Hvis det er nyttig i ditt
 \nhverdagsliv, overvei å gi en donasjon. Takk. Hvis du gjør det, send meg en e-post slik at jeg kan takke deg personlig!</string>
-	<string name="donate_amount">Velg donasjonsstørrelse (33% av dette beløpet vil tilfalle Google)</string>
+	<string name="donate_amount">Velg donasjonsstørrelse (⅓ av dette beløpet vil tilfalle Google)</string>
 	<string name="grids_legend">Rutenett-\"legende\"</string>
 	<string name="redetectHdGraphsUrl">Detekter den høyoppløselige grafnettadressen igjen</string>
 	<string name="disableHDGraphs">Skru av høyoppløselige grafer</string>
