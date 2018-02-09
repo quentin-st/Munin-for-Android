@@ -121,7 +121,7 @@
 	<string name="goPremiumTitle">Go Premium</string>
 	<string name="alertsTitle">Alerts</string>
 	<string name="notificationsTitle">Notifications</string>
-	<string name="widget_configuration1">Widget added to home screen. Tip: You can update the graph by tapping the grey bar at the bottom of the widget.</string>
+	<string name="widget_configuration1">Widget added to home screen, tap the gray field at the bottom of it to update the graph.</string>
 	<string name="widget_configuration2">Only auto-update the graph on Wi-Fi (one update per hour)</string>
 	<string name="widget_configuration3">Hide node name</string>
 	<string name="settings_defaultnode">Default node</string>
@@ -129,7 +129,7 @@
 	<string name="text01">Settings and servers configuration will be reset. Are you sure?</string>
 	<string name="text02">Reset performed.</string>
 	<string name="text09">Error!</string>
-	<string name="text11">The Google Play app seems to be missing on your phone.</string>
+	<string name="text11">The Google Play app seems to be missing on your device.</string>
 	<string name="text16">The URL doesn\'t seem to be good. Please check it again.</string>
 	<string name="text18">Success.</string>
 	<string name="text21.1"> node</string>
