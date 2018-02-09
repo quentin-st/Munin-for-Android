@@ -235,7 +235,7 @@
 \n <li>And more to come! Be sure to enable auto-updates in Google Play to receive latest premium features</li>
 \n </string>
 	<string name="goPremiumTitle">Kjøp Premium</string>
-	<string name="widget_configuration1">Miniprogrammet har blitt lagt til på hjemmeskjermen. Tips: Du kan oppdatere grafen ved å trykke i det gråe feltet på bunnen av miniprogrammet.</string>
+	<string name="widget_configuration1">Miniprogrammet har blitt lagt til på hjemmeskjermen. trykk på dets gråe felt nederst for å oppdatere grafen.</string>
 	<string name="widget_configuration2">Kun oppdater grafen på Wi-Fi (én oppdatering per time)</string>
 	<string name="text62">Mangler etikett</string>
 	<string name="text65">Porteføljeautentisering er tilgjengelig i funksjonspakken for Munin for Android (1,49$).</string>
