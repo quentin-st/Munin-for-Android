@@ -14,7 +14,7 @@
 	<string name="settings_hdgraphs">Увімкнення HD графіків</string>
 	<string name="settings_hdgraphs_text">Спробуйте DynaZoom для перегляду графіків високої якості</string>
 	<string name="settings_auth_type">Тип аутентифікації</string>
-	<string name="settings_login">Користувач</string>
+	<string name="settings_login">Увійти</string>
 	<string name="settings_password">Пароль</string>
 	<string name="settings_default_scale">Базовий розмір графіку</string>
 	<string name="settings_screenalwayson_label">Екран завжди увімкнено</string>
@@ -22,7 +22,7 @@
 	<string name="settings_autorefresh_label">Автооновлення</string>
 	<string name="settings_autorefresh_checkbox">Автоматично оновлювати графіки / сповіщення кожні 5 хвилин впродовж показу</string>
 	<string name="settings_enablegraphszoom">Увімкнути масштабування графіків</string>
-	<string name="settings_titlelabel_app">Налаштування програми</string>
+	<string name="settings_titlelabel_app">Налаштування застосунку</string>
 	<string name="settings_titlelabel_graphs">Налаштування графіків</string>
 	<string name="save_button">Зберегти</string>
 	<string name="menu_graph_refresh">Оновити</string>
@@ -123,4 +123,34 @@
 	<string name="text49.1">Приховати суб-сервери з норм. статусом</string>
 	<string name="text49.2">Показати суб-сервери з норм. статусом</string>
 	<string name="text54">Розрахункове споживання трафіку: ?? / в день</string>
-	</resources>
+	<string name="addToHomescreen">Додати на головний екран</string>
+	<string name="addToHomescreen_confirm">Ярлик для %1$ s додано до головного екрану</string>
+	<string name="text57">10 хвилин/30 хвилин/1 година/2 години/5 годин/10 годин/24 години</string>
+	<string name="text62">Без позначки</string>
+	<string name="action_import">Імпортувати</string>
+	<string name="action_export">Екпортувати</string>
+	<string name="import_export">Імпортування / Експортування</string>
+	<string name="export_failed">Не вдалося виконати експортування…</string>
+	<string name="import_title">Імпортувати</string>
+	<string name="delete">Видалити</string>
+	<string name="move_up">Перемістити вгору</string>
+	<string name="move_right">Перемістити праворуч</string>
+	<string name="move_down">Перемістити донизу</string>
+	<string name="move_left">Перемістити ліворуч</string>
+	<string name="rate">Оцінити застосунок</string>
+	<string name="not_now">Не зараз</string>
+	<string name="export_success_title">Експортовано</string>
+	<string name="import_success_title">Імпортовано</string>
+	<string name="delete_plugin">Видалити плаґін</string>
+	<string name="donate">Пожертвувати</string>
+	<string name="sync_nochange">Без змін</string>
+	<string name="downloadError">Помилка завантаження</string>
+	<string name="close">Закрити</string>
+	<string name="documentation">Документація</string>
+	<string name="ok">Гаразд</string>
+	<string name="about">Про додаток</string>
+	<string name="ignore">Ігнорувати</string>
+	<string name="permission_missing">Не в змозі досягти дії: відсутній один або декілька дозволів.</string>
+	<string name="restart_to_apply_lang_changes">Застосунок необхідно перезапустити, щоб зміни мови вступили в силу.</string>
+
+</resources>
