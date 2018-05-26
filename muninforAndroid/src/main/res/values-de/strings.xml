@@ -7,7 +7,7 @@
 	<string name="settings_URL_label2">"z.B.: http(s)://88.180.108.192/munin/"</string>
 	<string name="settings_text">... oder wähle einen Beispielserver aus:</string>
 	<string name="settings_http_auth2">"HTTP Authentifizierung erforderlich"</string>
-	<string name="settings_login">"Login"</string>
+	<string name="settings_login">Einloggen</string>
 	<string name="settings_password">"Passwort"</string>
 	<string name="settings_default_scale">"Standardskalierung der Graphen"</string>
 	<string name="save_button">"Speichern"</string>
@@ -71,8 +71,8 @@
 	<string name="button_labels">"Labels"</string>
 	<string name="button_notifications">"Benachrichtigungen"</string>
 	<string name="settings_auth_type">"Authentifizierungsart"</string>
-	<string name="settings_titlelabel_app">Einstellungen</string>
-	<string name="settings_titlelabel_graphs">"GRAPHEN"</string>
+	<string name="settings_titlelabel_app">App-Einstellungen</string>
+	<string name="settings_titlelabel_graphs">Graphen-Einstellungen</string>
 	<string name="menu_graph_switch">Node-Server wechseln</string>
 	<string name="servers_noservers_1">Noch kein Server vorhanden</string>
 	<string name="servers_noservers_2">"Eigene oder Beispielserver mit einem Klick auf + hinzufügen"</string>
