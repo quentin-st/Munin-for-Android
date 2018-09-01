@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-	<string name="app_name">"Munin für Android"</string>
+	<string name="app_name">&lt;string name=\"touch_filtered_warning\"&gt;</string>
 	<string name="button_graphs">"Graphen"</string>
 	<string name="button_server">"Server"</string>
 	<string name="settings_URL_label">"URL des Masterservers"</string>
