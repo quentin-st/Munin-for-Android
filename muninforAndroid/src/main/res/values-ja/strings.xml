@@ -22,7 +22,7 @@
 	<string name="settings_autorefresh_label">自動リフレッシュ</string>
 	<string name="settings_autorefresh_checkbox">グラフ / アラートの表示中、5 分毎に自動的にリフレッシュします</string>
 	<string name="settings_enablegraphszoom">グラフのズームを有効にする</string>
-	<string name="settings_titlelabel_app">アプリケーション設定</string>
+	<string name="settings_titlelabel_app">アプリ設定</string>
 	<string name="settings_titlelabel_graphs">グラフ設定</string>
 	<string name="save_button">保存</string>
 	<string name="menu_graph_refresh">リフレッシュ</string>
@@ -35,14 +35,14 @@
 	<string name="about_eraseData">アプリをリセット</string>
 	<string name="about_gplay">アプリを評価</string>
 	<string name="servers_noservers_1">まだサーバーはありません</string>
-	<string name="servers_noservers_2">+ をタップしてご利用の、またはサンプルのサーバーを追加してください</string>
+	<string name="servers_noservers_2">+ をタップして、自分のまたはサンプルを追加してください</string>
 	<string name="edit">編集</string>
 	<string name="yourerunning">実行しています</string>
 	<string name="openInBrowser">ブラウザーで開く</string>
 	<string name="fieldsDescription">フィールドの詳細</string>
 	<string name="follow">Twitter でフォローする</string>
 	<string name="notifs_vibrate">バイブレート</string>
-	<string name="about_firstPhrase">開発者に連絡しますか? アプリ改善のアイデアをお持ちですか? 致命的な問題を見つけませんでしたか? お気軽にメールをお送りください <b><u>support@munin-for-android.com</u></b>! ありがとうございます!</string>
+	<string name="about_firstPhrase">開発者に連絡しますか? アプリ改善のアイデアをお持ちですか? 致命的な問題を見つけましたか? お気軽にメールをお送りください <b><u>support@munin-for-android.com</u></b>。 ありがとうございます。</string>
 	<string name="about_independantApp">このアプリは独立して開発されています - 公式のアプリではありません。</string>
 	<string name="about_changelog">詳細な情報は <a href="http://munin-for-android.com/">munin-for-android.com</a> を参照してください。</string>
 	<string name="about_openSource">Munin for Android はオープンソースです! <a href="https://github.com/chteuchteu/Munin-for-Android">GitHub のプロジェクトに貢献してください</a>。
@@ -70,34 +70,35 @@
 	<string name="goPremiumTitle">プレミアムへ</string>
 	<string name="alertsTitle">アラート</string>
 	<string name="notificationsTitle">通知</string>
-	<string name="widget_configuration1">正常にホーム画面にウィジェットを追加しました。 Tip: ウィジェット下部にあるグレーのバーをタップしてグラフを更新できます!</string>
-	<string name="widget_configuration2">WiFi 時のみグラフを自動で更新する (1 時間毎に更新)</string>
+	<string name="widget_configuration1">ホーム画面にウィジェットを追加しました。下部にあるグレーの項目をタップするとグラフを更新します。</string>
+	<string name="widget_configuration2">Wi-Fi 接続時のみグラフを自動更新する (1 時間毎に更新)</string>
 	<string name="widget_configuration3">ノード名を非表示にする</string>
 	<string name="settings_defaultnode">デフォルト サーバー</string>
 	<string name="settings_lang">アプリの言語</string>
 	<string name="text01">設定およびサーバー構成がリセットされます。よろしいですか?</string>
 	<string name="text02">リセットしました。</string>
 	<string name="text09">エラー!</string>
-	<string name="text11">お使いの電話に Google Play アプリが見つからないようです。</string>
+	<string name="text11">お使いのデバイスに Google Play アプリが見つからないようです。</string>
 	<string name="text16">URL が正しくないようです。もう一度ご確認ください。</string>
-	<string name="text18">成功しました!</string>
+	<string name="text18">成功しました。</string>
 	<string name="text21.1">ノード</string>
-	<string name="text21.2">" 追加しました!\n"</string>
+	<string name="text21.2">追加しました。
+\n</string>
 	<string name="success">成功しました</string>
-	<string name="text27">" プラグインが見つかりました!"</string>
+	<string name="text27">プラグインが見つかりました。</string>
 	<string name="text28">グラフを /muninForAndroid/ として保存しました</string>
 	<string name="text29">グラフの保存中にエラー</string>
 	<string name="text30">インターネット接続がありません</string>
 	<string name="yes">はい</string>
 	<string name="no">いいえ</string>
 	<string name="text35">さらに詳しく…</string>
-	<string name="text36">設定が正常に保存されました!</string>
-	<string name="text37">サーバーが設定されていません。設定してください。</string>
+	<string name="text36">設定を保存しました。</string>
+	<string name="text37">サーバーが設定されていません。設定を追加してください。</string>
 	<string name="text39">アプリが更新を行う間、しばらくお待ちください…</string>
 	<string name="text42">ロード中…</string>
 	<string name="text43">しばらくお待ちください…</string>
 	<string name="text44">URL の取得中…</string>
-	<string name="text45">保存しています!</string>
+	<string name="text45">保存しています…</string>
 	<string name="text46">"ノードに接続中 "</string>
 	<string name="text47.1">日</string>
 	<string name="text47.2">週</string>
@@ -111,22 +112,22 @@
 	<string name="text51.1">警告</string>
 	<string name="text51.2">警告</string>
 	<string name="text52">通知を有効にする</string>
-	<string name="text53">WiFi 時のみ更新</string>
+	<string name="text53">Wi-Fi 接続時のみ更新</string>
 	<string name="text54">見積のデータ消費量: ?? /日</string>
 	<string name="text55">リフレッシュレート</string>
 	<string name="text56">ウォッチするノードを選択</string>
 	<string name="text57">10 分/30 分/1 時間/2 時間/5 時間/10 時間/24 時間</string>
-	<string name="text58">" 致命的 / 致命的 /&amp; / 警告 / 警告 /毎 / ノード/ ノード"</string>
+	<string name="text58">致命的 / 致命的 /&amp; / 警告 / 警告 /毎 / ノード/ ノード</string>
 	<string name="text60">続行</string>
 	<string name="text61">追加</string>
-	<string name="text62">まだラベルはありません</string>
+	<string name="text62">ラベルなし</string>
 	<string name="text64">キャンセル</string>
 	<string name="text65">Munin for Android フィーチャーパックでダイジェスト認証がご利用できます ($1.49)。</string>
 	<string name="text65.1">Munin for Android フィーチャーパックでダイジェスト認証がご利用できます ($1.49)。 Google Play で購入しますか?</string>
 	<string name="text66">URL の履歴をクリア</string>
 	<string name="text66.1">履歴をクリアしました。</string>
-	<string name="text67">まだラベルはありません</string>
-	<string name="text68">タイムアウト - サーバーは要求の処理に長時間かかました</string>
+	<string name="text67">ラベルなし</string>
+	<string name="text68">タイムアウト: サーバーは要求の処理に長時間かかっています</string>
 	<string name="text69">グリッド名</string>
 	<string name="text70">グリッドを追加</string>
 	<string name="text70.2">ラベルを追加</string>
@@ -158,29 +159,29 @@
 	<string name="move_down">下に移動</string>
 	<string name="move_left">左に移動</string>
 	<string name="rate">アプリを評価</string>
-	<string name="rate_long">アプリを気に入っていただいた場合、Google Play で評価していただけませんか? ありがとうございます!</string>
+	<string name="rate_long">Google Play で評価して、アプリの意見をお寄せください。ご意見を参考にさせていただきます。ありがとうございます。</string>
 	<string name="not_now">今はしない</string>
 	<string name="export_explanation">別のデバイスから検索できるように、構成がアップロードされます。パスワードがある場合は、暗号化されます。
 エクスポートが終わると、ランダムに生成されるコードを使って、お使いの他のデバイスで構成をダウンロードできるようになります。
 構成をダウンロードするとすぐに Munin for Android のサーバーから削除されます。または 24 時間以内に構成をダウンロードしない場合も削除されます。</string>
-	<string name="export_success_title">正常にエクスポートしました</string>
+	<string name="export_success_title">エクスポートしました</string>
 	<string name="export_success_txt1">構成が正常にアップロードされました。
 別のデバイスで次のコードを使用して、インポートしてください。</string>
-	<string name="import_success_title">正常にインポートしました</string>
+	<string name="import_success_title">インポートしました</string>
 	<string name="delete_plugin">プラグインを削除</string>
 	<string name="delete_label">ラベルを削除</string>
 	<string name="rename_label">ラベルの名前を変更</string>
-	<string name="delete_master">マスターとノードを削除</string>
-	<string name="alerts_ok">良いニュース - すべて OK です</string>
+	<string name="delete_master">インスタンスと接続されたノードを削除</string>
+	<string name="alerts_ok">良いニュース–すべて OK です</string>
 	<string name="update_credentials">接続の資格情報を編集</string>
 	<string name="long_click">長押しして編集</string>
 	<string name="rescan">再スキャン</string>
 	<string name="support">サポート</string>
-	<string name="choose_email_client">お使いのメールのアプリを選択してください</string>
+	<string name="choose_email_client">お使いのメールアプリを選択してください</string>
 	<string name="donate">寄付</string>
 	<string name="donate_text">このような大規模のアプリケーションを開発するのは、膨大な時間と関与が必要です。アプリが、あなたの日常生活に役立つ場合は、
 寄付をご検討いただけませんでしょうか? ありがとうございます! その場合、個人的にあなたに感謝を伝えられるように、私にメールをお送りください!</string>
-	<string name="donate_amount">寄付の金額を選択してください (この金額の 33% は Google に支払われます)</string>
+	<string name="donate_amount">"寄付の金額を選択してください (この金額の ⅓  は Google に支払われます)"</string>
 	<string name="sync_serversadded">XXX ノードを追加しました\n</string>
 	<string name="sync_serversupdated">XXX ノードを更新しました\n</string>
 	<string name="sync_serversdeleted">XXX ノードを削除しました\n</string>
@@ -189,8 +190,8 @@
 	<string name="sync_pluginsdeleted">XXX プラグインを削除しました\n</string>
 	<string name="sync_nochange">変更なし</string>
 	<string name="sync_reporttitle">報告をスキャン</string>
-	<string name="graphwidgetname">Munin for Android : グラフ ウィジェット</string>
-	<string name="alertswidgetname">Munin for Android : アラート ウィジェット</string>
+	<string name="graphwidgetname">Munin for Android: グラフ ウィジェット</string>
+	<string name="alertswidgetname">Munin for Android: アラート ウィジェット</string>
 	<string name="featuresPackNeeded">Munin for Android フィーチャーパックが必要</string>
 	<string name="user_agent">ユーザーエージェント</string>
 	<string name="from">から</string>
@@ -204,7 +205,7 @@
 	<string name="disableHDGraphs">HD グラフを無効にする</string>
 	<string name="downloadError">ダウンロードエラー</string>
 	<string name="certificate_error">お使いの接続は保護されていません</string>
-	<string name="alert_opensource">ご存知ですか? Munin for Android はオープンソースになりました!</string>
+	<string name="alert_opensource">Munin for Android は GPLv2 コピーレフトの自由ソフトウェアです。</string>
 	<string name="alert_opensource_action">GitHub で貢献</string>
 	<string name="close">閉じる</string>
 	<string name="documentation">ドキュメント</string>
@@ -212,7 +213,7 @@
 	<string name="grids_settings">グリッド設定</string>
 	<string name="alert_i18n">アプリはあなたの母国語でご利用できないようです。あなたの言語で利用できるように、
 ご支援いただけますか?</string>
-	<string name="alert_i18n_yes">どうもありがとうございます! 私たちは、翻訳を管理するために、簡単に使えるオンラインツールを使用しています。 このリンクから使用してください: Use this link to reach it: www.munin-for-android.com/i18n.php</string>
+	<string name="alert_i18n_yes">ありがとうございます。私たちは翻訳の管理に、簡単に使えるオンラインツールを使用しています: www.munin-for-android.com/i18n.php</string>
 	<string name="defaultActivity">デフォルト アクティビティ</string>
 	<string name="setDefaultActivity">デフォルト アクティビティを設定</string>
 	<string name="load">ロード</string>
@@ -231,14 +232,14 @@
 
 <string name="about">アプリについて</string>
 	<string name="splashDesc">ロード中</string>
-	<string name="import_success">正常にインポートしました</string>
+	<string name="import_success">全てインポートしました</string>
 	<string name="default_grid">デフォルトのグリッド</string>
 	<string name="notifications_device_code">デバイス コード</string>
 	<string name="notifications_instructions">このデバイスに通知を送信できるように、各マスターを構成する必要があります。</string>
 	<string name="notifications_sendByMail">メールで私にコードと操作を送ってください</string>
-	<string name="notifications_mailSent">メールを送信しました! 受信トレイを確認してください</string>
+	<string name="notifications_mailSent">メールを送信しました。受信トレイを確認してください</string>
 	<string name="notifications_test_title">Munin for Android テスト通知</string>
-	<string name="notifications_test_text">Munin for Android GCM トリガーは正しくインストールされました</string>
+	<string name="notifications_test_text">Munin for Android GCM トリガーがインストールされました</string>
 	<string name="ignore">無視</string>
 	<string name="ignore_alert">アラートを無視</string>
 	<string name="ignore_for">次を無視</string>
@@ -266,7 +267,7 @@
 余分な設定はありませんが、プッシュ モードより信頼性が高くありません。バッテリの残量とデータ料金プランを減らす可能性があります。
 プッシュ モードで必要なスクリプトをインストールできない場合のみこのモードを使用してください。</string>
 	<string name="graphs_autoload">グラフを自動的に読み込む</string>
-	<string name="permission_required">この操作を行うためにアクセス許可が必要です</string>
+	<string name="permission_required">これを行うには、追加のアクセス許可が必要です</string>
 	<string name="permission_missing">操作を行うことができません: 1 つまたは複数のアクセス許可がありません。</string>
 	<string name="restart_to_apply_lang_changes">言語の変更を有効にするには、アプリケーションを再起動する必要があります。</string>
 

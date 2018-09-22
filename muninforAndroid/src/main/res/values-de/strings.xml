@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-	<string name="app_name">"Munin für Android"</string>
+	<string name="app_name">&lt;string name=\"touch_filtered_warning\"&gt;</string>
 	<string name="button_graphs">"Graphen"</string>
 	<string name="button_server">"Server"</string>
 	<string name="settings_URL_label">"URL des Masterservers"</string>
 	<string name="settings_URL_label2">"z.B.: http(s)://88.180.108.192/munin/"</string>
 	<string name="settings_text">... oder wähle einen Beispielserver aus:</string>
 	<string name="settings_http_auth2">"HTTP Authentifizierung erforderlich"</string>
-	<string name="settings_login">"Login"</string>
+	<string name="settings_login">Einloggen</string>
 	<string name="settings_password">"Passwort"</string>
 	<string name="settings_default_scale">"Standardskalierung der Graphen"</string>
 	<string name="save_button">"Speichern"</string>
@@ -55,7 +55,7 @@
 \n<li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li>
 \n<li>Und es kommt noch mehr! Aktiviere die automatischen Update in Google Play um neuesten Premiumfunktionen automatisch zu erhalten.</li>
 \n </string>
-	<string name="buy_now">"JETZT KAUFEN"</string>
+	<string name="buy_now">Jetzt kaufen</string>
 	<string name="goPremiumTitle">Munin Premium</string>
 	<string name="text42">Laden …</string>
 	<string name="text43">Bitte warten …</string>
@@ -71,8 +71,8 @@
 	<string name="button_labels">"Labels"</string>
 	<string name="button_notifications">"Benachrichtigungen"</string>
 	<string name="settings_auth_type">"Authentifizierungsart"</string>
-	<string name="settings_titlelabel_app">Einstellungen</string>
-	<string name="settings_titlelabel_graphs">"GRAPHEN"</string>
+	<string name="settings_titlelabel_app">App-Einstellungen</string>
+	<string name="settings_titlelabel_graphs">Graphen-Einstellungen</string>
 	<string name="menu_graph_switch">Node-Server wechseln</string>
 	<string name="servers_noservers_1">Noch kein Server vorhanden</string>
 	<string name="servers_noservers_2">"Eigene oder Beispielserver mit einem Klick auf + hinzufügen"</string>
@@ -138,7 +138,7 @@
 	<string name="settings_autorefresh_checkbox">Graphen/Alarme automatisch alle 5 Minuten aktualisieren, während diese angezeigt werden</string>
 	<string name="settings_hdgraphs">Hochauflösende Graphen verwenden</string>
 	<string name="settings_hdgraphs_text">"Nutze DynaZoom, um hochauflösende Graphen anzuzeigen"</string>
-	<string name="settings_enablegraphszoom">"Graphen-Zoom aktivieren"</string>
+	<string name="settings_enablegraphszoom">Graph-Zoom aktivieren</string>
 	<string name="yourerunning">Es läuft</string>
 	<string name="openInBrowser">"Im Browser öffnen"</string>
 	<string name="fieldsDescription">"Feld-Beschreibung"</string>
@@ -209,7 +209,7 @@
 	<string name="grids_settings">Gitter-Einstellungen</string>
 	<string name="alert_i18n">Ist die Übersetzung unvollständig oder fehlerhaft? Könntest du uns helfen, sie zu verbessern?</string>
 	<string name="alert_i18n_yes">Vielen Dank! Wir benutzen ein einfaches Online-Tool zum Übersetzen. Du kannst es unter http://www.munin-for-android.com/i18n.php erreichen</string>
-	<string name="about_openSource">Munin für Android ist Open Source! <a href="https://github.com/chteuchteu/Munin-for-Android">Du kannst auf GitHub an dem Projekt mitwirken</a>. Die App wird unter der GNU GPL version 2 veröffentlicht.</string>
+	<string name="about_openSource">Munin für Android ist freie (libre) Software. <a href="https://github.com/chteuchteu/Munin-for-Android">Du kannst auf GitHub an dem Projekt mitwirken</a>. Die App wird unter der GNU GPL version 2 veröffentlicht.</string>
 	<string name="defaultActivity">Startansicht</string>
 	<string name="setDefaultActivity">Startansicht setzen</string>
 	<string name="label">Label</string>
@@ -236,7 +236,7 @@
 	<string name="one_week">Für 1 Woche</string>
 	<string name="forever">Ständig</string>
 	<string name="addToHomescreen">Zur Startseite hinzufügen</string>
-	<string name="addToHomescreen_confirm">Eine Abkürzung für %1$s wurde auf deiner Startseite hinzugefügt</string>
+	<string name="addToHomescreen_confirm">Abkürzung nach %1$s auf Startseite hinzugefügt</string>
 	<string name="import_success">Der Import war erfolgreich</string>
 	<string name="graphs_autoload">Lade Graphen automatisch</string>
 	<string name="default_grid">Standard-Raster</string>

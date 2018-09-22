@@ -62,7 +62,7 @@
 	<string name="text01">Innstillinger og tjeneroppsett vil tilbakestilles. Er du sikker?</string>
 	<string name="text02">Tilbakestilling utført.</string>
 	<string name="text09">Feil!</string>
-	<string name="text11">Google Play-programmet ser ut til å mangle på telefonen din.</string>
+	<string name="text11">Google Play-programmet ser ut til å mangle på enheten din.</string>
 	<string name="text16">Nettadressen ser feilaktig ut. Sjekk den igjen.</string>
 	<string name="text18">Vellykket.</string>
 	<string name="text21.1">node</string>
@@ -235,7 +235,7 @@
 \n <li>And more to come! Be sure to enable auto-updates in Google Play to receive latest premium features</li>
 \n </string>
 	<string name="goPremiumTitle">Kjøp Premium</string>
-	<string name="widget_configuration1">Miniprogrammet har blitt lagt til på hjemmeskjermen. Tips: Du kan oppdatere grafen ved å trykke i det gråe feltet på bunnen av miniprogrammet.</string>
+	<string name="widget_configuration1">Miniprogrammet har blitt lagt til på hjemmeskjermen. trykk på dets gråe felt nederst for å oppdatere grafen.</string>
 	<string name="widget_configuration2">Kun oppdater grafen på Wi-Fi (én oppdatering per time)</string>
 	<string name="text62">Mangler etikett</string>
 	<string name="text65">Porteføljeautentisering er tilgjengelig i funksjonspakken for Munin for Android (1,49$).</string>
