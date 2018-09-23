@@ -42,14 +42,6 @@
 				android:layout_height="wrap_content"
 				android:textColor="@color/alerts_servername_text_color"
 				android:textSize="19sp"/>
-
-			<ImageView
-				android:id="@+id/arrow"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:layout_centerVertical="true"
-				android:src="@drawable/arrow"/>
 		</RelativeLayout>
 
 		<LinearLayout

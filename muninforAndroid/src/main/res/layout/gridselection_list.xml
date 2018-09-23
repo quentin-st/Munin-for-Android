@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:orientation="horizontal"
-	android:gravity="center_vertical"
-	android:paddingLeft="@dimen/listview_inner_horizontal_margin"
-	android:paddingRight="@dimen/listview_inner_horizontal_margin" >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/listview_inner_horizontal_margin"
+    android:paddingRight="@dimen/listview_inner_horizontal_margin">
 
-	<ImageView
-		style="@style/Material_ListItem_Icon"
-		android:src="@drawable/ic_grid" />
+    <ImageView
+        style="@style/Material_ListItem_Icon"
+        android:src="@drawable/ic_grid" />
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-		<TextView
-			android:id="@+id/line_a"
-			style="@style/Material_ListItem_Line1" />
+        <TextView
+            android:id="@+id/line_a"
+            style="@style/Material_ListItem_Line1"
+            android:text="Line 1" />
 
-		<TextView
-			android:id="@+id/line_b"
-			style="@style/Material_ListItem_Line2" />
-	</LinearLayout>
+        <TextView
+            android:id="@+id/line_b"
+            style="@style/Material_ListItem_Line2"
+            android:text="Line 2" />
+    </LinearLayout>
 
 </LinearLayout>

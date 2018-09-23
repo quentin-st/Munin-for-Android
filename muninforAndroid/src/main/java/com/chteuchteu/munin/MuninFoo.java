@@ -80,8 +80,9 @@ public class MuninFoo {
 
 		attachOrphanNodes();
 
-		if (BuildConfig.DEBUG)
-			this.sqlite.logMasters();
+		if (BuildConfig.DEBUG) {
+            this.sqlite.logMasters();
+        }
 
 		if (context != null) {
 			// Set default node
@@ -377,17 +378,22 @@ public class MuninFoo {
 	public static void logW(String tag, String msg) { if (BuildConfig.DEBUG) Log.w(tag, msg); }
 
 	public static boolean isPremium(Context c) {
-        if (Util.isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c)) {
-			if (BuildConfig.DEBUG && FORCE_NOT_PREMIUM)
-				return false;
-			if (BuildConfig.DEBUG)
-				return true;
-			//PackageManager manager = c.getPackageManager();
-			//return (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")
-			//		== PackageManager.SIGNATURE_MATCH);
-			return true;
-		}
-		return false;
+        if (BuildConfig.DEBUG) {
+            return !FORCE_NOT_PREMIUM;
+        }
+
+        // Note: we should check packages signatures like it was done before:
+        /*
+        PackageManager manager = c.getPackageManager();
+		return (manager.checkSignatures("com.chteuchteu.munin", "com.chteuchteu.muninforandroidfeaturespack")
+				== PackageManager.SIGNATURE_MATCH);
+         */
+        // But we had problems with this in the past, so we disabled it. Without this check,
+        // having premium without buying the premium pack is incredibly easy, but I'd rather
+        // having smart users having the premium features for free rather than poor paying users
+        // not having their premium features.
+
+        return Util.isPackageInstalled("com.chteuchteu.muninforandroidfeaturespack", c);
 	}
 
 	/**

@@ -9,7 +9,7 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal" >
+		android:orientation="horizontal">
 
 		<ImageView
 			style="@style/Material_ListItem_Icon"
@@ -19,7 +19,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			android:orientation="vertical" >
+			android:orientation="vertical">
 
 			<TextView
 				android:id="@+id/line_a"
@@ -30,7 +30,4 @@
 				style="@style/Material_ListItem_Line2" />
 		</LinearLayout>
 	</LinearLayout>
-
-	<View style="@style/Material_Divider_ListViewItem" />
-
 </LinearLayout>

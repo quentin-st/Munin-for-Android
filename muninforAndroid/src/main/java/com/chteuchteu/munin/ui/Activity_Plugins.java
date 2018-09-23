@@ -54,7 +54,7 @@ public class Activity_Plugins extends MuninActivity {
 
 	private EditText		filter;
 	private ListView       listview;
-	
+
 	private Mode mode;
 	private enum Mode {
 		GROUPED, FLAT
@@ -98,15 +98,18 @@ public class Activity_Plugins extends MuninActivity {
         customActionBarView_textView = (TextView) customActionBarView.findViewById(R.id.text);
         customActionBarView_textView.setText(muninFoo.getCurrentNode().getName());
 
+        // By default, mode is grouped (FLAT is for search)
 		mode = Mode.GROUPED;
+
+		// Fetch plugins list
 		pluginsList = muninFoo.getCurrentNode().getPlugins();
 
 		updateListView(mode);
 	}
-	
+
 	private void updateListView(final Mode mode) {
 		this.mode = mode;
-		
+
 		if (mode == Mode.FLAT) {
 			adapterList.clear();
 
@@ -121,7 +124,8 @@ public class Activity_Plugins extends MuninActivity {
 			adapter = new SimpleAdapter(this, adapterList, R.layout.plugins_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
 			listview.setAdapter(adapter);
 		} else {
-			// Create plugins list
+		    // Grouped mode
+			// Create plugins list (grouped by category)
 			List<List<MuninPlugin>> categories = muninFoo.getCurrentNode().getPluginsListWithCategory();
 
 			Adapter_SeparatedList adapter = new Adapter_SeparatedList(this, false);
@@ -136,13 +140,14 @@ public class Activity_Plugins extends MuninActivity {
 					elements.add(item);
 					categoryName = Util.capitalize(plugin.getCategory());
 				}
-				
+
 				adapter.addSection(categoryName, new SimpleAdapter(this, elements, R.layout.plugins_list,
 						new String[] { "title", "caption" }, new int[] { R.id.line_a, R.id.line_b }));
 			}
 			listview.setAdapter(adapter);
 		}
-		
+
+		// On click name, open the GraphView
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 				TextView pluginName = (TextView) view.findViewById(R.id.line_b);
@@ -155,11 +160,11 @@ public class Activity_Plugins extends MuninActivity {
 				Util.setTransition(activity, TransitionStyle.DEEPER);
 			}
 		});
-		
+
+        // On long click, display options list
 		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapter, final View view, final int position, long arg) {
-				// Display actions list
 				AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
 				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
 						context, android.R.layout.simple_list_item_1);
@@ -211,7 +216,7 @@ public class Activity_Plugins extends MuninActivity {
 		filter.getBackground().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 		filter.setTextColor(Color.WHITE);
 		filter.setTag("hidden");
-		
+
 		filter.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(Editable s) {
@@ -222,8 +227,9 @@ public class Activity_Plugins extends MuninActivity {
 					filteredPluginsList = new MuninPlugin[pluginsList.size()];
 					for (int i = 0; i < pluginsList.size(); i++) {
 						if (pluginsList.get(i).getFancyName().toLowerCase(Locale.ENGLISH).contains(search.toLowerCase(Locale.ENGLISH))
-								|| pluginsList.get(i).getName().toLowerCase(Locale.ENGLISH).contains(search.toLowerCase(Locale.ENGLISH)))
-							filteredPluginsList[i] = pluginsList.get(i);
+								|| pluginsList.get(i).getName().toLowerCase(Locale.ENGLISH).contains(search.toLowerCase(Locale.ENGLISH))) {
+                            filteredPluginsList[i] = pluginsList.get(i);
+                        }
 					}
 
 					HashMap<String, String> item;
@@ -252,7 +258,7 @@ public class Activity_Plugins extends MuninActivity {
 
 	@Override
 	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Graphs; }
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
@@ -294,7 +300,7 @@ public class Activity_Plugins extends MuninActivity {
 			actionBar.setCustomView(null);
 		}
 	}
-	
+
 	@Override
 	public void onBackPressed() {
         if (drawerHelper.closeDrawerIfOpen())

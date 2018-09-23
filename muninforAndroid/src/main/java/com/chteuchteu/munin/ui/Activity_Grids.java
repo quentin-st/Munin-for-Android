@@ -37,7 +37,7 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 	private List<HashMap<String, String>> list;
 	private ListView listview;
 	private List<Grid> grids;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,112 +70,117 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 
 		return null;
 	}
-	
+
 	private void updateList() {
 		list.clear();
 		listview.setAdapter(null);
-		
+
+		// Load grids list
 		grids = muninFoo.sqlite.dbHlpr.getGrids(muninFoo);
-		
-		if (grids.isEmpty())
-			findViewById(R.id.grids_nogrid).setVisibility(View.VISIBLE);
-		else {
-			for (Grid g : grids) {
-				HashMap<String,String> item = new HashMap<>();
-				item.put("line1", g.getName());
-				item.put("line2", g.getFullWidth() + " x " + g.getFullHeight());
-				list.add(item);
-			}
-			SimpleAdapter sa = new SimpleAdapter(this, list, R.layout.gridselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
-			listview.setAdapter(sa);
-			
-			listview.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-					TextView gridName = (TextView) view.findViewById(R.id.line_a);
-					Intent intent = new Intent(Activity_Grids.this, Activity_Grid.class);
-					intent.putExtra(Activity_Grid.ARG_GRIDID, getGridFromName(gridName.getText().toString()).getId());
-					startActivity(intent);
-					Util.setTransition(activity, TransitionStyle.DEEPER);
-				}
-			});
-			
-			listview.setOnItemLongClickListener(new OnItemLongClickListener() {
-				@Override
-				public boolean onItemLongClick(AdapterView<?> adapter, final View view, int position, long arg) {
-					// Display actions list
-					AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-					final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-							context, android.R.layout.simple_list_item_1);
-					arrayAdapter.add(context.getString(R.string.rename_grid));
-					arrayAdapter.add(context.getString(R.string.text73)); // Delete grid
 
-					builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							final TextView gridNameTextView = (TextView) view.findViewById(R.id.line_a);
-							final String gridName = gridNameTextView.getText().toString();
+		if (grids.isEmpty()) {
+            findViewById(R.id.grids_nogrid).setVisibility(View.VISIBLE);
+            return;
+        }
 
-							switch (which) {
-								case 0: // Rename grid
-									LayoutInflater layoutInflater = LayoutInflater.from(context);
-									ViewGroup alertDialogView = (ViewGroup) layoutInflater.inflate(R.layout.dialog_edittext, null, false);
-									final EditText input = (EditText) alertDialogView.findViewById(R.id.input);
-									input.setText(gridName);
 
-									new AlertDialog.Builder(context)
-											.setTitle(R.string.rename_grid)
-											.setView(alertDialogView)
-											.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-												public void onClick(DialogInterface dialog, int whichButton) {
-													String value = input.getText().toString();
-													if (!value.equals(gridName)) {
-														// Check if there's a grid with this name
-														boolean alreadyExists = muninFoo.sqlite.dbHlpr.gridExists(value);
-														if (!alreadyExists) {
-															MuninFoo.getInstance(context).sqlite.dbHlpr.updateGridName(gridName, value);
-															gridNameTextView.setText(value);
-														} else
-															Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
-													}
-													dialog.dismiss();
-												}
-											}).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog, int whichButton) {
-										}
-									}).show();
-									break;
-								case 1: // Delete grid
-									new AlertDialog.Builder(context)
-											.setTitle(R.string.delete)
-											.setMessage(R.string.text80)
-											.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-												@Override
-												public void onClick(DialogInterface dialog, int which) {
-													Grid grid = getGridFromName(gridName);
-													muninFoo.sqlite.dbHlpr.deleteGrid(grid);
-													updateList();
-												}
-											})
-											.setNegativeButton(R.string.no, null)
-											.show();
+        for (Grid g : grids) {
+            HashMap<String,String> item = new HashMap<>();
+            item.put("line1", g.getName());
+            item.put("line2", g.getFullWidth() + " x " + g.getFullHeight());
+            list.add(item);
+        }
+        SimpleAdapter sa = new SimpleAdapter(this, list, R.layout.gridselection_list, new String[] { "line1","line2" }, new int[] {R.id.line_a, R.id.line_b});
+        listview.setAdapter(sa);
 
-									break;
-							}
-						}
-					});
-					builderSingle.show();
+        // Navigate to grid on click
+        listview.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
+                TextView gridName = (TextView) view.findViewById(R.id.line_a);
+                Intent intent = new Intent(Activity_Grids.this, Activity_Grid.class);
+                intent.putExtra(Activity_Grid.ARG_GRIDID, getGridFromName(gridName.getText().toString()).getId());
+                startActivity(intent);
+                Util.setTransition(activity, TransitionStyle.DEEPER);
+            }
+        });
 
-					return true;
-				}
-			});
-		}
+        // Display grid options on click
+        listview.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapter, final View view, int position, long arg) {
+                // Display actions list
+                AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+                        context, android.R.layout.simple_list_item_1);
+                arrayAdapter.add(context.getString(R.string.rename_grid));
+                arrayAdapter.add(context.getString(R.string.text73)); // Delete grid
+
+                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final TextView gridNameTextView = (TextView) view.findViewById(R.id.line_a);
+                        final String gridName = gridNameTextView.getText().toString();
+
+                        switch (which) {
+                            case 0: // Rename grid
+                                LayoutInflater layoutInflater = LayoutInflater.from(context);
+                                ViewGroup alertDialogView = (ViewGroup) layoutInflater.inflate(R.layout.dialog_edittext, null, false);
+                                final EditText input = (EditText) alertDialogView.findViewById(R.id.input);
+                                input.setText(gridName);
+
+                                new AlertDialog.Builder(context)
+                                        .setTitle(R.string.rename_grid)
+                                        .setView(alertDialogView)
+                                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                String value = input.getText().toString();
+                                                if (!value.equals(gridName)) {
+                                                    // Check if there's a grid with this name
+                                                    boolean alreadyExists = muninFoo.sqlite.dbHlpr.gridExists(value);
+                                                    if (!alreadyExists) {
+                                                        MuninFoo.getInstance(context).sqlite.dbHlpr.updateGridName(gridName, value);
+                                                        gridNameTextView.setText(value);
+                                                    } else
+                                                        Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
+                                                }
+                                                dialog.dismiss();
+                                            }
+                                        }).setNegativeButton(R.string.text64, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                    }
+                                }).show();
+                                break;
+                            case 1: // Delete grid
+                                new AlertDialog.Builder(context)
+                                        .setTitle(R.string.delete)
+                                        .setMessage(R.string.text80)
+                                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Grid grid = getGridFromName(gridName);
+                                                muninFoo.sqlite.dbHlpr.deleteGrid(grid);
+                                                updateList();
+                                            }
+                                        })
+                                        .setNegativeButton(R.string.no, null)
+                                        .show();
+
+                                break;
+                        }
+                    }
+                });
+                builderSingle.show();
+
+                return true;
+            }
+        });
 	}
-	
+
 	private void add() {
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View dialogLayout = inflater.inflate(R.layout.dialog_edittext, null, false);
 		final EditText input = (EditText) dialogLayout.findViewById(R.id.input);
-		
+
 		AlertDialog.Builder b = new AlertDialog.Builder(Activity_Grids.this)
 				.setTitle(getText(R.string.text69))
 				.setView(dialogLayout)
@@ -213,10 +218,10 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();
-		
+
 		getMenuInflater().inflate(R.menu.grids, menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
@@ -271,7 +276,7 @@ public class Activity_Grids extends MuninActivity implements IImportExportActivi
 	public void onImportError() {
 		Toast.makeText(context, R.string.text09, Toast.LENGTH_SHORT).show();
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent(this, Activity_Main.class);

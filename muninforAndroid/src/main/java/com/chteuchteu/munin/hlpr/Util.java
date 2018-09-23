@@ -76,13 +76,13 @@ public final class Util {
 			progressBar.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 24));
 			progressBar.setProgress(0);
 			progressBar.setVisibility(View.GONE);
-			
+
 			// retrieve the top view of our application
 			final FrameLayout decorView = (FrameLayout) activity.getWindow().getDecorView();
 			decorView.addView(progressBar);
-			
+
 			// Here we try to position the ProgressBar to the correct position by looking
-			// at the position where content area starts. But during creating time, sizes 
+			// at the position where content area starts. But during creating time, sizes
 			// of the components are not set yet, so we have to wait until the components
 			// has been laid out
 			// Also note that doing progressBar.setY(136) will not work, because of different
@@ -98,44 +98,50 @@ public final class Util {
 					progressBar.setY(y + contentView.getY() - 10);
 					progressBar.setProgressDrawable(activity.getResources().getDrawable(
 							R.drawable.progress_horizontal_holo_no_background_light));
-					
+
 					ViewTreeObserver observer = progressBar.getViewTreeObserver();
 					observer.removeGlobalOnLayoutListener(this);
 				}
 			});
-			
+
 			return progressBar;
 		}
 	}
-	
+
+    /**
+     * @deprecated - don't use custom fonts
+     */
 	public static final class Fonts {
 		/* ENUM Custom Fonts */
 		public enum CustomFont {
 			RobotoCondensed_Regular("RobotoCondensed-Regular.ttf"),
 			RobotoCondensed_Bold("RobotoCondensed-Bold.ttf"),
+            /**
+             * @deprecated - Use android:textStyle="bold" instead
+             */
 			Roboto_Medium("Roboto-Medium.ttf");
-			
+
 			final String file;
 			CustomFont(String fileName) { this.file = fileName; }
 			public String getValue() { return this.file; }
 		}
-		
+
 		/* Fonts */
 		public static void setFont(Context c, ViewGroup g, CustomFont font) {
 			Typeface mFont = Typeface.createFromAsset(c.getAssets(), font.getValue());
 			setFont(g, mFont);
 		}
-		
+
 		public static void setFont(Context c, TextView t, CustomFont font) {
 			Typeface mFont = Typeface.createFromAsset(c.getAssets(), font.getValue());
 			t.setTypeface(mFont);
 		}
-		
+
 		public static void setFont(Context c, Button t, CustomFont font) {
 			Typeface mFont = Typeface.createFromAsset(c.getAssets(), font.getValue());
 			t.setTypeface(mFont);
 		}
-		
+
 		private static void setFont(ViewGroup group, Typeface font) {
 			int count = group.getChildCount();
 			View v;
@@ -152,7 +158,7 @@ public final class Util {
 	public static int pxToDp(int px) {
 		return (int) (px / Resources.getSystem().getDisplayMetrics().density);
 	}
-	
+
 	public static int[] getDeviceSize(Context c) {
 		int[] r = new int[2];
 		DisplayMetrics dm = c.getResources().getDisplayMetrics();
@@ -160,7 +166,7 @@ public final class Util {
 		r[1] = dm.heightPixels;
 		return r;
 	}
-	
+
 	public enum TransitionStyle { DEEPER, SHALLOWER }
 	public static void setTransition(Activity activity, TransitionStyle transitionStyle) {
         int enterAnim = -1;
@@ -182,7 +188,7 @@ public final class Util {
 
         activity.overridePendingTransition(enterAnim, exitAnim);
 	}
-	
+
 	public static int getStatusBarHeight(Context c) {
 		int result = 0;
 		int resourceId = c.getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -190,17 +196,17 @@ public final class Util {
 			result = c.getResources().getDimensionPixelSize(resourceId);
 		return result;
 	}
-	
+
 	public static boolean isOnline(Context c) {
 		ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
 		return netInfo != null && netInfo.isConnectedOrConnecting();
 	}
-	
+
 	public static Period getDefaultPeriod(Context context) {
 		return Period.get(Settings.getInstance(context).getString(Settings.PrefKeys.DefaultScale));
 	}
-	
+
 	public static Bitmap removeBitmapBorder(Bitmap original) {
 		if (original != null && original.getPixel(0, 0) == 0xFFCFCFCF) {
 			try {
@@ -212,18 +218,18 @@ public final class Util {
 		// if null or does not needs to be cropped
 		return original;
 	}
-	
+
 	public static Bitmap dropShadow(Bitmap src) {
 		if (src == null)
 			return null;
-		
+
 		try {
 			// Parameters
 			int verticalPadding = 10;
 			int horizontalPadding = 10;
 			int radius = 3;
 			int color = 0x44000000;
-			
+
 			// Create result bitmap
 			Bitmap bmOut = Bitmap.createBitmap(src.getWidth() + horizontalPadding, src.getHeight() + verticalPadding, Bitmap.Config.ARGB_8888);
 			Canvas canvas = new Canvas(bmOut);
@@ -265,7 +271,7 @@ public final class Util {
 			return src;
 		}
 	}
-	
+
 	public static class URLManipulation {
 		public static String setHttps(String url) {
 			if (url.contains("http://"))
@@ -304,7 +310,7 @@ public final class Util {
 				return 80;
 			}
 		}
-		
+
 		private static String setPort(String url, int port) {
 			URL _url;
 			try {
@@ -316,7 +322,7 @@ public final class Util {
 				return url;
 			return _url.getProtocol() + "://" + _url.getHost() + ":" + port + _url.getFile();
 		}
-		
+
 		public static String getHostFromUrl(String url) { return getHostFromUrl(url, url); }
 		public static String getHostFromUrl(String url, String defaultUri) {
 			try {
@@ -329,48 +335,48 @@ public final class Util {
 			}
 		}
 	}
-	
+
 	public static final class HDGraphs {
 		private static float getScreenDensity(Context context) {
 			return context.getResources().getDisplayMetrics().density;
 		}
-		
+
 		public static int[] getBestImageDimensions(View imageView, Context context) {
 			int[] res = new int[2];
-			
+
 			float screenDensity = getScreenDensity(context);
 			if (screenDensity < 1)
 				screenDensity = 1;
-			
+
 			int dimens_x = imageView.getMeasuredWidth();
 			int dimens_y = imageView.getMeasuredHeight();
-			
+
 			// Apply density
 			dimens_x = (int) (dimens_x/screenDensity);
 			dimens_y = (int) (dimens_y/screenDensity);
-			
+
 			// Limit ratio
 			if (dimens_y != 0) {
 				double minRatio = ((double)360) / 210;
 				double currentRatio = ((double)dimens_x) / dimens_y;
-				
+
 				if (currentRatio < minRatio) {
 					// Adjust height
 					dimens_y = (int) (dimens_x/minRatio);
 				}
 			}
-			
+
 			res[0] = dimens_x;
 			res[1] = dimens_y;
 			return res;
 		}
 	}
-	
+
 	public static void hideKeyboard(Activity activity, EditText editText) {
 		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
-	
+
 	/**
 	 * "apache" => "Apache"
 	 * "some words" => "Some words"
@@ -381,7 +387,7 @@ public final class Util {
 	public static String capitalize(String original) {
 		if (original.length() < 2)
 			return original;
-		
+
 		return original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
 

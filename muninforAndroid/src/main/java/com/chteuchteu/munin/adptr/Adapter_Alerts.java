@@ -31,6 +31,7 @@ public class Adapter_Alerts {
 	public enum ListItemPolicy { SHOW_ALL, HIDE_NORMAL }
 	private ListItemPolicy listItemPolicy;
 
+	// Colors list - fetched from resources at runtime
     private int COLOR_BG_CRITICAL;
     private int COLOR_BG_WARNING;
     private int COLOR_BG_OK;
@@ -124,7 +125,6 @@ public class Adapter_Alerts {
 		private TextView warningsAmount;
 		private TextView warningsLabel;
 		private TextView warningsPluginsList;
-		private View arrow;
 		private boolean everythingsOk;
 
 		public AlertPart(MuninNode node, Adapter_Alerts adapter) {
@@ -151,7 +151,6 @@ public class Adapter_Alerts {
 			warningsAmount		= (TextView) v.findViewById(R.id.alerts_part_warningsNumber);
 			warningsLabel 			= (TextView) v.findViewById(R.id.alerts_part_warningsLabel);
 			warningsPluginsList 	= (TextView) v.findViewById(R.id.alerts_part_warningsPluginsList);
-			arrow                  = v.findViewById(R.id.arrow);
 
 			part.setVisibility(View.GONE);
 			nodeName.setText(node.getName());
@@ -241,7 +240,6 @@ public class Adapter_Alerts {
 			boolean hasErrorsOrWarnings = nbErrors > 0 || nbWarnings > 0;
 
 			cardHeader.setClickable(hasErrorsOrWarnings);
-			arrow.setVisibility(hasErrorsOrWarnings ? View.VISIBLE : View.GONE);
 			part.setVisibility(hideNormal && !hasErrorsOrWarnings ? View.GONE : View.VISIBLE);
 		}
 

@@ -15,20 +15,23 @@
         android:background="@drawable/bottom_shadow"
         android:orientation="vertical">
 
+        <!-- Grids list -->
         <ListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/listview_horizontal_margin"
-            android:paddingRight="@dimen/listview_horizontal_margin" />
+            android:paddingRight="@dimen/listview_horizontal_margin"
+            android:divider="#00000000" />
 
+        <!-- Empty state, hidden by default -->
         <LinearLayout
             android:id="@+id/grids_nogrid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:visibility="gone" >
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"

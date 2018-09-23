@@ -76,7 +76,7 @@ public class DrawerHelper {
 			return None;
 		}
 	}
-	
+
 	public DrawerHelper(Activity activity, MuninFoo muninFoo, Toolbar toolbar) {
 		this.drawerItems = new HashMap<>();
 		this.activity = activity;
@@ -85,7 +85,7 @@ public class DrawerHelper {
 		this.toolbar = toolbar;
 		initDrawer();
 	}
-	
+
 	public void reset() {
 		if (this.drawer != null) {
 			this.drawer.removeHeader();
@@ -258,7 +258,7 @@ public class DrawerHelper {
 		builder.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
 			@Override
 			public boolean onItemClick(View view, int index, IDrawerItem iDrawerItem) {
-				DrawerMenuItem item = DrawerMenuItem.from(iDrawerItem.getIdentifier());
+				DrawerMenuItem item = DrawerMenuItem.from((int) iDrawerItem.getIdentifier());
 
 				switch (item) {
 					case Graphs:
