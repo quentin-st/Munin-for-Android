@@ -7,8 +7,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.PopupMenu;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,7 +47,7 @@ import java.util.Map;
 public class Activity_Servers extends MuninActivity implements IServersActivity, IImportExportActivity {
 	private static Context context;
 	private ExpandableListView expListView;
-	
+
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = this;
@@ -56,9 +56,9 @@ public class Activity_Servers extends MuninActivity implements IServersActivity,
 		super.onContentViewSet();
 
 		actionBar.setTitle(getString(R.string.serversTitle));
-		
+
 		expListView = (ExpandableListView) findViewById(R.id.servers_list);
-		
+
 		refreshList();
 
 		// Init fab
@@ -71,38 +71,38 @@ public class Activity_Servers extends MuninActivity implements IServersActivity,
 			}
 		});
 	}
-	
+
 	public void refreshList() {
 		findViewById(R.id.servers_noserver).setVisibility(View.GONE);
-		
+
 		Intent i = getIntent();
 		MuninMaster fromServersEdit = null;
 		if (i.getExtras() != null && i.getExtras().containsKey("fromMaster"))
 			fromServersEdit = muninFoo.getMasterById((int) i.getExtras().getLong("fromMaster"));
-		
+
 		List<MuninMaster> masters = muninFoo.masters;
         Map<MuninMaster, List<String>> nodesCollection = getNodesCollection();
 		final Adapter_ExpandableListView expListAdapter = new Adapter_ExpandableListView(this, this, masters, nodesCollection);
 		expListView.setAdapter(expListAdapter);
-		
+
 		if (fromServersEdit != null)
 			expListView.expandGroup(muninFoo.getMasterPosition(fromServersEdit));
-		
+
 		if (muninFoo.getNodes().isEmpty())
 			findViewById(R.id.servers_noserver).setVisibility(View.VISIBLE);
 	}
-	
+
 	private Map<MuninMaster, List<String>> getNodesCollection() {
 		// Create collection
 		LinkedHashMap<MuninMaster, List<String>> nodesCollection = new LinkedHashMap<>();
-		
+
 		for (MuninMaster master : muninFoo.masters) {
 			List<String> childList = new ArrayList<>();
 			for (MuninNode node : master.getChildren())
 				childList.add(node.getName());
 			nodesCollection.put(master, childList);
 		}
-		
+
 		return nodesCollection;
 	}
 
@@ -114,20 +114,20 @@ public class Activity_Servers extends MuninActivity implements IServersActivity,
 	public void onChildClick() {
 		Toast.makeText(context, R.string.long_click, Toast.LENGTH_SHORT).show();
 	}
-	
+
 	/**
 	 * Called when a long click event is triggered on a child-level element of the listview
 	 */
 	@Override
 	public boolean onChildLongClick(int groupPosition, int childPosition) {
 		final MuninNode node = muninFoo.masters.get(groupPosition).getChildren().get(childPosition);
-		
+
 		// Display actions list
 		AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
 		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
 				context, android.R.layout.simple_list_item_1);
 		arrayAdapter.add(context.getString(R.string.menu_addserver_delete));
-		
+
 		builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -141,11 +141,11 @@ public class Activity_Servers extends MuninActivity implements IServersActivity,
 							public void onClick(DialogInterface dialog, int which) {
 								muninFoo.sqlite.dbHlpr.deleteNode(node);
 								muninFoo.deleteNode(node);
-								
+
 								// Delete labels relations stored in MuninFoo.labels for the current session
 								for (MuninPlugin plugin : node.getPlugins())
 									muninFoo.removeLabelRelation(plugin);
-								
+
 								if (muninFoo.getCurrentNode().equalsApprox(node))
 									muninFoo.updateCurrentNode(context);
 
@@ -161,7 +161,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity,
 		});
 		builderSingle.setTitle(node.getName());
 		builderSingle.show();
-		
+
 		return true;
 	}
 
@@ -173,7 +173,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity,
 		if (muninFoo.getMasters().size() == 0)
 			drawerHelper.reset();
 	}
-	
+
 	/**
 	 * Called when a click event is triggered on the overflow icon on each parent-level list item
 	 */
@@ -350,7 +350,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity,
 		TextView code = (TextView) dialogView.findViewById(R.id.export_succes_code);
 		Util.Fonts.setFont(context, code, CustomFont.RobotoCondensed_Bold);
 		code.setText(pswd);
-		
+
 		new AlertDialog.Builder(context)
 			.setTitle(R.string.export_success_title)
 			.setView(dialogView)
@@ -395,7 +395,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity,
 		if (muninFoo.getNodes().isEmpty())
 			exportMenuItem.setVisible(false);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
@@ -411,7 +411,7 @@ public class Activity_Servers extends MuninActivity implements IServersActivity,
 
 		return true;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
         if (drawerHelper.closeDrawerIfOpen())

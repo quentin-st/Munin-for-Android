@@ -12,7 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -28,31 +28,31 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 	private static final String ACTION_UPDATE_GRAPH = "com.chteuchteu.munin.widget.UPDATE_GRAPH";
 	private static final String ACTION_START_ACTIVITY = "com.chteuchteu.munin.widget.START_ACTIVITY";
 	private static final String ACTION_START_PREMIUM = "com.chteuchteu.munin.widget.START_PREMIUM";
-	
+
 	private static SQLite sqlite;
 	private static GraphWidget graphWidget;
-	
+
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		sqlite = new SQLite(context, MuninFoo.getInstance(context));
-		
+
 		// Get all ids
 		ComponentName thisWidget = new ComponentName(context, Widget_GraphWidget_WidgetProvider.class);
 		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-		
+
 		// Perform this loop procedure for each App GraphWidget that belongs to this provider
 		for (Integer i : allWidgetIds)
 			updateAppWidget(context, appWidgetManager, i, false);
 	}
-	
+
 	public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int widgetId, boolean forceUpdate) {
 		boolean premium = MuninFoo.isPremium(context);
-		
+
 		// Updating graphWidget
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_graphwidget_layout);
 		if (!premium){
 			views.setTextViewText(R.id.widget_servername, context.getString(R.string.featuresPackNeeded));
-			
+
 			// Action open Munin for Android
 			Intent intent2 = new Intent(context, Widget_GraphWidget_WidgetProvider.class);
 			intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
@@ -66,7 +66,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 			if (sqlite == null)
 				sqlite = new SQLite(context, MuninFoo.getInstance(context));
 			graphWidget = sqlite.dbHlpr.getGraphWidget(widgetId);
-			
+
 			if (graphWidget != null && graphWidget.getPlugin() != null
 					&& graphWidget.getPlugin().getInstalledOn() != null
 					&& graphWidget.getPlugin().getInstalledOn().getParent() != null) {
@@ -76,21 +76,21 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 					views.setViewVisibility(R.id.widget_legend, View.GONE);
 					views.setInt(R.id.widget_graph, "setBackgroundColor", Color.TRANSPARENT);
 				}
-				
+
 				// Update action
 				Intent intent = new Intent(context, Widget_GraphWidget_WidgetProvider.class);
 				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 				intent.setAction(ACTION_UPDATE_GRAPH);
 				PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 				views.setOnClickPendingIntent(R.id.widget_legend, pendingIntent);
-				
+
 				// Action open Munin for Android
 				Intent intent2 = new Intent(context, Widget_GraphWidget_WidgetProvider.class);
 				intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 				intent2.setAction(ACTION_START_ACTIVITY);
 				PendingIntent pendingIntent2 = PendingIntent.getBroadcast(context, widgetId, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
 				views.setOnClickPendingIntent(R.id.widget_graph, pendingIntent2);
-				
+
 				if (!graphWidget.isWifiOnly() || forceUpdate) {
 					// Launching Asyntask
 					ApplyBitmap task = new ApplyBitmap(graphWidget, views, appWidgetManager, widgetId, context);
@@ -99,21 +99,21 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 					// Automatic update -> let's check if on wifi or data
 					ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 					NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-					
+
 					if (mWifi.isConnected())
 						updateAppWidget(context, appWidgetManager, widgetId, true);
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public void onReceive(@NonNull Context context, @NonNull Intent intent) {
 		super.onReceive(context, intent);
-		
+
 		if (sqlite == null)
 			sqlite = new SQLite(context, MuninFoo.getInstance(context));
-		
+
 		if (intent.getAction() != null) {
 			switch (intent.getAction()) {
 				case ACTION_UPDATE_GRAPH:
@@ -159,18 +159,18 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 		} else
 			super.onReceive(context, intent);
 	}
-	
+
 	private static class ApplyBitmap extends AsyncTask<Void, Integer, Void> {
 		private Bitmap bm;
 
 		private String url;
 		private GraphWidget graphWidget;
-		
+
 		private RemoteViews views;
 		private AppWidgetManager awm;
 		private int widgetId;
 		private Context context;
-		
+
 		public ApplyBitmap(GraphWidget graphWidget, RemoteViews v, AppWidgetManager a, int w, Context context) {
 			super();
 			this.url = graphWidget.getPlugin().getImgUrl(graphWidget.getPeriod());
@@ -180,7 +180,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 			this.widgetId = w;
 			this.context = context;
 		}
-		
+
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -188,7 +188,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 			this.views.setViewVisibility(R.id.widget_loading, View.VISIBLE);
 			this.awm.updateAppWidget(this.widgetId, this.views);
 		}
-		
+
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			bm = graphWidget.getPlugin().getGraph(url, MuninFoo.getUserAgent(context));
@@ -197,7 +197,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 				bm = Util.dropShadow(bm);
 			return null;
 		}
-		
+
 		@Override
 		protected void onPostExecute(Void result) {
 			if (this.bm != null)
@@ -207,7 +207,7 @@ public class Widget_GraphWidget_WidgetProvider extends AppWidgetProvider {
 			this.awm.updateAppWidget(this.widgetId, this.views);
 		}
 	}
-	
+
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		if (sqlite == null)

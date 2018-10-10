@@ -25,7 +25,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Vibrator;
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;

@@ -1,8 +1,8 @@
 package com.chteuchteu.munin.adptr;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.ui.Activity_GraphView;
@@ -23,12 +23,12 @@ public class Adapter_GraphView extends FragmentStatePagerAdapter {
 		this.count = count;
 		this.fragments = new HashMap<>();
 	}
-	
+
 	@Override
 	public int getCount() {
 		return count;
 	}
-	
+
 	@Override
 	public Fragment getItem(int position) {
 		if (fragments.containsKey(position))
@@ -38,7 +38,7 @@ public class Adapter_GraphView extends FragmentStatePagerAdapter {
 		fragments.put(position, newFragment);
 		return newFragment;
 	}
-	
+
 	@Override
 	public CharSequence getPageTitle(int position) {
 		if (position < 0)

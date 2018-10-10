@@ -5,13 +5,13 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<android.support.v7.widget.Toolbar
+	<androidx.appcompat.widget.Toolbar
 		android:id="@+id/toolbar"
 		style="@style/Toolbar">
 
 		<include layout="@layout/actionbar_dropdown" />
 
-	</android.support.v7.widget.Toolbar>
+	</androidx.appcompat.widget.Toolbar>
 
 	<FrameLayout
 		android:layout_width="match_parent"
@@ -60,7 +60,7 @@
 				android:layout_height="match_parent"
 				android:orientation="vertical">
 
-				<android.support.design.widget.TabLayout
+				<com.google.android.material.tabs.TabLayout
 					android:id="@+id/tabLayout"
 					style="@style/TabLayout"
 					android:layout_width="match_parent"
@@ -75,7 +75,7 @@
 			</LinearLayout>
 		</LinearLayout>
 
-		<android.support.design.widget.FloatingActionButton
+		<com.google.android.material.floatingactionbutton.FloatingActionButton
 			android:id="@+id/fab"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

@@ -4,11 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import androidx.viewpager.widget.ViewPager;
+
 /**
  * When using ViewPager, a random crash may randomly happen.
  * Let's try catch that exception.
  */
-public class HackyViewPager extends android.support.v4.view.ViewPager {
+public class HackyViewPager extends ViewPager {
 	public HackyViewPager(Context context) {
 		super(context);
 	}

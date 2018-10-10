@@ -9,9 +9,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.AppCompatCheckBox;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +68,7 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 		view = inflater.inflate(R.layout.fragment_notifications_push, container, false);
 		muninFoo = MuninFoo.getInstance(context);
 		settings = muninFoo.getSettings();
-		
+
 		registrationBroadcastReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {

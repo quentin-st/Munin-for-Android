@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -280,7 +280,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 
 	@Override
 	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Grids; }
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
@@ -328,7 +328,7 @@ public class Activity_Grid extends MuninActivity implements IGridActivity {
 		if (chromecastEnabled && ChromecastHelper.isConnected(muninFoo.chromecastHelper))
 			muninFoo.chromecastHelper.sendMessage_changePeriod(newPeriod);
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		if (fragment.isPreviewing())

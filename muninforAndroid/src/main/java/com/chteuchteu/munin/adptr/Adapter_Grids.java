@@ -1,9 +1,9 @@
 package com.chteuchteu.munin.adptr;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.chteuchteu.munin.obj.Grid;
 import com.chteuchteu.munin.ui.Fragment_Grid;
@@ -23,12 +23,12 @@ public class Adapter_Grids extends FragmentStatePagerAdapter {
 		this.count = grids.size();
 		this.fragments = new HashMap<>();
 	}
-	
+
 	@Override
 	public int getCount() {
 		return count;
 	}
-	
+
 	@Override
 	public Fragment getItem(int position) {
 		if (fragments.containsKey(position))
@@ -45,7 +45,7 @@ public class Adapter_Grids extends FragmentStatePagerAdapter {
 
 		return fragment;
 	}
-	
+
 	@Override
 	public CharSequence getPageTitle(int position) {
 		return this.grids.get(position).getName();

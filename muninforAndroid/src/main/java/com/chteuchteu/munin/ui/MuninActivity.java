@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 
 import com.chteuchteu.munin.BuildConfig;
@@ -32,7 +32,7 @@ public class MuninActivity extends AppCompatActivity {
 	protected DrawerHelper  drawerHelper;
 	protected Context       context;
 	protected Activity      activity;
-	protected android.support.v7.app.ActionBar actionBar;
+	protected androidx.appcompat.app.ActionBar actionBar;
 	protected Toolbar       toolbar;
 	protected Menu          menu;
 

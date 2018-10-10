@@ -2,8 +2,8 @@ package com.chteuchteu.munin.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import com.google.android.material.tabs.TabLayout;
+import androidx.viewpager.widget.ViewPager;
 import android.view.MenuItem;
 
 import com.chteuchteu.munin.R;
@@ -74,7 +74,7 @@ public class Activity_Notifications extends MuninActivity {
 
 	@Override
 	public DrawerHelper.DrawerMenuItem getDrawerMenuItem() { return DrawerHelper.DrawerMenuItem.Notifications; }
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
@@ -87,7 +87,7 @@ public class Activity_Notifications extends MuninActivity {
 
 		return true;
 	}
-	
+
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();
 

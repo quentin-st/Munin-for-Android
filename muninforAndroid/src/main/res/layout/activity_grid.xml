@@ -5,13 +5,13 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<android.support.v7.widget.Toolbar
+	<androidx.appcompat.widget.Toolbar
 		android:id="@+id/toolbar"
 		style="@style/Toolbar">
 
 		<include layout="@layout/actionbar_dropdown" />
 
-	</android.support.v7.widget.Toolbar>
+	</androidx.appcompat.widget.Toolbar>
 
 	<RelativeLayout
 		android:layout_width="match_parent"
