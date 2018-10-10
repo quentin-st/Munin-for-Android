@@ -1,31 +1,17 @@
-# Android Studio
-.idea/
-.gradle
-!build.gradle
-build/
-/*/local.properties
-/*/out
-/*/*/build
-/*/*/production
 *.iml
-*.iws
-*.ipr
-*~
-*.swp
-
-# Windows thumbnail db
-Thumbs.db
-
-# Crashlytics export string
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-fabric.properties
+.gradle
+/local.properties
+/.idea/caches/build_file_checksums.ser
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+/.idea
 
 # Additionnal files
 gradlew
 gradlew.bat
 local.properties
-
-# Screengrab screenshots
-fastlane/

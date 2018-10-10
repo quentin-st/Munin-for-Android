@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	  xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+	<item
+		android:id="@+id/media_route_menu_item"
+		android:title=""
+		app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
+		app:showAsAction="always"/>
+	<item
+		android:id="@+id/menu_period"
+		app:showAsAction="ifRoom"
+		android:title="@string/text76">
+		<menu>
+			<item
+				android:id="@+id/period_day"
+				android:title="@string/text47.1"/>
+			<item
+				android:id="@+id/period_week"
+				android:title="@string/text47.2"/>
+			<item
+				android:id="@+id/period_month"
+				android:title="@string/text47.3"/>
+			<item
+				android:id="@+id/period_year"
+				android:title="@string/text47.4"/>
+		</menu>
+	</item>
+	<item
+		android:id="@+id/menu_open"
+		android:icon="@drawable/ic_action_open"
+		app:showAsAction="ifRoom"
+		android:title="@string/text79"
+		android:visible="false"/>
+	<item
+		android:id="@+id/menu_refresh"
+		android:icon="@drawable/ic_action_navigation_refresh"
+		app:showAsAction="ifRoom"
+		android:title="@string/menu_graph_refresh"/>
+	<item
+		android:id="@+id/menu_edit"
+		app:showAsAction="ifRoom"
+		android:icon="@drawable/ic_action_image_edit"
+		android:title="@string/edit"/>
+	<item
+		android:id="@+id/menu_addToHomescreen"
+		app:showAsAction="never"
+		android:title="@string/addToHomescreen"/>
+	<!-- Fragment on Activity_Main -->
+	<item android:id="@+id/menu_openInActivity"
+		  app:showAsAction="never"
+		  android:title="@string/openGrid"
+		  android:visible="false"/>
+
+</menu>

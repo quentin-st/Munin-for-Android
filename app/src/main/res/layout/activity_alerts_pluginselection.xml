@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/toolbar"
+		style="@style/Toolbar" />
+
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@drawable/bottom_shadow">
+
+		<LinearLayout
+			android:id="@+id/alerts_pluginselection_inserthere"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:paddingLeft="@dimen/listview_horizontal_margin"
+			android:paddingRight="@dimen/listview_horizontal_margin" />
+	</ScrollView>
+</LinearLayout>
