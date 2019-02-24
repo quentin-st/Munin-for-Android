@@ -1,13 +1,16 @@
 package com.chteuchteu.munin.ntfs.push;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 
@@ -172,6 +175,8 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
                 .setContentIntent(pendingIntent)
                 .addAction(R.drawable.ic_bookmark_remove_grey600, getString(R.string.ignore), ignorePendingIntent);
 
+        this.withNotificationChannel(notificationBuilder);
+
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -181,8 +186,7 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
     private void sendTestNotification() {
         Intent intent = new Intent(this, Activity_Main.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -194,10 +198,32 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
+        this.withNotificationChannel(notificationBuilder);
+
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void withNotificationChannel(NotificationCompat.Builder builder)
+    {
+        if (Build.VERSION.SDK_INT < 26) {
+            return;
+        }
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        String channelId = "mfa_channel";
+        CharSequence channelName = getString(R.string.notificationsTitle);
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
+        notificationChannel.enableLights(true);
+        notificationChannel.setLightColor(Color.RED);
+        notificationChannel.enableVibration(true);
+        notificationManager.createNotificationChannel(notificationChannel);
+
+        builder.setChannelId(channelId);
     }
 
     private static int getUniqueNotificationId() {
