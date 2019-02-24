@@ -3,17 +3,17 @@ package com.chteuchteu.munin.obj;
 import android.content.Context;
 
 import com.chteuchteu.munin.MuninFoo;
-import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.Dynazoom.DynazoomAvailability;
+import com.chteuchteu.munin.hlpr.Exception.Http.HttpException;
+import com.chteuchteu.munin.hlpr.Exception.Parser.EmptyResultSetException;
+import com.chteuchteu.munin.hlpr.Http.AuthType;
 import com.chteuchteu.munin.hlpr.NetHelper;
+import com.chteuchteu.munin.hlpr.Parser.PageParser;
+import com.chteuchteu.munin.hlpr.Parser.PageType;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.HTTPResponse.BitmapResponse;
 import com.chteuchteu.munin.obj.HTTPResponse.HTMLResponse;
 import com.chteuchteu.munin.obj.MuninPlugin.Period;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,43 +52,11 @@ public class MuninMaster {
 		this.isPersistant = false;
 	}
 
-	public enum DynazoomAvailability {
-		AUTO_DETECT(""), FALSE("false"), TRUE("true");
-		private String val = "";
-		DynazoomAvailability(String val) { this.val = val; }
-		public String getVal() { return this.val; }
-		public String toString() { return this.val; }
-		public static DynazoomAvailability get(String val) {
-			for (DynazoomAvailability g : DynazoomAvailability.values())
-				if (g.val.equals(val))
-					return g;
-			return AUTO_DETECT;
-		}
-		public static DynazoomAvailability get(boolean val) {
-            return val ? TRUE : FALSE;
-		}
-	}
-
-	public enum AuthType {
-		UNKNOWN(-2), NONE(-1), BASIC(1), DIGEST(2);
-		private int val = -2;
-
-		AuthType(int val) { this.val = val; }
-		public int getVal() { return this.val; }
-		public String toString() { return val + ""; }
-		public static AuthType get(int val) {
-			for (AuthType t : AuthType.values())
-				if (t.val == val)
-					return t;
-			return UNKNOWN;
-		}
-	}
-
 	public void setAuthType(AuthType t) { this.authType = t; }
 	public AuthType getAuthType() { return this.authType; }
 	public boolean isAuthNeeded() {
-		return this.authType == AuthType.BASIC || this.authType == AuthType.DIGEST;
-	}
+	    return AuthType.isAuthNeeded(this.authType);
+    }
 	public void setAuthIds(String login, String password) {
 		this.authLogin = login;
 		this.authPassword = password;
@@ -112,7 +80,7 @@ public class MuninMaster {
 	/**
 	 * Generates a custom name, to avoid "localdomain"
 	 */
-	private void generateName() {
+	public void generateName() {
 		if (this.url.equals(""))
 			return;
 
@@ -130,6 +98,8 @@ public class MuninMaster {
 	 * Checks if dynazoom is available.
 	 * Warning : this has to be done on a thread
 	 * @return boolean
+     *
+     * @deprecated TODO - refactor this
 	 */
 	public boolean isDynazoomAvailable(String userAgent) {
 		if (this.defaultMaster || this.isEmpty())
@@ -143,6 +113,9 @@ public class MuninMaster {
 
 	}
 
+    /**
+     * @deprecated TODO - refactor this
+     */
 	public boolean isDynazoomAvailable(MuninPlugin plugin, String userAgent) {
 		String hdGraphUrl = plugin.getHDImgUrl(Period.DAY);
 		BitmapResponse res = downloadBitmap(hdGraphUrl, userAgent);
@@ -208,167 +181,80 @@ public class MuninMaster {
 	}
 
 	/**
-	 * Get the type of the given page:
-	 * 	- munin/		: list of nodes
-	 * 	- munin/x/		: list of plugins (not used)
-	 * 	- err_code		: if error -> error code
-	 * @return String : pageType
+	 * Get the type of the given page. See PageParser.detectPageType for documentation.
+     *
+     * @deprecated TODO move this out of this class
 	 */
-	public String detectPageType(String userAgent) {
-		HTMLResponse res = downloadUrl(this.url, userAgent);
-		String page = res.getHtml();
-		if (!res.getAuthenticateHeader().equals("")) {
+	public PageType detectPageType(String userAgent) throws HttpException {
+		HTMLResponse response = downloadUrl(this.url, userAgent);
+		String page = response.getHtml();
+		if (!response.getAuthenticateHeader().equals("")) {
 			// Digest realm="munin", nonce="39r1cMPqBAA=57afd1487ef532bfe119d40278a642533f25964e", algorithm=MD5, qop="auth"
-			this.authString = res.getAuthenticateHeader();
-			if (res.getAuthenticateHeader().contains("Digest"))
+			this.authString = response.getAuthenticateHeader();
+			if (response.getAuthenticateHeader().contains("Digest"))
 				this.authType = AuthType.DIGEST;
-			else if (res.getAuthenticateHeader().contains("Basic"))
+			else if (response.getAuthenticateHeader().contains("Basic"))
 				this.authType = AuthType.BASIC;
 		}
 
-		if (res.hasSucceeded()) {
-			if (res.wasRedirected()) {
+		// Initialize page type to null
+		PageType pageType = null;
+
+		if (response.hasSucceeded()) {
+			if (response.wasRedirected()) {
 				// Redirected from http to https
-				if (res.getLastUrl().contains("https") && !this.url.contains("https"))
+				if (response.getLastUrl().contains("https") && !this.url.contains("https"))
 					this.setSSL(true);
-				this.url = res.getLastUrl();
+				this.url = response.getLastUrl();
 			}
 
-			Document doc = Jsoup.parse(page, this.url);
-			Elements images = doc.select("img[src$=-day.png]");
+			pageType = PageParser.detectPageType(page, this.url);
+		}
 
-			if (images.size() == 0)
-				images = doc.select("img[src$=-day.svg]");
+        if (pageType == null) {
+            throw new HttpException(response);
+        }
 
-			if (images.size() > 0)
-				return "munin/x/";
-			else {
-				// Munin normal
-				Elements muninHosts = doc.select("span.host");
-
-				// MunStrap
-				Elements munstrapHosts = doc.select("ul.groupview");
-
-				if (muninHosts.size() > 0 || munstrapHosts.size() > 0)
-					return "munin/";
-				else
-					return res.getResponseCode() + " - " + res.getResponseMessage();
-			}
-		} else if (res.getTimeout())
-			return "timeout";
-		else
-			return res.getResponseCode() + " - " + res.getResponseMessage();
+        return pageType;
 	}
 
 	/**
 	 * Fetches the children of this MuninMaster
+     *
+     * @throws HttpException If something went wrong during the request
+     * @throws EmptyResultSetException If the request went fine, but was un-parseable.
+     *
 	 * @return How many nodes have been found
 	 */
-	public int fetchChildren(String userAgent) {
-		int nbNodes = 0;
-
+	public int fetchChildren(String userAgent) throws EmptyResultSetException, HttpException {
 		// Grab HTML content
 		HTMLResponse response = downloadUrl(this.url, userAgent);
 
-		if (!response.hasSucceeded())
-			return nbNodes;
+		// Throw if request went wrong
+		response.throwOnFailure();
 
 		String html = response.getHtml();
 
-		Document doc = Jsoup.parse(html, this.url);
-		/*
-		 * URL CATCHUP
-		 * Between MfA 2.8 and 3.0, we saved Master url as http://demo.munin-monitoring.org/munin-monitoring.org/
-		 * So let's update it if needed.													~~~~~~~~~~~~~~~~~~~~~
-		 * So let's just check if we are on the right page, if not : update the master url.
-		 */
-		if (!doc.select("span.comparison").isEmpty()) {
-			// Replace the current master URL
-			String parentUrl = "";
-			Elements parentLinks = doc.select("a[href=..]");
-			if (parentLinks.size() == 1)
-				parentUrl = parentLinks.get(0).absUrl("href");
-			else {
-				Elements parentLinks2 = doc.select("a[href=../index.html]");
-				if (parentLinks2.size() == 1)
-					parentUrl = parentLinks.get(0).absUrl("href");
-			}
+		// Get nodes list from response HTML
+        int nodesCount = 0;
+        ArrayList<MuninNode> nodes = PageParser.parseNodes(this, html);
+        for (MuninNode node : nodes) {
+            if (!this.has(node)) {
+                this.addChild(node);
+                nodesCount++;
+            }
+        }
 
-			if (!parentUrl.equals(this.url)) {
-				this.url = parentUrl;
-				String htmlBis = downloadUrl(parentUrl, userAgent).getHtml();
-				if (!html.equals("")) {
-					html = htmlBis;
-					doc = Jsoup.parse(html, this.url);
-				}
-			}
-		}
-		// URL catchup ends here
+        // Detect master name
+        String masterName = PageParser.findMasterName(html, this.url);
+        if (masterName != null) {
+            this.name = masterName;
+        }
+        else {
+            this.generateName();
+        }
 
-		// Check if Munin or MunStrap
-		if (html.contains("MunStrap")) { // Munstrap
-			Elements domains = doc.select("ul.groupview > li > a.link-domain");
-
-			if (domains.size() > 0) {
-				// If there's just one domain : take the domain name as master name.
-				// Else : generate the name from host url
-				if (domains.size() == 1 && !domains.get(0).text().equals("localdomain"))
-					this.name = domains.get(0).text();
-				else
-					this.generateName();
-
-				int previousPosition = -1;
-				for (Element domain : domains) {
-					// Get every host for that domain
-					Elements hosts = domain.parent().select("ul>li");
-					for (Element host : hosts) {
-						Elements infosList = host.select("a.link-host");
-
-						if (infosList.size() == 0)
-							continue;
-
-						Element infos = infosList.get(0);
-						MuninNode serv = new MuninNode(infos.text(), infos.attr("abs:href"));
-						serv.setParent(this);
-						previousPosition++;
-						serv.setPosition(previousPosition);
-						nbNodes++;
-					}
-				}
-			}
-		} else { // Munin
-			Elements domains = doc.select("span.domain");
-
-			if (domains.size() > 0) {
-				// If there's just one domain : take the domain name as master name.
-				// Else : generate the name from host url
-				if (domains.size() == 1 && !domains.get(0).text().equals("localdomain")) {
-					Element a = domains.get(0).child(0);
-					this.name = a.text();
-				}
-				else
-					this.generateName();
-
-				int previousPosition = -1;
-				for (Element domain : domains) {
-					// Get every host for that domain
-					Elements hosts = domain.parent().select("span.host");
-					for (Element host : hosts) {
-						String nodeUrl = host.child(0).attr("abs:href");
-						// Avoid duplicates for weird DOM analysis: check if it has already been added
-						if (!this.has(nodeUrl)) {
-							MuninNode node = new MuninNode(host.child(0).text(), nodeUrl);
-							node.setParent(this);
-							previousPosition++;
-							node.setPosition(previousPosition);
-							nbNodes++;
-						}
-					}
-				}
-			}
-		}
-
-		return nbNodes;
+		return nodesCount;
 	}
 
 	/**
@@ -475,9 +361,12 @@ public class MuninMaster {
 
 	/**
 	 * Contacts the URL to check if there are some other nodes / plugins for each node
+     *
+     * TODO - remplement this
 	 */
 	public String rescan(Context context, MuninFoo muninFoo) {
-		if (isEmpty())
+	    return "TOD BE REIMPLEMENTED";
+		/*if (isEmpty())
 			return null;
 
 		String report = "";
@@ -726,8 +615,12 @@ public class MuninMaster {
 				report += context.getString(R.string.sync_pluginsdeleted).replace("XXX", String.valueOf(nbDeletedPlugins));
 		}
 
-		return report;
+		return report;*/
 	}
+
+	public boolean has(MuninNode node) {
+	    return this.has(node.getUrl());
+    }
 
 	/**
 	 * Checks if this master contains a node, based on its URL

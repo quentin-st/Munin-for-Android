@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.Http.AuthType;
 import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.GraphWidget;
 import com.chteuchteu.munin.obj.GridItem;
@@ -44,23 +45,8 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
     private Context context;
     private MuninFoo muninFoo;
 
-    private ProgressBar progressBar;
-    private TextView 	alert_title2;
-    private View		cancelButton;
-
-    private String 	serverUrl;
-    private String 	type;
-    private String 	message_title;
-    private String 	message_text;
-
-    public enum ScannerState { IDLE, RUNNING, WAITING_FOR_URL, WAITING_FOR_CREDENTIALS }
-    public ScannerState scannerState;
-
-	private enum ReturnCode {
-		UNDEFINED, SERVER_SUCCESS, SERVERS_SUCCESS, OK, // Success
-		NOT_PREMIUM, NO_CONNECTION, MALFORMED_URL // Error
-	}
-	private ReturnCode returnCode;
+    private enum ScannerState { IDLE, RUNNING, URL_INPUT, CREDENTIALS_INPUT, FATAL }
+    private ScannerState scannerState;
 
     public ServerScanner(Activity_Server activity) {
         this.activity = activity;
@@ -72,35 +58,21 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        if (Util.isOnline(context)) {
-            if (scannerState != ScannerState.WAITING_FOR_CREDENTIALS
-                    && scannerState != ScannerState.WAITING_FOR_URL) {
-	            if (!activity.isAlertShown) {
-		            final View view = LayoutInflater.from(context).inflate(R.layout.server_popup, null, false);
+        final View view = LayoutInflater.from(context).inflate(R.layout.server_popup, null, false);
 
-		            activity.alertDialog = new AlertDialog.Builder(context)
-                            .setTitle(R.string.loading)
-				            .setView(view)
-				            .setCancelable(false)
-				            .show();
-		            activity.isAlertShown = true;
-	            }
+        progressBar = (ProgressBar) activity.alertDialog.findViewById(R.id.progressbar);
+        progressBar.setProgress(0);
+        progressBar.setIndeterminate(true);
+        alert_title2 = (TextView) activity.alertDialog.findViewById(R.id.popup_text_b);
+        cancelButton = activity.alertDialog.findViewById(R.id.cancelButton);
 
-                progressBar = (ProgressBar) activity.alertDialog.findViewById(R.id.progressbar);
-                progressBar.setProgress(0);
-                progressBar.setIndeterminate(true);
-                alert_title2 = (TextView) activity.alertDialog.findViewById(R.id.popup_text_b);
-                cancelButton = activity.alertDialog.findViewById(R.id.cancelButton);
-
-                cancelButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        activity.cancelSave();
-                    }
-                });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.cancelSave();
             }
-            setPopupState(0);
-        }
+        });
+        setPopupState(0);
 
         activity.alertDialog.findViewById(R.id.popup_credentials).setVisibility(View.GONE);
         activity.alertDialog.findViewById(R.id.popup_url).setVisibility(View.GONE);
@@ -308,7 +280,7 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
     private ReturnCode finish() {
         ReturnCode ret = ReturnCode.UNDEFINED;
 
-        if (type.equals("munin/")) {
+        if (type.equals("munin/")) { // TODO NOPE
 			/*		CONTENT OF THE PAGE: NODES LIST	*/
             int nbNewNodes = activity.master.fetchChildren(muninFoo.getUserAgent());
 
@@ -432,9 +404,9 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
                 if (activity.master.isAuthNeeded()) {
                     et_login.setText(activity.master.getAuthLogin());
                     et_password.setText(activity.master.getAuthPassword());
-                    if (activity.master.getAuthType() == MuninMaster.AuthType.BASIC)
+                    if (activity.master.getAuthType() == AuthType.BASIC)
                         pop_sp_authType.setSelection(0);
-                    else if (activity.master.getAuthType() == MuninMaster.AuthType.DIGEST)
+                    else if (activity.master.getAuthType() == AuthType.DIGEST)
                         pop_sp_authType.setSelection(1);
                 }
 
@@ -457,7 +429,8 @@ public class ServerScanner extends AsyncTask<Void, Integer, Void> {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (alert_title2 != null)	alert_title2.setText("");
+                if (alert_title2 != null)
+                    alert_title2.setText("");
 
                 activity.runOnUiThread(new Runnable() {
                     public void run() {

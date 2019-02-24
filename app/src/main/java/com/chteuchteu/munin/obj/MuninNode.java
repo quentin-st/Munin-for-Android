@@ -1,9 +1,9 @@
 package com.chteuchteu.munin.obj;
 
-import android.net.Uri;
-
-import com.chteuchteu.munin.hlpr.HTMLParser;
-import com.chteuchteu.munin.hlpr.Util;
+import com.chteuchteu.munin.hlpr.Dynazoom.DynazoomAvailability;
+import com.chteuchteu.munin.hlpr.Exception.Http.HttpException;
+import com.chteuchteu.munin.hlpr.Parser.DynazoomDiscoveryHelper;
+import com.chteuchteu.munin.hlpr.Parser.PageParser;
 import com.chteuchteu.munin.hlpr.Util.SpecialBool;
 import com.chteuchteu.munin.obj.HTTPResponse.HTMLResponse;
 import com.chteuchteu.munin.obj.MuninPlugin.AlertState;
@@ -15,8 +15,6 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MuninNode {
 	private long id;
@@ -96,174 +94,30 @@ public class MuninNode {
 	public MuninMaster getParent() { return this.master; }
 
 
-	public List<MuninPlugin> getPluginsList(String userAgent) {
-		List<MuninPlugin> plugins = new ArrayList<>();
-		String html = this.master.downloadUrl(this.getUrl(), userAgent).getHtml();
+    /**
+     * @deprecated TODO - move this out of this class
+     */
+	public List<MuninPlugin> getPluginsList(String userAgent) throws HttpException {
+		HTMLResponse response = this.master.downloadUrl(this.getUrl(), userAgent);
 
-		if (html.equals(""))
-			return null;
+        // Throw if request went wrong
+        response.throwOnFailure();
 
-		//						   code  base_uri
-		Document doc = Jsoup.parse(html, this.getUrl());
-		Elements images = doc.select(HTMLParser.MUNIN_GRAPH_SELECTOR);
+		ArrayList<MuninPlugin> plugins = PageParser.parsePlugins(this, response.getHtml());
 
-		Pattern pluginNamePattern = Pattern.compile("/([^/]*)-day\\..*");
-		for (Element image : images) {
-			String imageSrc = image.attr("src");
-			Matcher pluginNameMatcher = pluginNamePattern.matcher(imageSrc);
-			if (!pluginNameMatcher.find())
-				throw new RuntimeException("Could not extract plugin name from URL " + imageSrc);
+        // Find HDGraphURL (if not already done in a previous loop iteration) and DynazoomAvailability
+        if ((this.hdGraphURL == null || this.hdGraphURL.equals(""))
+            && this.master.isDynazoomAvailable() != DynazoomAvailability.FALSE) {
+            DynazoomDiscoveryHelper.checkDynazoomAvailability(this, userAgent);
+        }
 
-			String pluginName = pluginNameMatcher.group(1);
-
-			// Delete special chars
-			pluginName = Util.removeAll(pluginName, new String[]{
-					"&", "^", "\"", ",", ";"
-			});
-
-			String fancyName = image.attr("alt");
-			// Delete quotes
-			fancyName = fancyName.replaceAll("\"", "");
-
-			// Get graphUrl
-			Element link = image.parent();
-			String pluginPageUrl = link.attr("abs:href");
-
-			// Get groupName
-			String group = "";
-			if (html.contains("MunStrap")) {
-				Element tab = image.parent().parent().parent().parent();
-				group = tab.id();
-			} else {
-				// Munin 2.X
-				boolean is2 = true;
-
-				if (html.contains("<table")) {
-					Element table = image.parent().parent().parent().parent().parent();
-
-					if (table != null) {
-						Element h3 = table.previousElementSibling();
-						if (h3 != null)
-							group = h3.html();
-						else
-							is2 = false;
-					} else
-						is2 = false;
-				} else {
-					// chteuchteu's munin redesign: removed tables
-					Element container = image.parent().parent().parent().parent();
-					if (container != null && container.hasAttr("data-category"))
-						group = container.attr("data-category");
-					else is2 = false;
-				}
-
-				// Munin 1.4
-				if (!is2) {
-					try {
-						Element h3 = image.parent().parent().parent().parent().child(0).child(0).child(0);
-						group = h3.html();
-					}
-					catch (Exception e) { e.printStackTrace(); }
-				}
-			}
-
-			MuninPlugin currentPl = new MuninPlugin(pluginName, this);
-			currentPl.setFancyName(fancyName);
-			currentPl.setCategory(group);
-			currentPl.setPluginPageUrl(pluginPageUrl);
-            currentPl.setPosition(plugins.size());
-
-			plugins.add(currentPl);
-
-			// Find GraphURL
-			if (this.graphURL.equals("")) {
-				String srcAttr = image.attr("abs:src");
-				this.graphURL = srcAttr.substring(0, srcAttr.lastIndexOf('/') + 1);
-			}
-
-			// Find HDGraphURL (if not already done in a previous loop iteration) and DynazoomAvailability
-			if ((this.hdGraphURL == null || this.hdGraphURL.equals(""))
-                    && this.master.isDynazoomAvailable() != MuninMaster.DynazoomAvailability.FALSE) {
-				try {
-					// To go to the dynazoom page, we have to "click" on the first graph.
-					// Then, on the second page, we have to "click" again on the first graph.
-					// With multigraph feature, we have to click once more.
-					// Finally, the only image on this third page is the dynazoom graph.
-
-					String subPageUrl = image.parent().attr("abs:href");
-					boolean dynazoomPageReached = false;
-					int subLevel = 0,
-						maxLevels = 4;
-
-					while (!dynazoomPageReached) {
-						HTMLResponse subPageResponse = this.master.downloadUrl(subPageUrl, userAgent);
-
-						if (!subPageResponse.hasSucceeded())
-							throw new RuntimeException("Request failed (" + subPageResponse.getResponseMessage() + ")");
-
-						String subPageHtml = subPageResponse.getHtml();
-						Document subPage = Jsoup.parse(subPageHtml, subPageUrl);
-						dynazoomPageReached = subPageHtml.contains("Zooming is");
-
-						if (dynazoomPageReached) {
-							// Since the image URL is built in JS on the web page, we have to build it manually
-							// Parse page URL
-							Uri uri = Uri.parse(subPageUrl);
-							String cgiUrl = uri.getQueryParameterNames().contains("cgiurl_graph")
-									? uri.getQueryParameter("cgiurl_graph")
-									: "/munin-cgi/munin-cgi-graph";
-							if (!cgiUrl.endsWith("/"))
-								cgiUrl += "/";
-
-							// localdomain/localhost.localdomain/if_eth0
-							String pluginNameUrl = uri.getQueryParameterNames().contains("plugin_name")
-									? uri.getQueryParameter("plugin_name")
-									: "localdomain/localhost.localdomain/pluginName";
-
-							// Remove plugin name from pluginNameUrl
-							// Get prefix from path:
-							// group/node/[multigraph_name/]/plugin_name
-							Pattern pattern = Pattern.compile("^(((?:[^/])*/){2}).*");
-							Matcher matcher = pattern.matcher(pluginNameUrl);
-
-							if (!matcher.find())
-								throw new RuntimeException("Could not determine usable pluginNameUrl from " + pluginNameUrl);
-
-							pluginNameUrl = matcher.group(1);
-
-							this.hdGraphURL = Util.URLManipulation.getScheme(this.getUrl())
-									+ Util.URLManipulation.getHostFromUrl(this.getUrl())
-									+ ":" + Util.URLManipulation.getPort(this.getUrl())
-									+ cgiUrl + pluginNameUrl;
-
-							// Now that we have the HD Graph URL, let's try to reach it to see if it is available
-							if (this.master.isDynazoomAvailable(currentPl, userAgent))
-								this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.TRUE);
-							else
-								this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
-						} else {
-							// We haven't reached dynazoom page yet, find the first graph to click on
-							Element graph = subPage.select(HTMLParser.MUNIN_GRAPH_SELECTOR).get(0);
-
-							subPageUrl = graph.parent().attr("abs:href");
-							// Loop over
-						}
-
-						// Avoid infinite loop
-						subLevel++;
-						if (subLevel > maxLevels)
-							throw new RuntimeException("Max levels (" + maxLevels + ") reached: " + subLevel);
-					}
-				} catch (Exception ex) {
-					// Parsing pages is quite tricky, especially when the server configuration may be wrong.
-					this.master.setDynazoomAvailable(MuninMaster.DynazoomAvailability.FALSE);
-				}
-			}
-		}
 		return plugins;
 	}
 
-	public boolean fetchPluginsList(String userAgent) {
+    /**
+     * @deprecated TODO - move this out of this class
+     */
+	public boolean fetchPluginsList(String userAgent) throws HttpException {
 		List<MuninPlugin> plugins = getPluginsList(userAgent);
 
 		if (plugins != null) {
@@ -277,6 +131,8 @@ public class MuninNode {
 	 * Get plugin state (OK / WARNING / CRITICAL) for each plugin
 	 * in this senodeUsed on Activity_Alerts
 	 * @param userAgent String
+     *
+     * @deprecated TODO - move this out of this class
 	 */
 	public void fetchPluginsStates(String userAgent) {
 		erroredPlugins.clear();
@@ -409,23 +265,7 @@ public class MuninNode {
 	}
 
 	public boolean equalsApprox (MuninNode node2) {
-		String address1 = this.getUrl();
-		String address2 = node2.getUrl();
-
-		// transformations
-		if (address1.length() > 11) {
-			if (address1.endsWith("index.html"))
-				address1 = address1.substring(0, address1.length()-11);
-			if (address1.substring(address1.length()-1).equals("/"))
-				address1 = address1.substring(0, address1.length()-1);
-		}
-		if (address2.length() > 11) {
-			if (address2.endsWith("index.html"))
-				address2 = address2.substring(0, address2.length()-11);
-			if (address2.substring(address2.length()-1).equals("/"))
-				address2 = address2.substring(0, address2.length()-1);
-		}
-		return address1.equals(address2);
+	    return equalsApprox(node2.getUrl());
 	}
 
 	public boolean equalsApprox (String node2) {

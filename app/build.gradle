@@ -71,4 +71,8 @@ dependencies {
     api files('libs/AppRate_1.1.jar')
 }
 
+sourceSets {
+    test.resources.srcDirs += 'app/src/test/resources'
+}
+
 apply plugin: 'com.google.gms.google-services'

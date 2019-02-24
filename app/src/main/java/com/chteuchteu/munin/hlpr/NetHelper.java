@@ -8,6 +8,7 @@ import android.util.Pair;
 
 import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
+import com.chteuchteu.munin.hlpr.Http.ResponseCode;
 import com.chteuchteu.munin.obj.HTTPResponse.BaseResponse;
 import com.chteuchteu.munin.obj.HTTPResponse.BitmapResponse;
 import com.chteuchteu.munin.obj.HTTPResponse.HTMLResponse;
@@ -142,7 +143,7 @@ public class NetHelper {
 				MuninFoo.log(responseCode + " - " + responseMessage);
 
 			switch (responseCode) {
-				case HttpURLConnection.HTTP_UNAUTHORIZED:
+				case ResponseCode.HTTP_UNAUTHORIZED:
 					if (connection.getHeaderFields().containsKey("WWW-Authenticate"))
 						master.setAuthString(connection.getHeaderField("WWW-Authenticate"));
 
@@ -151,11 +152,11 @@ public class NetHelper {
 					else if (!master.isAuthNeeded()) // Unauthorized & no auth information: abort
 						return resp;
 					break;
-				case HttpURLConnection.HTTP_MOVED_PERM:
-				case HttpURLConnection.HTTP_MOVED_TEMP:
-				case HttpURLConnection.HTTP_SEE_OTHER:
-				case 307: // Temporary Redirect, but keep POST data
-				case 308: // Permanent Redirect, but keep POST data
+				case ResponseCode.HTTP_MOVED_PERMANENTLY:
+				case ResponseCode.HTTP_FOUND:
+				case ResponseCode.HTTP_SEE_OTHER:
+				case ResponseCode.HTTP_TEMPORARY_REDIRECT: // Temporary Redirect, but keep POST data
+				case ResponseCode.HTTP_PERMANENTLY_REDIRECT: // Permanent Redirect, but keep POST data
 					// That's a redirection
 					String newUrl = connection.getHeaderField("Location");
 					return download(downloadType, master, newUrl, userAgent, true);
@@ -297,11 +298,11 @@ public class NetHelper {
 
 			// Handle redirects
 			switch (responseCode) {
-				case HttpURLConnection.HTTP_MOVED_PERM:
-				case HttpURLConnection.HTTP_MOVED_TEMP:
-				case HttpURLConnection.HTTP_SEE_OTHER:
-				case 307: // Temporary Redirect, but keep POST data
-				case 308: // Permanent Redirect, but keep POST data
+                case ResponseCode.HTTP_MOVED_PERMANENTLY:
+                case ResponseCode.HTTP_FOUND:
+                case ResponseCode.HTTP_SEE_OTHER:
+                case ResponseCode.HTTP_TEMPORARY_REDIRECT: // Temporary Redirect, but keep POST data
+                case ResponseCode.HTTP_PERMANENTLY_REDIRECT: // Permanent Redirect, but keep POST data
 					String newUrl = connection.getHeaderField("Location");
 					return simplePost(newUrl, params, userAgent);
 				default:

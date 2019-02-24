@@ -43,15 +43,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.adptr.Adapter_GraphView;
 import com.chteuchteu.munin.adptr.PluginsListAlertDialog;
 import com.chteuchteu.munin.async.DynazoomDetector;
 import com.chteuchteu.munin.async.FieldsDescriptionFetcher;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
-import com.chteuchteu.munin.hlpr.DynazoomHelper;
-import com.chteuchteu.munin.hlpr.DynazoomHelper.DynazoomFetcher;
+import com.chteuchteu.munin.hlpr.Dynazoom.DynazoomHelper;
+import com.chteuchteu.munin.hlpr.Dynazoom.DynazoomHelper.DynazoomFetcher;
 import com.chteuchteu.munin.hlpr.PermissionsHelper;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
@@ -301,7 +300,7 @@ public class Activity_GraphView extends MuninActivity {
 				actionDynazoom();
 			}
 		});
-		
+
 		// Launch periodical check
 		if (settings.getBool(Settings.PrefKeys.AutoRefresh)) {
 			mHandler = new Handler();
@@ -432,25 +431,25 @@ public class Activity_GraphView extends MuninActivity {
 		if (item_period != null)
 			item_period.setTitle(load_period.getLabel(context));
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
-		
+
 		savedInstanceState.putInt("position", position);
 	}
-	
+
 	protected void createOptionsMenu() {
 		super.createOptionsMenu();
 
 		getMenuInflater().inflate(R.menu.graphview, menu);
-		
+
 		item_period = menu.findItem(R.id.menu_period);
 		item_documentation = menu.findItem(R.id.menu_documentation);
 		item_documentation.setVisible(muninFoo.documentationHelper.hasDocumentation(currentPlugin));
 		MenuItem item_openInBrowser = menu.findItem(R.id.menu_openinbrowser);
         MenuItem item_fieldsDescription = menu.findItem(R.id.menu_fieldsDescription);
-		
+
 		if (muninFoo.getCurrentNode().getPlugin(0).hasPluginPageUrl()) {
 			item_openInBrowser.setVisible(true);
 			item_fieldsDescription.setVisible(true);
@@ -458,12 +457,12 @@ public class Activity_GraphView extends MuninActivity {
 
 		item_period.setTitle(load_period.getLabel(context));
 	}
-	
+
 	private void changePeriod(Period newPeriod) {
 		bitmaps.clear();
-		
+
 		load_period = newPeriod;
-		
+
 		adapter.refreshAll();
 
 		if (isDynazoomOpen()) {
@@ -476,10 +475,10 @@ public class Activity_GraphView extends MuninActivity {
 			dynazoom_updateFromTo();
 			((RangeBar) findViewById(R.id.dynazoom_rangebar)).setThumbIndices(0, DynazoomHelper.RANGEBAR_TICKS_COUNT - 1);
 		}
-		
+
 		item_period.setTitle(load_period.getLabel(context).toUpperCase());
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
@@ -498,7 +497,7 @@ public class Activity_GraphView extends MuninActivity {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
         if (drawerHelper.closeDrawerIfOpen())
@@ -565,7 +564,7 @@ public class Activity_GraphView extends MuninActivity {
 			Util.setTransition(this, TransitionStyle.SHALLOWER);
 		}
 	}
-	
+
 	public void actionRefresh() {
 		if (isDynazoomOpen()) {
 			dynazoomFetcher = (DynazoomFetcher) new DynazoomFetcher(currentPlugin, (ImageView) findViewById(R.id.dynazoom_imageview),
@@ -613,7 +612,7 @@ public class Activity_GraphView extends MuninActivity {
 		else
 			Toast.makeText(this, getString(R.string.text29), Toast.LENGTH_LONG).show();
 	}
-	
+
 	private void actionAddLabel() {
 		LayoutInflater inflater = LayoutInflater.from(this);
 		LinearLayout view = (LinearLayout) inflater.inflate(R.layout.dialog_edittext, null, false);
@@ -634,7 +633,7 @@ public class Activity_GraphView extends MuninActivity {
 					public void onClick(DialogInterface dialog, int whichButton) { }
 				}).show();
 	}
-	
+
 	private void actionLabels() {
 		if (isDynazoomOpen())
 			hideDynazoom();
@@ -655,9 +654,9 @@ public class Activity_GraphView extends MuninActivity {
 					cb.setChecked(!cb.isChecked());
 				}
 			});
-			
+
 			if (l.contains(currentPlugin))	checkboxes.get(i).setChecked(true);
-			
+
 			((CheckBox) v.findViewById(R.id.line_0)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -668,16 +667,16 @@ public class Activity_GraphView extends MuninActivity {
 						muninFoo.getLabel(labelName).addPlugin(p);
 					else
 						muninFoo.getLabel(labelName).removePlugin(p);
-					
+
 					muninFoo.sqlite.saveLabels();
 				}
 			});
-			
+
 			((TextView)v.findViewById(R.id.line_a)).setText(l.getName());
-			
+
 			int id = Resources.getSystem().getIdentifier("btn_check_holo_light", "drawable", "android");
 			((CheckBox) v.findViewById(R.id.line_0)).setButtonDrawable(id);
-			
+
 			checkboxesContainer.addView(v);
 			i++;
 		}
@@ -688,7 +687,7 @@ public class Activity_GraphView extends MuninActivity {
 			tv.setPadding(20, 20, 0, 0);
 			checkboxesContainer.addView(tv);
 		}
-		
+
 		AlertDialog dialog;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getText(R.string.button_labels));
@@ -722,7 +721,7 @@ public class Activity_GraphView extends MuninActivity {
 			startActivity(browserIntent);
 		} catch (Exception ex) { ex.printStackTrace(); }
 	}
-	
+
 	private void actionFieldsDescription() {
 		new FieldsDescriptionFetcher(currentPlugin, this).execute();
 	}
@@ -1035,7 +1034,7 @@ public class Activity_GraphView extends MuninActivity {
 	@Override
 	public void onStop() {
 		super.onStop();
-		
+
 		if (settings.getBool(Settings.PrefKeys.ScreenAlwaysOn))
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}

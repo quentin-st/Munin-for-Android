@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.chteuchteu.munin.R;
-import com.chteuchteu.munin.hlpr.DynazoomHelper;
+import com.chteuchteu.munin.hlpr.Dynazoom.DynazoomHelper;
 import com.chteuchteu.munin.hlpr.Util;
 
 import org.jsoup.Jsoup;

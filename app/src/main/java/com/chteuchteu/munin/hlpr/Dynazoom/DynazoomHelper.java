@@ -1,4 +1,4 @@
-package com.chteuchteu.munin.hlpr;
+package com.chteuchteu.munin.hlpr.Dynazoom;
 
 
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.chteuchteu.munin.R;
+import com.chteuchteu.munin.hlpr.Util;
 import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.edmodo.rangebar.RangeBar;

@@ -1,5 +1,8 @@
 package com.chteuchteu.munin.obj.HTTPResponse;
 
+import com.chteuchteu.munin.hlpr.Exception.Http.HttpException;
+import com.chteuchteu.munin.hlpr.Http.ResponseCode;
+
 import java.net.HttpURLConnection;
 
 public abstract class BaseResponse {
@@ -56,7 +59,7 @@ public abstract class BaseResponse {
     public String getAuthenticateHeader() { return this.header_wwwauthenticate; }
 
     public boolean hasSucceeded() {
-        return !this.timeout && this.responseCode == HttpURLConnection.HTTP_OK;
+        return !this.timeout && this.responseCode == ResponseCode.HTTP_OK;
     }
     public boolean wasRedirected() { return !this.requestUrl.equals(this.lastUrl); }
 
@@ -66,4 +69,14 @@ public abstract class BaseResponse {
     public void begin() { this.startTime = System.currentTimeMillis(); }
     public void end() { this.endTime = System.currentTimeMillis(); }
     public long getExecutionTime() { return this.endTime - this.startTime; }
+
+    public void throwOnFailure() throws HttpException {
+        if (!this.hasSucceeded()) {
+            throw this.toException();
+        }
+    }
+
+    public HttpException toException() {
+        return new HttpException(this.lastUrl, this.responseCode, this.responseMessage);
+    }
 }
