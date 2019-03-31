@@ -265,4 +265,5 @@
 	<string name="permission_missing">Unfähig Aktion durchzuführen: Eine oder mehrere Berechtigungen fehlen.</string>
 	<string name="restart_to_apply_lang_changes">Anwendung muss neu gestartet werden, damit Sprachänderungen wirksam werden.</string>
 
-</resources>
+<string name="ignore_plugin_in">Plugin %1$s auf Host %2$s (%3$s Gruppe)</string>
+	</resources>
