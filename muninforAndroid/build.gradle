@@ -66,7 +66,7 @@ dependencies {
     api 'com.edmodo:rangebar:1.0.0'
     api 'com.github.chrisbanes.photoview:library:1.2.4'
     api('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') { transitive = true; }
-    api('com.mikepenz:materialdrawer:6.0.9@aar') { transitive = true }
+    api('com.mikepenz:materialdrawer:4.3.0@aar') { transitive = true }
     api 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
     api files('libs/AppRate_1.1.jar')
 
