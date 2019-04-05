@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-	<string name="app_name">&lt;string name=\"touch_filtered_warning\"&gt;</string>
 	<string name="button_graphs">"Graphen"</string>
 	<string name="button_server">"Server"</string>
 	<string name="settings_URL_label">"URL des Masterservers"</string>
@@ -78,8 +77,6 @@
 	<string name="servers_noservers_2">"Eigene oder Beispielserver mit einem Klick auf + hinzufügen"</string>
 	<string name="alertsTitle">"Alarme"</string>
 	<string name="notificationsTitle">"Benachrichtigungen"</string>
-
-	<!-- MAIN BUTTON -->
 	<string name="widget_configuration1">Das Widget wurde erfolgreich zum Homescreen hinzugefügt. Tipp: Der Graph kann durch Tippen auf die graue Leiste unten aktualisiert werden!</string>
 	<string name="widget_configuration2">"Graphen nur im WLAN automatisch aktualisieren (1 Update pro Stunde)"</string>
 	<string name="text49.1">Normal operierende Node-Server ausblenden</string>

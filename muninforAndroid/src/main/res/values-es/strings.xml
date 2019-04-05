@@ -177,12 +177,9 @@
 	<string name="donate">Donar</string>
 	<string name="donate_text">Desarrollar una aplicación tan grande requiere un gran esfuerzo de tiempo y compromiso. Si encuentra útil la aplicación en su día a día, consideraría realizar una donación? Muchas gracias! En caso de hacerlo por favor envíeme un correo electrónico para que pueda agradecérselo en persona!</string>
 	<string name="donate_amount">Por favor elija una cantidad para donar (Google tomará 33% de esta cantidad)</string>
-	<string name="sync_serversadded">nodo(s) XXX agregado(s)
-</string>
-	<string name="sync_serversupdated">nodo(s) XXX actualizado(s)
-</string>
-	<string name="sync_serversdeleted">nodo(s) XXX eliminado(s)
-</string>
+	<string name="sync_serversadded">nodo(s) XXX agregado(s)</string>
+	<string name="sync_serversupdated">nodo(s) XXX actualizado(s)</string>
+	<string name="sync_serversdeleted">nodo(s) XXX eliminado(s)</string>
 	<string name="sync_pluginsadded">plugin(s) XXX agregado(s)\n</string>
 	<string name="sync_pluginsupdated">plugin(s) XXX actualizado(s)\n</string>
 	<string name="sync_pluginsdeleted">plugin(s) XXX eliminado(s)\n</string>
@@ -251,6 +248,5 @@
 	<string name="push"/>
 	<string name="permission_required">Se requiere permiso para hacer esto</string>
 	<string name="restart_to_apply_lang_changes">Hay que reiniciar la aplicación para que los cambios de idioma tengan efecto.</string>
-
-<string name="openGrid">Abrir cuadrícula</string>
-	</resources>
+    <string name="openGrid">Abrir cuadrícula</string>
+</resources>

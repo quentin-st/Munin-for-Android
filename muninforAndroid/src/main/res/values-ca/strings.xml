@@ -182,18 +182,12 @@ La configuració serà esborrada del servidor de Munin per a Android tan aviat c
 	<string name="donate">Donar</string>
 	<string name="donate_text">Desenvolupar una aplicació tan gran requereix un gran esforç de temps i compromís. Si trobeu útil l\'aplicació en el seu dia a dia, consideraríeu realitzar una donació? Moltes gràcies! En cas de fer-ho, si us plau, envieu-me un correu electrònic per a que us ho pugui agraïr en persona!</string>
 	<string name="donate_amount">Si us plau, escolliu una quantitat per a donar (Google es quedarà el 33% d\'aquesta quantitat)</string>
-	<string name="sync_serversadded">Node(s) XXX afegit(s)
-</string>
-	<string name="sync_serversupdated">node(s) XXX actualitzat(s)
-</string>
-	<string name="sync_serversdeleted">node(s) XXX eliminat(s)
-</string>
-	<string name="sync_pluginsadded">plugin(s) XXX afegit(s)
-</string>
-	<string name="sync_pluginsupdated">plugin(s) XXX actualitzat(s)
-</string>
-	<string name="sync_pluginsdeleted">plugin(s) XXX eliminat(s)
-</string>
+	<string name="sync_serversadded">Node(s) XXX afegit(s)</string>
+	<string name="sync_serversupdated">node(s) XXX actualitzat(s)</string>
+	<string name="sync_serversdeleted">node(s) XXX eliminat(s)</string>
+	<string name="sync_pluginsadded">plugin(s) XXX afegit(s)</string>
+	<string name="sync_pluginsupdated">plugin(s) XXX actualitzat(s)</string>
+	<string name="sync_pluginsdeleted">plugin(s) XXX eliminat(s)</string>
 	<string name="sync_nochange">Sense canvis</string>
 	<string name="sync_reporttitle">Informe d\'escaneig</string>
 	<string name="graphwidgetname">Munin per a Android : Widgets de gràfiques</string>
