@@ -8,14 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 
-import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.hlpr.DrawerHelper;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -46,12 +43,6 @@ public class MuninActivity extends AppCompatActivity {
 		this.activity = this;
 		this.muninFoo = MuninFoo.getInstance(this);
 		this.settings = muninFoo.getSettings();
-
-		if (!BuildConfig.DEBUG) {
-			Tracker tracker = this.muninFoo.getDefaultTracker(this);
-			tracker.setScreenName(this.getClass().getSimpleName());
-			tracker.send(new HitBuilders.ScreenViewBuilder().build());
-		}
 
 		// setContentView...
 	}

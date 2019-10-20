@@ -9,17 +9,19 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
-        classpath 'com.google.gms:google-services:4.1.0'
+        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.google.gms:google-services:4.3.2'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        google()
     }
 }
 
-task wrapper(type: Wrapper) {
+wrapper() {
     gradleVersion = '2.11'
+    distributionUrl = distributionUrl.replace("bin", "all")
 }

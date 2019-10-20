@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.chteuchteu.munin.BuildConfig;
 import com.chteuchteu.munin.MuninFoo;
 import com.chteuchteu.munin.R;
 import com.chteuchteu.munin.async.AppUpdater;
@@ -30,8 +29,6 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.tjeannin.apprate.AppRate;
 
 import java.util.Locale;
@@ -76,12 +73,6 @@ public class Activity_Main extends AppCompatActivity implements IGridActivity, I
 		boolean loaded = MuninFoo.isLoaded();
 		muninFoo = MuninFoo.getInstance(this);
 		settings = muninFoo.getSettings();
-
-		if (!BuildConfig.DEBUG) {
-			Tracker tracker = this.muninFoo.getDefaultTracker(this);
-			tracker.setScreenName(this.getClass().getSimpleName());
-			tracker.send(new HitBuilders.ScreenViewBuilder().build());
-		}
 
 		optionsMenuLoaded = false;
 		if (loaded)

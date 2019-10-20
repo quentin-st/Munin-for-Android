@@ -5,13 +5,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.chteuchteu.munin.BuildConfig;
@@ -23,6 +25,8 @@ import com.chteuchteu.munin.obj.NotifIgnoreRule;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.chteuchteu.munin.ui.Activity_IgnoreNotification;
 import com.chteuchteu.munin.ui.Activity_Main;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,37 +34,44 @@ import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerService {
+public class FcmListenerService extends FirebaseMessagingService {
 
-    /**
-     * Called when message is received.
-     *
-     * @param from SenderID of the sender.
-     * @param data Data bundle containing message data as key/value pairs.
-     *             For Set of keys use data.keySet().
-     */
     @Override
-    public void onMessageReceived(String from, Bundle data) {
-        if (BuildConfig.DEBUG)
-            debugDataBundle(data);
-
-        // Check if this is a test notifications
-        if (data.getString("test", "false").equals("true"))
-            sendTestNotification();
-        else
-            handleNotification(data);
+    public void onNewToken(@NonNull String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences("user_pref", Context.MODE_PRIVATE);
+        sharedPreferences.edit().putString(Settings.PrefKeys.Notifs_Push_regId.getKey(), token).apply();
     }
 
-    private void handleNotification(Bundle data) {
+    @Override
+    public void onMessageReceived(RemoteMessage message) {
+        //String from = message.getFrom();
+        Map<String, String> data = message.getData();
+
+        if (BuildConfig.DEBUG) {
+            debugDataBundle(data);
+        }
+
+        // Check if this is a test notifications
+        if (data.containsKey("test")) {
+            sendTestNotification();
+        }
+        else {
+            handleNotification(data);
+        }
+    }
+
+    private void handleNotification(Map<String, String> data) {
         // [{"plugin":"plugin","host":"localhost.localdomain","category":"plugin_category","fields":[{"c":":2","level":"c","w":":1","extra":"","label":"submitted","value":"6.00"}],"group":"localdomain"}]
 
         // Check if notifications are enabled
-        if (!Settings.getInstance(this).getBool(Settings.PrefKeys.Notifs_Push))
+        if (!Settings.getInstance(this).getBool(Settings.PrefKeys.Notifs_Push)) {
             return;
+        }
 
         // Parse alerts
-        String alerts = data.getString("alerts");
+        String alerts = data.get("alerts");
         try {
             JSONArray alertsArray = new JSONArray(alerts);
 
@@ -122,7 +133,7 @@ public class GcmListenerService extends com.google.android.gms.gcm.GcmListenerSe
         return notifIgnoreRules.size() > 0;
     }
 
-    private void debugDataBundle(Bundle data) {
+    private void debugDataBundle(Map<String, String> data) {
         for (String key : data.keySet()) {
             Object object = data.get(key);
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.chteuchteu.munin">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.chteuchteu.munin">
 
 	<!-- Permissions -->
 	<uses-permission android:name="android.permission.INTERNET" />
@@ -8,7 +9,6 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="com.android.vending.BILLING" />
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
@@ -34,7 +34,8 @@
 		android:theme="@style/AppTheme"
 		android:fullBackupContent="true"
 		android:name="com.chteuchteu.munin.App"
-        android:networkSecurityConfig="@xml/network_security_config">
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:ignore="GoogleAppIndexingWarning">
 
 		<activity android:name=".ui.Activity_About"
 				  android:configChanges="layoutDirection|locale" />
@@ -129,51 +130,13 @@
 			android:name="com.crashlytics.ApiKey"
 			android:value="b7bc84aa870bd35d3de03f69309f1748a52354a4" />
 
-		<!-- Google Play services -->
-		<meta-data
-			android:name="com.google.android.gms.version"
-			android:value="@integer/google_play_services_version"/>
-
-		<!-- Analytics -->
-		<receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
-			android:enabled="true">
-			<intent-filter>
-				<action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
-			</intent-filter>
-		</receiver>
-		<service android:name="com.google.android.gms.analytics.AnalyticsService"
-			android:enabled="true"
-			android:exported="false"/>
-
-		<!-- Google Cloud Messaging -->
-		<receiver
-			android:name="com.google.android.gms.gcm.GcmReceiver"
-			android:exported="true"
-			android:permission="com.google.android.c2dm.permission.SEND" >
-			<intent-filter>
-				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
-				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-				<category android:name="com.chteuchteu.munin" />
-				<category android:name="com.chteuchteu.munin.debug" />
-			</intent-filter>
-		</receiver>
-		<service
-			android:name=".ntfs.push.GcmListenerService"
-			android:exported="false">
-			<intent-filter>
-				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
-			</intent-filter>
-		</service>
-		<service
-			android:name=".ntfs.push.InstanceIDListenerService"
-			android:exported="false">
-			<intent-filter>
-				<action android:name="com.google.android.gms.iid.InstanceID"/>
-			</intent-filter>
-		</service>
-		<service
-			android:name=".ntfs.push.RegistrationIntentService"
-			android:exported="false">
-		</service>
+		<!-- Firebase Cloud Messaging -->
+        <service
+            android:name=".ntfs.push.FcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 	</application>
 </manifest>

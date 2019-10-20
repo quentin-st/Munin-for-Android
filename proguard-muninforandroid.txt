@@ -31,10 +31,7 @@
 -keepclassmembers class android.support.v7.** { *; }
 
 -dontwarn com.google.tagmanager.SimpleNetworkDispatcher
--dontwarn com.google.analytics.tracking.android.SimpleNetworkDispatcher
 -dontwarn com.google.tagmanager.HttpNetworkClient
 -dontwarn uk.co.senab.photoview.gestures.CupcakeGestureDetector
 -dontwarn uk.co.senab.photoview.PhotoViewAttacher
 -dontwarn com.google.tagmanager.PersistentHitStore
--dontwarn com.google.analytics.tracking.android.PersistentAnalyticsStore
--dontwarn com.google.analytics.tracking.android.HttpClientFactory

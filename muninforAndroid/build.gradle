@@ -21,11 +21,11 @@ repositories {
 
 android {
     compileSdkVersion 28
-    buildToolsVersion '28.0.2'
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "com.chteuchteu.munin"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 75
         versionName "4.1.1"
@@ -55,11 +55,10 @@ dependencies {
     api 'com.google.android.gms:play-services-base:16.0.1'
     api 'com.google.android.gms:play-services-cast:16.0.3'
     api 'com.google.android.gms:play-services-wallet:16.0.1'
-    api 'com.google.android.gms:play-services-gcm:16.0.0'
-    api 'com.google.android.gms:play-services-analytics:16.0.4'
     api 'androidx.mediarouter:mediarouter:1.0.0'
     api 'com.google.android.material:material:1.0.0'
-    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
 
     // 3d party dependencies
     api 'org.jsoup:jsoup:1.8.1'

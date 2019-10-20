@@ -2,15 +2,11 @@ package com.chteuchteu.munin.ui;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Vibrator;
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -29,16 +25,17 @@ import com.chteuchteu.munin.adptr.Adapter_NotifIgnoreRules;
 import com.chteuchteu.munin.async.Notifications_SendInstructionsByMail;
 import com.chteuchteu.munin.hlpr.Settings;
 import com.chteuchteu.munin.hlpr.Util;
-import com.chteuchteu.munin.ntfs.push.RegistrationIntentService;
 import com.chteuchteu.munin.obj.NotifIgnoreRule;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.List;
 
 public class Fragment_Notifications_Push extends Fragment implements INotificationsFragment {
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-	public static final String REGISTRATION_COMPLETE = "REGISTRATION_COMPLETE";
 	public static final String INSTRUCTIONS_EMAIL_TARGET = "https://gcm-proxy.munin-for-android.com/android/sendConfig";
 
 	private MuninFoo    muninFoo;
@@ -47,7 +44,6 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 	private View        view;
 
 	private ProgressDialog progressDialog;
-	private BroadcastReceiver registrationBroadcastReceiver;
 
 	private CheckBox    cb_notifications;
 	private CheckBox    cb_vibrate;
@@ -68,17 +64,6 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 		view = inflater.inflate(R.layout.fragment_notifications_push, container, false);
 		muninFoo = MuninFoo.getInstance(context);
 		settings = muninFoo.getSettings();
-
-		registrationBroadcastReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				if (progressDialog != null)
-					progressDialog.dismiss();
-
-				updateDeviceCode();
-				bt_sendByMail.setEnabled(true);
-			}
-		};
 
 		cb_notifications = (CheckBox) view.findViewById(R.id.checkbox_notifications);
 		cb_vibrate = (CheckBox) view.findViewById(R.id.checkbox_vibrate);
@@ -129,17 +114,27 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				View notificationsSettings = view.findViewById(R.id.notificationsEnabled);
-				if (isChecked)
-					notificationsSettings.setVisibility(View.VISIBLE);
-				else
-					notificationsSettings.setVisibility(View.GONE);
+                notificationsSettings.setVisibility(isChecked ? View.VISIBLE : View.GONE);
 
 				// Get reg id
 				if (isChecked && muninFoo.getSettings().getString(Settings.PrefKeys.Notifs_Push_regId) == null) {
 					if (checkPlayServices()) {
 						progressDialog = ProgressDialog.show(context, "", getString(R.string.loading), true);
-						Intent intent = new Intent(context, RegistrationIntentService.class);
-						context.startService(intent);
+
+                        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                            @Override
+                            public void onSuccess(InstanceIdResult instanceIdResult) {
+                                String deviceToken = instanceIdResult.getToken();
+
+                                settings.set(Settings.PrefKeys.Notifs_Push_regId, deviceToken);
+
+                                if (progressDialog != null)
+                                    progressDialog.dismiss();
+
+                                updateDeviceCode();
+                                bt_sendByMail.setEnabled(true);
+                            }
+                        });
 					}
 				}
 			}
@@ -181,7 +176,7 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 	}
 
 	public void updateIgnoreRulesCount() {
-		ignoreRulesText.setText(String.format(getString(R.string.ignoreRulesText), ignoreRules.size()));
+		ignoreRulesText.setText(String.format(getString(R.string.ignoreRulesText), String.valueOf(ignoreRules.size())));
 		manageIgnoreRules.setEnabled(ignoreRules.size() > 0);
 	}
 
@@ -197,7 +192,7 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						// Update rules count
-						ignoreRulesText.setText(String.format(getString(R.string.ignoreRulesText), ignoreRules.size()));
+						ignoreRulesText.setText(String.format(getString(R.string.ignoreRulesText), String.valueOf(ignoreRules.size())));
 					}
 				})
 				.show();
@@ -207,6 +202,8 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 		String deviceCode = settings.getString(Settings.PrefKeys.Notifs_Push_regId);
 		if (deviceCode != null) {
 			TextView tv_deviceCode = (TextView) view.findViewById(R.id.device_code);
+
+			// Show truncated devide code
 			tv_deviceCode.setText(deviceCode.substring(0, Math.min(deviceCode.length()-1, 15)) + "...");
 		}
 	}
@@ -232,18 +229,5 @@ public class Fragment_Notifications_Push extends Fragment implements INotificati
 	public void save() {
 		settings.set(Settings.PrefKeys.Notifs_Push, cb_notifications.isChecked());
 		settings.set(Settings.PrefKeys.Notifs_Push_Vibrate, cb_vibrate.isChecked());
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		LocalBroadcastManager.getInstance(context).registerReceiver(registrationBroadcastReceiver,
-				new IntentFilter(REGISTRATION_COMPLETE));
-	}
-
-	@Override
-	public void onPause() {
-		LocalBroadcastManager.getInstance(context).unregisterReceiver(registrationBroadcastReceiver);
-		super.onPause();
 	}
 }

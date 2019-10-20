@@ -14,8 +14,7 @@ import com.chteuchteu.munin.obj.MuninMaster;
 import com.chteuchteu.munin.obj.MuninNode;
 import com.chteuchteu.munin.obj.MuninPlugin;
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,8 +49,7 @@ public class MuninFoo {
 	public ChromecastHelper chromecastHelper;
 	public DocumentationHelper documentationHelper;
 
-	private Tracker tracker;
-	private static final String ANALYTICS_TRACKING_ID = "UA-44703951-1";
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 	private MuninFoo(Context context) {
 		premium = false;
@@ -434,12 +432,11 @@ public class MuninFoo {
 	}
 	public void setUserAgent(String val) { this.userAgent = val; }
 
-	public synchronized Tracker getDefaultTracker(Context context) {
-		if (this.tracker == null) {
-			GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
-			this.tracker = analytics.newTracker(ANALYTICS_TRACKING_ID);
-		}
+	public synchronized FirebaseAnalytics getDefaultTracker(Context context) {
+	    if (this.mFirebaseAnalytics == null) {
+	        this.mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        }
 
-		return this.tracker;
+	    return this.mFirebaseAnalytics;
 	}
 }

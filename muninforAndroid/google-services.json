@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "938150913367",
-    "project_id": "munin-for-android"
+    "firebase_url": "https://munin-for-android.firebaseio.com",
+    "project_id": "munin-for-android",
+    "storage_bucket": "munin-for-android.appspot.com"
   },
   "client": [
     {
@@ -11,21 +13,28 @@
           "package_name": "com.chteuchteu.munin"
         }
       },
-      "oauth_client": [],
-      "api_key": [{ "current_key": "" }],
+      "oauth_client": [
+        {
+          "client_id": "938150913367-obll4isgrpmbkcq7rrgjn9147ql2sdb0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc0kxOfIDyuzxDfgLvVi9hzHvhAwSpQLc"
+        },
+        {
+          "current_key": "AIzaSyClrOdkB6vVNzMmP5WM33Glu7gZbd7Naa8"
+        }
+      ],
       "services": {
-        "analytics_service": {
-          "status": 2,
-          "analytics_property": {
-            "tracking_id": "UA-44703951-1"
-          }
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 1
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938150913367-obll4isgrpmbkcq7rrgjn9147ql2sdb0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -36,22 +45,31 @@
           "package_name": "com.chteuchteu.munin.debug"
         }
       },
-      "oauth_client": [],
-      "api_key": [{ "current_key": "" }],
+      "oauth_client": [
+        {
+          "client_id": "938150913367-obll4isgrpmbkcq7rrgjn9147ql2sdb0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc0kxOfIDyuzxDfgLvVi9hzHvhAwSpQLc"
+        },
+        {
+          "current_key": "AIzaSyClrOdkB6vVNzMmP5WM33Glu7gZbd7Naa8"
+        }
+      ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 1
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938150913367-obll4isgrpmbkcq7rrgjn9147ql2sdb0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
   ],
   "configuration_version": "1"
 }
-
