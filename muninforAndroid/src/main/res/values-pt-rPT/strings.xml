@@ -1,2 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="text09">Erro!</string>
+    <string name="settings_lang">Idioma da aplicação</string>
+    <string name="notificationsTitle">Notificações</string>
+    <string name="alertsTitle">Alertas</string>
+    <string name="goPremiumTitle">Ir Premium</string>
+    <string name="aboutTitle">Sobre Munin para Android</string>
+    <string name="settingsTitle">Definições</string>
+    <string name="serversTitle">Servidores</string>
+    <string name="addServerTitle">Adicionar um servidor</string>
+    <string name="graphView_ImageViewDescription">Gráfico</string>
+    <string name="splashDesc">A carregar</string>
+    <string name="buy_now">Comprar agora</string>
+    <string name="about_librariesTitle">Bibliotecas</string>
+    <string name="about_specialThanksTitle">Agradecimentos especiais</string>
+    <string name="notifs_vibrate">Vibrar</string>
+    <string name="follow">Seguir no Twitter</string>
+    <string name="fieldsDescription">Descrição dos campos</string>
+    <string name="openInBrowser">Abrir no navegador</string>
+    <string name="yourerunning">Está a executar</string>
+    <string name="addToHomescreen">Adicionar ao ecrã inicial</string>
+    <string name="edit">Editar</string>
+    <string name="servers_noservers_1">Ainda sem servidor</string>
+    <string name="about_gplay">Classificar a aplicação</string>
+    <string name="about_eraseData">Reiniciar aplicação</string>
+    <string name="search">Procurar</string>
+    <string name="loading">A carregar…</string>
+    <string name="menu_addserver_delete">Eliminar servidor</string>
+    <string name="menu_addserver_save">Guardar servidor</string>
+    <string name="menu_graph_refresh">Atualizar</string>
+    <string name="save_button">Guardar</string>
+    <string name="settings_titlelabel_graphs">Definições de gráfico</string>
+    <string name="settings_titlelabel_app">Definições da aplicação</string>
+    <string name="settings_autorefresh_label">Auto atualizar</string>
+    <string name="settings_screenalwayson_label">Ecrã sempre ligado</string>
+    <string name="settings_password">Palavra-passe</string>
+    <string name="settings_login">Iniciar sessão</string>
+    <string name="settings_auth_type">Tipo de autenticação</string>
+    <string name="button_notifications">Notificações</string>
+    <string name="button_grid">Grelhas</string>
+    <string name="button_labels">Etiquetas</string>
+    <string name="button_alerts">Alertas</string>
+    <string name="button_premium">Ir Premium</string>
+    <string name="button_server">Servidores</string>
+    <string name="button_graphs">Gráficos</string>
+    <string name="app_name">Munin para Android</string>
+</resources>
