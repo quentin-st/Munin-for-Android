@@ -9,7 +9,7 @@
     <string name="button_grid">Grilles</string>
     <string name="button_notifications">Notifications</string>
     <string name="settings_URL_label">URL du serveur Munin maître</string>
-    <string name="settings_URL_label2">ex: https://88.180.108.192:80/munin/</string>
+    <string name="settings_URL_label2">ex : https://88.180.108.192:80/munin/</string>
     <string name="settings_text">… ou choisissez un serveur d\'exemple :</string>
     <string name="settings_http_auth2">Authentification HTTP requise</string>
     <string name="settings_hdgraphs">Activer les graphs HD</string>
@@ -58,8 +58,9 @@
     <string name="text16">L\'URL semble être incorrecte. Veuillez la vérifier.</string>
     <string name="text18">Succès.</string>
     <string name="text21.1"> noeud</string>
-    <string name="text21.2"> ajouté(s) !</string>
-    <string name="success">Succès !</string>
+    <string name="text21.2">ajouté.
+\n</string>
+    <string name="success">Succès</string>
     <string name="text27">plugins trouvés.</string>
     <string name="text28">Graph sauvegardé sous /muninForAndroid/</string>
     <string name="text29">Erreur lors de la sauvegarde du graphique</string>
@@ -88,7 +89,7 @@
     <string name="text51.2">avertissements</string>
     <string name="text52">Activer les notifications</string>
     <string name="text53">Mettre à jour par Wi-Fi uniquement</string>
-    <string name="text54">Consommation de data estimée: ?? /jour</string>
+    <string name="text54">Consommation de data estimée : \? \? /jour</string>
     <string name="text55">Taux de rafraîchissement</string>
     <string name="text56">Noeuds à surveiller</string>
     <string name="text57">10 minutes/30 minutes/1 heure/2 heures/5 heures/10 heures/24 heures</string>
@@ -186,15 +187,7 @@ Veuillez utiliser le code suivant sur votre autre appareil Android afin de l\'im
     <string name="about_specialThanksTitle">Remerciements</string>
     <string name="about_librariesTitle">Bibliothèques</string>
     <string name="goPremium_title">Ensemble de fonctionnalités additionnelles de Munin pour Android</string>
-    <string name="goPremium_features"><![CDATA[
-		<li>Grilles de graphs</li>
-		<li>Widgets</li>
-		<li>Authentification digest</li>
-		<li>Notifications</li>
-		<li>Support haute-priorité</li>
-		<li>Pack de fonctionnalités unique: payez une fois pour recevoir les prochaines fonctionnalités premium !</li>
-		<li>Et plus encore, à venir ! Veuillez vous assurer d\'accepter les mises à jour automatiques afin de recevoir automatiquement les prochaines fonctionnalités premium !</li>
-	]]></string>
+    <string name="goPremium_features"><li>Grilles de graphs</li> <li>Widgets</li> <li>Authentification digest</li> <li>Notifications</li> <li>Support haute-priorité</li> <li>Pack de fonctionnalités unique : payez une fois pour recevoir les prochaines fonctionnalités premium !</li> <li>Et plus encore, à venir ! Veuillez vous assurer d\'accepter les mises à jour automatiques afin de recevoir automatiquement les prochaines fonctionnalités premium !</li></string>
     <string name="from">Du</string>
     <string name="to">Au</string>
     <string name="grids_legend">Légende des grilles</string>
