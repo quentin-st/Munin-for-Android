@@ -7,7 +7,7 @@
     <string name="settings_URL_label2">"пример: https://88.180.108.192:80/munin/"</string>
     <string name="settings_text">… либо выберите сервер согласно примеру:</string>
     <string name="settings_http_auth2">"необходима HTTP аутентификация"</string>
-    <string name="settings_login">"Логин"</string>
+    <string name="settings_login">Войти</string>
     <string name="settings_password">"Пароль"</string>
     <string name="settings_default_scale">"масштаб графика по умолчанию"</string>
     <string name="save_button">"Сохранить"</string>
