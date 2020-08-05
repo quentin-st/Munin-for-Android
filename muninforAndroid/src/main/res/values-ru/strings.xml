@@ -40,7 +40,7 @@
     <string name="yes">"Да"</string>
     <string name="no">"Нет"</string>
     <string name="text35">"Подробнее…"</string>
-    <string name="text36">Настройки успешно сохранены!</string>
+    <string name="text36">Настройки успешно сохранены.</string>
     <string name="text37">Серверы не добавлены. Добавьте их в настройках.</string>
     <string name="text39">"Идет обновление приложения. Пожалуйста, подождите…"</string>
     <string name="settings_lang">"Язык"</string>
@@ -50,7 +50,7 @@
     <string name="text42">"Загрузка…"</string>
     <string name="text43">"Пожалуйста, подождите…"</string>
     <string name="text44">"получение URL…"</string>
-    <string name="text45">"Сохранено!"</string>
+    <string name="text45">Сохранение…</string>
     <string name="text46">"Подключение к суб-серверу "</string>
     <string name="text47.1">"день"</string>
     <string name="text47.2">"неделя"</string>
@@ -113,7 +113,7 @@
     <string name="move_down">"Переместить вниз"</string>
     <string name="move_left">"Переместить влево"</string>
     <string name="rate">"Оценить"</string>
-    <string name="rate_long">"Если вам понравилось приложение, пожалуйста оцените его на Google Play. Спасибо!"</string>
+    <string name="rate_long">Если вам понравилось приложение, пожалуйста оцените его на Google Play. Спасибо.</string>
     <string name="not_now">"Не сейчас"</string>
     <string name="settings_screenalwayson_label">"Экран всегда включен"</string>
     <string name="settings_screenalwayson_checkbox">"Не отключать экран при отображении графиков / оповещений"</string>
@@ -171,9 +171,7 @@
     <string name="about_specialThanksTitle">Особая благодарность</string>
     <string name="about_librariesTitle">Библиотеки</string>
     <string name="splashDesc">Загрузка</string>
-    <string name="about_firstPhrase">Хотите поздороваться? У вас есть инновационная идея по улучшению приложения? Обнаружили серьёзные ошибки? Пожалуйста отправте нам письмо на <b>
-            <u>support@munin-for-android.com</u>
-        </b>! Спасибо!</string>
+    <string name="about_firstPhrase">Хотите поздороваться\? У вас есть инновационная идея по улучшению приложения\? Обнаружили серьёзные ошибки\? Пожалуйста, отправте нам письмо на <b><u>support@munin-for-android.com</u></b>. Спасибо!</string>
     <string name="about_independantApp">Это приложение разрабатывается независимо и не является официальным.</string>
     <string name="about_changelog">Для просмотра полного списка изменений в версии пожалуйста перейдите по ссылке &lt;a href=http://munin-for-android.com/&gt;munin-for-android.com&lt;/a&gt;.</string>
     <string name="about_openSource">Munin for Android - это приложение с открытым кодом! &lt;a href=https://github.com/chteuchteu/Munin-for-Android&gt;Вы можете помочь проекту на GitHub&lt;/a&gt;. Приложение поставляется под GNU GPL версия 2.</string>
