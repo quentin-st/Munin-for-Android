@@ -50,7 +50,7 @@
     <string name="setDefaultActivity">Definir a atividade predefinida</string>
     <string name="defaultActivity">Atividade predefinida</string>
     <string name="alert_i18n_yes">Muito obrigado. Usamos uma ferramenta on-line fácil de usar para gerir as traduções, disponível aqui: www.munin-for-android.com/i18n.php</string>
-    <string name="alert_i18n">Parece que a aplicação não está disponível na sua língua nativa. Pode ajudar-nos a torná-la disponível\?</string>
+    <string name="alert_i18n">Parece que a app não está disponível na sua língua nativa. Pode ajudar-nos a torná-la disponível\?</string>
     <string name="grids_settings">Configurações de grelhas</string>
     <string name="ok">Ok</string>
     <string name="documentation">Documentação</string>
@@ -87,7 +87,7 @@
     <string name="sync_serversadded">XXX nó(s) adicionado(s)
 \n</string>
     <string name="donate_amount">Por favor, selecione a quantia a doar (⅓ deste valor será tomado pelo Google)</string>
-    <string name="donate_text">Desenvolver uma aplicação tão grande requer uma enorme quantidade de tempo e envolvimento. Se a app for útil no seu dia a dia, poderia considerar a possibilidade de doar\? Obrigado. Se o fizer, envie-me um e-mail para que possa agradecer-lhe pessoalmente!</string>
+    <string name="donate_text">Desenvolver uma app tão grande requer uma enorme quantidade de tempo e envolvimento. Se a app for útil no seu dia a dia, poderia considerar a possibilidade de doar\? Obrigado. Se o fizer, envie-me um e-mail para que possa agradecer-lhe pessoalmente!</string>
     <string name="donate">Doar</string>
     <string name="choose_email_client">Por favor escolha a sua app de e-mail</string>
     <string name="support">Apoio</string>
@@ -189,7 +189,7 @@
     <string name="text09">Erro!</string>
     <string name="text02">Reinicialização realizada.</string>
     <string name="text01">Definições e configurações do servidor serão reiniciadas. Tem certeza\?</string>
-    <string name="settings_lang">Idioma da aplicação</string>
+    <string name="settings_lang">Idioma da app</string>
     <string name="settings_defaultnode">Nó predefinido</string>
     <string name="widget_configuration3">Esconder nome do nó</string>
     <string name="widget_configuration2">Apenas atualizar o gráfico automaticamente em Wi-Fi (uma atualização por hora)</string>
@@ -234,7 +234,7 @@
     <string name="menu_graph_refresh">Atualizar</string>
     <string name="save_button">Guardar</string>
     <string name="settings_titlelabel_graphs">Definições de gráfico</string>
-    <string name="settings_titlelabel_app">Definições da aplicação</string>
+    <string name="settings_titlelabel_app">Definições da app</string>
     <string name="settings_enablegraphszoom">Ativar zoom de gráficos</string>
     <string name="settings_autorefresh_checkbox">Atualizar os gráficos / alertas automaticamente a cada 5 minutos quando os estiver a exibir</string>
     <string name="settings_autorefresh_label">Auto atualizar</string>
