@@ -46,15 +46,7 @@
     <string name="settings_lang">"App-Sprache"</string>
     <string name="button_premium">Munin Premium</string>
     <string name="goPremium_title">Munin für Android Premiumfunktionen</string>
-    <string name="goPremium_features">
-\n <li>Graphen-Gitter</li>
-\n<li>Graph Widgets</li>
-\n<li>Digest-Authentifikation</li>
-\n<li>Benachrichtigungen</li>
-\n<li>Bevorzugter Support</li>
-\n<li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li>
-\n<li>Und es kommt noch mehr! Aktiviere die automatischen Update in Google Play um neuesten Premiumfunktionen automatisch zu erhalten.</li>
-\n </string>
+    <string name="goPremium_features"><li>Graphen-Gitter</li>·<li>Graph Widgets</li>·<li>Digest-Authentifikation</li>·<li>Benachrichtigungen</li>·<li>Bevorzugter Support</li>·<li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li>·<li>Und es kommt noch mehr! Aktiviere die automatischen Aktualisierungen in Google Play um neuesten Premiumfunktionen automatisch zu erhalten.</li></string>
     <string name="buy_now">Jetzt kaufen</string>
     <string name="goPremiumTitle">Munin Premium</string>
     <string name="text42">Laden …</string>
@@ -75,7 +67,7 @@
     <string name="settings_titlelabel_graphs">Graphen-Einstellungen</string>
     <string name="menu_graph_switch">Node-Server wechseln</string>
     <string name="servers_noservers_1">Noch kein Server vorhanden</string>
-    <string name="servers_noservers_2">"Eigene oder Beispielserver mit einem Klick auf + hinzufügen"</string>
+    <string name="servers_noservers_2">Fügen Sie Ihre eigene oder Beispielserver durch einen Klick auf + hinzu</string>
     <string name="alertsTitle">"Alarme"</string>
     <string name="notificationsTitle">"Benachrichtigungen"</string>
     <string name="widget_configuration1">Widget zum Startbildschirm hinzugefügt, tippen Sie auf das graue Feld unten, um die Grafik zu aktualisieren.</string>
@@ -159,8 +151,7 @@
     <string name="import_sentence">Bitte den Code eingeben, der auf dem ersten Gerät generiert wurde</string>
     <string name="export_explanation">Ihre Konfiguration wird zum Abruf durch ein anderes Gerät hochgeladen. Alle Passwörter werden verschlüsselt und am Ende erhalten Sie einen Code zum Abrufen der Konfiguration auf Ihrem anderen Gerät. Die Konfiguration wird vom Munin for Android-Server gelöscht, sobald Sie sie herunterladen oder nach 24 Stunden, wenn Sie es nicht tun.</string>
     <string name="export_success_title">Exportiert</string>
-    <string name="export_success_txt1">Die Konfiguration der App wurde erfolgreich hochgeladen.
-\n Bitte nutze den folgenden Code, um die Konfiguration auf dem anderen Gerät zu importieren.</string>
+    <string name="export_success_txt1">Die Konfiguration der App wurde erfolgreich hochgeladen. Bitte nutze den folgenden Code, um die Konfiguration auf dem anderen Gerät zu importieren.</string>
     <string name="import_success_title">Importiert</string>
     <string name="delete_plugin">"Plugin löschen"</string>
     <string name="delete_label">"Label löschen"</string>
@@ -171,7 +162,7 @@
     <string name="long_click">"Lange zum Bearbeiten drücken"</string>
     <string name="rescan">"Erneut scannen"</string>
     <string name="support">Support</string>
-    <string name="choose_email_client">Bitte wählen Sie Ihre E-Mail-App</string>
+    <string name="choose_email_client">Bitte wählen Sie Ihre E-Mail-Anwendung</string>
     <string name="donate">"Spenden"</string>
     <string name="donate_text">Entwicklung einer App dieser Größe benötigt eine große Menge an Zeit und Einsatz. Die App erleichtert Ihr tägliches Leben\? Dann würde es mich freuen, wenn Sie sich überlegen, etwas zu spenden. Danke. Wenn Sie etwas spenden möchten, senden Sie mir bitte ein E-Mail, damit ich Ihnen persönlich danken kann!</string>
     <string name="donate_amount">Bitte wählen Sie den zu spendenden Betrag aus (⅓ davon geht an Google)</string>
@@ -197,7 +188,7 @@
     <string name="grids_legend_pluginName">Plugin-Name</string>
     <string name="grids_legend_nodeName">Server-Name</string>
     <string name="grids_legend_both">Beides</string>
-    <string name="redetectHdGraphsUrl">HD-Graph URL neu bestimmen</string>
+    <string name="redetectHdGraphsUrl">HD-Graph URL neu erfassen</string>
     <string name="disableHDGraphs">HD-Graphen deaktivieren</string>
     <string name="downloadError">Fehler beim Herunterladen</string>
     <string name="certificate_error">Verschlüsselte Verbindung fehlgeschlagen</string>
@@ -208,7 +199,7 @@
     <string name="ok">OK</string>
     <string name="grids_settings">Gitter-Einstellungen</string>
     <string name="alert_i18n">Es scheint, dass die App nicht in Ihrer Muttersprache verfügbar ist. Könnten Sie uns bitte helfen, sie zur Verfügung zu stellen\?</string>
-    <string name="alert_i18n_yes">Vielen Dank. Wir verwenden ein einfach zu bedienendes Online-Tool, um Übersetzungen zu verwalten, das hier verfügbar ist: www.munin-for-android.com/i18n.php</string>
+    <string name="alert_i18n_yes">Vielen Dank. Wir verwenden ein einfach zu bedienendes Online-Wekzeug, um Übersetzungen zu verwalten, das hier verfügbar ist: www.munin-for-android.com/i18n.php</string>
     <string name="about_openSource">Munin für Android ist freie (libre) Software. <a href="https://github.com/chteuchteu/Munin-for-Android">Du kannst auf GitHub an dem Projekt mitwirken</a>. Die App wird unter der GNU GPL version 2 veröffentlicht.</string>
     <string name="defaultActivity">Startansicht</string>
     <string name="setDefaultActivity">Startansicht setzen</string>
@@ -223,7 +214,7 @@
     <string name="reset">Auf Standard-Werte zurücksetzen</string>
     <string name="advanced">Erweiterte Optionen</string>
     <string name="disable_chromecast">Chromecast Funktion deaktivieren</string>
-    <string name="disable_chromecast_text">Falls du keinen Chromecast besitzt kannst du die Funktion in der App abstellen</string>
+    <string name="disable_chromecast_text">Sie können die Chromecast-Unterstützung deaktivieren, wenn Sie sie nicht brauchen</string>
     <string name="about">Über</string>
     <string name="splashDesc">Lade</string>
     <string name="notifications_mailSent">E-Mail versendet. Bitte überprüfen Sie ihren Posteingang</string>
@@ -256,11 +247,8 @@
     <string name="push_notifications">Push-Benachrichtigungen</string>
     <string name="poll">Umfrage</string>
     <string name="poll_notifications">Polling-Benachrichtigungen</string>
-    <string name="push_explanation">Empfohlen: In diesem Modus sendet Munin Warnungen direkt auf Ihr Gerät.
-\n Dies ermöglicht Echtzeit-Benachrichtigungen, geringe Akku-Bilanz und reduzierte Datennutzung aber musst du ein kleines Script auf jeder Master installieren.</string>
-    <string name="poll_explanation">In diesem Modus fragt Munin für Android alle Server regelmäßig ab.
-\n Es gibt keine zusätzliche Konfiguration, aber es ist nicht so zuverlässig wie der Push-Modus und kann Ihre Batterie-Laufzeit und ihr Datenvolumen reduzieren.
-\n Verwenden Sie diesen Modus nur, wenn Sie das Skript nicht installieren, dass im Push-Modus erwähnt ist.</string>
+    <string name="push_explanation">Empfohlen: In diesem Modus sendet Munin Warnungen direkt auf Ihr Gerät. Dies ermöglicht Echtzeit-Benachrichtigungen, geringe Akku-Bilanz und reduzierte Datennutzung aber musst du ein kleines Script auf jeder Master installieren.</string>
+    <string name="poll_explanation">In diesem Modus fragt Munin für Android alle Server regelmäßig ab. Es gibt keine zusätzliche Konfiguration, aber es ist nicht so zuverlässig wie der Push-Modus und kann Ihre Batterie-Laufzeit und ihr Datenvolumen reduzieren. Verwenden Sie diesen Modus nur, wenn Sie das Skript nicht installieren, dass im Push-Modus erwähnt ist.</string>
     <string name="permission_required">Dazu ist eine zusätzliche Berechtigung erforderlich</string>
     <string name="permission_missing">Nicht in der Lage, Maßnahmen zu ergreifen: ein oder mehrere Berechtigungen fehlen.</string>
     <string name="restart_to_apply_lang_changes">Anwendung muss neu gestartet werden, damit Sprachänderungen wirksam werden.</string>
