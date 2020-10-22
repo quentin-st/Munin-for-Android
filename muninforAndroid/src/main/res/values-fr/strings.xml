@@ -34,7 +34,7 @@
     <string name="loading">Chargement…</string>
     <string name="search">Rechercher</string>
     <string name="about_eraseData">Remise à zéro de l\'appli</string>
-    <string name="about_gplay">Notez l\'application sur Google Play</string>
+    <string name="about_gplay">Notez l\'application</string>
     <string name="graphView_ImageViewDescription">Graphique</string>
     <string name="renameMaster">Renommer</string>
     <string name="addServerTitle">Ajouter un serveur</string>
@@ -158,18 +158,22 @@ Veuillez utiliser le code suivant sur votre autre appareil Android afin de l\'im
     <string name="long_click">Appui long pour éditer</string>
     <string name="rescan">Re-scanner</string>
     <string name="support">Support</string>
-    <string name="choose_email_client">Veuillez sélectionner votre application d\'e-mail</string>
-    <string name="donate">Donation</string>
-    <string name="donate_text">Développer une telle application nécessite beaucoup de temps et de dévotion. Si Munin for Android vous est utile,
-	    pourriez-vous considérer une donation s\'il vous plaît ? Merci ! Si vous le faites, envoyez-moi un mail afin que je puisse
-	    vous remercier en personne !</string>
+    <string name="choose_email_client">Veuillez sélectionner votre application de messagerie</string>
+    <string name="donate">Faire un don</string>
+    <string name="donate_text">Développer une telle application nécessite beaucoup de temps et de dévotion. Si Munin for Android vous est utile, pourriez-vous considérer une donation s\'il vous plaît \? Merci ! Si vous le faites, envoyez-moi un courriel afin que je puisse vous remercier en personne !</string>
     <string name="donate_amount">Veuillez sélectionner le montant à donner (⅓ sera pris par Google)</string>
-    <string name="sync_serversadded">XXX noeud(s) ajouté(s)\n</string>
-    <string name="sync_serversupdated">XXX noeud(s) mis à jour\n</string>
-    <string name="sync_serversdeleted">XXX noeud(s) supprimé(s)\n</string>
-    <string name="sync_pluginsadded">XXX plugin(s) ajouté(s)\n</string>
-    <string name="sync_pluginsupdated">XXX plugin(s) mis à jour\n</string>
-    <string name="sync_pluginsdeleted">XXX plugin(s) supprimé(s)\n</string>
+    <string name="sync_serversadded">XXX nœud(s) ajouté(s)
+\n</string>
+    <string name="sync_serversupdated">XXX nœud(s) mis à jour
+\n</string>
+    <string name="sync_serversdeleted">XXX nœud(s) supprimé(s)
+\n</string>
+    <string name="sync_pluginsadded">XXX greffon(s) ajouté(s)
+\n</string>
+    <string name="sync_pluginsupdated">XXX greffon(s) mis à jour
+\n</string>
+    <string name="sync_pluginsdeleted">XXX greffon(s) supprimé(s)
+\n</string>
     <string name="sync_nochange">Aucun changement</string>
     <string name="sync_reporttitle">Rapport du scan</string>
     <string name="follow">Suivre sur Twitter</string>
@@ -177,9 +181,7 @@ Veuillez utiliser le code suivant sur votre autre appareil Android afin de l\'im
     <string name="graphwidgetname">Munin for Android : Widget graphique</string>
     <string name="alertswidgetname">Munin for Android : Widget alertes</string>
     <string name="featuresPackNeeded">Munin for Android Features Pack requis</string>
-    <string name="about_firstPhrase">Si vous voulez dire bonjour, si vous avez des idées d\'améliorations ou si vous avez trouvé un bug, vous pouvez m\'envoyer un e-mail à <b>
-            <u>support@munin-for-android.com</u>
-        </b>. Merci.</string>
+    <string name="about_firstPhrase">Si vous voulez dire bonjour, si vous avez des idées d\'améliorations ou si vous avez trouvé une erreur, vous pouvez m\'envoyer un courriel à <b> <u>support@munin-for-android.com</u> </b>. Merci.</string>
     <string name="about_independantApp">Munin for Android est développée de manière indépendante, ce n\'est pas l\'application officielle.</string>
     <string name="about_changelog"><![CDATA[Veuillez visiter <a href="http://munin-for-android.com/">munin-for-android.com</a> pour lire l\'ensemble des changements.]]></string>
     <string name="about_openSource"><![CDATA[Munin for Android est open source ! <a href="https://github.com/chteuchteu/Munin-for-Android">Vous pouvez contribuer au projet sur GitHub</a>.
@@ -192,8 +194,8 @@ Veuillez utiliser le code suivant sur votre autre appareil Android afin de l\'im
     <string name="to">Au</string>
     <string name="grids_legend">Légende des grilles</string>
     <string name="grids_legend_none">Aucune</string>
-    <string name="grids_legend_pluginName">Nom du plugin</string>
-    <string name="grids_legend_nodeName">Nom du noeud</string>
+    <string name="grids_legend_pluginName">Nom du greffon</string>
+    <string name="grids_legend_nodeName">Nom du nœud</string>
     <string name="grids_legend_both">Les deux</string>
     <string name="user_agent">User Agent</string>
     <string name="redetectHdGraphsUrl">Détection de l\'URL des graphs HD</string>
@@ -223,13 +225,13 @@ dans votre langue s\'il-vous plaît ?</string>
     <string name="reset">Réinitialisation</string>
     <string name="disable_chromecast">Désactiver la fonctionnalité Chromecast</string>
     <string name="disable_chromecast_text">Si vous ne possédez pas de Chromecast, vous voudriez peut-être désactiver son utilisation dans l\'application</string>
-    <string name="about">A propos</string>
+    <string name="about">À propos</string>
     <string name="splashDesc">Chargement</string>
     <string name="default_grid">Grille par défaut</string>
     <string name="notifications_device_code">Code de l\'appareil</string>
     <string name="notifications_instructions">Vous devez configurer chacun des hôtes pour qu\'ils puissent envoyer des notifications à cet appareil.</string>
-    <string name="notifications_sendByMail">Envoyer le code et les instructions par e-mail</string>
-    <string name="notifications_mailSent">E-mail envoyé ! Veuillez vérifier votre boîte de réception</string>
+    <string name="notifications_sendByMail">Envoyer le code et les instructions par courriel</string>
+    <string name="notifications_mailSent">Courriel envoyé ! Veuillez vérifier votre boîte de réception</string>
     <string name="notifications_test_title">Test de notification Munin for Android</string>
     <string name="notifications_test_text">Munin for Android GCM Trigger a été installé</string>
     <string name="ignore">Ignorer</string>
