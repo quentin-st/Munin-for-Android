@@ -198,16 +198,16 @@
     <string name="grids_legend_both">Entrambi</string>
     <string name="redetectHdGraphsUrl">Rileva nuovamente URL grafici HD</string>
     <string name="disableHDGraphs">Disabilita grafici HD</string>
-    <string name="downloadError">Errore download</string>
+    <string name="downloadError">Errore di scaricamento</string>
     <string name="certificate_error">La tua connessione non è sicura</string>
-    <string name="alert_opensource">Lo sapevi? Munin per Android ora è open-source!</string>
+    <string name="alert_opensource">Munin per Android è un software libero con copyleft GPLv2.</string>
     <string name="alert_opensource_action">Contribuisci su GitHub</string>
     <string name="close">Chiudi</string>
     <string name="documentation">Documentazione</string>
     <string name="ok">OK</string>
     <string name="grids_settings">Impostazioni griglie</string>
-    <string name="alert_i18n">Sembra che l\'app non sia disponibile nella tua lingua. Puoi aiutarci a renderla disponibile nella tua lingua?</string>
-    <string name="alert_i18n_yes">Grazie molte! Usiamo un tool online semplice da usare per gestire le traduzioni. Usa questo link per raggiungerlo: www.munin-for-android.com/i18n.php</string>
+    <string name="alert_i18n">Sembra che l\'applicazione non sia disponibile nella tua lingua madre. Potresti aiutarci a renderlo disponibile\?</string>
+    <string name="alert_i18n_yes">Grazie mille. Utilizziamo uno strumento online facile da usare per gestire le traduzioni, disponibile qui: www.munin-for-android.com/i18n.php</string>
     <string name="text53">Aggiorna solo con Wifi</string>
     <string name="defaultActivity">Attività predefinita</string>
     <string name="setDefaultActivity">Imposta attività di default</string>
@@ -254,4 +254,9 @@
     <string name="poll_notifications">Notifiche Poll</string>
     <string name="push_explanation">Raccomandato: In questo modo, munin manda informazioni direttamente al tuo dispositivo. Questo permette notifiche in tempo reale, basso consumo di batteria e ridotto utilizzo di banda ma richiede l\'installazione di uno script intelligente su ogni master.</string>
     <string name="poll_explanation">In questo modo, Munin per Android contatta ogni server regolarmente. Queto non richiede alcuna configurazione aggiuntiva, ma non è cosi affidabile come le notifiche push e potrebbe ridurre la durat della batteria e aumentare il consumo del piano dati. Usa questa modalita solo se non puoi installare lo script menzionato nella modalità push.</string>
+    <string name="restart_to_apply_lang_changes">L\'applicazione deve essere riavviata affinché le modifiche alla lingua abbiano effetto.</string>
+    <string name="permission_missing">Impossibile eseguire l\'azione: mancano una o più autorizzazioni.</string>
+    <string name="permission_required">Per farlo è necessaria un\'autorizzazione aggiuntiva</string>
+    <string name="graphs_autoload">Carica automaticamente i grafici</string>
+    <string name="addToHomescreen">Aggiungi alla schermata iniziale</string>
 </resources>
