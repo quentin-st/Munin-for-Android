@@ -218,7 +218,7 @@
     <string name="fieldsDescription">Descrição dos campos</string>
     <string name="openInBrowser">Abrir no navegador</string>
     <string name="yourerunning">Está a executar</string>
-    <string name="addToHomescreen_confirm">Atalho para %1$a adicionado ao ecrã inicial</string>
+    <string name="addToHomescreen_confirm">Atalho para %1$s adicionado ao ecrã inicial</string>
     <string name="addToHomescreen">Adicionar ao ecrã inicial</string>
     <string name="edit">Editar</string>
     <string name="servers_noservers_2">Adicionar a sua, ou uma de exemplo, a tocar em +</string>
