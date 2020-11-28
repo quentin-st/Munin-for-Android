@@ -31,9 +31,10 @@
     <string name="text16">Некорректный URL. Пожалуйста, проверьте настройки.</string>
     <string name="text18">"Готово!"</string>
     <string name="text21.1">" Суб-сервер"</string>
-    <string name="text21.2">" Добавлено!\n"</string>
+    <string name="text21.2">добавлено.
+\n</string>
     <string name="success">"Готово"</string>
-    <string name="text27">" плагины найдены!"</string>
+    <string name="text27">найдены плагины.</string>
     <string name="text28">"График сохранён как /muninForAndroid/"</string>
     <string name="text29">"Ошибка сохранения графика"</string>
     <string name="text30">"Нет подключения к Интернету"</string>
