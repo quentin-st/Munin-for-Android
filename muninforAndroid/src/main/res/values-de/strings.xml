@@ -22,7 +22,7 @@
     <string name="addServerTitle">"Server hinzufügen"</string>
     <string name="serversTitle">"Server"</string>
     <string name="settingsTitle">"Einstellungen"</string>
-    <string name="aboutTitle">"Über Munin für Android"</string>
+    <string name="aboutTitle">Über Munin for Android</string>
     <string name="text01">Einstellungen werden zurückgesetzt. Sind Sie sicher?</string>
     <string name="text02">Erfolgreich zurückgesetzt.</string>
     <string name="text09">"Fehler!"</string>
@@ -45,7 +45,7 @@
     <string name="text39">Bitte warten, die App wird aktualisiert …</string>
     <string name="settings_lang">"App-Sprache"</string>
     <string name="button_premium">Munin Premium</string>
-    <string name="goPremium_title">Munin für Android Premiumfunktionen</string>
+    <string name="goPremium_title">Munin for Android Premiumfunktionen</string>
     <string name="goPremium_features"><li>Graphen-Gitter</li>·<li>Graph Widgets</li>·<li>Digest-Authentifikation</li>·<li>Benachrichtigungen</li>·<li>Bevorzugter Support</li>·<li>Ein Paket für alles: Einmal bezahlen für existierende und alle zukünftigen Premiumfunktionen!</li>·<li>Und es kommt noch mehr! Aktiviere die automatischen Aktualisierungen in Google Play um neuesten Premiumfunktionen automatisch zu erhalten.</li></string>
     <string name="buy_now">Jetzt kaufen</string>
     <string name="goPremiumTitle">Munin Premium</string>
@@ -89,8 +89,8 @@
     <string name="text61">"Hinzufügen"</string>
     <string name="text62">Unbeschriftet</string>
     <string name="text64">"Abbrechen"</string>
-    <string name="text65">Digest Authentifizierung ist im Munin für Android Premiumfunktionspaket enthalten ($1,49).</string>
-    <string name="text65.1">Digest Authentifizierung ist im Munin für Android Premiumfunktionspaket enthalten ($1,49). Möchten Sie es in Google Play kaufen\?</string>
+    <string name="text65">Digest Authentifizierung ist im Munin for Android Premiumfunktionspaket enthalten ($1,49).</string>
+    <string name="text65.1">Digest Authentifizierung ist im Munin for Android Premiumfunktionspaket enthalten ($1,49). Möchten Sie es in Google Play kaufen\?</string>
     <string name="text66">"History URLs leeren"</string>
     <string name="text66.1">Verlauf gelöscht.</string>
     <string name="text67">Unbeschriftet</string>
@@ -146,7 +146,7 @@
     <string name="action_export">"Export"</string>
     <string name="import_export">"Import / Export"</string>
     <string name="export_failed">Exportieren fehlgeschlagen …</string>
-    <string name="export_subject">"Munin für Android-Export"</string>
+    <string name="export_subject">Munin for Android-Export</string>
     <string name="import_title">Importieren</string>
     <string name="import_sentence">Bitte den Code eingeben, der auf dem ersten Gerät generiert wurde</string>
     <string name="export_explanation">Ihre Konfiguration wird zum Abruf durch ein anderes Gerät hochgeladen. Alle Passwörter werden verschlüsselt und am Ende erhalten Sie einen Code zum Abrufen der Konfiguration auf Ihrem anderen Gerät. Die Konfiguration wird vom Munin for Android-Server gelöscht, sobald Sie sie herunterladen oder nach 24 Stunden, wenn Sie es nicht tun.</string>
@@ -175,11 +175,11 @@
     <string name="sync_nochange">"Keine Änderung"</string>
     <string name="sync_reporttitle">"Scan-Report"</string>
     <string name="text84">"Der Master wird gelöscht. Sicher?"</string>
-    <string name="follow">Munin für Android auf Twitter folgen</string>
+    <string name="follow">Auf Twitter folgen</string>
     <string name="notifs_vibrate">Vibrieren</string>
-    <string name="graphwidgetname">Munin für Android: Graph Widget</string>
-    <string name="alertswidgetname">Munin für Android: Alarm Widget</string>
-    <string name="featuresPackNeeded">Munin für Android Features Pack benötigt</string>
+    <string name="graphwidgetname">Munin for Android: Graph Widget</string>
+    <string name="alertswidgetname">Munin forr Android: Alarm Widget</string>
+    <string name="featuresPackNeeded">Munin for Android Features Pack benötigt</string>
     <string name="user_agent">User Agent</string>
     <string name="from">Von</string>
     <string name="to">Bis</string>
@@ -192,7 +192,7 @@
     <string name="disableHDGraphs">HD-Graphen deaktivieren</string>
     <string name="downloadError">Fehler beim Herunterladen</string>
     <string name="certificate_error">Verschlüsselte Verbindung fehlgeschlagen</string>
-    <string name="alert_opensource">Munin für Android ist eine GPLv2 copyleft libre Software.</string>
+    <string name="alert_opensource">Munin for Android ist eine GPLv2 copyleft libre Software.</string>
     <string name="alert_opensource_action">Auf GitHub beitragen</string>
     <string name="close">Schließen</string>
     <string name="documentation">Dokumentation</string>
@@ -200,7 +200,7 @@
     <string name="grids_settings">Gitter-Einstellungen</string>
     <string name="alert_i18n">Es scheint, dass die App nicht in Ihrer Muttersprache verfügbar ist. Könnten Sie uns bitte helfen, sie zur Verfügung zu stellen\?</string>
     <string name="alert_i18n_yes">Vielen Dank. Wir verwenden ein einfach zu bedienendes Online-Wekzeug, um Übersetzungen zu verwalten, das hier verfügbar ist: www.munin-for-android.com/i18n.php</string>
-    <string name="about_openSource">Munin für Android ist freie (libre) Software. <a href="https://github.com/chteuchteu/Munin-for-Android">Du kannst auf GitHub an dem Projekt mitwirken</a>. Die App wird unter der GNU GPL version 2 veröffentlicht.</string>
+    <string name="about_openSource">Munin for Android ist freie (libre) Software. <a href="https://github.com/chteuchteu/Munin-for-Android">Du kannst auf GitHub an dem Projekt mitwirken</a>. Die App wird unter der GNU GPL version 2 veröffentlicht.</string>
     <string name="defaultActivity">Startansicht</string>
     <string name="setDefaultActivity">Startansicht setzen</string>
     <string name="label">Label</string>
@@ -248,7 +248,7 @@
     <string name="poll">Umfrage</string>
     <string name="poll_notifications">Polling-Benachrichtigungen</string>
     <string name="push_explanation">Empfohlen: In diesem Modus sendet Munin Warnungen direkt auf Ihr Gerät. Dies ermöglicht Echtzeit-Benachrichtigungen, geringe Akku-Bilanz und reduzierte Datennutzung aber musst du ein kleines Script auf jeder Master installieren.</string>
-    <string name="poll_explanation">In diesem Modus fragt Munin für Android alle Server regelmäßig ab. Es gibt keine zusätzliche Konfiguration, aber es ist nicht so zuverlässig wie der Push-Modus und kann Ihre Batterie-Laufzeit und ihr Datenvolumen reduzieren. Verwenden Sie diesen Modus nur, wenn Sie das Skript nicht installieren, dass im Push-Modus erwähnt ist.</string>
+    <string name="poll_explanation">In diesem Modus fragt Munin for Android alle Server regelmäßig ab. Es gibt keine zusätzliche Konfiguration, aber es ist nicht so zuverlässig wie der Push-Modus und kann Ihre Batterie-Laufzeit und ihr Datenvolumen reduzieren. Verwenden Sie diesen Modus nur, wenn Sie das Skript nicht installieren, dass im Push-Modus erwähnt ist.</string>
     <string name="permission_required">Dazu ist eine zusätzliche Berechtigung erforderlich</string>
     <string name="permission_missing">Nicht in der Lage, Maßnahmen zu ergreifen: ein oder mehrere Berechtigungen fehlen.</string>
     <string name="restart_to_apply_lang_changes">Anwendung muss neu gestartet werden, damit Sprachänderungen wirksam werden.</string>
