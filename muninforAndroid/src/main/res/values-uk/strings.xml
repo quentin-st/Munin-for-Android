@@ -36,23 +36,21 @@
     <string name="about_eraseData">Обнулити програму</string>
     <string name="about_gplay">Проголосувати</string>
     <string name="servers_noservers_1">Відсутній сервер</string>
-    <string name="servers_noservers_2">Додайте ваш або демонстраційний натисканням +</string>
+    <string name="servers_noservers_2">Додайте свій або тестовий сервер, натиснувши +</string>
     <string name="edit">Редагувати</string>
     <string name="yourerunning">Працює</string>
     <string name="openInBrowser">Відкрити в браузері</string>
     <string name="fieldsDescription">Опис полей</string>
     <string name="follow">Слідкувати в Твітер</string>
     <string name="notifs_vibrate">Вібрувати</string>
-    <string name="about_firstPhrase">Хочете привітати автора? Володієте ідеєю для вдосконалення програми? Знайшли критичну проблему? Надсилайте пошту на <b>
-            <u>support@munin-for-android.com</u>
-        </b>! Дякуємо!</string>
+    <string name="about_firstPhrase">Хочете привітати автора\? Володієте ідеєю для вдосконалення програми\? Знайшли критичну проблему\? Надсилайте пошту на <b><u>support@munin-for-android.com</u></b>! Дякуємо!</string>
     <string name="about_independantApp">Ця програма розроблена індивідуально - це не є офіційна версія.</string>
     <string name="about_changelog">Перейдіть до &lt;a href=http://munin-for-android.com/&gt;munin-for-android.com&lt;/a&gt; для перегляду повного списку змін.</string>
-    <string name="about_openSource">Мунін для Андроід тепер має відкритий код! &lt;a href=https://github.com/chteuchteu/Munin-for-Android&gt;Ви можете приєднатись до проекту на ГітХаб&lt;/a&gt;. Програма розповсюджується за ліцензією GNU GPL версії 2.</string>
+    <string name="about_openSource">Мунін для Андроїд тепер має відкритий код! &lt;a href=https://github.com/chteuchteu/Munin-for-Android&gt;Ви можете приєднатись до проєкту на ҐітГаб&lt;/a&gt;. Застосунок розповсюджується за ліцензією GNU GPL версії 2.</string>
     <string name="about_specialThanksTitle">Спеціальні подяки</string>
     <string name="about_librariesTitle">Бібліотеки</string>
     <string name="goPremium_title">Розширений пакет Мунін для Андроід</string>
-    <string name="buy_now">ПРИДБАТИ</string>
+    <string name="buy_now">Придбати</string>
     <string name="graphView_ImageViewDescription">Графік</string>
     <string name="addServerTitle">Додати сервер</string>
     <string name="renameMaster">Перейменування майстра</string>
@@ -62,25 +60,26 @@
     <string name="goPremiumTitle">Отримати Преміум</string>
     <string name="alertsTitle">Сповіщення</string>
     <string name="notificationsTitle">Повідомлення</string>
-    <string name="widget_configuration3">Приховати ім\'я сервера</string>
+    <string name="widget_configuration3">Приховати назву сервера</string>
     <string name="settings_defaultnode">Базовий сервер</string>
     <string name="settings_lang">Мова програми</string>
     <string name="text01">Налаштування і параметри серверів буде скинуто. Впевнені?</string>
     <string name="text09">Помилка!</string>
-    <string name="text18">Успішно!</string>
-    <string name="text21.1">" сервер"</string>
-    <string name="text21.2">" додано!\n"</string>
+    <string name="text18">Успішно.</string>
+    <string name="text21.1">сервер</string>
+    <string name="text21.2">додано.
+\n</string>
     <string name="success">Успішно</string>
-    <string name="text27">" додатки знайдено!"</string>
+    <string name="text27">додатки знайдено.</string>
     <string name="yes">Так</string>
     <string name="no">Ні</string>
     <string name="text35">Більше…</string>
-    <string name="text36">Налаштування вдало збережено!</string>
+    <string name="text36">Налаштування вдало збережено.</string>
     <string name="text42">Завантаження…</string>
     <string name="text43">Зачекайте…</string>
     <string name="text44">Отримання URL…</string>
-    <string name="text45">Збереження!</string>
-    <string name="text46">"Опитування сервера "</string>
+    <string name="text45">Зберігання…</string>
+    <string name="text46">Опитування сервера</string>
     <string name="text47.1">день</string>
     <string name="text47.2">тиждень</string>
     <string name="text47.3">місяць</string>
@@ -91,15 +90,15 @@
     <string name="text51.1">попередження</string>
     <string name="text51.2">попередження</string>
     <string name="text52">Задіяти повідомлення</string>
-    <string name="text53">Оновлення лише за наявності WiFi</string>
+    <string name="text53">Оновлення лише через Wi-Fi</string>
     <string name="text55">Частота оновлення</string>
     <string name="text56">Вибір серверів для перегляду</string>
-    <string name="text58">" критичне / критичні /&amp; / попередження / попередження /на / сервері/ серверах"</string>
+    <string name="text58">критичне / критичні /&amp; / попередження / попередження /на / сервері/ серверах</string>
     <string name="text60">Продовження</string>
     <string name="text61">Додавання</string>
     <string name="text64">Скасувати</string>
     <string name="text66.1">Історію спорожнено.</string>
-    <string name="text67">Відсутні мітки</string>
+    <string name="text67">Без позначки</string>
     <string name="text69">Ім\'я графіка</string>
     <string name="text70">Додати графік</string>
     <string name="text70.2">Додати мітку</string>
@@ -112,15 +111,15 @@
     <string name="text77">Без графіка</string>
     <string name="text79">Відкрити</string>
     <string name="splashDesc">Завантаження</string>
-    <string name="widget_configuration1">Готово! Віджет доданий на головний екран. Підказка: для поновлення графіка торкніться сірої смужки на віджеті!</string>
-    <string name="widget_configuration2">Автопоновлення графіка тільки по WiFi (1 раз на годину)</string>
+    <string name="widget_configuration1">Віджет додано на головний екран, торкніться сірого поля внизу його, щоб оновити графік.</string>
+    <string name="widget_configuration2">Лише автоматичне оновлення графіка у Wi-Fi (одне оновлення на годину)</string>
     <string name="text02">Скидання виконано.</string>
-    <string name="text11">Програма Google Play, здається, відсутня у вашому телефоні.</string>
+    <string name="text11">Застосунок Google Play, здається, відсутній у вашому телефоні.</string>
     <string name="text16">URL не виглядає правильним. Будь ласка, спробуйте ще раз.</string>
     <string name="text28">Графік збережений як /muninForAndroid/</string>
     <string name="text29">Помилка при збереженні графіка</string>
     <string name="text30">Немає підключення до Інтернету</string>
-    <string name="text37">Сервери не додано. Додайте їх в настройках.</string>
+    <string name="text37">Сервери не додано. Додайте їх в налаштуваннях.</string>
     <string name="text39">Йде оновлення застосунку. Будь ласка, зачекайте…</string>
     <string name="text49.1">Приховати суб-сервери з норм. статусом</string>
     <string name="text49.2">Показати суб-сервери з норм. статусом</string>
@@ -154,4 +153,8 @@
     <string name="ignore">Ігнорувати</string>
     <string name="permission_missing">Не в змозі досягти дії: відсутній один або декілька дозволів.</string>
     <string name="restart_to_apply_lang_changes">Застосунок необхідно перезапустити, щоб зміни мови вступили в силу.</string>
+    <string name="text66">Очистити історію URL-адрес</string>
+    <string name="text65.1">Дайджест-автентифікація доступна в наборі функцій Munin для Android (1,49 дол. США). Ви хочете придбати його в Google Play\?</string>
+    <string name="text65">Дайджест-автентифікація доступна в наборі функцій Munin для Android (1,49 дол. США).</string>
+    <string name="goPremium_features"><li>Сітки графіків</li> <li>Віджети графіків</li> <li>Авторизація дайджестів</li> <li>Сповіщення</li> <li>Пріоритетна підтримка</li> <li>Єдиний пакет функцій преміумкласу: Платіть один раз за поточні та майбутні функції преміумкласу! </li> <li> Попереду ще більше, обов’язково ввімкніть автоматичне оновлення в Google Play, щоб отримувати найновіші функції преміумкласу. </li></string>
 </resources>
