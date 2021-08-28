@@ -43,7 +43,7 @@
     <string name="fieldsDescription">Опис полей</string>
     <string name="follow">Слідкувати в Твітер</string>
     <string name="notifs_vibrate">Вібрувати</string>
-    <string name="about_firstPhrase">Хочете привітати автора\? Володієте ідеєю для вдосконалення програми\? Знайшли критичну проблему\? Надсилайте пошту на <b><u>support@munin-for-android.com</u></b>! Дякуємо!</string>
+    <string name="about_firstPhrase">Хочете привітати автора\? Володієте ідеєю для вдосконалення застосунку\? Знайшли критичну проблему\? Надсилайте пошту на <b><u>support@munin-for-android.com</u></b>! Дякуємо!</string>
     <string name="about_independantApp">Ця програма розроблена індивідуально - це не є офіційна версія.</string>
     <string name="about_changelog">Перейдіть до &lt;a href=http://munin-for-android.com/&gt;munin-for-android.com&lt;/a&gt; для перегляду повного списку змін.</string>
     <string name="about_openSource">Мунін для Андроїд тепер має відкритий код! &lt;a href=https://github.com/chteuchteu/Munin-for-Android&gt;Ви можете приєднатись до проєкту на ҐітГаб&lt;/a&gt;. Застосунок розповсюджується за ліцензією GNU GPL версії 2.</string>
@@ -125,7 +125,7 @@
     <string name="text49.2">Показати суб-сервери з норм. статусом</string>
     <string name="text54">Розрахункове споживання трафіку: ?? / в день</string>
     <string name="addToHomescreen">Додати на головний екран</string>
-    <string name="addToHomescreen_confirm">Ярлик для %1$ s додано до головного екрану</string>
+    <string name="addToHomescreen_confirm">Мітку для %1$s додано до головного екрану</string>
     <string name="text57">10 хвилин/30 хвилин/1 година/2 години/5 годин/10 годин/24 години</string>
     <string name="text62">Без позначки</string>
     <string name="action_import">Імпортувати</string>
@@ -157,4 +157,105 @@
     <string name="text65.1">Дайджест-автентифікація доступна в наборі функцій Munin для Android (1,49 дол. США). Ви хочете придбати його в Google Play\?</string>
     <string name="text65">Дайджест-автентифікація доступна в наборі функцій Munin для Android (1,49 дол. США).</string>
     <string name="goPremium_features"><li>Сітки графіків</li> <li>Віджети графіків</li> <li>Авторизація дайджестів</li> <li>Сповіщення</li> <li>Пріоритетна підтримка</li> <li>Єдиний пакет функцій преміумкласу: Платіть один раз за поточні та майбутні функції преміумкласу! </li> <li> Попереду ще більше, обов’язково ввімкніть автоматичне оновлення в Google Play, щоб отримувати найновіші функції преміумкласу. </li></string>
+    <string name="disable_chromecast_text">Якщо у вас немає Chromecast, ви можете вимкнути його використання в застосунку</string>
+    <string name="alert_i18n_yes">Щиро дякую. Ми використовуємо простий у використанні мережевий засіб для управління перекладами, доступний тут: www.munin-for-android.com/i18n.php</string>
+    <string name="poll_explanation">В цьому режимі Munin для Android регулярно опитує (poll) кожен з ваших серверів. Він не вимагає додаткового налаштування, але він не так надійний, як режим push, коштом зниження часу роботи від батареї та додаткового використання даних. Використовуйте цей режим тільки в тому випадку, якщо ви не можете встановити скрипт, згаданий в режимі push.</string>
+    <string name="push_explanation">Порада: В цьому режимі Munin надсилає сповіщення безпосередньо на ваш пристрій. Це дає змогу отримувати сповіщення наживо, заощаджувати заряд батареї і знижувати споживання даних, але вам доведеться встановити невеликий скрипт на кожен зразок.</string>
+    <string name="poll">Poll-режим</string>
+    <string name="until">Доти, поки</string>
+    <string name="manageIgnoreRules">Управління правилами нехтування</string>
+    <string name="ignoreRulesText">Наразі існує %1$s правил нехтування. Правила створюються з окремих повідомлень і можуть управлятися звідси</string>
+    <string name="ignore_plugin">Розширення %1$s незалежно від хоста і групи</string>
+    <string name="notifications_instructions">Ви повинні налаштувати кожного майстер-сервера так, щоб він міг надсилати сповіщення на цей пристрій.</string>
+    <string name="reset">Скинути</string>
+    <string name="chromecast_application_id">ID застосунку Chromecast</string>
+    <string name="grids_legend">Легенда сіток</string>
+    <string name="alert_opensource_action">Робіть свій унесок на GitHub</string>
+    <string name="alert_opensource">Munin для Android є вільним програмним забезпеченням з копілефтом GPLv2.</string>
+    <string name="certificate_error">Ваше з\'єднання не є приватним</string>
+    <string name="disableHDGraphs">Вимкнути HD Graphs</string>
+    <string name="redetectHdGraphsUrl">Повторне виявлення HD Graphs URL</string>
+    <string name="grids_legend_nodeName">Назва сервера</string>
+    <string name="grids_legend_none">Немає</string>
+    <string name="to">У</string>
+    <string name="from">З</string>
+    <string name="sync_pluginsupdated">XXX розширення оновлено
+\n</string>
+    <string name="sync_serversdeleted">XXX сервер/серверів було знищено
+\n</string>
+    <string name="sync_serversupdated">XXX сервер/серверів оновлено
+\n</string>
+    <string name="sync_serversadded">XXX сервер/серверів додано
+\n</string>
+    <string name="donate_text">Розробка такого великого застосунку вимагає величезної кількості часу та участі. Якщо застосунок буде корисним у вашому повсякденному житті, не могли б ви розглянути можливість пожертвування\? Спасибі. Якщо ви зробите це, будь ласка, надішліть мені листа, щоб я міг подякувати вам особисто!</string>
+    <string name="rescan">Повторити зчитування</string>
+    <string name="update_credentials">Редагувати налаштування з\'єднання</string>
+    <string name="export_success_txt1">Ваша конфігурація була завантажена. Будь ласка, використовуйте наступний код на вашому другому пристрої, щоб імпортувати її.</string>
+    <string name="export_explanation">Ваша конфігурація буде завантажена для повторного використання на іншому пристрої. Будь-які паролі будуть зашифровані, і в кінці ви отримаєте код для отримання конфігурації на іншому пристрої. Конфігурація буде видалена з сервера Munin for Android, як тільки ви завантажите її, або через 24 години, якщо ви цього не зробите.</string>
+    <string name="rate_long">Будь ласка, залиште свою думку про застосунок, оцінивши його на Google Play, тому що це допомагає іншим приймати обґрунтовані рішення. Спасибі.</string>
+    <string name="import_sentence">Будь ласка, введіть код, утворений на першому пристрої</string>
+    <string name="export_subject">Експорт Munin для Android</string>
+    <string name="text84">Цей майстер-сервер буде видалений. Ви впевнені\?</string>
+    <string name="text81">Немає даних для цього розширення</string>
+    <string name="text80">Ця сітка буде видалена. Ви впевнені\?</string>
+    <string name="text68">Тайм-аут: Серверу знадобилося надто багато часу для обробки запиту</string>
+    <string name="permission_required">Для цього необхідний додатковий дозвіл</string>
+    <string name="poll_notifications">Poll-сповіщення</string>
+    <string name="push_notifications">Push-сповіщення</string>
+    <string name="push">Push</string>
+    <string name="ignoreRules">Правила нехтування</string>
+    <string name="ignore_plugin_in">Розширення %1$s на хості %2$s (%3$s група)</string>
+    <string name="ignore_whole_host">Усі розширення на хості %1$s (%2$s група)</string>
+    <string name="ignore_whole_group">Усі розширення в групі %1$s</string>
+    <string name="forever">Назавжди</string>
+    <string name="one_week">На 1 тиждень</string>
+    <string name="one_day">На 1 день</string>
+    <string name="six_hours">На 6 годин</string>
+    <string name="one_hour">На 1 годину</string>
+    <string name="ignore_for">Нехтувати протягом</string>
+    <string name="ignore_alert">Нехтувати сповіщеннями</string>
+    <string name="notifications_test_text">Munin for Android GCM Trigger був установлений</string>
+    <string name="notifications_test_title">Сповіщення про тестування Munin для Android</string>
+    <string name="notifications_mailSent">Е-пошта надіслана. Будь ласка, перевірте свою поштову скриньку</string>
+    <string name="notifications_sendByMail">Надішліть мені код і вказівки поштою</string>
+    <string name="notifications_device_code">Код пристрою</string>
+    <string name="default_grid">Типова сітка</string>
+    <string name="graphs_autoload">Автоматичне завантаження графіків</string>
+    <string name="disable_chromecast">Вимкнути функцію Chromecast</string>
+    <string name="advanced">Додатково</string>
+    <string name="import_export_server">Сервер імпорту/експорту</string>
+    <string name="chromecastAuthWarning">Попередження - функція Chromecast не працює з Apache Basic/Digest auth</string>
+    <string name="openGrid">Відкрити сітку</string>
+    <string name="emptyLabel">Порожня мітка</string>
+    <string name="selectALabel">Виберіть мітку</string>
+    <string name="label">Мітка</string>
+    <string name="load">Завантажити</string>
+    <string name="setDefaultActivity">Установиити типову діяльність</string>
+    <string name="defaultActivity">Типова діяльність</string>
+    <string name="alert_i18n">Схоже, що застосунок недоступний вашою рідною мовою. Чи не могли б ви допомогти нам зробити його доступним\?</string>
+    <string name="grids_settings">Налаштування сіток</string>
+    <string name="grids_legend_both">Обидва</string>
+    <string name="grids_legend_pluginName">Назва розширення</string>
+    <string name="user_agent">Агент користувача</string>
+    <string name="featuresPackNeeded">Необхідний пакет функцій Munin для Android</string>
+    <string name="alertswidgetname">Munin для Android: Віджет сповіщень</string>
+    <string name="graphwidgetname">Munin для Android: Віджет графіка</string>
+    <string name="sync_reporttitle">Звіт про зчитування</string>
+    <string name="sync_pluginsdeleted">XXX розширення було знищено
+\n</string>
+    <string name="sync_pluginsadded">XXX розширення додано
+\n</string>
+    <string name="donate_amount">Будь ласка, виберіть суму для пожертви (⅓ цієї суми буде взято Google)</string>
+    <string name="choose_email_client">Будь ласка, виберіть застосунок для роботи з е-поштою</string>
+    <string name="support">Підтримка</string>
+    <string name="long_click">Затисніть для редагування</string>
+    <string name="alerts_ok">Хороші новини - все в порядку</string>
+    <string name="delete_master">Видалити зразок і з\'єднані вузли</string>
+    <string name="rename_label">Перейменувати мітку</string>
+    <string name="delete_label">Видалити мітку</string>
+    <string name="import_success">Усе було імпортовано</string>
+    <string name="text83">Цей вузол буде видалений. Ви впевнені\?</string>
+    <string name="text82">Ця мітка буде видалена. Ви впевнені\?</string>
+    <string name="text78">Додайте її зараз, натиснувши на +</string>
+    <string name="text74">Сітка з такою назвою вже існує.</string>
 </resources>
