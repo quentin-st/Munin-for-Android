@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="search">검색</string>
+    <string name="button_server">서버</string>
+    <string name="button_alerts">경고</string>
+    <string name="settings_autorefresh_checkbox">그래프/경고를 표시하는 동안 5분마다 자동으로 새로 고침</string>
+    <string name="button_notifications">알림</string>
+    <string name="button_graphs">그래프</string>
+    <string name="settings_login">로그인</string>
+    <string name="settings_password">비밀번호</string>
+    <string name="settings_autorefresh_label">자동 새로 고침</string>
+    <string name="save_button">저장</string>
+</resources>
