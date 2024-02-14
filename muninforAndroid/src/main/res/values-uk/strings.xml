@@ -58,7 +58,7 @@
     <string name="settingsTitle">Налаштування</string>
     <string name="aboutTitle">Про Мунін для Андроід</string>
     <string name="goPremiumTitle">Отримати Преміум</string>
-    <string name="alertsTitle">Сповіщення</string>
+    <string name="alertsTitle">Сигнали</string>
     <string name="notificationsTitle">Повідомлення</string>
     <string name="widget_configuration3">Приховати назву сервера</string>
     <string name="settings_defaultnode">Базовий сервер</string>
@@ -106,7 +106,7 @@
     <string name="text72">Обрати додатки для додавання</string>
     <string name="text73">Видалення графіка</string>
     <string name="rename_grid">Перейменування графіка</string>
-    <string name="text75">Графік</string>
+    <string name="text75">Сітка</string>
     <string name="text76">Зміна періоду…</string>
     <string name="text77">Без графіка</string>
     <string name="text79">Відкрити</string>
