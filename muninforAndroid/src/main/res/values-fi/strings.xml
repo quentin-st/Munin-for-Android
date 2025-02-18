@@ -20,13 +20,13 @@
     <string name="settings_default_scale">Graafin oletusskaala</string>
     <string name="settings_screenalwayson_label">Pidä näyttö päällä</string>
     <string name="settings_screenalwayson_checkbox">Estä näyttöä sammumasta kun näytetään graafeja / hälytyksiä</string>
-    <string name="settings_autorefresh_label">Automaattinen päivitys</string>
-    <string name="settings_autorefresh_checkbox">Päivitä graafit / hälytykset viiden minuutin välein niitä katsottaessa</string>
+    <string name="settings_autorefresh_label">Automaattinen virkistys</string>
+    <string name="settings_autorefresh_checkbox">Virkistä kaaviot/hälytykset automaattisesti viiden minuutin välein samalla kun ne näytetään</string>
     <string name="settings_enablegraphszoom">Salli graafien zoomaus</string>
     <string name="settings_titlelabel_app">Sovelluksen asetukset</string>
     <string name="settings_titlelabel_graphs">Graafien asetukset</string>
     <string name="save_button">Tallenna</string>
-    <string name="menu_graph_refresh">Päivitä</string>
+    <string name="menu_graph_refresh">Virkistä</string>
     <string name="menu_graph_save">Tallenna graafi muistikortille</string>
     <string name="menu_graph_switch">Vaihda kohdetta</string>
     <string name="menu_addserver_save">Tallenna palvelin</string>
