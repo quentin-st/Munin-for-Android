@@ -43,13 +43,13 @@
     <string name="servers_noservers_2">+ தட்டுவதன் மூலம் இப்போது உங்களுடையதைச் சேர்க்கவும் அல்லது சிலவற்றை மாதிரி செய்யவும்</string>
     <string name="edit">தொகு</string>
     <string name="addToHomescreen">ஓம்ச்கிரீனில் சேர்க்கவும்</string>
-    <string name="addToHomescreen_confirm">%1 $ க்கு குறுக்குவழி முகப்புத் திரையில் சேர்க்கப்பட்டுள்ளது</string>
+    <string name="addToHomescreen_confirm">%1$sக்கு குறுக்குவழி முகப்புத் திரையில் சேர்க்கப்பட்டுள்ளது</string>
     <string name="yourerunning">நீங்கள் ஓடுகிறீர்கள்</string>
     <string name="openInBrowser">உலாவியில் திற</string>
     <string name="fieldsDescription">புலங்கள் விளக்கம்</string>
     <string name="follow">ட்விட்டரில் பின்தொடரவும்</string>
     <string name="notifs_vibrate">அதிர்வு</string>
-    <string name="about_firstPhrase">&lt;! [சி.டி.ஏ.டி.ஏ [ஆய் சொல்ல வேண்டுமா? பயன்பாட்டை மேம்படுத்த புதுமையான சிந்தனை உள்ளதா? ஒரு முக்கியமான சிக்கலைக் கண்டுபிடித்தீர்களா? தயவுசெய்து &lt;b&gt; &lt;u&gt; support@munin-for-android.com &lt;/u&gt; &lt;/b&gt; க்கு ஒரு மின்னஞ்சல் அனுப்ப தயங்க. நன்றி.]]</string>
+    <string name="about_firstPhrase"><![CDATA[ஆய் சொல்ல வேண்டுமா? பயன்பாட்டை மேம்படுத்தப் புதுமையான சிந்தனை உள்ளதா? ஒரு முக்கியமான சிக்கலைக் கண்டுபிடித்தீர்களா? தயவுசெய்து <b><u> support@munin-for-android.com </u> </b> க்கு ஒரு மின்னஞ்சல் அனுப்ப தயங்க. நன்றி.]]></string>
     <string name="about_independantApp">இந்த பயன்பாடு சுயாதீனமாக உருவாக்கப்பட்டது - இது அதிகாரப்பூர்வ பயன்பாடு அல்ல.</string>
     <string name="about_changelog">&lt;!</string>
     <string name="about_openSource">&lt;! [சி.டி.ஏ.டி.ஏ [ஆண்ட்ராய்டுக்கான முனின் லிப்ரே மென்பொருள். &lt;a href = \"https://github.com/chteuchteu/munin-for-android\"&gt; நீங்கள் கிதுபில் திட்டத்திற்கு பங்களிக்கலாம் &lt;/a&gt;.\n பயன்பாடு குனு சிபிஎல் பதிப்பின் கீழ் விநியோகிக்கப்படுகிறது.]]&gt;</string>
