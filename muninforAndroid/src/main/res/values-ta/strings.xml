@@ -51,12 +51,21 @@
     <string name="notifs_vibrate">அதிர்வு</string>
     <string name="about_firstPhrase"><![CDATA[ஆய் சொல்ல வேண்டுமா? பயன்பாட்டை மேம்படுத்தப் புதுமையான சிந்தனை உள்ளதா? ஒரு முக்கியமான சிக்கலைக் கண்டுபிடித்தீர்களா? தயவுசெய்து <b><u> support@munin-for-android.com </u> </b> க்கு ஒரு மின்னஞ்சல் அனுப்ப தயங்க. நன்றி.]]></string>
     <string name="about_independantApp">இந்த பயன்பாடு சுயாதீனமாக உருவாக்கப்பட்டது - இது அதிகாரப்பூர்வ பயன்பாடு அல்ல.</string>
-    <string name="about_changelog">&lt;!</string>
-    <string name="about_openSource">&lt;! [சி.டி.ஏ.டி.ஏ [ஆண்ட்ராய்டுக்கான முனின் லிப்ரே மென்பொருள். &lt;a href = \"https://github.com/chteuchteu/munin-for-android\"&gt; நீங்கள் கிதுபில் திட்டத்திற்கு பங்களிக்கலாம் &lt;/a&gt;.\n பயன்பாடு குனு சிபிஎல் பதிப்பின் கீழ் விநியோகிக்கப்படுகிறது.]]&gt;</string>
+    <string name="about_changelog"><![CDATA[முழுமையான சேஞ்ச்லாக் மற்றும் பதிப்பு குறிப்புகளைப் பார்க்க <a href="http://munin-for-android.com/">munin-for-android.com</a> க்குச் செல்லவும்.]]></string>
+    <string name="about_openSource"><![CDATA[ஆண்ட்ராய்டுக்கான முனின் என்பது ஒரு இலவச மென்பொருள். <a href="https://github.com/chteuchteu/Munin-for-Android">நீங்கள் GitHub இல் திட்டத்திற்கு பங்களிக்கலாம்</a>.
+இந்தச் செயலி GNU GPL பதிப்பு 2 இன் கீழ் விநியோகிக்கப்படுகிறது.]]></string>
     <string name="about_specialThanksTitle">சிறப்பு நன்றி</string>
     <string name="about_librariesTitle">நூலகங்கள்</string>
     <string name="goPremium_title">ஆண்ட்ராய்டு அம்சங்களுக்கான முனின் பேக்</string>
-    <string name="goPremium_features">&lt;! [சி.டி.ஏ.டி.ஏ [\n &lt;li&gt; வரைபடங்கள் கட்டங்கள் &lt;/li&gt;\n &lt;li&gt; வரைபடம் விட்செட்டுகள் &lt;/li&gt;\n &lt;li&gt; டைசச்ட் ஏற்பு &lt;/li&gt;\n &lt;li&gt; அறிவிப்புகள் &lt;/li&gt;\n &lt;li&gt; உயர் முன்னுரிமை உதவி &lt;/li&gt;\n &lt;li&gt; காப்பீடு அம்சங்களின் ஒற்றை பேக்: தற்போதைய மற்றும் வரவிருக்கும் காப்பீடு அம்சங்களுக்கு ஒரு முறை செலுத்துங்கள்! &lt;/li&gt;\n &lt;li&gt; இன்னும் வர, அண்மைக் கால காப்பீடு அம்சங்களைப் பெற Google Play இல் தானாக புதுப்பிப்புகளை இயக்க மறக்காதீர்கள். &lt;/li&gt;\n ]]&gt;</string>
+    <string name="goPremium_features"><![CDATA[
+		<li>வரைபடங்கள் கட்டங்கள் </li>
+	    <li> வரைபடம் விட்செட்டுகள் </li>
+	    <li> டைசச்ட் ஏற்பு </li>
+	    <li> அறிவிப்புகள் </li>
+	    <li> உயர் முன்னுரிமை உதவி </li>
+	    <li> காப்பீடு அம்சங்களின் ஒற்றை பேக்: தற்போதைய மற்றும் வரவிருக்கும் காப்பீடு அம்சங்களுக்கு ஒரு முறை செலுத்துங்கள்! </li>
+	    <li> இன்னும் வர, அண்மைக் கால காப்பீடு அம்சங்களைப் பெற Google Play இல் தானாகப் புதுப்பிப்புகளை இயக்க மறக்காதீர்கள். </li>
+	]]></string>
     <string name="buy_now">இப்போது வாங்க</string>
     <string name="splashDesc">ஏற்றுகிறது</string>
     <string name="graphView_ImageViewDescription">வரைபடம்</string>
@@ -158,7 +167,7 @@
     <string name="rate_long">பயன்பாட்டைப் பற்றிய உங்கள் கருத்தை கூகிள் பிளேயில் மதிப்பிடுவதன் மூலம் பங்களிக்கவும், ஏனென்றால் அவ்வாறு செய்வது மற்றவர்களுக்கு தகவலறிந்த முடிவுகளை எடுக்க உதவுகிறது. நன்றி.</string>
     <string name="not_now">இப்போது இல்லை</string>
     <string name="export_explanation">உங்கள் உள்ளமைவு மற்றொரு சாதனத்தில் மீட்டெடுப்பதற்காக பதிவேற்றப்படும். எந்த கடவுச்சொற்களும் குறியாக்கம் செய்யப்படும், இறுதியில் உங்கள் மற்ற சாதனத்தில் உள்ளமைவைப் பெறுவதற்கான குறியீட்டைப் பெறுவீர்கள். ஆண்ட்ராய்டு சேவையகத்திற்கான முனினிலிருந்து நீங்கள் பதிவிறக்கம் செய்தவுடன் அல்லது 24 மணி நேரத்திற்குப் பிறகு உள்ளமைவு நீக்கப்படும்.</string>
-    <string name="export_success_title">ஏற்றுமதி</string>
+    <string name="export_success_title">ஏற்றுமதிசெய்யப்பட்டது</string>
     <string name="export_success_txt1">உங்கள் உள்ளமைவு பதிவேற்றப்பட்டது. இறக்குமதி செய்ய பின்வரும் குறியீட்டை உங்கள் இரண்டாம் நிலை சாதனத்தில் பயன்படுத்தவும்.</string>
     <string name="import_success_title">இறக்குமதி செய்யப்பட்டது</string>
     <string name="import_success">எல்லாம் இறக்குமதி செய்யப்பட்டுள்ளது</string>
